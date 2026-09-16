@@ -49,17 +49,31 @@ localStorage.setItem(CESTO, JSON.stringify({
 addEventListener('beforeunload', () => {
   if (guardado) localStorage.setItem(CESTO, guardado); else localStorage.removeItem(CESTO);
 });
+/* A ORIGEM também é um parâmetro, e não era.
+ *
+ * A bateria sempre conduziu o `localhost`, onde o prefixo de endereço é vazio.
+ * A versão publicada vive debaixo de uma pasta e tem endereços diferentes — e
+ * foi exactamente aí que oito @font-face saíram sem prefixo e todas as
+ * tipografias 404aram, com a verificação «tipo carregado» a passar em verde no
+ * local. Verificar contra um endereço diferente daquele para onde se publica
+ * não é verificar.
+ *
+ *   /_drive.html?w=390                          o site local
+ *   /_drive.html?w=390&base=/ithos-cathelier    o mesmo HTML publicado
+ */
+const BASE = (new URLSearchParams(location.search).get('base') || '').replace(/\/$/, '');
+
 for (const pag of PAGINAS) {
   const f = document.createElement('iframe');
   f.style.cssText = `width:${L}px;height:${A}px;border:0;position:absolute;left:-9999px`;
-  f.src = pag;
+  f.src = BASE + pag;
   document.body.appendChild(f);
   await new Promise(r => { f.onload = r; setTimeout(r, 4000); });
   await new Promise(r => setTimeout(r, 900));
   try {
     const w = f.contentWindow;
     const s = w.document.createElement('script');
-    s.src = '/_battery.js?v=' + L + Math.floor(performance.now());
+    s.src = BASE + '/_battery.js?v=' + L + Math.floor(performance.now());
     w.document.head.appendChild(s);
     await new Promise(r => { s.onload = r; setTimeout(r, 2500); });
     window.__resultados[pag] = w.__bateria();

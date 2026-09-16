@@ -58,6 +58,24 @@ function prefix(html) {
       head + list.replace(/(^|,\s*)\/(?!\/)/g, `$1${BASE}/`) + '"');
 }
 
+/* The stylesheet needs it too, and forgetting that cost every typeface on the
+ * live site.
+ *
+ * The HTML rewrite above only ever looked at attributes. A CSS file has its own
+ * addresses — `url('/assets/fonts/...')` in eight @font-face rules — and those
+ * went out unprefixed, resolved to the root of github.io, and 404ed. Every page
+ * that has been published so far rendered in the system fallback: not
+ * Montserrat, not Cormorant, not Klee One, not Grandstander.
+ *
+ * The battery could not see it. It drives localhost, where BASE is empty and
+ * the fonts load, and its "typeface loaded" check passed every time. A build
+ * verified against a different address than the one it ships to is not
+ * verified. */
+function prefixCss(css) {
+  if (!BASE) return css;
+  return css.replace(/url\((['"]?)\/(?!\/)/g, `url($1${BASE}/`);
+}
+
 const read = (p) => JSON.parse(readFileSync(join(CONTENT, p), 'utf8'));
 const identity = read('settings/identity.json');
 const shipping = read('settings/shipping.json');
@@ -106,7 +124,7 @@ function assets() {
     .map((f) => `/* ===== ${f} ===== */\n${readFileSync(join(HERE, f), 'utf8')}`)
     .join('\n\n');
   mkdirSync(join(OUT, 'assets'), { recursive: true });
-  writeFileSync(join(OUT, 'assets', 'styles.css'), css);
+  writeFileSync(join(OUT, 'assets', 'styles.css'), prefixCss(css));
 
   cpSync(join(HERE, 'fonts'), join(OUT, 'assets', 'fonts'), { recursive: true });
   cpSync(join(ROOT, 'assets', 'brand'), join(OUT, 'assets'), { recursive: true });

@@ -102,6 +102,33 @@ for (const file of pages) {
   if (!/data-brand="(ithos|cathelier)"/.test(html)) deaths.push(`${where}: no brand on <html>`);
 }
 
+/* Every address INSIDE the stylesheet has to resolve too.
+ *
+ * The page checks above only ever read HTML attributes, and a CSS file has
+ * addresses of its own. Eight @font-face rules shipped with root-relative
+ * url() under a project path: every typeface 404ed on the live site and every
+ * page rendered in the system fallback, while the local preview — where the
+ * prefix is empty — looked perfect. */
+const cssPath = join(OUT, 'assets', 'styles.css');
+if (!existsSync(cssPath)) deaths.push('assets/styles.css is missing');
+else {
+  const css = readFileSync(cssPath, 'utf8');
+  const BASE_CSS = (process.env.BASE_PATH || '').replace(/\/$/, '');
+  let urls = 0;
+  for (const m of css.matchAll(/url\((['"]?)(\/[^'")]+)\1\)/g)) {
+    urls++;
+    const target = m[2];
+    if (BASE_CSS && !target.startsWith(BASE_CSS + '/')) {
+      deaths.push(`styles.css: ${target} is missing the ${BASE_CSS} prefix — it would 404`);
+      continue;
+    }
+    const onDisk = BASE_CSS ? target.slice(BASE_CSS.length) : target;
+    if (!existsSync(join(OUT, onDisk))) deaths.push(`styles.css: ${target} does not exist`);
+  }
+  if (urls === 0) deaths.push('styles.css has no url() at all — are the typefaces still declared?');
+  console.log(`  stylesheet: ${urls} addresses inside the CSS all resolve`);
+}
+
 /* The catalogue the Worker prices against has to be the one the pointer names. */
 const pointer = join(OUT, 'data', 'catalogue-current.txt');
 if (!existsSync(pointer)) deaths.push('data/catalogue-current.txt is missing');
