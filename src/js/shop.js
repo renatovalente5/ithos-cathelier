@@ -427,6 +427,24 @@ function cardShots() {
 
     let at = 0;
     let timer = null;
+    const ready = new Set([shots[0]]);
+
+    /* Fetch and DECODE before swapping. Setting `src` on an <img> empties it
+       until the new file has decoded, so the frame goes blank for a moment —
+       invisible on a fast connection and a flicker on a slow one, which is the
+       connection this is most likely to be used on. */
+    const warm = (name) => {
+      if (ready.has(name)) return Promise.resolve();
+      const pre = new Image();
+      pre.src = `${BASE}/media/${dir}/${name}-600.webp`;
+      // decode() is raced against a deadline and never simply awaited. In a
+      // hidden document it does not settle at all — a backgrounded tab would
+      // leave the cycle waiting forever on a promise that never resolves — and
+      // on a slow connection it should not hold the sequence either.
+      const decoded = (pre.decode ? pre.decode() : Promise.resolve()).catch(() => {});
+      return Promise.race([decoded, new Promise((r) => setTimeout(r, 400))])
+        .then(() => { ready.add(name); });
+    };
 
     const show = (n) => {
       at = n % shots.length;
@@ -439,12 +457,19 @@ function cardShots() {
       }
       img.src = `${BASE}/media/${dir}/${name}-600.webp`;
       dots.forEach((d, n2) => d.classList.toggle('on', n2 === at));
+      // Have the one after this ready before it is needed.
+      warm(shots[(at + 1) % shots.length]);
     };
 
     const start = () => {
       if (timer) return;
       card.dataset.showing = 'yes';
-      timer = setInterval(() => show(at + 1), EVERY);
+      // Nothing moves until the second photograph is actually in hand.
+      warm(shots[1]).then(() => {
+        if (card.dataset.showing !== 'yes' || timer) return;
+        show(1);
+        timer = setInterval(() => show(at + 1), EVERY);
+      });
     };
     const stop = () => {
       clearInterval(timer);
