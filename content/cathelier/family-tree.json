@@ -1,0 +1,39 @@
+{
+  "name": "Family tree",
+  "price": 68,
+  "published": true,
+  "featured": true,
+  "order": 20,
+  "made": "to_order",
+  "occasion": "home",
+  "alsoIn": [
+    "names",
+    "mothers-day"
+  ],
+  "summary": "The whole family on one piece.",
+  "text": "The whole family on one piece.",
+  "photoFolder": "",
+  "photos": [],
+  "cover": "",
+  "options": [
+    {
+      "id": "engraving",
+      "name": "What should it say",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 80,
+      "extra": 0,
+      "help": "Names, a date, a short phrase. We send you a proof to approve before anything is cut."
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

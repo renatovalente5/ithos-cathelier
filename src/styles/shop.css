@@ -5,11 +5,41 @@
    drawer on the ithos side and a drawer on the cathelier side share a skeleton
    and share no appearance. */
 
+/* --- hero -----------------------------------------------------------------
+   A photograph edge to edge with the line over it. The owner rejected the
+   picture-beside-text version twice and asked for this by name.
+
+   The scrim is a flat layer, not a gradient, over the band the text sits in.
+   Contrast has to be MEASURABLE, and with a gradient the answer depends on
+   where you measure: the same headline passes at the bottom of the band and
+   fails at the top. A flat scrim gives one answer.
+
+   With no photograph yet, the panel is a solid brand colour instead. A light
+   placeholder under white text is not a design decision, it is unreadable. */
+.hero { position: relative; isolation: isolate; }
+.hero__photo { background: var(--frame-bg); }
+.hero__body {
+  position: absolute; inset-block-end: 0; inset-inline: 0;
+  padding: clamp(1.5rem, 5vw, 4rem) var(--gutter) clamp(2rem, 6vw, 4.5rem);
+  background: rgb(24 18 14 / .62);
+  color: #fff; text-align: center;
+}
+.hero--nophoto .hero__photo { display: none; }
+.hero--nophoto .hero__body { position: static; background: var(--accent); }
+.hero__title { color: #fff; font-size: clamp(1.75rem, 1rem + 3.4vw, 3.1rem); max-width: 22ch; margin-inline: auto; }
+.hero__cta {
+  display: inline-block; margin-block-start: 1.5rem;
+  font-size: 12px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase;
+  color: #fff; text-decoration: none; padding-block-end: 4px;
+  border-block-end: 1px solid rgb(255 255 255 / .65);
+}
+.hero__cta:hover { border-color: #fff; }
+
 /* --- breadcrumbs ---------------------------------------------------------- */
-.crumbs { padding-block: .625rem .25rem; font-size: 12px; color: var(--muted); }
+.crumbs { padding-block: .5rem .25rem; font-size: 12px; color: var(--muted); }
 .crumbs ol { display: flex; flex-wrap: wrap; gap: .4rem; list-style: none; padding: 0; margin: 0; }
 .crumbs li + li::before { content: '/'; margin-inline-end: .4rem; color: var(--line); }
-.crumbs a { text-decoration: none; }
+.crumbs a, .crumbs span { text-decoration: none; display: inline-flex; align-items: center; min-height: 26px; }
 .crumbs a:hover { color: var(--accent); }
 
 /* --- the other brand, in the header --------------------------------------
@@ -17,7 +47,7 @@
    out of the page; a door does. */
 .head__sibling {
   display: none; align-items: center; gap: .35em;
-  font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+  font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
   text-decoration: none; color: var(--muted); padding: .5rem .75rem;
 }
 .head__sibling:hover { color: var(--accent); }
@@ -32,7 +62,7 @@
 .filter {
   flex: none; min-height: 40px; padding: .45em .85em;
   border: 1px solid var(--line); background: transparent; color: var(--muted);
-  border-radius: var(--pill, 999px); font-size: 11.5px; letter-spacing: .03em;
+  border-radius: var(--pill, 999px); font-size: 12px; letter-spacing: .02em;
   transition: color .18s, border-color .18s, background .18s;
 }
 .filter:hover { border-color: var(--accent); color: var(--accent); }
@@ -40,7 +70,13 @@
 .filter--more { color: var(--accent); border-style: dashed; }
 
 /* --- product page ---------------------------------------------------------- */
-.product { display: grid; gap: clamp(1.5rem, 4vw, 3.5rem); padding-block: clamp(1rem, 3vw, 2rem) clamp(2.5rem, 6vw, 4.5rem); }
+/* The column must be minmax(0, 1fr) at EVERY width, not just the wide one.
+   A grid column defaults to `auto`, which sizes to its content's max-content —
+   and the gallery track is six slides at 100% each. On a phone that made the
+   column 560px inside a 375px screen and the whole page scrolled sideways.
+   Only the six-photo product showed it; the four-photo ones did not. */
+.product { display: grid; grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 3.5rem); padding-block: clamp(1rem, 3vw, 2rem) clamp(2.5rem, 6vw, 4.5rem); }
 @media (width >= 64rem) { .product { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; } }
 
 .gallery { position: relative; overflow: hidden; }
@@ -144,8 +180,10 @@
 .foot__group summary::-webkit-details-marker { display: none; }
 .foot__group summary::after { content: '+'; font-size: 1.1rem; color: var(--muted); }
 .foot__group[open] summary::after { content: '\2212'; }
-.foot__group ul { list-style: none; padding: 0 0 1rem; margin: 0; display: grid; gap: .6rem; font-size: 13px; }
-.foot__group a { text-decoration: none; color: var(--muted); }
+.foot__group ul { list-style: none; padding: 0 0 1rem; margin: 0; display: grid; font-size: 13px; }
+/* A link on its own line in a list is a target, not a word inside a sentence:
+   the standard's exemption does not cover it. These were 16px tall. */
+.foot__group a { text-decoration: none; color: var(--muted); display: inline-flex; align-items: center; min-height: 28px; }
 .foot__group a:hover { color: var(--accent); }
 @media (width >= 60rem) {
   .foot__group { border: 0; }
@@ -153,11 +191,11 @@
   .foot__group summary::after { display: none; }
 }
 
-.foot__cost { margin-block-start: 1.5rem; font-size: 11px; color: var(--muted); }
+.foot__cost { margin-block-start: 1.5rem; font-size: 12px; color: var(--muted); }
 .foot__social { display: flex; gap: .6rem; margin-block-start: 1.25rem; }
 .foot__social a { width: 44px; height: 44px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); }
 .foot__social a:hover { color: var(--accent); border-color: var(--accent); }
-.foot__end { margin-block-start: 1.75rem; padding-block-start: 1.25rem; border-block-start: 1px solid var(--line); font-size: 11px; color: var(--muted); display: grid; gap: .4rem; line-height: 1.7; }
+.foot__end { margin-block-start: 1.75rem; padding-block-start: 1.25rem; border-block-start: 1px solid var(--line); font-size: 12px; color: var(--muted); display: grid; gap: .4rem; line-height: 1.7; }
 .foot__end a { color: var(--muted); }
 
 /* --- back to top ----------------------------------------------------------- */

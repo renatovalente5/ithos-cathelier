@@ -1,0 +1,39 @@
+{
+  "name": "Panel with the children’s names",
+  "price": 34,
+  "published": true,
+  "featured": false,
+  "order": 330,
+  "made": "to_order",
+  "occasion": "mothers-day",
+  "alsoIn": [
+    "names",
+    "home"
+  ],
+  "summary": "The names and the birth dates, on one piece.",
+  "text": "The names and the birth dates, on one piece.",
+  "photoFolder": "",
+  "photos": [],
+  "cover": "",
+  "options": [
+    {
+      "id": "engraving",
+      "name": "What should it say",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 80,
+      "extra": 0,
+      "help": "Names, a date, a short phrase. We send you a proof to approve before anything is cut."
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "name": "Ring box",
+  "price": 34,
+  "published": true,
+  "featured": false,
+  "order": 60,
+  "made": "to_order",
+  "occasion": "keepsakes",
+  "alsoIn": [
+    "home"
+  ],
+  "summary": "In wood, engraved with the names and the date.",
+  "text": "In wood, engraved with the names and the date.",
+  "photoFolder": "",
+  "photos": [],
+  "cover": "",
+  "options": [
+    {
+      "id": "engraving",
+      "name": "What should it say",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 80,
+      "extra": 0,
+      "help": "Names, a date, a short phrase. We send you a proof to approve before anything is cut."
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

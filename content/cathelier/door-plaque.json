@@ -1,0 +1,39 @@
+{
+  "name": "Door plaque",
+  "price": 16,
+  "published": true,
+  "featured": false,
+  "order": 290,
+  "made": "to_order",
+  "occasion": "names",
+  "alsoIn": [
+    "childrens-day",
+    "home"
+  ],
+  "summary": "The name on the bedroom door.",
+  "text": "The name on the bedroom door.",
+  "photoFolder": "",
+  "photos": [],
+  "cover": "",
+  "options": [
+    {
+      "id": "engraving",
+      "name": "What should it say",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 80,
+      "extra": 0,
+      "help": "Names, a date, a short phrase. We send you a proof to approve before anything is cut."
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

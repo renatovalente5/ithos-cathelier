@@ -1,0 +1,38 @@
+{
+  "name": "Growth chart",
+  "price": 48,
+  "published": true,
+  "featured": true,
+  "order": 340,
+  "made": "to_order",
+  "occasion": "home",
+  "alsoIn": [
+    "childrens-day"
+  ],
+  "summary": "To measure a whole childhood, then take with you when you move.",
+  "text": "To measure a whole childhood, then take with you when you move.",
+  "photoFolder": "",
+  "photos": [],
+  "cover": "",
+  "options": [
+    {
+      "id": "engraving",
+      "name": "What should it say",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 80,
+      "extra": 0,
+      "help": "Names, a date, a short phrase. We send you a proof to approve before anything is cut."
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

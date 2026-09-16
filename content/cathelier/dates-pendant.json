@@ -1,0 +1,39 @@
+{
+  "name": "Pendant with the dates",
+  "price": 14,
+  "published": true,
+  "featured": false,
+  "order": 260,
+  "made": "to_order",
+  "occasion": "mothers-day",
+  "alsoIn": [
+    "hanging",
+    "new-baby"
+  ],
+  "summary": "A small disc with the dates that matter, to carry in a bag.",
+  "text": "A small disc with the dates that matter, to carry in a bag.",
+  "photoFolder": "",
+  "photos": [],
+  "cover": "",
+  "options": [
+    {
+      "id": "engraving",
+      "name": "What should it say",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 80,
+      "extra": 0,
+      "help": "Names, a date, a short phrase. We send you a proof to approve before anything is cut."
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

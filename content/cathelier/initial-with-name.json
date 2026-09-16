@@ -1,0 +1,39 @@
+{
+  "name": "Initial with the name",
+  "price": 28,
+  "published": true,
+  "featured": false,
+  "order": 200,
+  "made": "to_order",
+  "occasion": "names",
+  "alsoIn": [
+    "home",
+    "childrens-day"
+  ],
+  "summary": "The large initial, with the name written across it.",
+  "text": "The large initial, with the name written across it.",
+  "photoFolder": "",
+  "photos": [],
+  "cover": "",
+  "options": [
+    {
+      "id": "engraving",
+      "name": "What should it say",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 80,
+      "extra": 0,
+      "help": "Names, a date, a short phrase. We send you a proof to approve before anything is cut."
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

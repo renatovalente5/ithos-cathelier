@@ -16,6 +16,7 @@ import { createHash } from 'node:crypto';
 
 import { page } from './lib/shell.mjs';
 import * as ithos from './lib/ithos.mjs';
+import * as cath from './lib/cathelier.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..');
@@ -47,8 +48,11 @@ function loadProducts(brand) {
 }
 
 const lamps = loadProducts('ithos');
-const pieces = loadProducts('cathelier');
-const counts = { lamps: lamps.length, pieces: pieces.length };
+const pieces = loadProducts('cathelier').filter((p) => p.slug !== '_occasions');
+const occasions = existsSync(join(CONTENT, 'cathelier/_occasions.json'))
+  ? read('cathelier/_occasions.json').filter((o) => o.published).sort((a, b) => a.order - b.order)
+  : [];
+const counts = { lamps: lamps.length, pieces: pieces.length, occasions: occasions.length };
 
 /* --- writing -------------------------------------------------------------- */
 
@@ -159,6 +163,47 @@ function buildIthos() {
   }
 }
 
+function buildCathelier() {
+  write('/cathelier/', page({
+    ...shellArgs, brand: 'cathelier', path: '/cathelier/',
+    title: 'cathelier — personalised pieces, cut and engraved to order',
+    description: `Laser-cut wooden keepsakes with your names, dates and words on them. `
+      + `${occasions.length} occasions, ${pieces.length} pieces, each with a proof to approve before we cut.`,
+    body: cath.home({ occasions, pieces }),
+  }));
+
+  for (const o of occasions) {
+    const mine = pieces.filter((p) => p.occasion === o.slug || (p.alsoIn || []).includes(o.slug));
+    write(`/cathelier/${o.slug}/`, page({
+      ...shellArgs, brand: 'cathelier', path: `/cathelier/${o.slug}/`,
+      title: `${o.name} — personalised wooden pieces | cathelier`,
+      description: o.summary,
+      crumbs: [{ name: 'cathelier', href: '/cathelier/' }, { name: o.name }],
+      body: cath.occasion({ o, pieces, occasions }),
+    }));
+    if (!mine.length) console.warn(`  ! ${o.name} has no pieces in it`);
+  }
+
+  write('/cathelier/pieces/', page({
+    ...shellArgs, brand: 'cathelier', path: '/cathelier/pieces/',
+    title: `Every piece — ${pieces.length} personalised designs | cathelier`,
+    description: `All ${pieces.length} cathelier pieces, made to order with your names, dates or words engraved.`,
+    crumbs: [{ name: 'cathelier', href: '/cathelier/' }, { name: 'Every piece' }],
+    body: cath.all({ pieces, occasions }),
+  }));
+
+  for (const p of pieces) {
+    write(`/cathelier/pieces/${p.slug}/`, page({
+      ...shellArgs, brand: 'cathelier', path: `/cathelier/pieces/${p.slug}/`,
+      title: `${p.name} — personalised and engraved | cathelier`,
+      description: p.summary,
+      crumbs: [{ name: 'cathelier', href: '/cathelier/' },
+               { name: 'Every piece', href: '/cathelier/pieces/' }, { name: p.name }],
+      body: cath.piece({ p, all: pieces, shop, occasions }),
+    }));
+  }
+}
+
 /* --- run ------------------------------------------------------------------ */
 
 const media = join(OUT, 'media');
@@ -170,6 +215,7 @@ if (keepMedia) { cpSync(join(ROOT, '.media-cache'), media, { recursive: true });
 
 assets();
 buildIthos();
+buildCathelier();
 const cat = catalogueFile();
 
 writeFileSync(join(OUT, 'robots.txt'),

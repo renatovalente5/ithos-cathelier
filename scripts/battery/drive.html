@@ -1,0 +1,54 @@
+<!doctype html><meta charset=utf-8><title>bateria</title>
+<body style="font:13px/1.5 ui-monospace,monospace;padding:1rem">
+<div id=saida>a correr…</div>
+<script type=module>
+const PAGINAS = ['/','/lamps/','/lamps/fox/','/lamps/mushroom/',
+ '/cathelier/','/cathelier/christmas/','/cathelier/keepsakes/','/cathelier/pieces/',
+ '/cathelier/pieces/growth-chart/','/cathelier/pieces/engraved-bauble/'];
+window.__resultados = {};
+const saida = document.getElementById('saida');
+const L = Number(new URLSearchParams(location.search).get('w') || 1280);
+
+/* O carrinho é SEMEADO antes de começar.
+ *
+ * Com o carrinho vazio, `/carrinho/` e `/encomenda/` são duas páginas com uma
+ * frase cada, e a bateria dava-as por boas durante três larguras seguidas. Só
+ * quando um teste manual deixou dois artigos no `localStorage` é que
+ * apareceram as ligações de 19 px que faltavam à norma dos alvos de toque.
+ * Uma peça de cada marca, para o agrupamento por marca também ser pintado. */
+const CESTO = 'ic-basket-v1';
+const guardado = localStorage.getItem(CESTO);
+localStorage.setItem(CESTO, JSON.stringify({
+  country: 'PT',
+  lines: [
+    { id: 'fox', qty: 1, options: { power: 'batteries' } },
+    { id: 'save-the-date', qty: 2, options: { engraving: 'Ana and John · 12.09.2027' } },
+  ],
+}));
+// E respondido o aviso de cookies: senão tapa o fundo de todas as páginas e
+// as medidas de contraste e de alvos leem-no a ele em vez do conteúdo.
+// no cookie banner on this build: there is nothing to consent to
+addEventListener('beforeunload', () => {
+  if (guardado) localStorage.setItem(CESTO, guardado); else localStorage.removeItem(CESTO);
+});
+for (const pag of PAGINAS) {
+  const f = document.createElement('iframe');
+  f.style.cssText = `width:${L}px;height:900px;border:0;position:absolute;left:-9999px`;
+  f.src = pag;
+  document.body.appendChild(f);
+  await new Promise(r => { f.onload = r; setTimeout(r, 4000); });
+  await new Promise(r => setTimeout(r, 900));
+  try {
+    const w = f.contentWindow;
+    const s = w.document.createElement('script');
+    s.src = '/_battery.js?v=' + L + Math.floor(performance.now());
+    w.document.head.appendChild(s);
+    await new Promise(r => { s.onload = r; setTimeout(r, 2500); });
+    window.__resultados[pag] = w.__bateria();
+  } catch (e) { window.__resultados[pag] = { erro: String(e) }; }
+  f.remove();
+  saida.textContent = Object.keys(window.__resultados).length + '/' + PAGINAS.length;
+}
+window.__pronto = true;
+saida.textContent = 'pronto: ' + Object.keys(window.__resultados).length + ' páginas';
+</script>

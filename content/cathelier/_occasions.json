@@ -1,0 +1,72 @@
+[
+  {
+    "slug": "christmas",
+    "name": "Christmas",
+    "summary": "Ornaments with everyone’s name on them, to hang again every year.",
+    "order": 10,
+    "published": true
+  },
+  {
+    "slug": "mothers-day",
+    "name": "Mother’s Day",
+    "summary": "A piece carrying her children’s names, to keep in sight all year.",
+    "order": 20,
+    "published": true
+  },
+  {
+    "slug": "fathers-day",
+    "name": "Father’s Day",
+    "summary": "“You are my superhero”, and other lines only he understands.",
+    "order": 30,
+    "published": true
+  },
+  {
+    "slug": "childrens-day",
+    "name": "Children’s Day",
+    "summary": "Pieces with a name on them, made to outlast a toy.",
+    "order": 40,
+    "published": true
+  },
+  {
+    "slug": "keepsakes",
+    "name": "Keepsakes",
+    "summary": "For everyone who came: weddings, christenings, communions, birthdays.",
+    "order": 50,
+    "published": true
+  },
+  {
+    "slug": "new-baby",
+    "name": "A new baby",
+    "summary": "The name, the date, the time, the weight and the length. All engraved.",
+    "order": 60,
+    "published": true
+  },
+  {
+    "slug": "names",
+    "name": "Names",
+    "summary": "A name for the bedroom wall, the door, or above the bed.",
+    "order": 70,
+    "published": true
+  },
+  {
+    "slug": "home",
+    "name": "For the home",
+    "summary": "Growth charts, panels, plaques and signs for the day itself.",
+    "order": 80,
+    "published": true
+  },
+  {
+    "slug": "hanging",
+    "name": "Hanging pieces",
+    "summary": "Small pieces with a hole and a ribbon, to hang anywhere.",
+    "order": 90,
+    "published": true
+  },
+  {
+    "slug": "awards",
+    "name": "Awards and gifts",
+    "summary": "For clubs, schools, companies and councils. With your emblem engraved.",
+    "order": 100,
+    "published": true
+  }
+]

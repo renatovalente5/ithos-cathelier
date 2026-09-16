@@ -1,0 +1,38 @@
+{
+  "name": "Door wreath with the family name",
+  "price": 38,
+  "published": true,
+  "featured": false,
+  "order": 130,
+  "made": "to_order",
+  "occasion": "christmas",
+  "alsoIn": [
+    "home"
+  ],
+  "summary": "For the front door, with the family name in the middle.",
+  "text": "For the front door, with the family name in the middle.",
+  "photoFolder": "",
+  "photos": [],
+  "cover": "",
+  "options": [
+    {
+      "id": "engraving",
+      "name": "What should it say",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 80,
+      "extra": 0,
+      "help": "Names, a date, a short phrase. We send you a proof to approve before anything is cut."
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

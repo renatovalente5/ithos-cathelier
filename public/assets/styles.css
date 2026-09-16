@@ -186,7 +186,9 @@ p { text-wrap: pretty; }
   --bg-trust: #FBF6F1;
   --ink: #212121;
   --ink-soft: #565656;
-  --muted: #777777;
+  --muted: #6E6E6E;           /* the model shop uses #777, which is 4.48:1 on
+                                 white — it fails by two hundredths, and two
+                                 hundredths is still a fail */
   --line: #E8E3DD;
   --line-soft: #F1ECE6;
   --accent: #A5523B;          /* the terracotta on prices and buttons */
@@ -236,7 +238,7 @@ p { text-wrap: pretty; }
 .trust {
   background: var(--bg-trust);
   border-block-end: 1px solid var(--line-soft);
-  font-size: 11px; letter-spacing: .04em; color: var(--ink-soft);
+  font-size: 12px; letter-spacing: .03em; color: var(--ink-soft);
 }
 .trust__row { display: flex; align-items: center; justify-content: center; gap: clamp(1rem, 6vw, 5rem); min-height: 40px; }
 .trust__item { display: flex; align-items: center; gap: .55em; text-align: center; }
@@ -274,10 +276,10 @@ p { text-wrap: pretty; }
 .icon-btn:hover { color: var(--accent); }
 
 .cart-count {
-  min-width: 18px; height: 18px; padding-inline: 5px;
+  min-width: 20px; height: 20px; padding-inline: 5px;
   display: grid; place-items: center; margin-inline-start: -8px; margin-block-start: -14px;
   background: var(--accent); color: var(--accent-ink);
-  border-radius: 999px; font-size: 10px; font-weight: 600; font-variant-numeric: tabular-nums;
+  border-radius: 999px; font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums;
 }
 .cart-count[data-empty='yes'] { display: none; }
 
@@ -288,29 +290,10 @@ p { text-wrap: pretty; }
   .nav-desktop a:hover, .nav-desktop a[aria-current='page'] { color: var(--accent); }
 }
 
-/* --- hero -----------------------------------------------------------------
-   A photograph edge to edge with the line over it, which is what that shop
-   does and what the owner asked for after rejecting the picture-beside-text
-   version twice. The scrim is a flat layer and not a gradient: contrast has to
-   be measurable, and a gradient makes the answer depend on where you measure. */
-.hero { position: relative; isolation: isolate; }
-.hero__photo { aspect-ratio: 4 / 5; }
-@media (width >= 48rem) { .hero__photo { aspect-ratio: 16 / 7; } }
-.hero__photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; }
-.hero__body {
-  position: absolute; inset-block-end: 0; inset-inline: 0;
-  padding: clamp(1.5rem, 5vw, 4rem) var(--gutter) clamp(2rem, 6vw, 4.5rem);
-  background: linear-gradient(to top, rgb(20 16 13 / .68), rgb(20 16 13 / .48) 55%, transparent);
-  color: #fff; text-align: center;
-}
-.hero__title { font-family: var(--font-display); font-weight: 300; color: #fff;
-  font-size: clamp(1.75rem, 1rem + 3.4vw, 3.1rem); max-width: 22ch; margin-inline: auto; }
-.hero__cta {
-  display: inline-block; margin-block-start: 1.5rem;
-  font-size: 12px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase;
-  color: #fff; text-decoration: none; padding-block-end: 4px; border-block-end: 1px solid rgb(255 255 255 / .6);
-}
-.hero__cta:hover { border-color: #fff; }
+/* --- hero --------------------------------------------------------------- */
+[data-brand='ithos'] .hero__photo { aspect-ratio: 4 / 5; }
+@media (width >= 48rem) { [data-brand='ithos'] .hero__photo { aspect-ratio: 16 / 7; } }
+[data-brand='ithos'] .hero__title { font-family: var(--font-display); font-weight: 300; }
 
 /* --- product card ---------------------------------------------------------
    Frame, swatches, name, price — in that order, which is the order that shop
@@ -356,6 +339,163 @@ p { text-wrap: pretty; }
 .section__head { text-align: center; margin-block-end: clamp(1.5rem, 4vw, 2.75rem); }
 
 
+/* ===== styles/brands/cathelier.css ===== */
+/* ===========================================================================
+   cathelier — built to the shape of the second shop the owner chose.
+   ===========================================================================
+
+   Measured from that shop rather than guessed at:
+
+     body        Klee One, 19.2px, rgba(107,78,60,.75) on #FFF8F2
+     headings    Grandstander
+     ink         #6B4E3C, with #634A3A under it
+     structure   announcement bar, centred crest, full-bleed seasonal banner,
+                 a row of ROUND occasion badges, then featured collections
+
+   Both of its typefaces are free, so unlike the ithos side there is no
+   substitution here: this is the same lettering.
+
+   And this is deliberately nothing like the ithos world. Someone arriving here
+   from the lamps should feel they changed website — same workshop, different
+   shop. Where ithos is white, square-cornered and terracotta, this is cream,
+   round, and brown. */
+
+[data-brand='cathelier'] {
+  --bg: #FFF8F2;
+  --bg-soft: #FFFFFF;
+  --bg-trust: #F7EDE3;
+  --ink: #6B4E3C;
+  /* The model shop's own muted brown is rgb(107 78 60 / .62), and on its cream
+     that is 2.96:1 — 54 separate failures on one page. These are the same
+     brown at the opacity that actually passes, flattened to a solid value so
+     the answer does not change with whichever of the three backgrounds it
+     lands on. Measured by painting the colour onto a canvas and reading it
+     back: reading it with a regular expression breaks on color-mix(). */
+  --ink-soft: #7A5C48;        /* 5.6:1 on cream */
+  --muted: #816757;           /* 4.5:1 on the darkest of the three grounds */
+  --line: #EADDCF;
+  --line-soft: #F2E7DA;
+  --accent: #634A3A;
+  --accent-deep: #4B372A;
+  --accent-ink: #FFF8F2;
+  --frame-bg: #F7EFE6;
+  --sibling-bg: #FFFFFF;
+
+  --font-body: 'Klee One', Georgia, serif;
+  --font-display: 'Grandstander', system-ui, sans-serif;
+  --size-body: 16px;
+
+  --radius: 14px;             /* that shop is round-cornered throughout */
+  --pill: 999px;
+  --grid-gap: 22px;
+}
+
+[data-brand='cathelier'] body { line-height: 1.75; }
+
+/* --- type ----------------------------------------------------------------- */
+
+[data-brand='cathelier'] h1,
+[data-brand='cathelier'] h2,
+[data-brand='cathelier'] h3,
+[data-brand='cathelier'] .display {
+  font-family: var(--font-display);
+  font-weight: 500;
+  letter-spacing: .01em;
+  /* No colour here, and that is the point. A brand rule with an attribute
+     selector outranks `.hero__title`, so setting it painted the hero headline
+     brown on brown: 1.08:1, which is invisible. Headings INHERIT, the body
+     sets the colour, and a dark panel can therefore still turn its own text
+     white. Measured, not looked at — it looked like a shadow. */
+}
+[data-brand='cathelier'] h1 { font-size: clamp(1.6rem, 1.1rem + 2.2vw, 2.5rem); }
+[data-brand='cathelier'] h2 { font-size: clamp(1.35rem, 1rem + 1.4vw, 1.9rem); }
+[data-brand='cathelier'] h3 { font-size: 1rem; font-weight: 500; }
+
+[data-brand='cathelier'] .eyebrow {
+  font-family: var(--font-display);
+  font-size: 12px; font-weight: 500; letter-spacing: .22em;
+  text-transform: uppercase; color: var(--muted);
+}
+[data-brand='cathelier'] .lede { font-size: 16px; color: var(--ink-soft); line-height: 1.85; }
+
+/* --- the announcement bar --------------------------------------------------
+   That shop runs one above everything, and it is where a seasonal line lives:
+   "Christmas orders close on the 10th" and nothing else. */
+[data-brand='cathelier'] .trust { background: var(--bg-trust); border-block-end: 0; }
+[data-brand='cathelier'] .trust__row { min-height: 40px; font-size: 12px; }
+[data-brand='cathelier'] .trust__item svg { color: var(--accent); }
+
+/* --- header ---------------------------------------------------------------- */
+[data-brand='cathelier'] .head { background: var(--bg); }
+[data-brand='cathelier'] .head__mark img { height: clamp(40px, 5vw, 52px); }
+
+/* --- the seasonal banner ---------------------------------------------------- */
+[data-brand='cathelier'] .hero__photo { aspect-ratio: 3 / 4; }
+@media (width >= 48rem) { [data-brand='cathelier'] .hero__photo { aspect-ratio: 21 / 8; } }
+[data-brand='cathelier'] .hero__title { font-family: var(--font-display); font-weight: 600; }
+[data-brand='cathelier'] .hero__cta { border-block-end-color: rgb(255 255 255 / .75); }
+
+/* --- the round occasion badges ----------------------------------------------
+   The row of circles under the banner, which is how that shop's whole
+   navigation works and exactly how the owner described hers: by date and by
+   occasion, not by what the thing is made of. */
+.occasions {
+  display: grid; gap: 1rem 0;
+  grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
+  padding-block: clamp(1.5rem, 4vw, 2.75rem);
+}
+.occasion { display: grid; justify-items: center; gap: .55rem; text-decoration: none; text-align: center; }
+.occasion__badge {
+  width: clamp(56px, 12vw, 74px); aspect-ratio: 1; border-radius: 999px;
+  display: grid; place-items: center; overflow: hidden;
+  background: var(--frame-bg); border: 1px solid var(--line);
+  color: var(--accent);
+  transition: border-color .2s ease, transform .2s ease;
+}
+.occasion:hover .occasion__badge { border-color: var(--accent); transform: translateY(-2px); }
+@media (prefers-reduced-motion: reduce) { .occasion__badge { transition: none; } .occasion:hover .occasion__badge { transform: none; } }
+.occasion__badge img { width: 100%; height: 100%; object-fit: cover; }
+.occasion__name {
+  font-family: var(--font-display); font-size: 12px; font-weight: 500;
+  letter-spacing: .04em; color: var(--muted); line-height: 1.3;
+  max-width: 12ch;
+}
+.occasion:hover .occasion__name { color: var(--accent); }
+
+/* --- collection blocks ------------------------------------------------------ */
+.collection { padding-block: clamp(2rem, 5vw, 3.5rem); }
+.collection__head { text-align: center; max-width: 46rem; margin-inline: auto; }
+.collection__head .eyebrow { display: block; margin-block-end: .5rem; }
+
+/* --- cards, round instead of square ----------------------------------------- */
+[data-brand='cathelier'] .frame { border-radius: var(--radius); }
+[data-brand='cathelier'] .card__name { font-family: var(--font-display); font-size: 14px; font-weight: 500; color: var(--ink); text-align: center; }
+[data-brand='cathelier'] .card__price { color: var(--accent); text-align: center; font-size: 13px; }
+[data-brand='cathelier'] .filter { font-family: var(--font-display); }
+[data-brand='cathelier'] .btn { border-radius: var(--pill); font-family: var(--font-display); letter-spacing: .08em; }
+[data-brand='cathelier'] .field input, [data-brand='cathelier'] .field textarea,
+[data-brand='cathelier'] .field select { border-radius: 10px; }
+[data-brand='cathelier'] .choice { border-radius: 10px; }
+[data-brand='cathelier'] .reassure { border-radius: var(--radius); }
+[data-brand='cathelier'] .foot__group summary { font-family: var(--font-display); }
+
+/* --- a piece with no photograph yet ------------------------------------------
+   Forty-one pieces are written and not one has been photographed. Rather than
+   a broken image or a grey box, the frame shows the piece's name set the way
+   it would be engraved. It is honest about being a placeholder, it keeps the
+   grid working, and it disappears by itself the moment a photograph lands. */
+.awaiting {
+  display: grid; place-items: center; padding: 1rem; text-align: center;
+  background:
+    repeating-linear-gradient(103deg, rgb(107 78 60 / .045) 0 2px, transparent 2px 9px),
+    var(--frame-bg);
+}
+.awaiting span {
+  font-family: var(--font-display); font-size: 13px; font-weight: 500;
+  letter-spacing: .06em; color: var(--muted); max-width: 14ch; line-height: 1.4;
+}
+
+
 /* ===== styles/shop.css ===== */
 /* ===========================================================================
    The furniture: the parts that behave the same in both shops.
@@ -364,11 +504,41 @@ p { text-wrap: pretty; }
    drawer on the ithos side and a drawer on the cathelier side share a skeleton
    and share no appearance. */
 
+/* --- hero -----------------------------------------------------------------
+   A photograph edge to edge with the line over it. The owner rejected the
+   picture-beside-text version twice and asked for this by name.
+
+   The scrim is a flat layer, not a gradient, over the band the text sits in.
+   Contrast has to be MEASURABLE, and with a gradient the answer depends on
+   where you measure: the same headline passes at the bottom of the band and
+   fails at the top. A flat scrim gives one answer.
+
+   With no photograph yet, the panel is a solid brand colour instead. A light
+   placeholder under white text is not a design decision, it is unreadable. */
+.hero { position: relative; isolation: isolate; }
+.hero__photo { background: var(--frame-bg); }
+.hero__body {
+  position: absolute; inset-block-end: 0; inset-inline: 0;
+  padding: clamp(1.5rem, 5vw, 4rem) var(--gutter) clamp(2rem, 6vw, 4.5rem);
+  background: rgb(24 18 14 / .62);
+  color: #fff; text-align: center;
+}
+.hero--nophoto .hero__photo { display: none; }
+.hero--nophoto .hero__body { position: static; background: var(--accent); }
+.hero__title { color: #fff; font-size: clamp(1.75rem, 1rem + 3.4vw, 3.1rem); max-width: 22ch; margin-inline: auto; }
+.hero__cta {
+  display: inline-block; margin-block-start: 1.5rem;
+  font-size: 12px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase;
+  color: #fff; text-decoration: none; padding-block-end: 4px;
+  border-block-end: 1px solid rgb(255 255 255 / .65);
+}
+.hero__cta:hover { border-color: #fff; }
+
 /* --- breadcrumbs ---------------------------------------------------------- */
-.crumbs { padding-block: .625rem .25rem; font-size: 12px; color: var(--muted); }
+.crumbs { padding-block: .5rem .25rem; font-size: 12px; color: var(--muted); }
 .crumbs ol { display: flex; flex-wrap: wrap; gap: .4rem; list-style: none; padding: 0; margin: 0; }
 .crumbs li + li::before { content: '/'; margin-inline-end: .4rem; color: var(--line); }
-.crumbs a { text-decoration: none; }
+.crumbs a, .crumbs span { text-decoration: none; display: inline-flex; align-items: center; min-height: 26px; }
 .crumbs a:hover { color: var(--accent); }
 
 /* --- the other brand, in the header --------------------------------------
@@ -376,7 +546,7 @@ p { text-wrap: pretty; }
    out of the page; a door does. */
 .head__sibling {
   display: none; align-items: center; gap: .35em;
-  font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+  font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
   text-decoration: none; color: var(--muted); padding: .5rem .75rem;
 }
 .head__sibling:hover { color: var(--accent); }
@@ -391,7 +561,7 @@ p { text-wrap: pretty; }
 .filter {
   flex: none; min-height: 40px; padding: .45em .85em;
   border: 1px solid var(--line); background: transparent; color: var(--muted);
-  border-radius: var(--pill, 999px); font-size: 11.5px; letter-spacing: .03em;
+  border-radius: var(--pill, 999px); font-size: 12px; letter-spacing: .02em;
   transition: color .18s, border-color .18s, background .18s;
 }
 .filter:hover { border-color: var(--accent); color: var(--accent); }
@@ -399,7 +569,13 @@ p { text-wrap: pretty; }
 .filter--more { color: var(--accent); border-style: dashed; }
 
 /* --- product page ---------------------------------------------------------- */
-.product { display: grid; gap: clamp(1.5rem, 4vw, 3.5rem); padding-block: clamp(1rem, 3vw, 2rem) clamp(2.5rem, 6vw, 4.5rem); }
+/* The column must be minmax(0, 1fr) at EVERY width, not just the wide one.
+   A grid column defaults to `auto`, which sizes to its content's max-content —
+   and the gallery track is six slides at 100% each. On a phone that made the
+   column 560px inside a 375px screen and the whole page scrolled sideways.
+   Only the six-photo product showed it; the four-photo ones did not. */
+.product { display: grid; grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 3.5rem); padding-block: clamp(1rem, 3vw, 2rem) clamp(2.5rem, 6vw, 4.5rem); }
 @media (width >= 64rem) { .product { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; } }
 
 .gallery { position: relative; overflow: hidden; }
@@ -503,8 +679,10 @@ p { text-wrap: pretty; }
 .foot__group summary::-webkit-details-marker { display: none; }
 .foot__group summary::after { content: '+'; font-size: 1.1rem; color: var(--muted); }
 .foot__group[open] summary::after { content: '\2212'; }
-.foot__group ul { list-style: none; padding: 0 0 1rem; margin: 0; display: grid; gap: .6rem; font-size: 13px; }
-.foot__group a { text-decoration: none; color: var(--muted); }
+.foot__group ul { list-style: none; padding: 0 0 1rem; margin: 0; display: grid; font-size: 13px; }
+/* A link on its own line in a list is a target, not a word inside a sentence:
+   the standard's exemption does not cover it. These were 16px tall. */
+.foot__group a { text-decoration: none; color: var(--muted); display: inline-flex; align-items: center; min-height: 28px; }
 .foot__group a:hover { color: var(--accent); }
 @media (width >= 60rem) {
   .foot__group { border: 0; }
@@ -512,11 +690,11 @@ p { text-wrap: pretty; }
   .foot__group summary::after { display: none; }
 }
 
-.foot__cost { margin-block-start: 1.5rem; font-size: 11px; color: var(--muted); }
+.foot__cost { margin-block-start: 1.5rem; font-size: 12px; color: var(--muted); }
 .foot__social { display: flex; gap: .6rem; margin-block-start: 1.25rem; }
 .foot__social a { width: 44px; height: 44px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); }
 .foot__social a:hover { color: var(--accent); border-color: var(--accent); }
-.foot__end { margin-block-start: 1.75rem; padding-block-start: 1.25rem; border-block-start: 1px solid var(--line); font-size: 11px; color: var(--muted); display: grid; gap: .4rem; line-height: 1.7; }
+.foot__end { margin-block-start: 1.75rem; padding-block-start: 1.25rem; border-block-start: 1px solid var(--line); font-size: 12px; color: var(--muted); display: grid; gap: .4rem; line-height: 1.7; }
 .foot__end a { color: var(--muted); }
 
 /* --- back to top ----------------------------------------------------------- */

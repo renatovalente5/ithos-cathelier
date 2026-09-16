@@ -26,3 +26,30 @@ guess was wrong. Read the header of that script before touching any of it.
 **A cover photograph must show the whole piece.** Some of the studio files are
 deliberate close-ups that run off the frame — good as the second or third
 picture in a gallery, never as the face of a product card.
+
+## Running it
+
+```bash
+node src/build.mjs                                  # live address, from CNAME
+BASE_URL=http://localhost:4320 PREVIEW=yes node src/build.mjs
+
+python3 scripts/square.py --contact   # review sheets for the square crops
+python3 scripts/square.py             # write the square masters
+python3 scripts/renditions.py         # web sizes from the masters
+python3 scripts/fonts.py              # re-download the self-hosted typefaces
+```
+
+### The browser battery
+
+Measures what only a browser knows: real contrast, tap targets, sideways
+overflow, broken images, the typefaces actually loading. It **drives** the site
+rather than reading it.
+
+```bash
+cp scripts/battery/battery.js public/_battery.js
+cp scripts/battery/drive.html public/_drive.html
+# then open /_drive.html?w=390 (and ?w=768, ?w=1280) and read window.__resultados
+```
+
+The build wipes `public/`, so both files have to be copied again after every
+build. Neither goes to the live site.

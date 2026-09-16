@@ -13,3 +13,7 @@ photos/_contact/
 # built INSIDE that folder by accident — macOS does not distinguish
 # `Ithos-Cathelier` from `ithos-cathelier`, they were the same directory, and
 # the first push carried a 328 MB PDF with it. Keep the two apart.
+
+# The battery is copied into public/ to run and removed again. It is not the site.
+public/_battery.js
+public/_drive.html

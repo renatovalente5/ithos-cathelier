@@ -1,0 +1,36 @@
+{
+  "name": "Asking the godparents",
+  "price": 14,
+  "published": true,
+  "featured": false,
+  "order": 100,
+  "made": "to_order",
+  "occasion": "keepsakes",
+  "alsoIn": [],
+  "summary": "“I have a very important question for you…”",
+  "text": "“I have a very important question for you…”",
+  "photoFolder": "",
+  "photos": [],
+  "cover": "",
+  "options": [
+    {
+      "id": "engraving",
+      "name": "What should it say",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 80,
+      "extra": 0,
+      "help": "Names, a date, a short phrase. We send you a proof to approve before anything is cut."
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}
