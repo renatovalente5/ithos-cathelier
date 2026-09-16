@@ -32,6 +32,7 @@ if (!pages.length) { console.error('public/ has no HTML in it'); process.exit(1)
 const titles = new Map();
 const descriptions = new Map();
 let links = 0, images = 0, indexablePages = 0;
+const placeholders = new Map();
 
 /* Uniqueness is checked on pages that go into the index. In PREVIEW every page
    is noindex — so the check quietly stopped running in the exact mode the site
@@ -60,9 +61,13 @@ for (const file of pages) {
     else descriptions.set(desc, where);
   }
 
-  // Text the owner has not filled in must never reach a live page.
+  // Text the owner has not filled in must never reach a LIVE page. In preview
+  // it is expected — that is what preview is for — so it warns there and kills
+  // everywhere else. Counted by marker rather than by page: the address is on
+  // all 96 of them and 202 identical lines would bury everything else.
   for (const m of html.matchAll(/⟨[^⟩]*⟩|\{\{[^}]*\}\}|TODO|FIXME|lorem ipsum/gi)) {
-    deaths.push(`${where}: an unfilled placeholder reached the page: ${m[0].slice(0, 40)}`);
+    const marker = m[0].slice(0, 60);
+    placeholders.set(marker, (placeholders.get(marker) ?? 0) + 1);
   }
 
   // Every internal link has to resolve to something on disk. When the site is
@@ -105,6 +110,11 @@ else {
   if (!existsSync(join(OUT, 'data', `catalogue.${hash}.json`))) {
     deaths.push(`the pointer names catalogue.${hash}.json, which does not exist`);
   }
+}
+
+for (const [marker, count] of placeholders) {
+  const line = `an unfilled placeholder is on ${count} page${count > 1 ? 's' : ''}: ${marker}`;
+  (PREVIEW_BUILD ? warnings : deaths).push(line);
 }
 
 for (const w of warnings) console.warn(`  warning: ${w}`);

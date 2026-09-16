@@ -11,9 +11,12 @@
   ],
   "summary": "“Dad, you are my superhero.”",
   "text": "“Dad, you are my superhero.”",
-  "photoFolder": "",
-  "photos": [],
-  "cover": "",
+  "photoFolder": "pool",
+  "photos": [
+    "12",
+    "11"
+  ],
+  "cover": "12",
   "options": [
     {
       "id": "engraving",

@@ -12,9 +12,12 @@
   ],
   "summary": "For the bedroom wall, painted whatever colour you choose.",
   "text": "For the bedroom wall, painted whatever colour you choose.",
-  "photoFolder": "",
-  "photos": [],
-  "cover": "",
+  "photoFolder": "pool",
+  "photos": [
+    "04",
+    "06"
+  ],
+  "cover": "04",
   "options": [
     {
       "id": "engraving",

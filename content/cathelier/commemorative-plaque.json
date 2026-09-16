@@ -11,9 +11,12 @@
   ],
   "summary": "For institutions, anniversaries and tributes.",
   "text": "For institutions, anniversaries and tributes.",
-  "photoFolder": "",
-  "photos": [],
-  "cover": "",
+  "photoFolder": "pool",
+  "photos": [
+    "12",
+    "04"
+  ],
+  "cover": "12",
   "options": [
     {
       "id": "engraving",

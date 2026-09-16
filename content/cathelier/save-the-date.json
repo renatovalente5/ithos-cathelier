@@ -11,9 +11,12 @@
   ],
   "summary": "A disc or a rectangle engraved with the names and the date.",
   "text": "A disc or a rectangle engraved with the names and the date.",
-  "photoFolder": "",
-  "photos": [],
-  "cover": "",
+  "photoFolder": "pool",
+  "photos": [
+    "03",
+    "07"
+  ],
+  "cover": "03",
   "options": [
     {
       "id": "engraving",

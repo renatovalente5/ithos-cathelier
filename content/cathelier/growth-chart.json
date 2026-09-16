@@ -11,9 +11,12 @@
   ],
   "summary": "To measure a whole childhood, then take with you when you move.",
   "text": "To measure a whole childhood, then take with you when you move.",
-  "photoFolder": "",
-  "photos": [],
-  "cover": "",
+  "photoFolder": "pool",
+  "photos": [
+    "04",
+    "06"
+  ],
+  "cover": "04",
   "options": [
     {
       "id": "engraving",

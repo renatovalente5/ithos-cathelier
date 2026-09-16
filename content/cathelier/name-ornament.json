@@ -11,9 +11,12 @@
   ],
   "summary": "One for everyone in the house, with the name engraved.",
   "text": "One for everyone in the house, with the name engraved.",
-  "photoFolder": "",
-  "photos": [],
-  "cover": "",
+  "photoFolder": "pool",
+  "photos": [
+    "04",
+    "07"
+  ],
+  "cover": "04",
   "options": [
     {
       "id": "engraving",

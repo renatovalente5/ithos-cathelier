@@ -11,9 +11,12 @@
   ],
   "summary": "At the entrance, with the names and the date.",
   "text": "At the entrance, with the names and the date.",
-  "photoFolder": "",
-  "photos": [],
-  "cover": "",
+  "photoFolder": "pool",
+  "photos": [
+    "06",
+    "04"
+  ],
+  "cover": "06",
   "options": [
     {
       "id": "engraving",

@@ -13,9 +13,12 @@
   ],
   "summary": "The photograph inside a metal and glass keyring.",
   "text": "The photograph inside a metal and glass keyring.",
-  "photoFolder": "",
-  "photos": [],
-  "cover": "",
+  "photoFolder": "pool",
+  "photos": [
+    "11",
+    "05"
+  ],
+  "cover": "11",
   "options": [
     {
       "id": "engraving",

@@ -12,9 +12,12 @@
   ],
   "summary": "The names and the birth dates, on one piece.",
   "text": "The names and the birth dates, on one piece.",
-  "photoFolder": "",
-  "photos": [],
-  "cover": "",
+  "photoFolder": "pool",
+  "photos": [
+    "06",
+    "07"
+  ],
+  "cover": "06",
   "options": [
     {
       "id": "engraving",

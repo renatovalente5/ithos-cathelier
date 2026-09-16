@@ -12,9 +12,12 @@
   ],
   "summary": "The large initial, with the name written across it.",
   "text": "The large initial, with the name written across it.",
-  "photoFolder": "",
-  "photos": [],
-  "cover": "",
+  "photoFolder": "pool",
+  "photos": [
+    "04",
+    "06"
+  ],
+  "cover": "04",
   "options": [
     {
       "id": "engraving",

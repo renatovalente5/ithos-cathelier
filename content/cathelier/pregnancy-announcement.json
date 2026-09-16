@@ -9,9 +9,12 @@
   "alsoIn": [],
   "summary": "To break the news to the grandparents and the godparents.",
   "text": "To break the news to the grandparents and the godparents.",
-  "photoFolder": "",
-  "photos": [],
-  "cover": "",
+  "photoFolder": "pool",
+  "photos": [
+    "05",
+    "02"
+  ],
+  "cover": "05",
   "options": [
     {
       "id": "engraving",

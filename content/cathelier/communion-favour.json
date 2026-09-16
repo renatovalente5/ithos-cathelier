@@ -11,9 +11,12 @@
   ],
   "summary": "With the name, the date and a simple drawing.",
   "text": "With the name, the date and a simple drawing.",
-  "photoFolder": "",
-  "photos": [],
-  "cover": "",
+  "photoFolder": "pool",
+  "photos": [
+    "03",
+    "09"
+  ],
+  "cover": "03",
   "options": [
     {
       "id": "engraving",

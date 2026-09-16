@@ -11,9 +11,12 @@
   ],
   "summary": "Fifty years, both names and both dates.",
   "text": "Fifty years, both names and both dates.",
-  "photoFolder": "",
-  "photos": [],
-  "cover": "",
+  "photoFolder": "pool",
+  "photos": [
+    "07",
+    "02"
+  ],
+  "cover": "07",
   "options": [
     {
       "id": "engraving",

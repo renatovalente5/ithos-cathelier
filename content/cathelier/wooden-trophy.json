@@ -9,9 +9,12 @@
   "alsoIn": [],
   "summary": "For tournaments, prize-givings and end-of-season nights.",
   "text": "For tournaments, prize-givings and end-of-season nights.",
-  "photoFolder": "",
-  "photos": [],
-  "cover": "",
+  "photoFolder": "pool",
+  "photos": [
+    "12",
+    "04"
+  ],
+  "cover": "12",
   "options": [
     {
       "id": "engraving",

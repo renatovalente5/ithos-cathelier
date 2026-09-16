@@ -11,9 +11,12 @@
   ],
   "summary": "Small, to hang on a cot or a door.",
   "text": "Small, to hang on a cot or a door.",
-  "photoFolder": "",
-  "photos": [],
-  "cover": "",
+  "photoFolder": "pool",
+  "photos": [
+    "05",
+    "07"
+  ],
+  "cover": "05",
   "options": [
     {
       "id": "engraving",

@@ -12,9 +12,12 @@
   ],
   "summary": "The name and the age, cut out.",
   "text": "The name and the age, cut out.",
-  "photoFolder": "",
-  "photos": [],
-  "cover": "",
+  "photoFolder": "pool",
+  "photos": [
+    "02",
+    "06"
+  ],
+  "cover": "02",
   "options": [
     {
       "id": "engraving",

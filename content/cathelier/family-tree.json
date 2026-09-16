@@ -12,9 +12,12 @@
   ],
   "summary": "The whole family on one piece.",
   "text": "The whole family on one piece.",
-  "photoFolder": "",
-  "photos": [],
-  "cover": "",
+  "photoFolder": "pool",
+  "photos": [
+    "07",
+    "04"
+  ],
+  "cover": "07",
   "options": [
     {
       "id": "engraving",

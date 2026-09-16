@@ -21,10 +21,15 @@ export const slugify = (s) => String(s).toLowerCase().normalize('NFD')
  */
 export function picture({ dir, name, alt, sizes, widths = [200, 400, 600, 1000], loading = 'lazy', fetchpriority }) {
   const set = (ext) => widths.map((w) => `/media/${dir}/${name}-${w}.${ext} ${w}w`).join(', ');
+  // The fallback is the LARGEST width that was actually asked for, not a fixed
+  // 600: the cathelier stand-ins only go to 400, and hardcoding 600 wrote 548
+  // references to files that do not exist. The intrinsic size matches it, so
+  // the browser reserves the right box before anything loads.
+  const biggest = Math.max(...widths);
   const attrs = [
-    `src="/media/${dir}/${name}-600.webp"`,
+    `src="/media/${dir}/${name}-${biggest}.webp"`,
     `alt="${esc(alt)}"`,
-    'width="600" height="600"',
+    `width="${biggest}" height="${biggest}"`,
     `loading="${loading}"`,
     `decoding="async"`,
     fetchpriority ? `fetchpriority="${fetchpriority}"` : '',

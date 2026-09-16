@@ -17,6 +17,9 @@ function frame(p, sizes, eager = false) {
   return `<div class="frame">${picture({
     dir: `cathelier/${p.photoFolder}`, name: p.cover || p.photos[0],
     alt: `${p.name} — laser cut and engraved to order`,
+    // Only the widths that exist. The stand-in photographs are 360px wide, so
+    // offering a 1000w candidate would be a promise the file cannot keep.
+    widths: [200, 400],
     sizes, loading: eager ? 'eager' : 'lazy',
   })}</div>`;
 }
@@ -32,16 +35,22 @@ export function card(p, { eager = false } = {}) {
 </article>`;
 }
 
+/* A photograph in each circle, the way the model shop does it — a row of round
+   badges is the whole navigation there, and a row of ten identical line icons
+   would say nothing about what is behind them. */
 const BADGE = {
-  christmas: 'star', 'mothers-day': 'hand', 'fathers-day': 'shield',
-  'childrens-day': 'star', keepsakes: 'leaf', 'new-baby': 'leaf',
-  names: 'pin', home: 'pin', hanging: 'leaf', awards: 'shield',
+  christmas: '04', 'mothers-day': '06', 'fathers-day': '12',
+  'childrens-day': '02', keepsakes: '03', 'new-baby': '05',
+  names: '07', home: '08', hanging: '09', awards: '12',
 };
 
 function occasionRow(occasions, current) {
   return `<nav class="occasions" aria-label="Occasions">
   ${occasions.map((o) => `<a class="occasion" href="/cathelier/${esc(o.slug)}/"${o.slug === current ? ' aria-current="page"' : ''}>
-    <span class="occasion__badge">${icon(BADGE[o.slug] || 'star', 26)}</span>
+    <span class="occasion__badge">${picture({
+      dir: 'cathelier/pool', name: BADGE[o.slug] || '02', widths: [200],
+      alt: '', sizes: '74px',
+    })}</span>
     <span class="occasion__name">${esc(o.name)}</span>
   </a>`).join('\n  ')}
 </nav>`;
@@ -50,8 +59,12 @@ function occasionRow(occasions, current) {
 export function home({ occasions, pieces }) {
   const featured = occasions.slice(0, 3);
   return `
-<section class="hero hero--nophoto">
-  <div class="hero__photo"></div>
+<section class="hero">
+  <div class="hero__photo">
+    ${picture({ dir: 'cathelier/pool', name: '06', widths: [200, 400],
+      alt: 'Laser-cut wooden keepsakes with names engraved into them',
+      sizes: '100vw', loading: 'eager', fetchpriority: 'high' })}
+  </div>
   <div class="hero__body">
     <h1 class="hero__title">Pieces cut and engraved with your names on them</h1>
     <a class="hero__cta" href="/cathelier/pieces/">See everything</a>
@@ -150,7 +163,25 @@ export function piece({ p, all: everything, shop, occasions }) {
   return `
 <section class="product shell">
   <div class="product__gallery">
-    ${frame(p, '(min-width: 64rem) 560px, 100vw', true)}
+    ${(p.photos || []).length > 1 ? `
+    <div class="gallery" data-gallery>
+      <div class="gallery__track" data-gallery-track>
+        ${p.photos.map((n, i) => `<div class="frame gallery__slide">${picture({
+          dir: `cathelier/${p.photoFolder}`, name: n, widths: [200, 400],
+          alt: `${esc(p.name)} — photograph ${i + 1}`,
+          sizes: '(min-width: 64rem) 560px, 100vw',
+          loading: i === 0 ? 'eager' : 'lazy',
+        })}</div>`).join('\n        ')}
+      </div>
+      <button class="gallery__arrow gallery__arrow--prev" type="button" data-gallery-prev aria-label="Previous photograph">${icon('arrowLeft', 20)}</button>
+      <button class="gallery__arrow gallery__arrow--next" type="button" data-gallery-next aria-label="Next photograph">${icon('arrowRight', 20)}</button>
+    </div>
+    <div class="gallery__thumbs" role="tablist" aria-label="Photographs">
+      ${p.photos.map((n, i) => `<button class="frame gallery__thumb" type="button" role="tab"
+        data-gallery-go="${i}" aria-selected="${i === 0}" aria-label="Photograph ${i + 1}">
+        ${picture({ dir: `cathelier/${p.photoFolder}`, name: n, alt: '', sizes: '84px', widths: [200] })}
+      </button>`).join('\n      ')}
+    </div>` : frame(p, '(min-width: 64rem) 560px, 100vw', true)}
   </div>
 
   <div class="product__detail">

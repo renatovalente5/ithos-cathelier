@@ -9,9 +9,12 @@
   "alsoIn": [],
   "summary": "Round, engraved, for the day itself or to keep.",
   "text": "Round, engraved, for the day itself or to keep.",
-  "photoFolder": "",
-  "photos": [],
-  "cover": "",
+  "photoFolder": "pool",
+  "photos": [
+    "04",
+    "02"
+  ],
+  "cover": "04",
   "options": [
     {
       "id": "engraving",

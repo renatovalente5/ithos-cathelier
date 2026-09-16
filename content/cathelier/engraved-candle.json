@@ -9,9 +9,12 @@
   "alsoIn": [],
   "summary": "The christening candle, with the name and the date.",
   "text": "The christening candle, with the name and the date.",
-  "photoFolder": "",
-  "photos": [],
-  "cover": "",
+  "photoFolder": "pool",
+  "photos": [
+    "02",
+    "03"
+  ],
+  "cover": "02",
   "options": [
     {
       "id": "engraving",

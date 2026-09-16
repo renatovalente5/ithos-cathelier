@@ -11,9 +11,12 @@
   ],
   "summary": "A photograph engraved into wood, with a magnet on the back.",
   "text": "A photograph engraved into wood, with a magnet on the back.",
-  "photoFolder": "",
-  "photos": [],
-  "cover": "",
+  "photoFolder": "pool",
+  "photos": [
+    "11",
+    "08"
+  ],
+  "cover": "11",
   "options": [
     {
       "id": "engraving",

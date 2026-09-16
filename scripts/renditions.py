@@ -38,7 +38,14 @@ def main():
     written = skipped = 0
     for master in sorted(SRC.rglob('*.jpg')):
         rel = master.relative_to(SRC).with_suffix('')
+        with Image.open(master) as probe:
+            source = probe.width
         for w in WIDTHS:
+            # Never upscale. These Instagram frames are 360px wide, and writing
+            # them out as "-1000" would tell the browser to download a bigger
+            # file to see the same picture blurrier.
+            if w > source and w != min(x for x in WIDTHS if x >= source):
+                continue
             for fmt, ext in (('AVIF', 'avif'), ('WEBP', 'webp')):
                 dest = OUT / f'{rel}-{w}.{ext}'
                 if dest.exists() and not FORCE:

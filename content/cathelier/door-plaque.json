@@ -12,9 +12,12 @@
   ],
   "summary": "The name on the bedroom door.",
   "text": "The name on the bedroom door.",
-  "photoFolder": "",
-  "photos": [],
-  "cover": "",
+  "photoFolder": "pool",
+  "photos": [
+    "04",
+    "02"
+  ],
+  "cover": "04",
   "options": [
     {
       "id": "engraving",

@@ -11,9 +11,12 @@
   ],
   "summary": "Your names or whatever line you want, laser cut.",
   "text": "Your names or whatever line you want, laser cut.",
-  "photoFolder": "",
-  "photos": [],
-  "cover": "",
+  "photoFolder": "pool",
+  "photos": [
+    "06",
+    "02"
+  ],
+  "cover": "06",
   "options": [
     {
       "id": "engraving",

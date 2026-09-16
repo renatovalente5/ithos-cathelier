@@ -9,9 +9,12 @@
   "alsoIn": [],
   "summary": "Arrows, table plans, “this way”.",
   "text": "Arrows, table plans, “this way”.",
-  "photoFolder": "",
-  "photos": [],
-  "cover": "",
+  "photoFolder": "pool",
+  "photos": [
+    "04",
+    "06"
+  ],
+  "cover": "04",
   "options": [
     {
       "id": "engraving",

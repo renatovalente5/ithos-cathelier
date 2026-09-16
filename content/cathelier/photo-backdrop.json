@@ -11,9 +11,12 @@
   ],
   "summary": "The backdrop panel, with the name and the age.",
   "text": "The backdrop panel, with the name and the age.",
-  "photoFolder": "",
-  "photos": [],
-  "cover": "",
+  "photoFolder": "pool",
+  "photos": [
+    "08",
+    "06"
+  ],
+  "cover": "08",
   "options": [
     {
       "id": "engraving",

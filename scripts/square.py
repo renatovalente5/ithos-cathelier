@@ -118,10 +118,18 @@ def cortar(im: Image.Image, foco: float) -> Image.Image:
 
 
 def originais():
+    """Both brands. The ithos side is one folder per lamp; the cathelier side is
+    a flat pool of photographs that several pieces share, because there are 41
+    pieces and ten photographs and the owner will replace them one at a time in
+    the back office."""
     for pasta in sorted((FOTOS / 'ithos').iterdir()):
         if pasta.is_dir():
             for f in sorted(pasta.glob('*.jpg')):
                 yield f'ithos/{pasta.name}/{f.stem}', f
+    pool = FOTOS / 'cathelier' / '_raw'
+    if pool.is_dir():
+        for f in sorted(pool.glob('*.jpg')):
+            yield f'cathelier/pool/{f.stem}', f
 
 
 def main():

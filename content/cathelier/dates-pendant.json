@@ -12,9 +12,12 @@
   ],
   "summary": "A small disc with the dates that matter, to carry in a bag.",
   "text": "A small disc with the dates that matter, to carry in a bag.",
-  "photoFolder": "",
-  "photos": [],
-  "cover": "",
+  "photoFolder": "pool",
+  "photos": [
+    "07",
+    "05"
+  ],
+  "cover": "07",
   "options": [
     {
       "id": "engraving",

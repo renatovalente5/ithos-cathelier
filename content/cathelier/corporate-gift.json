@@ -9,9 +9,12 @@
   "alsoIn": [],
   "summary": "For fairs, conferences and end-of-year gifts.",
   "text": "For fairs, conferences and end-of-year gifts.",
-  "photoFolder": "",
-  "photos": [],
-  "cover": "",
+  "photoFolder": "pool",
+  "photos": [
+    "12",
+    "11"
+  ],
+  "cover": "12",
   "options": [
     {
       "id": "engraving",

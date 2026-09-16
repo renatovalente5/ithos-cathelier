@@ -9,9 +9,12 @@
   "alsoIn": [],
   "summary": "“I have a very important question for you…”",
   "text": "“I have a very important question for you…”",
-  "photoFolder": "",
-  "photos": [],
-  "cover": "",
+  "photoFolder": "pool",
+  "photos": [
+    "03",
+    "02"
+  ],
+  "cover": "03",
   "options": [
     {
       "id": "engraving",

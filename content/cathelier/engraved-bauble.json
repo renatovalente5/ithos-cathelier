@@ -11,9 +11,12 @@
   ],
   "summary": "Two halves of wood that click together, with the name in between.",
   "text": "Two halves of wood that click together, with the name in between.",
-  "photoFolder": "",
-  "photos": [],
-  "cover": "",
+  "photoFolder": "pool",
+  "photos": [
+    "04",
+    "03"
+  ],
+  "cover": "04",
   "options": [
     {
       "id": "engraving",

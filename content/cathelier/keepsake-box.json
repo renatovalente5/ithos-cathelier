@@ -11,9 +11,12 @@
   ],
   "summary": "For the first lock of hair, the hospital bracelet, all of it.",
   "text": "For the first lock of hair, the hospital bracelet, all of it.",
-  "photoFolder": "",
-  "photos": [],
-  "cover": "",
+  "photoFolder": "pool",
+  "photos": [
+    "02",
+    "08"
+  ],
+  "cover": "02",
   "options": [
     {
       "id": "engraving",
