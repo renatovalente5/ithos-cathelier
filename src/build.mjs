@@ -111,8 +111,10 @@ function assets() {
   cpSync(join(HERE, 'fonts'), join(OUT, 'assets', 'fonts'), { recursive: true });
   cpSync(join(ROOT, 'assets', 'brand'), join(OUT, 'assets'), { recursive: true });
   if (existsSync(join(HERE, 'js', 'shop.js'))) {
+    const API = (process.env.API_URL || '').replace(/\/$/, '');
     const js = readFileSync(join(HERE, 'js', 'shop.js'), 'utf8')
-      .replace("const BASE = '';", `const BASE = '${BASE}';`);
+      .replace("const BASE = '';", `const BASE = '${BASE}';`)
+      .replace("const API = '';", `const API = '${API}';`);
     if (BASE && !js.includes(`const BASE = '${BASE}'`)) {
       throw new Error('shop.js has no BASE line to fill in — every fetch in it would miss the prefix');
     }
@@ -132,16 +134,27 @@ function catalogueFile() {
   const body = {
     preview: PREVIEW || !shop.open,
     currency: 'EUR',
+    lead: { inStockDays: shop.lead.inStockDays, toOrderDays: shop.lead.toOrderDays },
     shipping,
+    /* The options travel WHOLE, as an array, and not flattened to a price map.
+     * The Worker has to do three things with them and only the full shape
+     * allows all three: refuse a value the catalogue never offered, price the
+     * one it did, and know which of them PERSONALISE — because an order
+     * carrying an engraved name loses the right to cancel, and that is a legal
+     * fact the shop has to be able to state on the invoice. */
     products: Object.fromEntries([...lamps, ...pieces].map((p) => [p.slug, {
       brand: lamps.includes(p) ? 'ithos' : 'cathelier',
       name: p.name,
       price: p.price,
+      made: p.made || 'to_order',
       photo: p.photoFolder && p.cover
         ? `${lamps.includes(p) ? 'ithos' : 'cathelier'}/${p.photoFolder}/${p.cover}` : '',
-      options: Object.fromEntries((p.options || []).map((o) => [o.id, o.type === 'text'
-        ? { type: 'text', max: o.max || 40, extra: o.extra || 0 }
-        : { type: 'choice', values: Object.fromEntries(o.values.map((v) => [v.id, v.extra || 0])) }])),
+      options: (p.options || []).map((o) => (o.type === 'text'
+        ? { id: o.id, name: o.name, type: 'text', required: !!o.required,
+            personalises: !!o.personalises, max: o.max || 40, extra: o.extra || 0 }
+        : { id: o.id, name: o.name, type: 'choice', required: !!o.required,
+            personalises: !!o.personalises,
+            values: o.values.map((v) => ({ id: v.id, name: v.name, extra: v.extra || 0 })) })),
     }])),
   };
   const json = JSON.stringify(body);
@@ -308,6 +321,16 @@ function buildShared() {
     description: 'What you have chosen so far.',
     body: pages.basket({ shipping }),
   }));
+
+  for (const [path, title, description, body] of [
+    ['/thank-you/', 'Thank you', 'Your order is placed and the workshop starts now.', pages.thankYou()],
+    ['/order-cancelled/', 'Nothing was charged', 'You closed the payment page, so the order was not placed.', pages.orderCancelled()],
+  ]) {
+    write(path, page({
+      ...shellArgs, brand: 'ithos', path, noindex: true,
+      title: `${title} — ithos · cathelier`, description, body,
+    }));
+  }
 
   write('/404.html', page({
     ...shellArgs, brand: 'ithos', path: '/404.html', noindex: true,

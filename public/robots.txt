@@ -1,3 +1,2 @@
 User-agent: *
-Allow: /
-Sitemap: https://renatovalente5.github.io/sitemap.xml
+Disallow: /

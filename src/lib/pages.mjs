@@ -301,3 +301,49 @@ export function notFound() {
   </div>
 </section>`;
 }
+
+/* --- after Stripe ---------------------------------------------------------
+   Two pages Stripe sends people back to. Both are noindex: they are the end of
+   a private transaction, not content. */
+
+export function thankYou() {
+  return `
+<section class="section">
+  <div class="shell shell--narrow page-prose" style="text-align:center">
+    <h1>Thank you</h1>
+    <p class="lede" data-order-state>Checking your payment…</p>
+
+    <div data-order-ok hidden>
+      <p>Your order is <strong data-order-ref>—</strong>. Keep that reference: it is
+         what we both use if you write to us.</p>
+      <p>A confirmation is on its way to your inbox. Everything is made to order,
+         so the workshop starts now and we will tell you when it ships.</p>
+      <p style="margin-block-start:2rem">
+        <a class="btn" href="/lamps/">Back to the lamps</a>
+      </p>
+    </div>
+
+    <div data-order-pending hidden>
+      <p>The payment has not come through yet. If you have just paid, give it a
+         minute and reload this page.</p>
+      <p>If it stays like this, write to us and nothing will be charged twice.</p>
+    </div>
+  </div>
+</section>`;
+}
+
+export function orderCancelled() {
+  return `
+<section class="section">
+  <div class="shell shell--narrow page-prose" style="text-align:center">
+    <h1>Nothing was charged</h1>
+    <p class="lede">You closed the payment page, so the order was not placed and
+       your card was not touched.</p>
+    <p>Your basket is still here if you want to pick it up again.</p>
+    <p style="margin-block-start:2rem">
+      <a class="btn" href="/cart/">Back to the basket</a>
+      <a class="btn btn--ghost" href="/lamps/" style="margin-inline-start:.5rem">Keep looking</a>
+    </p>
+  </div>
+</section>`;
+}

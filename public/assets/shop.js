@@ -10,6 +10,9 @@
    the site is served from a GitHub project page. Every URL this file builds
    has to carry it. */
 const BASE = '/ithos-cathelier';
+/* Filled in by the build too. Empty means the shop cannot take money, and the
+   checkout button says so rather than failing silently. */
+const API = '';
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -104,8 +107,111 @@ document.addEventListener('DOMContentLoaded', () => {
   productForm();
   basketPage();
   mapConsent();
+  checkout();
+  thankYouPage();
   previewLock();
 });
+
+/* --- checkout -------------------------------------------------------------
+   The browser sends ids, quantities, option ids, a country and the catalogue
+   hash it was looking at. Never a price. The Worker reprices from the same
+   file that built the page, and refuses with 409 if the catalogue has moved
+   under us in the ten minutes GitHub Pages caches it. */
+function checkout() {
+  const go = $('[data-to-checkout]');
+  if (!go) return;
+
+  go.addEventListener('click', async () => {
+    if (go.getAttribute('aria-disabled') === 'true') return;
+    if (!API) { say('The shop cannot take payments yet.'); return; }
+
+    const cur = basket();
+    if (!cur.lines.length) return;
+
+    go.setAttribute('aria-disabled', 'true');
+    const wasSaying = go.textContent;
+    go.textContent = 'Taking you to payment…';
+
+    try {
+      const cat = await catalogue();
+      const r = await fetch(`${API}/checkout`, {
+        method: 'POST',
+        headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ hash: cat.hash, country: cur.country || 'PT', lines: cur.lines }),
+      });
+      const data = await r.json().catch(() => ({}));
+
+      if (r.status === 409 && data.error === 'catalogue_changed') {
+        catalogueCache = null;
+        say('Prices changed while you were looking. The basket has been updated — '
+          + 'please check the total and try again.');
+        location.reload();
+        return;
+      }
+      if (!r.ok || !data.url) { say(reason(data.error)); return; }
+      location.href = data.url;
+    } catch {
+      say('We could not reach the payment service. Please try again in a moment.');
+    } finally {
+      go.removeAttribute('aria-disabled');
+      go.textContent = wasSaying;
+    }
+  });
+
+  function say(text) {
+    let box = $('[data-checkout-error]');
+    if (!box) {
+      box = document.createElement('p');
+      box.dataset.checkoutError = '';
+      box.className = 'small';
+      box.style.cssText = 'margin-block-start:.75rem;color:#8C2F1F';
+      box.setAttribute('role', 'status');
+      go.after(box);
+    }
+    box.textContent = text;
+  }
+
+  // An error code is for us; a person needs a sentence and something to do.
+  function reason(code) {
+    return ({
+      shop_not_open_yet: 'The shop has not opened yet.',
+      country_not_served: 'We do not ship to that country yet. Write to us and we will see what we can do.',
+      empty_basket: 'Your basket is empty.',
+      unknown_product: 'Something in your basket is no longer available. Please reload the page.',
+      option_missing: 'Something in your basket is missing a choice. Open it and pick one.',
+      payments_not_configured: 'The shop cannot take payments yet.',
+      catalogue_unavailable: 'The shop is briefly unavailable. Please try again in a minute.',
+    })[code] || 'Something went wrong on our side. Please try again, or write to us.';
+  }
+}
+
+/* --- the page Stripe sends people back to -------------------------------- */
+async function thankYouPage() {
+  const state = $('[data-order-state]');
+  if (!state) return;
+  const id = new URLSearchParams(location.search).get('session_id');
+  if (!id || !API) { state.textContent = 'We could not find that order.'; return; }
+
+  try {
+    const r = await fetch(`${API}/session?id=${encodeURIComponent(id)}`);
+    const s = await r.json();
+    if (s.status === 'paid') {
+      // The basket is emptied only once the payment is CONFIRMED. Emptying it
+      // when the customer leaves for Stripe loses the order of anyone who goes
+      // back to change their mind about one line.
+      save(BASKET, { country: 'PT', lines: [] });
+      paintCount();
+      state.hidden = true;
+      $('[data-order-ok]').hidden = false;
+      $('[data-order-ref]').textContent = s.reference || '—';
+    } else {
+      state.hidden = true;
+      $('[data-order-pending]').hidden = false;
+    }
+  } catch {
+    state.textContent = 'We could not check that order just now. Your confirmation email is the record.';
+  }
+}
 
 /* --- the one consent question on the site ---------------------------------
    The map is the only third-party content anywhere here, so it is the only
@@ -149,13 +255,21 @@ async function basketPage() {
     const p = cat.products[line.id];
     if (!p) return null;
     let each = p.price;
-    for (const [id, value] of Object.entries(line.options || {})) {
-      const opt = p.options[id];
-      if (!opt) continue;
-      if (opt.type === 'choice') each += opt.values[value] ?? 0;
-      else each += opt.extra || 0;
+    const shown = [];
+    for (const o of p.options || []) {
+      const value = (line.options || {})[o.id];
+      if (value === undefined || value === '') continue;
+      if (o.type === 'choice') {
+        const v = o.values.find((x) => x.id === value);
+        if (!v) continue;
+        each += v.extra || 0;
+        shown.push(`${o.name}: ${v.name}`);
+      } else {
+        each += o.extra || 0;
+        shown.push(`${o.name}: “${value}”`);
+      }
     }
-    return { name: p.name, brand: p.brand, photo: p.photo, each, total: each * line.qty };
+    return { name: p.name, brand: p.brand, photo: p.photo, shown, each, total: each * line.qty };
   }
 
   function shippingFor(country, goods) {
@@ -185,8 +299,7 @@ async function basketPage() {
         ? `<img src="${BASE}/media/${p.photo}-200.webp" alt="" width="200" height="200" loading="lazy">` : ''}</div>
       <div>
         <p class="basket-line__name">${p.name}</p>
-        ${Object.entries(line.options || {}).length
-          ? `<p class="basket-line__opts">${Object.entries(line.options).map(([k, v]) => `${k}: ${v}`).join(' · ')}</p>` : ''}
+        ${p.shown.length ? `<p class="basket-line__opts">${p.shown.join(' · ')}</p>` : ''}
         <p class="basket-line__opts">${line.qty} × ${euros(p.each)}</p>
         <button class="basket-line__drop" type="button" data-drop="${i}">Remove</button>
       </div>

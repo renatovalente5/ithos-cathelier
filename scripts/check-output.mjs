@@ -31,7 +31,14 @@ if (!pages.length) { console.error('public/ has no HTML in it'); process.exit(1)
 
 const titles = new Map();
 const descriptions = new Map();
-let links = 0, images = 0;
+let links = 0, images = 0, indexablePages = 0;
+
+/* Uniqueness is checked on pages that go into the index. In PREVIEW every page
+   is noindex — so the check quietly stopped running in the exact mode the site
+   publishes in, and reported "0 distinct titles" as if that were a result. A
+   condition that is never true does not print a failure, it disappears. When
+   nothing is indexable, the whole set is checked instead. */
+const PREVIEW_BUILD = process.env.PREVIEW === 'yes';
 
 for (const file of pages) {
   const html = readFileSync(file, 'utf8');
@@ -43,11 +50,12 @@ for (const file of pages) {
 
   if (!title) deaths.push(`${where}: no <title>`);
   if (!desc) deaths.push(`${where}: no description`);
-  if (indexable && title) {
+  if (indexable) indexablePages++;
+  if ((indexable || PREVIEW_BUILD) && title) {
     if (titles.has(title)) deaths.push(`${where}: same title as ${titles.get(title)}`);
     else titles.set(title, where);
   }
-  if (indexable && desc) {
+  if ((indexable || PREVIEW_BUILD) && desc) {
     if (descriptions.has(desc)) warnings.push(`${where}: same description as ${descriptions.get(desc)}`);
     else descriptions.set(desc, where);
   }
@@ -108,4 +116,6 @@ if (deaths.length) {
   process.exit(1);
 }
 console.log(`  output: ${pages.length} pages, ${links} internal links and ${images} assets all resolve`);
-console.log(`  ${titles.size} distinct titles, ${descriptions.size} distinct descriptions`);
+console.log(`  ${titles.size} distinct titles, ${descriptions.size} distinct descriptions`
+  + (PREVIEW_BUILD ? ` (checked across all pages: this is a preview build, so none is indexable)`
+                   : ` across ${indexablePages} indexable pages`));

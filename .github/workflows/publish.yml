@@ -40,11 +40,13 @@ jobs:
         env:
           PREVIEW: ${{ vars.PREVIEW || 'yes' }}
           BASE_PATH: ${{ vars.BASE_PATH }}
+          API_URL: ${{ vars.API_URL }}
 
       - name: Check what came out
         run: node scripts/check-output.mjs
         env:
           BASE_PATH: ${{ vars.BASE_PATH }}
+          PREVIEW: ${{ vars.PREVIEW || 'yes' }}
 
       - uses: actions/upload-pages-artifact@v3
         with:
