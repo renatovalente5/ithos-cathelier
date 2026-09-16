@@ -188,7 +188,7 @@ export function product({ p, all, shop }) {
     <p class="product__price">${high > low ? `${money(low)} – ${money(high)}` : money(low)}</p>
     <p class="product__lead">${esc(p.made === 'to_order' ? shop.lead.toOrder : shop.lead.inStock)}</p>
 
-    <form class="product__form" data-product-form>
+    <form class="product__form" data-product-form data-product-id="${esc(p.slug)}">
       ${(p.options || []).map(optionField).join('\n      ')}
 
       <div class="product__buy">

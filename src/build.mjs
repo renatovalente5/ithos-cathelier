@@ -17,6 +17,7 @@ import { createHash } from 'node:crypto';
 import { page } from './lib/shell.mjs';
 import * as ithos from './lib/ithos.mjs';
 import * as cath from './lib/cathelier.mjs';
+import * as pages from './lib/pages.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..');
@@ -101,6 +102,8 @@ function catalogueFile() {
       brand: lamps.includes(p) ? 'ithos' : 'cathelier',
       name: p.name,
       price: p.price,
+      photo: p.photoFolder && p.cover
+        ? `${lamps.includes(p) ? 'ithos' : 'cathelier'}/${p.photoFolder}/${p.cover}` : '',
       options: Object.fromEntries((p.options || []).map((o) => [o.id, o.type === 'text'
         ? { type: 'text', max: o.max || 40, extra: o.extra || 0 }
         : { type: 'choice', values: Object.fromEntries(o.values.map((v) => [v.id, v.extra || 0])) }])),
@@ -204,6 +207,81 @@ function buildCathelier() {
   }
 }
 
+/* --- the pages both shops share ------------------------------------------ */
+
+const MARKERS = pages.markers({ identity, shop, shipping });
+const readPage = (f) => readFileSync(join(CONTENT, 'pages', f), 'utf8');
+
+function prose(path, file, { brand = 'ithos', title, description, crumbs }) {
+  const html = pages.markdown(pages.fill(readPage(file), MARKERS));
+  write(path, page({
+    ...shellArgs, brand, path, title, description, crumbs,
+    noindex: false, body: pages.prosePage(html),
+  }));
+}
+
+function buildShared() {
+  prose('/about/', 'about.md', { title: 'The workshop — ithos', crumbs: [{ name: 'Home', href: '/' }, { name: 'The workshop' }],
+    description: 'A small workshop in Castelo Branco, Portugal, where every wooden night light is cut, sanded, painted and wired by hand.' });
+
+  prose('/cathelier/about/', 'cathelier/about.md', { brand: 'cathelier',
+    title: 'The workshop — cathelier', crumbs: [{ name: 'cathelier', href: '/cathelier/' }, { name: 'The workshop' }],
+    description: 'The laser side of a small Portuguese workshop: personalised pieces drawn, cut and engraved to order, with a proof to approve before anything is cut.' });
+
+  prose('/care-and-safety/', 'care-and-safety.md', { title: 'Care and safety — ithos',
+    crumbs: [{ name: 'Home', href: '/' }, { name: 'Care and safety' }],
+    description: 'How to look after a wooden night light, and what to know before putting one in a child\u2019s room.' });
+
+  for (const [file, path, title, description] of [
+    ['legal/terms.md', '/legal/terms/', 'Terms of sale', 'The terms that apply to every purchase on this site, under both the ithos and cathelier names.'],
+    ['legal/privacy.md', '/legal/privacy/', 'Privacy', 'This site sets no analytics or advertising cookies and does not track you. What we hold, why, and for how long.'],
+    ['legal/cancellation.md', '/legal/cancellation/', 'Your right to cancel', 'Fourteen days to change your mind on anything that is not personalised, and what that exception means.'],
+    ['legal/returns-form.md', '/legal/returns-form/', 'Cancellation form', 'The form you may use to cancel an order. An email does the same job.'],
+    ['legal/shipping-and-returns.md', '/legal/shipping-and-returns/', 'Delivery and returns', 'How long things take, where we ship, what it costs, and what happens if something arrives damaged.'],
+    ['legal/identification.md', '/legal/identification/', 'Who you are buying from', 'The seller\u2019s legal identification, published under article 10 of Decree-Law 7/2004.'],
+  ]) {
+    prose(path, file, { title: `${title} — ${identity.tradingName}`, description,
+      crumbs: [{ name: 'Home', href: '/' }, { name: title }] });
+  }
+
+  write('/contact/', page({
+    ...shellArgs, brand: 'ithos', path: '/contact/',
+    title: 'Contact — ithos · cathelier',
+    description: 'WhatsApp, email or telephone. Answers in a day, usually less. And the questions we are asked most.',
+    crumbs: [{ name: 'Home', href: '/' }, { name: 'Contact' }],
+    body: pages.contact({ identity, shop, faq: pages.FAQ(shop) }),
+    schema: [{
+      '@context': 'https://schema.org', '@type': 'FAQPage',
+      mainEntity: pages.FAQ(shop).map(([q, a]) => ({
+        '@type': 'Question', name: q,
+        acceptedAnswer: { '@type': 'Answer', text: a.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() },
+      })),
+    }],
+  }));
+
+  write('/cathelier/quote/', page({
+    ...shellArgs, brand: 'cathelier', path: '/cathelier/quote/',
+    title: 'Ask for a quote — cathelier',
+    description: 'For anything in quantity: wedding favours, christening keepsakes, place cards, corporate gifts, trophies.',
+    crumbs: [{ name: 'cathelier', href: '/cathelier/' }, { name: 'Ask for a quote' }],
+    body: pages.quote({ identity }),
+  }));
+
+  write('/cart/', page({
+    ...shellArgs, brand: 'ithos', path: '/cart/', noindex: true,
+    title: 'Your basket — ithos · cathelier',
+    description: 'What you have chosen so far.',
+    body: pages.basket({ shipping }),
+  }));
+
+  write('/404.html', page({
+    ...shellArgs, brand: 'ithos', path: '/404.html', noindex: true,
+    title: 'Not found — ithos · cathelier',
+    description: 'The page you were looking for has moved or never existed.',
+    body: pages.notFound(),
+  }));
+}
+
 /* --- run ------------------------------------------------------------------ */
 
 const media = join(OUT, 'media');
@@ -216,6 +294,7 @@ if (keepMedia) { cpSync(join(ROOT, '.media-cache'), media, { recursive: true });
 assets();
 buildIthos();
 buildCathelier();
+buildShared();
 const cat = catalogueFile();
 
 writeFileSync(join(OUT, 'robots.txt'),

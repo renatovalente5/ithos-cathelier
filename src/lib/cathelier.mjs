@@ -158,7 +158,7 @@ export function piece({ p, all: everything, shop, occasions }) {
     <p class="product__price">from ${money(p.price)}</p>
     <p class="product__lead">${esc(shop.lead.toOrder)}</p>
 
-    <form class="product__form" data-product-form>
+    <form class="product__form" data-product-form data-product-id="${esc(p.slug)}">
       ${(p.options || []).map((o) => `<div class="field">
         <label for="opt-${esc(o.id)}">${esc(o.name)}</label>
         ${o.help ? `<p class="field__help">${esc(o.help)}</p>` : ''}

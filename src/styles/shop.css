@@ -216,3 +216,77 @@
 /* --- odds and ends --------------------------------------------------------- */
 .small { font-size: 12px; }
 .muted { color: var(--muted); }
+
+/* --- prose pages ----------------------------------------------------------- */
+.page-prose { font-size: 15px; line-height: 1.85; color: var(--ink-soft, var(--ink)); }
+.page-prose h1 { margin-block-end: 1.5rem; }
+.page-prose h2 { margin-block: 2.5rem 1rem; }
+.page-prose h3 { margin-block: 1.75rem .5rem; }
+.page-prose p + p, .page-prose ul + p, .page-prose p + ul, .page-prose ol { margin-block-start: 1rem; }
+.page-prose ul, .page-prose ol { padding-inline-start: 1.25rem; display: grid; gap: .5rem; }
+.page-prose a { color: var(--accent); text-underline-offset: 3px; }
+.page-prose hr { border: 0; border-block-start: 1px solid var(--line); margin-block: 2rem; }
+.page-prose table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.page-prose th, .page-prose td { text-align: start; padding: .7rem .75rem; border-block-end: 1px solid var(--line); }
+.page-prose th { font-weight: 600; color: var(--ink); }
+/* A link alone in a table cell is a target too. The email address on the
+   identification page was 17px tall. */
+.page-prose td a { display: inline-flex; align-items: center; min-height: 26px; }
+.page-prose .table-wrap { margin-block-start: 1rem; }
+
+/* --- contact ---------------------------------------------------------------- */
+.contact-cards { display: grid; gap: .75rem; margin-block: 1.75rem; }
+@media (width >= 44rem) { .contact-cards { grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); } }
+.contact-card {
+  display: flex; gap: .9rem; align-items: flex-start; padding: 1rem;
+  border: 1px solid var(--line); border-radius: var(--radius, 0);
+  text-decoration: none; font-size: 13px; line-height: 1.5; color: var(--ink-soft, var(--ink));
+}
+.contact-card:hover { border-color: var(--accent); }
+.contact-card svg { flex: none; color: var(--accent); margin-block-start: .15rem; }
+.contact-card strong { color: var(--ink); }
+
+/* --- the map, and the one consent question on the site ---------------------- */
+.map { margin-block-start: 1.25rem; border: 1px solid var(--line); border-radius: var(--radius, 0); overflow: hidden; }
+.map__ask {
+  display: flex; gap: .9rem; align-items: flex-start; text-align: start;
+  width: 100%; padding: 1.5rem; background: var(--bg-soft, var(--bg));
+  font-size: 13px; line-height: 1.6; color: var(--ink-soft, var(--ink));
+}
+.map__ask:hover { background: var(--frame-bg); }
+.map__ask svg { flex: none; color: var(--accent); margin-block-start: .15rem; }
+.map__ask strong { color: var(--ink); }
+.map iframe { display: block; width: 100%; height: 360px; border: 0; }
+
+/* --- questions -------------------------------------------------------------- */
+.faq { margin-block-start: 1.25rem; }
+.faq__item { border-block-end: 1px solid var(--line); }
+.faq__item summary {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  min-height: 58px; cursor: pointer; font-size: 15px; color: var(--ink); list-style: none;
+}
+.faq__item summary::-webkit-details-marker { display: none; }
+.faq__item summary::after { content: '+'; font-size: 1.25rem; color: var(--muted); }
+.faq__item[open] summary::after { content: '\2212'; }
+.faq__item > div { padding-block-end: 1.25rem; font-size: 14px; line-height: 1.8; }
+.faq__item > div p + p { margin-block-start: .75rem; }
+
+/* --- basket ------------------------------------------------------------------ */
+.basket { display: grid; gap: 2rem; margin-block-start: 1.5rem; }
+@media (width >= 60rem) { .basket { grid-template-columns: minmax(0, 1fr) 20rem; align-items: start; } }
+.basket__lines { display: grid; gap: 1rem; }
+.basket-line {
+  display: grid; grid-template-columns: 84px minmax(0, 1fr) auto; gap: 1rem;
+  padding-block-end: 1rem; border-block-end: 1px solid var(--line); align-items: start;
+}
+.basket-line__name { font-size: 14px; color: var(--ink); }
+.basket-line__opts { font-size: 12px; color: var(--muted); margin-block-start: .25rem; line-height: 1.6; }
+.basket-line__price { font-size: 14px; font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; text-align: end; }
+.basket-line__drop {
+  font-size: 12px; color: var(--muted); margin-block-start: .35rem; text-decoration: underline;
+  display: inline-flex; align-items: center; min-height: 26px;   /* it was 20px tall */
+}
+.basket__total { padding: 1.25rem; background: var(--bg-soft, var(--bg)); border: 1px solid var(--line); border-radius: var(--radius, 0); }
+.basket__sums { display: grid; grid-template-columns: 1fr auto; gap: .6rem 1rem; margin-block: 1.25rem; font-size: 14px; }
+.basket__sums dd { margin: 0; text-align: end; font-variant-numeric: tabular-nums; }
+.basket__grand { font-weight: 600; color: var(--ink); font-size: 16px; padding-block-start: .6rem; border-block-start: 1px solid var(--line); }
