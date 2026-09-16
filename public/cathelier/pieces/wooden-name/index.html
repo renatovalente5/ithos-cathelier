@@ -28,6 +28,7 @@
 <body class="" id="top">
 <a class="skip" href="#main">Skip to content</a>
 
+<p class="announce">A drawing to approve before anything is cut</p>
 <header class="head" data-shrunk="no">
   <div class="shell head__row">
     <div class="head__left">
@@ -107,11 +108,15 @@
     <p class="product__lead">Made to order. Up to 20 working days in the workshop.</p>
 
     <form class="product__form" data-product-form data-product-id="wooden-name">
+      <p class="field__help" style="margin-block-end:.25rem">
+        Fill these in and we will send you a drawing to approve. Nothing is cut
+        before you say yes.
+      </p>
       <div class="field">
-        <label for="opt-engraving">What should it say</label>
-        <p class="field__help">Names, a date, a short phrase. We send you a proof to approve before anything is cut.</p>
-        <textarea id="opt-engraving" rows="3" maxlength="80"
-                  data-option="engraving" placeholder="Names, a date, a short phrase"></textarea>
+        <label for="opt-name">The name <span class="field__req">required</span></label>
+        <input id="opt-name" type="text" maxlength="40"
+               data-option="name" required
+               placeholder="Beatriz">
       </div>
 
       <div class="product__buy">

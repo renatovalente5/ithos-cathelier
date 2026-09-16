@@ -20,14 +20,24 @@
   "cover": "06",
   "options": [
     {
-      "id": "engraving",
-      "name": "What should it say",
+      "id": "names",
+      "name": "Name or names",
       "type": "text",
       "required": true,
       "personalises": true,
-      "max": 80,
+      "max": 60,
       "extra": 0,
-      "help": "Names, a date, a short phrase. We send you a proof to approve before anything is cut."
+      "example": "Ana and Duarte"
+    },
+    {
+      "id": "line",
+      "name": "A short line (optional)",
+      "type": "text",
+      "required": false,
+      "personalises": true,
+      "max": 60,
+      "extra": 0,
+      "example": ""
     }
   ],
   "gpsr": {

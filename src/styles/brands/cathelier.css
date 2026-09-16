@@ -189,3 +189,63 @@
 .steps__list p { font-size: 14px; color: var(--ink-soft); line-height: 1.75; }
 
 .collection--alt { background: var(--bg-soft); }
+
+/* --- the announcement line ------------------------------------------------- */
+.announce {
+  margin: 0; padding-block: .75rem; text-align: center;
+  background: var(--bg-trust); color: var(--ink-soft);
+  font-family: var(--font-body); font-size: 15px; letter-spacing: .03em;
+}
+
+/* --- image with text -------------------------------------------------------
+   The block that carries the weight of that shop's home page: a column of
+   copy with a solid button, beside a photograph. Two of them, alternating
+   sides, which is what stops a long page of product grids reading as a
+   catalogue dump. */
+.feature { padding-block: clamp(2rem, 5vw, 3.5rem); }
+.feature__row { display: grid; gap: clamp(1.5rem, 4vw, 3rem); align-items: center; }
+@media (width >= 56rem) {
+  .feature__row { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+  .feature--flip .feature__text { order: 2; }
+}
+.feature__text { text-align: center; }
+@media (width >= 56rem) { .feature__text { text-align: start; } }
+.feature__text p { font-size: 15px; line-height: 1.85; color: var(--ink-soft); }
+.feature__text p + p { margin-block-start: 1rem; }
+.feature__text .btn { margin-block-start: 1.75rem; }
+.feature__art { display: grid; gap: 10px; grid-template-columns: repeat(3, 1fr); }
+.feature__art .frame:first-child { grid-column: span 3; aspect-ratio: 16 / 9; }
+
+/* --- questions, on the home page ------------------------------------------
+   Two columns of pills. That shop puts them here rather than only on a
+   contact page, and it is right to: the questions people have about a
+   personalised piece are the reason they do not order one. */
+.ask { padding-block: clamp(2rem, 5vw, 3.5rem); }
+.ask__grid { display: grid; gap: .75rem; margin-block-start: 1.75rem; }
+@media (width >= 56rem) { .ask__grid { grid-template-columns: 1fr 1fr; gap: .75rem 1.25rem; } }
+.ask__item { background: var(--bg-soft); border: 1px solid var(--line); border-radius: 12px; }
+.ask__item summary {
+  display: flex; align-items: center; gap: .75rem;
+  padding: 1rem 1.15rem; cursor: pointer; list-style: none;
+  font-family: var(--font-body); font-size: 15px; color: var(--ink);
+}
+.ask__item summary::-webkit-details-marker { display: none; }
+.ask__item summary::after { content: '⌄'; margin-inline-start: auto; color: var(--muted); }
+.ask__item[open] summary::after { content: '⌃'; }
+.ask__item svg { flex: none; color: var(--accent); }
+.ask__item > div { padding: 0 1.15rem 1.15rem; font-size: 14px; line-height: 1.8; color: var(--ink-soft); }
+.ask__item > div p + p { margin-block-start: .75rem; }
+
+/* --- the product page ------------------------------------------------------
+   A big, light title, the way that shop sets them: Grandstander at 100, half
+   again the size everything else on the page uses. At 500 and 24px it read as
+   a paragraph heading; the point of a hairline face is that it can be large
+   without shouting. */
+[data-brand='cathelier'] .product__detail h1 {
+  font-size: clamp(1.9rem, 1.2rem + 2.6vw, 3.1rem);
+  font-weight: 100; line-height: 1.15;
+}
+[data-brand='cathelier'] .product__price { font-family: var(--font-body); font-size: 21px; font-weight: 400; }
+[data-brand='cathelier'] .field > label { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; font-weight: 400; }
+.field__req { color: var(--muted); letter-spacing: 0; text-transform: none; font-size: 12px; }
+[data-brand='cathelier'] .product__form { gap: .9rem; }

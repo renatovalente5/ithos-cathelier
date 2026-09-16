@@ -20,14 +20,14 @@
   "cover": "04",
   "options": [
     {
-      "id": "engraving",
-      "name": "What should it say",
+      "id": "name",
+      "name": "The name",
       "type": "text",
       "required": true,
       "personalises": true,
-      "max": 80,
+      "max": 40,
       "extra": 0,
-      "help": "Names, a date, a short phrase. We send you a proof to approve before anything is cut."
+      "example": "Beatriz"
     }
   ],
   "gpsr": {

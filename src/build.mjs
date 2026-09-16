@@ -167,7 +167,7 @@ function catalogueFile() {
 
 /* --- pages ---------------------------------------------------------------- */
 
-const shellArgs = { site: SITE, identity, counts, preview: PREVIEW };
+const shellArgs = { site: SITE, identity, counts, preview: PREVIEW, shipping, shop };
 
 function buildIthos() {
   write('/', page({

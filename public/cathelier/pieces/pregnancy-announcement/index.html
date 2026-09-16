@@ -28,6 +28,7 @@
 <body class="" id="top">
 <a class="skip" href="#main">Skip to content</a>
 
+<p class="announce">A drawing to approve before anything is cut</p>
 <header class="head" data-shrunk="no">
   <div class="shell head__row">
     <div class="head__left">
@@ -107,11 +108,45 @@
     <p class="product__lead">Made to order. Up to 20 working days in the workshop.</p>
 
     <form class="product__form" data-product-form data-product-id="pregnancy-announcement">
+      <p class="field__help" style="margin-block-end:.25rem">
+        Fill these in and we will send you a drawing to approve. Nothing is cut
+        before you say yes.
+      </p>
       <div class="field">
-        <label for="opt-engraving">What should it say</label>
-        <p class="field__help">Names, a date, a short phrase. We send you a proof to approve before anything is cut.</p>
-        <textarea id="opt-engraving" rows="3" maxlength="80"
-                  data-option="engraving" placeholder="Names, a date, a short phrase"></textarea>
+        <label for="opt-name">Name <span class="field__req">required</span></label>
+        <input id="opt-name" type="text" maxlength="40"
+               data-option="name" required
+               placeholder="Manuel">
+      </div>
+      <div class="field">
+        <label for="opt-surname">Surname <span class="field__req">required</span></label>
+        <input id="opt-surname" type="text" maxlength="60"
+               data-option="surname" required
+               placeholder="Marques Gomes Aparício">
+      </div>
+      <div class="field">
+        <label for="opt-born">Date of birth <span class="field__req">required</span></label>
+        <input id="opt-born" type="text" maxlength="30"
+               data-option="born" required
+               placeholder="16 June 2025">
+      </div>
+      <div class="field">
+        <label for="opt-time">Time <span class="field__req">required</span></label>
+        <input id="opt-time" type="text" maxlength="12"
+               data-option="time" required
+               placeholder="3:40">
+      </div>
+      <div class="field">
+        <label for="opt-weight">Weight <span class="field__req">required</span></label>
+        <input id="opt-weight" type="text" maxlength="14"
+               data-option="weight" required
+               placeholder="3,110 kg">
+      </div>
+      <div class="field">
+        <label for="opt-length">Length <span class="field__req">required</span></label>
+        <input id="opt-length" type="text" maxlength="12"
+               data-option="length" required
+               placeholder="49 cm">
       </div>
 
       <div class="product__buy">

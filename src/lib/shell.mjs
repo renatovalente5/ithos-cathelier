@@ -42,7 +42,7 @@ const CALL_COST = '(Call to the national mobile network)';
 export function page(o) {
   const {
     brand = 'ithos', title, description, path, body,
-    site, identity, image, schema = [], counts = {},
+    site, identity, image, schema = [], counts = {}, shipping = null, shop = null,
     bodyClass = '', noindex = false, crumbs = null, extraHead = '', preview = false,
   } = o;
 
@@ -81,6 +81,7 @@ ${schema.length ? `<script type="application/ld+json">${JSON.stringify(schema.le
 <body class="${esc(bodyClass)}" id="top">
 <a class="skip" href="#main">Skip to content</a>
 
+${announcement({ brand, shipping, shop })}
 ${header({ brand, path })}
 ${crumbs ? breadcrumbs(crumbs) : ''}
 
@@ -108,6 +109,22 @@ ${footer({ brand, identity })}
 </body>
 </html>
 `;
+}
+
+/* --- the line above everything -------------------------------------------
+   The shop this brand is modelled on runs one, and what it carries is the free
+   shipping threshold — commercially the most valuable sentence on the page.
+   It is read from the shipping settings, so it cannot promise a campaign that
+   is switched off. With no campaign running it carries the workshop's own
+   promise instead, which is the thing that actually sells these: nothing is
+   cut until you have seen a drawing. */
+function announcement({ brand, shipping, shop }) {
+  if (brand !== 'cathelier') return '';
+  const c = shipping?.campaign;
+  const line = c?.active && c.freeOver > 0
+    ? `Free shipping on orders over €${Number(c.freeOver).toFixed(0)}`
+    : 'A drawing to approve before anything is cut';
+  return `<p class="announce">${esc(line)}</p>`;
 }
 
 function header({ brand, path }) {

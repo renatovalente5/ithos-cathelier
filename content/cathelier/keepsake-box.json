@@ -19,14 +19,64 @@
   "cover": "02",
   "options": [
     {
-      "id": "engraving",
-      "name": "What should it say",
+      "id": "name",
+      "name": "Name",
       "type": "text",
       "required": true,
       "personalises": true,
-      "max": 80,
+      "max": 40,
       "extra": 0,
-      "help": "Names, a date, a short phrase. We send you a proof to approve before anything is cut."
+      "example": "Manuel"
+    },
+    {
+      "id": "surname",
+      "name": "Surname",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 60,
+      "extra": 0,
+      "example": "Marques Gomes Aparício"
+    },
+    {
+      "id": "born",
+      "name": "Date of birth",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 30,
+      "extra": 0,
+      "example": "16 June 2025"
+    },
+    {
+      "id": "time",
+      "name": "Time",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 12,
+      "extra": 0,
+      "example": "3:40"
+    },
+    {
+      "id": "weight",
+      "name": "Weight",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 14,
+      "extra": 0,
+      "example": "3,110 kg"
+    },
+    {
+      "id": "length",
+      "name": "Length",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 12,
+      "extra": 0,
+      "example": "49 cm"
     }
   ],
   "gpsr": {

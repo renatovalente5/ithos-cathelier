@@ -19,14 +19,24 @@
   "cover": "04",
   "options": [
     {
-      "id": "engraving",
-      "name": "What should it say",
+      "id": "names",
+      "name": "Name or names",
       "type": "text",
       "required": true,
       "personalises": true,
-      "max": 80,
+      "max": 60,
       "extra": 0,
-      "help": "Names, a date, a short phrase. We send you a proof to approve before anything is cut."
+      "example": "The Aparício family"
+    },
+    {
+      "id": "date",
+      "name": "Date (optional)",
+      "type": "text",
+      "required": false,
+      "personalises": true,
+      "max": 30,
+      "extra": 0,
+      "example": ""
     }
   ],
   "gpsr": {
