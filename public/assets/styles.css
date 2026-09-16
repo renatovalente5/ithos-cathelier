@@ -205,22 +205,33 @@ p { text-wrap: pretty; }
 
 /* --- type ----------------------------------------------------------------- */
 
+/* The serif is for the HERO LINE AND NOTHING ELSE.
+ *
+ * That is the correction that came out of reading the model shop properly.
+ * Its section headings are Montserrat 22/600 and its product titles are
+ * Montserrat 34/500 — the serif appears exactly once per page, over the
+ * photograph, and that is what makes it feel like a moment instead of a
+ * typeface choice. I had it on every heading, which spends it. */
 [data-brand='ithos'] h1,
-[data-brand='ithos'] h2,
-[data-brand='ithos'] .display {
-  font-family: var(--font-display);
-  font-weight: 300;
-  letter-spacing: .01em;
+[data-brand='ithos'] h2 {
+  font-family: var(--font-body);
+  font-weight: 600;
+  letter-spacing: normal;
+  color: #242424;
 }
-[data-brand='ithos'] h1 { font-size: clamp(1.9rem, 1.2rem + 2.6vw, 3rem); }
-[data-brand='ithos'] h2 { font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.15rem); }
+[data-brand='ithos'] h1 { font-size: clamp(1.55rem, 1.1rem + 1.6vw, 2.15rem); }
+[data-brand='ithos'] h2 { font-size: clamp(1.25rem, 1.05rem + .7vw, 1.375rem); }
 [data-brand='ithos'] h3 { font-family: var(--font-body); font-weight: 500; font-size: 1rem; }
+[data-brand='ithos'] .display { font-family: var(--font-display); font-weight: 300; }
+
+/* The product title, at their size and weight. */
+[data-brand='ithos'] .product__detail h1 { font-size: clamp(1.5rem, 1.1rem + 1.7vw, 2.125rem); font-weight: 500; color: #333; }
 
 [data-brand='ithos'] .eyebrow {
   font-size: 11px; font-weight: 600; letter-spacing: .18em;
   text-transform: uppercase; color: var(--muted);
 }
-[data-brand='ithos'] .lede { font-size: 15px; color: var(--ink-soft); line-height: 1.8; }
+[data-brand='ithos'] .lede { font-size: 15px; color: var(--muted); line-height: 1.8; }
 /* On a phone the catalogue's opening paragraph is the only thing standing
    between the fold and the products. The owner asked for four lamps on a
    screen and named the number, so it is measured, not estimated: at 375x812
@@ -244,7 +255,26 @@ p { text-wrap: pretty; }
 /* --- hero --------------------------------------------------------------- */
 [data-brand='ithos'] .hero__photo { aspect-ratio: 4 / 5; }
 @media (width >= 48rem) { [data-brand='ithos'] .hero__photo { aspect-ratio: 16 / 7; } }
-[data-brand='ithos'] .hero__title { font-family: var(--font-display); font-weight: 300; }
+[data-brand='ithos'] .hero__title { font-family: var(--font-display); font-weight: 300; color: #fff; }
+
+/* --- the footer is WARM, and it is the one thing that stops a white shop
+   reading as a spreadsheet. Theirs is this exact peach. */
+[data-brand='ithos'] .foot { background: #FCE1C5; border-block-start: 0; }
+[data-brand='ithos'] .foot__group,
+[data-brand='ithos'] .foot__end { border-color: rgb(140 66 48 / .18); }
+[data-brand='ithos'] .foot__group a,
+[data-brand='ithos'] .foot__end,
+[data-brand='ithos'] .foot__end a,
+[data-brand='ithos'] .foot__cost { color: #6B4A38; }   /* 6.28:1 on the peach */
+[data-brand='ithos'] .foot__group summary { color: #3A2219; }
+[data-brand='ithos'] .foot__social a { border-color: rgb(140 66 48 / .28); color: #6B4A38; }
+[data-brand='ithos'] .foot__social a:hover { color: var(--accent-deep); border-color: var(--accent-deep); }
+[data-brand='ithos'] .head__nav a {
+  font-size: 13px; font-weight: 300; text-transform: uppercase; letter-spacing: normal;
+  color: var(--ink-soft); text-decoration: none; padding-block: .35rem;
+}
+[data-brand='ithos'] .head__nav a:hover,
+[data-brand='ithos'] .head__nav a[aria-current='page'] { color: var(--accent); }
 
 /* --- product card ---------------------------------------------------------
    Frame, swatches, name, price — in that order, which is the order that shop
@@ -571,7 +601,16 @@ p { text-wrap: pretty; }
 .head { position: sticky; inset-block-start: 0; z-index: 50; background: var(--bg); border-block-end: 1px solid var(--line-soft, var(--line)); }
 .head__row { min-height: var(--head-h, 84px); transition: min-height .2s ease; }
 .head[data-shrunk='yes'] .head__row { --head-h: 62px; }
-.head__mark img { width: auto; }
+/* An SVG with a viewBox and no intrinsic size collapses to nothing when it is
+   given `width: auto` and no height. Moving these rules between files dropped
+   the height and the ithos wordmark went to zero pixels wide — the link was
+   still there, the file still resolved, and every guard passed. Only looking
+   at the page found it, which is why there is now a battery check that the
+   mark has a size. */
+.head__mark img { width: auto; height: clamp(46px, 7vw, 64px); }
+[data-brand='cathelier'] .head__mark img { height: clamp(40px, 5vw, 54px); }
+.head[data-shrunk='yes'] .head__mark img { height: 40px; }
+.drawer__mark { height: 34px; width: auto; }
 
 .icon-btn {
   display: inline-flex; align-items: center; justify-content: center;
@@ -632,15 +671,16 @@ p { text-wrap: pretty; }
 .head__row {
   display: grid;
   grid-template-columns: 1fr auto 1fr;
+  grid-template-areas: 'left mark right';
   align-items: center;
   /* Enough air that the navigation reads as a separate thing from the mark
      even when it fills its whole track. At 1rem they were 20px apart, which
      is not overlapping but looks like it is. */
   gap: clamp(1rem, 3vw, 2.75rem);
 }
-.head__left { display: flex; align-items: center; gap: 1.5rem; min-width: 0; }
-.head__right { display: flex; align-items: center; justify-content: flex-end; gap: .35rem; }
-.head__mark { display: block; justify-self: center; }
+.head__left { grid-area: left; display: flex; align-items: center; gap: 1.5rem; min-width: 0; }
+.head__right { grid-area: right; display: flex; align-items: center; justify-content: flex-end; gap: .35rem; }
+.head__mark { grid-area: mark; display: block; justify-self: center; }
 
 .drawer__top {
   display: grid;
@@ -664,9 +704,10 @@ p { text-wrap: pretty; }
 .head__sibling:hover { color: var(--accent); }
 @media (width >= 48rem) { .head__sibling { display: inline-flex; } }
 
-/* The horizontal navigation belongs to cathelier only, and only when there is
-   room for it. The shop ithos is modelled on has no horizontal navigation at
-   all — burger, wordmark, basket — so ithos does not get one either. */
+/* Below 64rem neither brand shows horizontal navigation: it is the burger and
+   the drawer, on both. Above it, each brand takes the shape of the shop it is
+   modelled on — cathelier puts its mark on the left with the links beside it,
+   ithos stacks the mark over a centred row of links. */
 .head__nav { display: none; }
 @media (width >= 64rem) {
   .head__nav { display: flex; gap: 1.5rem; min-width: 0; }
@@ -684,11 +725,28 @@ p { text-wrap: pretty; }
      the <nav> said there was a 43px gap. Measuring the last <a> said -2. With
      the mark in its own auto track, the navigation has nowhere to go but the
      middle. */
-  [data-brand='cathelier'] .head__row { grid-template-columns: auto minmax(0, 1fr) auto; }
-  [data-brand='cathelier'] .head__mark { grid-column: 1; grid-row: 1; justify-self: start; }
-  [data-brand='cathelier'] .head__left { grid-column: 2; grid-row: 1; justify-content: center; }
-  [data-brand='cathelier'] .head__right { grid-column: 3; grid-row: 1; }
-  [data-brand='cathelier'] .head__nav { overflow: hidden; }
+  [data-brand='cathelier'] .head__row {
+    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-areas: 'mark nav right';
+  }
+  [data-brand='cathelier'] .head__mark { justify-self: start; }
+  [data-brand='cathelier'] .head__nav { grid-area: nav; justify-content: center; overflow: hidden; }
+  [data-brand='cathelier'] .head__left { display: none; }
+
+  /* ithos is a TWO-ROW header, which is what the shop it is modelled on
+     actually does at this width: the wordmark centred on its own line, the
+     navigation centred underneath it. I had read a narrow screenshot and
+     concluded that shop had no horizontal navigation at all. */
+  [data-brand='ithos'] .head__row {
+    grid-template-areas: 'left mark right' 'nav nav nav';
+    row-gap: .35rem;
+  }
+  [data-brand='ithos'] .head__nav {
+    grid-area: nav; justify-content: center; gap: 2rem;
+    border-block-start: 1px solid var(--line-soft);
+    padding-block-start: .5rem;
+  }
+  [data-brand='ithos'] .head__left { display: none; }
 }
 
 /* --- filters --------------------------------------------------------------
@@ -927,3 +985,23 @@ p { text-wrap: pretty; }
 .basket__sums { display: grid; grid-template-columns: 1fr auto; gap: .6rem 1rem; margin-block: 1.25rem; font-size: 14px; }
 .basket__sums dd { margin: 0; text-align: end; font-variant-numeric: tabular-nums; }
 .basket__grand { font-weight: 600; color: var(--ink); font-size: 16px; padding-block-start: .6rem; border-block-start: 1px solid var(--line); }
+
+/* --- the maker's block ------------------------------------------------------
+   The model shop signs its home page: a short hello on the left and a
+   photograph of the two people who make the things on the right, with their
+   names under it. It is the most human thing on that page and it was the piece
+   I had reduced to a centred paragraph.
+
+   Ours carries a lamp for now. A photograph of the workshop, or of her at the
+   bench, would be worth more than anything else that could go in this space. */
+.maker { display: grid; gap: clamp(1.5rem, 4vw, 3rem); align-items: center; }
+@media (width >= 56rem) { .maker { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+.maker__text { font-size: 17px; line-height: 1.8; color: var(--muted); }
+.maker__text h2 { margin-block-end: 1.25rem; }
+.maker__text p + p { margin-block-start: 1rem; }
+.maker__sign { margin-block-start: 1.5rem; color: var(--ink); }
+.maker__photo { aspect-ratio: 4 / 3; }
+
+.product__blurb { margin-block-start: 1rem; font-size: 15px; line-height: 1.8; color: var(--muted); }
+.product__lead { display: flex; align-items: center; gap: .5rem; }
+.product__lead svg { flex: none; color: var(--accent); }

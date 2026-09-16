@@ -34,8 +34,17 @@
     <div class="head__left">
       <button class="icon-btn open-menu" type="button" aria-expanded="false" aria-controls="menu"
               aria-label="Open the menu"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
-      
     </div>
+
+    <!-- A DIRECT CHILD of the grid, and it has to be. It used to live inside
+         .head__left, where grid-area on it did nothing at all: only children
+         of the grid can be placed in it. The mark vanished and the links piled
+         into the corner. -->
+    <nav class="head__nav" aria-label="Main">
+      <a href="/ithos-cathelier/lamps/">Lamps</a>
+      <a href="/ithos-cathelier/about/">The workshop</a>
+      <a href="/ithos-cathelier/contact/">Contact</a>
+    </nav>
 
     <a class="head__mark" href="/ithos-cathelier/" aria-label="ithos — home">
       <img src="/ithos-cathelier/assets/ithos-wordmark.svg" alt="ithos" width="119" height="120">
@@ -163,13 +172,22 @@
 </section>
 
 <section class="section section--soft">
-  <div class="shell shell--narrow" style="text-align:center">
-    <h2>Hello</h2>
-    <div class="stack lede" style="--stack:1rem;margin-block-start:1.25rem">
-      <p>We are a small workshop in Castelo Branco. Every lamp is cut, sanded and
-         painted by hand in solid pine, one at a time, and no two come out quite alike.</p>
-      <p>If you would like a name burned into the wood, say so when you order —
-         it costs nothing extra and it is the part we like best.</p>
+  <div class="shell">
+    <div class="maker">
+      <div class="maker__text">
+        <h2>Hello</h2>
+        <p>Lovely that you are here. We are a small family workshop in Castelo Branco,
+           where we make wooden night lights for children’s rooms by hand, one at a time.</p>
+        <p>Come and look around. We hope you find something here that steals your heart.</p>
+        <p class="maker__sign">Cathia</p>
+      </div>
+      <div class="frame maker__photo">
+        <picture>
+      <source type="image/avif" srcset="/ithos-cathelier/media/ithos/raposa/01-200.avif 200w, /ithos-cathelier/media/ithos/raposa/01-400.avif 400w, /ithos-cathelier/media/ithos/raposa/01-600.avif 600w, /ithos-cathelier/media/ithos/raposa/01-1000.avif 1000w" sizes="(min-width: 56rem) 45vw, 100vw">
+      <source type="image/webp" srcset="/ithos-cathelier/media/ithos/raposa/01-200.webp 200w, /ithos-cathelier/media/ithos/raposa/01-400.webp 400w, /ithos-cathelier/media/ithos/raposa/01-600.webp 600w, /ithos-cathelier/media/ithos/raposa/01-1000.webp 1000w" sizes="(min-width: 56rem) 45vw, 100vw">
+      <img src="/ithos-cathelier/media/ithos/raposa/01-1000.webp" alt="A wooden night light from the workshop" width="1000" height="1000" loading="lazy" decoding="async">
+    </picture>
+      </div>
     </div>
   </div>
 </section>

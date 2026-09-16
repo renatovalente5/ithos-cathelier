@@ -95,13 +95,23 @@ export function home({ products, identity }) {
 </section>
 
 <section class="section section--soft">
-  <div class="shell shell--narrow" style="text-align:center">
-    <h2>Hello</h2>
-    <div class="stack lede" style="--stack:1rem;margin-block-start:1.25rem">
-      <p>We are a small workshop in Castelo Branco. Every lamp is cut, sanded and
-         painted by hand in solid pine, one at a time, and no two come out quite alike.</p>
-      <p>If you would like a name burned into the wood, say so when you order —
-         it costs nothing extra and it is the part we like best.</p>
+  <div class="shell">
+    <div class="maker">
+      <div class="maker__text">
+        <h2>Hello</h2>
+        <p>Lovely that you are here. We are a small family workshop in Castelo Branco,
+           where we make wooden night lights for children’s rooms by hand, one at a time.</p>
+        <p>Come and look around. We hope you find something here that steals your heart.</p>
+        <p class="maker__sign">Cathia</p>
+      </div>
+      <div class="frame maker__photo">
+        ${picture({
+          dir: `ithos/${(products.find((x) => x.slug === 'sheep') ?? products[0]).photoFolder}`,
+          name: (products.find((x) => x.slug === 'sheep') ?? products[0]).cover,
+          alt: 'A wooden night light from the workshop',
+          sizes: '(min-width: 56rem) 45vw, 100vw',
+        })}
+      </div>
     </div>
   </div>
 </section>
@@ -186,7 +196,8 @@ export function product({ p, all, shop }) {
   <div class="product__detail">
     <h1>${esc(p.name)}</h1>
     <p class="product__price">${high > low ? `${money(low)} – ${money(high)}` : money(low)}</p>
-    <p class="product__lead">${esc(p.made === 'to_order' ? shop.lead.toOrder : shop.lead.inStock)}</p>
+    <p class="product__blurb">${esc(p.summary)}</p>
+    <p class="product__lead">${icon('truck', 15)}<span>${esc(p.made === 'to_order' ? shop.lead.toOrder : shop.lead.inStock)}</span></p>
 
     <form class="product__form" data-product-form data-product-id="${esc(p.slug)}">
       ${(p.options || []).map(optionField).join('\n      ')}

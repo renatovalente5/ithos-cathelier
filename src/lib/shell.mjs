@@ -145,10 +145,15 @@ function header({ brand, path }) {
     <div class="head__left">
       <button class="icon-btn open-menu" type="button" aria-expanded="false" aria-controls="menu"
               aria-label="Open the menu">${icon('menu', 24)}</button>
-      ${brand === 'cathelier' ? `<nav class="head__nav" aria-label="Main">
-        ${nav.map(([h, t2]) => `<a href="${h}"${path === h ? ' aria-current="page"' : ''}>${esc(t2)}</a>`).join('\n        ')}
-      </nav>` : ''}
     </div>
+
+    <!-- A DIRECT CHILD of the grid, and it has to be. It used to live inside
+         .head__left, where grid-area on it did nothing at all: only children
+         of the grid can be placed in it. The mark vanished and the links piled
+         into the corner. -->
+    <nav class="head__nav" aria-label="Main">
+      ${nav.map(([h, t2]) => `<a href="${h}"${path === h ? ' aria-current="page"' : ''}>${esc(t2)}</a>`).join('\n      ')}
+    </nav>
 
     <a class="head__mark" href="${home}" aria-label="${esc(mark.alt)} — home">
       <img src="${mark.src}" alt="${esc(mark.alt)}" width="${mark.w}" height="${mark.h}">

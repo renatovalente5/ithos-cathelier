@@ -193,9 +193,22 @@ window.__bateria = function () {
   nota(['ithos', 'cathelier'].includes(marca), 'the brand is in the HTML as served', marca);
 
   // --- tipografia carregada ------------------------------------------------
-  const esperadas = { ithos: ['Montserrat', 'Cormorant Garamond'], cathelier: ['Klee One', 'Grandstander'] }[marca] ?? [];
+  // Só se exige o que a página REALMENTE usa. O serifado da ithos existe
+  // apenas na linha do herói, por isso numa ficha de produto nunca é pedido —
+  // e exigi-lo ali seria exigir um descarregamento que não serve ninguém.
+  // A pergunta certa é: alguma coisa nesta página pede esta letra e ela não
+  // chegou?
+  const emUso = new Set();
+  for (const e of document.querySelectorAll('body *')) {
+    if (!e.textContent.trim() || !e.getBoundingClientRect().width) continue;
+    emUso.add(getComputedStyle(e).fontFamily.split(',')[0].replace(/["']/g, '').trim());
+  }
   const carregadas = [...document.fonts].filter((f) => f.status === 'loaded').map((f) => f.family);
-  for (const f of esperadas) nota(carregadas.includes(f), `tipo «${f}» carregado`, carregadas.join(', '));
+  const esperadas = { ithos: ['Montserrat', 'Cormorant Garamond'], cathelier: ['Klee One', 'Grandstander'] }[marca] ?? [];
+  for (const f of esperadas) {
+    if (!emUso.has(f)) continue;
+    nota(carregadas.includes(f), `tipo «${f}» carregado`, carregadas.join(', '));
+  }
 
   // --- corpo de letra mínimo ------------------------------------------------
   // Não há mínimo na WCAG, mas há na prática: abaixo de 12 px um texto no
@@ -237,10 +250,20 @@ window.__bateria = function () {
   const marcaNoTopo = document.querySelector('.head__mark img');
   if (marcaNoTopo) {
     const m = marcaNoTopo.getBoundingClientRect();
+    // Antes de perguntar se alguém a pisa, perguntar se ela EXISTE. Um SVG com
+    // viewBox e sem altura declarada colapsa para zero: o ficheiro resolve, o
+    // link está lá, e a marca não se vê. Nenhuma outra guarda apanha isso.
+    nota(m.width >= 24 && m.height >= 24, 'a marca do cabeçalho tem tamanho',
+      `${Math.round(m.width)}x${Math.round(m.height)}`);
     const vizinhos = [...document.querySelectorAll('.head__nav a, .head__right a, .head__left button')];
     const pisam = vizinhos
       .map((e) => ({ e, r: e.getBoundingClientRect() }))
-      .filter(({ r }) => r.width && r.height && r.right > m.left + 1 && r.left < m.right - 1)
+      // Nos DOIS eixos. O cabeçalho da ithos tem duas linhas: a navegação
+      // partilha a faixa horizontal da marca e passa por baixo dela, o que
+      // só é sobreposição se também se cruzarem na vertical.
+      .filter(({ r }) => r.width && r.height
+        && r.right > m.left + 1 && r.left < m.right - 1
+        && r.bottom > m.top + 1 && r.top < m.bottom - 1)
       .map(({ e }) => `«${e.textContent.trim().slice(0, 18) || e.getAttribute('aria-label')}»`);
     nota(pisam.length === 0, 'nada no cabeçalho se sobrepõe à marca', pisam.join(', '));
   }
@@ -249,6 +272,8 @@ window.__bateria = function () {
   if (drawerIsShown) {
     const fechar = drawer.querySelector('.close-menu')?.getBoundingClientRect();
     const dm = drawer.querySelector('.drawer__mark')?.getBoundingClientRect();
+    if (dm) nota(dm.width >= 24 && dm.height >= 24, 'a marca da gaveta tem tamanho',
+      `${Math.round(dm.width)}x${Math.round(dm.height)}`);
     if (fechar && dm) {
       nota(fechar.right < dm.left - 8, 'o botão de fechar não está colado à marca',
         `fechar acaba em ${Math.round(fechar.right)}, a marca comeca em ${Math.round(dm.left)}`);

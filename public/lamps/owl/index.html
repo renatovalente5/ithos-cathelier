@@ -34,8 +34,17 @@
     <div class="head__left">
       <button class="icon-btn open-menu" type="button" aria-expanded="false" aria-controls="menu"
               aria-label="Open the menu"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
-      
     </div>
+
+    <!-- A DIRECT CHILD of the grid, and it has to be. It used to live inside
+         .head__left, where grid-area on it did nothing at all: only children
+         of the grid can be placed in it. The mark vanished and the links piled
+         into the corner. -->
+    <nav class="head__nav" aria-label="Main">
+      <a href="/ithos-cathelier/lamps/">Lamps</a>
+      <a href="/ithos-cathelier/about/">The workshop</a>
+      <a href="/ithos-cathelier/contact/">Contact</a>
+    </nav>
 
     <a class="head__mark" href="/ithos-cathelier/" aria-label="ithos — home">
       <img src="/ithos-cathelier/assets/ithos-wordmark.svg" alt="ithos" width="119" height="120">
@@ -78,7 +87,8 @@
   <div class="product__detail">
     <h1>Owl</h1>
     <p class="product__price">€130,00</p>
-    <p class="product__lead">Made to order. Up to 20 working days in the workshop.</p>
+    <p class="product__blurb">Eyes closed, feathers in layers, perfectly still.</p>
+    <p class="product__lead"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.8"/><circle cx="17.5" cy="18" r="1.8"/></svg><span>Made to order. Up to 20 working days in the workshop.</span></p>
 
     <form class="product__form" data-product-form data-product-id="owl">
       <fieldset class="field">

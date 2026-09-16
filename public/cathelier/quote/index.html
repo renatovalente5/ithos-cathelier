@@ -34,13 +34,18 @@
     <div class="head__left">
       <button class="icon-btn open-menu" type="button" aria-expanded="false" aria-controls="menu"
               aria-label="Open the menu"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
-      <nav class="head__nav" aria-label="Main">
-        <a href="/ithos-cathelier/cathelier/">Occasions</a>
-        <a href="/ithos-cathelier/cathelier/pieces/">All pieces</a>
-        <a href="/ithos-cathelier/cathelier/quote/" aria-current="page">Ask for a quote</a>
-        <a href="/ithos-cathelier/cathelier/about/">The workshop</a>
-      </nav>
     </div>
+
+    <!-- A DIRECT CHILD of the grid, and it has to be. It used to live inside
+         .head__left, where grid-area on it did nothing at all: only children
+         of the grid can be placed in it. The mark vanished and the links piled
+         into the corner. -->
+    <nav class="head__nav" aria-label="Main">
+      <a href="/ithos-cathelier/cathelier/">Occasions</a>
+      <a href="/ithos-cathelier/cathelier/pieces/">All pieces</a>
+      <a href="/ithos-cathelier/cathelier/quote/" aria-current="page">Ask for a quote</a>
+      <a href="/ithos-cathelier/cathelier/about/">The workshop</a>
+    </nav>
 
     <a class="head__mark" href="/ithos-cathelier/cathelier/" aria-label="cathelier — home">
       <img src="/ithos-cathelier/assets/cathelier.svg" alt="cathelier" width="117" height="54">

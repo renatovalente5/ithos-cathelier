@@ -42,22 +42,33 @@
 
 /* --- type ----------------------------------------------------------------- */
 
+/* The serif is for the HERO LINE AND NOTHING ELSE.
+ *
+ * That is the correction that came out of reading the model shop properly.
+ * Its section headings are Montserrat 22/600 and its product titles are
+ * Montserrat 34/500 — the serif appears exactly once per page, over the
+ * photograph, and that is what makes it feel like a moment instead of a
+ * typeface choice. I had it on every heading, which spends it. */
 [data-brand='ithos'] h1,
-[data-brand='ithos'] h2,
-[data-brand='ithos'] .display {
-  font-family: var(--font-display);
-  font-weight: 300;
-  letter-spacing: .01em;
+[data-brand='ithos'] h2 {
+  font-family: var(--font-body);
+  font-weight: 600;
+  letter-spacing: normal;
+  color: #242424;
 }
-[data-brand='ithos'] h1 { font-size: clamp(1.9rem, 1.2rem + 2.6vw, 3rem); }
-[data-brand='ithos'] h2 { font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.15rem); }
+[data-brand='ithos'] h1 { font-size: clamp(1.55rem, 1.1rem + 1.6vw, 2.15rem); }
+[data-brand='ithos'] h2 { font-size: clamp(1.25rem, 1.05rem + .7vw, 1.375rem); }
 [data-brand='ithos'] h3 { font-family: var(--font-body); font-weight: 500; font-size: 1rem; }
+[data-brand='ithos'] .display { font-family: var(--font-display); font-weight: 300; }
+
+/* The product title, at their size and weight. */
+[data-brand='ithos'] .product__detail h1 { font-size: clamp(1.5rem, 1.1rem + 1.7vw, 2.125rem); font-weight: 500; color: #333; }
 
 [data-brand='ithos'] .eyebrow {
   font-size: 11px; font-weight: 600; letter-spacing: .18em;
   text-transform: uppercase; color: var(--muted);
 }
-[data-brand='ithos'] .lede { font-size: 15px; color: var(--ink-soft); line-height: 1.8; }
+[data-brand='ithos'] .lede { font-size: 15px; color: var(--muted); line-height: 1.8; }
 /* On a phone the catalogue's opening paragraph is the only thing standing
    between the fold and the products. The owner asked for four lamps on a
    screen and named the number, so it is measured, not estimated: at 375x812
@@ -81,7 +92,26 @@
 /* --- hero --------------------------------------------------------------- */
 [data-brand='ithos'] .hero__photo { aspect-ratio: 4 / 5; }
 @media (width >= 48rem) { [data-brand='ithos'] .hero__photo { aspect-ratio: 16 / 7; } }
-[data-brand='ithos'] .hero__title { font-family: var(--font-display); font-weight: 300; }
+[data-brand='ithos'] .hero__title { font-family: var(--font-display); font-weight: 300; color: #fff; }
+
+/* --- the footer is WARM, and it is the one thing that stops a white shop
+   reading as a spreadsheet. Theirs is this exact peach. */
+[data-brand='ithos'] .foot { background: #FCE1C5; border-block-start: 0; }
+[data-brand='ithos'] .foot__group,
+[data-brand='ithos'] .foot__end { border-color: rgb(140 66 48 / .18); }
+[data-brand='ithos'] .foot__group a,
+[data-brand='ithos'] .foot__end,
+[data-brand='ithos'] .foot__end a,
+[data-brand='ithos'] .foot__cost { color: #6B4A38; }   /* 6.28:1 on the peach */
+[data-brand='ithos'] .foot__group summary { color: #3A2219; }
+[data-brand='ithos'] .foot__social a { border-color: rgb(140 66 48 / .28); color: #6B4A38; }
+[data-brand='ithos'] .foot__social a:hover { color: var(--accent-deep); border-color: var(--accent-deep); }
+[data-brand='ithos'] .head__nav a {
+  font-size: 13px; font-weight: 300; text-transform: uppercase; letter-spacing: normal;
+  color: var(--ink-soft); text-decoration: none; padding-block: .35rem;
+}
+[data-brand='ithos'] .head__nav a:hover,
+[data-brand='ithos'] .head__nav a[aria-current='page'] { color: var(--accent); }
 
 /* --- product card ---------------------------------------------------------
    Frame, swatches, name, price — in that order, which is the order that shop
