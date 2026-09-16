@@ -57,9 +57,19 @@ for (const file of pages) {
     deaths.push(`${where}: an unfilled placeholder reached the page: ${m[0].slice(0, 40)}`);
   }
 
-  // Every internal link has to resolve to something on disk.
+  // Every internal link has to resolve to something on disk. When the site is
+  // served under a folder, a path that forgot the prefix resolves to somebody
+  // else's site — so the prefix is checked here rather than trusted.
+  const BASE = (process.env.BASE_PATH || '').replace(/\/$/, '');
   for (const m of html.matchAll(/(?:href|src)="(\/[^"#?]*)/g)) {
-    const target = m[1];
+    let target = m[1];
+    if (BASE) {
+      if (!target.startsWith(BASE + '/')) {
+        deaths.push(`${where}: ${target} is missing the ${BASE} prefix and would 404`);
+        continue;
+      }
+      target = target.slice(BASE.length);
+    }
     if (/^\/(media|assets|data)\//.test(target)) {
       images++;
       if (!existsSync(join(OUT, target))) deaths.push(`${where}: ${target} does not exist`);

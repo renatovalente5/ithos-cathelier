@@ -28,8 +28,35 @@ const CONTENT = join(ROOT, 'content');
    the domain — the CNAME, a config and the Worker's allowed origins — and
    nothing compared them. */
 const cname = existsSync(join(ROOT, 'CNAME')) ? readFileSync(join(ROOT, 'CNAME'), 'utf8').trim() : '';
-const SITE = process.env.BASE_URL || (cname ? `https://${cname}` : 'http://localhost:4320');
+/* With a prefix set, the site is NOT on its own domain, so the canonical URLs
+   must not claim the domain either — a canonical pointing at a host that does
+   not serve the page is worse than no canonical. */
+const BASE_PATH_SET = !!process.env.BASE_PATH;
+const SITE = process.env.BASE_URL
+  || (BASE_PATH_SET ? 'https://renatovalente5.github.io'
+  : cname ? `https://${cname}` : 'http://localhost:4320');
 const PREVIEW = process.env.PREVIEW === 'yes';
+
+/* The address prefix, and it is not optional.
+ *
+ * On the real domain every path starts at the root and BASE is empty. Served
+ * from a project page - renatovalente5.github.io/ithos-cathelier/ - every
+ * absolute path has to carry that folder, or the stylesheet, the fonts and all
+ * 836 photographs 404 at once and the shop renders as plain text.
+ *
+ * Rather than thread a helper through five page builders and hope nobody
+ * forgets one, the prefix is applied HERE, to every page as it is written, and
+ * scripts/check-output.mjs refuses to pass a page that still has a bare
+ * absolute path in it. A rule that is only remembered is a rule that breaks. */
+const BASE = (process.env.BASE_PATH || '').replace(/\/$/, '');
+
+function prefix(html) {
+  if (!BASE) return html;
+  return html
+    .replace(/(\s(?:href|src|content|action)=")\/(?!\/)/g, `$1${BASE}/`)
+    .replace(/(\ssrcset=")([^"]+)"/g, (m, head, list) =>
+      head + list.replace(/(^|,\s*)\/(?!\/)/g, `$1${BASE}/`) + '"');
+}
 
 const read = (p) => JSON.parse(readFileSync(join(CONTENT, p), 'utf8'));
 const identity = read('settings/identity.json');
@@ -64,7 +91,7 @@ function write(path, html) {
     : path.slice(1);
   const dest = join(OUT, file);
   mkdirSync(dirname(dest), { recursive: true });
-  writeFileSync(dest, html);
+  writeFileSync(dest, prefix(html));
   written.push(path);
 }
 
@@ -84,9 +111,17 @@ function assets() {
   cpSync(join(HERE, 'fonts'), join(OUT, 'assets', 'fonts'), { recursive: true });
   cpSync(join(ROOT, 'assets', 'brand'), join(OUT, 'assets'), { recursive: true });
   if (existsSync(join(HERE, 'js', 'shop.js'))) {
-    cpSync(join(HERE, 'js', 'shop.js'), join(OUT, 'assets', 'shop.js'));
+    const js = readFileSync(join(HERE, 'js', 'shop.js'), 'utf8')
+      .replace("const BASE = '';", `const BASE = '${BASE}';`);
+    if (BASE && !js.includes(`const BASE = '${BASE}'`)) {
+      throw new Error('shop.js has no BASE line to fill in — every fetch in it would miss the prefix');
+    }
+    writeFileSync(join(OUT, 'assets', 'shop.js'), js);
   }
-  if (cname) writeFileSync(join(OUT, 'CNAME'), cname + '\n');
+  // The CNAME file is what tells GitHub to serve at the custom domain. While
+  // the site is on a project path it must NOT be written, or Pages redirects
+  // to a domain that does not resolve yet and the whole site disappears.
+  if (cname && !BASE) writeFileSync(join(OUT, 'CNAME'), cname + '\n');
 }
 
 /* --- the catalogue the Worker prices against -----------------------------
@@ -303,6 +338,6 @@ writeFileSync(join(OUT, 'sitemap.xml'),
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`
   + written.map((p) => `  <url><loc>${SITE}${p}</loc></url>`).join('\n') + '\n</urlset>\n');
 
-console.log(`  ${SITE}${PREVIEW ? '   (preview: noindex, no checkout)' : ''}`);
+console.log(`  ${SITE}${BASE}${PREVIEW ? '   (preview: noindex, no checkout)' : ''}`);
 console.log(`  ${written.length} pages · ${lamps.length} lamps · ${pieces.length} pieces`);
 console.log(`  catalogue.${cat.hash}.json (${cat.count} products)`);

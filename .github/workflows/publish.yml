@@ -32,13 +32,19 @@ jobs:
         env:
           PREVIEW: ${{ vars.PREVIEW || 'yes' }}
 
+      # BASE_PATH stays set until the domain's DNS points here. Clear the
+      # repository variable (or set it empty) on the day it does, and the same
+      # build produces root-relative paths and writes the CNAME file.
       - name: Build
         run: node src/build.mjs
         env:
           PREVIEW: ${{ vars.PREVIEW || 'yes' }}
+          BASE_PATH: ${{ vars.BASE_PATH }}
 
       - name: Check what came out
         run: node scripts/check-output.mjs
+        env:
+          BASE_PATH: ${{ vars.BASE_PATH }}
 
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -6,6 +6,11 @@
    after the hash of its own contents — so a basket built against an old
    catalogue is refused rather than silently repriced. */
 
+/* Filled in by the build. Empty on the real domain, '/ithos-cathelier' when
+   the site is served from a GitHub project page. Every URL this file builds
+   has to carry it. */
+const BASE = '';
+
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
@@ -32,8 +37,8 @@ function paintCount() {
 let catalogueCache;
 async function catalogue() {
   if (catalogueCache) return catalogueCache;
-  const hash = (await (await fetch('/data/catalogue-current.txt')).text()).trim();
-  catalogueCache = await (await fetch(`/data/catalogue.${hash}.json`)).json();
+  const hash = (await (await fetch(`${BASE}/data/catalogue-current.txt`)).text()).trim();
+  catalogueCache = await (await fetch(`${BASE}/data/catalogue.${hash}.json`)).json();
   catalogueCache.hash = hash;
   return catalogueCache;
 }
@@ -177,7 +182,7 @@ async function basketPage() {
 
     linesBox.innerHTML = priced.map(({ line, p }, i) => `<div class="basket-line">
       <div class="frame">${p.photo
-        ? `<img src="/media/${p.photo}-200.webp" alt="" width="200" height="200" loading="lazy">` : ''}</div>
+        ? `<img src="${BASE}/media/${p.photo}-200.webp" alt="" width="200" height="200" loading="lazy">` : ''}</div>
       <div>
         <p class="basket-line__name">${p.name}</p>
         ${Object.entries(line.options || {}).length
