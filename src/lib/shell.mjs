@@ -1,5 +1,6 @@
 import { esc } from './html.mjs';
 import { icon } from './icons.mjs';
+import { occasionArt } from './occasions-art.mjs';
 
 /* ===========================================================================
    The page shell: <head>, the header, the drawer, the footer.
@@ -15,7 +16,11 @@ export const NAV = {
     ['/contact/', 'Contact'],
   ],
   cathelier: [
-    ['/cathelier/', 'Occasions', 'occasions'],
+    // "Occasions" came out of the bar at the owner's request. The ten occasion
+    // pages are not orphaned by it: the cathelier home draws all ten as
+    // badges, every occasion page links to the other nine, and the drawer
+    // carries them on a phone — eleven pages of origin, which is where they
+    // were being found anyway.
     ['/cathelier/pieces/', 'All pieces', 'pieces'],
     ['/cathelier/quote/', 'Ask for a quote'],
     ['/cathelier/about/', 'The workshop'],
@@ -49,6 +54,7 @@ export function page(o) {
   const {
     brand = 'ithos', title, description, path, body,
     site, identity, image, schema = [], counts = {}, shipping = null, shop = null, asset = {},
+    occasions = [], families = [],
     bodyClass = '', noindex = false, crumbs = null, extraHead = '', preview = false,
   } = o;
 
@@ -95,7 +101,7 @@ ${crumbs ? breadcrumbs(crumbs) : ''}
 ${body}
 </main>
 
-${drawer({ brand, identity, counts })}
+${drawer({ brand, identity, counts, occasions, families })}
 ${footer({ brand, identity })}
 
 <a class="to-top" href="#top" hidden aria-label="Back to the top of the page">${icon('arrowUp', 22)}</a>
@@ -182,7 +188,7 @@ function header({ brand, path }) {
 /* A native <dialog> opened with showModal(): focus goes in, stays in, and the
    rest of the page goes inert — three promises aria-modal makes and does not
    keep on its own. */
-function drawer({ brand, identity, counts }) {
+function drawer({ brand, identity, counts, occasions = [], families = [] }) {
   const nav = NAV[brand] ?? NAV.ithos;
   const sibling = SIBLING[brand];
   const count = (key) => (counts[key] ? `<span class="drawer__count">${counts[key]}</span>` : '');
@@ -197,9 +203,24 @@ function drawer({ brand, identity, counts }) {
     </a>
   </div>
 
-  <nav class="drawer__nav" aria-label="Main">
-    ${[...nav, ...NAV_EXTRA].map(([h, t, k]) => `<a href="${h}"><span>${esc(t)}</span>${count(k)}</a>`).join('\n    ')}
-  </nav>
+  <div class="drawer__body">
+    <nav class="drawer__nav" aria-label="Main">
+      ${brand === 'cathelier' && occasions.length ? `<details class="drawer__group">
+        <summary><span>Occasions</span><span class="drawer__count">${occasions.length}</span></summary>
+        <div class="drawer__occasions">
+          ${occasions.map((o) => `<a href="/cathelier/${esc(o.slug)}/">
+            ${occasionArt(o.slug, 22)}<span>${esc(o.name)}</span>
+          </a>`).join('\n          ')}
+        </div>
+      </details>` : ''}
+      ${brand === 'ithos' && families.length ? `<details class="drawer__group">
+        <summary><span>By family</span><span class="drawer__count">${families.length}</span></summary>
+        <div class="drawer__families">
+          ${families.map(([id, label]) => `<a href="/lamps/#${esc(id)}">${esc(label)}</a>`).join('\n          ')}
+        </div>
+      </details>` : ''}
+      ${[...nav, ...NAV_EXTRA].map(([h, t, k]) => `<a href="${h}"><span>${esc(t)}</span>${count(k)}</a>`).join('\n      ')}
+    </nav>
 
   <a class="drawer__sibling" href="${sibling.href}" data-other-brand
      aria-label="Go to ${esc(sibling.name)}, ${esc(sibling.note)}">
@@ -207,6 +228,8 @@ function drawer({ brand, identity, counts }) {
     <span class="drawer__sibling-note">${esc(sibling.note)}</span>
     <span aria-hidden="true">↗</span>
   </a>
+
+  </div>
 
   <div class="drawer__contact">
     <a href="tel:${esc(identity.phone)}">${icon('phone', 18)}<span>${esc(identity.phoneText)}</span></a>

@@ -47,16 +47,32 @@ export function card(p, { eager = false } = {}) {
         .map((v) => `<span class="swatch" title="${esc(v.name)}"></span>`).join('')}</div>`
     : '';
 
-  return `<article class="card" data-product="${esc(p.slug)}" data-family="${esc(fams)}">
+  /* The card carries EVERY photograph of the piece, not just the cover.
+   *
+   * The owner asked for two things here: the pictures bigger, and a way to see
+   * the other photographs of the same lamp without opening it — the way the
+   * shop she chose does it, where hovering cycles through them.
+   *
+   * The list goes in a data attribute rather than as hidden <img> tags: 26
+   * cards times three or four photographs would be a hundred extra requests on
+   * a catalogue page, and almost all of them never looked at. The script swaps
+   * the `src` on first hover and the browser fetches then. */
+  const others = (p.photos || []).filter((n) => n !== p.cover);
+
+  return `<article class="card" data-product="${esc(p.slug)}" data-family="${esc(fams)}"
+  data-shots="${esc([p.cover, ...others].join(','))}" data-dir="ithos/${esc(p.photoFolder)}">
   <a class="card__link" href="/lamps/${esc(p.slug)}/">
     <div class="frame card__frame">
       ${picture({
         dir: `ithos/${p.photoFolder}`, name: p.cover,
         alt: `${p.name} — a handmade wooden night light`,
-        sizes: '(min-width: 64rem) 280px, (min-width: 48rem) 30vw, 46vw',
+        sizes: '(min-width: 90rem) 340px, (min-width: 64rem) 30vw, (min-width: 48rem) 30vw, 46vw',
         loading: eager ? 'eager' : 'lazy',
         fetchpriority: eager ? 'high' : undefined,
       })}
+      ${others.length ? `<span class="card__shots" aria-hidden="true">${
+        [p.cover, ...others].map((_, n) => `<i${n === 0 ? ' class="on"' : ''}></i>`).join('')
+      }</span>` : ''}
     </div>
     ${dots}
     <h3 class="card__name">${esc(p.name)}</h3>

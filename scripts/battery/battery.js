@@ -230,6 +230,18 @@ window.__bateria = function () {
   // uma contagem mais larga), a última linha sai por baixo sem aviso — e a
   // última linha é o telefone.
   if (drawerIsShown) {
+    // A pergunta mudou de forma, e de propósito. O meio da gaveta passou a
+    // rolar, e «a soma dos filhos cabe no ecrã» passaria a ser verdade por
+    // construção — que é exactamente como a guarda anterior ficou cega.
+    //
+    // A pergunta que ainda pode ser FALSA é esta: com tudo fechado, é preciso
+    // rolar? Se for, há coisas escondidas sem que nada o diga.
+    const corpo = drawer.querySelector('.drawer__body');
+    if (corpo) {
+      const precisaDeRolar = corpo.scrollHeight > corpo.clientHeight + 1;
+      nota(!precisaDeRolar, 'com tudo fechado, a gaveta não precisa de rolar',
+        `conteúdo ${corpo.scrollHeight}px em ${corpo.clientHeight}px`);
+    }
     const contentHeight = [...drawer.children].reduce((t, e) => t + e.getBoundingClientRect().height, 0);
     nota(contentHeight <= innerHeight + 1, 'o menu de telemóvel cabe no ecrã sem rolar',
       `conteúdo ${Math.round(contentHeight)}px, ecrã ${innerHeight}px`);

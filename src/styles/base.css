@@ -142,7 +142,16 @@ p { text-wrap: pretty; }
   grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 @media (width >= 48rem) { .grid-products { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
-@media (width >= 64rem) { .grid-products { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+/* Four across only once there is room for four to be BIG.
+ *
+ * The owner asked for the products to carry more weight. On a 1280 laptop four
+ * columns gave a 273px frame; three give 390px, which is half again as much
+ * photograph for the same screen. Four returns above 90rem, where each one is
+ * still 340px — wider than the four-up ever was on a laptop.
+ *
+ * The phone is untouched: two columns, four lamps on a screen, which is the
+ * number she asked for by name. */
+@media (width >= 90rem) { .grid-products { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
 
 /* Every product frame is 1:1. This is the single most visible thing the owner
    asked for, and the reason scripts/square.py exists. */

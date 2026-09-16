@@ -199,7 +199,9 @@ function catalogueFile() {
 
 /* --- pages ---------------------------------------------------------------- */
 
-const shellArgs = { site: SITE, identity, counts, preview: PREVIEW, shipping, shop, asset: ASSET };
+const FAMILIES = [['animals', 'Animals'], ['vehicles', 'Vehicles'], ['nature', 'Nature'], ['festive', 'Festive']];
+const shellArgs = { site: SITE, identity, counts, preview: PREVIEW, shipping, shop, asset: ASSET,
+  occasions, families: FAMILIES };
 
 function buildIthos() {
   write('/', page({

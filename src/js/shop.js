@@ -103,6 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
   narrow.addEventListener('change', foldFooter);
 
   filters();
+  cardShots();
   gallery();
   productForm();
   basketPage();
@@ -391,6 +392,74 @@ function filters() {
   // Chips are measured with the fallback font until the real one arrives, and
   // the answer changes when it does.
   document.fonts?.ready.then(fold);
+}
+
+/* --- the other photographs, on the card ------------------------------------
+   Pointing at a card walks through the lamp's other photographs and gently
+   grows the picture; leaving puts the first one back. The first photograph is
+   the one that frames the piece properly — it is chosen per product in the
+   content, never taken to be photograph number one — so the card always
+   RETURNS to it rather than stopping wherever the cycle happened to be.
+
+   Only where there is a pointer to hover with. On a phone this would either
+   never fire or fire on the tap that was meant to open the lamp, so the whole
+   thing is gated on `(hover: hover) and (pointer: fine)`; the dots under the
+   frame are the only part a touch screen sees, and they say how many
+   photographs are waiting inside.
+
+   Nothing is preloaded. Twenty-six cards times four photographs is a hundred
+   requests for pictures almost nobody scrolls to; the swap happens on the
+   first hover and the browser fetches then. */
+function cardShots() {
+  if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+  const EVERY = 900;
+
+  for (const card of $$('[data-shots]')) {
+    const shots = card.dataset.shots.split(',').filter(Boolean);
+    if (shots.length < 2) continue;
+    const dir = card.dataset.dir;
+    const img = $('img', card);
+    const sources = $$('source', card);
+    const dots = $$('.card__shots i', card);
+    if (!img) continue;
+
+    let at = 0;
+    let timer = null;
+
+    const show = (n) => {
+      at = n % shots.length;
+      const name = shots[at];
+      // Both <source> sets have to move with the <img>, or the browser keeps
+      // serving the first photograph from whichever one it picked.
+      for (const s of sources) {
+        const ext = s.type === 'image/avif' ? 'avif' : 'webp';
+        s.srcset = [200, 400, 600, 1000].map((w) => `${BASE}/media/${dir}/${name}-${w}.${ext} ${w}w`).join(', ');
+      }
+      img.src = `${BASE}/media/${dir}/${name}-600.webp`;
+      dots.forEach((d, n2) => d.classList.toggle('on', n2 === at));
+    };
+
+    const start = () => {
+      if (timer) return;
+      card.dataset.showing = 'yes';
+      timer = setInterval(() => show(at + 1), EVERY);
+    };
+    const stop = () => {
+      clearInterval(timer);
+      timer = null;
+      delete card.dataset.showing;
+      show(0);
+    };
+
+    card.addEventListener('pointerenter', start);
+    card.addEventListener('pointerleave', stop);
+    // Keyboard users get the same thing, and losing focus has to stop it —
+    // otherwise a card left behind keeps swapping pictures off screen forever.
+    card.addEventListener('focusin', start);
+    card.addEventListener('focusout', (e) => { if (!card.contains(e.relatedTarget)) stop(); });
+  }
 }
 
 /* --- product gallery ------------------------------------------------------ */

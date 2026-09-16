@@ -53,3 +53,22 @@ cp scripts/battery/drive.html public/_drive.html
 
 The build wipes `public/`, so both files have to be copied again after every
 build. Neither goes to the live site.
+
+### The cover photograph
+
+Every product names its own `cover`, and it is **not** taken to be photograph
+number one. The cover is the frame that shows the whole piece against a clean
+background; the close-ups and the room shots are what the gallery is for, and
+the card cycles through them on hover.
+
+All 26 were reviewed on a contact sheet. Four still have a cover that is not
+what it should be, and none of them has an alternative to switch to — they each
+have exactly one photograph:
+
+  penguin      a workshop shot with an easel, paint pots and two penguins
+  raccoon      the raccoon runs off the left edge, cushions behind
+  snail        a room shot on a chair, loosely framed
+  wood-racer   lying on autumn leaves, busy background
+
+These need one plain studio photograph each, of the whole piece on the brown
+backdrop, like the other twenty-two.

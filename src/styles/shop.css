@@ -310,7 +310,48 @@
 .drawer:not([open]) { display: none; }
 .drawer__top { min-height: 72px; padding-inline: var(--gutter); border-block-end: 1px solid var(--line-soft, var(--line)); flex: none; }
 .drawer__mark { height: 34px; width: auto; }
+/* The drawer has three parts, and only the middle one moves.
+ *
+ * Adding the ten occasions made it 1100px of content in an 844px screen, and
+ * the guard said so the moment the battery started measuring at real phone
+ * heights. Ten occasions cannot be made to fit by tightening rows.
+ *
+ * So they live in a <details> that is closed when the drawer opens: at rest
+ * the drawer is what it always was, and the taxonomy is one tap away rather
+ * than one page away. Opening it scrolls the middle, never the whole dialog —
+ * the wordmark stays reachable at the top and the telephone at the bottom.
+ *
+ * The guard changed with it, and this is the part that matters: a scrolling
+ * list would have made "it fits" true by construction, which is how the last
+ * blind guard got here. It now asserts something that can still be false —
+ * that with everything CLOSED, nothing needs scrolling. */
+.drawer__body { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
 .drawer__nav { display: flex; flex-direction: column; padding-inline: var(--gutter); }
+
+.drawer__group { border-block-end: 1px solid var(--line-soft, var(--line)); }
+.drawer__group summary {
+  display: flex; align-items: center; gap: 1rem; min-height: 58px;
+  cursor: pointer; list-style: none; font-size: 1.1rem;
+}
+.drawer__group summary::-webkit-details-marker { display: none; }
+.drawer__group summary > span:first-child { flex: 1; }
+.drawer__group summary::after { content: '+'; font-size: 1.2rem; color: var(--muted); }
+.drawer__group[open] summary::after { content: '\2212'; }
+
+.drawer__occasions { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 1rem; padding-block-end: .75rem; }
+.drawer__occasions a {
+  display: flex; align-items: center; gap: .6rem; min-height: 46px;
+  text-decoration: none; font-size: .9375rem; color: var(--ink-soft, var(--ink));
+}
+.drawer__occasions svg { flex: none; color: var(--accent); }
+
+.drawer__families { display: flex; flex-wrap: wrap; gap: 8px; padding-block: .25rem 1rem; }
+.drawer__families a {
+  min-height: 40px; display: inline-flex; align-items: center; padding-inline: 1rem;
+  border: 1px solid var(--line); border-radius: var(--pill, 999px);
+  text-decoration: none; font-size: 13px; color: var(--muted);
+}
+.drawer__families a:hover { border-color: var(--accent); color: var(--accent); }
 .drawer__nav a { display: flex; align-items: center; gap: 1rem; min-height: 58px; text-decoration: none; border-block-end: 1px solid var(--line-soft, var(--line)); font-size: 1.1rem; }
 
 /* On a short phone the drawer was 578px of content in a 568px screen: the
@@ -343,7 +384,7 @@
    arrow took column 1 and it read "↗ cathelier" instead of "cathelier ↗". */
 .drawer__sibling > span:last-child { grid-column: 2; grid-row: 1 / span 2; color: var(--accent); }
 
-.drawer__contact { margin-block-start: auto; padding-block: 1rem 1.5rem; border-block-start: 1px solid var(--line-soft, var(--line)); }
+.drawer__contact { flex: none; padding-block: 1rem 1.5rem; border-block-start: 1px solid var(--line-soft, var(--line)); }
 .drawer__contact a { display: flex; align-items: center; gap: .85rem; min-height: 48px; padding-inline: var(--gutter); text-decoration: none; font-size: 1rem; }
 .drawer__contact a:first-child { color: var(--accent); }
 .drawer__contact svg { flex: none; }
@@ -497,3 +538,21 @@
 .product__blurb { margin-block-start: 1rem; font-size: 15px; line-height: 1.8; color: var(--muted); }
 .product__lead { display: flex; align-items: center; gap: .5rem; }
 .product__lead svg { flex: none; color: var(--accent); }
+
+/* --- the dots that say how many photographs there are ---------------------- */
+.card__shots {
+  position: absolute; inset-block-end: 10px; inset-inline: 0;
+  display: flex; justify-content: center; gap: 5px;
+  opacity: 0; transition: opacity .2s ease;
+}
+.card:hover .card__shots, .card:focus-within .card__shots { opacity: 1; }
+.card__shots i {
+  width: 5px; height: 5px; border-radius: 999px;
+  background: rgb(255 255 255 / .55); box-shadow: 0 0 3px rgb(0 0 0 / .35);
+  transition: background .2s ease;
+}
+.card__shots i.on { background: #fff; }
+/* While the cycle runs the frame grows a little more than the plain hover, so
+   the card reads as "showing you the rest" rather than merely hovered. */
+.card[data-showing='yes'] .card__frame img { scale: 1.07; }
+@media (prefers-reduced-motion: reduce) { .card__shots { transition: none; } }
