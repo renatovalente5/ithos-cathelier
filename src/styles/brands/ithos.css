@@ -99,9 +99,14 @@
 [data-brand='ithos'] .foot { background: #FCE1C5; border-block-start: 0; }
 [data-brand='ithos'] .foot__group,
 [data-brand='ithos'] .foot__end { border-color: rgb(140 66 48 / .18); }
+/* Everything that prints on the peach, in one list. The last two times a new
+   class appeared in the footer it inherited a grey chosen against white and
+   went straight to 4.06:1 — under the minimum, and invisible to anyone reading
+   the CSS rather than measuring it. */
 [data-brand='ithos'] .foot__group a,
 [data-brand='ithos'] .foot__end,
 [data-brand='ithos'] .foot__end a,
+[data-brand='ithos'] .foot__note,
 [data-brand='ithos'] .foot__cost { color: #6B4A38; }   /* 6.28:1 on the peach */
 [data-brand='ithos'] .foot__group summary { color: #3A2219; }
 [data-brand='ithos'] .foot__social a { border-color: rgb(140 66 48 / .28); color: #6B4A38; }

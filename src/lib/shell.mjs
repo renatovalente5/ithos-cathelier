@@ -37,6 +37,12 @@ const MARK = {
   cathelier: { src: '/assets/cathelier.svg', w: 117, h: 54, alt: 'cathelier' },
 };
 
+/* This line is not a footnote. Article 1 of DL 59/2021 requires it to sit WITH
+ * the number, and in a shop that is also the only place it is any use: a
+ * sentence at the bottom of a four-column footer does not tell anyone what
+ * that particular call costs. It was rendered after the whole grid, detached
+ * from the telephone it describes. It now follows the number everywhere the
+ * number appears, and nowhere else. */
 const CALL_COST = '(Call to the national mobile network)';
 
 export function page(o) {
@@ -203,8 +209,8 @@ function drawer({ brand, identity, counts }) {
 
   <div class="drawer__contact">
     <a href="tel:${esc(identity.phone)}">${icon('phone', 18)}<span>${esc(identity.phoneText)}</span></a>
-    <a href="https://wa.me/${esc(identity.whatsapp)}" rel="noopener">${icon('whatsapp', 18)}<span>WhatsApp</span></a>
     <p class="drawer__cost">${esc(CALL_COST)}</p>
+    <a href="https://wa.me/${esc(identity.whatsapp)}" rel="noopener">${icon('whatsapp', 18)}<span>WhatsApp</span></a>
   </div>
 </dialog>`;
 }
@@ -253,7 +259,7 @@ function footer({ brand, identity }) {
       ['/legal/identification/', 'Who you are buying from'],
     ]],
     ['Talk to us', [
-      [`tel:${i.phone}`, i.phoneText],
+      [`tel:${i.phone}`, i.phoneText, CALL_COST],
       [`https://wa.me/${i.whatsapp}`, 'WhatsApp'],
       [`mailto:${i.email}`, i.email],
     ]],
@@ -264,11 +270,10 @@ function footer({ brand, identity }) {
     <div class="foot__grid">
       ${groups.map(([name, links]) => `<details class="foot__group" open>
         <summary>${esc(name)}</summary>
-        <ul>${links.map(([h, t]) => `<li><a href="${esc(h)}">${esc(t)}</a></li>`).join('')}</ul>
+        <ul>${links.map(([h, t, note]) => `<li><a href="${esc(h)}">${esc(t)}</a>${
+          note ? `<span class="foot__note">${esc(note)}</span>` : ''}</li>`).join('')}</ul>
       </details>`).join('\n      ')}
     </div>
-
-    <p class="foot__cost">${esc(CALL_COST)}</p>
 
     <div class="foot__social">
       ${social.filter(([href]) => href).map(([href, label, ic]) =>

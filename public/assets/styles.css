@@ -262,9 +262,14 @@ p { text-wrap: pretty; }
 [data-brand='ithos'] .foot { background: #FCE1C5; border-block-start: 0; }
 [data-brand='ithos'] .foot__group,
 [data-brand='ithos'] .foot__end { border-color: rgb(140 66 48 / .18); }
+/* Everything that prints on the peach, in one list. The last two times a new
+   class appeared in the footer it inherited a grey chosen against white and
+   went straight to 4.06:1 — under the minimum, and invisible to anyone reading
+   the CSS rather than measuring it. */
 [data-brand='ithos'] .foot__group a,
 [data-brand='ithos'] .foot__end,
 [data-brand='ithos'] .foot__end a,
+[data-brand='ithos'] .foot__note,
 [data-brand='ithos'] .foot__cost { color: #6B4A38; }   /* 6.28:1 on the peach */
 [data-brand='ithos'] .foot__group summary { color: #3A2219; }
 [data-brand='ithos'] .foot__social a { border-color: rgb(140 66 48 / .28); color: #6B4A38; }
@@ -863,7 +868,7 @@ p { text-wrap: pretty; }
 .drawer__contact a { display: flex; align-items: center; gap: .85rem; min-height: 48px; padding-inline: var(--gutter); text-decoration: none; font-size: 1rem; }
 .drawer__contact a:first-child { color: var(--accent); }
 .drawer__contact svg { flex: none; }
-.drawer__cost { margin-block-start: .25rem; padding-inline: var(--gutter); font-size: 12px; color: var(--muted); }
+.drawer__cost { margin-block: -.35rem .35rem; padding-inline: var(--gutter); font-size: 12px; color: var(--muted); }
 
 /* --- footer ---------------------------------------------------------------- */
 .foot { margin-block-start: clamp(3rem, 8vw, 6rem); background: var(--bg-soft, var(--bg)); border-block-start: 1px solid var(--line); padding-block: clamp(2rem, 5vw, 3.5rem) 2rem; }
@@ -886,8 +891,8 @@ p { text-wrap: pretty; }
   .foot__group summary::after { display: none; }
 }
 
-.foot__cost { margin-block-start: 1.5rem; font-size: 12px; color: var(--muted); }
-.foot__social { display: flex; gap: .6rem; margin-block-start: 1.25rem; }
+.foot__note { display: block; font-size: 12px; color: var(--muted); margin-block-start: -.15rem; }
+.foot__social { display: flex; gap: .6rem; margin-block-start: 1.75rem; }
 .foot__social a { width: 44px; height: 44px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); }
 .foot__social a:hover { color: var(--accent); border-color: var(--accent); }
 .foot__end { margin-block-start: 1.75rem; padding-block-start: 1.25rem; border-block-start: 1px solid var(--line); font-size: 12px; color: var(--muted); }
@@ -919,6 +924,13 @@ p { text-wrap: pretty; }
 .page-prose p + p, .page-prose ul + p, .page-prose p + ul, .page-prose ol { margin-block-start: 1rem; }
 .page-prose ul, .page-prose ol { padding-inline-start: 1.25rem; display: grid; gap: .5rem; }
 .page-prose a { color: var(--accent); text-underline-offset: 3px; }
+/* …but not a button. `.page-prose a` outranks `.btn`, so a button inside a
+   prose page had its label repainted in the accent — on the accent. Terracotta
+   on terracotta, 1:1, a solid block where "Back to the basket" should be. It
+   is on the thank-you page and the cancelled-order page, which is to say on
+   both ends of a purchase. */
+.page-prose a.btn { color: var(--accent-ink); text-decoration: none; }
+.page-prose a.btn--ghost { color: var(--ink); }
 .page-prose hr { border: 0; border-block-start: 1px solid var(--line); margin-block: 2rem; }
 .page-prose table { width: 100%; border-collapse: collapse; font-size: 14px; }
 .page-prose th, .page-prose td { text-align: start; padding: .7rem .75rem; border-block-end: 1px solid var(--line); }
