@@ -48,7 +48,7 @@ const CALL_COST = '(Call to the national mobile network)';
 export function page(o) {
   const {
     brand = 'ithos', title, description, path, body,
-    site, identity, image, schema = [], counts = {}, shipping = null, shop = null,
+    site, identity, image, schema = [], counts = {}, shipping = null, shop = null, asset = {},
     bodyClass = '', noindex = false, crumbs = null, extraHead = '', preview = false,
   } = o;
 
@@ -80,7 +80,7 @@ ${noindex || preview ? '<meta name="robots" content="noindex, nofollow">' : ''}
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" as="font" type="font/woff2" crossorigin
       href="/assets/fonts/${brand === 'ithos' ? 'montserrat-latin' : 'kleeone-400-latin'}.woff2">
-<link rel="stylesheet" href="/assets/styles.css">
+<link rel="stylesheet" href="/assets/${asset.css || 'styles.css'}">
 ${extraHead}
 ${schema.length ? `<script type="application/ld+json">${JSON.stringify(schema.length === 1 ? schema[0] : schema)}</script>` : ''}
 </head>
@@ -111,7 +111,7 @@ ${footer({ brand, identity })}
      for by name: at 375x812 it covered the second row of lamps, so a
      first-time visitor saw two instead of the four she asked for. -->
 
-<script src="/assets/shop.js" defer></script>
+<script src="/assets/${asset.js || 'shop.js'}" defer></script>
 </body>
 </html>
 `;

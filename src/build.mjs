@@ -118,13 +118,26 @@ function write(path, html) {
    first, then each brand's world, then the shop furniture. One request, and
    the cascade order is a property of this list rather than of whatever order
    the browser happened to finish downloading in. */
+/* The stylesheet and the script carry a digest of their own contents in their
+ * filename, the same protocol the catalogue already uses.
+ *
+ * Without it, a browser that has visited once keeps the old file: the address
+ * never changes, so nothing tells it to look again. That is how a fixed
+ * stylesheet reached the CDN and the page in front of me still had the broken
+ * one. A hashed name makes a deploy impossible to miss and lets these be
+ * cached for a year instead of ten minutes. */
+const digest = (s) => createHash('sha256').update(s).digest('hex').slice(0, 10);
+const ASSET = { css: '', js: '' };
+
 function assets() {
   const css = ['styles/base.css', 'styles/brands/ithos.css', 'styles/brands/cathelier.css', 'styles/shop.css']
     .filter((f) => existsSync(join(HERE, f)))
     .map((f) => `/* ===== ${f} ===== */\n${readFileSync(join(HERE, f), 'utf8')}`)
     .join('\n\n');
   mkdirSync(join(OUT, 'assets'), { recursive: true });
-  writeFileSync(join(OUT, 'assets', 'styles.css'), prefixCss(css));
+  const cssOut = prefixCss(css);
+  ASSET.css = `styles.${digest(cssOut)}.css`;
+  writeFileSync(join(OUT, 'assets', ASSET.css), cssOut);
 
   cpSync(join(HERE, 'fonts'), join(OUT, 'assets', 'fonts'), { recursive: true });
   cpSync(join(ROOT, 'assets', 'brand'), join(OUT, 'assets'), { recursive: true });
@@ -133,10 +146,11 @@ function assets() {
     const js = readFileSync(join(HERE, 'js', 'shop.js'), 'utf8')
       .replace("const BASE = '';", `const BASE = '${BASE}';`)
       .replace("const API = '';", `const API = '${API}';`);
+    ASSET.js = `shop.${digest(js)}.js`;
     if (BASE && !js.includes(`const BASE = '${BASE}'`)) {
       throw new Error('shop.js has no BASE line to fill in — every fetch in it would miss the prefix');
     }
-    writeFileSync(join(OUT, 'assets', 'shop.js'), js);
+    writeFileSync(join(OUT, 'assets', ASSET.js), js);
   }
   // The CNAME file is what tells GitHub to serve at the custom domain. While
   // the site is on a project path it must NOT be written, or Pages redirects
@@ -185,7 +199,7 @@ function catalogueFile() {
 
 /* --- pages ---------------------------------------------------------------- */
 
-const shellArgs = { site: SITE, identity, counts, preview: PREVIEW, shipping, shop };
+const shellArgs = { site: SITE, identity, counts, preview: PREVIEW, shipping, shop, asset: ASSET };
 
 function buildIthos() {
   write('/', page({

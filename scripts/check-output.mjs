@@ -109,8 +109,11 @@ for (const file of pages) {
  * url() under a project path: every typeface 404ed on the live site and every
  * page rendered in the system fallback, while the local preview — where the
  * prefix is empty — looked perfect. */
-const cssPath = join(OUT, 'assets', 'styles.css');
-if (!existsSync(cssPath)) deaths.push('assets/styles.css is missing');
+const cssName = existsSync(join(OUT, 'assets'))
+  ? readdirSync(join(OUT, 'assets')).find((f) => /^styles\.[a-f0-9]+\.css$/.test(f))
+  : null;
+const cssPath = cssName ? join(OUT, 'assets', cssName) : '';
+if (!cssName) deaths.push('no styles.<digest>.css in assets/ — did the build write one?');
 else {
   const css = readFileSync(cssPath, 'utf8');
   const BASE_CSS = (process.env.BASE_PATH || '').replace(/\/$/, '');
