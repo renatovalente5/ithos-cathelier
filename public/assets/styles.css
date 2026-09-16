@@ -801,14 +801,26 @@ p { text-wrap: pretty; }
 .product__price { margin-block-start: .5rem; font-size: 1.35rem; font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; }
 .product__lead { margin-block-start: .5rem; font-size: 13px; color: var(--muted); }
 .product__form { margin-block-start: 1.75rem; display: grid; gap: 1.25rem; }
-.product__buy { display: flex; gap: .75rem; align-items: stretch; }
+.product__buy { display: flex; gap: .75rem; align-items: stretch; min-width: 0; }
+/* The button has to be allowed to shrink. `width: 100%` in a flex row next to
+   a fixed-width stepper resolves against the container, not the space left
+   over, and 2rem of padding each side made its minimum wider than a 320px
+   phone. */
+.product__buy .btn { flex: 1 1 auto; min-width: 0; padding-inline: 1rem; }
 .product__text { margin-block-start: 2rem; font-size: 14px; line-height: 1.85; color: var(--ink-soft, var(--ink)); }
 .product__safety { margin-block-start: 1.5rem; border-block-start: 1px solid var(--line); padding-block-start: 1rem; }
 .product__safety summary { cursor: pointer; font-size: 13px; font-weight: 600; letter-spacing: .06em; }
 .product__safety ul { margin-block-start: .75rem; padding-inline-start: 1.1rem; font-size: 13px; color: var(--muted); line-height: 1.8; }
 
 /* --- fields ---------------------------------------------------------------- */
-.field { border: 0; padding: 0; margin: 0; }
+/* `min-width: 0` on a fieldset is not cosmetic. Browsers give <fieldset> a
+   default `min-width: min-content`, which is the one element in HTML that
+   refuses to shrink below its content — so at 320px the form's rows measured
+   321 inside a 288 column and the whole page scrolled sideways. The grid
+   children need the same, because a grid item's default `min-width: auto`
+   has the same effect. */
+.field { border: 0; padding: 0; margin: 0; min-width: 0; }
+.product__form > * { min-width: 0; }
 .field legend, .field > label { font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; display: block; margin-block-end: .5rem; }
 .field__optional { font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--muted); }
 .field__help { font-size: 12px; color: var(--muted); margin-block-end: .6rem; line-height: 1.6; }
@@ -849,6 +861,22 @@ p { text-wrap: pretty; }
 .drawer__mark { height: 34px; width: auto; }
 .drawer__nav { display: flex; flex-direction: column; padding-inline: var(--gutter); }
 .drawer__nav a { display: flex; align-items: center; gap: 1rem; min-height: 58px; text-decoration: none; border-block-end: 1px solid var(--line-soft, var(--line)); font-size: 1.1rem; }
+
+/* On a short phone the drawer was 578px of content in a 568px screen: the
+   call-cost line fell off the bottom. The guard that exists to catch exactly
+   this never ran, because the battery opened every page in an iframe 900px
+   tall — `578 <= 901` is true for every phone ever made.
+   
+   The rows tighten rather than the list scrolling. A scrolling list would make
+   the guard unfalsifiable, which is how this got here. 52px is still more than
+   twice the 24px minimum. */
+@media (height < 40rem) {
+  .drawer__nav a { min-height: 52px; }
+  .drawer__sibling { min-height: 52px; padding-block: .6rem; }
+  .drawer__contact { padding-block: .5rem 1rem; }
+  .drawer__contact a { min-height: 44px; }
+  .drawer__top { min-height: 62px; }
+}
 .drawer__nav a > span:first-child { flex: 1; }
 .drawer__count { font-size: .85rem; color: var(--muted); font-variant-numeric: tabular-nums; }
 
@@ -932,6 +960,8 @@ p { text-wrap: pretty; }
 .page-prose a.btn { color: var(--accent-ink); text-decoration: none; }
 .page-prose a.btn--ghost { color: var(--ink); }
 .page-prose hr { border: 0; border-block-start: 1px solid var(--line); margin-block: 2rem; }
+.blank { display: inline-block; min-width: 6rem; max-width: 100%; flex: 1;
+  border-block-end: 1px solid var(--line); vertical-align: baseline; }
 .page-prose table { width: 100%; border-collapse: collapse; font-size: 14px; }
 .page-prose th, .page-prose td { text-align: start; padding: .7rem .75rem; border-block-end: 1px solid var(--line); }
 .page-prose th { font-weight: 600; color: var(--ink); }

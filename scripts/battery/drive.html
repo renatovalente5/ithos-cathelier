@@ -12,6 +12,21 @@ window.__resultados = {};
 const saida = document.getElementById('saida');
 const L = Number(new URLSearchParams(location.search).get('w') || 1280);
 
+/* A ALTURA importa tanto como a largura, e durante todo o projecto foi 900.
+ *
+ * A verificação «o menu de telemóvel cabe no ecrã sem rolar» compara o
+ * conteúdo da gaveta com `innerHeight` DENTRO do iframe. Com o iframe sempre
+ * a 900 px, essa comparação era `578 <= 901`: verdadeira para qualquer
+ * telemóvel que exista. A guarda não podia falhar, e por isso não falhou —
+ * enquanto a gaveta da cathelier transborda hoje, em produção, num ecrã de
+ * 568 px.
+ *
+ * Cada largura passa a trazer a altura do aparelho que ela representa. É a
+ * segunda vez neste projecto que uma guarda mede contra um número escolhido
+ * por conveniência e devolve um ✓ sobre o que nunca viu. */
+const ALTURAS = { 320: 568, 375: 667, 390: 844, 768: 1024, 1280: 800, 1440: 900 };
+const A = Number(new URLSearchParams(location.search).get('h') || ALTURAS[L] || 900);
+
 /* O carrinho é SEMEADO antes de começar.
  *
  * Com o carrinho vazio, `/carrinho/` e `/encomenda/` são duas páginas com uma
@@ -36,7 +51,7 @@ addEventListener('beforeunload', () => {
 });
 for (const pag of PAGINAS) {
   const f = document.createElement('iframe');
-  f.style.cssText = `width:${L}px;height:900px;border:0;position:absolute;left:-9999px`;
+  f.style.cssText = `width:${L}px;height:${A}px;border:0;position:absolute;left:-9999px`;
   f.src = pag;
   document.body.appendChild(f);
   await new Promise(r => { f.onload = r; setTimeout(r, 4000); });
@@ -53,5 +68,5 @@ for (const pag of PAGINAS) {
   saida.textContent = Object.keys(window.__resultados).length + '/' + PAGINAS.length;
 }
 window.__pronto = true;
-saida.textContent = 'pronto: ' + Object.keys(window.__resultados).length + ' páginas';
+saida.textContent = `pronto: ${Object.keys(window.__resultados).length} páginas a ${L}x${A}`;
 </script>

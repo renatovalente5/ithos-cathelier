@@ -56,7 +56,12 @@ export function fill(text, table) {
    rules. Anything more would be a dependency, and this has to still build in
    three years. */
 export function markdown(src) {
-  const inline = (s) => esc(s)
+  // A run of underscores is one unbreakable 47-character word, and at 320px it
+  // pushed the cancellation form sideways off the screen. A blank line to write
+  // on is a RULE, not punctuation — drawn in CSS it fits any width and reads
+  // the same to a screen reader, which would otherwise announce forty-seven
+  // underscores.
+  const inline = (s) => esc(s).replace(/_{3,}/g, '<span class="blank" aria-hidden="true"></span>')
     .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (m, t, h) => `<a href="${h}">${t}</a>`)
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
     .replace(/(^|[\s(])\*([^*]+)\*/g, '$1<em>$2</em>')
