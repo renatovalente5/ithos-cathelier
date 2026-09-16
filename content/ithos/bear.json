@@ -1,0 +1,64 @@
+{
+  "name": "Bear",
+  "price": 130,
+  "published": true,
+  "featured": false,
+  "order": 120,
+  "made": "to_order",
+  "size": {
+    "height": 40,
+    "width": 21
+  },
+  "summary": "Standing upright, with flowers painted across the chest.",
+  "text": "Standing straight, paws at its sides, a spray of flowers painted on its chest. Tall and narrow, in white, with very simple lines.\n\nThere is also a dark wood version with a pale chest — tell us which you would like.",
+  "photoFolder": "urso",
+  "photos": [
+    "01",
+    "02",
+    "03",
+    "04"
+  ],
+  "cover": "02",
+  "colours": [],
+  "options": [
+    {
+      "id": "power",
+      "name": "Power",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "help": "Batteries are not included. The mains version comes with a remote: on, off, dimmer, timer and a slow pulse.",
+      "values": [
+        {
+          "id": "batteries",
+          "name": "2 x AA batteries (3V)",
+          "extra": 0
+        },
+        {
+          "id": "mains",
+          "name": "Mains cable with remote",
+          "extra": 0
+        }
+      ]
+    },
+    {
+      "id": "engraving",
+      "name": "Laser engraving",
+      "type": "text",
+      "required": false,
+      "personalises": true,
+      "max": 22,
+      "extra": 0,
+      "help": "A name, a date or a short phrase, burned into the wood. Leave it empty if you would rather not."
+    }
+  ],
+  "gpsr": {
+    "type": "ITH-URS",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

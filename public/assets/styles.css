@@ -1,0 +1,539 @@
+/* ===== styles/base.css ===== */
+/* ===========================================================================
+   The skeleton, and nothing with a personality in it.
+   ===========================================================================
+
+   This file holds what is true of both shops: the reset, the box model, the
+   layout primitives, and the NAMES of the tokens. It sets almost no values.
+
+   The two brands are not variations of one another. ithos is built to the
+   shape of a Polish wooden-lamp shop the owner chose — white, Montserrat,
+   terracotta, a four-column grid of square frames. cathelier is built to the
+   shape of a Portuguese laser-cut shop she chose separately — cream, a brush
+   serif, round occasion badges. Someone landing on one from the other should
+   feel they changed website.
+
+   So every value lives in brands/ithos.css or brands/cathelier.css, and this
+   file only promises that the names exist. If a colour or a typeface appears
+   below, it is a bug.
+   ------------------------------------------------------------------------- */
+
+/* --- the typefaces, served from this domain ------------------------------
+   Not from fonts.gstatic.com. A font request to Google is a transfer of the
+   visitor's IP address to a third party: it has to be named in the privacy
+   policy and, on several readings, consented to. Served from here, the site
+   contacts nobody — which is why it needs no cookie banner at all. */
+
+@font-face { font-family: 'Montserrat'; font-style: normal; font-weight: 300 600;
+  font-display: swap; src: url('/assets/fonts/montserrat-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: 'Montserrat'; font-style: normal; font-weight: 300 600;
+  font-display: swap; src: url('/assets/fonts/montserrat-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+
+@font-face { font-family: 'Cormorant Garamond'; font-style: normal; font-weight: 300 500;
+  font-display: swap; src: url('/assets/fonts/cormorant-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: 'Cormorant Garamond'; font-style: normal; font-weight: 300 500;
+  font-display: swap; src: url('/assets/fonts/cormorant-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+@font-face { font-family: 'Cormorant Garamond'; font-style: italic; font-weight: 300;
+  font-display: swap; src: url('/assets/fonts/cormorant-300-italico-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+
+@font-face { font-family: 'Klee One'; font-style: normal; font-weight: 400;
+  font-display: swap; src: url('/assets/fonts/kleeone-400-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: 'Klee One'; font-style: normal; font-weight: 400;
+  font-display: swap; src: url('/assets/fonts/kleeone-400-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+@font-face { font-family: 'Klee One'; font-style: normal; font-weight: 600;
+  font-display: swap; src: url('/assets/fonts/kleeone-600-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: 'Klee One'; font-style: normal; font-weight: 600;
+  font-display: swap; src: url('/assets/fonts/kleeone-600-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+
+@font-face { font-family: 'Grandstander'; font-style: normal; font-weight: 400 700;
+  font-display: swap; src: url('/assets/fonts/grandstander-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: 'Grandstander'; font-style: normal; font-weight: 400 700;
+  font-display: swap; src: url('/assets/fonts/grandstander-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+
+/* --- reset ---------------------------------------------------------------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  overflow-x: clip;                 /* no page scrolls sideways, ever */
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  min-height: 100dvh;
+  font-family: var(--font-body);
+  font-size: var(--size-body);
+  line-height: 1.7;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img, picture, svg, video { display: block; max-width: 100%; }
+img { height: auto; }
+input, button, select, textarea { font: inherit; color: inherit; }
+button { background: none; border: 0; padding: 0; cursor: pointer; }
+a { color: inherit; }
+[hidden] { display: none !important; }
+
+h1, h2, h3, h4 { font-weight: inherit; line-height: 1.2; text-wrap: balance; }
+p { text-wrap: pretty; }
+
+/* Keyboard focus must stay visible. It is also the one ring that must never
+   read as "this item is selected" — on the first build the drawer threw focus
+   at the first menu link on open, and the owner read the ring as a selection
+   and asked why. Focus goes somewhere neutral; the ring stays. */
+:where(a, button, input, select, textarea, summary):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.skip {
+  position: fixed; inset-block-start: 0; inset-inline-start: 0; z-index: 200;
+  padding: .75rem 1.25rem; background: var(--ink); color: var(--bg);
+  transform: translateY(-120%);
+}
+.skip:focus { transform: none; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+
+/* --- layout primitives ----------------------------------------------------
+   The gutter is set once, here, and every page inherits it. A page that wants
+   to bleed to the edges pulls back with negative margin rather than removing
+   the padding, so nothing can end up flush against the glass by accident. */
+
+:root {
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+  --shell: 1222px;                  /* the model shop's content width */
+}
+
+.shell { width: 100%; max-width: var(--shell); margin-inline: auto; padding-inline: var(--gutter); }
+.shell--narrow { max-width: 46rem; }
+.bleed { margin-inline: calc(var(--gutter) * -1); }
+
+.stack > * + * { margin-block-start: var(--stack, 1rem); }
+.measure { max-width: 62ch; }
+
+/* --- the product grid -----------------------------------------------------
+   Four across on a desktop, two on a phone. The owner asked for exactly this
+   and named the number: "4 em cada total de ecrã". Three in between, because
+   four at tablet width makes a 170px frame that shows nothing. */
+.grid-products {
+  display: grid;
+  gap: var(--grid-gap, 30px);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (width >= 48rem) { .grid-products { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (width >= 64rem) { .grid-products { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+/* Every product frame is 1:1. This is the single most visible thing the owner
+   asked for, and the reason scripts/square.py exists. */
+.frame { aspect-ratio: 1; overflow: hidden; background: var(--frame-bg); }
+
+/* <picture> is a wrapper with no size of its own, and an <img> inside it sizes
+   against THAT, not against the frame. Without these two lines the square
+   frames were the photograph's natural width and the hero stopped short of the
+   right edge. */
+.frame > picture, .hero__photo > picture { display: block; width: 100%; height: 100%; }
+.frame img, .hero__photo img { width: 100%; height: 100%; object-fit: cover; }
+
+/* --- tables that refuse to shrink ---------------------------------------- */
+.table-wrap { overflow-x: auto; }
+
+
+/* ===== styles/brands/ithos.css ===== */
+/* ===========================================================================
+   ithos — built to the shape of the shop the owner chose as her model.
+   ===========================================================================
+
+   Measured from that shop rather than guessed at:
+
+     body            Montserrat 14px, #212121 on white
+     product name    Montserrat 500, 14px, #333
+     price           Montserrat 600, 14px, #A5523B
+     button          Montserrat 600, 13px, uppercase, white on #A5523B
+     grid            4 columns, 30px gap, 1:1 frames from 600px sources
+     swatches        35px boxes holding 27px images
+     content width   1222px
+
+   One substitution in the whole file. Their headline face is Canela, which is
+   licensed; Cormorant Garamond at 300 is the nearest free relative — the same
+   high contrast, the same long delicate serifs, the same air at large sizes.
+   ------------------------------------------------------------------------- */
+
+[data-brand='ithos'] {
+  --bg: #FFFFFF;
+  --bg-soft: #FAF7F4;
+  --bg-trust: #FBF6F1;
+  --ink: #212121;
+  --ink-soft: #565656;
+  --muted: #777777;
+  --line: #E8E3DD;
+  --line-soft: #F1ECE6;
+  --accent: #A5523B;          /* the terracotta on prices and buttons */
+  --accent-deep: #8C4230;
+  --accent-ink: #FFFFFF;
+  --frame-bg: #F6F1EC;
+
+  --font-body: 'Montserrat', system-ui, sans-serif;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --size-body: 14px;
+
+  --radius: 0px;              /* that shop is square-cornered throughout */
+}
+
+/* --- type ----------------------------------------------------------------- */
+
+[data-brand='ithos'] h1,
+[data-brand='ithos'] h2,
+[data-brand='ithos'] .display {
+  font-family: var(--font-display);
+  font-weight: 300;
+  letter-spacing: .01em;
+}
+[data-brand='ithos'] h1 { font-size: clamp(1.9rem, 1.2rem + 2.6vw, 3rem); }
+[data-brand='ithos'] h2 { font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.15rem); }
+[data-brand='ithos'] h3 { font-family: var(--font-body); font-weight: 500; font-size: 1rem; }
+
+[data-brand='ithos'] .eyebrow {
+  font-size: 11px; font-weight: 600; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--muted);
+}
+[data-brand='ithos'] .lede { font-size: 15px; color: var(--ink-soft); line-height: 1.8; }
+/* On a phone the catalogue's opening paragraph is the only thing standing
+   between the fold and the products. The owner asked for four lamps on a
+   screen and named the number, so it is measured, not estimated: at 375x812
+   the budget is 812 minus two card heights, and this paragraph has to live
+   inside what is left. */
+@media (width < 30rem) {
+  [data-brand='ithos'] .lede { font-size: 13.5px; line-height: 1.65; }
+  [data-brand='ithos'] h1 { font-size: 1.65rem; }
+}
+
+/* --- the trust strip above the header -------------------------------------
+   Three promises, always visible, above everything else. On a phone they turn
+   into one line that cycles, because three of them stacked is a screenful of
+   reassurance before any product. */
+.trust {
+  background: var(--bg-trust);
+  border-block-end: 1px solid var(--line-soft);
+  font-size: 11px; letter-spacing: .04em; color: var(--ink-soft);
+}
+.trust__row { display: flex; align-items: center; justify-content: center; gap: clamp(1rem, 6vw, 5rem); min-height: 40px; }
+.trust__item { display: flex; align-items: center; gap: .55em; text-align: center; }
+.trust__item svg { flex: none; color: var(--accent); }
+@media (width < 48rem) {
+  .trust__item + .trust__item { display: none; }
+  .trust__row { justify-content: center; }
+}
+
+/* --- header ---------------------------------------------------------------
+   Burger left, wordmark dead centre, cart right. The centring is absolute and
+   not a grid column: with a grid, the logo shifted left when the cart counter
+   went from one digit to two. */
+.head { position: sticky; inset-block-start: 0; z-index: 50; background: var(--bg); border-block-end: 1px solid var(--line-soft); }
+.head__row {
+  display: flex; align-items: center; gap: 1rem;
+  min-height: var(--head-h, 84px); position: relative;
+  transition: min-height .2s ease;
+}
+.head[data-shrunk='yes'] .head__row { --head-h: 62px; }
+
+.head__mark { position: absolute; inset-inline-start: 50%; translate: -50% 0; display: block; }
+/* The owner asked for this twice: the mark large, and without the
+   "handmade in Portugal" line under it. Both are honoured in the asset itself
+   — assets/brand/ithos-wordmark.svg has the strapline path removed and the
+   viewBox tightened, so nothing here has to crop it. */
+.head__mark img { height: clamp(46px, 7vw, 64px); width: auto; }
+.head[data-shrunk='yes'] .head__mark img { height: 40px; }
+
+.head__actions { margin-inline-start: auto; display: flex; align-items: center; gap: .35rem; }
+.icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; color: var(--ink);
+}
+.icon-btn:hover { color: var(--accent); }
+
+.cart-count {
+  min-width: 18px; height: 18px; padding-inline: 5px;
+  display: grid; place-items: center; margin-inline-start: -8px; margin-block-start: -14px;
+  background: var(--accent); color: var(--accent-ink);
+  border-radius: 999px; font-size: 10px; font-weight: 600; font-variant-numeric: tabular-nums;
+}
+.cart-count[data-empty='yes'] { display: none; }
+
+.nav-desktop { display: none; }
+@media (width >= 64rem) {
+  .nav-desktop { display: flex; gap: 2rem; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
+  .nav-desktop a { text-decoration: none; color: var(--ink-soft); padding-block: .5rem; }
+  .nav-desktop a:hover, .nav-desktop a[aria-current='page'] { color: var(--accent); }
+}
+
+/* --- hero -----------------------------------------------------------------
+   A photograph edge to edge with the line over it, which is what that shop
+   does and what the owner asked for after rejecting the picture-beside-text
+   version twice. The scrim is a flat layer and not a gradient: contrast has to
+   be measurable, and a gradient makes the answer depend on where you measure. */
+.hero { position: relative; isolation: isolate; }
+.hero__photo { aspect-ratio: 4 / 5; }
+@media (width >= 48rem) { .hero__photo { aspect-ratio: 16 / 7; } }
+.hero__photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; }
+.hero__body {
+  position: absolute; inset-block-end: 0; inset-inline: 0;
+  padding: clamp(1.5rem, 5vw, 4rem) var(--gutter) clamp(2rem, 6vw, 4.5rem);
+  background: linear-gradient(to top, rgb(20 16 13 / .68), rgb(20 16 13 / .48) 55%, transparent);
+  color: #fff; text-align: center;
+}
+.hero__title { font-family: var(--font-display); font-weight: 300; color: #fff;
+  font-size: clamp(1.75rem, 1rem + 3.4vw, 3.1rem); max-width: 22ch; margin-inline: auto; }
+.hero__cta {
+  display: inline-block; margin-block-start: 1.5rem;
+  font-size: 12px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase;
+  color: #fff; text-decoration: none; padding-block-end: 4px; border-block-end: 1px solid rgb(255 255 255 / .6);
+}
+.hero__cta:hover { border-color: #fff; }
+
+/* --- product card ---------------------------------------------------------
+   Frame, swatches, name, price — in that order, which is the order that shop
+   uses and the order the owner pointed at. The swatches are the "bolinhas" she
+   asked for: little squares of the actual finish, so nobody has to read the
+   words "itho rato" to know what they are choosing. */
+.card { display: flex; flex-direction: column; }
+.card__link { text-decoration: none; display: block; }
+.card__frame { position: relative; }
+.card__frame img { transition: scale .5s cubic-bezier(.22,.61,.36,1); }
+.card:hover .card__frame img { scale: 1.04; }
+@media (prefers-reduced-motion: reduce) { .card__frame img { transition: none; } .card:hover .card__frame img { scale: 1; } }
+
+.card__swatches { display: flex; flex-wrap: wrap; gap: 6px; margin-block-start: 12px; min-height: 0; }
+.swatch {
+  width: 27px; height: 27px; border: 1px solid var(--line);
+  background-size: cover; background-position: center;
+}
+.swatch[aria-pressed='true'] { outline: 1px solid var(--accent); outline-offset: 2px; }
+
+.card__name { margin-block-start: 10px; font-size: 14px; font-weight: 500; color: #333; line-height: 1.5; }
+.card__price { margin-block-start: 4px; font-size: 14px; font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; }
+.card__from { font-weight: 400; color: var(--muted); font-size: 12px; }
+
+/* --- buttons -------------------------------------------------------------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .6em;
+  min-height: 48px; padding-inline: 2rem;
+  font-size: 13px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+  background: var(--accent); color: var(--accent-ink);
+  border: 1px solid var(--accent); border-radius: var(--radius);
+  text-decoration: none; transition: background .18s ease, border-color .18s ease;
+}
+.btn:hover { background: var(--accent-deep); border-color: var(--accent-deep); }
+.btn--ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn--ghost:hover { background: transparent; border-color: var(--ink); color: var(--ink); }
+.btn--wide { width: 100%; }
+.btn[aria-disabled='true'] { opacity: .45; cursor: not-allowed; }
+
+/* --- section headings ----------------------------------------------------- */
+.section { padding-block: clamp(2.5rem, 6vw, 5rem); }
+.section--soft { background: var(--bg-soft); }
+.section__head { text-align: center; margin-block-end: clamp(1.5rem, 4vw, 2.75rem); }
+
+
+/* ===== styles/shop.css ===== */
+/* ===========================================================================
+   The furniture: the parts that behave the same in both shops.
+   ===========================================================================
+   Everything here reads its colours and typefaces from the brand tokens, so a
+   drawer on the ithos side and a drawer on the cathelier side share a skeleton
+   and share no appearance. */
+
+/* --- breadcrumbs ---------------------------------------------------------- */
+.crumbs { padding-block: .625rem .25rem; font-size: 12px; color: var(--muted); }
+.crumbs ol { display: flex; flex-wrap: wrap; gap: .4rem; list-style: none; padding: 0; margin: 0; }
+.crumbs li + li::before { content: '/'; margin-inline-end: .4rem; color: var(--line); }
+.crumbs a { text-decoration: none; }
+.crumbs a:hover { color: var(--accent); }
+
+/* --- the other brand, in the header --------------------------------------
+   It carries its own name and an arrow that points out. A label does not point
+   out of the page; a door does. */
+.head__sibling {
+  display: none; align-items: center; gap: .35em;
+  font-size: 11px; letter-spacing: .14em; text-transform: uppercase;
+  text-decoration: none; color: var(--muted); padding: .5rem .75rem;
+}
+.head__sibling:hover { color: var(--accent); }
+@media (width >= 48rem) { .head__sibling { display: inline-flex; } }
+
+/* --- filters --------------------------------------------------------------
+   They WRAP. A row that scrolls sideways on a phone hides what is in it: the
+   first build hid 154px of chips on one page and 927px on another, and the
+   owner photographed the cut-off one and asked why. Two rows, then a "+N" that
+   opens the rest, so nothing is ever off the screen without a way to know. */
+.filters { display: flex; flex-wrap: wrap; gap: 8px; }
+.filter {
+  flex: none; min-height: 40px; padding: .45em .85em;
+  border: 1px solid var(--line); background: transparent; color: var(--muted);
+  border-radius: var(--pill, 999px); font-size: 11.5px; letter-spacing: .03em;
+  transition: color .18s, border-color .18s, background .18s;
+}
+.filter:hover { border-color: var(--accent); color: var(--accent); }
+.filter[aria-pressed='true'] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.filter--more { color: var(--accent); border-style: dashed; }
+
+/* --- product page ---------------------------------------------------------- */
+.product { display: grid; gap: clamp(1.5rem, 4vw, 3.5rem); padding-block: clamp(1rem, 3vw, 2rem) clamp(2.5rem, 6vw, 4.5rem); }
+@media (width >= 64rem) { .product { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; } }
+
+.gallery { position: relative; overflow: hidden; }
+.gallery__track { display: flex; transition: translate .4s cubic-bezier(.22,.61,.36,1); }
+@media (prefers-reduced-motion: reduce) { .gallery__track { transition: none; } }
+.gallery__slide { flex: 0 0 100%; }
+.gallery__arrow {
+  position: absolute; inset-block-start: 50%; translate: 0 -50%;
+  width: 40px; height: 40px; display: grid; place-items: center;
+  background: rgb(255 255 255 / .85); color: var(--ink); border-radius: 999px;
+}
+.gallery__arrow--prev { inset-inline-start: 10px; }
+.gallery__arrow--next { inset-inline-end: 10px; }
+.gallery__arrow:hover { background: #fff; }
+
+.gallery__thumbs { display: flex; gap: 8px; margin-block-start: 8px; overflow-x: auto; scrollbar-width: none; }
+.gallery__thumbs::-webkit-scrollbar { display: none; }
+.gallery__thumb { flex: 0 0 84px; border: 1px solid transparent; padding: 0; }
+.gallery__thumb[aria-selected='true'] { border-color: var(--accent); }
+
+.product__price { margin-block-start: .5rem; font-size: 1.35rem; font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; }
+.product__lead { margin-block-start: .5rem; font-size: 13px; color: var(--muted); }
+.product__form { margin-block-start: 1.75rem; display: grid; gap: 1.25rem; }
+.product__buy { display: flex; gap: .75rem; align-items: stretch; }
+.product__text { margin-block-start: 2rem; font-size: 14px; line-height: 1.85; color: var(--ink-soft, var(--ink)); }
+.product__safety { margin-block-start: 1.5rem; border-block-start: 1px solid var(--line); padding-block-start: 1rem; }
+.product__safety summary { cursor: pointer; font-size: 13px; font-weight: 600; letter-spacing: .06em; }
+.product__safety ul { margin-block-start: .75rem; padding-inline-start: 1.1rem; font-size: 13px; color: var(--muted); line-height: 1.8; }
+
+/* --- fields ---------------------------------------------------------------- */
+.field { border: 0; padding: 0; margin: 0; }
+.field legend, .field > label { font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; display: block; margin-block-end: .5rem; }
+.field__optional { font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--muted); }
+.field__help { font-size: 12px; color: var(--muted); margin-block-end: .6rem; line-height: 1.6; }
+.field input[type='text'], .field input[type='email'], .field select, .field textarea {
+  width: 100%; min-height: 48px; padding: .6rem .85rem;
+  border: 1px solid var(--line); background: var(--bg); border-radius: var(--radius, 0);
+}
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--accent); outline: none; }
+
+.choices { display: grid; gap: .5rem; }
+.choice { display: flex; align-items: flex-start; gap: .65rem; padding: .7rem .85rem; border: 1px solid var(--line); cursor: pointer; font-size: 13px; }
+.choice:has(input:checked) { border-color: var(--accent); }
+.choice:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
+.choice input { margin-block-start: .25rem; accent-color: var(--accent); }
+.choice em { font-style: normal; color: var(--accent); }
+
+.qty { display: flex; align-items: center; border: 1px solid var(--line); flex: none; }
+.qty__btn { width: 44px; height: 48px; display: grid; place-items: center; color: var(--muted); }
+.qty__btn:hover { color: var(--accent); }
+.qty__input { width: 48px; height: 48px; text-align: center; border: 0; background: none; font-variant-numeric: tabular-nums; -moz-appearance: textfield; }
+.qty__input::-webkit-outer-spin-button, .qty__input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+/* --- the reassurance box -------------------------------------------------- */
+.reassure { margin-block-start: 1.75rem; padding: 1.25rem; background: var(--bg-soft, var(--bg)); display: grid; gap: .8rem; }
+.reassure p { display: flex; align-items: center; gap: .75rem; font-size: 13px; color: var(--ink-soft, var(--ink)); margin: 0; }
+.reassure svg { flex: none; color: var(--accent); }
+
+/* --- drawer ---------------------------------------------------------------- */
+.drawer {
+  width: 100%; max-width: none; height: 100dvh; max-height: 100dvh;
+  margin: 0; border: 0; padding: 0;
+  background: var(--bg); color: var(--ink);
+  overscroll-behavior: contain; display: flex; flex-direction: column;
+}
+.drawer::backdrop { background: var(--bg); }
+.drawer:not([open]) { display: none; }
+.drawer__top { display: flex; align-items: center; gap: 1rem; min-height: 72px; padding-inline: var(--gutter); border-block-end: 1px solid var(--line-soft, var(--line)); flex: none; position: relative; }
+.drawer__mark { height: 34px; width: auto; position: absolute; inset-inline-start: 50%; translate: -50% 0; }
+.drawer__top .icon-btn:last-of-type, .drawer__top a.icon-btn { margin-inline-start: auto; }
+.drawer__nav { display: flex; flex-direction: column; padding-inline: var(--gutter); }
+.drawer__nav a { display: flex; align-items: center; gap: 1rem; min-height: 58px; text-decoration: none; border-block-end: 1px solid var(--line-soft, var(--line)); font-size: 1.1rem; }
+.drawer__nav a > span:first-child { flex: 1; }
+.drawer__count { font-size: .85rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+.drawer__sibling {
+  display: grid; grid-template-columns: 1fr auto; align-items: center;
+  gap: 0 1rem; padding: .85rem var(--gutter); min-height: 58px; text-decoration: none;
+  background: var(--sibling-bg, var(--bg-soft));
+}
+.drawer__sibling-name { font-size: 1.05rem; }
+.drawer__sibling-note { grid-column: 1; font-size: .8125rem; color: var(--muted); }
+/* The column must be named. A grid item with a definite row and an automatic
+   column is placed BEFORE the fully automatic ones (Grid 8.5 step 3), so the
+   arrow took column 1 and it read "↗ cathelier" instead of "cathelier ↗". */
+.drawer__sibling > span:last-child { grid-column: 2; grid-row: 1 / span 2; color: var(--accent); }
+
+.drawer__contact { margin-block-start: auto; padding-block: 1rem 1.5rem; border-block-start: 1px solid var(--line-soft, var(--line)); }
+.drawer__contact a { display: flex; align-items: center; gap: .85rem; min-height: 48px; padding-inline: var(--gutter); text-decoration: none; font-size: 1rem; }
+.drawer__contact a:first-child { color: var(--accent); }
+.drawer__contact svg { flex: none; }
+.drawer__cost { margin-block-start: .25rem; padding-inline: var(--gutter); font-size: 12px; color: var(--muted); }
+
+/* --- footer ---------------------------------------------------------------- */
+.foot { margin-block-start: clamp(3rem, 8vw, 6rem); background: var(--bg-soft, var(--bg)); border-block-start: 1px solid var(--line); padding-block: clamp(2rem, 5vw, 3.5rem) 2rem; }
+.foot__grid { display: grid; gap: 0; }
+@media (width >= 60rem) { .foot__grid { grid-template-columns: repeat(4, 1fr); gap: 2rem; } }
+
+.foot__group { border-block-end: 1px solid var(--line); }
+.foot__group summary { display: flex; align-items: center; justify-content: space-between; min-height: 52px; cursor: pointer; font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; list-style: none; }
+.foot__group summary::-webkit-details-marker { display: none; }
+.foot__group summary::after { content: '+'; font-size: 1.1rem; color: var(--muted); }
+.foot__group[open] summary::after { content: '\2212'; }
+.foot__group ul { list-style: none; padding: 0 0 1rem; margin: 0; display: grid; gap: .6rem; font-size: 13px; }
+.foot__group a { text-decoration: none; color: var(--muted); }
+.foot__group a:hover { color: var(--accent); }
+@media (width >= 60rem) {
+  .foot__group { border: 0; }
+  .foot__group summary { pointer-events: none; min-height: auto; margin-block-end: 1rem; }
+  .foot__group summary::after { display: none; }
+}
+
+.foot__cost { margin-block-start: 1.5rem; font-size: 11px; color: var(--muted); }
+.foot__social { display: flex; gap: .6rem; margin-block-start: 1.25rem; }
+.foot__social a { width: 44px; height: 44px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); }
+.foot__social a:hover { color: var(--accent); border-color: var(--accent); }
+.foot__end { margin-block-start: 1.75rem; padding-block-start: 1.25rem; border-block-start: 1px solid var(--line); font-size: 11px; color: var(--muted); display: grid; gap: .4rem; line-height: 1.7; }
+.foot__end a { color: var(--muted); }
+
+/* --- back to top ----------------------------------------------------------- */
+.to-top {
+  position: fixed; inset-block-end: 1.25rem; inset-inline-end: 1.25rem; z-index: 40;
+  width: 46px; height: 46px; display: grid; place-items: center;
+  background: var(--accent); color: var(--accent-ink); border-radius: 999px;
+  box-shadow: 0 6px 20px rgb(0 0 0 / .18);
+}
+.to-top[hidden] { display: none; }
+
+/* --- cookies --------------------------------------------------------------- */
+.cookies { position: fixed; inset-block-end: 0; inset-inline: 0; z-index: 60; padding: 1.25rem var(--gutter); background: var(--bg); border-block-start: 1px solid var(--line); font-size: 13px; display: grid; gap: .85rem; }
+@media (width >= 48rem) { .cookies { inset-inline-start: auto; max-width: 30rem; margin: 1.25rem; border: 1px solid var(--line); } }
+.cookies__buttons { display: flex; gap: .6rem; flex-wrap: wrap; }
+.cookies .btn { min-height: 42px; padding-inline: 1.25rem; }
+
+/* --- odds and ends --------------------------------------------------------- */
+.small { font-size: 12px; }
+.muted { color: var(--muted); }

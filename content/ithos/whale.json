@@ -1,0 +1,64 @@
+{
+  "name": "Whale",
+  "price": 130,
+  "published": true,
+  "featured": true,
+  "order": 160,
+  "made": "to_order",
+  "size": {
+    "height": 29,
+    "length": 50
+  },
+  "summary": "Lying long and low, with flowers across its back.",
+  "text": "Long and low — 50 cm end to end — lying flat on the shelf. The back is white with hand-painted flowers, the belly is bare wood.\n\nThe tail lifts at the end, and the light comes out through the middle of the body. One of the most serene pieces in the range.",
+  "photoFolder": "baleia",
+  "photos": [
+    "01",
+    "02",
+    "03",
+    "04"
+  ],
+  "cover": "01",
+  "colours": [],
+  "options": [
+    {
+      "id": "power",
+      "name": "Power",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "help": "Batteries are not included. The mains version comes with a remote: on, off, dimmer, timer and a slow pulse.",
+      "values": [
+        {
+          "id": "batteries",
+          "name": "2 x AA batteries (3V)",
+          "extra": 0
+        },
+        {
+          "id": "mains",
+          "name": "Mains cable with remote",
+          "extra": 0
+        }
+      ]
+    },
+    {
+      "id": "engraving",
+      "name": "Laser engraving",
+      "type": "text",
+      "required": false,
+      "personalises": true,
+      "max": 22,
+      "extra": 0,
+      "help": "A name, a date or a short phrase, burned into the wood. Leave it empty if you would rather not."
+    }
+  ],
+  "gpsr": {
+    "type": "ITH-BAL",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

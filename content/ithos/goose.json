@@ -1,0 +1,62 @@
+{
+  "name": "Goose",
+  "price": 120,
+  "published": true,
+  "featured": false,
+  "order": 200,
+  "made": "to_order",
+  "size": {
+    "height": 44,
+    "width": 23
+  },
+  "summary": "A long neck, very straight, very white.",
+  "text": "Tall and white, with a long neck and an orange beak. The legs are fine wood and the light comes through the body.\n\nVery simple lines — right for a room that does not want much colour in it.",
+  "photoFolder": "ganso",
+  "photos": [
+    "01",
+    "02"
+  ],
+  "cover": "01",
+  "colours": [],
+  "options": [
+    {
+      "id": "power",
+      "name": "Power",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "help": "Batteries are not included. The mains version comes with a remote: on, off, dimmer, timer and a slow pulse.",
+      "values": [
+        {
+          "id": "batteries",
+          "name": "2 x AA batteries (3V)",
+          "extra": 0
+        },
+        {
+          "id": "mains",
+          "name": "Mains cable with remote",
+          "extra": 0
+        }
+      ]
+    },
+    {
+      "id": "engraving",
+      "name": "Laser engraving",
+      "type": "text",
+      "required": false,
+      "personalises": true,
+      "max": 22,
+      "extra": 0,
+      "help": "A name, a date or a short phrase, burned into the wood. Leave it empty if you would rather not."
+    }
+  ],
+  "gpsr": {
+    "type": "ITH-GAN",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

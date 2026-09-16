@@ -1,0 +1,80 @@
+{
+  "name": "Dinosaur",
+  "price": 135,
+  "published": true,
+  "featured": false,
+  "order": 240,
+  "made": "to_order",
+  "size": {},
+  "summary": "Big, long, and covered in stars.",
+  "text": "The largest pieces in the range — up to 71 cm long. There is the long-necked one in deep blue, speckled with light, and the plated one in green.\n\nThey are big on purpose: they live on the floor against a wall and light a whole room.",
+  "photoFolder": "dinossauro",
+  "photos": [
+    "01",
+    "02",
+    "03"
+  ],
+  "cover": "01",
+  "colours": [],
+  "options": [
+    {
+      "id": "variant",
+      "name": "Modelo",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "help": "",
+      "values": [
+        {
+          "id": "1",
+          "name": "30×65 cm",
+          "extra": 0
+        },
+        {
+          "id": "2",
+          "name": "41×71 cm",
+          "extra": 0
+        }
+      ]
+    },
+    {
+      "id": "power",
+      "name": "Power",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "help": "Batteries are not included. The mains version comes with a remote: on, off, dimmer, timer and a slow pulse.",
+      "values": [
+        {
+          "id": "batteries",
+          "name": "2 x AA batteries (3V)",
+          "extra": 0
+        },
+        {
+          "id": "mains",
+          "name": "Mains cable with remote",
+          "extra": 0
+        }
+      ]
+    },
+    {
+      "id": "engraving",
+      "name": "Laser engraving",
+      "type": "text",
+      "required": false,
+      "personalises": true,
+      "max": 22,
+      "extra": 0,
+      "help": "A name, a date or a short phrase, burned into the wood. Leave it empty if you would rather not."
+    }
+  ],
+  "gpsr": {
+    "type": "ITH-DIN",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

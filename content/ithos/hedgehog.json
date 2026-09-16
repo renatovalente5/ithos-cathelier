@@ -1,0 +1,64 @@
+{
+  "name": "Hedgehog",
+  "price": 130,
+  "published": true,
+  "featured": true,
+  "order": 30,
+  "made": "to_order",
+  "size": {
+    "height": 28,
+    "width": 36
+  },
+  "summary": "Dark spines, a pale belly, and a sleeping smile.",
+  "text": "Spines painted deep brown and speckled with light, over a body of pale wood. It is low and wide, so it sits happily on a broad shelf or on the floor beside a bed.\n\nOne of the most requested pieces for a baby's room: the shape is round, there is nothing sharp on it, and the light falls low.",
+  "photoFolder": "ourico",
+  "photos": [
+    "01",
+    "02",
+    "03",
+    "04"
+  ],
+  "cover": "02",
+  "colours": [],
+  "options": [
+    {
+      "id": "power",
+      "name": "Power",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "help": "Batteries are not included. The mains version comes with a remote: on, off, dimmer, timer and a slow pulse.",
+      "values": [
+        {
+          "id": "batteries",
+          "name": "2 x AA batteries (3V)",
+          "extra": 0
+        },
+        {
+          "id": "mains",
+          "name": "Mains cable with remote",
+          "extra": 0
+        }
+      ]
+    },
+    {
+      "id": "engraving",
+      "name": "Laser engraving",
+      "type": "text",
+      "required": false,
+      "personalises": true,
+      "max": 22,
+      "extra": 0,
+      "help": "A name, a date or a short phrase, burned into the wood. Leave it empty if you would rather not."
+    }
+  ],
+  "gpsr": {
+    "type": "ITH-OUR",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

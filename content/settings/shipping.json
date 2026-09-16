@@ -1,0 +1,94 @@
+{
+  "_note": "Only countries in `active` appear at checkout. Selling outside the EU loses the art. 53 CIVA exemption on the first sale, which is why the UK and Switzerland start switched off.",
+  "carrier": "MRW",
+  "active": [
+    "PT"
+  ],
+  "zones": [
+    {
+      "id": "pt",
+      "name": "Mainland Portugal",
+      "price": 5,
+      "daysMin": 1,
+      "daysMax": 5,
+      "countries": [
+        "PT"
+      ]
+    },
+    {
+      "id": "ilhas",
+      "name": "Azores and Madeira",
+      "price": 5,
+      "daysMin": 3,
+      "daysMax": 7,
+      "countries": [
+        "PT-20",
+        "PT-30"
+      ]
+    },
+    {
+      "id": "es",
+      "name": "Spain",
+      "price": 10,
+      "daysMin": 2,
+      "daysMax": 7,
+      "countries": [
+        "ES"
+      ]
+    },
+    {
+      "id": "fr-uk",
+      "name": "France and the United Kingdom",
+      "price": 15,
+      "daysMin": 2,
+      "daysMax": 7,
+      "countries": [
+        "FR",
+        "GB"
+      ]
+    },
+    {
+      "id": "europa",
+      "name": "Rest of Europe",
+      "price": 20,
+      "daysMin": 3,
+      "daysMax": 10,
+      "countries": [
+        "DE",
+        "CH",
+        "AT",
+        "BE",
+        "NL",
+        "LU",
+        "IT",
+        "IE",
+        "DK",
+        "SE",
+        "FI",
+        "PL",
+        "CZ",
+        "SK",
+        "HU",
+        "SI",
+        "HR",
+        "RO",
+        "BG",
+        "GR",
+        "EE",
+        "LV",
+        "LT",
+        "MT",
+        "CY",
+        "NO"
+      ]
+    }
+  ],
+  "campaign": {
+    "active": false,
+    "title": "",
+    "freeOver": 0,
+    "countries": [],
+    "from": "",
+    "to": ""
+  }
+}

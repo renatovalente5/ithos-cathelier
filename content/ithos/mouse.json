@@ -1,0 +1,64 @@
+{
+  "name": "Mouse",
+  "price": 130,
+  "published": true,
+  "featured": false,
+  "order": 20,
+  "made": "to_order",
+  "size": {
+    "height": 35,
+    "width": 28,
+    "depth": 7
+  },
+  "summary": "Big round ears, a long tail, and a belly full of light.",
+  "text": "Round ears full of light and a tail that leaves the body in a long curve. It sits well on a shelf or a bedside table, and the tail gives it the look of something passing through.\n\nThe wood is left bare on the body — hand-sanded pine, with no paint over it.",
+  "photoFolder": "rato",
+  "photos": [
+    "01",
+    "02",
+    "03"
+  ],
+  "cover": "01",
+  "colours": [],
+  "options": [
+    {
+      "id": "power",
+      "name": "Power",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "help": "Batteries are not included. The mains version comes with a remote: on, off, dimmer, timer and a slow pulse.",
+      "values": [
+        {
+          "id": "batteries",
+          "name": "2 x AA batteries (3V)",
+          "extra": 0
+        },
+        {
+          "id": "mains",
+          "name": "Mains cable with remote",
+          "extra": 0
+        }
+      ]
+    },
+    {
+      "id": "engraving",
+      "name": "Laser engraving",
+      "type": "text",
+      "required": false,
+      "personalises": true,
+      "max": 22,
+      "extra": 0,
+      "help": "A name, a date or a short phrase, burned into the wood. Leave it empty if you would rather not."
+    }
+  ],
+  "gpsr": {
+    "type": "ITH-RAT",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

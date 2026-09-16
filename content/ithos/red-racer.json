@@ -1,0 +1,64 @@
+{
+  "name": "Red Racer",
+  "price": 130,
+  "published": true,
+  "featured": false,
+  "order": 180,
+  "made": "to_order",
+  "size": {
+    "height": 23,
+    "length": 43
+  },
+  "summary": "A red racing car, with headlamps that come on.",
+  "text": "A classic racing car, painted red, with the number 2 on the side and wheels in wood. The headlamps and the wheels light up — that is where the glow comes from.\n\nLong and low, it sits well on a shelf or a windowsill.",
+  "photoFolder": "carro-2",
+  "photos": [
+    "01",
+    "02",
+    "03",
+    "04"
+  ],
+  "cover": "01",
+  "colours": [],
+  "options": [
+    {
+      "id": "power",
+      "name": "Power",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "help": "Batteries are not included. The mains version comes with a remote: on, off, dimmer, timer and a slow pulse.",
+      "values": [
+        {
+          "id": "batteries",
+          "name": "2 x AA batteries (3V)",
+          "extra": 0
+        },
+        {
+          "id": "mains",
+          "name": "Mains cable with remote",
+          "extra": 0
+        }
+      ]
+    },
+    {
+      "id": "engraving",
+      "name": "Laser engraving",
+      "type": "text",
+      "required": false,
+      "personalises": true,
+      "max": 22,
+      "extra": 0,
+      "help": "A name, a date or a short phrase, burned into the wood. Leave it empty if you would rather not."
+    }
+  ],
+  "gpsr": {
+    "type": "ITH-CAR",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

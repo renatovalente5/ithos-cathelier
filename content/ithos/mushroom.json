@@ -1,0 +1,88 @@
+{
+  "name": "Mushroom",
+  "price": 98,
+  "published": true,
+  "featured": false,
+  "order": 220,
+  "made": "to_order",
+  "size": {},
+  "summary": "A spotted cap on a wooden stem. Three colours.",
+  "text": "A pale wooden stem under a painted cap — red with white spots, soft beige, or deep brown. The light comes out through the spots.\n\nOne of the smallest pieces, and the best of them in a group: three mushrooms together on a shelf make a small wood.",
+  "photoFolder": "cogumelo",
+  "photos": [
+    "01",
+    "02",
+    "03",
+    "04",
+    "05",
+    "06"
+  ],
+  "cover": "01",
+  "colours": [],
+  "options": [
+    {
+      "id": "variant",
+      "name": "Modelo",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "help": "",
+      "values": [
+        {
+          "id": "1",
+          "name": "Castanho (25×20 cm)",
+          "extra": 0
+        },
+        {
+          "id": "2",
+          "name": "Bege (25×24 cm)",
+          "extra": 0
+        },
+        {
+          "id": "3",
+          "name": "Vermelho (25×22 cm)",
+          "extra": 0
+        }
+      ]
+    },
+    {
+      "id": "power",
+      "name": "Power",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "help": "Batteries are not included. The mains version comes with a remote: on, off, dimmer, timer and a slow pulse.",
+      "values": [
+        {
+          "id": "batteries",
+          "name": "2 x AA batteries (3V)",
+          "extra": 0
+        },
+        {
+          "id": "mains",
+          "name": "Mains cable with remote",
+          "extra": 0
+        }
+      ]
+    },
+    {
+      "id": "engraving",
+      "name": "Laser engraving",
+      "type": "text",
+      "required": false,
+      "personalises": true,
+      "max": 22,
+      "extra": 0,
+      "help": "A name, a date or a short phrase, burned into the wood. Leave it empty if you would rather not."
+    }
+  ],
+  "gpsr": {
+    "type": "ITH-COG",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

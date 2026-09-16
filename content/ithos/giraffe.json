@@ -1,0 +1,62 @@
+{
+  "name": "Giraffe",
+  "price": 130,
+  "published": true,
+  "featured": false,
+  "order": 170,
+  "made": "to_order",
+  "size": {
+    "height": 40,
+    "width": 19
+  },
+  "summary": "Tall and dappled, neck straight up.",
+  "text": "Tall and narrow, each patch painted one at a time, the neck rising straight. It stands on a dark wooden base.\n\nA piece that grows with the child — it works as a room ornament even when it is off.",
+  "photoFolder": "girafa",
+  "photos": [
+    "01",
+    "02"
+  ],
+  "cover": "01",
+  "colours": [],
+  "options": [
+    {
+      "id": "power",
+      "name": "Power",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "help": "Batteries are not included. The mains version comes with a remote: on, off, dimmer, timer and a slow pulse.",
+      "values": [
+        {
+          "id": "batteries",
+          "name": "2 x AA batteries (3V)",
+          "extra": 0
+        },
+        {
+          "id": "mains",
+          "name": "Mains cable with remote",
+          "extra": 0
+        }
+      ]
+    },
+    {
+      "id": "engraving",
+      "name": "Laser engraving",
+      "type": "text",
+      "required": false,
+      "personalises": true,
+      "max": 22,
+      "extra": 0,
+      "help": "A name, a date or a short phrase, burned into the wood. Leave it empty if you would rather not."
+    }
+  ],
+  "gpsr": {
+    "type": "ITH-GIR",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

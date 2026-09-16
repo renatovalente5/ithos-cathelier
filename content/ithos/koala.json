@@ -1,0 +1,64 @@
+{
+  "name": "Koala",
+  "price": 130,
+  "published": true,
+  "featured": true,
+  "order": 100,
+  "made": "to_order",
+  "size": {
+    "height": 40,
+    "width": 36
+  },
+  "summary": "Enormous ears and a round black nose.",
+  "text": "Big furry ears, cut in layers of wood, and a round black nose. It sits with its arms resting and its belly full of light.\n\nAlmost all of the wood is left showing — this is the piece where the pine is most itself.",
+  "photoFolder": "coala",
+  "photos": [
+    "01",
+    "02",
+    "03",
+    "04"
+  ],
+  "cover": "01",
+  "colours": [],
+  "options": [
+    {
+      "id": "power",
+      "name": "Power",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "help": "Batteries are not included. The mains version comes with a remote: on, off, dimmer, timer and a slow pulse.",
+      "values": [
+        {
+          "id": "batteries",
+          "name": "2 x AA batteries (3V)",
+          "extra": 0
+        },
+        {
+          "id": "mains",
+          "name": "Mains cable with remote",
+          "extra": 0
+        }
+      ]
+    },
+    {
+      "id": "engraving",
+      "name": "Laser engraving",
+      "type": "text",
+      "required": false,
+      "personalises": true,
+      "max": 22,
+      "extra": 0,
+      "help": "A name, a date or a short phrase, burned into the wood. Leave it empty if you would rather not."
+    }
+  ],
+  "gpsr": {
+    "type": "ITH-COA",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

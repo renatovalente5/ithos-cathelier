@@ -1,0 +1,61 @@
+{
+  "name": "Snail",
+  "price": 120,
+  "published": true,
+  "featured": false,
+  "order": 40,
+  "made": "to_order",
+  "size": {
+    "height": 25,
+    "width": 35
+  },
+  "summary": "A spiral shell, drawn entirely in points of light.",
+  "text": "The snail is almost all shell — one large spiral filled with points of light that trace the curve. The antennae come out in thin wood, and the body rests on the floor.\n\nA calm piece, for anyone who wants light without a face looking back.",
+  "photoFolder": "caracol",
+  "photos": [
+    "01"
+  ],
+  "cover": "01",
+  "colours": [],
+  "options": [
+    {
+      "id": "power",
+      "name": "Power",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "help": "Batteries are not included. The mains version comes with a remote: on, off, dimmer, timer and a slow pulse.",
+      "values": [
+        {
+          "id": "batteries",
+          "name": "2 x AA batteries (3V)",
+          "extra": 0
+        },
+        {
+          "id": "mains",
+          "name": "Mains cable with remote",
+          "extra": 0
+        }
+      ]
+    },
+    {
+      "id": "engraving",
+      "name": "Laser engraving",
+      "type": "text",
+      "required": false,
+      "personalises": true,
+      "max": 22,
+      "extra": 0,
+      "help": "A name, a date or a short phrase, burned into the wood. Leave it empty if you would rather not."
+    }
+  ],
+  "gpsr": {
+    "type": "ITH-CAR",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

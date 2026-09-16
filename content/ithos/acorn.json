@@ -1,0 +1,85 @@
+{
+  "name": "Acorn",
+  "price": 78,
+  "published": true,
+  "featured": false,
+  "order": 210,
+  "made": "to_order",
+  "size": {},
+  "summary": "Small, round, with a cross-hatched cap.",
+  "text": "A pale wooden body under a dark cap, engraved in a cross-hatch. Small enough to sit in the palm of your hand, and it gives a low, soft light.\n\nIt comes in two sizes, and the pair costs less than two singles. Most people take both and stand them side by side.",
+  "photoFolder": "bolota",
+  "photos": [
+    "01",
+    "02",
+    "03"
+  ],
+  "cover": "01",
+  "colours": [],
+  "options": [
+    {
+      "id": "variant",
+      "name": "Modelo",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "help": "",
+      "values": [
+        {
+          "id": "1",
+          "name": "Grande (25×22 cm)",
+          "extra": 11
+        },
+        {
+          "id": "2",
+          "name": "Pequena (18×16 cm)",
+          "extra": 0
+        },
+        {
+          "id": "3",
+          "name": "Conjunto das duas",
+          "extra": 72
+        }
+      ]
+    },
+    {
+      "id": "power",
+      "name": "Power",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "help": "Batteries are not included. The mains version comes with a remote: on, off, dimmer, timer and a slow pulse.",
+      "values": [
+        {
+          "id": "batteries",
+          "name": "2 x AA batteries (3V)",
+          "extra": 0
+        },
+        {
+          "id": "mains",
+          "name": "Mains cable with remote",
+          "extra": 0
+        }
+      ]
+    },
+    {
+      "id": "engraving",
+      "name": "Laser engraving",
+      "type": "text",
+      "required": false,
+      "personalises": true,
+      "max": 22,
+      "extra": 0,
+      "help": "A name, a date or a short phrase, burned into the wood. Leave it empty if you would rather not."
+    }
+  ],
+  "gpsr": {
+    "type": "ITH-BOL",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

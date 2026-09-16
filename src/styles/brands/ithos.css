@@ -1,0 +1,193 @@
+/* ===========================================================================
+   ithos — built to the shape of the shop the owner chose as her model.
+   ===========================================================================
+
+   Measured from that shop rather than guessed at:
+
+     body            Montserrat 14px, #212121 on white
+     product name    Montserrat 500, 14px, #333
+     price           Montserrat 600, 14px, #A5523B
+     button          Montserrat 600, 13px, uppercase, white on #A5523B
+     grid            4 columns, 30px gap, 1:1 frames from 600px sources
+     swatches        35px boxes holding 27px images
+     content width   1222px
+
+   One substitution in the whole file. Their headline face is Canela, which is
+   licensed; Cormorant Garamond at 300 is the nearest free relative — the same
+   high contrast, the same long delicate serifs, the same air at large sizes.
+   ------------------------------------------------------------------------- */
+
+[data-brand='ithos'] {
+  --bg: #FFFFFF;
+  --bg-soft: #FAF7F4;
+  --bg-trust: #FBF6F1;
+  --ink: #212121;
+  --ink-soft: #565656;
+  --muted: #777777;
+  --line: #E8E3DD;
+  --line-soft: #F1ECE6;
+  --accent: #A5523B;          /* the terracotta on prices and buttons */
+  --accent-deep: #8C4230;
+  --accent-ink: #FFFFFF;
+  --frame-bg: #F6F1EC;
+
+  --font-body: 'Montserrat', system-ui, sans-serif;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --size-body: 14px;
+
+  --radius: 0px;              /* that shop is square-cornered throughout */
+}
+
+/* --- type ----------------------------------------------------------------- */
+
+[data-brand='ithos'] h1,
+[data-brand='ithos'] h2,
+[data-brand='ithos'] .display {
+  font-family: var(--font-display);
+  font-weight: 300;
+  letter-spacing: .01em;
+}
+[data-brand='ithos'] h1 { font-size: clamp(1.9rem, 1.2rem + 2.6vw, 3rem); }
+[data-brand='ithos'] h2 { font-size: clamp(1.5rem, 1.1rem + 1.6vw, 2.15rem); }
+[data-brand='ithos'] h3 { font-family: var(--font-body); font-weight: 500; font-size: 1rem; }
+
+[data-brand='ithos'] .eyebrow {
+  font-size: 11px; font-weight: 600; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--muted);
+}
+[data-brand='ithos'] .lede { font-size: 15px; color: var(--ink-soft); line-height: 1.8; }
+/* On a phone the catalogue's opening paragraph is the only thing standing
+   between the fold and the products. The owner asked for four lamps on a
+   screen and named the number, so it is measured, not estimated: at 375x812
+   the budget is 812 minus two card heights, and this paragraph has to live
+   inside what is left. */
+@media (width < 30rem) {
+  [data-brand='ithos'] .lede { font-size: 13.5px; line-height: 1.65; }
+  [data-brand='ithos'] h1 { font-size: 1.65rem; }
+}
+
+/* --- the trust strip above the header -------------------------------------
+   Three promises, always visible, above everything else. On a phone they turn
+   into one line that cycles, because three of them stacked is a screenful of
+   reassurance before any product. */
+.trust {
+  background: var(--bg-trust);
+  border-block-end: 1px solid var(--line-soft);
+  font-size: 11px; letter-spacing: .04em; color: var(--ink-soft);
+}
+.trust__row { display: flex; align-items: center; justify-content: center; gap: clamp(1rem, 6vw, 5rem); min-height: 40px; }
+.trust__item { display: flex; align-items: center; gap: .55em; text-align: center; }
+.trust__item svg { flex: none; color: var(--accent); }
+@media (width < 48rem) {
+  .trust__item + .trust__item { display: none; }
+  .trust__row { justify-content: center; }
+}
+
+/* --- header ---------------------------------------------------------------
+   Burger left, wordmark dead centre, cart right. The centring is absolute and
+   not a grid column: with a grid, the logo shifted left when the cart counter
+   went from one digit to two. */
+.head { position: sticky; inset-block-start: 0; z-index: 50; background: var(--bg); border-block-end: 1px solid var(--line-soft); }
+.head__row {
+  display: flex; align-items: center; gap: 1rem;
+  min-height: var(--head-h, 84px); position: relative;
+  transition: min-height .2s ease;
+}
+.head[data-shrunk='yes'] .head__row { --head-h: 62px; }
+
+.head__mark { position: absolute; inset-inline-start: 50%; translate: -50% 0; display: block; }
+/* The owner asked for this twice: the mark large, and without the
+   "handmade in Portugal" line under it. Both are honoured in the asset itself
+   — assets/brand/ithos-wordmark.svg has the strapline path removed and the
+   viewBox tightened, so nothing here has to crop it. */
+.head__mark img { height: clamp(46px, 7vw, 64px); width: auto; }
+.head[data-shrunk='yes'] .head__mark img { height: 40px; }
+
+.head__actions { margin-inline-start: auto; display: flex; align-items: center; gap: .35rem; }
+.icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; color: var(--ink);
+}
+.icon-btn:hover { color: var(--accent); }
+
+.cart-count {
+  min-width: 18px; height: 18px; padding-inline: 5px;
+  display: grid; place-items: center; margin-inline-start: -8px; margin-block-start: -14px;
+  background: var(--accent); color: var(--accent-ink);
+  border-radius: 999px; font-size: 10px; font-weight: 600; font-variant-numeric: tabular-nums;
+}
+.cart-count[data-empty='yes'] { display: none; }
+
+.nav-desktop { display: none; }
+@media (width >= 64rem) {
+  .nav-desktop { display: flex; gap: 2rem; font-size: 12px; letter-spacing: .12em; text-transform: uppercase; }
+  .nav-desktop a { text-decoration: none; color: var(--ink-soft); padding-block: .5rem; }
+  .nav-desktop a:hover, .nav-desktop a[aria-current='page'] { color: var(--accent); }
+}
+
+/* --- hero -----------------------------------------------------------------
+   A photograph edge to edge with the line over it, which is what that shop
+   does and what the owner asked for after rejecting the picture-beside-text
+   version twice. The scrim is a flat layer and not a gradient: contrast has to
+   be measurable, and a gradient makes the answer depend on where you measure. */
+.hero { position: relative; isolation: isolate; }
+.hero__photo { aspect-ratio: 4 / 5; }
+@media (width >= 48rem) { .hero__photo { aspect-ratio: 16 / 7; } }
+.hero__photo img { width: 100%; height: 100%; object-fit: cover; object-position: 50% 45%; }
+.hero__body {
+  position: absolute; inset-block-end: 0; inset-inline: 0;
+  padding: clamp(1.5rem, 5vw, 4rem) var(--gutter) clamp(2rem, 6vw, 4.5rem);
+  background: linear-gradient(to top, rgb(20 16 13 / .68), rgb(20 16 13 / .48) 55%, transparent);
+  color: #fff; text-align: center;
+}
+.hero__title { font-family: var(--font-display); font-weight: 300; color: #fff;
+  font-size: clamp(1.75rem, 1rem + 3.4vw, 3.1rem); max-width: 22ch; margin-inline: auto; }
+.hero__cta {
+  display: inline-block; margin-block-start: 1.5rem;
+  font-size: 12px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase;
+  color: #fff; text-decoration: none; padding-block-end: 4px; border-block-end: 1px solid rgb(255 255 255 / .6);
+}
+.hero__cta:hover { border-color: #fff; }
+
+/* --- product card ---------------------------------------------------------
+   Frame, swatches, name, price — in that order, which is the order that shop
+   uses and the order the owner pointed at. The swatches are the "bolinhas" she
+   asked for: little squares of the actual finish, so nobody has to read the
+   words "itho rato" to know what they are choosing. */
+.card { display: flex; flex-direction: column; }
+.card__link { text-decoration: none; display: block; }
+.card__frame { position: relative; }
+.card__frame img { transition: scale .5s cubic-bezier(.22,.61,.36,1); }
+.card:hover .card__frame img { scale: 1.04; }
+@media (prefers-reduced-motion: reduce) { .card__frame img { transition: none; } .card:hover .card__frame img { scale: 1; } }
+
+.card__swatches { display: flex; flex-wrap: wrap; gap: 6px; margin-block-start: 12px; min-height: 0; }
+.swatch {
+  width: 27px; height: 27px; border: 1px solid var(--line);
+  background-size: cover; background-position: center;
+}
+.swatch[aria-pressed='true'] { outline: 1px solid var(--accent); outline-offset: 2px; }
+
+.card__name { margin-block-start: 10px; font-size: 14px; font-weight: 500; color: #333; line-height: 1.5; }
+.card__price { margin-block-start: 4px; font-size: 14px; font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; }
+.card__from { font-weight: 400; color: var(--muted); font-size: 12px; }
+
+/* --- buttons -------------------------------------------------------------- */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .6em;
+  min-height: 48px; padding-inline: 2rem;
+  font-size: 13px; font-weight: 600; letter-spacing: .12em; text-transform: uppercase;
+  background: var(--accent); color: var(--accent-ink);
+  border: 1px solid var(--accent); border-radius: var(--radius);
+  text-decoration: none; transition: background .18s ease, border-color .18s ease;
+}
+.btn:hover { background: var(--accent-deep); border-color: var(--accent-deep); }
+.btn--ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn--ghost:hover { background: transparent; border-color: var(--ink); color: var(--ink); }
+.btn--wide { width: 100%; }
+.btn[aria-disabled='true'] { opacity: .45; cursor: not-allowed; }
+
+/* --- section headings ----------------------------------------------------- */
+.section { padding-block: clamp(2.5rem, 6vw, 5rem); }
+.section--soft { background: var(--bg-soft); }
+.section__head { text-align: center; margin-block-end: clamp(1.5rem, 4vw, 2.75rem); }
