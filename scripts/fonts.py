@@ -41,7 +41,7 @@ FAMILIAS = {
     'montserrat': 'Montserrat:wght@300..600',
     'cormorant': 'Cormorant+Garamond:ital,wght@0,300..500;1,300',
     'kleeone': 'Klee+One:wght@400;600',
-    'grandstander': 'Grandstander:wght@400..700',
+    'grandstander': 'Grandstander:wght@100..700',
 }
 
 

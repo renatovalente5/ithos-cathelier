@@ -4,8 +4,13 @@
 
    Measured from that shop rather than guessed at:
 
-     body        Klee One, 19.2px, rgba(107,78,60,.75) on #FFF8F2
-     headings    Grandstander
+     body        Klee One 400, 14px in copy, letter-spacing 0.72px
+     navigation  Klee One 400, 21.6px, SENTENCE CASE — not uppercase, not
+                 letter-spaced. This is the part the owner picked out by name.
+     headings    Grandstander at weight 100. Not 500. The whole character of
+                 that shop is a hairline display face over a brush serif, and
+                 at 500 it reads as a different shop entirely.
+     header      a three-column grid, logo left, nav centre, icons right
      ink         #6B4E3C, with #634A3A under it
      structure   announcement bar, centred crest, full-bleed seasonal banner,
                  a row of ROUND occasion badges, then featured collections
@@ -57,8 +62,8 @@
 [data-brand='cathelier'] h3,
 [data-brand='cathelier'] .display {
   font-family: var(--font-display);
-  font-weight: 500;
-  letter-spacing: .01em;
+  font-weight: 100;
+  letter-spacing: .022em;
   /* No colour here, and that is the point. A brand rule with an attribute
      selector outranks `.hero__title`, so setting it painted the hero headline
      brown on brown: 1.08:1, which is invisible. Headings INHERIT, the body
@@ -67,30 +72,41 @@
 }
 [data-brand='cathelier'] h1 { font-size: clamp(1.6rem, 1.1rem + 2.2vw, 2.5rem); }
 [data-brand='cathelier'] h2 { font-size: clamp(1.35rem, 1rem + 1.4vw, 1.9rem); }
-[data-brand='cathelier'] h3 { font-size: 1rem; font-weight: 500; }
+[data-brand='cathelier'] h3 { font-size: 1rem; font-weight: 300; }
 
 [data-brand='cathelier'] .eyebrow {
-  font-family: var(--font-display);
-  font-size: 12px; font-weight: 500; letter-spacing: .22em;
-  text-transform: uppercase; color: var(--muted);
+  font-family: var(--font-body);
+  font-size: 13px; font-weight: 400; letter-spacing: .045em;
+  text-transform: none; color: var(--muted);
 }
 [data-brand='cathelier'] .lede { font-size: 16px; color: var(--ink-soft); line-height: 1.85; }
 
 /* --- the announcement bar --------------------------------------------------
    That shop runs one above everything, and it is where a seasonal line lives:
    "Christmas orders close on the 10th" and nothing else. */
-[data-brand='cathelier'] .trust { background: var(--bg-trust); border-block-end: 0; }
-[data-brand='cathelier'] .trust__row { min-height: 40px; font-size: 12px; }
-[data-brand='cathelier'] .trust__item svg { color: var(--accent); }
-
-/* --- header ---------------------------------------------------------------- */
+/* --- header ----------------------------------------------------------------
+   Sentence case, Klee One, and no letter-spacing to speak of. The uppercase
+   spaced-out version I had before belongs to the other brand; this one reads
+   like handwriting on a label, which is the whole point. */
 [data-brand='cathelier'] .head { background: var(--bg); }
-[data-brand='cathelier'] .head__mark img { height: clamp(40px, 5vw, 52px); }
+[data-brand='cathelier'] .head__mark img { height: clamp(40px, 5vw, 54px); }
+[data-brand='cathelier'] .head__nav { gap: 2rem; }
+[data-brand='cathelier'] .head__nav a {
+  font-family: var(--font-body); font-size: 17px; font-weight: 400;
+  letter-spacing: .03em; text-transform: none; color: var(--ink-soft);
+  padding-block: .4rem;
+}
+[data-brand='cathelier'] .head__nav a:hover,
+[data-brand='cathelier'] .head__nav a[aria-current='page'] { color: var(--accent); }
+[data-brand='cathelier'] .head__sibling {
+  font-family: var(--font-body); font-size: 14px; letter-spacing: .03em; text-transform: none;
+}
+[data-brand='cathelier'] .drawer__nav a { font-size: 1.15rem; letter-spacing: .03em; }
 
 /* --- the seasonal banner ---------------------------------------------------- */
 [data-brand='cathelier'] .hero__photo { aspect-ratio: 3 / 4; }
 @media (width >= 48rem) { [data-brand='cathelier'] .hero__photo { aspect-ratio: 21 / 8; } }
-[data-brand='cathelier'] .hero__title { font-family: var(--font-display); font-weight: 600; }
+[data-brand='cathelier'] .hero__title { font-family: var(--font-display); font-weight: 200; letter-spacing: .02em; }
 [data-brand='cathelier'] .hero__cta { border-block-end-color: rgb(255 255 255 / .75); }
 
 /* --- the round occasion badges ----------------------------------------------
@@ -114,9 +130,9 @@
 @media (prefers-reduced-motion: reduce) { .occasion__badge { transition: none; } .occasion:hover .occasion__badge { transform: none; } }
 .occasion__badge img { width: 100%; height: 100%; object-fit: cover; }
 .occasion__name {
-  font-family: var(--font-display); font-size: 12px; font-weight: 500;
-  letter-spacing: .04em; color: var(--muted); line-height: 1.3;
-  max-width: 12ch;
+  font-family: var(--font-body); font-size: 13px; font-weight: 400;
+  letter-spacing: .03em; color: var(--ink-soft); line-height: 1.3;
+  max-width: 13ch;
 }
 .occasion:hover .occasion__name { color: var(--accent); }
 
@@ -127,15 +143,15 @@
 
 /* --- cards, round instead of square ----------------------------------------- */
 [data-brand='cathelier'] .frame { border-radius: var(--radius); }
-[data-brand='cathelier'] .card__name { font-family: var(--font-display); font-size: 14px; font-weight: 500; color: var(--ink); text-align: center; }
+[data-brand='cathelier'] .card__name { font-family: var(--font-body); font-size: 15px; font-weight: 400; color: var(--ink); text-align: center; letter-spacing: .03em; }
 [data-brand='cathelier'] .card__price { color: var(--accent); text-align: center; font-size: 13px; }
-[data-brand='cathelier'] .filter { font-family: var(--font-display); }
-[data-brand='cathelier'] .btn { border-radius: var(--pill); font-family: var(--font-display); letter-spacing: .08em; }
+[data-brand='cathelier'] .filter { font-family: var(--font-body); font-size: 14px; letter-spacing: .03em; text-transform: none; }
+[data-brand='cathelier'] .btn { border-radius: var(--pill); font-family: var(--font-body); font-size: 15px; font-weight: 400; letter-spacing: .04em; text-transform: none; }
 [data-brand='cathelier'] .field input, [data-brand='cathelier'] .field textarea,
 [data-brand='cathelier'] .field select { border-radius: 10px; }
 [data-brand='cathelier'] .choice { border-radius: 10px; }
 [data-brand='cathelier'] .reassure { border-radius: var(--radius); }
-[data-brand='cathelier'] .foot__group summary { font-family: var(--font-display); }
+[data-brand='cathelier'] .foot__group summary { font-family: var(--font-body); font-size: 15px; font-weight: 400; letter-spacing: .03em; text-transform: none; }
 
 /* --- a piece with no photograph yet ------------------------------------------
    Forty-one pieces are written and not one has been photographed. Rather than
@@ -152,3 +168,24 @@
   font-family: var(--font-display); font-size: 13px; font-weight: 500;
   letter-spacing: .06em; color: var(--muted); max-width: 14ch; line-height: 1.4;
 }
+
+/* --- how it works, in three steps -------------------------------------------
+   The proof-before-cutting promise is the single thing that separates this
+   workshop from a print shop, and it was buried in a paragraph at the bottom.
+   It is the second thing on the page now. */
+.steps { padding-block: clamp(2rem, 5vw, 3.5rem); }
+.steps__list {
+  list-style: none; padding: 0; margin: 2rem 0 0;
+  display: grid; gap: 2rem;
+}
+@media (width >= 48rem) { .steps__list { grid-template-columns: repeat(3, 1fr); gap: 2.5rem; } }
+.steps__list li { text-align: center; }
+.steps__n {
+  display: grid; place-items: center; width: 40px; aspect-ratio: 1; margin-inline: auto;
+  border: 1px solid var(--line); border-radius: 999px;
+  font-family: var(--font-display); font-weight: 200; font-size: 18px; color: var(--accent);
+}
+.steps__list h3 { margin-block: .9rem .35rem; }
+.steps__list p { font-size: 14px; color: var(--ink-soft); line-height: 1.75; }
+
+.collection--alt { background: var(--bg-soft); }

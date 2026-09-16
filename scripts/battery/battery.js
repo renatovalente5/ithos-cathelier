@@ -225,6 +225,36 @@ window.__bateria = function () {
       `${drawer.querySelectorAll('.drawer__nav a').length} entradas`);
   }
 
+  // --- nada no cabeçalho pisa a marca ---------------------------------------
+  //
+  // Esta verificação existe porque a caixa do <nav> MENTIU. O logótipo estava
+  // centrado, o <nav> tinha `min-width: 0`, e os links transbordavam a sua
+  // faixa em vez de a alargarem: medir o <nav> dava 43 px de folga enquanto o
+  // último <a> imprimia dois pixels dentro da palavra. O dono viu-o numa
+  // fotografia do telemóvel antes de qualquer medição minha o apanhar.
+  //
+  // Mede-se cada elemento FILHO, nunca o contentor.
+  const marcaNoTopo = document.querySelector('.head__mark img');
+  if (marcaNoTopo) {
+    const m = marcaNoTopo.getBoundingClientRect();
+    const vizinhos = [...document.querySelectorAll('.head__nav a, .head__right a, .head__left button')];
+    const pisam = vizinhos
+      .map((e) => ({ e, r: e.getBoundingClientRect() }))
+      .filter(({ r }) => r.width && r.height && r.right > m.left + 1 && r.left < m.right - 1)
+      .map(({ e }) => `«${e.textContent.trim().slice(0, 18) || e.getAttribute('aria-label')}»`);
+    nota(pisam.length === 0, 'nada no cabeçalho se sobrepõe à marca', pisam.join(', '));
+  }
+
+  // --- e a gaveta: fechar à esquerda, marca ao meio, cesto à direita --------
+  if (drawerIsShown) {
+    const fechar = drawer.querySelector('.close-menu')?.getBoundingClientRect();
+    const dm = drawer.querySelector('.drawer__mark')?.getBoundingClientRect();
+    if (fechar && dm) {
+      nota(fechar.right < dm.left - 8, 'o botão de fechar não está colado à marca',
+        `fechar acaba em ${Math.round(fechar.right)}, a marca comeca em ${Math.round(dm.left)}`);
+    }
+  }
+
   // O `summary` é um alvo de toque por direito próprio — mas SÓ enquanto for
   // clicável. A partir de 60 rem o acordeão desaparece: o CSS põe-lhe
   // `pointer-events: none` e ele volta a ser um cabeçalho de coluna, que não

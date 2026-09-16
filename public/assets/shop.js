@@ -9,7 +9,7 @@
 /* Filled in by the build. Empty on the real domain, '/ithos-cathelier' when
    the site is served from a GitHub project page. Every URL this file builds
    has to carry it. */
-const BASE = '';
+const BASE = '/ithos-cathelier';
 /* Filled in by the build too. Empty means the shop cannot take money, and the
    checkout button says so rather than failing silently. */
 const API = '';

@@ -42,6 +42,103 @@
 .crumbs a, .crumbs span { text-decoration: none; display: inline-flex; align-items: center; min-height: 26px; }
 .crumbs a:hover { color: var(--accent); }
 
+
+/* --- header, basket counter, cards, buttons: SHAPE ONLY --------------------
+   These came out of brands/ithos.css, where they had no brand scope and
+   therefore governed cathelier too. That is how `.head__mark { position:
+   absolute }` survived: the cathelier header was told to put its mark in grid
+   column 1 while a rule in the other brand's file had already taken it out of
+   the grid entirely. The navigation then printed straight through the
+   wordmark, which is what the owner photographed.
+
+   base.css promises that a brand file holds values and this one holds shape.
+   It is a promise worth keeping. */
+
+.head { position: sticky; inset-block-start: 0; z-index: 50; background: var(--bg); border-block-end: 1px solid var(--line-soft, var(--line)); }
+.head__row { min-height: var(--head-h, 84px); transition: min-height .2s ease; }
+.head[data-shrunk='yes'] .head__row { --head-h: 62px; }
+.head__mark img { width: auto; }
+
+.icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; color: var(--ink);
+}
+.icon-btn:hover { color: var(--accent); }
+
+.cart-count {
+  min-width: 20px; height: 20px; padding-inline: 5px;
+  display: grid; place-items: center; margin-inline-start: -8px; margin-block-start: -14px;
+  background: var(--accent); color: var(--accent-ink);
+  border-radius: 999px; font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums;
+}
+.cart-count[data-empty='yes'] { display: none; }
+
+.card { display: flex; flex-direction: column; }
+.card__link { text-decoration: none; display: block; }
+.card__frame { position: relative; }
+.card__frame img { transition: scale .5s cubic-bezier(.22,.61,.36,1); }
+.card:hover .card__frame img { scale: 1.04; }
+@media (prefers-reduced-motion: reduce) { .card__frame img { transition: none; } .card:hover .card__frame img { scale: 1; } }
+
+.card__swatches { display: flex; flex-wrap: wrap; gap: 6px; margin-block-start: 12px; }
+.swatch { width: 27px; height: 27px; border: 1px solid var(--line); background-size: cover; background-position: center; }
+.swatch[aria-pressed='true'] { outline: 1px solid var(--accent); outline-offset: 2px; }
+
+.card__name { margin-block-start: 10px; line-height: 1.5; }
+.card__price { margin-block-start: 4px; font-variant-numeric: tabular-nums; color: var(--accent); }
+.card__from { font-weight: 400; color: var(--muted); font-size: 12px; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .6em;
+  min-height: 48px; padding-inline: 2rem;
+  background: var(--accent); color: var(--accent-ink);
+  border: 1px solid var(--accent); border-radius: var(--radius, 0);
+  text-decoration: none; transition: background .18s ease, border-color .18s ease;
+}
+.btn:hover { background: var(--accent-deep); border-color: var(--accent-deep); }
+.btn--ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn--ghost:hover { background: transparent; border-color: var(--ink); color: var(--ink); }
+.btn--wide { width: 100%; }
+.btn[aria-disabled='true'] { opacity: .45; cursor: not-allowed; }
+
+.section { padding-block: clamp(2.5rem, 6vw, 5rem); }
+.section--soft { background: var(--bg-soft); }
+.section__head { text-align: center; margin-block-end: clamp(1.5rem, 4vw, 2.75rem); }
+
+/* --- header and drawer: three tracks, never overlapping -------------------
+   The logo lives in a column of its own. Before this it was absolutely centred
+   while the navigation sat in normal flow beside it, and at the width where
+   the navigation reached the middle the two printed on top of each other.
+
+   The drawer's close button had a subtler version of the same fault:
+   `.icon-btn:last-of-type` matches by TAG, not by class, so the only <button>
+   in the row was "the last of its type" and collected a `margin-left: auto`
+   meant for the cart. Two auto margins share the space between them, which
+   parked the ✕ in the middle of the row, right beside the wordmark. */
+.head__row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  /* Enough air that the navigation reads as a separate thing from the mark
+     even when it fills its whole track. At 1rem they were 20px apart, which
+     is not overlapping but looks like it is. */
+  gap: clamp(1rem, 3vw, 2.75rem);
+}
+.head__left { display: flex; align-items: center; gap: 1.5rem; min-width: 0; }
+.head__right { display: flex; align-items: center; justify-content: flex-end; gap: .35rem; }
+.head__mark { display: block; justify-self: center; }
+
+.drawer__top {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+}
+.drawer__mark { justify-self: center; }
+.drawer__cart { justify-self: end; }
+.drawer__top .icon-btn { justify-self: start; }
+.drawer__cart.icon-btn { justify-self: end; }
+
 /* --- the other brand, in the header --------------------------------------
    It carries its own name and an arrow that points out. A label does not point
    out of the page; a door does. */
@@ -52,6 +149,33 @@
 }
 .head__sibling:hover { color: var(--accent); }
 @media (width >= 48rem) { .head__sibling { display: inline-flex; } }
+
+/* The horizontal navigation belongs to cathelier only, and only when there is
+   room for it. The shop ithos is modelled on has no horizontal navigation at
+   all — burger, wordmark, basket — so ithos does not get one either. */
+.head__nav { display: none; }
+@media (width >= 64rem) {
+  .head__nav { display: flex; gap: 1.5rem; min-width: 0; }
+  .head__nav a { text-decoration: none; white-space: nowrap; }
+  [data-brand='cathelier'] .head__left .open-menu { display: none; }
+
+  /* On a wide screen the cathelier mark moves to the LEFT column, which is
+     what the shop it is modelled on actually does — I had copied its phone
+     layout onto the desktop by mistake.
+     
+     It also removes the failure for good. A centred mark with the navigation
+     in a 1fr track beside it looks safe and is not: `min-width: 0` lets the
+     links OVERFLOW their track instead of widening it, so the box measures
+     clear while the last link prints two pixels into the wordmark. Measuring
+     the <nav> said there was a 43px gap. Measuring the last <a> said -2. With
+     the mark in its own auto track, the navigation has nowhere to go but the
+     middle. */
+  [data-brand='cathelier'] .head__row { grid-template-columns: auto minmax(0, 1fr) auto; }
+  [data-brand='cathelier'] .head__mark { grid-column: 1; grid-row: 1; justify-self: start; }
+  [data-brand='cathelier'] .head__left { grid-column: 2; grid-row: 1; justify-content: center; }
+  [data-brand='cathelier'] .head__right { grid-column: 3; grid-row: 1; }
+  [data-brand='cathelier'] .head__nav { overflow: hidden; }
+}
 
 /* --- filters --------------------------------------------------------------
    They WRAP. A row that scrolls sideways on a phone hides what is in it: the
@@ -144,9 +268,8 @@
 }
 .drawer::backdrop { background: var(--bg); }
 .drawer:not([open]) { display: none; }
-.drawer__top { display: flex; align-items: center; gap: 1rem; min-height: 72px; padding-inline: var(--gutter); border-block-end: 1px solid var(--line-soft, var(--line)); flex: none; position: relative; }
-.drawer__mark { height: 34px; width: auto; position: absolute; inset-inline-start: 50%; translate: -50% 0; }
-.drawer__top .icon-btn:last-of-type, .drawer__top a.icon-btn { margin-inline-start: auto; }
+.drawer__top { min-height: 72px; padding-inline: var(--gutter); border-block-end: 1px solid var(--line-soft, var(--line)); flex: none; }
+.drawer__mark { height: 34px; width: auto; }
 .drawer__nav { display: flex; flex-direction: column; padding-inline: var(--gutter); }
 .drawer__nav a { display: flex; align-items: center; gap: 1rem; min-height: 58px; text-decoration: none; border-block-end: 1px solid var(--line-soft, var(--line)); font-size: 1.1rem; }
 .drawer__nav a > span:first-child { flex: 1; }

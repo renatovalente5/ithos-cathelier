@@ -1,5 +1,6 @@
 import { esc, money, picture, prose } from './html.mjs';
 import { icon } from './icons.mjs';
+import { occasionArt } from './occasions-art.mjs';
 
 /* ===========================================================================
    cathelier — navigation by occasion, which is how the model shop works and
@@ -35,29 +36,20 @@ export function card(p, { eager = false } = {}) {
 </article>`;
 }
 
-/* A photograph in each circle, the way the model shop does it — a row of round
-   badges is the whole navigation there, and a row of ten identical line icons
-   would say nothing about what is behind them. */
-const BADGE = {
-  christmas: '04', 'mothers-day': '06', 'fathers-day': '12',
-  'childrens-day': '02', keepsakes: '03', 'new-baby': '05',
-  names: '07', home: '08', hanging: '09', awards: '12',
-};
-
 function occasionRow(occasions, current) {
   return `<nav class="occasions" aria-label="Occasions">
   ${occasions.map((o) => `<a class="occasion" href="/cathelier/${esc(o.slug)}/"${o.slug === current ? ' aria-current="page"' : ''}>
-    <span class="occasion__badge">${picture({
-      dir: 'cathelier/pool', name: BADGE[o.slug] || '02', widths: [200],
-      alt: '', sizes: '74px',
-    })}</span>
+    <span class="occasion__badge">${occasionArt(o.slug, 30)}</span>
     <span class="occasion__name">${esc(o.name)}</span>
   </a>`).join('\n  ')}
 </nav>`;
 }
 
 export function home({ occasions, pieces }) {
-  const featured = occasions.slice(0, 3);
+  const newest = [...pieces].sort((a, b) => (b.order ?? 0) - (a.order ?? 0)).slice(0, 8);
+  const collections = ['keepsakes', 'new-baby', 'christmas']
+    .map((s) => occasions.find((o) => o.slug === s)).filter(Boolean);
+
   return `
 <section class="hero">
   <div class="hero__photo">
@@ -75,32 +67,62 @@ export function home({ occasions, pieces }) {
   ${occasionRow(occasions)}
 </div>
 
-${featured.map((o) => {
+<section class="steps">
+  <div class="shell">
+    <div class="collection__head">
+      <h2>Nothing is cut before you say yes</h2>
+    </div>
+    <ol class="steps__list">
+      <li><span class="steps__n">1</span>
+        <h3>Tell us the words</h3>
+        <p>The names, the dates, the phrase. Whatever has to be on it.</p></li>
+      <li><span class="steps__n">2</span>
+        <h3>Approve the drawing</h3>
+        <p>We send you a proof. Nothing goes near the laser until you have seen it.</p></li>
+      <li><span class="steps__n">3</span>
+        <h3>It comes ready to give</h3>
+        <p>Cut, sanded and finished by hand, in time for the day.</p></li>
+    </ol>
+  </div>
+</section>
+
+${collections.map((o, i) => {
   const list = pieces.filter((p) => p.occasion === o.slug || (p.alsoIn || []).includes(o.slug)).slice(0, 4);
   if (!list.length) return '';
-  return `<section class="collection">
+  return `<section class="collection${i % 2 ? ' collection--alt' : ''}">
   <div class="shell">
     <div class="collection__head">
       <span class="eyebrow">Featured collection</span>
       <h2>${esc(o.name)}</h2>
-      <p class="lede" style="margin-block-start:.75rem">${esc(o.summary)}</p>
+      <p class="lede" style="margin-block-start:.6rem">${esc(o.summary)}</p>
     </div>
     <div class="grid-products" style="margin-block-start:2rem">${list.map((p) => card(p)).join('\n      ')}</div>
     <p style="text-align:center;margin-block-start:2rem">
-      <a class="btn btn--ghost" href="/cathelier/${esc(o.slug)}/">See all of ${esc(o.name)}</a>
+      <a class="btn btn--ghost" href="/cathelier/${esc(o.slug)}/">All of ${esc(o.name)}</a>
     </p>
   </div>
 </section>`;
 }).join('\n')}
 
-<section class="collection" style="background:var(--bg-soft)">
-  <div class="shell shell--narrow" style="text-align:center">
-    <h2>How it works</h2>
-    <div class="stack lede" style="--stack:1rem;margin-block-start:1.25rem">
-      <p>Tell us the names, the dates or the words. We send you a drawing to approve
-         before anything is cut — nothing goes on the laser until you say yes.</p>
-      <p>Then it is cut, sanded and finished by hand, and it comes to you ready to give.</p>
+<section class="collection">
+  <div class="shell">
+    <div class="collection__head"><h2>New in the workshop</h2></div>
+    <div class="grid-products" style="margin-block-start:2rem">
+      ${newest.map((p) => card(p)).join('\n      ')}
     </div>
+    <p style="text-align:center;margin-block-start:2.5rem">
+      <a class="btn btn--ghost" href="/cathelier/pieces/">See all ${pieces.length} pieces</a>
+    </p>
+  </div>
+</section>
+
+<section class="collection collection--alt">
+  <div class="shell shell--narrow" style="text-align:center">
+    <h2>Ordering a lot of them?</h2>
+    <p class="lede" style="margin-block-start:.75rem">
+      A hundred wedding favours is a different job from one birth disc, and it is
+      priced differently. Tell us roughly what and roughly how many.
+    </p>
     <p style="margin-block-start:1.75rem"><a class="btn" href="/cathelier/quote/">Ask for a quote</a></p>
   </div>
 </section>

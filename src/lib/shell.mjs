@@ -81,7 +81,6 @@ ${schema.length ? `<script type="application/ld+json">${JSON.stringify(schema.le
 <body class="${esc(bodyClass)}" id="top">
 <a class="skip" href="#main">Skip to content</a>
 
-${trustStrip(brand)}
 ${header({ brand, path })}
 ${crumbs ? breadcrumbs(crumbs) : ''}
 
@@ -111,45 +110,34 @@ ${footer({ brand, identity })}
 `;
 }
 
-/* --- the strip above everything -------------------------------------------
-   Three promises, in the place the model shop puts them. On a phone only the
-   first survives: three of them stacked is a screen of reassurance before a
-   single product, which is the opposite of reassuring. */
-function trustStrip(brand) {
-  const items = brand === 'ithos'
-    ? [['hand', 'Made by hand in Castelo Branco'],
-       ['leaf', 'Solid pine, water-based paints'],
-       ['truck', 'Shipped across Europe']]
-    : [['hand', 'Cut and engraved to order'],
-       ['shield', 'A proof to approve before we cut'],
-       ['truck', 'Shipped across Europe']];
-  return `<div class="trust">
-  <div class="shell trust__row">
-    ${items.map(([i, t]) => `<span class="trust__item">${icon(i, 15)}<span>${esc(t)}</span></span>`).join('\n    ')}
-  </div>
-</div>`;
-}
-
 function header({ brand, path }) {
   const nav = NAV[brand] ?? NAV.ithos;
   const mark = MARK[brand];
   const home = brand === 'cathelier' ? '/cathelier/' : '/';
   const sibling = SIBLING[brand];
 
+  /* Three slots, always, and the CSS decides where each one sits.
+   *
+   * The logo used to be absolutely centred while the navigation sat in normal
+   * flow beside it. At the width where the navigation grew past the halfway
+   * point, the two drew on top of each other — the owner photographed
+   * "THE WORKSHOP" printed across the cathelier wordmark. A grid column cannot
+   * do that: the logo has a track of its own and nothing else can enter it. */
   return `<header class="head" data-shrunk="no">
   <div class="shell head__row">
-    <button class="icon-btn open-menu" type="button" aria-expanded="false" aria-controls="menu"
-            aria-label="Open the menu">${icon('menu', 24)}</button>
-
-    <nav class="nav-desktop" aria-label="Main">
-      ${nav.map(([h, t]) => `<a href="${h}"${path === h ? ' aria-current="page"' : ''}>${esc(t)}</a>`).join('\n      ')}
-    </nav>
+    <div class="head__left">
+      <button class="icon-btn open-menu" type="button" aria-expanded="false" aria-controls="menu"
+              aria-label="Open the menu">${icon('menu', 24)}</button>
+      ${brand === 'cathelier' ? `<nav class="head__nav" aria-label="Main">
+        ${nav.map(([h, t2]) => `<a href="${h}"${path === h ? ' aria-current="page"' : ''}>${esc(t2)}</a>`).join('\n        ')}
+      </nav>` : ''}
+    </div>
 
     <a class="head__mark" href="${home}" aria-label="${esc(mark.alt)} — home">
       <img src="${mark.src}" alt="${esc(mark.alt)}" width="${mark.w}" height="${mark.h}">
     </a>
 
-    <div class="head__actions">
+    <div class="head__right">
       <a class="head__sibling" href="${sibling.href}" data-other-brand
          aria-label="Go to ${esc(sibling.name)}, ${esc(sibling.note)}">
         <span>${esc(sibling.name)}</span><span aria-hidden="true">↗</span>
@@ -175,7 +163,7 @@ function drawer({ brand, identity, counts }) {
   <div class="drawer__top">
     <button class="icon-btn close-menu" type="button" aria-label="Close the menu">${icon('close', 24)}</button>
     <img class="drawer__mark" src="${mark.src}" alt="${esc(mark.alt)}" width="${mark.w}" height="${mark.h}">
-    <a class="icon-btn" href="/cart/" aria-label="Basket">
+    <a class="icon-btn drawer__cart" href="/cart/" aria-label="Basket">
       ${icon('cart', 22)}<span class="cart-count" data-cart-count data-empty="yes"></span>
     </a>
   </div>
