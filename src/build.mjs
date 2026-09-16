@@ -285,6 +285,23 @@ function buildCathelier() {
       crumbs: [{ name: 'cathelier', href: '/cathelier/' },
                { name: 'Every piece', href: '/cathelier/pieces/' }, { name: p.name }],
       body: cath.piece({ p, all: pieces, shop, occasions }),
+      image: p.photoFolder && p.cover ? `/media/cathelier/${p.photoFolder}/${p.cover}-400.webp` : undefined,
+      /* The 41 cathelier pieces emitted no structured data at all while the 26
+         lamps did. Same shop, same basket, same law — and to a search engine
+         only half of it was a shop. `MadeToOrder` is the honest availability:
+         nothing here exists until somebody asks for it. */
+      schema: [{
+        '@context': 'https://schema.org', '@type': 'Product',
+        name: p.name, description: p.summary,
+        ...(p.photoFolder && p.cover
+          ? { image: `${SITE}/media/cathelier/${p.photoFolder}/${p.cover}-400.webp` } : {}),
+        brand: { '@type': 'Brand', name: 'cathelier' },
+        offers: {
+          '@type': 'Offer', price: Number(p.price).toFixed(2), priceCurrency: 'EUR',
+          availability: 'https://schema.org/MadeToOrder',
+          url: `${SITE}/cathelier/pieces/${p.slug}/`,
+        },
+      }],
     }));
   }
 }

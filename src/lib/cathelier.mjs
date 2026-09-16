@@ -45,6 +45,37 @@ function occasionRow(occasions, current) {
 </nav>`;
 }
 
+/* The cover.
+ *
+ * There is no photograph to put here and there is not going to be one this
+ * month. All ten files in the pool are 361px Instagram frames; the cover box is
+ * 753px wide at a tablet and 1425px on a laptop, so the old banner was showing
+ * one of them at 2.09x and 3.95x — at 768 it was 259px of brown panel over 28px
+ * of photograph. A cover cannot be built out of that.
+ *
+ * What this shop DOES own is the only thing a cover has to say here: which day
+ * it is for. Forty-one pieces, ten occasions, and ten marks already drawn — and
+ * each mark is a drawing of the piece that occasion really sells, so these are
+ * products, not icons. They are drawn rather than photographed for the reason
+ * written at the top of occasions-art.mjs: at badge size a photograph of a small
+ * engraved disc is a beige smudge, and ten smudges in a row say nothing.
+ *
+ * It is also the one cover the other shop could never wear. ithos has a single
+ * occasion — the bedroom — so a row of doors there would lead everywhere at
+ * once. Here it is the whole catalogue.
+ *
+ * Two shapes, and the phone gets the honest one: ten circles with names under
+ * them need four rows at 320px and eat the screen, so the phone lays them as two
+ * columns of rows, mark beside name. The circles come back at 48rem. */
+function doorRow(occasions) {
+  return `<nav class="doors" aria-label="Occasions">
+    ${occasions.map((o) => `<a class="door" href="/cathelier/${esc(o.slug)}/">
+      <span class="door__mark">${occasionArt(o.slug, 30)}</span>
+      <span class="door__name">${esc(o.name)}</span>
+    </a>`).join('\n    ')}
+  </nav>`;
+}
+
 const ASK = [
   ['shield', 'Will I see it before it is cut?',
    `<p>Always. We draw it, send you a picture of the drawing, and nothing goes near
@@ -82,21 +113,13 @@ export function home({ occasions, pieces }) {
   })}</div>`;
 
   return `
-<section class="hero">
-  <div class="hero__photo">
-    ${picture({ dir: 'cathelier/pool', name: '06', widths: [200, 400],
-      alt: 'Laser-cut wooden keepsakes with names engraved into them',
-      sizes: '100vw', loading: 'eager', fetchpriority: 'high' })}
-  </div>
-  <div class="hero__body">
-    <h1 class="hero__title">Pieces cut and engraved with your names on them</h1>
-    <a class="hero__cta" href="/cathelier/pieces/">See everything</a>
+<section class="hero hero--doors">
+  <div class="shell">
+    <h1 class="doors__line">Cut and engraved with your names on them</h1>
+    ${doorRow(occasions)}
+    <p class="doors__more"><a class="hero__cta" href="/cathelier/pieces/">See all ${pieces.length} pieces</a></p>
   </div>
 </section>
-
-<div class="shell">
-  ${occasionRow(occasions)}
-</div>
 
 <section class="feature">
   <div class="shell">
@@ -296,7 +319,14 @@ export function piece({ p, all: everything, shop, occasions }) {
 
 ${related.length ? `<section class="collection" style="background:var(--bg-soft)">
   <div class="shell">
-    <div class="collection__head"><span class="eyebrow">More for</span><h2>${esc(here?.name || 'the same day')}</h2></div>
+    <!-- The heading names the occasion and now LINKS to it. It used to be flat
+         text with four sibling cards under it and no way through to the page it
+         was naming — a dead end on every one of the 41 pieces. -->
+    <div class="collection__head">
+      <span class="eyebrow">More for</span>
+      ${here ? `<h2><a href="/cathelier/${esc(here.slug)}/">${esc(here.name)}</a></h2>`
+             : '<h2>the same day</h2>'}
+    </div>
     <div class="grid-products" style="margin-block-start:2rem">${related.map((x) => card(x)).join('\n      ')}</div>
   </div>
 </section>` : ''}

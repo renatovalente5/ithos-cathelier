@@ -94,6 +94,23 @@ for (const file of pages) {
     if (!existsSync(asDir) && !existsSync(asFile)) deaths.push(`${where}: link to ${target} goes nowhere`);
   }
 
+  // A product page has to describe itself. For a long while the 26 lamps did
+  // and the 41 pieces did not — same shop, same basket, and to a search engine
+  // only half of it was a shop.
+  const ehProduto = /\/(lamps|pieces)\/[^/]+\/index\.html$/.test(where);
+  if (ehProduto) {
+    const blobs = [...html.matchAll(/<script type="application\/ld\+json">(.*?)<\/script>/gs)]
+      .map((m) => { try { return JSON.parse(m[1]); } catch { return null; } })
+      .filter(Boolean)
+      .flatMap((x) => (Array.isArray(x) ? x : [x]));
+    if (!blobs.some((x) => x['@type'] === 'Product')) {
+      deaths.push(`${where}: a product page with no Product in its structured data`);
+    }
+    if (!blobs.some((x) => x['@type'] === 'BreadcrumbList')) {
+      deaths.push(`${where}: a product page with no BreadcrumbList`);
+    }
+  }
+
   // Structure the shop cannot work without.
   if (!/<main id="main"/.test(html)) deaths.push(`${where}: no <main>`);
   if ((html.match(/<h1[\s>]/g) || []).length !== 1) {

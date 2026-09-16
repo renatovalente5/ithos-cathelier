@@ -81,23 +81,63 @@ export function card(p, { eager = false } = {}) {
 </article>`;
 }
 
+/* The four lamps on the cover, named here rather than in the data.
+ *
+ * The cover is a SHELF: four square photographs edge to edge, no gap, no crop.
+ * It only works because all 120 studio files share one flat terracotta ground —
+ * put four of them side by side and the joins disappear, so the band reads as
+ * one wide photograph of lamps lined up. That is the "background image" the
+ * owner asked for, built out of the material that exists.
+ *
+ * Two rules decide what can go on the shelf, and both were measured on a
+ * contact sheet of all 90 squares:
+ *
+ *   · plain ground only. The ground colours of these four are #9C6C4B,
+ *     #AE7E5D, #B1805F and #AD7D5C — within ΔE 8 of each other, which is why
+ *     the seams vanish. A lamp photographed on the round straw mat (sheep,
+ *     hedgehog, giraffe) breaks the band in half: the mat carries more edge
+ *     energy than the lamp does.
+ *   · a silhouette that survives being one of four. Whale and train are wide
+ *     and lie down; mushroom is three objects in a row; bear stands. At two
+ *     cells on a phone the first two are the ones that show, so the two widest
+ *     go first.
+ *
+ * The photograph used is whatever the product names as its own `cover`, so the
+ * back office still decides which frame; this list only decides which lamps. */
+const SHELF = ['whale', 'train', 'mushroom', 'bear'];
+
 export function home({ products, identity }) {
   const featured = products.filter((p) => p.featured).slice(0, 8);
   const rest = products.filter((p) => !p.featured).slice(0, 8);
-  const hero = products.find((p) => p.slug === 'whale') ?? products[0];
+
+  /* If a slug on the shelf is unpublished or renamed, the cover must not lose a
+     cell and go three-across on a four-column grid. Featured lamps fill in. */
+  const picked = SHELF.map((slug) => products.find((p) => p.slug === slug)).filter(Boolean);
+  const shelf = [...picked, ...products.filter((p) => !picked.includes(p))].slice(0, 4);
 
   return `
-<section class="hero">
-  <div class="hero__photo">
-    ${picture({
-      dir: `ithos/${hero.photoFolder}`, name: hero.cover,
-      alt: 'A handmade wooden night light glowing in a child’s room',
-      sizes: '100vw', loading: 'eager', fetchpriority: 'high',
-    })}
+<section class="hero hero--shelf">
+  <div class="shell">
+    <h1 class="shelf__line">Handmade wooden night lights for children’s rooms</h1>
   </div>
-  <div class="hero__body">
-    <h1 class="hero__title">Handmade wooden night lights for children’s rooms</h1>
-    <a class="hero__cta" href="/lamps/">See the lamps</a>
+
+  <div class="shelf">
+    ${shelf.map((p, i) => `<a class="shelf__cell" href="/lamps/${esc(p.slug)}/">
+      ${picture({
+        dir: `ithos/${p.photoFolder}`, name: p.cover,
+        /* The alt describes THIS photograph. The old one promised a lamp
+           "glowing in a child's room" and not one of the 120 files is a room
+           shot — it described a photograph that does not exist. */
+        alt: `${p.name} — ${p.summary}`,
+        sizes: '(min-width: 80rem) 25vw, (min-width: 48rem) 33vw, 50vw',
+        loading: i < 2 ? 'eager' : 'lazy',
+        fetchpriority: i < 2 ? 'high' : undefined,
+      })}
+    </a>`).join('\n    ')}
+  </div>
+
+  <div class="shell">
+    <p class="shelf__more"><a class="hero__cta" href="/lamps/">See all ${products.length} lamps</a></p>
   </div>
 </section>
 

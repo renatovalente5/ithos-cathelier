@@ -261,10 +261,83 @@ p { text-wrap: pretty; }
    — assets/brand/ithos-wordmark.svg has the strapline path removed and the
    viewBox tightened, so nothing here has to crop it. */
 
-/* --- hero --------------------------------------------------------------- */
-[data-brand='ithos'] .hero__photo { aspect-ratio: 4 / 5; }
-@media (width >= 48rem) { [data-brand='ithos'] .hero__photo { aspect-ratio: 16 / 7; } }
-[data-brand='ithos'] .hero__title { font-family: var(--font-display); font-weight: 300; color: #fff; }
+/* --- the cover: a shelf of lamps -------------------------------------------
+   The model shop's cover is a full-width photograph with one serif line and a
+   quiet link. This is that, with the one substitution the material forces: the
+   full-width photograph is made of four square ones laid edge to edge.
+
+   Why, in numbers. The old cover stretched one square master to 16/7, which
+   keeps 43.8% of its height — and that master was already a 1:1 crop of a
+   1024x1536 portrait, so 70.8% of the file never reached the screen. On a
+   studio shot of one object on a plain ground there is no spare matter: the
+   band either has the middle of the lamp or it has nothing. Measured across the
+   90 squares, a 43.8% band keeps a median 49% of the edge energy; on the whale
+   it kept 26%, which is a white curve, an eye and half a straw mat. The
+   silhouette IS the product — it is what tells a whale from a sheep.
+
+   So nothing is cropped. Every cell is 1:1 over a 1:1 master, which is the same
+   deal the product grid already gets, and the widest the photograph is ever
+   shown is 360px at a 1440 viewport: 0.36x of the 1000px file. The old cover
+   showed it at 1.43x, and 2.85x on a retina screen.
+
+   The joins are the whole trick and they are measurable: the four ground
+   colours are #9C6C4B, #AE7E5D, #B1805F and #AD7D5C. Put any lamp shot on the
+   round straw mat in here and the band breaks in two.
+
+   Gap is zero and the corners are square, because this shop is square. Do not
+   add a gap: the gap is what turns a band back into four pictures. */
+[data-brand='ithos'] .hero--shelf { padding-block-start: clamp(1.25rem, 3.5vw, 2.5rem); }
+
+/* The one serif line on the page, and it sits on white rather than on pixels.
+   The brand rule `[data-brand='ithos'] h1` is (0,1,1) and outranked the old
+   `.hero__title` (0,1,0), so the cover's clamp never applied and the headline
+   rendered at 34.4px instead of 49.6px. This selector is (0,2,0) and wins. */
+[data-brand='ithos'] .shelf__line {
+  font-family: var(--font-display); font-weight: 300;
+  font-size: clamp(1.75rem, 1rem + 3.4vw, 3.1rem);
+  line-height: 1.15; color: #242424;          /* 15.5:1 on white */
+  max-width: 24ch; margin-inline: auto; text-align: center;
+  padding-block-end: clamp(.9rem, 2.5vw, 1.6rem);
+}
+
+[data-brand='ithos'] .shelf {
+  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0; background: var(--frame-bg);
+}
+[data-brand='ithos'] .shelf__cell { display: block; aspect-ratio: 1; overflow: hidden; }
+[data-brand='ithos'] .shelf__cell > picture { display: block; width: 100%; height: 100%; }
+[data-brand='ithos'] .shelf__cell img { width: 100%; height: 100%; object-fit: cover; }
+/* The ring goes INSIDE the cell: these run to the edge of the glass, and an
+   outline offset by 3px is clipped there and reads as a missing side. */
+[data-brand='ithos'] .shelf__cell:focus-visible { outline-offset: -5px; }
+
+/* Two cells on a phone, three at a tablet, four on a laptop — the number of
+   pieces changes, the crop never does. Cells that are not showing are `lazy`,
+   so a phone does not fetch the two it cannot see. */
+[data-brand='ithos'] .shelf__cell:nth-child(n + 3) { display: none; }
+@media (width >= 48rem) {
+  [data-brand='ithos'] .shelf { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  [data-brand='ithos'] .shelf__cell:nth-child(3) { display: block; }
+}
+@media (width >= 80rem) {
+  [data-brand='ithos'] .shelf { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  [data-brand='ithos'] .shelf__cell:nth-child(4) { display: block; }
+}
+
+[data-brand='ithos'] .shelf__cell img { transition: scale .5s cubic-bezier(.22,.61,.36,1); }
+[data-brand='ithos'] .shelf__cell:hover img { scale: 1.03; }
+@media (prefers-reduced-motion: reduce) {
+  [data-brand='ithos'] .shelf__cell img { transition: none; }
+  [data-brand='ithos'] .shelf__cell:hover img { scale: 1; }
+}
+
+[data-brand='ithos'] .shelf__more { text-align: center; padding-block-start: clamp(1.1rem, 3vw, 1.75rem); }
+[data-brand='ithos'] .hero__cta {
+  color: var(--accent);                        /* #A5523B on white = 5.43:1 */
+  padding-block-end: 4px;
+  border-block-end: 1px solid rgb(165 82 59 / .45);
+}
+[data-brand='ithos'] .hero__cta:hover { color: var(--accent-deep); border-block-end-color: var(--accent-deep); }
 
 /* --- the footer is WARM, and it is the one thing that stops a white shop
    reading as a spreadsheet. Theirs is this exact peach. */
@@ -407,11 +480,96 @@ p { text-wrap: pretty; }
 }
 [data-brand='cathelier'] .drawer__nav a { font-size: 1.15rem; letter-spacing: .03em; }
 
-/* --- the seasonal banner ---------------------------------------------------- */
-[data-brand='cathelier'] .hero__photo { aspect-ratio: 3 / 4; }
-@media (width >= 48rem) { [data-brand='cathelier'] .hero__photo { aspect-ratio: 21 / 8; } }
-[data-brand='cathelier'] .hero__title { font-family: var(--font-display); font-weight: 200; letter-spacing: .02em; }
-[data-brand='cathelier'] .hero__cta { border-block-end-color: rgb(255 255 255 / .75); }
+/* --- the cover: ten doors ----------------------------------------------------
+   The model shop opens with a seasonal banner and a row of round occasion
+   badges. This shop cannot have the banner and can have the badges, so the
+   badges ARE the banner.
+
+   The arithmetic that settles it. Every photograph this shop owns is a 361px
+   Instagram frame — ten of them, shared between all 41 pieces. The cover box is
+   753px wide at 768 and 1425px at 1440, so a photograph in it is shown at 2.09x
+   and 3.95x (4.17x and 7.89x on a retina screen), where one pixel of the file is
+   painted as a square of 15.6 pixels. The ceiling for these files is about 470px
+   of display width, and the old cover crossed it at the first breakpoint. At 768
+   that cover was 259px of brown panel over 28px of photograph — a panel with a
+   picture on it, not a cover.
+
+   The photographs are not gone, they moved to where they stay sharp: the
+   product frames (280-332px) and the two feature mosaics, which put four of
+   them at 332px, or 0.92x — untouched.
+
+   What the cover shows instead is the catalogue itself. Ten occasions, ten
+   marks, and each mark is a drawing of the piece that occasion really sells:
+   the daisy for Mother's Day, the birth disc with its rows of data, the
+   trophy. Drawn and not photographed for the reason in occasions-art.mjs — at
+   80px a photograph of a small engraved disc is a beige smudge.
+
+   The other shop could not wear this cover. ithos sells into one occasion, the
+   bedroom, so a row of doors there would be ten ways to the same place.
+
+   Two shapes. Ten circles with names under them need four rows at 320px, which
+   is 444px of cover before the line is set; so the phone lays them as two
+   columns of rows with the mark beside the name, 48px tall. The circles come
+   back at 48rem, where five fit on a line. */
+[data-brand='cathelier'] .hero--doors {
+  background: var(--bg-trust);                  /* #F7EDE3, full bleed */
+  padding-block: clamp(1.25rem, 4vw, 2.5rem) clamp(1.25rem, 3.5vw, 2.25rem);
+  border-block-end: 1px solid var(--line);
+}
+
+/* (0,2,0), which beats `[data-brand='cathelier'] h1` at (0,1,1). The old
+   `.hero__title` was (0,1,0) and lost, so the cover headline was rendering at
+   the generic h1 size — 40px instead of the 2.5rem the cover asked for. */
+[data-brand='cathelier'] .doors__line {
+  font-family: var(--font-display); font-weight: 200; letter-spacing: .02em;
+  font-size: clamp(1.6rem, 1.1rem + 2.2vw, 2.5rem);
+  line-height: 1.2; color: var(--ink);          /* #6B4E3C on #F7EDE3 */
+  max-width: 28ch; margin-inline: auto; text-align: center;
+  padding-block-end: clamp(.9rem, 2.5vw, 1.5rem);
+}
+
+.doors { display: grid; gap: .4rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+.door {
+  display: flex; align-items: center; gap: .6rem;
+  min-height: 48px; padding: .2rem .4rem .2rem .2rem;
+  border-radius: var(--pill); text-decoration: none;
+  transition: background-color .2s ease;
+}
+.door:hover { background: var(--bg); }
+.door__mark {
+  flex: none; width: 40px; aspect-ratio: 1; border-radius: 999px;
+  display: grid; place-items: center; overflow: hidden;
+  background: var(--bg); border: 1px solid var(--line); color: var(--accent);
+  transition: border-color .2s ease;
+}
+.door:hover .door__mark { border-color: var(--accent); }
+/* The mark is sized here and not by the attribute, so one drawing serves 40px
+   and 96px. No `fill` in this rule: the drawings carry fill="none" on the
+   element and a CSS fill would overrule the attribute and blacken every one. */
+.door__mark svg { width: 62%; height: 62%; }
+.door__name {
+  font-family: var(--font-body); font-size: 14px; font-weight: 400;
+  letter-spacing: .03em; line-height: 1.25; color: var(--ink);
+}
+
+@media (width >= 48rem) {
+  .doors { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 1.5rem .75rem; }
+  .door { flex-direction: column; gap: .55rem; text-align: center; min-height: 0; padding: .4rem; border-radius: var(--radius); }
+  .door__mark { width: clamp(76px, 8vw, 96px); }
+  .door__name { font-size: 15px; max-width: 13ch; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .door, .door__mark { transition: none; }
+}
+
+[data-brand='cathelier'] .doors__more { text-align: center; padding-block-start: clamp(1rem, 3vw, 1.5rem); }
+[data-brand='cathelier'] .hero__cta {
+  color: var(--accent);                         /* #634A3A on #F7EDE3 */
+  letter-spacing: .12em;
+  padding-block-end: 4px;
+  border-block-end: 1px solid rgb(99 74 58 / .45);
+}
+[data-brand='cathelier'] .hero__cta:hover { color: var(--accent-deep); border-block-end-color: var(--accent-deep); }
 
 /* --- the round occasion badges ----------------------------------------------
    The row of circles under the banner, which is how that shop's whole
@@ -554,6 +712,15 @@ p { text-wrap: pretty; }
 .field__req { color: var(--muted); letter-spacing: 0; text-transform: none; font-size: 12px; }
 [data-brand='cathelier'] .product__form { gap: .9rem; }
 
+/* An <a> inside an <h2> is inline: it gets the glyphs' box, not the heading's
+   line box, so it measured 22px tall — below the 24px minimum, on a link that
+   is the only way out of 41 pages. */
+[data-brand='cathelier'] .collection__head h2 a {
+  color: inherit; text-decoration: none;
+  display: inline-block; min-height: 28px;
+}
+[data-brand='cathelier'] .collection__head h2 a:hover { color: var(--accent); text-decoration: underline; text-underline-offset: 6px; }
+
 
 /* ===== styles/shop.css ===== */
 /* ===========================================================================
@@ -563,35 +730,32 @@ p { text-wrap: pretty; }
    drawer on the ithos side and a drawer on the cathelier side share a skeleton
    and share no appearance. */
 
-/* --- hero -----------------------------------------------------------------
-   A photograph edge to edge with the line over it. The owner rejected the
-   picture-beside-text version twice and asked for this by name.
+/* --- the cover ------------------------------------------------------------
+   There is no shared cover any more, and that is the point.
 
-   The scrim is a flat layer, not a gradient, over the band the text sits in.
-   Contrast has to be MEASURABLE, and with a gradient the answer depends on
-   where you measure: the same headline passes at the bottom of the band and
-   fails at the top. A flat scrim gives one answer.
+   Both shops used to render the same <section class="hero">: one photograph
+   under a flat rgb(24 18 14 / .62) panel, with only the aspect-ratio and the
+   words telling them apart. Measured, that panel covered 42% of the cover at
+   320px, 62% at 768 on the ithos side and 90% on the cathelier side — where it
+   left 28 pixels of photograph. And a proportion is invisible to somebody who
+   only ever sees one of the two shops, so the panel made the two covers the
+   same object wearing two sentences.
 
-   With no photograph yet, the panel is a solid brand colour instead. A light
-   placeholder under white text is not a design decision, it is unreadable. */
-.hero { position: relative; isolation: isolate; }
-.hero__photo { background: var(--frame-bg); }
-.hero__body {
-  position: absolute; inset-block-end: 0; inset-inline: 0;
-  padding: clamp(1.5rem, 5vw, 4rem) var(--gutter) clamp(2rem, 6vw, 4.5rem);
-  background: rgb(24 18 14 / .62);
-  color: #fff; text-align: center;
-}
-.hero--nophoto .hero__photo { display: none; }
-.hero--nophoto .hero__body { position: static; background: var(--accent); }
-.hero__title { color: #fff; font-size: clamp(1.75rem, 1rem + 3.4vw, 3.1rem); max-width: 22ch; margin-inline: auto; }
+   What is left here is the one line they still share: the quiet link under the
+   cover. Everything else lives in the brand file, because the two covers are
+   now different objects — a seamless band of lamp photographs on one side, a
+   field of ten drawn doors on the other — and neither would survive being
+   swapped for the other.
+
+   Nothing sits on top of a photograph any more, so contrast is measured
+   against a token instead of against pixels, which is the only thing the
+   battery can actually do. */
+.hero { position: relative; }
 .hero__cta {
-  display: inline-block; margin-block-start: 1.5rem;
+  display: inline-flex; align-items: center; min-height: 26px;
   font-size: 12px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase;
-  color: #fff; text-decoration: none; padding-block-end: 4px;
-  border-block-end: 1px solid rgb(255 255 255 / .65);
+  text-decoration: none;
 }
-.hero__cta:hover { border-color: #fff; }
 
 /* --- breadcrumbs ---------------------------------------------------------- */
 .crumbs { padding-block: .5rem .25rem; font-size: 12px; color: var(--muted); }

@@ -5,35 +5,32 @@
    drawer on the ithos side and a drawer on the cathelier side share a skeleton
    and share no appearance. */
 
-/* --- hero -----------------------------------------------------------------
-   A photograph edge to edge with the line over it. The owner rejected the
-   picture-beside-text version twice and asked for this by name.
+/* --- the cover ------------------------------------------------------------
+   There is no shared cover any more, and that is the point.
 
-   The scrim is a flat layer, not a gradient, over the band the text sits in.
-   Contrast has to be MEASURABLE, and with a gradient the answer depends on
-   where you measure: the same headline passes at the bottom of the band and
-   fails at the top. A flat scrim gives one answer.
+   Both shops used to render the same <section class="hero">: one photograph
+   under a flat rgb(24 18 14 / .62) panel, with only the aspect-ratio and the
+   words telling them apart. Measured, that panel covered 42% of the cover at
+   320px, 62% at 768 on the ithos side and 90% on the cathelier side — where it
+   left 28 pixels of photograph. And a proportion is invisible to somebody who
+   only ever sees one of the two shops, so the panel made the two covers the
+   same object wearing two sentences.
 
-   With no photograph yet, the panel is a solid brand colour instead. A light
-   placeholder under white text is not a design decision, it is unreadable. */
-.hero { position: relative; isolation: isolate; }
-.hero__photo { background: var(--frame-bg); }
-.hero__body {
-  position: absolute; inset-block-end: 0; inset-inline: 0;
-  padding: clamp(1.5rem, 5vw, 4rem) var(--gutter) clamp(2rem, 6vw, 4.5rem);
-  background: rgb(24 18 14 / .62);
-  color: #fff; text-align: center;
-}
-.hero--nophoto .hero__photo { display: none; }
-.hero--nophoto .hero__body { position: static; background: var(--accent); }
-.hero__title { color: #fff; font-size: clamp(1.75rem, 1rem + 3.4vw, 3.1rem); max-width: 22ch; margin-inline: auto; }
+   What is left here is the one line they still share: the quiet link under the
+   cover. Everything else lives in the brand file, because the two covers are
+   now different objects — a seamless band of lamp photographs on one side, a
+   field of ten drawn doors on the other — and neither would survive being
+   swapped for the other.
+
+   Nothing sits on top of a photograph any more, so contrast is measured
+   against a token instead of against pixels, which is the only thing the
+   battery can actually do. */
+.hero { position: relative; }
 .hero__cta {
-  display: inline-block; margin-block-start: 1.5rem;
+  display: inline-flex; align-items: center; min-height: 26px;
   font-size: 12px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase;
-  color: #fff; text-decoration: none; padding-block-end: 4px;
-  border-block-end: 1px solid rgb(255 255 255 / .65);
+  text-decoration: none;
 }
-.hero__cta:hover { border-color: #fff; }
 
 /* --- breadcrumbs ---------------------------------------------------------- */
 .crumbs { padding-block: .5rem .25rem; font-size: 12px; color: var(--muted); }

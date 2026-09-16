@@ -88,7 +88,24 @@ ${noindex || preview ? '<meta name="robots" content="noindex, nofollow">' : ''}
       href="/assets/fonts/${brand === 'ithos' ? 'montserrat-latin' : 'kleeone-400-latin'}.woff2">
 <link rel="stylesheet" href="/assets/${asset.css || 'styles.css'}">
 ${extraHead}
-${schema.length ? `<script type="application/ld+json">${JSON.stringify(schema.length === 1 ? schema[0] : schema)}</script>` : ''}
+${(() => {
+  /* The breadcrumb trail is emitted from the SAME array that draws it, so the
+     two can never disagree. Writing it twice is how a page ends up telling a
+     search engine one path and a reader another. */
+  const all = [...schema];
+  if (crumbs && crumbs.length > 1) {
+    all.push({
+      '@context': 'https://schema.org', '@type': 'BreadcrumbList',
+      itemListElement: crumbs.map((c, i) => ({
+        '@type': 'ListItem', position: i + 1, name: c.name,
+        ...(c.href ? { item: `${site}${c.href}` } : {}),
+      })),
+    });
+  }
+  return all.length
+    ? `<script type="application/ld+json">${JSON.stringify(all.length === 1 ? all[0] : all)}</script>`
+    : '';
+})()}
 </head>
 <body class="${esc(bodyClass)}" id="top">
 <a class="skip" href="#main">Skip to content</a>
