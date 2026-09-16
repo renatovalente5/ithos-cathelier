@@ -87,7 +87,7 @@ ${schema.length ? `<script type="application/ld+json">${JSON.stringify(schema.le
 <body class="${esc(bodyClass)}" id="top">
 <a class="skip" href="#main">Skip to content</a>
 
-${announcement({ brand, shipping, shop })}
+${announcement({ brand, shipping })}
 ${header({ brand, path })}
 ${crumbs ? breadcrumbs(crumbs) : ''}
 
@@ -118,19 +118,20 @@ ${footer({ brand, identity })}
 }
 
 /* --- the line above everything -------------------------------------------
-   The shop this brand is modelled on runs one, and what it carries is the free
-   shipping threshold — commercially the most valuable sentence on the page.
-   It is read from the shipping settings, so it cannot promise a campaign that
-   is switched off. With no campaign running it carries the workshop's own
-   promise instead, which is the thing that actually sells these: nothing is
-   cut until you have seen a drawing. */
-function announcement({ brand, shipping, shop }) {
+   It appears ONLY when there is a campaign running, and carries that campaign:
+   a free shipping threshold, a Christmas cut-off date. Nothing else.
+
+   It used to fall back to a line about the workshop when no campaign was on,
+   and the owner had it taken down — rightly. A bar at the very top of every
+   page is the place a shop says something that is true today and will not be
+   true next month. A permanent claim sitting there is just furniture, and the
+   promise it was making is already on the page, twice, where it means
+   something: beside the button and in the questions. */
+function announcement({ brand, shipping }) {
   if (brand !== 'cathelier') return '';
   const c = shipping?.campaign;
-  const line = c?.active && c.freeOver > 0
-    ? `Free shipping on orders over €${Number(c.freeOver).toFixed(0)}`
-    : 'A drawing to approve before anything is cut';
-  return `<p class="announce">${esc(line)}</p>`;
+  if (!c?.active || !(c.freeOver > 0)) return '';
+  return `<p class="announce">Free shipping on orders over €${Number(c.freeOver).toFixed(0)}</p>`;
 }
 
 function header({ brand, path }) {
