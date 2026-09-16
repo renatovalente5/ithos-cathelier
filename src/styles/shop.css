@@ -346,8 +346,7 @@
 .foot__social { display: flex; gap: .6rem; margin-block-start: 1.25rem; }
 .foot__social a { width: 44px; height: 44px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); }
 .foot__social a:hover { color: var(--accent); border-color: var(--accent); }
-.foot__end { margin-block-start: 1.75rem; padding-block-start: 1.25rem; border-block-start: 1px solid var(--line); font-size: 12px; color: var(--muted); display: grid; gap: .4rem; line-height: 1.7; }
-.foot__end a { color: var(--muted); }
+.foot__end { margin-block-start: 1.75rem; padding-block-start: 1.25rem; border-block-start: 1px solid var(--line); font-size: 12px; color: var(--muted); }
 
 /* --- back to top ----------------------------------------------------------- */
 .to-top {

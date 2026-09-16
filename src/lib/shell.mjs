@@ -227,8 +227,6 @@ function breadcrumbs(items) {
    one landed you in the other brand's world with no idea why. */
 function footer({ brand, identity }) {
   const i = identity;
-  const address = [i.street, [i.postcode, i.town].filter(Boolean).join(' '), i.country].filter(Boolean).join(' · ');
-
   const social = brand === 'cathelier'
     ? [[i.instagramCathelier, 'cathelier on Instagram', 'instagram']]
     : [[i.instagramIthos, 'ithos on Instagram', 'instagram'],
@@ -240,6 +238,7 @@ function footer({ brand, identity }) {
       ['/legal/shipping-and-returns/', 'Delivery and returns'],
       ['/care-and-safety/', 'Care and safety'],
       ['/legal/returns-form/', 'Cancellation form'],
+      [i.complaintsBook, 'Complaints book'],
     ]],
     ['The shop', [
       ['/about/', 'The workshop'],
@@ -276,12 +275,24 @@ function footer({ brand, identity }) {
         `<a href="${esc(href)}" rel="noopener" aria-label="${esc(label)}">${icon(ic, 18)}</a>`).join('\n      ')}
     </div>
 
-    <div class="foot__end">
-      <p>${esc(i.tradingName)} · ${esc(i.legalName)}${address ? ` · ${esc(address)}` : ''}
-         · Tax no. ${esc(i.taxNumber)}</p>
-      <p><a href="${esc(i.complaintsBook)}" rel="noopener">Complaints book</a> ·
-         Out-of-court dispute resolution: <a href="${esc(i.adr.site)}" rel="noopener">${esc(i.adr.name.split('—')[0].trim())}</a></p>
-    </div>
+    <!-- The seller's identification used to be printed here in full, on all 96
+         pages, and it is gone.
+
+         What the law requires is ACCESS, not repetition: article 10 of
+         DL 7/2004 asks for the name, address and tax number to be
+         "permanently, easily and directly accessible", and a permanent link in
+         the footer of every page to a page that carries them is exactly that.
+         It lives at /legal/identification/ and is linked under Terms below.
+
+         The two things that must be ON the site rather than merely reachable
+         are still on it: the electronic complaints book is a link under
+         Customer care, where somebody with a complaint would look for it, and
+         the out-of-court dispute body is named on the terms page and on the
+         identification page, which is what article 18 of Lei 144/2015 asks.
+
+         The call-cost line stays wherever the telephone number appears. That
+         one is not about access — it has to sit beside the number. -->
+    <p class="foot__end">© ${new Date().getFullYear()} ${esc(i.tradingName)}</p>
   </div>
 </footer>`;
 }
