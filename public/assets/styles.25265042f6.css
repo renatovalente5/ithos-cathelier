@@ -667,6 +667,26 @@ p { text-wrap: pretty; }
   object-position: var(--cover-focus, 50% 50%);
 }
 
+/* The film sits in the same grid cell as the photograph, between it and the
+   words. It starts invisible and with no source at all: until shop.js turns it
+   on, this is an empty box over the picture, and the cover looks exactly as it
+   does with no JavaScript. The fade is what stops the first frame appearing as
+   a jump-cut out of the photograph -- and it is skipped for anyone who asked
+   for less motion, who in any case never gets this far. */
+.cover__film {
+  grid-area: 1 / 1;
+  z-index: 0;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+}
+.cover__film[data-on] { opacity: 1; }
+@media (prefers-reduced-motion: no-preference) {
+  .cover__film { transition: opacity .9s ease; }
+}
+
 .cover__words {
   position: relative;
   z-index: 1;

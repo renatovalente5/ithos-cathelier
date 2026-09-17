@@ -278,6 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
   foldFooter();
   narrow.addEventListener('change', foldFooter);
 
+  coverFilm();
   filters();
   sorting();
   cardShots();
@@ -1092,6 +1093,87 @@ function productForm() {
     add.textContent = 'Added';
     setTimeout(() => { add.textContent = 'Add to basket'; }, 1600);
   });
+}
+
+/* --- the film on the cover -------------------------------------------------
+   WHAT DECIDES, AND WHAT MERELY FOLLOWS
+
+   Three questions decide whether the film runs, and none of them is asked
+   once: the screen can be resized, the reader can change their motion setting
+   while the page is open, and the cover scrolls away. So there is no "start
+   the film" step anywhere below. `settle()` asks the three questions, looks at
+   whether the cover is on screen, and makes the element agree -- the same
+   shape as the drawer's lock, and for the same reason: it can be called from
+   any of the five listeners, in any order, and the answer is always the state
+   the page should be in.
+
+   The first call is what fetches the file. Until then there is no `src`, so a
+   phone, a reader who asked for stillness and anyone on a metered connection
+   pay nothing at all for a film they are never shown -- not a request, not a
+   redirect, nothing.
+
+   THE BREAKPOINT IS READ, NOT REPEATED
+
+   `data-film-from` is written by the template and mirrors the one place the
+   stylesheet turns the cover into a 16:9 frame. A copy of that number here
+   would be a second truth, and this project has already had a media query in a
+   script quietly disagree with the one in the stylesheet. scripts/guards.mjs
+   checks the two still say the same thing.
+
+   AND THE FADE WAITS FOR A REAL FRAME
+
+   `data-on` goes on at `playing` and not at `loadeddata`, because a video that
+   has loaded has not necessarily painted: fading in on the earlier event
+   shows a black rectangle for a beat where the photograph used to be. Coming
+   back on screen does not fade again -- `data-on` only comes off when the
+   answer to the three questions changes. */
+function coverFilm() {
+  const film = $('.cover__film');
+  if (!film || !film.dataset.film || !film.dataset.filmFrom) return;
+
+  const wide = matchMedia(`(min-width: ${film.dataset.filmFrom})`);
+  const calm = matchMedia('(prefers-reduced-motion: reduce)');
+  /* Chrome and the Android browsers answer this; Safari and Firefox do not,
+     and an absent answer is not a no -- it is silence, and silence here means
+     carry on. Only an explicit "this connection is metered or very slow" stops
+     the film. */
+  const link = navigator.connection;
+  const metered = () => !!link
+    && (link.saveData === true || /(^|-)2g$/.test(link.effectiveType || ''));
+
+  const allowed = () => wide.matches && !calm.matches && !metered();
+  let onScreen = true;
+
+  const settle = () => {
+    if (!allowed()) {
+      delete film.dataset.on;
+      if (film.src) film.pause();
+      return;
+    }
+    if (!film.src) {
+      /* The attribute already carries the base path: the build puts it there,
+         the same way it does for every src on the page. */
+      film.muted = true;      // the attribute says so too; Safari wants both
+      film.src = film.dataset.film;
+    }
+    if (!onScreen || document.visibilityState === 'hidden') { film.pause(); return; }
+    /* A refused autoplay is not a failure to handle, it is an answer: the
+       photograph stays, which is where the cover started. */
+    film.play().catch(() => { delete film.dataset.on; });
+  };
+
+  film.addEventListener('playing', () => { if (allowed()) film.dataset.on = ''; });
+  wide.addEventListener('change', settle);
+  calm.addEventListener('change', settle);
+  document.addEventListener('visibilitychange', settle);
+
+  if (typeof IntersectionObserver === 'function') {
+    new IntersectionObserver((entries) => {
+      onScreen = entries.some((e) => e.isIntersecting);
+      settle();
+    }).observe(film);
+  }
+  settle();
 }
 
 /* --- the shop is not open yet --------------------------------------------

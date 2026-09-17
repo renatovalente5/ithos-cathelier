@@ -206,6 +206,26 @@ window.__bateria = function () {
     }
   }
 
+  /* E QUANDO O FUNDO É UM FILME
+     A medição de cima amostra a fotografia. Numa capa com filme a fotografia
+     continua lá por baixo, mas não é ela que se vê: o chão do painel muda 25
+     vezes por segundo, e medir um quadro não diz nada sobre o seguinte. Medir
+     o quadro actual seria pior do que não medir, porque daria um ✓ sobre uma
+     pergunta que não foi feita.
+     O que se mede é o limite: o painel composto sobre PRETO. Nenhum quadro de
+     nenhum filme pode ser mais escuro do que preto, portanto se este número
+     passa, passam todos — e passa a ser verdade para o filme que a dona lá
+     puser amanhã, sem ninguém ter de vir cá medir outra vez. */
+  if (document.querySelector('.cover__film') && capaPainel) {
+    const painel = getComputedStyle(capaPainel).backgroundColor;
+    const tinta = getComputedStyle(capaPainel).color;
+    const fundo = `rgb(${rgbDe(painel, 'rgb(0,0,0)').join(',')})`;
+    const [a, b] = [lum(tinta, fundo), lum(fundo)].sort((q, w) => w - q);
+    const r = (a + 0.05) / (b + 0.05);
+    nota(r >= 4.5, 'contraste da capa sobre o quadro mais escuro que um filme pode ter',
+      `${r.toFixed(2)}:1 com o painel sobre preto (min 4.5)`);
+  }
+
 
   // --- alvos de toque ------------------------------------------------------
   /* Duas isenções, e as duas são da própria norma (WCAG 2.5.8):

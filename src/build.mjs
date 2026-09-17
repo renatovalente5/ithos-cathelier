@@ -60,7 +60,12 @@ const BASE = (process.env.BASE_PATH || '').replace(/\/$/, '');
 function prefix(html) {
   if (!BASE) return html;
   return html
-    .replace(/(\s(?:href|src|content|action)=")\/(?!\/)/g, `$1${BASE}/`)
+    /* data-film is in this list for the same reason src is: it holds an
+       address, and an address that misses the prefix is a 404 the moment the
+       site is served from a subfolder. Putting it here means shop.js can
+       assign the attribute verbatim and never do prefix arithmetic of its
+       own -- which is the whole point of there being one place. */
+    .replace(/(\s(?:href|src|content|action|data-film)=")\/(?!\/)/g, `$1${BASE}/`)
     .replace(/(\ssrcset=")([^"]+)"/g, (m, head, list) =>
       head + list.replace(/(^|,\s*)\/(?!\/)/g, `$1${BASE}/`) + '"');
 }

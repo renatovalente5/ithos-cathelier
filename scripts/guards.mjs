@@ -171,6 +171,76 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
       die(`covers.json: the ${brand} cover has no renditions — run scripts/renditions.py`);
     }
     if (!c.text) pending(`covers.json: the ${brand} cover has no sentence under the title`);
+
+    /* The film is optional and deleting the line is meant to be safe, so a
+       missing "film" is silence. A film that is NAMED and not on disk is not:
+       that is a 2 MB request for nothing on the busiest page of the site. */
+    if (c.film) {
+      if (!/^[a-z0-9-]+$/.test(c.film)) {
+        die(`covers.json: ${brand}.film must be a plain file name — got "${c.film}"`);
+      } else if (!existsSync(join(ROOT, 'public/media/film', `${c.film}.mp4`))) {
+        die(`covers.json: the ${brand} cover names the film "${c.film}" and `
+          + `public/media/film/${c.film}.mp4 is not there — run scripts/film.sh ${c.film}`);
+      }
+    }
+  }
+}
+
+/* --- the film's breakpoint, and the panel it plays behind -------------------
+   Two numbers in this project are written down in more than one language, and
+   both have already gone wrong somewhere: a width that the stylesheet and a
+   script have to agree on, and an opacity that a paragraph of prose claims is
+   safe. Neither is checked by reading the site, because on the day they
+   disagree the page still renders -- it just renders the wrong thing. */
+{
+  const css = readFileSync(join(ROOT, 'src/styles/shop.css'), 'utf8');
+  const covers = read('settings/covers.json');
+
+  /* 1. The film runs from the width at which the cover becomes 16:9, because
+        that is the width at which the cover and the film are the same shape.
+        The template writes that number into data-film-from and shop.js reads
+        it from there; here we check it is still the number the stylesheet
+        uses, rather than one somebody moved and the other did not. */
+  if (Object.values(covers).some((c) => c && c.film)) {
+    const wide = css.match(/@media \(width >= ([\d.]+rem)\) \{\s*\.cover__media \{ aspect-ratio: 16 \/ 9/);
+    const template = readFileSync(join(ROOT, 'src/lib/cover.mjs'), 'utf8')
+      .match(/data-film-from="([^"]+)"/);
+    if (!wide) {
+      die('shop.css: cannot find the breakpoint where .cover__media becomes 16/9, '
+        + 'so the film\'s breakpoint cannot be checked against it');
+    } else if (!template) {
+      die('cover.mjs: the film element has no data-film-from');
+    } else if (wide[1] !== template[1]) {
+      die(`the film starts at ${template[1]} (cover.mjs) but the cover only becomes `
+        + `16:9 at ${wide[1]} (shop.css) — between the two it would be cropped`);
+    }
+  }
+
+  /* 2. The words sit on a panel that lets some of the picture -- or the film
+        -- through, so the worst ground the ink can ever land on is the panel
+        composited over black. cover.mjs claims that is still above 4.5:1.
+        Claims in comments rot; this one is arithmetic, so it is done. */
+  const lum = (hex) => {
+    const n = hex.replace('#', '');
+    const ch = [0, 2, 4].map((i) => parseInt(n.slice(i, i + 2), 16) / 255)
+      .map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
+    return 0.2126 * ch[0] + 0.7152 * ch[1] + 0.0722 * ch[2];
+  };
+  for (const brand of ['ithos', 'cathelier']) {
+    const sheet = readFileSync(join(ROOT, 'src/styles/brands', `${brand}.css`), 'utf8');
+    const panel = sheet.match(/--cover-panel:\s*rgb\((\d+) (\d+) (\d+) \/ ([\d.]+)\)/);
+    const ink = sheet.match(/--cover-ink:\s*(#[0-9a-fA-F]{6})/);
+    if (!panel || !ink) { die(`${brand}.css: cannot read --cover-panel / --cover-ink`); continue; }
+    const a = Number(panel[4]);
+    /* over black: the panel keeps only its own alpha of itself */
+    const over = '#' + panel.slice(1, 4)
+      .map((v) => Math.round(Number(v) * a).toString(16).padStart(2, '0')).join('');
+    const [hi, lo] = [lum(over), lum(ink[1])].sort((x, y) => y - x);
+    const ratio = (hi + 0.05) / (lo + 0.05);
+    if (ratio < 4.5) {
+      die(`${brand}: the cover panel at ${a} opacity over a black frame reads `
+        + `${ratio.toFixed(2)}:1 against the ink — below the 4.5:1 minimum`);
+    }
   }
 }
 

@@ -84,7 +84,11 @@ for (const file of pages) {
   // served under a folder, a path that forgot the prefix resolves to somebody
   // else's site — so the prefix is checked here rather than trusted.
   const BASE = (process.env.BASE_PATH || '').replace(/\/$/, '');
-  for (const m of html.matchAll(/(?:href|src)="(\/[^"#?]*)/g)) {
+  // data-film is in here with href and src because it is the same kind of
+  // thing: an address the page will fetch. It is fetched by script rather than
+  // by the parser, which is exactly why it needs checking -- nothing about a
+  // missing prefix shows up until somebody loads the home page.
+  for (const m of html.matchAll(/(?:href|src|data-film)="(\/[^"#?]*)/g)) {
     let target = m[1];
     if (BASE) {
       if (!target.startsWith(BASE + '/')) {

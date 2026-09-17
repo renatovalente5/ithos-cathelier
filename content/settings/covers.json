@@ -1,12 +1,15 @@
 {
   "_note": "The cover of each brand: one photograph filling the first screen, with these words over it. Change the words here and they change on the site. To change the photograph, replace photos/_covers/ithos.jpg or cathelier.jpg with a landscape picture and run scripts/covers.py.",
 
+  "_note_film": "\"film\" plays a short silent film over the cover photograph on laptops and larger screens. Delete the line and the photograph stays, with nothing to undo — on phones and for anyone whose device is set to reduce motion, the photograph is what shows anyway. Changing the film itself is not a back-office job: the new recording goes in _materiais-ithos-cathelier/filmes/ and somebody runs scripts/film.sh.",
+
   "ithos": {
     "title": "A small light that stays on all night",
     "text": "Wooden night lights, cut, sanded and painted by hand.",
     "buttonLabel": "See all the lamps",
     "buttonHref": "/lamps/",
     "alt": "A wooden horse night light standing lit on a round straw mat",
+    "film": "ithos-cover",
     "focus": "50% 52%",
     "focusWide": "50% 44%"
   },
