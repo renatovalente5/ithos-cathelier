@@ -498,6 +498,13 @@ p { text-wrap: pretty; }
 :where([data-brand='cathelier']) .occasion:hover .occasion__badge { background: var(--accent-deep); transform: translateY(-2px); }
 @media (prefers-reduced-motion: reduce) { :where([data-brand='cathelier']) .occasion__badge { transition: none; } :where([data-brand='cathelier']) .occasion:hover .occasion__badge { transform: none; } }
 :where([data-brand='cathelier']) .occasion__badge img { width: 100%; height: 100%; object-fit: cover; }
+/* O DESENHO EM PERCENTAGEM DO CÍRCULO, não num tamanho fixo.
+   Estava a 30px dentro de um disco que vai de 56 a 74: ocupava 40% do círculo
+   na largura maior e não se percebia o que era. Em percentagem cresce e encolhe
+   com o disco, e a proporção desenho/círculo é a mesma em todos os ecrãs. O
+   atributo width/height que occasionArt() escreve fica como tamanho intrínseco
+   -- serve de reserva antes de a folha de estilos chegar. */
+:where([data-brand='cathelier']) .occasion__badge svg { inline-size: 62%; block-size: 62%; }
 :where([data-brand='cathelier']) .occasion__name {
   font-family: var(--font-body); font-size: 13px; font-weight: 500;
   letter-spacing: .1em; text-transform: uppercase;
@@ -511,8 +518,7 @@ p { text-wrap: pretty; }
    construído à volta disso -- e a fila só existia no PÉ das páginas de ocasião,
    a 4455px de uma página de 5145. Aqui é a primeira coisa por baixo da capa,
    que é onde uma navegação serve para alguma coisa. */
-:where([data-brand='cathelier']) .occasions-lead { padding-block: clamp(2rem, 5vw, 3.25rem); background: var(--bg-trust); }
-:where([data-brand='cathelier']) .occasions-lead .collection__head p { margin-block-start: .5rem; color: var(--ink-soft); }
+:where([data-brand='cathelier']) .occasions-lead { padding-block: clamp(.5rem, 2vw, 1rem); background: var(--bg-trust); }
 :where([data-brand='cathelier']) .steps__aside { margin-block-start: 2.5rem; text-align: center; font-size: 14px; color: var(--ink-soft); }
 
 /* --- collection blocks ------------------------------------------------------ */

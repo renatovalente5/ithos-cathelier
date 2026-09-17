@@ -81,10 +81,6 @@ ${cover(coverText, 'cathelier', coverArt)}
 
 <section class="occasions-lead">
   <div class="shell">
-    <div class="collection__head">
-      <h2>What is it for?</h2>
-      <p>Start with the day, or with the person.</p>
-    </div>
     ${occasionRow(occasions)}
   </div>
 </section>

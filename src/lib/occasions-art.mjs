@@ -100,11 +100,16 @@ const ART = {
     <path d="M24 12.6l1.2 2.5 2.8.4-2 1.9.5 2.7-2.5-1.3-2.5 1.3.5-2.7-2-1.9 2.8-.4Z" fill="currentColor" stroke="none" opacity=".5"/>`,
 };
 
+/* 1.9 e nao 1.4. Os desenhos passaram a ocupar 62% do circulo em vez de 40%, e
+ * a esse tamanho o traco fino desaparecia -- a dona disse que nao dava para
+ * perceber o que eram. Renderizei os dez a 150px com 1.4, 1.9 e 2.4 lado a
+ * lado: a 1.4 ficam esquelicos e a 2.4 os detalhes fecham-se (o escudo do Pai,
+ * a taca dos premios). 1.9 e o que le em ambos os tamanhos. */
 export function occasionArt(slug, size = 30) {
   const body = ART[slug];
   if (!body) return '';
   return `<svg viewBox="0 0 48 48" width="${size}" height="${size}" fill="none" stroke="currentColor"
-    stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"
+    stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"
     aria-hidden="true" focusable="false">${body}</svg>`;
 }
 
