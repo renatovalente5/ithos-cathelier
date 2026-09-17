@@ -15,11 +15,11 @@ export const NAV = {
     ['/contact/', 'Contact'],
   ],
   cathelier: [
-    // "Occasions" came out of the bar at the owner's request. The ten occasion
-    // pages are not orphaned by it: the cathelier home draws all ten as
-    // badges, every occasion page links to the other nine, and the drawer
-    // carries them on a phone — eleven pages of origin, which is where they
-    // were being found anyway.
+    // "Occasions" came out of the bar at the owner's request, and the ten
+    // occasion PAGES have since been deleted outright: an occasion is now a
+    // filter on this one list, reached from the badges on the cathelier home.
+    // So this single entry is the whole catalogue, and there is nothing left
+    // for the bar to orphan.
     ['/cathelier/pieces/', 'All pieces', 'pieces'],
     ['/cathelier/quote/', 'Ask for a quote'],
     ['/cathelier/about/', 'The workshop'],

@@ -588,6 +588,34 @@ window.__bateria = function () {
       `${Math.round(r.width)}×${Math.round(r.height)}`);
   }
 
+  /* O ATALHO DO CÍRCULO TEM DE FILTRAR MESMO.
+     Os círculos da home da cathelier deixaram de apontar a páginas próprias e
+     passaram a apontar a esta lista com a ocasião no fragmento. Ninguém mais
+     vê esse endereço: o `check-output` para de ler no `#`, e o HTML servido é
+     byte a byte o mesmo com e sem ele -- a diferença acontece toda no browser.
+     Se o leitor do fragmento se partir, a página abre com tudo visível e
+     parece perfeitamente bem. Só isto dá por isso. */
+  const querido = decodeURIComponent(location.hash.slice(1));
+  const chips = [...document.querySelectorAll('[data-filters] [data-filter]')];
+  if (querido && chips.length) {
+    const chip = chips.find((c) => c.dataset.filter === querido);
+    nota(!!chip, `o fragmento #${querido} nomeia um filtro que existe`,
+      chips.map((c) => c.dataset.filter).join(', '));
+    if (chip) {
+      nota(chip.getAttribute('aria-pressed') === 'true' && !chip.hidden,
+        'e esse filtro abriu já escolhido e à vista',
+        `aria-pressed=${chip.getAttribute('aria-pressed')} hidden=${chip.hidden}`);
+      const cartoes = [...document.querySelectorAll('[data-product-list] [data-family]')];
+      const vistos = cartoes.filter((c) => c.style.display !== 'none');
+      nota(vistos.length > 0 && vistos.length < cartoes.length,
+        'e a lista encolheu sem ficar vazia',
+        `${vistos.length} de ${cartoes.length}`);
+      const intruso = vistos.map((c) => c.dataset.family)
+        .find((f) => !f.split(' ').includes(querido));
+      nota(!intruso, 'e o que ficou pertence todo a essa ocasião', intruso || 'sim');
+    }
+  }
+
   for (const g of closedGroups) g.open = false;
   if (drawerIsShown && !drawerWasOpen) drawer.close();
 

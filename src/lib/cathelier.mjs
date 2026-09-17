@@ -44,9 +44,16 @@ export function card(p, { eager = false } = {}) {
 </article>`;
 }
 
-function occasionRow(occasions, current) {
+/* OS CIRCULOS NAO SAO UM MENU DE PAGINAS, SAO UM ATALHO PARA UM FILTRO.
+   Cada ocasiao tinha a sua propria pagina; o filtro de /cathelier/pieces/
+   reproduz EXACTAMENTE a mesma lista (mesmo predicado, mesmas contagens), por
+   isso a pagina era uma segunda morada para o mesmo conteudo. O fragmento e a
+   forma combinada: nao precisa de servidor, sobrevive ao GitHub Pages e o
+   filters() do shop.js le-o ao arrancar. Quem muda isto aqui tem de mudar la,
+   e a guarda em guards.mjs recusa um atalho que nao case com nenhum chip. */
+function occasionRow(occasions) {
   return `<nav class="occasions" aria-label="Occasions">
-  ${occasions.map((o) => `<a class="occasion" href="/cathelier/${esc(o.slug)}/"${o.slug === current ? ' aria-current="page"' : ''}>
+  ${occasions.map((o) => `<a class="occasion" href="/cathelier/pieces/#${esc(o.slug)}"${o.summary ? ` title="${esc(o.summary)}"` : ''}>
     <span class="occasion__badge">${occasionArt(o.slug, 30)}</span>
     <span class="occasion__name">${esc(o.name)}</span>
   </a>`).join('\n  ')}
@@ -56,25 +63,28 @@ function occasionRow(occasions, current) {
 
 
 export function home({ occasions, pieces, cover: coverText, coverArt }) {
-  /* A CONTAGEM SAI DO MESMO FILTRO QUE A PÁGINA DE OCASIÃO USA.
-     Escrever "19 keepsakes" à mão faz a home mentir na primeira vez que a dona
-     publicar mais uma -- e ninguém repara, porque o número continua a parecer
-     um número. `featured` é o que se MOSTRA (quatro); `quantos` é o que
-     EXISTE, e é esse que vai no botão. */
-  const feature = occasions.find((o) => o.slug === 'keepsakes') ?? occasions[0];
-  const naColeccao = (p) => p.occasion === feature.slug || (p.alsoIn || []).includes(feature.slug);
-  const quantos = pieces.filter(naColeccao).length;
-  /* SEIS e não quatro. A grelha é de 2 colunas abaixo de 48rem, 3 acima e 4 a
-     partir de 90rem: quatro cartões deixam sempre UM sozinho na segunda fila a
-     3 colunas, que é a largura mais comum. Seis fecha certo a 2 e a 3, e a 4
-     deixa meia fila em vez de um órfão. */
-  const featured = pieces.filter(naColeccao).slice(0, 6);
-  const resto = pieces.filter((p) => !naColeccao(p)).slice(0, 8);
-
-  const shot = (name, ratio) => `<div class="frame"${ratio ? ` style="aspect-ratio:${ratio}"` : ''}>${picture({
-    dir: 'cathelier/pool', name, widths: [200, 400], alt: '',
-    sizes: '(min-width: 56rem) 33vw, 50vw',
-  })}</div>`;
+  /* OITO CARTOES, UM POR OCASIAO, E SEM DUAS FOTOGRAFIAS IGUAIS.
+     Oito porque a grelha e de 2 colunas abaixo de 48rem, 3 acima e 4 a partir
+     de 90rem, e oito fecha a fila nas tres larguras.
+     Um por ocasiao porque a fila de circulos esta mesmo por cima: a grelha
+     mostra o que cada circulo promete, pela mesma ordem.
+     E sem repetir fotografia porque nenhuma das 41 pecas foi fotografada
+     ainda -- partilham uma pasta comum de amostras, e as oito primeiras da
+     lista traziam a MESMA imagem tres vezes, duas delas lado a lado, na
+     pagina mais vista da marca. O dia em que houver fotografias a serio isto
+     continua a servir, sem se lhe tocar.
+     A contagem do botao sai de `pieces.length` e nunca de um numero escrito a
+     mao: assim a home nao passa a mentir quando a dona publicar mais uma. */
+  const retrato = (x) => (x.photoFolder && (x.cover || x.photos?.[0])
+    ? `${x.photoFolder}/${x.cover || x.photos[0]}` : `sem-fotografia:${x.slug}`);
+  const mostra = [];
+  const usadas = new Set();
+  const cabe = (x) => mostra.length < 8 && !mostra.includes(x) && !usadas.has(retrato(x));
+  const junta = (x) => { if (x) { mostra.push(x); usadas.add(retrato(x)); } };
+  for (const o of occasions) {
+    junta(pieces.find((x) => cabe(x) && (x.occasion === o.slug || (x.alsoIn || []).includes(o.slug))));
+  }
+  for (const x of pieces) if (cabe(x)) junta(x);   // ocasiões a menos, ou fotografias repetidas a mais
 
   return `
 ${cover(coverText, 'cathelier', coverArt)}
@@ -85,94 +95,19 @@ ${cover(coverText, 'cathelier', coverArt)}
   </div>
 </section>
 
-<section class="feature">
-  <div class="shell">
-    <div class="feature__row">
-      <div class="feature__text">
-        <h2>For everyone who was there</h2>
-        <p>A christening, a wedding, a communion, a birthday — and fifty small
-           things to hand out at the end of it, each one carrying a name.</p>
-        <p>They are cut, engraved and sanded here, one run at a time. No two runs
-           come out the same, because the names are not.</p>
-      </div>
-      <div class="feature__art">
-        ${shot('03', '16 / 9')}${shot('09')}${shot('02')}${shot('07')}
-      </div>
-    </div>
-    <div class="grid-products" style="margin-block-start:clamp(2rem, 5vw, 3rem)">
-      ${featured.map((p, i) => card(p, { eager: i < 3 })).join('\n      ')}
-    </div>
-    <p style="text-align:center;margin-block-start:2.5rem">
-      <a class="btn" href="/cathelier/${esc(feature.slug)}/">See all ${quantos} keepsakes</a>
-    </p>
-  </div>
-</section>
-
-<section class="steps">
-  <div class="shell">
-    <div class="collection__head"><h2>Nothing is cut before you say yes</h2></div>
-    <ol class="steps__list">
-      <li>
-        <span class="steps__n" aria-hidden="true">1</span>
-        <h3>You write</h3>
-        <p>The names, the dates, the words. A photograph of something you liked,
-           if you have one.</p>
-      </li>
-      <li>
-        <span class="steps__n" aria-hidden="true">2</span>
-        <h3>We draw it</h3>
-        <p>The drawing comes back to you with every letter exactly where it will
-           be cut. Change it as many times as you need to.</p>
-      </li>
-      <li>
-        <span class="steps__n" aria-hidden="true">3</span>
-        <h3>Then the laser</h3>
-        <p>Only after you have said yes. There is no version of this where you
-           open the box and find a name spelled wrong.</p>
-      </li>
-    </ol>
-    <p class="steps__aside">Fifty of something, for a wedding or a school?
-      <a href="/cathelier/quote/">Ask for a quote</a>.</p>
-  </div>
-</section>
-
 <section class="collection collection--alt">
   <div class="shell">
     <div class="collection__head">
-      <h2>Everything else</h2>
+      <h2>Made to order</h2>
       <p>Cake toppers, signs, trophies, bookmarks, boxes, keyrings. ${pieces.length}
          pieces in all, and every one of them takes a name.</p>
     </div>
     <div class="grid-products" style="margin-block-start:2rem">
-      ${resto.map((p) => card(p)).join('\n      ')}
+      ${mostra.map((p, i) => card(p, { eager: i < 3 })).join('\n      ')}
     </div>
     <p style="text-align:center;margin-block-start:2.5rem">
       <a class="btn btn--ghost" href="/cathelier/pieces/">See all ${pieces.length} pieces</a>
     </p>
-  </div>
-</section>
-`;
-}
-
-export function occasion({ o, pieces, occasions }) {
-  const list = pieces.filter((p) => p.occasion === o.slug || (p.alsoIn || []).includes(o.slug));
-  return `
-<section class="collection">
-  <div class="shell">
-    <div class="collection__head">
-      <h1>${esc(o.name)}</h1>
-      <p class="lede" style="margin-block-start:.75rem">${esc(o.summary)}</p>
-    </div>
-    <div class="grid-products" style="margin-block-start:2rem">
-      ${list.map((p, i) => card(p, { eager: i < 4 })).join('\n      ')}
-    </div>
-  </div>
-</section>
-
-<section class="collection" style="background:var(--bg-soft)">
-  <div class="shell">
-    <div class="collection__head"><span class="eyebrow">Or look by</span></div>
-    ${occasionRow(occasions, o.slug)}
   </div>
 </section>
 `;
@@ -288,12 +223,13 @@ ${viewer()}
 
 ${related.length ? `<section class="collection" style="background:var(--bg-soft)">
   <div class="shell">
-    <!-- The heading names the occasion and now LINKS to it. It used to be flat
-         text with four sibling cards under it and no way through to the page it
-         was naming — a dead end on every one of the 41 pieces. -->
+    <!-- The heading names the occasion and LINKS to it: to the full list,
+         filtered, which is now the only place an occasion lives. It used to be
+         flat text with four sibling cards under it and no way through to the
+         thing it was naming -- a dead end on every one of the 41 pieces. -->
     <div class="collection__head">
       <span class="eyebrow">More for</span>
-      ${here ? `<h2><a href="/cathelier/${esc(here.slug)}/">${esc(here.name)}</a></h2>`
+      ${here ? `<h2><a href="/cathelier/pieces/#${esc(here.slug)}">${esc(here.name)}</a></h2>`
              : '<h2>the same day</h2>'}
     </div>
     <div class="grid-products" style="margin-block-start:2rem">${related.map((x) => card(x)).join('\n      ')}</div>

@@ -16,35 +16,31 @@
    ------------------------------------------------------------------------- */
 
 const ART = {
-  /* A bauble: the two wooden halves that click together, with the name between. */
+  /* UMA ÁRVORE, e não a bola que aqui estava. A bola era um círculo com linhas
+     dentro -- e o disco de nascimento, a seguir, também: a 46px os dois eram a
+     mesma mancha, e a dona disse que não dava para perceber o que eram. Uma
+     árvore não se confunde com nada no conjunto. */
   christmas: `
-    <path d="M21.5 11.5h5v3.4h-5z"/>
-    <path d="M24 11.5V9.2a2.6 2.6 0 0 0-2.6-2.6"/>
-    <circle cx="24" cy="28.4" r="13"/>
-    <path d="M11.2 26.6h25.6"/>
-    <path d="M18 33.5h12M20.5 37.2h7"/>
-    <circle cx="24" cy="20.8" r="1.5" fill="currentColor" stroke="none"/>`,
-
-  /* The daisy they really cut, on its stem. Eight proper teardrop petals
-     rotated around the centre — the first version drew them as loose marks
-     and read as scattered debris rather than a flower. */
+    <path d="M24 7.8 14.6 21.2h18.8Z"/>
+    <path d="M24 15.6 10.2 33h27.6Z"/>
+    <path d="M21.4 33h5.2v6.4h-5.2z"/>
+    <circle cx="24" cy="5.4" r="1.9" fill="currentColor" stroke="none"/>`,
+  /* A MESMA margarida, com SEIS pétalas gordas em vez de oito estreitas. As
+     oito, rodadas, fechavam-se umas nas outras e a flor lia-se como uma
+     explosão de raios. Menos pétalas e mais largas, e volta a ser uma flor. */
   'mothers-day': `
-    ${[0, 45, 90, 135, 180, 225, 270, 315].map((a) =>
-      `<path d="M24 19.8C21.3 18 20.8 14 24 8.8C27.2 14 26.7 18 24 19.8Z" transform="rotate(${a} 24 22)"/>`).join('\n    ')}
-    <circle cx="24" cy="22" r="3.4" fill="currentColor" stroke="none" opacity=".55"/>
-    <path d="M24 35.2V42"/>
-    <path d="M24 38.4c-3.2 0-5.2-1.6-6-4.8 3.2-.6 5.2.9 6 4.8Z"/>`,
-
-  /* The "you are my superhero" shield, with the small figure and the cape. */
+    ${[0, 60, 120, 180, 240, 300].map((a) =>
+      `<ellipse cx="24" cy="11.4" rx="4.4" ry="6.5" transform="rotate(${a} 24 19)"/>`).join('\n    ')}
+    <circle cx="24" cy="19" r="3.4" fill="currentColor" stroke="none" opacity=".55"/>
+    <path d="M24 30.2V42"/>
+    <path d="M24 35.6c-4-2.6-8.2-1.2-8.2-1.2s1.8 3.9 5.8 3.4"/>`,
+  /* O MESMO escudo de super-herói, com uma ESTRELA cheia em vez da figurinha.
+     A figura tinha cabeça, tronco, pernas e capa dentro de 20px de escudo: a
+     46px era um borrão. A estrela lê-se ao primeiro olhar e a frase da ocasião
+     -- "You are my superhero" -- continua de pé. */
   'fathers-day': `
     <path d="M24 7.5 37 12v12.4c0 9-5.5 14.3-13 17.1-7.5-2.8-13-8.1-13-17.1V12Z"/>
-    <path d="M17.6 18.6h12.8"/>
-    <circle cx="26.4" cy="27.2" r="2.1"/>
-    <path d="M26.4 29.5v5.2M23.4 31.6h6M24.6 34.7l-1.2 3.2M28.2 34.7l1.2 3.2"/>
-    <path d="M28.6 29.6c2.4 1.1 3.1 3.3 2.2 6.5"/>
-    <circle cx="20.6" cy="31.8" r="1.4"/>
-    <path d="M20.6 33.4v3.1M19.2 37.9l1.4-1.4 1.4 1.4"/>`,
-
+    <path d="M24 15.5 25.94 20.33 31.13 20.68 27.14 24.02 28.41 29.07 24 26.3 19.59 29.07 20.86 24.02 16.87 20.68 22.06 20.33Z" fill="currentColor" stroke="none" opacity=".55"/>`,
   /* A balloon with a name tag on its string. The first attempt was a rocking
      horse and at badge size it read as a tent: too many joints, none of them
      legible below 40px. A balloon survives being small. */
@@ -63,21 +59,26 @@ const ART = {
     <path d="M24 16c0-2.6-2-3.6-2-5.6a2 2 0 0 1 4 0c0 2-2 3-2 5.6Z"/>
     <path d="M16.6 24.4h14.8M18.8 28.6h10.4"/>`,
 
-  /* The birth disc: name, date, time, weight, length, all engraved. */
+  /* UM CARRINHO. Era o disco de nascimento com as linhas dos dados -- honesto
+     sobre o produto e ilegível como sinal: um círculo com linhas era o que
+     metade das ocasiões parecia. O cabeçalho deste ficheiro já dizia que um
+     desenho a este tamanho ainda consegue dizer "pram". Diz. */
   'new-baby': `
-    <circle cx="24" cy="25" r="14"/>
-    <path d="M17 19.4h14"/>
-    <path d="M15.6 24.6h7.2M15.6 28.6h5.6"/>
-    <path d="M27 25.4a2.6 2.6 0 0 1 4.6 1.7c0 1.9-2.3 3.4-4.6 5.1-2.3-1.7-4.6-3.2-4.6-5.1A2.6 2.6 0 0 1 27 25.4Z" fill="currentColor" stroke="none" opacity=".5"/>
-    <path d="M20.4 11v-.4a3.6 3.6 0 0 1 7.2 0v.4"/>`,
-
-  /* A name cut in wood, on its little standing base. */
+    <path d="M10.6 25.6h26.8a13.4 13.4 0 0 1-26.8 0Z"/>
+    <path d="M24 25.6V12.2a13.4 13.4 0 0 1 13.4 13.4"/>
+    <path d="M14.4 36.6 16.6 31.4M33.6 36.6 31.4 31.4"/>
+    <circle cx="14" cy="39.2" r="2.7"/>
+    <circle cx="34" cy="39.2" r="2.7"/>
+    <circle cx="30.6" cy="19.4" r="1.7" fill="currentColor" stroke="none"/>`,
+  /* UMA LETRA, grande. Era uma assinatura manuscrita desenhada a traço e a
+     46px lia-se como um garatujo -- nem letra, nem nome, nem nada. É isto que
+     a ocasião vende: um nome cortado grande para uma porta ou uma parede. Um
+     "A" diz "letras" ao primeiro olhar e não se parece com mais nenhum dos
+     dez. O acento cheio é o interior da própria letra. */
   names: `
-    <path d="M9 30.6c2.4-5.6 4-8.4 4.8-8.4s1 2.2 1 5.2c0 1.7.6 2.6 1.7 2.6 1.6 0 2.7-1.9 3.2-5.6"/>
-    <path d="M19.7 24.4c1.6 0 3-.9 4.3-2.6M22.4 30.6c1.2-4.4 2.6-8.8 4.2-13.2.7-2 1.4-3 2.1-3 .6 0 .9.4.9 1.2 0 2.4-2 6.4-6 12"/>
-    <path d="M26.8 30.6c2.5-3 4.4-4.6 5.6-4.6.9 0 1.3.5 1.3 1.4 0 .6-.2 1.3-.6 2.1.9.7 1.8 1.1 2.7 1.1h3.2"/>
-    <path d="M13 36.6h22M17 36.6v3.2M31 36.6v3.2"/>`,
-
+    <path d="M24 9.6 20 20.6h8Z" fill="currentColor" stroke="none" opacity=".45"/>
+    <path d="M11.6 39.4 24 7.6l12.4 31.8"/>
+    <path d="M16.4 27.2h15.2"/>`,
   /* A growth chart on a wall: the piece that stays in the house for years. */
   home: `
     <path d="M11.4 22.6 24 12l12.6 10.6"/>
@@ -85,13 +86,15 @@ const ART = {
     <path d="M27.8 38V26.2a1.4 1.4 0 0 0-1.4-1.4h-4.8a1.4 1.4 0 0 0-1.4 1.4V38"/>
     <path d="M20.2 29.4h7.6M20.2 33h4.4"/>`,
 
-  /* A tag on a ribbon, hanging. */
+  /* UM DISCO PENDURADO PELA ARGOLA. Era um rectângulo com linhas dentro e
+     lia-se como uma folha de papel. O que estas peças têm em comum é o furo e
+     a fita -- é isso que se desenha. */
   hanging: `
-    <path d="M24 7v4.4a3.4 3.4 0 0 1-3.4 3.4h-1.2"/>
-    <path d="M19.4 14.8h9.2a2.4 2.4 0 0 1 2.4 2.4V36a2.4 2.4 0 0 1-2.4 2.4h-9.2A2.4 2.4 0 0 1 17 36V17.2a2.4 2.4 0 0 1 2.4-2.4Z"/>
-    <circle cx="24" cy="19.6" r="1.5"/>
-    <path d="M20 25.4h8M20 29h8M20 32.6h5"/>`,
-
+    <circle cx="24" cy="11.2" r="3.6"/>
+    <path d="M24 14.8v3.4"/>
+    <circle cx="24" cy="29.4" r="10.8"/>
+    <path d="M17.6 29h12.8M20.4 33.6h7.2"/>
+    <circle cx="24" cy="24.4" r="1.7" fill="currentColor" stroke="none"/>`,
   /* A trophy, for the clubs and the end-of-season nights. */
   awards: `
     <path d="M17 10.4h14v8.4a7 7 0 0 1-14 0Z"/>

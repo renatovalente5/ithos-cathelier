@@ -302,17 +302,14 @@ function buildCathelier() {
     body: cath.home({ occasions, pieces, cover: covers.cathelier, coverArt: coverArt('cathelier') }),
   }));
 
-  for (const o of occasions) {
-    const mine = pieces.filter((p) => p.occasion === o.slug || (p.alsoIn || []).includes(o.slug));
-    write(`/cathelier/${o.slug}/`, page({
-      ...shellArgs, brand: 'cathelier', path: `/cathelier/${o.slug}/`,
-      title: `${o.name} — personalised wooden pieces | cathelier`,
-      description: o.summary,
-      crumbs: [{ name: 'cathelier', href: '/cathelier/' }, { name: o.name }],
-      body: cath.occasion({ o, pieces, occasions }),
-    }));
-    if (!mine.length) console.warn(`  ! ${o.name} has no pieces in it`);
-  }
+  /* AS DEZ PAGINAS DE OCASIAO DEIXARAM DE SE ESCREVER.
+     Cada uma listava `pieces` filtradas por `o.slug` -- exactamente o mesmo
+     predicado que o filtro de /cathelier/pieces/ aplica no browser, com as
+     mesmas contagens. Eram uma segunda morada para a mesma lista: duplicavam
+     o conteudo aos olhos de quem indexa e obrigavam quem visita a escolher
+     entre duas formas de fazer a mesma coisa. Os circulos da home levam agora
+     a /cathelier/pieces/#<slug>, e o sitemap, os canonicals e as migalhas
+     seguem sozinhos porque saem todos de `written`. */
 
   write('/cathelier/pieces/', page({
     ...shellArgs, brand: 'cathelier', path: '/cathelier/pieces/',

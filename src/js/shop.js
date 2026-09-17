@@ -600,12 +600,11 @@ function filters() {
   const none = $('[data-no-results]');
   const chips = $$('[data-filter]', box);
 
-  box.addEventListener('click', (e) => {
-    const b = e.target.closest('[data-filter]');
-    if (!b) return;
-    for (const other of chips) other.setAttribute('aria-pressed', String(other === b));
-    const want = b.dataset.filter;
+  // ONE way in. A click, the address the page opened at, and the Back button
+  // all arrive here, so a filter can never mean two different things.
+  function apply(want) {
     let shown = 0;
+    for (const other of chips) other.setAttribute('aria-pressed', String(other.dataset.filter === want));
     for (const card of $$('[data-family]', list)) {
       // A lamp can belong to more than one family, so compare against the list
       // rather than against a single word.
@@ -615,7 +614,34 @@ function filters() {
     }
     if (none) none.hidden = shown > 0;
     open();                                   // a chosen chip must never hide
+  }
+
+  box.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-filter]');
+    if (!b) return;
+    const want = b.dataset.filter;
+    apply(want);
+    // Keep the address in step: a chosen filter can then be shared, and a
+    // reload lands back on it. Replace and not push, because the chips are one
+    // page seen ten ways and not ten pages -- Back should leave.
+    history.replaceState(null, '', want === 'all'
+      ? location.pathname + location.search
+      : `#${encodeURIComponent(want)}`);
   });
+
+  // The circles on the cathelier home point here with the occasion in the
+  // fragment. Reading it is the only thing that makes those links true.
+  function fromAddress(start) {
+    const raw = location.hash.slice(1);
+    let want = '';
+    try { want = decodeURIComponent(raw); } catch { want = raw; }
+    if (want && chips.some((c) => c.dataset.filter === want)) apply(want);
+    // An unknown word shows everything rather than nothing: a stale link is a
+    // disappointment, an empty page looks broken. At the start we do not even
+    // do that, because apply() unfolds the chips and the page ships folded.
+    else if (!start) apply('all');
+  }
+  addEventListener('hashchange', () => fromAddress(false));
 
   const more = document.createElement('button');
   more.type = 'button';
@@ -651,6 +677,7 @@ function filters() {
     more.setAttribute('aria-label', `Show ${hidden} more filters`);
   }
 
+  fromAddress(true);   // before fold(): a pre-chosen chip must not be one of the hidden ones
   fold();
   addEventListener('resize', fold, { passive: true });
   // Chips are measured with the fallback font until the real one arrives, and

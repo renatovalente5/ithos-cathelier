@@ -488,11 +488,10 @@ p { text-wrap: pretty; }
   display: grid; place-items: center; overflow: hidden;
   /* Cheio e não pálido, com o desenho a branco e um anel claro à volta -- é a
      referência que a dona mandou, e é medido: branco sobre --accent dá 8,17:1,
-     muito acima dos 3:1 de que um desenho precisa. O anel é uma SOMBRA e não
-     uma borda, para não entrar na caixa do círculo nem empurrar a grelha. */
+     muito acima dos 3:1 de que um desenho precisa. Sem anel à volta: a dona
+     pediu-o fora depois de o ver. */
   background: var(--accent); border: 0;
   color: #FFFFFF;
-  box-shadow: 0 0 0 5px var(--bg-soft);
   transition: background-color .2s ease, transform .2s ease;
 }
 :where([data-brand='cathelier']) .occasion:hover .occasion__badge { background: var(--accent-deep); transform: translateY(-2px); }
@@ -515,11 +514,10 @@ p { text-wrap: pretty; }
 
 /* --- a fila de ocasiões na home ---------------------------------------------
    A navegação desta loja é por ocasião -- a dona descreveu-a assim e o site foi
-   construído à volta disso -- e a fila só existia no PÉ das páginas de ocasião,
-   a 4455px de uma página de 5145. Aqui é a primeira coisa por baixo da capa,
-   que é onde uma navegação serve para alguma coisa. */
+   construído à volta disso. A fila é a primeira coisa por baixo da capa, que é
+   onde uma navegação serve para alguma coisa, e cada círculo leva à lista
+   completa já filtrada: as dez páginas de ocasião deixaram de existir. */
 :where([data-brand='cathelier']) .occasions-lead { padding-block: clamp(.5rem, 2vw, 1rem); background: var(--bg-trust); }
-:where([data-brand='cathelier']) .steps__aside { margin-block-start: 2.5rem; text-align: center; font-size: 14px; color: var(--ink-soft); }
 
 /* --- collection blocks ------------------------------------------------------ */
 :where([data-brand='cathelier']) .collection { padding-block: clamp(2rem, 5vw, 3.5rem); }
@@ -554,25 +552,6 @@ p { text-wrap: pretty; }
   letter-spacing: .06em; color: var(--muted); max-width: 14ch; line-height: 1.4;
 }
 
-/* --- how it works, in three steps -------------------------------------------
-   The proof-before-cutting promise is the single thing that separates this
-   workshop from a print shop, and it was buried in a paragraph at the bottom.
-   It is the second thing on the page now. */
-:where([data-brand='cathelier']) .steps { padding-block: clamp(2rem, 5vw, 3.5rem); }
-:where([data-brand='cathelier']) .steps__list {
-  list-style: none; padding: 0; margin: 2rem 0 0;
-  display: grid; gap: 2rem;
-}
-@media (width >= 48rem) { :where([data-brand='cathelier']) .steps__list { grid-template-columns: repeat(3, 1fr); gap: 2.5rem; } }
-:where([data-brand='cathelier']) .steps__list li { text-align: center; }
-:where([data-brand='cathelier']) .steps__n {
-  display: grid; place-items: center; width: 40px; aspect-ratio: 1; margin-inline: auto;
-  border: 1px solid var(--line); border-radius: 999px;
-  font-family: var(--font-display); font-weight: 200; font-size: 18px; color: var(--accent);
-}
-:where([data-brand='cathelier']) .steps__list h3 { margin-block: .9rem .35rem; }
-:where([data-brand='cathelier']) .steps__list p { font-size: 14px; color: var(--ink-soft); line-height: 1.75; }
-
 :where([data-brand='cathelier']) .collection--alt { background: var(--bg-soft); }
 
 /* --- the announcement line ------------------------------------------------- */
@@ -581,25 +560,6 @@ p { text-wrap: pretty; }
   background: var(--bg-trust); color: var(--ink-soft);
   font-family: var(--font-body); font-size: 15px; letter-spacing: .03em;
 }
-
-/* --- image with text -------------------------------------------------------
-   The block that carries the weight of that shop's home page: a column of
-   copy with a solid button, beside a photograph. Two of them, alternating
-   sides, which is what stops a long page of product grids reading as a
-   catalogue dump. */
-:where([data-brand='cathelier']) .feature { padding-block: clamp(2rem, 5vw, 3.5rem); }
-:where([data-brand='cathelier']) .feature__row { display: grid; gap: clamp(1.5rem, 4vw, 3rem); align-items: center; }
-@media (width >= 56rem) {
-  :where([data-brand='cathelier']) .feature__row { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
-  :where([data-brand='cathelier']) .feature--flip .feature__text { order: 2; }
-}
-:where([data-brand='cathelier']) .feature__text { text-align: center; }
-@media (width >= 56rem) { :where([data-brand='cathelier']) .feature__text { text-align: start; } }
-:where([data-brand='cathelier']) .feature__text p { font-size: 15px; line-height: 1.85; color: var(--ink-soft); }
-:where([data-brand='cathelier']) .feature__text p + p { margin-block-start: 1rem; }
-:where([data-brand='cathelier']) .feature__text .btn { margin-block-start: 1.75rem; }
-:where([data-brand='cathelier']) .feature__art { display: grid; gap: 10px; grid-template-columns: repeat(3, 1fr); }
-:where([data-brand='cathelier']) .feature__art .frame:first-child { grid-column: span 3; aspect-ratio: 16 / 9; }
 
 /* --- questions, on the home page ------------------------------------------
    Two columns of pills. That shop puts them here rather than only on a

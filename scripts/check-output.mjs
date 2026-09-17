@@ -14,6 +14,7 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = join(ROOT, 'public');
 
 const deaths = [];
+const fragmentos = [];
 const warnings = [];
 
 function walk(dir, found = []) {
@@ -95,6 +96,17 @@ for (const file of pages) {
   for (const m of html.matchAll(/(?:href|src|poster|data-film(?:-tall)?)="(\/[^"#?]*)/g)) {
     enderecos.push(m[1]);
   }
+  /* E O QUE VEM DEPOIS DO `#`.
+     A expressão acima para no cardinal, de propósito: o ficheiro é o mesmo com
+     ou sem fragmento. Mas o fragmento é uma promessa à mesma -- e desde que os
+     círculos da cathelier passaram a levar a /cathelier/pieces/#<ocasião>, é
+     uma promessa que NINGUÉM verificava: o HTML servido é byte a byte igual
+     com um fragmento certo e com um errado, e a diferença só aparece no
+     browser de quem clica. Guardam-se aqui e conferem-se no fim, quando já se
+     sabe o que cada página tem lá dentro. */
+  for (const m of html.matchAll(/href="(\/[^"#?]*)#([^"?\s]+)"/g)) {
+    fragmentos.push({ where, target: m[1], frag: decodeURIComponent(m[2]) });
+  }
   for (const m of html.matchAll(/srcset="([^"]+)"/g)) {
     for (const parte of m[1].split(',')) {
       const url = parte.trim().split(/\s+/)[0];
@@ -163,6 +175,49 @@ for (const file of pages) {
  * url() under a project path: every typeface 404ed on the live site and every
  * page rendered in the system fallback, while the local preview — where the
  * prefix is empty — looked perfect. */
+/* Um fragmento aterra em qualquer sítio: o browser não se queixa de um `#`
+   que não existe, limita-se a deixar a pessoa no topo da página -- e, no caso
+   de um filtro, com a lista toda à frente, que é exactamente o que ela não
+   pediu. Vale como âncora um `id`, ou um chip de filtro com aquele nome. */
+for (const { where, target, frag } of fragmentos) {
+  const base = (process.env.BASE_PATH || '').replace(/\/$/, '');
+  const limpo = base && target.startsWith(base + '/') ? target.slice(base.length) : target;
+  const disco = [join(OUT, limpo, 'index.html'), join(OUT, limpo)].find((f) => existsSync(f) && statSync(f).isFile());
+  if (!disco) continue;                    // a falta da página já é morte acima
+  const alvoHtml = readFileSync(disco, 'utf8');
+  const temId = new RegExp(`\\sid="${frag.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`).test(alvoHtml);
+  const temFiltro = alvoHtml.includes(`data-filter="${frag}"`);
+  if (!temId && !temFiltro) {
+    deaths.push(`${where}: link to ${limpo}#${frag} — that page has no id="${frag}" `
+      + 'and no filter by that name, so the fragment does nothing');
+  }
+}
+
+/* A MONTRA DE UMA MARCA NAO REPETE FOTOGRAFIAS.
+   Nenhuma das 41 pecas da cathelier foi fotografada: partilham uma pasta de
+   amostras, e uma grelha construida por ordem da lista punha a mesma imagem
+   tres vezes na home -- duas delas lado a lado. Um cartao e uma promessa de
+   que ha ali outra coisa; dois cartoes com a mesma fotografia desmentem-na
+   antes de alguem clicar. A lista completa pode repetir, porque la a peca e
+   que manda; a montra nao. */
+for (const home of ['/index.html', '/cathelier/index.html']) {
+  const f = join(OUT, home.slice(1));
+  if (!existsSync(f)) continue;
+  const vistas = new Map();
+  for (const m of readFileSync(f, 'utf8').matchAll(/<article class="card"[\s\S]*?<\/article>/g)) {
+    // O nome, ou o endereço da peça: as duas marcas não desenham o cartão igual
+    // e uma mensagem com "?" lá dentro não diz a ninguém o que ir corrigir.
+    const nome = m[0].match(/class="card__name">([^<]*)/)?.[1]
+      || m[0].match(/data-product="([^"]*)"/)?.[1] || '?';
+    const foto = m[0].match(/srcset="[^"]*?\/media\/([^"\s]+?)-\d+\.(?:avif|webp)/)?.[1];
+    if (!foto) continue;
+    if (vistas.has(foto)) {
+      deaths.push(`${home}: "${nome}" and "${vistas.get(foto)}" show the same photograph `
+        + `(media/${foto}) — two cards promising one thing`);
+    } else vistas.set(foto, nome);
+  }
+}
+
 const cssName = existsSync(join(OUT, 'assets'))
   ? readdirSync(join(OUT, 'assets')).find((f) => /^styles\.[a-f0-9]+\.css$/.test(f))
   : null;

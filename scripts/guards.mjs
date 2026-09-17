@@ -135,10 +135,25 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
   }
   // A piece pointing at an occasion that does not exist would vanish from the
   // shop without a word.
+  const conta = new Map([...slugs].map((s) => [s, 0]));
   for (const f of readdirSync(join(CONTENT, 'cathelier')).filter((x) => x.endsWith('.json') && !x.startsWith('_'))) {
     const p = JSON.parse(readFileSync(join(CONTENT, 'cathelier', f), 'utf8'));
     for (const s of [p.occasion, ...(p.alsoIn || [])].filter(Boolean)) {
       if (!slugs.has(s)) die(`cathelier/${f}: occasion "${s}" does not exist`);
+      if (p.published !== false) conta.set(s, conta.get(s) + 1);
+    }
+  }
+  /* UMA OCASIÃO VAZIA PIOROU DE CONSEQUÊNCIA.
+     Enquanto teve página própria, uma ocasião sem peças abria um cabeçalho com
+     uma grelha vazia por baixo -- pouco simpático, mas legível. Agora é um
+     círculo na home que leva a /cathelier/pieces/ e ESVAZIA a lista: quem
+     clica vê os quarenta e um artigos desaparecerem e a mensagem de "nada
+     encontrado". Parece uma avaria da loja, não uma colecção por encher.
+     O aviso vivia no build.mjs, que já não escreve essas páginas. */
+  for (const o of occ.filter((x) => x.published)) {
+    if (!conta.get(o.slug)) {
+      pending(`_occasions.json: "${o.name}" is published with no pieces in it — its `
+        + 'circle on the home page would empty the list');
     }
   }
 }
