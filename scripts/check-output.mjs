@@ -15,6 +15,7 @@ const OUT = join(ROOT, 'public');
 
 const deaths = [];
 const fragmentos = [];
+const stubs = [];
 const warnings = [];
 
 function walk(dir, found = []) {
@@ -41,6 +42,7 @@ const placeholders = new Map();
    condition that is never true does not print a failure, it disappears. When
    nothing is indexable, the whole set is checked instead. */
 const { MIRRORED } = await import('../src/lib/shell.mjs');
+const { REDIRECTS } = await import('../src/lib/redirects.mjs');
 const PREVIEW_BUILD = process.env.PREVIEW === 'yes';
 const byCanonical = new Map();
 
@@ -48,13 +50,23 @@ for (const file of pages) {
   const html = readFileSync(file, 'utf8');
   const where = file.slice(OUT.length) || '/';
 
+  /* UM STUB DE REENCAMINHAMENTO NÃO É UMA PÁGINA, e é reconhecido por uma
+     marca que o gerador ESCREVE -- nunca por lhe faltar o título ou o <main>.
+     Reconhecer pela falta seria abrir a porta ao contrário do que isto
+     defende: uma página a sério que saísse partida do build deixaria de ser
+     medida, em silêncio, por parecer um sinal de trânsito. Um stub responde
+     mais abaixo, ao bloco que lhe é próprio, e esse é mais exigente do que
+     estas cinco linhas. */
+  const ehStub = /<meta name="generator" content="redirect-stub">/.test(html);
+  if (ehStub) stubs.push({ where, html });
+
   const title = html.match(/<title>([^<]*)<\/title>/)?.[1];
   const desc = html.match(/<meta name="description" content="([^"]*)"/)?.[1];
   const indexable = !/<meta name="robots" content="noindex/.test(html);
 
-  if (!title) deaths.push(`${where}: no <title>`);
-  if (!desc) deaths.push(`${where}: no description`);
-  if (indexable) indexablePages++;
+  if (!title && !ehStub) deaths.push(`${where}: no <title>`);
+  if (!desc && !ehStub) deaths.push(`${where}: no description`);
+  if (indexable && !ehStub) indexablePages++;
 
   /* THE QUESTION IS "ARE THESE THE SAME DOCUMENT?", NOT "THE SAME FILE?".
      Eight pages are now written twice, once in each shop's dress, and the two
@@ -65,17 +77,26 @@ for (const file of pages) {
      hold at most two files, exactly one of which is the canonical. Without
      those two bounds, "same canonical" would be a way to make any two pages
      stop being compared. */
+  /* O canonical de um stub é, de propósito, a morada de outra pessoa: é
+     exactamente isso que um reencaminhamento diz. Metê-lo neste agrupamento
+     punha onze ficheiros no grupo de /cathelier/pieces/ e, pior, o stub que
+     calhasse primeiro por ordem alfabética virava `group[0]`: como não tem
+     título, o laço fazia `continue` e a página verdadeira DEIXAVA de ser
+     comparada com as outras. O limite das "duas roupas" foi escrito sobre
+     páginas espelhadas, não sobre sinais de trânsito. */
   const canonical = html.match(/<link rel="canonical" href="([^"]*)"/)?.[1] || where;
+  if (!ehStub) {
   if (!byCanonical.has(canonical)) byCanonical.set(canonical, []);
   byCanonical.get(canonical).push({
     where, title, desc, indexable,
     selfCanonical: canonical.endsWith(where) || canonical.endsWith(where.replace(/index\.html$/, '')),
   });
+  }
 
   // Text the owner has not filled in must never reach a LIVE page. In preview
   // it is expected — that is what preview is for — so it warns there and kills
   // everywhere else. Counted by marker rather than by page: the address is on
-  // all 96 of them and 202 identical lines would bury everything else.
+  // all 94 of them and 202 identical lines would bury everything else.
   for (const m of html.matchAll(/⟨[^⟩]*⟩|\{\{[^}]*\}\}|TODO|FIXME|lorem ipsum/gi)) {
     const marker = m[0].slice(0, 60);
     placeholders.set(marker, (placeholders.get(marker) ?? 0) + 1);
@@ -160,7 +181,9 @@ for (const file of pages) {
     }
   }
 
-  // Structure the shop cannot work without.
+  // Structure the shop cannot work without — of a page. A stub has none of it
+  // and should have none of it.
+  if (ehStub) continue;
   if (!/<main id="main"/.test(html)) deaths.push(`${where}: no <main>`);
   if ((html.match(/<h1[\s>]/g) || []).length !== 1) {
     deaths.push(`${where}: ${(html.match(/<h1[\s>]/g) || []).length} h1 elements, expected exactly 1`);
@@ -175,6 +198,109 @@ for (const file of pages) {
  * url() under a project path: every typeface 404ed on the live site and every
  * page rendered in the system fallback, while the local preview — where the
  * prefix is empty — looked perfect. */
+/* --- os reencaminhamentos --------------------------------------------------
+   Um stub foi dispensado de cinco exigências lá em cima, por isso paga-as
+   aqui, com juros. O que ele promete é uma coisa só -- "o que estava nesta
+   morada está agora naquela" -- e essa promessa tem três mecanismos: o meta
+   refresh, o JavaScript e o link visível para quem os dois falharem.
+
+   A MANEIRA DE OS TRÊS CONCORDAREM NÃO É COMPARÁ-LOS, É NÃO HAVER TRÊS.
+   O JavaScript lê a morada do DOM em vez de a repetir (um literal dentro de
+   <script> nunca leva o prefixo do endereço e ia 404 na produção), o que deixa
+   duas cópias: o `href` e o `url=` do refresh. Essas duas comparam-se aqui,
+   byte a byte.
+
+   E a lista é comparada nos DOIS sentidos com src/lib/redirects.mjs. Contar
+   não serve: dez ficheiros no sítio errado contam dez na mesma. */
+{
+  const BASE = (process.env.BASE_PATH || '').replace(/\/$/, '');
+  const esperados = new Map(REDIRECTS.map((r) => [`${r.from}index.html`, r]));
+  const encontrados = new Set(stubs.map((x) => x.where));
+
+  for (const [onde, r] of esperados) {
+    if (!encontrados.has(onde)) {
+      deaths.push(`${r.from}: src/lib/redirects.mjs promises a redirect here and the build wrote none`);
+    }
+  }
+  for (const { where } of stubs) {
+    if (!esperados.has(where)) {
+      deaths.push(`${where}: a redirect stub at an address src/lib/redirects.mjs does not list `
+        + '— every redirect is a historical fact and belongs in that file');
+    }
+  }
+
+  const ondeEsta = new Map(stubs.map((x) => [x.where, x.html]));
+  for (const [onde, r] of esperados) {
+    const html = ondeEsta.get(onde);
+    if (!html) continue;
+    const querido = BASE + r.to;                       // a forma já prefixada
+
+    // 1. o meta refresh, e o atraso
+    const refresh = html.match(/<meta http-equiv="refresh" content="(\d+);\s*url=([^"]+)">/);
+    if (!refresh) {
+      deaths.push(`${onde}: a redirect stub with no <meta http-equiv="refresh"> — nothing redirects`);
+      continue;
+    }
+    if (refresh[1] !== '0') {
+      deaths.push(`${onde}: the refresh waits ${refresh[1]}s. Zero is not about speed: a refresh with `
+        + 'a delay REPLACES the history entry, and one with a wait pushes a new one, which traps Back');
+    }
+
+    // 2. o link visível, que é a única morada escrita à mão
+    const link = html.match(/<a id="go" href="([^"]+)"/);
+    if (!link) {
+      deaths.push(`${onde}: no <a id="go"> — if the refresh and the script both fail there is `
+        + 'nothing on the page for a human to click, and the script reads its address from it');
+      continue;
+    }
+
+    // 3. e as duas cópias dizem a mesma coisa
+    if (refresh[2] !== link[1]) {
+      deaths.push(`${onde}: the refresh goes to ${refresh[2]} and the link goes to ${link[1]} `
+        + '— two answers to one question');
+    }
+    if (link[1] !== querido) {
+      deaths.push(`${onde}: goes to ${link[1]}, but src/lib/redirects.mjs says ${querido}`);
+    }
+
+    // 4. o prefixo do endereço, que é o defeito que este projecto já pagou
+    if (BASE && !link[1].startsWith(BASE + '/')) {
+      deaths.push(`${onde}: ${link[1]} is missing the ${BASE} prefix and would land on somebody `
+        + "else's site at the root of github.io");
+    }
+    if (BASE && !refresh[2].startsWith(BASE + '/')) {
+      deaths.push(`${onde}: the refresh url ${refresh[2]} is missing the ${BASE} prefix. This is the `
+        + 'one the attribute rule in prefix() does not reach on its own — the `url=` sits before the slash');
+    }
+
+    // 5. o destino existe, e não é outro sinal de trânsito
+    const semFragmento = link[1].split('#')[0];
+    const nu = BASE && semFragmento.startsWith(BASE + '/') ? semFragmento.slice(BASE.length) : semFragmento;
+    const alvo = join(OUT, nu, 'index.html');
+    if (!existsSync(alvo)) {
+      deaths.push(`${onde}: redirects to ${nu}, which does not exist`);
+    } else if (/<meta name="generator" content="redirect-stub">/.test(readFileSync(alvo, 'utf8'))) {
+      deaths.push(`${onde}: redirects to ${nu}, which is itself a redirect — a chain, and every `
+        + 'browser gives up on one eventually');
+    }
+
+    // 6. o canonical aponta ao destino, e sem fragmento: um canonical com `#`
+    //    é normalizado para a morada sem ele, por isso escrevê-lo é escrever
+    //    uma coisa e dizer outra.
+    const canonical = html.match(/<link rel="canonical" href="([^"]+)"/)?.[1];
+    if (!canonical) deaths.push(`${onde}: a redirect stub with no canonical — nothing tells an index where the page went`);
+    else if (canonical.includes('#')) deaths.push(`${onde}: the canonical carries a fragment (${canonical}), which is normalised away`);
+    else if (!canonical.endsWith(nu)) deaths.push(`${onde}: the canonical is ${canonical} but it redirects to ${nu}`);
+
+    // 7. e o script não tem morada nenhuma lá dentro
+    const script = html.match(/<script>([\s\S]*?)<\/script>/)?.[1] ?? '';
+    if (/["'`]\//.test(script)) {
+      deaths.push(`${onde}: the inline script carries an address of its own (${script.trim().slice(0, 60)}). `
+        + 'A literal inside <script> never gets the BASE_PATH prefix — it must read the link instead');
+    }
+  }
+}
+
 /* Um fragmento aterra em qualquer sítio: o browser não se queixa de um `#`
    que não existe, limita-se a deixar a pessoa no topo da página -- e, no caso
    de um filtro, com a lista toda à frente, que é exactamente o que ela não
@@ -256,11 +382,10 @@ for (const [marker, count] of placeholders) {
   (PREVIEW_BUILD ? warnings : deaths).push(line);
 }
 
-for (const w of warnings) console.warn(`  warning: ${w}`);
 /* --- nobody is dropped into the other shop's chrome ------------------------
    Eight pages exist in both dresses. The failure this guards against is not
    today's: it is the next shared page somebody adds, links from the footer,
-   and forgets to put in MIRRORED -- which would put 55 cathelier pages one
+   and forgets to put in MIRRORED -- which would put 53 cathelier pages one
    click from the ithos wordmark, silently, exactly the way the basket did
    before this change.
 
@@ -328,6 +453,13 @@ for (const [canonical, group] of byCanonical) {
   }
 }
 
+/* OS AVISOS IMPRIMEM-SE NO FIM, E NÃO A MEIO.
+   Esta linha estava antes do laço do canonical, que ainda escreve para
+   `warnings` (as descrições repetidas). Eram recolhidas para um array já
+   esvaziado e nunca chegaram aos olhos de ninguém -- uma verificação que
+   corre, acerta, e fala para o vazio. */
+for (const w of warnings) console.warn(`  warning: ${w}`);
+
 if (deaths.length) {
   console.error(`\n${deaths.length} problem(s) in what was built:\n`);
   for (const d of deaths.slice(0, 40)) console.error(`  · ${d}`);
@@ -335,7 +467,12 @@ if (deaths.length) {
   console.error('');
   process.exit(1);
 }
-console.log(`  output: ${pages.length} pages, ${links} internal links and ${images} assets all resolve`);
+/* Os stubs saem da contagem. "104 páginas" sobre uma loja de 94 é a forma
+   exacta como um sinal de trânsito se faz passar por destino -- e uma
+   verificação que CONTA nunca distingue os dois. */
+console.log(`  output: ${pages.length - stubs.length} pages`
+  + (stubs.length ? ` and ${stubs.length} redirect stubs` : '')
+  + `, ${links} internal links and ${images} assets all resolve`);
 console.log(`  ${titles.size} distinct titles, ${descriptions.size} distinct descriptions`
   + (PREVIEW_BUILD ? ` (checked across all pages: this is a preview build, so none is indexable)`
                    : ` across ${indexablePages} indexable pages`));

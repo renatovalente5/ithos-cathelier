@@ -39,6 +39,21 @@ python3 scripts/renditions.py         # web sizes from the masters
 python3 scripts/fonts.py              # re-download the self-hosted typefaces
 ```
 
+### Pages and redirect stubs are different numbers
+
+`public/` holds 104 HTML files: **94 pages** and **10 redirect stubs**. The stubs
+sit at the ten old cathelier occasion addresses (`/cathelier/christmas/` and the
+rest), which were deleted on 17 September 2026 when an occasion became a filter
+on `/cathelier/pieces/`. They are listed in `src/lib/redirects.mjs`, they are not
+in the sitemap, and both the build and `check-output` report them apart from the
+page count — a file count has never been able to tell a signpost from a
+destination.
+
+Each one carries a date. Past it, the guards start asking for it to be deleted:
+they serve bookmarks made before the move and nothing else, and with
+`robots.txt` set to `Disallow: /` there will never be a traffic figure to say
+when they stopped being used.
+
 ### The browser battery
 
 Measures what only a browser knows: real contrast, tap targets, sideways

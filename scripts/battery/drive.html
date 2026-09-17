@@ -442,6 +442,68 @@ for (const pag of PAGINAS) {
   f.remove();
   saida.textContent = Object.keys(window.__resultados).length + '/' + PAGINAS.length;
 }
+/* --- OS REENCAMINHAMENTOS, CONDUZIDOS ATÉ AO FIM ---------------------------
+   As dez moradas antigas das ocasiões são stubs. Nada disto se vê no HTML
+   servido: o ficheiro é idêntico quer o reencaminhamento funcione quer não, e
+   o que decide é o browser.
+
+   NÃO PODEM IR NA LISTA DE CIMA. O laço das páginas espera pelo `onload` e
+   depois 900 ms, e um stub navega no meio disso: a bateria seria injectada no
+   documento que lá estivesse nessa altura e escreveria uma página inteira de
+   vistos verdes sob a chave do stub -- medindo o DESTINO e chamando-lhe a
+   origem. Já aconteceu neste repositório, com o /404.html a receber vistos por
+   uma morada apagada.
+
+   O destino esperado sai do PRÓPRIO stub (o `href` do link de recurso), e não
+   de uma segunda cópia da tabela aqui: o check-output já garante que esse href
+   é o que src/lib/redirects.mjs manda. Uma lista só, e ninguém a repetir. */
+const STUBS = ['/cathelier/christmas/','/cathelier/mothers-day/','/cathelier/fathers-day/',
+ '/cathelier/childrens-day/','/cathelier/keepsakes/','/cathelier/new-baby/','/cathelier/names/',
+ '/cathelier/home/','/cathelier/hanging/','/cathelier/awards/'];
+
+for (const de of STUBS) {
+  const R = [];
+  const nota = (ok, o, d = '') => R.push({ ok: !!ok, o, d });
+  try {
+    // Primeiro o documento do stub, lido SEM o executar, para saber o que ele promete.
+    const bruto = await (await fetch(BASE + de)).text();
+    const promete = bruto.match(/<a id="go" href="([^"]+)"/)?.[1];
+    nota(promete, 'o stub diz para onde vai', promete || 'não tem link nenhum');
+
+    const f = document.createElement('iframe');
+    f.style.cssText = `width:${L}px;height:${A}px;border:0;position:fixed;left:0;top:0;z-index:-1;pointer-events:none`;
+    f.src = BASE + de;
+    document.body.appendChild(f);
+    // Esperar pela MUDANÇA e não por um relógio: o reencaminhamento pode
+    // chegar antes ou depois do primeiro onload, e um `setTimeout` fixo
+    // transforma «ainda não» em «não».
+    let onde = '';
+    for (let i = 0; i < 60; i++) {
+      await new Promise(r => setTimeout(r, 100));
+      try { onde = f.contentWindow.location.pathname + f.contentWindow.location.hash; } catch (e) { onde = '(outra origem)'; }
+      if (onde && onde !== BASE + de) break;
+    }
+    nota(onde === promete, 'e o browser vai mesmo lá parar', `ficou em ${onde}`);
+    nota(onde !== BASE + de, 'não ficou parado no stub', onde);
+
+    // E, chegado lá, o filtro certo está posto. É o fim da promessa toda:
+    // a morada antiga dá a lista filtrada pela ocasião que lá estava.
+    const d = f.contentDocument;
+    const querido = (promete || '').split('#')[1] || '';
+    const chips = [...d.querySelectorAll('[data-filter]')];
+    const premido = chips.filter(c => c.getAttribute('aria-pressed') === 'true').map(c => c.dataset.filter);
+    nota(premido.length === 1 && premido[0] === querido,
+      'e com o filtro da ocasião já escolhido', `premidos: ${premido.join(', ') || 'nenhum'}`);
+    const cartoes = [...d.querySelectorAll('[data-family]')];
+    const vistos = cartoes.filter(c => c.style.display !== 'none');
+    nota(cartoes.length > 0 && vistos.length > 0 && vistos.length < cartoes.length,
+      'e a lista encolhida sem ficar vazia', `${vistos.length} de ${cartoes.length}`);
+    f.remove();
+  } catch (e) { nota(false, 'o reencaminhamento correu sem rebentar', String(e)); }
+  window.__resultados[de] = { total: R.length, falhas: R.filter(x => !x.ok), tudo: R };
+  saida.textContent = Object.keys(window.__resultados).length + '/' + (PAGINAS.length + STUBS.length);
+}
+
 window.__pronto = true;
-saida.textContent = `pronto: ${Object.keys(window.__resultados).length} páginas a ${L}x${A}`;
+saida.textContent = `pronto: ${Object.keys(window.__resultados).length} páginas e stubs a ${L}x${A}`;
 </script>

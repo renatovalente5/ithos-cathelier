@@ -158,6 +158,76 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
   }
 }
 
+/* --- reencaminhamentos ------------------------------------------------------
+   As dez páginas de ocasião foram apagadas em 17 set 2026 e ficaram stubs nas
+   moradas antigas. O que se pode perguntar AQUI é só metade: estas guardas
+   correm antes do build e não há saída nenhuma para olhar. A outra metade --
+   a morada existe, o prefixo está lá, o destino não é outro stub -- é do
+   check-output, e a colisão com uma página a sério é do próprio write(), que
+   se recusa a escrever duas vezes na mesma morada. */
+{
+  const { REDIRECTS } = await import('../src/lib/redirects.mjs');
+  const vistas = new Set();
+  for (const r of REDIRECTS) {
+    if (vistas.has(r.from)) die(`redirects.mjs: two redirects leave from ${r.from}`);
+    vistas.add(r.from);
+    if (!r.from.startsWith('/') || !r.from.endsWith('/')) {
+      die(`redirects.mjs: ${r.from} is not a folder address — it has to start and end with a slash`);
+    }
+    if (!r.to.startsWith('/')) die(`redirects.mjs: ${r.to} is not an absolute address`);
+    if (r.from === r.to.split('#')[0]) die(`redirects.mjs: ${r.from} redirects to itself`);
+  }
+  for (const r of REDIRECTS) {
+    if (REDIRECTS.some((x) => x.from === r.to.split('#')[0])) {
+      die(`redirects.mjs: ${r.from} points at ${r.to}, which is itself a redirect`);
+    }
+  }
+
+  /* O DESTINO É UM FILTRO, E UM FILTRO SÓ EXISTE ENQUANTO A OCASIÃO EXISTIR.
+     Despublicar uma ocasião tira-lhe o chip da página das peças. O stub
+     continuava a mandar lá o visitante com um fragmento que já não nomeia
+     nada: ele chegava à lista inteira sem perceber porquê -- o pior tipo de
+     avaria, a que parece que está bem. */
+  if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
+    const vivas = new Set(read('cathelier/_occasions.json').filter((o) => o.published).map((o) => o.slug));
+    for (const r of REDIRECTS) {
+      const frag = r.to.split('#')[1];
+      if (frag && !vivas.has(frag)) {
+        die(`redirects.mjs: ${r.from} redirects to the "${frag}" filter, and no published occasion `
+          + 'has that slug — the visitor would land on the unfiltered list with no explanation');
+      }
+    }
+  }
+
+  /* E A BATERIA TEM DE OS CONDUZIR A TODOS.
+     Um reencaminhamento acontece todo no browser: o HTML servido é o mesmo
+     quer funcione quer não. Se um stub novo não entrar na lista do condutor,
+     nunca ninguém o experimenta -- e a lista do condutor é um ficheiro
+     estático que não sabe desta. Nesta mesma sessão duas moradas apagadas
+     ficaram lá esquecidas e a bateria imprimiu vistos sobre o 404. */
+  {
+    const drive = readFileSync(join(ROOT, 'scripts/battery/drive.html'), 'utf8');
+    for (const r of REDIRECTS) {
+      if (!drive.includes(`'${r.from}'`)) {
+        die(`scripts/battery/drive.html: does not drive ${r.from}, so nothing ever proves that `
+          + 'redirect works — it only happens in a browser');
+      }
+    }
+  }
+
+  /* UM STUB É DÍVIDA, E ESTA É A ÚNICA COISA QUE ALGUM DIA A VAI COBRAR.
+     O site não tem analítica e o robots.txt da pré-visualização é
+     `Disallow: /`, por isso nunca existirá um sinal de tráfego a dizer que já
+     ninguém usa uma destas moradas. Sem uma data escrita, ficavam para sempre.
+     Isto avisa, nunca mata: apagar dez ficheiros é decisão da dona, não do
+     build. */
+  const hoje = new Date().toISOString().slice(0, 10);
+  for (const r of REDIRECTS.filter((x) => x.until && x.until < hoje)) {
+    pending(`redirects.mjs: the stub at ${r.from} was due to be deleted on ${r.until} `
+      + '— bookmarks from before the move have had their time');
+  }
+}
+
 /* --- covers ---------------------------------------------------------------
    The cover is the first thing anybody sees, and every word on it is typed in
    the back office. An emptied headline does not break a build -- it publishes

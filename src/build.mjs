@@ -18,6 +18,8 @@ import { page, MIRRORED } from './lib/shell.mjs';
 import * as ithos from './lib/ithos.mjs';
 import * as cath from './lib/cathelier.mjs';
 import * as pages from './lib/pages.mjs';
+import { esc } from './lib/html.mjs';
+import { REDIRECTS } from './lib/redirects.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..');
@@ -36,7 +38,7 @@ const BASE_PATH_SET = !!process.env.BASE_PATH;
    arithmetic was not: with BASE_PATH set the site is served at
    github.io/ithos-cathelier/, and the canonical claimed github.io/contact/ --
    an address that serves nothing. It has been inert only because every build
-   so far is a preview and noindex; it would have been wrong on all 96 pages
+   so far is a preview and noindex; it would have been wrong on all 94 pages
    the day the preview flag came off. The same constant feeds og:url and the
    sitemap, so all three were pointing at 404s. */
 const SITE = process.env.BASE_URL
@@ -66,6 +68,15 @@ function prefix(html) {
        assign the attribute verbatim and never do prefix arithmetic of its
        own -- which is the whole point of there being one place. */
     .replace(/(\s(?:href|src|content|action|data-film(?:-tall)?)=")\/(?!\/)/g, `$1${BASE}/`)
+    /* E O `url=` DE UM META REFRESH, QUE A REGRA DE CIMA NÃO APANHA.
+       A regra de cima exige que a barra seja o PRIMEIRO carácter a seguir às
+       aspas. Num reencaminhamento o valor começa pelo atraso —
+       `content="0; url=/cathelier/pieces/#christmas"` — por isso passava
+       intacto e ia para o ar sem o /ithos-cathelier: o favorito de alguém
+       aterrava na raiz do github.io, que é o site de outra pessoa. Não havia
+       nada a apanhá-lo, porque o verificador também só olhava para atributos
+       cujo valor começa por barra. Isto foi medido, não suposto. */
+    .replace(/(\scontent="\d+;\s*url=)\/(?!\/)/g, `$1${BASE}/`)
     .replace(/(\ssrcset=")([^"]+)"/g, (m, head, list) =>
       head + list.replace(/(^|,\s*)\/(?!\/)/g, `$1${BASE}/`) + '"');
 }
@@ -142,14 +153,72 @@ const counts = { lamps: lamps.length, pieces: pieces.length, occasions: occasion
 /* --- writing -------------------------------------------------------------- */
 
 const written = [];
-function write(path, html, { sitemap = true } = {}) {
+function write(path, html, { sitemap = true, stub = false } = {}) {
+  /* DUAS ESCRITAS NA MESMA MORADA ERAM UM SUBSTITUIR SILENCIOSO.
+     Sem isto, escrever um reencaminhamento em `/cathelier/pieces/` por engano
+     apagava a página verdadeira e punha lá um sinal de trânsito -- e nada
+     dava por ela: o ficheiro existe, todas as ligações para ele continuam a
+     resolver, o canonical continua a ser dele, e a única diferença visível é
+     o título. É exactamente o disfarce contra o qual os stubs são escritos,
+     por isso quem os escreve é o primeiro a ter de o impedir. */
+  const ja = written.find((w) => w.path === path);
+  if (ja) {
+    throw new Error(`two pages claim ${path}: the second would overwrite the first `
+      + `(${ja.stub ? 'a redirect stub' : 'a page'} is already there)`);
+  }
   const file = path === '/' ? 'index.html'
     : path.endsWith('/') ? join(path.slice(1), 'index.html')
     : path.slice(1);
   const dest = join(OUT, file);
   mkdirSync(dirname(dest), { recursive: true });
   writeFileSync(dest, prefix(html));
-  written.push({ path, sitemap });
+  written.push({ path, sitemap, stub });
+}
+
+/* --- reencaminhamentos -----------------------------------------------------
+   Um stub NÃO é uma página e não passa pelo page(): não leva cabeçalho, nem
+   gaveta, nem rodapé. Se levasse, cada um trazia a navegação partilhada
+   inteira e as contagens de ligações internas do verificador subiam às
+   centenas por causa de dez ficheiros que ninguém lê.
+
+   O ENDEREÇO APARECE UMA VEZ SÓ ONDE A MÃO O ESCREVE.
+   Há três mecanismos e os três têm de concordar; a maneira de garantir que
+   concordam não é verificá-los, é não haver três. O `href` do link visível é
+   o único que este ficheiro escreve por extenso e é o único que o prefix()
+   sabia tratar desde sempre; o JavaScript lê-o do DOM em vez de repetir a
+   morada num literal (um literal dentro de <script> nunca leva prefixo). Fica
+   uma segunda cópia inevitável, a do meta refresh, que a regra nova do
+   prefix() passou a cobrir e que o verificador compara com a primeira.
+
+   `location.replace` e não `location.href`: o stub não fica no histórico, por
+   isso quem carrega em Voltar sai da página em vez de ser atirado outra vez
+   para a frente. O atraso é 0 pela mesma razão, e não por pressa: um refresh
+   com atraso zero é uma substituição e não uma entrada nova. */
+function redirectStub({ to, name }) {
+  /* O nome vai sempre entre aspas e nunca é sujeito de uma frase. "Awards and
+     gifts is now" e "A new baby is now" concordam mal, e um `toLowerCase()`
+     dava "See the a new baby pieces". Entre aspas é um rótulo, e um rótulo
+     serve os dez nomes sem excepção.
+     Não há comentários nesta saída: um stub é lido por quem estiver de
+     passagem durante uns milissegundos, e o que aqui vai é servido. */
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="generator" content="redirect-stub">
+<meta http-equiv="refresh" content="0; url=${esc(to)}">
+<link rel="canonical" href="${SITE}${to.split('#')[0]}">${PREVIEW ? `
+<meta name="robots" content="noindex, nofollow">` : ''}
+<title>${esc(name)} — moved to the full list | cathelier</title>
+</head>
+<body>
+<p>This page has moved. \u201C${esc(name)}\u201D is now a filter on the full list of pieces.
+<a id="go" href="${esc(to)}">Go to \u201C${esc(name)}\u201D</a>.</p>
+<script>var a=document.getElementById('go');if(a)location.replace(a.href)</script>
+</body>
+</html>
+`;
 }
 
 /* --- assets ---------------------------------------------------------------
@@ -301,6 +370,19 @@ function buildCathelier() {
     cover: true,
     body: cath.home({ occasions, pieces, cover: covers.cathelier, coverArt: coverArt('cathelier') }),
   }));
+
+  /* E NO LUGAR DELAS, DEZ SINAIS DE TRÂNSITO.
+     As moradas estiveram no ar, e quem as tenha guardado merece chegar ao
+     sítio para onde o conteúdo foi em vez de bater num 404 -- que neste site
+     é ainda pior do que parece, porque o GitHub Pages serve UM 404 só, o da
+     raiz, e esse veste ithos: um leitor da cathelier aterrava com a tipografia
+     e as cores da outra marca a oferecer-lhe candeeiros.
+     A lista está em src/lib/redirects.mjs e é história, não conteúdo. */
+  for (const r of REDIRECTS) {
+    const o = occasions.find((x) => x.slug === r.to.split('#')[1]);
+    write(r.from, redirectStub({ ...r, name: o ? o.name : r.to.split('#')[1] }),
+      { sitemap: false, stub: true });
+  }
 
   /* AS DEZ PAGINAS DE OCASIAO DEIXARAM DE SE ESCREVER.
      Cada uma listava `pieces` filtradas por `o.slug` -- exactamente o mesmo
@@ -499,5 +581,11 @@ writeFileSync(join(OUT, 'sitemap.xml'),
   + written.filter((w) => w.sitemap).map((w) => `  <url><loc>${SITE}${w.path}</loc></url>`).join('\n') + '\n</urlset>\n');
 
 console.log(`  ${SITE}${PREVIEW ? '   (preview: noindex, no checkout)' : ''}`);
-console.log(`  ${written.length} pages · ${lamps.length} lamps · ${pieces.length} pieces`);
+/* CONTAR FICHEIROS NÃO PROVA PÁGINAS, e um stub está ao mesmo nível de uma
+   página no disco. Se esta linha somasse os dois, dizia 104 sobre uma loja de
+   94 -- que é precisamente a forma como um sinal de trânsito se faz passar
+   por destino. Saem separados, aqui e no verificador. */
+const stubs = written.filter((w) => w.stub).length;
+console.log(`  ${written.length - stubs} pages · ${lamps.length} lamps · ${pieces.length} pieces`
+  + (stubs ? ` · ${stubs} redirect stubs (they are not pages)` : ''));
 console.log(`  catalogue.${cat.hash}.json (${cat.count} products)`);

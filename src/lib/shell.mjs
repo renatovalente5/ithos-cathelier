@@ -37,7 +37,7 @@ const NAV_EXTRA = [['/contact/#faq', 'Questions']];
  * menu and the footer differ -- which is exactly what was asked for.
  *
  * The basket is on the list and it is the worst of them: the basket icon is in
- * the header AND the drawer of all 96 pages, so a cathelier reader used to
+ * the header AND the drawer of all 94 pages, so a cathelier reader used to
  * change shop by clicking the most-used control on the site.
  *
  * The ithos address stays the canonical one, and not because ithos matters
@@ -124,7 +124,7 @@ export function page(o) {
     bodyClass = '', noindex = false, crumbs = null, extraHead = '', preview = false,
     /* True on the two pages that open with a cover. It rides on <html> so the
        stylesheet can lighten the header's ink there and nowhere else -- on the
-       other 102 pages the bar at rest is standing on the page's own background
+       other 92 pages the bar at rest is standing on the page's own background
        and its ink must stay dark. */
     cover = false,
     /* Where the canonical points. On a mirrored page it is the OTHER copy --
@@ -384,7 +384,7 @@ function footer({ brand, identity }) {
        it is a trapdoor.
 
        These rows exist at all because the horizontal link bar went away, and
-       each shop still has to carry its own: of 55 cathelier pages, 12 had no
+       each shop still has to carry its own: of 53 cathelier pages, 12 had no
        visible route to the pieces or the quote outside the header and the
        drawer, and all 55 had none to how a piece is made. So the group is not
        dropped -- it is narrowed to the shop it belongs to. */
@@ -431,7 +431,7 @@ function footer({ brand, identity }) {
         `<a href="${esc(href)}" rel="noopener" aria-label="${esc(label)}">${icon(ic, 18)}</a>`).join('\n      ')}
     </div>
 
-    <!-- The seller's identification used to be printed here in full, on all 96
+    <!-- The seller's identification used to be printed here in full, on all 94
          pages, and it is gone.
 
          What the law requires is ACCESS, not repetition: article 10 of
