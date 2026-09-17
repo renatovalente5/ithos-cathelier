@@ -25,6 +25,7 @@
 
 [data-brand='cathelier'] {
   --bg: #FFF8F2;
+  --head-bg: rgb(255 248 242 / .92);   /* a barra depois de descer: fosca, não opaca */
   --bg-soft: #FFFFFF;
   --bg-trust: #F7EDE3;
   --ink: #6B4E3C;

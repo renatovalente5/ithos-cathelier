@@ -207,7 +207,23 @@
    because by the time the bar has shrunk the cover is off the screen. */
 html { --head-h: 84px; }
 
-.head { position: sticky; inset-block-start: 0; z-index: 50; background: var(--bg); border-block-end: 1px solid var(--line-soft, var(--line)); }
+/* A BARRA DEPOIS DE DESCER: VIDRO FOSCO, NÃO UM BLOCO BRANCO.
+   Quatro coisas em vez de uma, e é o conjunto que faz a diferença: fundo a
+   92% em vez de opaco, desfoque do que passa por trás, uma sombra baixa em vez
+   de só um fio, e tudo no mesmo relógio. A curva já era esta.
+   Os 92% não são gosto, são o que a aritmética permite. A pior coisa que passa
+   por trás da barra é a parte escura da capa, que em pixels é quase preta, e o
+   chão da barra nunca desce abaixo de `alfa × --bg`. A 92% a tinta mais fraca
+   do cabeçalho lê 6,13:1 na ithos e 4,84:1 na cathelier; scripts/guards.mjs
+   calcula-o e mata a construção se deixar de dar. */
+.head {
+  position: sticky; inset-block-start: 0; z-index: 50;
+  background: var(--head-bg, var(--bg));
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 2px 20px rgb(0 0 0 / .06);
+  border-block-end: 1px solid var(--line-soft, var(--line));
+}
 .head__row { min-height: var(--head-h); }
 
 /* --- the bar has no ground of its own until you move ------------------------
@@ -229,6 +245,11 @@ html { --head-h: 84px; }
    keyed on data-cover and not on data-scrolled alone. */
 html[data-scrolled='no'] .head {
   background: transparent;
+  /* blur(0px) e não `none`: `none` não interpola, e o desfoque entraria de uma
+     vez enquanto o fundo ainda vinha a caminho. */
+  -webkit-backdrop-filter: blur(0px);
+  backdrop-filter: blur(0px);
+  box-shadow: 0 0 0 rgb(0 0 0 / 0);
   border-block-end-color: transparent;
 }
 html[data-cover='yes'][data-scrolled='no'] .head :is(.icon-btn, .open-menu__word, .head__sibling) {
@@ -271,6 +292,9 @@ html[data-cover='yes'][data-scrolled='no'] .mark--light { opacity: 1; }
   .head[data-anim='yes'] .head__sibling img {
     transition: background-color var(--head-fade) var(--head-fade-ease),
                 border-block-end-color var(--head-fade) var(--head-fade-ease),
+                box-shadow var(--head-fade) var(--head-fade-ease),
+                -webkit-backdrop-filter var(--head-fade) var(--head-fade-ease),
+                backdrop-filter var(--head-fade) var(--head-fade-ease),
                 color var(--head-fade) var(--head-fade-ease),
                 opacity var(--head-fade) var(--head-fade-ease);
   }
@@ -311,7 +335,7 @@ html[data-cover='yes'][data-scrolled='no'] .mark--light { opacity: 1; }
    o que a norma mede, passam os dois com folga. */
 .head {
   --head-shrink: 220ms; --head-ease: cubic-bezier(.22, .61, .36, 1);
-  --head-fade: 460ms;   --head-fade-ease: cubic-bezier(.4, 0, .2, 1);
+  --head-fade: 350ms;   --head-fade-ease: cubic-bezier(.4, 0, .2, 1);
 }
 .head[data-anim='yes'] .head__row { transition: min-height var(--head-shrink) var(--head-ease); }
 /* Height AND opacity in ONE declaration. A second `transition` on the same
@@ -537,7 +561,12 @@ html[data-cover='yes'][data-scrolled='no'] .mark--light { opacity: 1; }
    12px: at 11 it read as a defect, correctly. */
 .head__sibling {
   display: none; align-items: center; gap: .35em;
-  text-decoration: none; color: var(--muted); padding: .5rem;
+  /* --ink-soft e não --muted. Aqui o tom só pinta a setinha -- o nome da outra
+     loja é o lockup ao lado -- e --muted é o tom mais fraco da casa: na
+     cathelier já está a 4,63:1 sobre creme OPACO, portanto qualquer
+     transparência na barra afundava-o abaixo do mínimo. Um tom acima resolve,
+     e a seta fica mais fácil de ler de caminho. */
+  text-decoration: none; color: var(--ink-soft); padding: .5rem;
 }
 @media (width >= 48rem) { .head__sibling { display: inline-flex; } }
 .head__sibling:hover { color: var(--accent); }

@@ -19,6 +19,7 @@
 
 [data-brand='ithos'] {
   --bg: #FFFFFF;
+  --head-bg: rgb(255 255 255 / .92);   /* a barra depois de descer: fosca, não opaca */
   --bg-soft: #FAF7F4;
   --bg-trust: #FBF6F1;
   --ink: #212121;

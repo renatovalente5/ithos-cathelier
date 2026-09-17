@@ -400,6 +400,48 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
     }
   }
 
+  /* 2a. THE BAR IS FROSTED, SO ITS GROUND HAS A WORST CASE TOO.
+         Once it stops being opaque, what the bar's own words are read against
+         stops being `--bg` and becomes `alpha x --bg` plus whatever is
+         passing behind -- and what passes behind, on a cover page, is the dark
+         part of the cover, which in pixels is nearly black. So the honest
+         floor is the declared colour over BLACK, exactly as the veil's is over
+         white, and it holds for any page and any photograph.
+         This is not measurable from the built site either: the battery reads
+         the DECLARED background and composites it over white, which is the
+         kind case. The strict one is arithmetic, so it is done here. */
+  {
+    const lum2 = (r, g, b) => {
+      const ch = [r, g, b].map((v) => v / 255)
+        .map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
+      return 0.2126 * ch[0] + 0.7152 * ch[1] + 0.0722 * ch[2];
+    };
+    const doHex2 = (h) => {
+      const n = h.replace('#', '');
+      return [0, 2, 4].map((i) => parseInt(n.slice(i, i + 2), 16));
+    };
+    for (const brand of ['ithos', 'cathelier']) {
+      const sheet = readFileSync(join(ROOT, 'src/styles/brands', `${brand}.css`), 'utf8');
+      const bar = sheet.match(/--head-bg:\s*rgb\(\s*(\d+) (\d+) (\d+)\s*\/\s*([\d.]+)\s*\)/);
+      if (!bar) { die(`${brand}.css: cannot read --head-bg as rgb(R G B / A)`); continue; }
+      const a = Number(bar[4]);
+      const chao = [1, 2, 3].map((i) => a * Number(bar[i]));   // a barra sobre PRETO
+      /* Os tons que o cabeçalho realmente pinta: os ícones, a palavra ao lado
+         dos traços e a porta para a outra loja, e o tom de passagem do rato. */
+      for (const token of ['--ink', '--ink-soft', '--accent']) {
+        const m = sheet.match(new RegExp(`${token}:\\s*(#[0-9a-fA-F]{6})`));
+        if (!m) { die(`${brand}.css: cannot read ${token}`); continue; }
+        const [hi, lo] = [lum2(...chao), lum2(...doHex2(m[1]))].sort((x, y) => y - x);
+        const r = (hi + 0.05) / (lo + 0.05);
+        if (r < 4.5) {
+          die(`${brand}: the frosted bar at ${a} opacity over a black frame reads `
+            + `${r.toFixed(2)}:1 against ${token} (${m[1]}) — below 4.5:1. Raise --head-bg's `
+            + 'opacity or darken that token');
+        }
+      }
+    }
+  }
+
   /* 2b. THE COVER'S FOUR LAYERS DECLARE THEIR ORDER.
          This one is not about tidiness, it is about a bug that fixed itself
          at the wrong moment. The layers share one grid cell, and without a
