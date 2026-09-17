@@ -124,8 +124,8 @@
    middle track, the mark IS the header. */
 @media (width >= 64rem) {
   [data-brand='ithos'] .head__row { --head-h: 96px; }
+  [data-brand='ithos'] { scroll-padding-block-start: 106px; }   /* the taller header here */
   [data-brand='ithos'] .head__mark img { height: clamp(64px, 5.5vw, 76px); }
-  [data-brand='ithos'] .head[data-shrunk='yes'] .head__row { --head-h: 62px; }
 }
 
 /* --- product card ---------------------------------------------------------

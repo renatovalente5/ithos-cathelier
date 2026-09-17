@@ -147,6 +147,48 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
 }
 
 
+/* --- the header shrink stays behind the reduced-motion gate ---------------
+   A header that changes size as the page moves is motion, so a reader who
+   asked for less of it gets a header that does not change size at all --
+   doing it instantly instead of smoothly would be worse, not better.
+
+   That only holds while EVERY rule that shrinks something sits inside the
+   gate, and the trap is specificity: `[data-brand='ithos'] .head[data-shrunk]`
+   outranks an ungated rule in shop.css, so one brand-file copy left outside
+   would leave ithos sliding 96 -> 62 and stopping dead at 76 for exactly the
+   readers who asked for no motion. The copies were deleted; this is what
+   stops them coming back. */
+{
+  const folhas = ['base.css', 'shop.css', 'brands/ithos.css', 'brands/cathelier.css'];
+  for (const f of folhas) {
+    /* Comments out first, with their length preserved so the byte offsets
+       still line up: this file explains the trap in prose, and a guard that
+       cannot tell an explanation from a rule fires on its own documentation. */
+    const css = readFileSync(join(ROOT, 'src/styles', f), 'utf8')
+      .replace(/\/\*[\s\S]*?\*\//g, (c) => ' '.repeat(c.length));
+    // os intervalos de bytes de cada bloco `prefers-reduced-motion: no-preference`
+    const portoes = [];
+    for (const m of css.matchAll(/@media[^{]*prefers-reduced-motion:\s*no-preference[^{]*\{/g)) {
+      let i = m.index + m[0].length, nivel = 1;
+      while (i < css.length && nivel > 0) {
+        if (css[i] === '{') nivel++;
+        else if (css[i] === '}') nivel--;
+        i++;
+      }
+      portoes.push([m.index, i]);
+    }
+    for (const m of css.matchAll(/\[data-shrunk=.yes.\]/g)) {
+      const dentro = portoes.some(([a, b]) => m.index > a && m.index < b);
+      if (!dentro) {
+        die(`${f}: a rule with [data-shrunk='yes'] sits outside the `
+          + `prefers-reduced-motion: no-preference gate — readers who asked for `
+          + `no motion would get a half-shrunk header`);
+      }
+    }
+  }
+}
+
+
 /* --- report --------------------------------------------------------------- */
 for (const w of warnings) console.warn(`  warning: ${w}`);
 if (deaths.length) {

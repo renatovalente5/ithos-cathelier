@@ -49,6 +49,11 @@ async function catalogue() {
 document.addEventListener('DOMContentLoaded', () => {
   paintCount();
 
+  /* The header's state is derived state of the same kind as the menu's, so
+     settle() re-reads it too. Declared here because the drawer block below
+     runs first and closes over it. */
+  let headSettle = () => {};
+
   /* --- the drawer -------------------------------------------------------- */
   const drawer = $('#menu');
   const opener = $('.open-menu');
@@ -75,6 +80,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const settle = () => {
       document.documentElement.classList.toggle('menu-open', drawer.open);
       opener.setAttribute('aria-expanded', drawer.open ? 'true' : 'false');
+      headSettle();
     };
     const giveFocusBack = () => {
       if (drawer.open) return;
@@ -167,12 +173,86 @@ document.addEventListener('DOMContentLoaded', () => {
   /* --- header shrinks on the way down ------------------------------------ */
   const head = $('.head');
   if (head) {
-    let last = 0;
-    addEventListener('scroll', () => {
+    /* TWO thresholds, and the gap between them has to be WIDER than the
+       height the header gives back.
+       
+       With a single line at 120 the shrink could trigger its own undo.
+       Shrinking removes up to 34px of document (ithos at >=64rem, 96 -> 62),
+       and at the bottom of a short page the browser clamps the scroll
+       position by exactly that much -- so a page whose whole overflow sits
+       just past the line shrinks, gets clamped back below it, grows, and
+       pumps for as long as anyone looks at it. 240/150 is 90px of band
+       against 34px of travel.
+       
+       240 and not 160 for a second reason, measured: "Skip to content" lands
+       at y=123 on a page with breadcrumbs, and 44px lower again if the owner
+       turns the campaign line on. A keyboard reader pressing the skip link
+       was tripping the old 120 threshold by three pixels -- the page jumped,
+       settled, and then slid another 22-34px on its own. */
+    const SHRINK_AT = 240, GROW_AT = 150;
+    let queued = false;
+    const decide = () => {
+      queued = false;
+      const now = head.dataset.shrunk === 'yes';
       const y = scrollY;
-      if (Math.abs(y - last) < 8) return;
-      head.dataset.shrunk = y > 120 ? 'yes' : 'no';
-      last = y;
+      const next = y >= SHRINK_AT ? true : y <= GROW_AT ? false : now;
+      if (next !== now) head.dataset.shrunk = next ? 'yes' : 'no';
+    };
+    headSettle = decide;
+
+    /* One read and at most one write per FRAME. rAF is not here to make this
+       cheaper -- the write is already guarded by the change test. It is here
+       to order it: the old handler read scrollY, which can flush a pending
+       layout, and then wrote an attribute that invalidates style on the one
+       element whose height lays out the rest of the document. */
+    addEventListener('scroll', () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(decide);
+    }, { passive: true });
+
+    /* Decide once, at rest, BEFORE the transitions exist.
+       
+       A reload or a Back restores the scroll position without firing a single
+       scroll event, so the header used to be simply wrong -- full height at
+       y=2000 -- until the reader moved. Fixing that alone would have bought a
+       new defect: the header would then glide shut half a second after every
+       arrival, with the whole page sliding up underneath, for a gesture
+       nobody made. So the first decision is taken while nothing is animated,
+       and the animation is armed two frames later, once that state has
+       painted. Same lesson the panel above carries: the resting state must be
+       the correct state, and the animation may only decorate an arrival. */
+    let armTimer;
+    const arm = () => { head.dataset.anim = 'yes'; };
+    const armAfterPaint = () => {
+      head.dataset.anim = 'no';
+      clearTimeout(armTimer);
+      requestAnimationFrame(() => requestAnimationFrame(arm));
+      /* And a timer as well, because requestAnimationFrame does not fire at
+         all in a document that is not being rendered -- a background tab, or
+         a window nobody is looking at. Measured in exactly that state: zero
+         frames in 600ms, and the header stayed disarmed for good. Nothing is
+         painting there, so there is nothing to animate from and arming early
+         costs nothing; what it buys is that the shrink is smooth the first
+         time the reader actually sees it. */
+      armTimer = setTimeout(arm, 300);
+    };
+    decide();
+    armAfterPaint();
+    addEventListener('pageshow', () => { decide(); armAfterPaint(); });
+    /* A tab that was scrolled while hidden comes back with a stale header,
+       and no scroll event is owed to anyone. Re-read the truth instead. */
+    document.addEventListener('visibilitychange', () => { if (!document.hidden) decide(); });
+
+    /* A resize is not a scroll. The wordmark's resting height is a vw clamp,
+       so every pixel of a window drag is a new computed height -- and a
+       transition would interpolate every one of them, leaving the logo
+       trailing the rest of the bar for the whole gesture. */
+    let resizeTimer;
+    addEventListener('resize', () => {
+      head.dataset.anim = 'no';
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(armAfterPaint, 150);
     }, { passive: true });
   }
 

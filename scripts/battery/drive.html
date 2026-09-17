@@ -67,6 +67,122 @@ addEventListener('beforeunload', () => {
  */
 const BASE = (new URLSearchParams(location.search).get('base') || '').replace(/\/$/, '');
 
+/* --- o cabeçalho a encolher, medido quadro a quadro -------------------------
+ *
+ * Isto vive no CONDUTOR e não na bateria por uma razão simples: `__bateria()`
+ * é síncrona e devolve os resultados, e não há forma de esperar por quadros lá
+ * dentro. E corre DEPOIS da bateria, nunca antes: encolher o cabeçalho em
+ * scrollY 0 tira 22 a 34px do topo do documento e sobe a página inteira, o que
+ * entregaria geometria deslocada a todas as verificações seguintes.
+ *
+ * O que mede é o voo, não as pontas. As pontas passam sempre — os dois estados
+ * estão certos desde o início. O que estava errado era o meio: a marca saltava
+ * de 61px para 40px num único quadro enquanto a barra planava 200ms à volta
+ * dela. Uma verificação que só olhasse para o princípio e o fim nunca veria.
+ */
+/* Há quadros neste ambiente? Pergunta-se UMA vez.
+ *
+ * Sem `requestAnimationFrame` não há transição nenhuma para medir, e a
+ * verificação do encolher acusaria vinte falhas que são do medidor e não do
+ * site — ruído que esconde as verdadeiras, que é como as guardas cegas deste
+ * projecto sempre começaram. Mas saltá-las em silêncio é pior. Então: uma
+ * falha, alta e clara, sobre o AMBIENTE, e as verificações do voo ficam por
+ * fazer com isso dito. */
+let TEMOS_QUADROS = null;
+async function haQuadros() {
+  if (TEMOS_QUADROS !== null) return TEMOS_QUADROS;
+  let n = 0;
+  await new Promise((fim) => {
+    const t = setTimeout(fim, 500);
+    const tick = () => { n++; if (n < 3) requestAnimationFrame(tick); else { clearTimeout(t); fim(); } };
+    requestAnimationFrame(tick);
+  });
+  TEMOS_QUADROS = n >= 3;
+  if (!TEMOS_QUADROS) {
+    const r = { ok: false, o: 'o ambiente dá quadros para medir animações',
+      detalhe: `${n} quadros em 500ms — o painel do browser não está a desenhar, e o voo do cabeçalho fica por medir` };
+    window.__resultados['(ambiente)'] = { total: 1, falhas: [r], tudo: [r] };
+  }
+  return TEMOS_QUADROS;
+}
+
+async function medirEncolher(w, res) {
+  if (!res || !res.tudo) return;
+  if (!await haQuadros()) return;
+  const d = w.document;
+  const head = d.querySelector('.head');
+  const row = d.querySelector('.head__row');
+  const mark = d.querySelector('.head__mark img');
+  if (!head || !row || !mark) return;
+
+  const nota = (ok, o, detalhe = '') => {
+    const r = { ok: !!ok, o, detalhe: String(detalhe).slice(0, 180) };
+    res.tudo.push(r); res.total = res.tudo.length;
+    if (!ok) res.falhas.push(r);
+  };
+
+  const era = head.dataset.shrunk;
+  head.dataset.anim = 'yes';        // o condutor nunca rola, por isso nunca se armou sozinho
+  head.dataset.shrunk = 'no';
+  // NUNCA esperar por um rAF sem prazo: num documento que não está a ser
+  // desenhado ele não dispara, e o condutor fica preso para sempre. Ficou —
+  // uma página em setenta segundos, sem erro nenhum, só parado.
+  await new Promise((r) => { w.requestAnimationFrame(r); setTimeout(r, 400); });
+  const alt = () => [row.getBoundingClientRect().height, mark.getBoundingClientRect().height];
+  const inicio = alt();
+
+  head.dataset.shrunk = 'yes';
+  const amostras = [];
+  await new Promise((fim) => {
+    const limite = performance.now() + 700;
+    const tick = () => {
+      amostras.push(alt());
+      if (performance.now() < limite && amostras.length < 60) w.requestAnimationFrame(tick);
+      else fim();
+    };
+    w.requestAnimationFrame(tick);
+    // O rAF não dispara de todo num documento que não está a ser desenhado.
+    // Isso tem de aparecer como FALHA e não como silêncio: uma pergunta que
+    // desaparece é como esta bateria ficou cega à gaveta o projecto inteiro.
+    setTimeout(fim, 1400);
+  });
+  const fim = alt();
+  head.dataset.shrunk = era;        // o valor do MARKUP, não 'no' às cegas
+
+  nota(amostras.length >= 6, 'houve quadros para medir o encolher do cabeçalho',
+    `${amostras.length} amostras`);
+  if (amostras.length < 6) return;
+
+  const distintas = new Set(amostras.map((a) => Math.round(a[0]))).size;
+  nota(distintas >= 4, 'o cabeçalho passa por várias alturas a caminho',
+    `${distintas} alturas distintas entre ${Math.round(inicio[0])} e ${Math.round(fim[0])}`);
+
+  const p = (de, para, agora) => (Math.abs(de - para) < 0.5 ? null : (de - agora) / (de - para));
+  const viajaAMarca = Math.abs(inicio[1] - fim[1]) > 2;
+  if (viajaAMarca) {
+    let pior = 0, onde = '';
+    for (const [h, m] of amostras) {
+      const a = p(inicio[0], fim[0], h), b = p(inicio[1], fim[1], m);
+      if (a === null || b === null) continue;
+      const dif = Math.abs(a - b);
+      if (dif > pior) { pior = dif; onde = `barra ${a.toFixed(2)} vs marca ${b.toFixed(2)}`; }
+    }
+    nota(pior <= 0.08, 'a barra e a marca encolhem ao mesmo passo',
+      `pior desvio ${(pior * 100).toFixed(1)}% (${onde})`);
+  } else {
+    // A marca da cathelier abaixo de 800px já está no seu tamanho encolhido:
+    // `clamp(40px, 5vw, 54px)` só chega a 40 aos 800. Perguntar «encolhe ao
+    // mesmo passo» ali não tem resposta, por isso pergunta-se a outra.
+    const constante = new Set(amostras.map((a) => Math.round(a[1]))).size === 1;
+    nota(constante, 'a marca, que aqui já está no tamanho pequeno, não se mexe',
+      `${new Set(amostras.map((a) => Math.round(a[1]))).size} alturas`);
+  }
+
+  const manda = amostras.every(([h, m]) => h >= m + 8);
+  nota(manda, 'o min-height continua a mandar na altura durante o voo',
+    manda ? '' : amostras.filter(([h, m]) => h < m + 8).slice(0, 2).map(([h, m]) => `${h.toFixed(1)} vs ${m.toFixed(1)}`).join(' · '));
+}
+
 for (const pag of PAGINAS) {
   const f = document.createElement('iframe');
   f.style.cssText = `width:${L}px;height:${A}px;border:0;position:absolute;left:-9999px`;
@@ -104,6 +220,7 @@ for (const pag of PAGINAS) {
     w.document.head.appendChild(s);
     await new Promise(r => { s.onload = r; setTimeout(r, 2500); });
     window.__resultados[pag] = w.__bateria();
+    await medirEncolher(w, window.__resultados[pag]);
   } catch (e) { window.__resultados[pag] = { erro: String(e) }; }
   f.remove();
   saida.textContent = Object.keys(window.__resultados).length + '/' + PAGINAS.length;

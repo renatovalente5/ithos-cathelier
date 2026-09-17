@@ -73,6 +73,14 @@ html {
   -webkit-text-size-adjust: 100%;
   overflow-x: clip;                 /* no page scrolls sideways, ever */
   scroll-behavior: smooth;
+  /* The header is sticky, so without this every anchor lands BEHIND it.
+     Measured before adding it: /contact/#faq put the heading 85px under the
+     bar -- completely hidden, with the page looking as if the link had gone
+     nowhere. The value is the RESTING header plus a little air, not the
+     shrunk one: a jump from the top of a page happens while the header is
+     still at full height, and over-clearing when it is shrunk only leaves a
+     gap. Each brand raises it where its header is taller. */
+  scroll-padding-block-start: 94px;
 }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
 

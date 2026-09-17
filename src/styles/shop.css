@@ -141,8 +141,48 @@
    It is a promise worth keeping. */
 
 .head { position: sticky; inset-block-start: 0; z-index: 50; background: var(--bg); border-block-end: 1px solid var(--line-soft, var(--line)); }
-.head__row { min-height: var(--head-h, 84px); transition: min-height .2s ease; }
-.head[data-shrunk='yes'] .head__row { --head-h: 62px; }
+.head__row { min-height: var(--head-h, 84px); }
+
+/* --- the header shrinks on the way down ------------------------------------
+   EXACTLY TWO THINGS MOVE, AND THEY MOVE ON ONE CLOCK.
+   Everything else in the bar -- the three lines, the word beside them, the
+   door to the other brand, the basket -- is centred by the grid, so it rides
+   the row's height and needs no timing of its own. Only the row's min-height
+   and the wordmark's height actually change, and until now only the first of
+   them was animated: the wordmark went from 61px to 40px IN ONE FRAME while
+   the bar glided around it for 200ms. The biggest thing in the header was the
+   one thing that jumped, which is what the owner was seeing.
+
+   One duration and one curve for both, and that is a correctness requirement
+   rather than a preference. A block's height is max(min-height, content), and
+   with both endpoints moving under the SAME easing the gap between them is a
+   straight blend of two positive numbers and can never close mid-flight.
+   Give the two different curves and the content can take over the height
+   part-way down, which is a stutter nobody would be able to explain.
+
+   The transitions hang off data-anim, not off .head, so they can be switched
+   off for the two moments when a size change is not a shrink: the first
+   decision after load, and a window being dragged (the wordmark's resting
+   height is a vw clamp, so every pixel of a drag is a new computed height and
+   a transition would have it trailing the rest of the bar for the whole
+   gesture). */
+.head { --head-shrink: 220ms; --head-ease: cubic-bezier(.22, .61, .36, 1); }
+.head[data-anim='yes'] .head__row { transition: min-height var(--head-shrink) var(--head-ease); }
+.head[data-anim='yes'] .head__mark img { transition: height var(--head-shrink) var(--head-ease); }
+
+/* The shrink itself is motion, so a reader who asked for less of it does not
+   get a header that changes size at all -- doing it instantly instead of
+   smoothly would be worse, not better.
+   BOTH rules have to sit inside this gate, and the brand files must not carry
+   copies: `[data-brand='ithos'] .head[data-shrunk='yes'] .head__row` outranks
+   an ungated rule here, so gating only this file would leave ithos sliding
+   96 -> 62 and stopping dead at 76 -- the worst of both. The brand copies are
+   deleted; this one rule serves both, because (0,3,0) beats the brands'
+   (0,2,0) resting values. */
+@media (prefers-reduced-motion: no-preference) {
+  .head[data-shrunk='yes'] .head__row { --head-h: 62px; }
+  .head[data-shrunk='yes'] .head__mark img { height: 40px; }
+}
 /* An SVG with a viewBox and no intrinsic size collapses to nothing when it is
    given `width: auto` and no height. Moving these rules between files dropped
    the height and the ithos wordmark went to zero pixels wide — the link was
@@ -151,7 +191,8 @@
    mark has a size. */
 .head__mark img { width: auto; height: clamp(46px, 7vw, 64px); }
 [data-brand='cathelier'] .head__mark img { height: clamp(40px, 5vw, 54px); }
-.head[data-shrunk='yes'] .head__mark img { height: 40px; }
+/* the shrunk height lives with the other shrink rule, inside the
+   prefers-reduced-motion gate further up */
 .drawer__mark { height: 34px; width: auto; }
 
 .icon-btn {
@@ -222,7 +263,15 @@
 }
 .head__left { grid-area: left; display: flex; align-items: center; gap: 1.5rem; min-width: 0; }
 .head__right { grid-area: right; display: flex; align-items: center; justify-content: flex-end; gap: .35rem; }
-.head__mark { grid-area: mark; display: block; justify-self: center; }
+/* The target is 44px even when the artwork is 40. Shrunk, the ithos wordmark
+   is 39.7x40 -- the only control on the site under 44px, sitting between a
+   44px burger and a 44px basket, and it is the way back to the top of the
+   shop. The art keeps its size; the box around it does not. */
+.head__mark {
+  grid-area: mark; justify-self: center;
+  display: grid; place-items: center;
+  min-width: 44px; min-height: 44px;
+}
 
 .drawer__top {
   display: grid;

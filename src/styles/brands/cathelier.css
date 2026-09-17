@@ -106,8 +106,8 @@
 
 @media (width >= 64rem) {
   [data-brand='cathelier'] .head__row { --head-h: 92px; }
+  [data-brand='cathelier'] { scroll-padding-block-start: 102px; }   /* the taller header here */
   [data-brand='cathelier'] .head__mark img { height: clamp(50px, 4.2vw, 62px); }
-  [data-brand='cathelier'] .head[data-shrunk='yes'] .head__row { --head-h: 62px; }
 }
 [data-brand='cathelier'] .head__sibling {
   font-family: var(--font-body); font-size: 14px; letter-spacing: .03em; text-transform: none;
