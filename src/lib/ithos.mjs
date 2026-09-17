@@ -116,6 +116,13 @@ export function card(p, { eager = false } = {}) {
 }
 
 export function home({ products, identity, cover: coverText, coverWidths }) {
+  /* "Bestsellers" and not "Favourites", at the owner's request. Worth knowing
+     what changed with the word: a favourite is the shop's own opinion and owes
+     nobody evidence, while a bestseller is a claim about what actually sells.
+     The lamps under it are whatever is marked featured in the back office, so
+     keeping the heading honest means keeping that list matched to real sales.
+     (This note lives here and not in the markup: an HTML comment inside the
+     template would ship to every visitor who opens the source.) */
   const featured = products.filter((p) => p.featured).slice(0, 8);
   const rest = products.filter((p) => !p.featured).slice(0, 8);
 
@@ -124,7 +131,7 @@ ${cover(coverText, 'ithos', coverWidths)}
 
 <section class="section">
   <div class="shell">
-    <div class="section__head"><h2>Favourites</h2></div>
+    <div class="section__head"><h2>Bestsellers</h2></div>
     <div class="grid-products">
       ${featured.map((p, i) => card(p, { eager: i < 4 })).join('\n      ')}
     </div>

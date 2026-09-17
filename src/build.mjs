@@ -14,7 +14,7 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 
-import { page } from './lib/shell.mjs';
+import { page, MIRRORED } from './lib/shell.mjs';
 import * as ithos from './lib/ithos.mjs';
 import * as cath from './lib/cathelier.mjs';
 import * as pages from './lib/pages.mjs';
@@ -32,8 +32,15 @@ const cname = existsSync(join(ROOT, 'CNAME')) ? readFileSync(join(ROOT, 'CNAME')
    must not claim the domain either — a canonical pointing at a host that does
    not serve the page is worse than no canonical. */
 const BASE_PATH_SET = !!process.env.BASE_PATH;
+/* AND THE PREFIX, which was missing. The reasoning above was right and the
+   arithmetic was not: with BASE_PATH set the site is served at
+   github.io/ithos-cathelier/, and the canonical claimed github.io/contact/ --
+   an address that serves nothing. It has been inert only because every build
+   so far is a preview and noindex; it would have been wrong on all 96 pages
+   the day the preview flag came off. The same constant feeds og:url and the
+   sitemap, so all three were pointing at 404s. */
 const SITE = process.env.BASE_URL
-  || (BASE_PATH_SET ? 'https://renatovalente5.github.io'
+  || (BASE_PATH_SET ? `https://renatovalente5.github.io${(process.env.BASE_PATH || '').replace(/\/$/, '')}`
   : cname ? `https://${cname}` : 'http://localhost:4320');
 const PREVIEW = process.env.PREVIEW === 'yes';
 
@@ -116,14 +123,14 @@ const counts = { lamps: lamps.length, pieces: pieces.length, occasions: occasion
 /* --- writing -------------------------------------------------------------- */
 
 const written = [];
-function write(path, html) {
+function write(path, html, { sitemap = true } = {}) {
   const file = path === '/' ? 'index.html'
     : path.endsWith('/') ? join(path.slice(1), 'index.html')
     : path.slice(1);
   const dest = join(OUT, file);
   mkdirSync(dirname(dest), { recursive: true });
   writeFileSync(dest, prefix(html));
-  written.push(path);
+  written.push({ path, sitemap });
 }
 
 /* --- assets ---------------------------------------------------------------
@@ -320,12 +327,49 @@ function buildCathelier() {
 const MARKERS = pages.markers({ identity, shop, shipping });
 const readPage = (f) => readFileSync(join(CONTENT, 'pages', f), 'utf8');
 
-function prose(path, file, { brand = 'ithos', title, description, crumbs }) {
+function prose(path, file, { brand = 'ithos', title, description, crumbs, both = false }) {
   const html = pages.markdown(pages.fill(readPage(file), MARKERS));
+  const body = pages.prosePage(html);
+  if (both) { mirror(path, { title, description, crumbs, body }); return; }
   write(path, page({
     ...shellArgs, brand, path, title, description, crumbs,
-    noindex: false, body: pages.prosePage(html),
+    noindex: false, body,
   }));
+}
+
+/* Writes a shared page TWICE: at its own address wearing ithos, and under
+   /cathelier/ wearing cathelier. Same body, same title, same description --
+   the copy differs only in the navbar, the menu and the footer, which is what
+   was asked for. The copy's canonical points home, it carries no structured
+   data and it is not in the sitemap, so the two are never in competition. */
+/** Rewrite every link to a shared page so it stays inside cathelier. Exact
+ *  paths only, with an optional fragment -- never a prefix match, or
+ *  /legal/terms-of-hire/ would be caught by /legal/terms/. */
+function dressBody(html) {
+  let out = String(html);
+  for (const m of MIRRORED) {
+    out = out.replace(new RegExp(`href="${m}(#[^"]*)?"`, 'g'), (_, hash) => `href="/cathelier${m}${hash || ''}"`);
+  }
+  return out;
+}
+
+function mirror(path, { title, description, crumbs, body, schema = [], noindex = false }) {
+  const common = { ...shellArgs, path, title, description, body, noindex };
+  write(path, page({ ...common, brand: 'ithos', crumbs, schema }),
+    { sitemap: !noindex });
+  write(`/cathelier${path}`, page({
+    ...common, brand: 'cathelier', path: `/cathelier${path}`, canonicalPath: path,
+    /* And the links INSIDE the words, not just the ones in the frame. The
+       cancellation page points at the cancellation form, the delivery page
+       points back at the cancellation page, and the FAQ answers point at three
+       more -- every one of them a trapdoor out of cathelier and into the ithos
+       wordmark, in the middle of a sentence. The body is rendered once and
+       dressed here, before the address prefix is applied, because that is the
+       one place that knows which shop this copy belongs to. */
+    body: dressBody(body),
+    /* The trail starts in the shop the reader is standing in. */
+    crumbs: crumbs && [{ name: 'cathelier', href: '/cathelier/' }, ...crumbs.slice(1)],
+  }), { sitemap: false });
 }
 
 function buildShared() {
@@ -348,12 +392,11 @@ function buildShared() {
     ['legal/shipping-and-returns.md', '/legal/shipping-and-returns/', 'Delivery and returns', 'How long things take, where we ship, what it costs, and what happens if something arrives damaged.'],
     ['legal/identification.md', '/legal/identification/', 'Who you are buying from', 'The seller\u2019s legal identification, published under article 10 of Decree-Law 7/2004.'],
   ]) {
-    prose(path, file, { title: `${title} — ${identity.tradingName}`, description,
+    prose(path, file, { both: true, title: `${title} — ${identity.tradingName}`, description,
       crumbs: [{ name: 'Home', href: '/' }, { name: title }] });
   }
 
-  write('/contact/', page({
-    ...shellArgs, brand: 'ithos', path: '/contact/',
+  mirror('/contact/', {
     title: 'Contact — ithos · cathelier',
     description: 'WhatsApp, email or telephone. Answers in a day, usually less. And the questions we are asked most.',
     crumbs: [{ name: 'Home', href: '/' }, { name: 'Contact' }],
@@ -365,7 +408,7 @@ function buildShared() {
         acceptedAnswer: { '@type': 'Answer', text: a.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() },
       })),
     }],
-  }));
+  });
 
   write('/cathelier/quote/', page({
     ...shellArgs, brand: 'cathelier', path: '/cathelier/quote/',
@@ -375,12 +418,15 @@ function buildShared() {
     body: pages.quote({ identity }),
   }));
 
-  write('/cart/', page({
-    ...shellArgs, brand: 'ithos', path: '/cart/', noindex: true,
+  /* The basket is the worst of them and the one nobody would have listed: its
+     icon is in the header AND the drawer of every page, so a cathelier reader
+     used to change shop by clicking the most-used control on the site. */
+  mirror('/cart/', {
+    noindex: true,
     title: 'Your basket — ithos · cathelier',
     description: 'What you have chosen so far.',
     body: pages.basket({ shipping }),
-  }));
+  });
 
   for (const [path, title, description, body] of [
     ['/thank-you/', 'Thank you', 'Your order is placed and the workshop starts now.', pages.thankYou()],
@@ -389,7 +435,7 @@ function buildShared() {
     write(path, page({
       ...shellArgs, brand: 'ithos', path, noindex: true,
       title: `${title} — ithos · cathelier`, description, body,
-    }));
+    }), { sitemap: false });
   }
 
   write('/404.html', page({
@@ -397,7 +443,7 @@ function buildShared() {
     title: 'Not found — ithos · cathelier',
     description: 'The page you were looking for has moved or never existed.',
     body: pages.notFound(),
-  }));
+  }), { sitemap: false });
 }
 
 /* --- run ------------------------------------------------------------------ */
@@ -419,8 +465,13 @@ writeFileSync(join(OUT, 'robots.txt'),
   PREVIEW ? 'User-agent: *\nDisallow: /\n' : `User-agent: *\nAllow: /\nSitemap: ${SITE}/sitemap.xml\n`);
 writeFileSync(join(OUT, 'sitemap.xml'),
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`
-  + written.map((p) => `  <url><loc>${SITE}${p}</loc></url>`).join('\n') + '\n</urlset>\n');
+  /* The copies are not in here, and neither is anything noindex. A sitemap
+     entry for a page that carries a canonical pointing elsewhere is two
+     contradictory signals about the same document; one for a noindex page is
+     the same mistake, and this build has been making it since it was written
+     (the basket, the thank-you page, the 404 were all listed). */
+  + written.filter((w) => w.sitemap).map((w) => `  <url><loc>${SITE}${w.path}</loc></url>`).join('\n') + '\n</urlset>\n');
 
-console.log(`  ${SITE}${BASE}${PREVIEW ? '   (preview: noindex, no checkout)' : ''}`);
+console.log(`  ${SITE}${PREVIEW ? '   (preview: noindex, no checkout)' : ''}`);
 console.log(`  ${written.length} pages · ${lamps.length} lamps · ${pieces.length} pieces`);
 console.log(`  catalogue.${cat.hash}.json (${cat.count} products)`);

@@ -7,7 +7,13 @@ const PAGINAS = ['/','/lamps/','/lamps/fox/','/lamps/mushroom/',
  '/cathelier/pieces/growth-chart/','/cathelier/pieces/engraved-bauble/',
  '/cart/','/contact/','/about/','/cathelier/about/','/cathelier/quote/',
  '/thank-you/','/order-cancelled/','/care-and-safety/','/legal/terms/','/legal/privacy/','/legal/cancellation/',
- '/legal/shipping-and-returns/','/legal/identification/','/legal/returns-form/','/404.html'];
+ '/legal/shipping-and-returns/','/legal/identification/','/legal/returns-form/','/404.html',
+ /* And the SAME pages in the other shop's dress. Eight pages are now written
+    twice, and a copy is a page like any other: it has to hold its contrast,
+    its tap targets and its menu. Two of the eight are driven here; measuring
+    all sixteen would double the run for very little, since the bodies are
+    byte-identical and only the frame differs. */
+ '/cathelier/contact/','/cathelier/legal/terms/','/cathelier/cart/'];
 window.__resultados = {};
 const saida = document.getElementById('saida');
 const L = Number(new URLSearchParams(location.search).get('w') || 1280);

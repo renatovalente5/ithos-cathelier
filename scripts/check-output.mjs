@@ -39,7 +39,9 @@ const placeholders = new Map();
    publishes in, and reported "0 distinct titles" as if that were a result. A
    condition that is never true does not print a failure, it disappears. When
    nothing is indexable, the whole set is checked instead. */
+const { MIRRORED } = await import('../src/lib/shell.mjs');
 const PREVIEW_BUILD = process.env.PREVIEW === 'yes';
+const byCanonical = new Map();
 
 for (const file of pages) {
   const html = readFileSync(file, 'utf8');
@@ -52,14 +54,22 @@ for (const file of pages) {
   if (!title) deaths.push(`${where}: no <title>`);
   if (!desc) deaths.push(`${where}: no description`);
   if (indexable) indexablePages++;
-  if ((indexable || PREVIEW_BUILD) && title) {
-    if (titles.has(title)) deaths.push(`${where}: same title as ${titles.get(title)}`);
-    else titles.set(title, where);
-  }
-  if ((indexable || PREVIEW_BUILD) && desc) {
-    if (descriptions.has(desc)) warnings.push(`${where}: same description as ${descriptions.get(desc)}`);
-    else descriptions.set(desc, where);
-  }
+
+  /* THE QUESTION IS "ARE THESE THE SAME DOCUMENT?", NOT "THE SAME FILE?".
+     Eight pages are now written twice, once in each shop's dress, and the two
+     copies SHOULD carry the same title -- inventing a second description of
+     one document is inventing a second claim about it. So pages are grouped by
+     the canonical they name, and uniqueness is asked ACROSS groups.
+     That is an exemption, so it is bounded on its own terms below: a group may
+     hold at most two files, exactly one of which is the canonical. Without
+     those two bounds, "same canonical" would be a way to make any two pages
+     stop being compared. */
+  const canonical = html.match(/<link rel="canonical" href="([^"]*)"/)?.[1] || where;
+  if (!byCanonical.has(canonical)) byCanonical.set(canonical, []);
+  byCanonical.get(canonical).push({
+    where, title, desc, indexable,
+    selfCanonical: canonical.endsWith(where) || canonical.endsWith(where.replace(/index\.html$/, '')),
+  });
 
   // Text the owner has not filled in must never reach a LIVE page. In preview
   // it is expected — that is what preview is for — so it warns there and kills
@@ -165,6 +175,77 @@ for (const [marker, count] of placeholders) {
 }
 
 for (const w of warnings) console.warn(`  warning: ${w}`);
+/* --- nobody is dropped into the other shop's chrome ------------------------
+   Eight pages exist in both dresses. The failure this guards against is not
+   today's: it is the next shared page somebody adds, links from the footer,
+   and forgets to put in MIRRORED -- which would put 55 cathelier pages one
+   click from the ithos wordmark, silently, exactly the way the basket did
+   before this change.
+
+   The question is asked of the built HTML and of the pages themselves: a page
+   wearing cathelier may not link to the ithos copy of a shared page, and the
+   other way round. The doors between the shops are the brands' OWN addresses
+   and are not in this list, so they are untouched. */
+{
+  const BASE = (process.env.BASE_PATH || '').replace(/\/$/, '');
+  const dressOf = new Map();
+  for (const f of pages) {
+    const at = (f.slice(OUT.length) || '/').replace(/index\.html$/, '');
+    dressOf.set(at, readFileSync(f, 'utf8').match(/data-brand="(ithos|cathelier)"/)?.[1] || null);
+  }
+  for (const m of MIRRORED) {
+    if (dressOf.get(m) !== 'ithos') deaths.push(`${m}: missing, or not wearing ithos`);
+    if (dressOf.get(`/cathelier${m}`) !== 'cathelier') deaths.push(`/cathelier${m}: missing, or not wearing cathelier`);
+  }
+  for (const f of pages) {
+    const at = (f.slice(OUT.length) || '/').replace(/index\.html$/, '');
+    if (dressOf.get(at) !== 'cathelier') continue;
+    const html = readFileSync(f, 'utf8');
+    for (const m of MIRRORED) {
+      const bare = new RegExp(`\\shref="${BASE}${m.replace(/\//g, '\\/')}(?:#[^"]*)?"`);
+      if (bare.test(html)) {
+        deaths.push(`${at}: wears cathelier but links to ${m}, which wears ithos `
+          + `— that link has to go through brandPath()`);
+      }
+    }
+  }
+}
+
+/* --- one document, one title ---------------------------------------------- */
+for (const [canonical, group] of byCanonical) {
+  /* The bounds that stop "same canonical" becoming a way to be excused. */
+  if (group.length > 2) {
+    deaths.push(`${group.length} pages name the same canonical ${canonical}: `
+      + group.map((g) => g.where).join(', ') + ' — a shared page has two dresses, not more');
+  }
+  const selves = group.filter((g) => g.selfCanonical).length;
+  if (selves !== 1) {
+    deaths.push(`${canonical}: ${selves} of ${group.length} pages are their own canonical, expected exactly 1 `
+      + `(${group.map((g) => g.where).join(', ')}) — a copy must point home, and the home page must point at itself`);
+  }
+  /* Two dresses of one document say the same thing. If they diverge, one of
+     them is lying about what it is. */
+  const first = group[0];
+  for (const g of group.slice(1)) {
+    if (g.title !== first.title) deaths.push(`${g.where}: same canonical as ${first.where} but a different title`);
+    if (g.desc !== first.desc) deaths.push(`${g.where}: same canonical as ${first.where} but a different description`);
+  }
+
+  /* Uniqueness is asked of documents that go into the index. In PREVIEW
+     nothing is indexable, so the whole set is checked instead -- the same
+     reasoning as the note at the top of this file, where a condition that was
+     never true made the check disappear and report "0 distinct titles" as if
+     that were a result. */
+  const home = group.find((g) => g.selfCanonical) || first;
+  if (!(PREVIEW_BUILD || home.indexable) || !first.title) continue;
+  if (titles.has(first.title)) deaths.push(`${first.where}: same title as ${titles.get(first.title)}`);
+  else titles.set(first.title, first.where);
+  if (first.desc) {
+    if (descriptions.has(first.desc)) warnings.push(`${first.where}: same description as ${descriptions.get(first.desc)}`);
+    else descriptions.set(first.desc, first.where);
+  }
+}
+
 if (deaths.length) {
   console.error(`\n${deaths.length} problem(s) in what was built:\n`);
   for (const d of deaths.slice(0, 40)) console.error(`  · ${d}`);

@@ -29,6 +29,56 @@ export const NAV = {
 /** Only in the drawer: things people look for that do not earn a place in the bar. */
 const NAV_EXTRA = [['/contact/#faq', 'Questions']];
 
+/* --- the pages both shops share, in both dresses ---------------------------
+ *
+ * These carry the same words whichever shop you are standing in, so they are
+ * written TWICE: once at the address below, wearing ithos, and once at the
+ * same address under /cathelier/, wearing cathelier. Only the navbar, the
+ * menu and the footer differ -- which is exactly what was asked for.
+ *
+ * The basket is on the list and it is the worst of them: the basket icon is in
+ * the header AND the drawer of all 96 pages, so a cathelier reader used to
+ * change shop by clicking the most-used control on the site.
+ *
+ * The ithos address stays the canonical one, and not because ithos matters
+ * more. It is the address that already exists, GitHub Pages cannot issue a
+ * redirect, and `/cathelier/legal/terms/` would read as "cathelier's terms"
+ * when there is one contract with one sole trader -- terms.md says so itself.
+ *
+ * WHAT IS DELIBERATELY NOT HERE
+ * · /care-and-safety/ is the lamp manual: AA cells, the mains remote, keeping
+ *   the cable out of a cot, solid pine. Dressed as cathelier it would be the
+ *   only safety page a reader of the other shop ever sees, and it would
+ *   describe a product with no electricity in it. That one needs its own
+ *   words, not a copy, and the words have to come from the owner.
+ * · /404.html -- GitHub Pages serves exactly one, from the site root. A second
+ *   copy is a page no address can reach.
+ * · /thank-you/ and /order-cancelled/ -- the address Stripe returns to is
+ *   named by the Worker, and a reader arriving from stripe.com is not standing
+ *   in either shop. They stay single until the Worker can be told which.
+ * · / -- on a cathelier page that is the door OUT. Mirroring it would break
+ *   the one link whose whole job is to change brand.
+ */
+export const MIRRORED = [
+  '/contact/',
+  '/cart/',
+  '/legal/terms/',
+  '/legal/privacy/',
+  '/legal/cancellation/',
+  '/legal/returns-form/',
+  '/legal/shipping-and-returns/',
+  '/legal/identification/',
+];
+
+/** The address of a shared page in the dress of the shop you are standing in.
+ *  Every link to one goes through here -- the bar, the menu, the footer, the
+ *  breadcrumbs and the bodies -- so there is one place to be wrong, not forty. */
+export function brandPath(path, brand) {
+  if (brand !== 'cathelier') return path;
+  const [bare, hash = ''] = String(path).split('#');
+  return MIRRORED.includes(bare) ? `/cathelier${bare}${hash ? `#${hash}` : ''}` : path;
+}
+
 /* The other brand is always reachable, and always announces itself as
    elsewhere: its own name, its own lettering, and an arrow that points out. */
 export const SIBLING = {
@@ -54,10 +104,14 @@ export function page(o) {
     brand = 'ithos', title, description, path, body,
     site, identity, image, schema = [], counts = {}, shipping = null, shop = null, asset = {},
     bodyClass = '', noindex = false, crumbs = null, extraHead = '', preview = false,
+    /* Where the canonical points. On a mirrored page it is the OTHER copy --
+       the ithos one -- which is what stops two addresses with the same words
+       competing with each other. */
+    canonicalPath = path,
   } = o;
 
   const abs = (p) => `${site}${p}`;
-  const canonical = abs(path);
+  const canonical = abs(canonicalPath);
   const themeColour = brand === 'ithos' ? '#FFFFFF' : '#FFF8F2';
   const og = image ? (image.startsWith('http') ? image : abs(image)) : abs('/assets/share.jpg');
 
@@ -96,10 +150,16 @@ ${(() => {
       '@context': 'https://schema.org', '@type': 'BreadcrumbList',
       itemListElement: crumbs.map((c, i) => ({
         '@type': 'ListItem', position: i + 1, name: c.name,
-        ...(c.href ? { item: `${site}${c.href}` } : {}),
+        ...(c.href ? { item: `${site}${brandPath(c.href, brand)}` } : {}),
       })),
     });
   }
+  /* A copy carries no structured data. Every blob in here is a claim ABOUT AN
+     ADDRESS, and the address a copy names is the other one -- two FAQPage
+     blobs for one set of seven questions, or two BreadcrumbLists for one page,
+     is a contradiction handed to a search engine for nothing. The visible
+     trail is still drawn, because the reader really is standing there. */
+  if (canonicalPath !== path) return '';
   return all.length
     ? `<script type="application/ld+json">${JSON.stringify(all.length === 1 ? all[0] : all)}</script>`
     : '';
@@ -110,7 +170,7 @@ ${(() => {
 
 ${announcement({ brand, shipping })}
 ${header({ brand, path })}
-${crumbs ? breadcrumbs(crumbs) : ''}
+${crumbs ? breadcrumbs(crumbs, brand) : ''}
 
 <main id="main">
 ${body}
@@ -193,7 +253,7 @@ function header({ brand }) {
          aria-label="Go to ${esc(sibling.name)}, ${esc(sibling.note)}">
         <span>${esc(sibling.name)}</span><span aria-hidden="true">↗</span>
       </a>
-      <a class="icon-btn" href="/cart/" aria-label="Basket">
+      <a class="icon-btn" href="${brandPath('/cart/', brand)}" aria-label="Basket">
         ${icon('cart', 22)}<span class="cart-count" data-cart-count data-empty="yes"></span>
       </a>
     </div>
@@ -214,14 +274,14 @@ function drawer({ brand, identity, counts }) {
   <div class="drawer__top">
     <button class="icon-btn close-menu" type="button" aria-label="Close the menu">${icon('close', 24)}</button>
     <img class="drawer__mark" src="${mark.src}" alt="${esc(mark.alt)}" width="${mark.w}" height="${mark.h}">
-    <a class="icon-btn drawer__cart" href="/cart/" aria-label="Basket">
+    <a class="icon-btn drawer__cart" href="${brandPath('/cart/', brand)}" aria-label="Basket">
       ${icon('cart', 22)}<span class="cart-count" data-cart-count data-empty="yes"></span>
     </a>
   </div>
 
   <div class="drawer__body">
     <nav class="drawer__nav" aria-label="Main">
-      ${[...nav, ...NAV_EXTRA].map(([h, t, k]) => `<a href="${h}"><span>${esc(t)}</span>${count(k)}</a>`).join('\n      ')}
+      ${[...nav, ...NAV_EXTRA].map(([h, t, k]) => `<a href="${brandPath(h, brand)}"><span>${esc(t)}</span>${count(k)}</a>`).join('\n      ')}
     </nav>
 
   <a class="drawer__sibling" href="${sibling.href}" data-other-brand
@@ -241,11 +301,11 @@ function drawer({ brand, identity, counts }) {
 </dialog>`;
 }
 
-function breadcrumbs(items) {
+function breadcrumbs(items, brand) {
   return `<nav class="crumbs shell" aria-label="Breadcrumb">
   <ol>${items.map((it, i) => (i === items.length - 1
     ? `<li><span aria-current="page">${esc(it.name)}</span></li>`
-    : `<li><a href="${it.href}">${esc(it.name)}</a></li>`)).join('')}</ol>
+    : `<li><a href="${brandPath(it.href, brand)}">${esc(it.name)}</a></li>`)).join('')}</ol>
 </nav>`;
 }
 
@@ -268,7 +328,14 @@ function footer({ brand, identity }) {
     ['Customer care', [
       ['/contact/#faq', 'Questions'],
       ['/legal/shipping-and-returns/', 'Delivery and returns'],
-      ['/care-and-safety/', 'Care and safety'],
+      /* Care and safety is the LAMP manual -- AA cells, the mains remote,
+         keeping the cable out of a cot. It is offered where it is true and
+         nowhere else: from a cathelier page it would be the only safety page
+         that reader ever sees, and it would describe a product with no
+         electricity in it. cathelier needs its own, written for keepsakes with
+         small parts, magnets and a candle, and those words have to come from
+         the owner. */
+      ...(brand === 'cathelier' ? [] : [['/care-and-safety/', 'Care and safety']]),
       ['/legal/returns-form/', 'Cancellation form'],
       [i.complaintsBook, 'Complaints book'],
     ]],
@@ -304,7 +371,7 @@ function footer({ brand, identity }) {
     <div class="foot__grid">
       ${groups.map(([name, links]) => `<details class="foot__group" open>
         <summary>${esc(name)}</summary>
-        <ul>${links.map(([h, t, note]) => `<li><a href="${esc(h)}">${esc(t)}</a>${
+        <ul>${links.map(([h, t, note]) => `<li><a href="${esc(brandPath(h, brand))}">${esc(t)}</a>${
           note ? `<span class="foot__note">${esc(note)}</span>` : ''}</li>`).join('')}</ul>
       </details>`).join('\n      ')}
     </div>
