@@ -297,16 +297,18 @@ window.__bateria = function () {
   // uma contagem mais larga), a última linha sai por baixo sem aviso — e a
   // última linha é o telefone.
   if (drawerIsShown) {
-    // A pergunta mudou de forma, e de propósito. O meio da gaveta passou a
-    // rolar, e «a soma dos filhos cabe no ecrã» passaria a ser verdade por
-    // construção — que é exactamente como a guarda anterior ficou cega.
+    // A pergunta mudou de forma, e de propósito. O meio da gaveta rola, e «a
+    // soma dos filhos cabe no ecrã» passaria a ser verdade por construção —
+    // que é exactamente como a guarda anterior ficou cega.
     //
-    // A pergunta que ainda pode ser FALSA é esta: com tudo fechado, é preciso
-    // rolar? Se for, há coisas escondidas sem que nada o diga.
+    // A que ainda pode ser FALSA é esta: é preciso rolar para ver o menu
+    // todo? Se for, há entradas escondidas sem que nada o diga. (Havia dois
+    // acordeões aqui dentro; saíram a pedido da dona, e a pergunta continua a
+    // valer — agora sobre a lista inteira, que é um caso mais exigente.)
     const corpo = drawer.querySelector('.drawer__body');
     if (corpo) {
       const precisaDeRolar = corpo.scrollHeight > corpo.clientHeight + 1;
-      nota(!precisaDeRolar, 'com tudo fechado, a gaveta não precisa de rolar',
+      nota(!precisaDeRolar, 'o menu inteiro cabe sem rolar',
         `conteúdo ${corpo.scrollHeight}px em ${corpo.clientHeight}px`);
     }
     const contentHeight = [...drawer.children].reduce((t, e) => t + e.getBoundingClientRect().height, 0);
@@ -363,9 +365,16 @@ window.__bateria = function () {
         'o menu está encostado à esquerda e ocupa o ecrã todo em altura',
         `x=${Math.round(r.x)} altura=${Math.round(r.height)} de ${vh}`);
 
+      /* «Largo» decide-se COM A MESMA PERGUNTA QUE O CSS FAZ, e não com um
+         número à parte. Uma media query mede a área de visualização COM a
+         barra de rolamento; o `clientWidth` mede-a sem. No pixel exacto do
+         limite as duas discordam em 15px — com 768 por fora, o CSS já dá o
+         painel e o `clientWidth` diz 753, e a guarda acusava 63 falhas a
+         perguntar pelo caso do telemóvel a um painel. O 48rem tem de
+         acompanhar o de shop.css. */
+      const largo = matchMedia('(width >= 48rem)').matches;
       // Limite dos DOIS lados: um painel de 80px passaria num teste que só
       // perguntasse «menos de metade», e não seria um menu.
-      const largo = vw >= 768;
       nota(largo ? (r.width < vw * 0.5 && r.width > 300) : (r.width >= vw - 1),
         largo ? 'num ecrã grande o menu ocupa só um bocado' : 'num telemóvel o menu ocupa o ecrã',
         `${Math.round(r.width)}px de ${vw}px (${(r.width / vw * 100).toFixed(1)}%)`);
@@ -430,7 +439,7 @@ window.__bateria = function () {
     const fechar = drawer.querySelector('.close-menu')?.getBoundingClientRect();
     const marca = drawer.querySelector('.drawer__mark');
     const dm = marca?.getBoundingClientRect();
-    const eEstreito = de.clientWidth < 768;
+    const eEstreito = !matchMedia('(width >= 48rem)').matches;   // como em shop.css
 
     if (eEstreito) {
       if (dm) nota(dm.width >= 24 && dm.height >= 24, 'a marca da gaveta tem tamanho',

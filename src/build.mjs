@@ -210,11 +210,7 @@ function catalogueFile() {
   return { hash, count: Object.keys(body.products).length };
 }
 
-/* --- pages ---------------------------------------------------------------- */
-
-const FAMILIES = [['animals', 'Animals'], ['vehicles', 'Vehicles'], ['nature', 'Nature'], ['festive', 'Festive']];
-const shellArgs = { site: SITE, identity, counts, preview: PREVIEW, shipping, shop, asset: ASSET,
-  occasions, families: FAMILIES };
+const shellArgs = { site: SITE, identity, counts, preview: PREVIEW, shipping, shop, asset: ASSET };
 
 function buildIthos() {
   write('/', page({

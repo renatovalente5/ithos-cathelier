@@ -102,14 +102,15 @@ document.addEventListener('DOMContentLoaded', () => {
     opener.addEventListener('click', () => {
       if (drawer.open) drawer.close();   // never showModal() an open dialog
 
-      /* Close the groups. The comment above .drawer__body has claimed since it
-         was written that the taxonomy "is closed when the drawer opens", and
-         nothing ever closed it -- it was true of the FIRST opening only,
-         because the markup ships without `open`. Measured on cathelier in a
-         400px panel: the ten occasions expanded are 710px of content in a
-         470px box, so a returning visitor gets a menu that opens already
-         scrolled, with the telephone below the fold. The battery never saw it
-         because the battery only ever meets the state that shipped. */
+      /* The menu always opens in its resting state. There are no accordions in
+         it today -- the owner had both removed -- so this does nothing; it
+         stays because the day one comes back it will be needed and the reason
+         is not obvious. An open <details> is sticky: the markup ships without
+         `open`, so "closed when the menu opens" is true of the FIRST opening
+         and of no other. Measured while there still was one: the ten
+         occasions expanded were 710px of content in a 470px panel, and a
+         returning visitor got a menu that opened already scrolled with the
+         telephone below the fold. */
       for (const g of $$('details', drawer)) g.open = false;
 
       drawer.showModal();

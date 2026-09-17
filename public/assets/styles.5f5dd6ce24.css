@@ -1024,10 +1024,6 @@ html.menu-open { overflow: hidden; }
     --gutter: 1.25rem;
     border-inline-end: 1px solid var(--line);
   }
-  /* One column. Two columns of 155px wrap the longer occasion names onto a
-     second line, and a row designed at 46px renders at 65px. */
-  .drawer__occasions { grid-template-columns: 1fr; }
-
   /* The header is visible BESIDE the panel now, and it already carries the
      wordmark and the basket. Showing them again 40px away is the kind of
      duplicate the owner photographs. The ✕ stays, and the grid keeps its
@@ -1038,11 +1034,14 @@ html.menu-open { overflow: hidden; }
      open the richer one speaks. */
   .menu-open .head__sibling { visibility: hidden; }
 
+  /* Square, like the other one. This shop is round-cornered everywhere else
+     (--radius: 14px), but the owner looked at the panel and wanted its corners
+     straight, so the radius is not inherited here. The shadow stays: it is
+     what still tells the two panels apart. */
   [data-brand='cathelier'] .drawer {
     width: min(25rem, 48vw);
     border-inline-end: 0;
-    border-start-end-radius: var(--radius);
-    border-end-end-radius: var(--radius);
+    border-radius: 0;
     box-shadow: 0 0 44px rgb(107 78 60 / .18);
   }
 }
@@ -1076,21 +1075,21 @@ html.menu-open { overflow: hidden; }
 
 .drawer__top { min-height: 72px; padding-inline: var(--gutter); border-block-end: 1px solid var(--line-soft, var(--line)); flex: none; }
 .drawer__mark { height: 34px; width: auto; }
-/* The drawer has three parts, and only the middle one moves.
+/* The drawer has three parts, and only the middle one moves: the wordmark
+ * stays reachable at the top and the telephone at the bottom however long the
+ * list gets.
  *
- * Adding the ten occasions made it 1100px of content in an 844px screen, and
- * the guard said so the moment the battery started measuring at real phone
- * heights. Ten occasions cannot be made to fit by tightening rows.
+ * The middle used to hold two accordions — ten occasions for cathelier, four
+ * families for ithos — because ten occasions laid out flat were 1100px of
+ * content in an 844px screen. The owner asked for both to go, and the pages
+ * they led to lost nothing: each occasion is linked from ten to fourteen other
+ * pages, and the families were anchors into a catalogue that has the same four
+ * as filter chips at the top.
  *
- * So they live in a <details> that is closed when the drawer opens: at rest
- * the drawer is what it always was, and the taxonomy is one tap away rather
- * than one page away. Opening it scrolls the middle, never the whole dialog —
- * the wordmark stays reachable at the top and the telephone at the bottom.
- *
- * The guard changed with it, and this is the part that matters: a scrolling
- * list would have made "it fits" true by construction, which is how the last
- * blind guard got here. It now asserts something that can still be false —
- * that with everything CLOSED, nothing needs scrolling. */
+ * The guard that came with them stays, and this is the part that matters: it
+ * asks whether the middle needs scrolling at all, which a scrolling list would
+ * have made true by construction — which is how the last blind guard got
+ * here. */
 /* overflow-x is PINNED, not left to compute. When one axis is not `visible`
    the other computes to `auto`, so .drawer__body was a horizontal scroll
    container by accident — and the battery's two overflow guards are both blind
@@ -1101,30 +1100,6 @@ html.menu-open { overflow: hidden; }
 .drawer__body { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; }
 .drawer__nav { display: flex; flex-direction: column; padding-inline: var(--gutter); }
 
-.drawer__group { border-block-end: 1px solid var(--line-soft, var(--line)); }
-.drawer__group summary {
-  display: flex; align-items: center; gap: 1rem; min-height: 58px;
-  cursor: pointer; list-style: none; font-size: 1.1rem;
-}
-.drawer__group summary::-webkit-details-marker { display: none; }
-.drawer__group summary > span:first-child { flex: 1; }
-.drawer__group summary::after { content: '+'; font-size: 1.2rem; color: var(--muted); }
-.drawer__group[open] summary::after { content: '\2212'; }
-
-.drawer__occasions { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 1rem; padding-block-end: .75rem; }
-.drawer__occasions a {
-  display: flex; align-items: center; gap: .6rem; min-height: 46px;
-  text-decoration: none; font-size: .9375rem; color: var(--ink-soft, var(--ink));
-}
-.drawer__occasions svg { flex: none; color: var(--accent); }
-
-.drawer__families { display: flex; flex-wrap: wrap; gap: 8px; padding-block: .25rem 1rem; }
-.drawer__families a {
-  min-height: 40px; display: inline-flex; align-items: center; padding-inline: 1rem;
-  border: 1px solid var(--line); border-radius: var(--pill, 999px);
-  text-decoration: none; font-size: 13px; color: var(--muted);
-}
-.drawer__families a:hover { border-color: var(--accent); color: var(--accent); }
 .drawer__nav a { display: flex; align-items: center; gap: 1rem; min-height: 58px; text-decoration: none; border-block-end: 1px solid var(--line-soft, var(--line)); font-size: 1.1rem; }
 
 /* On a short phone the drawer was 578px of content in a 568px screen: the

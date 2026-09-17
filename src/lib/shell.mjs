@@ -1,6 +1,5 @@
 import { esc } from './html.mjs';
 import { icon } from './icons.mjs';
-import { occasionArt } from './occasions-art.mjs';
 
 /* ===========================================================================
    The page shell: <head>, the header, the drawer, the footer.
@@ -54,7 +53,6 @@ export function page(o) {
   const {
     brand = 'ithos', title, description, path, body,
     site, identity, image, schema = [], counts = {}, shipping = null, shop = null, asset = {},
-    occasions = [], families = [],
     bodyClass = '', noindex = false, crumbs = null, extraHead = '', preview = false,
   } = o;
 
@@ -118,7 +116,7 @@ ${crumbs ? breadcrumbs(crumbs) : ''}
 ${body}
 </main>
 
-${drawer({ brand, identity, counts, occasions, families })}
+${drawer({ brand, identity, counts })}
 ${footer({ brand, identity })}
 
 <a class="to-top" href="#top" hidden aria-label="Back to the top of the page">${icon('arrowUp', 22)}</a>
@@ -206,7 +204,7 @@ function header({ brand }) {
 /* A native <dialog> opened with showModal(): focus goes in, stays in, and the
    rest of the page goes inert — three promises aria-modal makes and does not
    keep on its own. */
-function drawer({ brand, identity, counts, occasions = [], families = [] }) {
+function drawer({ brand, identity, counts }) {
   const nav = NAV[brand] ?? NAV.ithos;
   const sibling = SIBLING[brand];
   const count = (key) => (counts[key] ? `<span class="drawer__count">${counts[key]}</span>` : '');
@@ -223,20 +221,6 @@ function drawer({ brand, identity, counts, occasions = [], families = [] }) {
 
   <div class="drawer__body">
     <nav class="drawer__nav" aria-label="Main">
-      ${brand === 'cathelier' && occasions.length ? `<details class="drawer__group">
-        <summary><span>Occasions</span><span class="drawer__count">${occasions.length}</span></summary>
-        <div class="drawer__occasions">
-          ${occasions.map((o) => `<a href="/cathelier/${esc(o.slug)}/">
-            ${occasionArt(o.slug, 22)}<span>${esc(o.name)}</span>
-          </a>`).join('\n          ')}
-        </div>
-      </details>` : ''}
-      ${brand === 'ithos' && families.length ? `<details class="drawer__group">
-        <summary><span>By family</span><span class="drawer__count">${families.length}</span></summary>
-        <div class="drawer__families">
-          ${families.map(([id, label]) => `<a href="/lamps/#${esc(id)}">${esc(label)}</a>`).join('\n          ')}
-        </div>
-      </details>` : ''}
       ${[...nav, ...NAV_EXTRA].map(([h, t, k]) => `<a href="${h}"><span>${esc(t)}</span>${count(k)}</a>`).join('\n      ')}
     </nav>
 
