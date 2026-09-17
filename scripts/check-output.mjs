@@ -80,16 +80,29 @@ for (const file of pages) {
     placeholders.set(marker, (placeholders.get(marker) ?? 0) + 1);
   }
 
-  // Every internal link has to resolve to something on disk. When the site is
-  // served under a folder, a path that forgot the prefix resolves to somebody
-  // else's site — so the prefix is checked here rather than trusted.
+  // Every internal address has to resolve to something on disk, and the site
+  // is served from a folder, so a path that forgot the prefix resolves to
+  // somebody else's site — the prefix is checked here rather than trusted.
+  //
+  // SRCSET IS IN HERE, AND IT WAS NOT.
+  // This walked `href` and `src` only, and the renditions live in `srcset`:
+  // 747 of the site's 944 image addresses appeared NOWHERE ELSE, so three
+  // quarters of the pictures were never checked for existence, for the prefix,
+  // or for being empty. Which is the shape of the defect this file was written
+  // after in the first place.
   const BASE = (process.env.BASE_PATH || '').replace(/\/$/, '');
-  // data-film is in here with href and src because it is the same kind of
-  // thing: an address the page will fetch. It is fetched by script rather than
-  // by the parser, which is exactly why it needs checking -- nothing about a
-  // missing prefix shows up until somebody loads the home page.
+  const enderecos = [];
   for (const m of html.matchAll(/(?:href|src|poster|data-film(?:-tall)?)="(\/[^"#?]*)/g)) {
-    let target = m[1];
+    enderecos.push(m[1]);
+  }
+  for (const m of html.matchAll(/srcset="([^"]+)"/g)) {
+    for (const parte of m[1].split(',')) {
+      const url = parte.trim().split(/\s+/)[0];
+      if (url.startsWith('/')) enderecos.push(url.split('#')[0].split('?')[0]);
+    }
+  }
+
+  for (let target of enderecos) {
     if (BASE) {
       if (!target.startsWith(BASE + '/')) {
         deaths.push(`${where}: ${target} is missing the ${BASE} prefix and would 404`);
@@ -99,7 +112,17 @@ for (const file of pages) {
     }
     if (/^\/(media|assets|data)\//.test(target)) {
       images++;
-      if (!existsSync(join(OUT, target))) deaths.push(`${where}: ${target} does not exist`);
+      const disco = join(OUT, target);
+      if (!existsSync(disco)) {
+        deaths.push(`${where}: ${target} does not exist`);
+      } else if (statSync(disco).size === 0) {
+        /* Existir não é ter conteúdo, e a diferença já custou uma publicação:
+           um scripts/renditions.py interrompido a meio deixou uma imagem de
+           0 bytes, o existsSync disse que sim, e a fotografia partida foi para
+           o ar com todas as verificações verdes. */
+        deaths.push(`${where}: ${target} exists but is empty — an interrupted write, `
+          + 'or a generator that failed silently');
+      }
       continue;
     }
     links++;
