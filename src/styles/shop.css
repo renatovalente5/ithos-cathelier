@@ -395,6 +395,25 @@
   .open-menu__word { display: inline; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; }
 }
 
+/* An option that is out of stock. Greyed AND labelled: colour alone is not a
+   message, and "why is this one pale?" is a question the reader should not
+   have to ask. The radio carries `disabled`, so it is skipped by the keyboard
+   within its group, which is the right behaviour for a radio -- unlike a
+   button, where disabling the thing you just pressed leaves the focus with
+   nowhere to go. */
+/* The limit, said out loud. A maxlength the reader only discovers when the
+   keyboard stops responding is worse than a number on the page -- and it is
+   printed from o.max, so it cannot come to disagree with the field it
+   describes, or with the Worker, which enforces the same number. */
+.field__limit { display: block; margin-block-start: .35rem; font-size: 12px; color: var(--muted); }
+
+.choice--off { opacity: .55; cursor: not-allowed; }
+.choice--off input { cursor: not-allowed; }
+.choice__off {
+  font-style: normal; font-size: 12px; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--muted);
+}
+
 /* --- sort by ----------------------------------------------------------------
    Built by the script, so it is never on a page that cannot use it. A native
    <select>: it is one tab stop, it is the control every phone already knows

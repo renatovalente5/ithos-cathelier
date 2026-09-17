@@ -34,12 +34,18 @@ const FILTERS = [
  *  price the product page cannot honour is a lie the shop tells on the way in;
  *  it happened once, with an option pre-ticked that carried a surcharge. */
 export function fromPrice(p) {
-  const cheapest = (p.options || [])
-    .filter((o) => o.type === 'choice' && o.required)
-    .reduce((sum, o) => sum + Math.min(...o.values.map((v) => v.extra || 0)), 0);
-  const dearest = (p.options || [])
-    .filter((o) => o.type === 'choice' && o.required)
-    .reduce((sum, o) => sum + Math.max(...o.values.map((v) => v.extra || 0)), 0);
+  /* Only values you can actually buy count towards the price on the card.
+     A surcharged option that is out of stock must not make the card say
+     "from" a number nobody can reach today -- and an option that is out of
+     stock must not lower the floor either. The card's price has to be
+     obtainable, which this shop has been caught on once before. */
+  const haveable = (o) => {
+    const on = o.values.filter((v) => v.available !== false);
+    return on.length ? on : o.values;
+  };
+  const required = (p.options || []).filter((o) => o.type === 'choice' && o.required);
+  const cheapest = required.reduce((sum, o) => sum + Math.min(...haveable(o).map((v) => v.extra || 0)), 0);
+  const dearest = required.reduce((sum, o) => sum + Math.max(...haveable(o).map((v) => v.extra || 0)), 0);
   return { low: p.price + cheapest, high: p.price + dearest };
 }
 
@@ -338,22 +344,34 @@ function optionField(o) {
   if (o.type === 'text') {
     return `<div class="field">
         <label for="opt-${esc(o.id)}">${esc(o.name)} <span class="field__optional">optional</span></label>
-        ${o.help ? `<p class="field__help">${esc(o.help)}</p>` : ''}
+        ${o.help ? `<p class="field__help">${esc(o.help)} <span class="field__limit">Up to ${o.max || 40} characters.</span></p>` : ''}
         <input id="opt-${esc(o.id)}" type="text" maxlength="${o.max || 40}"
                data-option="${esc(o.id)}" placeholder="A name, a date, a short phrase">
       </div>`;
   }
-  const cheapest = Math.min(...o.values.map((v) => v.extra || 0));
-  const chosen = o.values.find((v) => (v.extra || 0) === cheapest) ?? o.values[0];
+  /* THE TICKED ONE HAS TO BE ONE YOU CAN ACTUALLY BUY.
+     It used to be the cheapest, full stop, which is the same family of bug as
+     the one that once put a surcharged option on tick and made the card
+     advertise 78 EUR for a product whose page opened at 89: the default has to
+     be obtainable. An option that is out of stock is neither the default nor
+     selectable, and it says why rather than just going grey. */
+  const haveable = o.values.filter((v) => v.available !== false);
+  const pool = haveable.length ? haveable : o.values;
+  const cheapest = Math.min(...pool.map((v) => v.extra || 0));
+  const chosen = pool.find((v) => (v.extra || 0) === cheapest) ?? pool[0];
   return `<fieldset class="field">
         <legend>${esc(o.name)}</legend>
         ${o.help ? `<p class="field__help">${esc(o.help)}</p>` : ''}
         <div class="choices">
-          ${o.values.map((v) => `<label class="choice">
+          ${o.values.map((v) => {
+    const off = v.available === false;
+    return `<label class="choice${off ? ' choice--off' : ''}">
             <input type="radio" name="opt-${esc(o.id)}" value="${esc(v.id)}"
-                   data-option="${esc(o.id)}"${v.id === chosen.id ? ' checked' : ''}>
-            <span>${esc(v.name)}${v.extra ? ` <em>+${money(v.extra)}</em>` : ''}</span>
-          </label>`).join('\n          ')}
+                   data-option="${esc(o.id)}"${v.id === chosen.id ? ' checked' : ''}${off ? ' disabled' : ''}>
+            <span>${esc(v.name)}${v.extra ? ` <em>+${money(v.extra)}</em>` : ''}${
+      off ? ` <em class="choice__off">${esc(v.note || 'Unavailable')}</em>` : ''}</span>
+          </label>`;
+  }).join('\n          ')}
         </div>
       </fieldset>`;
 }

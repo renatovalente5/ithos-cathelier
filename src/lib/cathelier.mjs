@@ -270,6 +270,7 @@ export function piece({ p, all: everything, shop, occasions }) {
         <input id="opt-${esc(o.id)}" type="text" maxlength="${o.max || 60}"
                data-option="${esc(o.id)}"${o.required ? ' required' : ''}
                placeholder="${esc(o.example || '')}">
+        <p class="field__limit">Up to ${o.max || 60} characters.</p>
       </div>`).join('\n      ')}
 
       <div class="product__buy">

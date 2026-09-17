@@ -20,6 +20,7 @@ const { shapeOf, rungs } = await import('../src/lib/photo.mjs');
 const PREVIEW = process.env.PREVIEW === 'yes';
 
 const deaths = [];
+const esgotados = new Map();
 const warnings = [];
 const die = (m) => deaths.push(m);
 const pending = (m) => (PREVIEW ? warnings.push(m) : deaths.push(m));
@@ -74,6 +75,24 @@ function checkProduct(brand, slug, p) {
           die(`${where}: option "${o.id}" value "${v.id}" has colour "${v.colour}", `
             + `which is not a six-digit hex like #B32920`);
         }
+      }
+      /* A REQUIRED CHOICE WITH NOTHING LEFT TO CHOOSE IS A PRODUCT NOBODY CAN
+         BUY, and it would not look broken: the page would draw every option
+         greyed, the form would refuse to submit, and the shop would go on
+         advertising a price. Marking the last value unavailable has to stop
+         the build and say which product it was. */
+      const aVenda = o.values.filter((v) => v.available !== false);
+      if (o.required && !aVenda.length) {
+        die(`${where}: every value of required option "${o.id}" is unavailable — `
+          + `nobody could buy this. Unpublish the product instead.`);
+      }
+      /* Counted, not listed. "Mains cable with remote" is out of stock on all
+         26 lamps at once, and 26 identical warning lines would bury the two
+         that matter (the address the owner has still to fill in). One line
+         per option says the same thing and can still be read. */
+      for (const v of o.values.filter((x) => x.available === false)) {
+        const chave = `${o.name} — ${v.name}`;
+        esgotados.set(chave, (esgotados.get(chave) || 0) + 1);
       }
       // The price on the card is the lowest the product can be bought for, so
       // some choice at zero surcharge has to exist. A required option whose
@@ -265,6 +284,16 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
   }
 }
 
+
+/* A warning and never a `pending`. `pending` means "the owner has not filled
+   this in yet" and kills a live build; being out of stock is a deliberate,
+   legitimate state that must not stop the shop from publishing. It is still
+   said out loud every build, because a thing that quietly stays out of stock
+   for a year is a thing nobody remembered to put back. */
+for (const [o, n] of esgotados) {
+  warnings.push(`${o}: unavailable on ${n} product${n > 1 ? 's' : ''} — nobody can `
+    + `choose it, and the Worker refuses it if anyone tries`);
+}
 
 /* --- report --------------------------------------------------------------- */
 for (const w of warnings) console.warn(`  warning: ${w}`);

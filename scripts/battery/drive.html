@@ -266,6 +266,11 @@ async function medirDeriva(w, res) {
  */
 async function medirFotografia(w, res) {
   if (!res || !res.tudo) return;
+  /* Sem quadros não há geometria pintada para medir, e uma <img> num documento
+     que não está a ser desenhado fica com `naturalWidth` a zero sem que nada
+     esteja errado com o site. Isso já é dito UMA vez, alto, sobre o ambiente;
+     repeti-lo aqui seriam cinco falhas enganadoras por corrida. */
+  if (!await haQuadros()) return;
   const d = w.document;
   const slide = d.querySelector('.gallery__slide img, .product__gallery .frame img');
   if (!slide) return;
@@ -276,7 +281,19 @@ async function medirFotografia(w, res) {
     if (!ok) res.falhas.push(r);
   };
 
-  if (!slide.naturalWidth) { nota(false, 'a fotografia do produto carregou', 'sem pixels'); return; }
+  if (!slide.naturalWidth) {
+    await new Promise((r) => { slide.addEventListener('load', r, { once: true }); setTimeout(r, 2500); });
+  }
+  if (!slide.naturalWidth) {
+    /* A prova de que uma imagem falhou é o ESTADO DA RESPOSTA, não o
+       naturalWidth -- a bateria aprendeu isso com três imagens "partidas" que
+       carregavam bem. */
+    const pedido = w.performance.getEntriesByType('resource')
+      .find((e) => e.name === (slide.currentSrc || slide.src));
+    nota(false, 'a fotografia do produto carregou',
+      pedido ? `resposta ${pedido.responseStatus}` : 'nunca chegou a ser pedida');
+    return;
+  }
   const b = slide.getBoundingClientRect();
   const doFicheiro = slide.naturalWidth / slide.naturalHeight;
   const k = Math.min(b.width / slide.naturalWidth, b.height / slide.naturalHeight);

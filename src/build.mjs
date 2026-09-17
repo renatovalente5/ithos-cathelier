@@ -206,7 +206,14 @@ function catalogueFile() {
             personalises: !!o.personalises, max: o.max || 40, extra: o.extra || 0 }
         : { id: o.id, name: o.name, type: 'choice', required: !!o.required,
             personalises: !!o.personalises,
-            values: o.values.map((v) => ({ id: v.id, name: v.name, extra: v.extra || 0 })) })),
+            /* `available` travels. Without it the shop could refuse a choice in
+               the browser and accept it at the till: the Worker prices from
+               THIS file and knows nothing the file does not say. A disabled
+               radio is a courtesy to the reader, never a control. */
+            values: o.values.map((v) => ({
+              id: v.id, name: v.name, extra: v.extra || 0,
+              ...(v.available === false ? { available: false } : {}),
+            })) })),
     }])),
   };
   const json = JSON.stringify(body);

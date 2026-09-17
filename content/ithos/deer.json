@@ -35,7 +35,9 @@
         {
           "id": "mains",
           "name": "Mains cable with remote",
-          "extra": 0
+          "extra": 0,
+          "available": false,
+          "note": "Out of stock for now"
         }
       ]
     },
@@ -45,7 +47,7 @@
       "type": "text",
       "required": false,
       "personalises": true,
-      "max": 22,
+      "max": 40,
       "extra": 0,
       "help": "A name, a date or a short phrase, burned into the wood. Leave it empty if you would rather not."
     }
