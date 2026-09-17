@@ -400,6 +400,58 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
     }
   }
 
+  /* 0a. UM FICHEIRO DE MARCA SÓ GOVERNA A SUA MARCA.
+         É a regra desta casa e já foi paga: `.head__mark { position: absolute }`
+         escrito sem âmbito no ficheiro da ithos pôs a navegação a imprimir por
+         cima do wordmark da cathelier, e a dona fotografou-o. Hoje o ficheiro
+         da cathelier tinha QUARENTA E OITO regras assim -- `.occasion`,
+         `.collection`, `.feature`, `.steps`, `.ask` -- e só não partiam nada
+         por acaso, porque a ithos não usa nenhum desses nomes.
+         Confinam-se com `:where([data-brand='…'])`, que tem especificidade
+         ZERO: confina sem mexer numa única relação da cascata. `[data-brand]`
+         directo também passa aqui, e é o que as regras antigas já usam. */
+  for (const brand of ['ithos', 'cathelier']) {
+    const css = readFileSync(join(ROOT, 'src/styles/brands', `${brand}.css`), 'utf8')
+      .replace(/\/\*[\s\S]*?\*\//g, '');
+    const soltos = [];
+    let i = 0;
+    for (;;) {
+      const j = css.indexOf('{', i);
+      if (j === -1) break;
+      const bruto = css.slice(i, j);
+      const corte = Math.max(bruto.lastIndexOf(';') + 1, bruto.lastIndexOf('}') + 1, 0);
+      const sel = bruto.slice(corte).trim();
+      if (sel && !sel.startsWith('@') && !sel.startsWith(':root') && !sel.includes('data-brand')) {
+        soltos.push(sel.replace(/\s+/g, ' ').slice(0, 60));
+      }
+      i = j + 1;
+    }
+    if (soltos.length) {
+      die(`${brand}.css: ${soltos.length} selector(s) with no brand scope, so they govern the `
+        + `OTHER shop too — ${soltos.slice(0, 3).join(' · ')}`);
+    }
+  }
+
+  /* 0. TODA A OCASIÃO PUBLICADA TEM UM DESENHO.
+        `drawnOccasions` está exportado em src/lib/occasions-art.mjs desde que o
+        ficheiro existe e nunca foi importado por ninguém -- uma guarda escrita
+        e nunca ligada, que é o mesmo que não existir. E o que ela vigia não
+        falha alto: occasionArt() devolve string VAZIA para um slug que não
+        conhece, portanto uma ocasião nova publicada pelo backoffice aparece na
+        fila da home como um círculo castanho liso, sem erro nenhum em lado
+        nenhum. Agora a construção morre e diz qual. */
+  {
+    const { drawnOccasions } = await import('../src/lib/occasions-art.mjs');
+    const ocasioes = read('cathelier/_occasions.json');
+    for (const o of ocasioes) {
+      if (!o.published) continue;
+      if (!drawnOccasions.includes(o.slug)) {
+        die(`_occasions.json: "${o.slug}" is published and src/lib/occasions-art.mjs has no `
+          + 'drawing for it — the badge would be an empty circle, and nothing else would say so');
+      }
+    }
+  }
+
   /* 1a. A FORMA DOS CARTÕES: TRÊS DECLARAÇÕES E OS FICHEIROS.
          O mesmo número existe em três linguagens -- scripts/cards.py corta os
          masters, src/lib/photo.mjs declara a proporção intrínseca no <img>, e

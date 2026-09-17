@@ -54,36 +54,22 @@ function occasionRow(occasions, current) {
 }
 
 
-const ASK = [
-  ['shield', 'Will I see it before it is cut?',
-   `<p>Always. We draw it, send you a picture of the drawing, and nothing goes near
-     the laser until you have said yes. If a letter is wrong, it is wrong on a
-     screen and not in wood.</p>`],
-  ['truck', 'How long does it take?',
-   `<p>Around three weeks in the workshop from the moment you approve the drawing,
-     and a few days to reach you. If you have a date, tell us — we work backwards
-     from it.</p>`],
-  ['hand', 'Can I order a hundred of them?',
-   `<p>Yes, and it is priced differently from one.
-     <a href="/cathelier/quote/">Ask for a quote</a> and say roughly how many and
-     what for.</p>`],
-  ['leaf', 'What is it made of?',
-   `<p>Birch plywood or solid wood, depending on the piece, from responsibly
-     managed forests. Cut, engraved, and finished by hand.</p>`],
-  ['pin', 'Can I change my mind?',
-   `<p>Not once we have started, and the reason is that it has your names on it —
-     it cannot go to anybody else. That is the exception in article 17(c) of
-     Decree-Law 24/2014. It is exactly why we send the drawing first.</p>`],
-  ['mail', 'Something is wrong with mine.',
-   `<p>Write to us with a photograph and we will put it right. Everything carries a
-     three-year guarantee, and a mistake of ours is remade at our cost.</p>`],
-];
 
 export function home({ occasions, pieces, cover: coverText, coverArt }) {
-  const newest = [...pieces].sort((a, b) => (b.order ?? 0) - (a.order ?? 0)).slice(0, 8);
+  /* A CONTAGEM SAI DO MESMO FILTRO QUE A PÁGINA DE OCASIÃO USA.
+     Escrever "19 keepsakes" à mão faz a home mentir na primeira vez que a dona
+     publicar mais uma -- e ninguém repara, porque o número continua a parecer
+     um número. `featured` é o que se MOSTRA (quatro); `quantos` é o que
+     EXISTE, e é esse que vai no botão. */
   const feature = occasions.find((o) => o.slug === 'keepsakes') ?? occasions[0];
-  const featurePieces = pieces.filter((p) => p.occasion === feature.slug
-    || (p.alsoIn || []).includes(feature.slug)).slice(0, 4);
+  const naColeccao = (p) => p.occasion === feature.slug || (p.alsoIn || []).includes(feature.slug);
+  const quantos = pieces.filter(naColeccao).length;
+  /* SEIS e não quatro. A grelha é de 2 colunas abaixo de 48rem, 3 acima e 4 a
+     partir de 90rem: quatro cartões deixam sempre UM sozinho na segunda fila a
+     3 colunas, que é a largura mais comum. Seis fecha certo a 2 e a 3, e a 4
+     deixa meia fila em vez de um órfão. */
+  const featured = pieces.filter(naColeccao).slice(0, 6);
+  const resto = pieces.filter((p) => !naColeccao(p)).slice(0, 8);
 
   const shot = (name, ratio) => `<div class="frame"${ratio ? ` style="aspect-ratio:${ratio}"` : ''}>${picture({
     dir: 'cathelier/pool', name, widths: [200, 400], alt: '',
@@ -93,76 +79,80 @@ export function home({ occasions, pieces, cover: coverText, coverArt }) {
   return `
 ${cover(coverText, 'cathelier', coverArt)}
 
+<section class="occasions-lead">
+  <div class="shell">
+    <div class="collection__head">
+      <h2>What is it for?</h2>
+      <p>Start with the day, or with the person.</p>
+    </div>
+    ${occasionRow(occasions)}
+  </div>
+</section>
+
 <section class="feature">
   <div class="shell">
-    <div class="collection__head" style="margin-block-end:1.5rem">
-      <span class="eyebrow">Featured collection</span>
-      <h2>${esc(feature.name)}</h2>
-    </div>
     <div class="feature__row">
       <div class="feature__text">
-        <p>${esc(feature.summary)}</p>
-        <p>Made to hold a day still: the names of the people who were there, the date
-           it happened, and the small drawing that belongs to it. Each one is cut,
-           engraved and finished by hand, and each one is different because the
-           words are.</p>
-        <p>Tell us what it has to say and we will draw it first.</p>
-        <a class="btn" href="/cathelier/${esc(feature.slug)}/">See the collection</a>
+        <h2>For everyone who was there</h2>
+        <p>A christening, a wedding, a communion, a birthday — and fifty small
+           things to hand out at the end of it, each one carrying a name.</p>
+        <p>They are cut, engraved and sanded here, one run at a time. No two runs
+           come out the same, because the names are not.</p>
       </div>
       <div class="feature__art">
         ${shot('03', '16 / 9')}${shot('09')}${shot('02')}${shot('07')}
       </div>
     </div>
+    <div class="grid-products" style="margin-block-start:clamp(2rem, 5vw, 3rem)">
+      ${featured.map((p, i) => card(p, { eager: i < 3 })).join('\n      ')}
+    </div>
+    <p style="text-align:center;margin-block-start:2.5rem">
+      <a class="btn" href="/cathelier/${esc(feature.slug)}/">See all ${quantos} keepsakes</a>
+    </p>
+  </div>
+</section>
+
+<section class="steps">
+  <div class="shell">
+    <div class="collection__head"><h2>Nothing is cut before you say yes</h2></div>
+    <ol class="steps__list">
+      <li>
+        <span class="steps__n" aria-hidden="true">1</span>
+        <h3>You write</h3>
+        <p>The names, the dates, the words. A photograph of something you liked,
+           if you have one.</p>
+      </li>
+      <li>
+        <span class="steps__n" aria-hidden="true">2</span>
+        <h3>We draw it</h3>
+        <p>The drawing comes back to you with every letter exactly where it will
+           be cut. Change it as many times as you need to.</p>
+      </li>
+      <li>
+        <span class="steps__n" aria-hidden="true">3</span>
+        <h3>Then the laser</h3>
+        <p>Only after you have said yes. There is no version of this where you
+           open the box and find a name spelled wrong.</p>
+      </li>
+    </ol>
+    <p class="steps__aside">Fifty of something, for a wedding or a school?
+      <a href="/cathelier/quote/">Ask for a quote</a>.</p>
   </div>
 </section>
 
 <section class="collection collection--alt">
   <div class="shell">
-    <div class="grid-products">${featurePieces.map((p) => card(p)).join('\n      ')}</div>
-  </div>
-</section>
-
-<section class="collection">
-  <div class="shell">
-    <div class="collection__head"><h2>New in the workshop</h2></div>
+    <div class="collection__head">
+      <h2>Everything else</h2>
+      <p>Cake toppers, signs, trophies, bookmarks, boxes, keyrings. ${pieces.length}
+         pieces in all, and every one of them takes a name.</p>
+    </div>
     <div class="grid-products" style="margin-block-start:2rem">
-      ${newest.map((p) => card(p)).join('\n      ')}
+      ${resto.map((p) => card(p)).join('\n      ')}
     </div>
     <p style="text-align:center;margin-block-start:2.5rem">
       <a class="btn btn--ghost" href="/cathelier/pieces/">See all ${pieces.length} pieces</a>
     </p>
-  </div>
-</section>
-
-<section class="feature" style="background:var(--bg-soft)">
-  <div class="shell">
-    <div class="feature__row feature--flip">
-      <div class="feature__text">
-        <h2>Nothing is cut before you say yes</h2>
-        <p>Tell us the names, the dates or the words. We draw it and send you the
-           drawing. Only when you have looked at it and said yes does anything go
-           on the laser.</p>
-        <p>It is the whole reason people trust us with a christening or a wedding:
-           there is no version of this where you open the box and find a name
-           spelled wrong.</p>
-        <a class="btn" href="/cathelier/quote/">Ask for a quote</a>
-      </div>
-      <div class="feature__art">
-        ${shot('05', '16 / 9')}${shot('08')}${shot('11')}${shot('12')}
-      </div>
-    </div>
-  </div>
-</section>
-
-<section class="ask">
-  <div class="shell">
-    <div class="collection__head"><h2>Need a hand?</h2></div>
-    <div class="ask__grid">
-      ${ASK.map(([ic, q, a]) => `<details class="ask__item">
-        <summary>${icon(ic, 18)}<span>${esc(q)}</span></summary>
-        <div>${a}</div>
-      </details>`).join('\n      ')}
-    </div>
   </div>
 </section>
 `;
