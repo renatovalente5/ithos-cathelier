@@ -243,12 +243,24 @@ window.__bateria = function () {
   // perfeitamente numa página normal.
   const respostas = new Map(performance.getEntriesByType('resource')
     .map((r) => [r.name, r.responseStatus]));
-  const partidas = [...document.images]
-    .map((i) => i.currentSrc || i.src)
-    .filter((u) => u && respostas.get(u) >= 400)
-    .slice(0, 4);
-  nota(partidas.length === 0, 'nenhuma imagem partida (pelo estado da resposta)', partidas.join(', '));
-  const semAlt = [...document.images].filter((i) => i.alt === null || i.alt === undefined).length;
+  /* E DIZER SOBRE QUANTAS É QUE FALA.
+     Esta verificação só conhece uma imagem depois de alguma coisa a ter ido
+     buscar. A tira de miniaturas fez a página de catálogo passar de 28 para 95
+     imagens, todas em `loading="lazy"` — e o condutor nunca rola. Sem o
+     denominador, a cobertura caía para um terço e o ✓ continuava igual: a
+     forma exacta de guarda que este projecto trata como defeito. */
+  const enderecos = [...document.images].map((i) => i.currentSrc || i.src).filter(Boolean);
+  const medidas = enderecos.filter((u) => respostas.has(u));
+  const partidas = medidas.filter((u) => respostas.get(u) >= 400).slice(0, 4);
+  nota(partidas.length === 0,
+    `nenhuma imagem partida (${medidas.length} de ${document.images.length} medidas)`,
+    partidas.join(', '));
+
+  /* A pergunta é sobre o ATRIBUTO. A propriedade responde a outra: `i.alt`
+     reflecte o atributo e devolve '' quando ele não existe, por isso nunca é
+     null nem undefined — a versão anterior contava zero em todas as páginas
+     desde que foi escrita e não podia fazer outra coisa. */
+  const semAlt = [...document.images].filter((i) => !i.hasAttribute('alt')).length;
   nota(semAlt === 0, 'todas as imagens têm atributo alt', String(semAlt));
 
   // --- estrutura -----------------------------------------------------------

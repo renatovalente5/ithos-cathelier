@@ -581,81 +581,270 @@ function filters() {
    requests for pictures almost nobody scrolls to; the swap happens on the
    first hover and the browser fetches then. */
 function cardShots() {
-  if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
-  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  /* THE THREE MOVES.
+   *
+   * Every change of photograph is the same three, and the third one is the
+   * whole design:
+   *   1. a second layer takes the next photograph, settled into place with
+   *      transitions off, and is NOT shown until it has real pixels;
+   *   2. it dissolves in over the first, which stays fully opaque underneath;
+   *   3. once the dissolve is done, the FIRST layer is repointed at the same
+   *      photograph and the second is snapped back to invisible with the
+   *      transition suppressed. Both hold the identical picture at that
+   *      instant, so the handover cannot be seen.
+   *
+   * Move 3 is what makes the card return to its resting shape after every
+   * step, not just at the end of the loop: one layer, in flow, opaque,
+   * scale 1, showing what it says it is showing. The alternative -- leaving
+   * whichever layer happens to be on top -- means the card's correct state
+   * depends on an animation having finished, and this project has already
+   * paid for that lesson twice.
+   *
+   * The clicking of a thumbnail works even where the drift does not: it is a
+   * deliberate act, so it runs on a phone, under reduced motion, and with a
+   * keyboard. Only the automatic drift is gated on a fine pointer. */
+  const cards = $$('[data-shots]');
+  if (!cards.length) return;
 
-  const EVERY = 900;
+  const FINE = matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const CALM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const DRIFTS = FINE && !CALM;
 
-  for (const card of $$('[data-shots]')) {
+  const FIRST = 1400;   // before the first change: most hovers are short
+  const ZOOM = 2600;    // the dwell, which is also the length of the zoom
+  const FADE = 900;     // the dissolve
+  const DWELL = 250;    // pointer must stay before anything is fetched
+  const WARM = 700;     // deadline on decode, never an open-ended wait
+
+  const wait = (ms) => new Promise((r) => setTimeout(r, ms));
+
+  for (const card of cards) {
     const shots = card.dataset.shots.split(',').filter(Boolean);
-    if (shots.length < 2) continue;
-    const dir = card.dataset.dir;
-    const img = $('img', card);
-    const sources = $$('source', card);
-    const dots = $$('.card__shots i', card);
-    if (!img) continue;
+    const frame = $('.card__frame', card);
+    const base = frame && $('picture', frame);
+    if (!frame || !base || shots.length < 2) continue;
+    /* Fill the strip, but only where it is shown. On a phone there is no
+       pointer to rest anywhere and the strip is display:none, so not one of
+       these images is built and not one byte is fetched. */
+    const strip = $('.card__thumbs', card);
+    const thumbs = $$('.card__thumb', card);
+    const fillStrip = () => {
+      if (!strip || strip.classList.contains('ready')) return;
+      const dir = card.dataset.dir;
+      thumbs.forEach((t, n) => {
+        const name = shots[n];
+        const im = document.createElement('img');
+        im.src = `${BASE}/media/${dir}/${name}-200.webp`;
+        im.srcset = `${BASE}/media/${dir}/${name}-120.webp 120w, ${BASE}/media/${dir}/${name}-200.webp 200w`;
+        im.sizes = '56px';
+        im.width = 200; im.height = 200;
+        im.alt = '';
+        im.loading = 'lazy';
+        im.decoding = 'async';
+        im.fetchPriority = 'low';
+        t.append(im);
+      });
+      strip.classList.add('ready');
+    };
+    /* And it follows the reader down the page. `loading="lazy"` did not help
+       here: the images are created after layout, and Chrome's threshold
+       reaches about 1250px below the fold, so all sixty-seven were fetched at
+       once -- 176 KB for twenty-six cards of which four are on screen. An
+       observer builds a card's strip when the card is close to being seen. */
+    if (strip && matchMedia('(min-width: 48rem)').matches) {
+      if (typeof IntersectionObserver === 'function') {
+        const eye = new IntersectionObserver((entries) => {
+          for (const e of entries) {
+            if (!e.isIntersecting) continue;
+            fillStrip();
+            eye.disconnect();
+          }
+        }, { rootMargin: '300px' });
+        eye.observe(card);
+      } else {
+        fillStrip();
+      }
+    }
 
-    let at = 0;
-    let timer = null;
-    const ready = new Set([shots[0]]);
+    let at = 0;          // which photograph layer A is holding
+    let chosen = null;   // a thumbnail the reader picked; the drift respects it
+    let over = null;     // layer B, while it exists
+    let run = 0;         // bumped on every stop, so a stale step gives up
 
-    /* Fetch and DECODE before swapping. Setting `src` on an <img> empties it
-       until the new file has decoded, so the frame goes blank for a moment —
-       invisible on a fast connection and a flicker on a slow one, which is the
-       connection this is most likely to be used on. */
-    const warm = (name) => {
-      if (ready.has(name)) return Promise.resolve();
-      const pre = new Image();
-      pre.src = `${BASE}/media/${dir}/${name}-600.webp`;
-      // decode() is raced against a deadline and never simply awaited. In a
-      // hidden document it does not settle at all — a backgrounded tab would
-      // leave the cycle waiting forever on a promise that never resolves — and
-      // on a slow connection it should not hold the sequence either.
-      const decoded = (pre.decode ? pre.decode() : Promise.resolve()).catch(() => {});
-      return Promise.race([decoded, new Promise((r) => setTimeout(r, 400))])
-        .then(() => { ready.add(name); });
+    /* The addresses are NEVER composed, only rewritten. Layer B is a clone of
+       the frame's own <picture>, so it already carries the right widths, the
+       right `sizes` and the address prefix -- which this project once shipped
+       missing for days. Swapping the photograph's name inside them cannot get
+       any of that wrong. */
+    const rename = (url, name) => url.replace(/\/[^/]+-(\d+)\.(avif|webp)/g, `/${name}-$1.$2`);
+    const point = (pic, name) => {
+      for (const s of $$('source', pic)) s.srcset = rename(s.srcset, name);
+      const im = $('img', pic);
+      im.setAttribute('src', rename(im.getAttribute('src'), name));
     };
 
-    const show = (n) => {
-      at = n % shots.length;
-      const name = shots[at];
-      // Both <source> sets have to move with the <img>, or the browser keeps
-      // serving the first photograph from whichever one it picked.
-      for (const s of sources) {
-        const ext = s.type === 'image/avif' ? 'avif' : 'webp';
-        s.srcset = [200, 400, 600, 1000].map((w) => `${BASE}/media/${dir}/${name}-${w}.${ext} ${w}w`).join(', ');
+    /* Real pixels, or no dissolve at all. The deadline aborts the STEP; it
+       never licenses a fade into an empty box, because layer A underneath is
+       still correct and waiting costs nothing while fading into nothing costs
+       the whole card. `decode()` rejects whenever the source changes mid
+       flight, so the promise settling is not the test -- the bitmap is. */
+    const hasPixels = (pic) => {
+      const im = $('img', pic);
+      const done = (im.decode ? im.decode() : Promise.resolve()).catch(() => {});
+      return Promise.race([done, wait(WARM)]).then(() => im.complete && im.naturalWidth > 0);
+    };
+
+    const markThumbs = () => {
+      thumbs.forEach((t, n) => {
+        const on = n === at;
+        t.classList.toggle('is-on', on);
+        t.setAttribute('aria-pressed', on ? 'true' : 'false');
+        t.tabIndex = on ? 0 : -1;
+      });
+    };
+
+    const makeOver = () => {
+      const pic = base.cloneNode(true);
+      const im = $('img', pic);
+      im.setAttribute('alt', '');
+      im.setAttribute('loading', 'eager');
+      /* The first four cards on a page are built eager and high priority. A
+         verbatim clone would inherit that and put a decoration ahead of the
+         covers the reader is scrolling towards. */
+      im.setAttribute('fetchpriority', 'low');
+      pic.setAttribute('aria-hidden', 'true');
+      pic.classList.add('over', 'still');
+      frame.append(pic);
+      return pic;
+    };
+
+    /* One step: show `n`, and leave the card at rest holding it. */
+    const step = async (n, mine) => {
+      if (!over) over = makeOver();
+      point(over, shots[n]);
+      over.offsetWidth;                 // settle it before anything animates
+      over.classList.remove('still');
+      if (!(await hasPixels(over))) { clean(); return false; }
+      if (mine !== run) return false;
+
+      over.classList.add('up');
+      await wait(FADE);
+      if (mine !== run) return false;
+
+      at = n;
+      point(base, shots[at]);
+      markThumbs();
+      await hasPixels(base);            // a cache hit: the file is in hand
+      if (mine !== run) return false;
+      over.classList.add('still');
+      over.classList.remove('up');
+      over.offsetWidth;
+      over.classList.remove('still');
+
+      /* And the zoom starts over. Without this the layer in flow reaches 1.05
+         on the first photograph and stays there: the owner asked for the
+         picture to creep in a little before each change, "e assim
+         sucessivamente", so every photograph has to begin at 1 again. Pinned
+         with the transition off and released one reflow later, which is the
+         same trick move 3 uses above -- a value set and released in the same
+         frame animates from nothing. */
+      restartZoom();
+      return true;
+    };
+
+    const clean = () => {
+      if (over) { over.remove(); over = null; }
+    };
+
+    const restartZoom = () => {
+      if (CALM) return;
+      base.classList.add('still');
+      base.style.scale = '1';
+      base.offsetWidth;
+      base.classList.remove('still');
+      base.style.scale = '';            // back to the CSS value, which is 1.05
+    };
+
+    /* --- the automatic drift ------------------------------------------- */
+    let dwellTimer = null;
+    let driving = false;
+
+    const drive = async () => {
+      const mine = run;
+      driving = true;
+      card.dataset.showing = 'yes';     // starts the zoom on the layer in flow
+      await wait(FIRST);
+      while (mine === run) {
+        const next = (at + 1) % shots.length;
+        if (!(await step(next, mine))) break;
+        if (mine !== run) break;
+        await wait(ZOOM);
       }
-      img.src = `${BASE}/media/${dir}/${name}-600.webp`;
-      dots.forEach((d, n2) => d.classList.toggle('on', n2 === at));
-      // Have the one after this ready before it is needed.
-      warm(shots[(at + 1) % shots.length]);
+      driving = false;
     };
 
     const start = () => {
-      if (timer) return;
-      card.dataset.showing = 'yes';
-      // Nothing moves until the second photograph is actually in hand.
-      warm(shots[1]).then(() => {
-        if (card.dataset.showing !== 'yes' || timer) return;
-        show(1);
-        timer = setInterval(() => show(at + 1), EVERY);
-      });
-    };
-    const stop = () => {
-      clearInterval(timer);
-      timer = null;
-      delete card.dataset.showing;
-      show(0);
+      if (!DRIFTS || driving) return;
+      drive();
     };
 
-    card.addEventListener('pointerenter', start);
+    const stop = async () => {
+      run++;
+      clearTimeout(dwellTimer); dwellTimer = null;
+      delete card.dataset.showing;
+      driving = false;
+      clean();
+      /* Back to whichever photograph the reader chose, or the cover. */
+      base.style.scale = '';
+      const back = chosen === null ? 0 : chosen;
+      if (at !== back) { at = back; point(base, shots[at]); markThumbs(); }
+    };
+
+    /* A pointer crossing a card is not a visitor looking at it. Nothing is
+       fetched, cloned or decoded until it has stayed put: a mouse swept across
+       the catalogue touches all twenty-six cards in a second, and the old code
+       fired an uncancellable request for each one. */
+    card.addEventListener('pointerenter', () => {
+      clearTimeout(dwellTimer);
+      dwellTimer = setTimeout(start, DWELL);
+    });
     card.addEventListener('pointerleave', stop);
-    // Keyboard users get the same thing, and losing focus has to stop it —
-    // otherwise a card left behind keeps swapping pictures off screen forever.
-    card.addEventListener('focusin', start);
+    card.addEventListener('focusin', () => { clearTimeout(dwellTimer); start(); });
     card.addEventListener('focusout', (e) => { if (!card.contains(e.relatedTarget)) stop(); });
+
+    /* --- choosing one ---------------------------------------------------- */
+    thumbs.forEach((t, n) => {
+      t.addEventListener('click', async () => {
+        run++;                          // a choice outranks the drift
+        clearTimeout(dwellTimer);
+        driving = false;
+        delete card.dataset.showing;
+        chosen = n;
+        if (n === at) { clean(); markThumbs(); return; }
+        const mine = run;
+        if (CALM || !over) {
+          // No dissolve asked for, or nothing to dissolve from: go straight.
+          at = n; point(base, shots[at]); markThumbs(); clean();
+          return;
+        }
+        await step(n, mine);
+        clean();
+      });
+      /* Arrow keys move within the strip, which is why only the chosen
+         thumbnail is tabbable: twenty-six cards times six photographs would
+         otherwise be a hundred and fifty-six stops between the filters and
+         the footer. */
+      t.addEventListener('keydown', (e) => {
+        const d = e.key === 'ArrowRight' ? 1 : e.key === 'ArrowLeft' ? -1 : 0;
+        if (!d) return;
+        e.preventDefault();
+        const to = thumbs[(n + d + thumbs.length) % thumbs.length];
+        to.tabIndex = 0; to.focus();
+      });
+    });
   }
 }
+
 
 /* --- product gallery ------------------------------------------------------ */
 function gallery() {

@@ -50,35 +50,68 @@ export function card(p, { eager = false } = {}) {
 
   /* The card carries EVERY photograph of the piece, not just the cover.
    *
-   * The owner asked for two things here: the pictures bigger, and a way to see
-   * the other photographs of the same lamp without opening it — the way the
-   * shop she chose does it, where hovering cycles through them.
+   * The owner asked for two things: the other photographs of the same lamp
+   * offered underneath the picture so they can be chosen, and -- while the
+   * pointer rests on the picture -- a slow drift from one to the next, each
+   * one zooming in a little before it hands over.
    *
-   * The list goes in a data attribute rather than as hidden <img> tags: 26
-   * cards times three or four photographs would be a hundred extra requests on
-   * a catalogue page, and almost all of them never looked at. The script swaps
-   * the `src` on first hover and the browser fetches then. */
-  const others = (p.photos || []).filter((n) => n !== p.cover);
+   * THE LINK HAD TO BE BROKEN IN TWO. The whole card used to be one <a>, and
+   * HTML forbids a <button> inside a link, so the thumbnails could not have
+   * gone anywhere. They are now a SIBLING of the picture's link rather than a
+   * descendant of it. That costs a second anchor to the same address, which is
+   * paid for in the usual way: the picture's link is `tabindex="-1"` and
+   * `aria-hidden`, so the card still offers exactly one link and one name.
+   * Not a stretched pseudo-element over the whole card -- that works until the
+   * day some later rule gives the strip `position: static`, and then a click
+   * meant for a thumbnail navigates instead, silently.
+   *
+   * The big list of photographs stays in a data attribute and not as hidden
+   * <img> tags: the script clones the frame's own <picture> when it needs a
+   * second layer, which inherits its sizes, its widths and its address prefix
+   * instead of composing any of them again. */
+  const shots = [p.cover, ...(p.photos || []).filter((n) => n !== p.cover)];
+  const dir = `ithos/${p.photoFolder}`;
+  const href = `/lamps/${esc(p.slug)}/`;
+
+  /* The buttons ship EMPTY, and the script puts the pictures in them.
+   *
+   * They used to ship with an <img loading="lazy"> each, and the strip is
+   * display:none below 48rem -- which turns out not to matter: measured on a
+   * 375px phone, the browser fetched twenty-two of them anyway, 53 KB of
+   * photographs nobody can see, on the one device least able to afford it.
+   * A lazy image inside a hidden box is still loading-eligible.
+   *
+   * So the markup carries only the button, and the script builds the <img>
+   * from data-shots and data-dir -- which it already has -- and only where the
+   * strip is actually shown. Without a script there is no strip at all, and
+   * the card is exactly the card it was before. Nothing checks these
+   * addresses in the HTML any more, which is why scripts/guards.mjs now
+   * checks every rendition against the disk instead. */
+  const thumb = (name, n) => `<button class="card__thumb${n === 0 ? ' is-on' : ''}" type="button"
+        data-thumb="${n}" aria-pressed="${n === 0 ? 'true' : 'false'}" tabindex="${n === 0 ? '0' : '-1'}"
+        aria-label="Photograph ${n + 1} of ${shots.length}"></button>`;
 
   return `<article class="card" data-product="${esc(p.slug)}" data-family="${esc(fams)}"
-  data-shots="${esc([p.cover, ...others].join(','))}" data-dir="ithos/${esc(p.photoFolder)}">
-  <a class="card__link" href="/lamps/${esc(p.slug)}/">
+  data-shots="${esc(shots.join(','))}" data-dir="${esc(dir)}">
+  <a class="card__media" href="${href}" tabindex="-1" aria-hidden="true">
     <div class="frame card__frame">
       ${picture({
-        dir: `ithos/${p.photoFolder}`, name: p.cover,
+        dir, name: p.cover,
         alt: `${p.name} — a handmade wooden night light`,
         sizes: '(min-width: 90rem) 340px, (min-width: 64rem) 30vw, (min-width: 48rem) 30vw, 46vw',
         loading: eager ? 'eager' : 'lazy',
         fetchpriority: eager ? 'high' : undefined,
       })}
-      ${others.length ? `<span class="card__shots" aria-hidden="true">${
-        [p.cover, ...others].map((_, n) => `<i${n === 0 ? ' class="on"' : ''}></i>`).join('')
-      }</span>` : ''}
     </div>
-    ${dots}
-    <h3 class="card__name">${esc(p.name)}</h3>
-    <p class="card__price">${range ? `<span class="card__from">from </span>` : ''}${money(low)}</p>
   </a>
+  ${shots.length > 1
+    ? `<div class="card__thumbs" role="group" aria-label="${esc(p.name)} — ${shots.length} photographs">
+    ${shots.map(thumb).join('\n    ')}
+  </div>`
+    : '<div class="card__thumbs card__thumbs--none" aria-hidden="true"></div>'}
+  ${dots}
+  <h3 class="card__name"><a class="card__link" href="${href}">${esc(p.name)}</a></h3>
+  <p class="card__price">${range ? `<span class="card__from">from </span>` : ''}${money(low)}</p>
 </article>`;
 }
 

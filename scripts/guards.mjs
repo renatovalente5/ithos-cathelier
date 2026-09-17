@@ -147,6 +147,48 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
 }
 
 
+/* --- every photograph a card can ask for is on disk ------------------------
+   The hover cycle composes its addresses AT RUNTIME, by swapping the
+   photograph's name inside the srcset the build wrote. Those URLs are in no
+   HTML file, so scripts/check-output.mjs cannot see them -- it matches `src="`
+   and never looks inside a `srcset=` at all. Nor can the browser battery: it
+   only knows about an image once something has fetched it, and it never
+   hovers.
+
+   So `rm public/media/ithos/raposa/02-1000.avif` used to pass the build, the
+   CI and the battery, and break the Fox card the moment a pointer rested on
+   it. All 576 of them happen to exist today; the failure is the next
+   photograph added without re-running scripts/renditions.py. */
+{
+  const PUB = join(ROOT, 'public', 'media');
+  // What the frame asks for, and what the thumbnail strip asks for.
+  const QUADRO = [200, 400, 600, 1000];
+  const TIRA = [120, 200];
+  let faltam = 0;
+  for (const f of readdirSync(join(CONTENT, 'ithos')).filter((x) => x.endsWith('.json'))) {
+    const p = JSON.parse(readFileSync(join(CONTENT, 'ithos', f), 'utf8'));
+    if (!p.published) continue;
+    for (const n of p.photos || []) {
+      if (!/^[A-Za-z0-9._-]+$/.test(n)) {
+        die(`ithos/${f}: photograph "${n}" has a character that would break the srcset`);
+        continue;
+      }
+      for (const w of QUADRO) for (const ext of ['avif', 'webp']) {
+        if (!existsSync(join(PUB, 'ithos', p.photoFolder, `${n}-${w}.${ext}`))) faltam++;
+      }
+      for (const w of TIRA) {
+        if (!existsSync(join(PUB, 'ithos', p.photoFolder, `${n}-${w}.webp`))) faltam++;
+      }
+    }
+  }
+  if (faltam) {
+    die(`${faltam} rendition(s) a card would ask for are not on disk — run `
+      + `python3 scripts/renditions.py. Nothing else checks these: their `
+      + `addresses are built at runtime and appear in no HTML file.`);
+  }
+}
+
+
 /* --- the header shrink stays behind the reduced-motion gate ---------------
    A header that changes size as the page moves is motion, so a reader who
    asked for less of it gets a header that does not change size at all --

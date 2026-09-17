@@ -29,7 +29,11 @@ ROOT = Path(__file__).resolve().parent.parent
 SRC = ROOT / 'photos' / '_square'
 COVERS = ROOT / 'photos' / '_covers'
 OUT = ROOT / 'public' / 'media'
-WIDTHS = (200, 400, 600, 1000)
+# 120 is for the thumbnail strip under a product card and nothing else. The
+# biggest that box ever gets is 56 CSS px, which is 112 device pixels at two
+# device pixels per CSS pixel, so 200 was nearly twice the file needed on every
+# one of them -- and a catalogue page carries sixty-seven.
+WIDTHS = (120, 200, 400, 600, 1000)
 # A cover is the full width of the screen, so it needs sizes a thumbnail never
 # does. 2600 covers a 1440px laptop at two device pixels with room to spare.
 COVER_WIDTHS = (640, 960, 1280, 1600, 2000, 2600)

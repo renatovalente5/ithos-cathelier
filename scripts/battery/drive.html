@@ -183,6 +183,75 @@ async function medirEncolher(w, res) {
     manda ? '' : amostras.filter(([h, m]) => h < m + 8).slice(0, 2).map(([h, m]) => `${h.toFixed(1)} vs ${m.toFixed(1)}`).join(' · '));
 }
 
+/* --- a deriva das fotografias do cartão -------------------------------------
+ *
+ * Conduz um cartão a sério: entra com o ponteiro, espera a primeira troca, e
+ * pergunta o que não se pode saber de outra maneira. As URLs que esta
+ * funcionalidade pede são compostas em tempo de execução a partir do srcset —
+ * não estão em HTML nenhum, por isso o check-output não as vê, e a bateria só
+ * conhece uma imagem depois de alguém a ter pedido. Ninguém passa o rato por
+ * cima de nada excepto isto.
+ */
+async function medirDeriva(w, res) {
+  if (!res || !res.tudo) return;
+  if (!await haQuadros()) return;
+  const d = w.document;
+  const card = [...d.querySelectorAll('[data-shots]')]
+    .find((c) => (c.dataset.shots || '').split(',').filter(Boolean).length > 1);
+  if (!card) return;
+  if (!w.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+
+  const nota = (ok, o, detalhe = '') => {
+    const r = { ok: !!ok, o, detalhe: String(detalhe).slice(0, 180) };
+    res.tudo.push(r); res.total = res.tudo.length;
+    if (!ok) res.falhas.push(r);
+  };
+
+  const shots = card.dataset.shots.split(',').filter(Boolean);
+  const dir = card.dataset.dir;
+  const frame = card.querySelector('.card__frame');
+  const emBaixo = () => frame.querySelector('picture:not(.over) img');
+  const qual = () => {
+    const im = emBaixo();
+    const m = (im.currentSrc || im.src).match(/\/([^/]+)-\d+\.(avif|webp)/);
+    return m ? m[1] : '';
+  };
+
+  const naCapa = qual();
+  card.dispatchEvent(new w.PointerEvent('pointerenter', { bubbles: true }));
+  await new Promise((r) => setTimeout(r, 4200));   // dwell + primeira + fade
+
+  nota(qual() !== naCapa, 'ao parar o rato, o cartão passa à fotografia seguinte',
+    `começou em ${naCapa}, está em ${qual()}`);
+  nota(frame.querySelectorAll('picture').length === 2,
+    'a segunda camada existe enquanto a deriva corre',
+    `${frame.querySelectorAll('picture').length} camadas`);
+
+  /* As respostas dos ficheiros que ELE foi buscar — a única forma de um
+     rendition em falta aparecer alguma vez num teste de browser. */
+  const pedidas = w.performance.getEntriesByType('resource')
+    .filter((r) => r.name.includes(dir));
+  const mas = pedidas.filter((r) => r.responseStatus >= 400).map((r) => r.name.split('/').pop());
+  nota(mas.length === 0, 'as fotografias que a deriva pede respondem todas',
+    `${pedidas.length} pedidas · ${mas.slice(0, 3).join(', ')}`);
+
+  card.dispatchEvent(new w.PointerEvent('pointerleave', { bubbles: true }));
+  await new Promise((r) => setTimeout(r, 1200));
+  nota(frame.querySelectorAll('picture').length === 1,
+    'ao sair, o cartão fica com uma camada só',
+    `${frame.querySelectorAll('picture').length} camadas`);
+  nota(qual() === shots[0], 'ao sair, volta à capa', `${qual()} (capa ${shots[0]})`);
+
+  /* E o que a marcação promete a quem não vê: uma âncora fora da árvore de
+     acessibilidade não pode continuar a apanhar o foco. */
+  const escondidosFocaveis = [...d.querySelectorAll('[aria-hidden="true"]')]
+    .filter((e) => e.matches('a[href], button, input, select, textarea')
+      && e.getAttribute('tabindex') !== '-1');
+  nota(escondidosFocaveis.length === 0,
+    'nada escondido dos leitores de ecrã continua a apanhar o foco',
+    escondidosFocaveis.slice(0, 3).map((e) => e.tagName + '.' + e.className).join(', '));
+}
+
 for (const pag of PAGINAS) {
   const f = document.createElement('iframe');
   f.style.cssText = `width:${L}px;height:${A}px;border:0;position:absolute;left:-9999px`;
@@ -221,6 +290,7 @@ for (const pag of PAGINAS) {
     await new Promise(r => { s.onload = r; setTimeout(r, 2500); });
     window.__resultados[pag] = w.__bateria();
     await medirEncolher(w, window.__resultados[pag]);
+    await medirDeriva(w, window.__resultados[pag]);
   } catch (e) { window.__resultados[pag] = { erro: String(e) }; }
   f.remove();
   saida.textContent = Object.keys(window.__resultados).length + '/' + PAGINAS.length;

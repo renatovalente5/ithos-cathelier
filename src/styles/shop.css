@@ -210,11 +210,89 @@
 .cart-count[data-empty='yes'] { display: none; }
 
 .card { display: flex; flex-direction: column; }
-.card__link { text-decoration: none; display: block; }
+.card__media { display: block; text-decoration: none; }
+/* The name is now the card's only link, and a bare line of text is a 20px
+   target -- the whole card used to be the link, so this was never a question
+   before. Block and a little padding puts it over the 24px floor and makes the
+   whole name row clickable, which is what a reader aims at anyway. */
+.card__link {
+  text-decoration: none; color: inherit;
+  display: block; padding-block: 3px;
+}
 .card__frame { position: relative; }
-.card__frame img { transition: scale .5s cubic-bezier(.22,.61,.36,1); }
-.card:hover .card__frame img { scale: 1.04; }
-@media (prefers-reduced-motion: reduce) { .card__frame img { transition: none; } .card:hover .card__frame img { scale: 1; } }
+
+/* --- the slow drift from one photograph to the next -------------------------
+   TWO LAYERS, AND ONLY ONE OF THEM IS EVER THE CARD.
+
+   Layer A is the <picture> the build wrote. It is in normal flow, its opacity
+   is never set, and it rests at scale 1. It IS the card. It is never parked at
+   opacity 0 and never absolutely positioned -- the resting state has to be the
+   correct state, the same lesson the side panel above carries.
+
+   Layer B does not exist in the HTML at all. The script clones A when it first
+   needs a second photograph and REMOVES it again when the card comes to rest,
+   so a card nobody has hovered is byte-for-byte what the server sent.
+
+   Only B's opacity moves. A stays fully opaque underneath it, which is why the
+   dissolve has no dip: fade two layers against each other and the picture sags
+   at the halfway mark, because two 50% images do not add up to one. */
+.card__frame > picture {
+  transition: scale var(--shot-zoom, 2600ms) cubic-bezier(.4, 0, .6, 1);
+}
+.card__frame > picture.over {
+  position: absolute; inset: 0;
+  opacity: 0;
+  transition: opacity var(--shot-fade, 900ms) linear;
+}
+.card__frame > picture.over.up { opacity: 1; }
+/* Set by the script while a step is being set up: the incoming layer has to be
+   placed without animating into place. */
+.card__frame > picture.still { transition: none !important; }
+.card[data-showing='yes'] .card__frame > picture:not(.over) { scale: var(--shot-scale, 1.05); }
+/* Going in is slow on purpose; coming back is not. A pointer that leaves
+   should let go of the picture at once, not creep back over two and a half
+   seconds after the reader has moved on. */
+.card:not([data-showing]) .card__frame > picture { transition-duration: 400ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .card__frame > picture,
+  .card__frame > picture.over { transition: none; }
+  .card[data-showing='yes'] .card__frame > picture:not(.over) { scale: 1; }
+}
+
+/* --- the other photographs, underneath --------------------------------------
+   From 48rem only. On a phone there is no pointer to rest anywhere, the row
+   would add forty pixels to every card in a two-column grid -- the catalogue's
+   opening paragraph was tightened on purpose once to keep four lamps above the
+   fold -- and it would put sixty-seven more images on the page for a gesture
+   that does not exist there. The product page carries the full gallery.
+
+   The empty row on a single-photograph lamp is deliberate: five of the
+   twenty-six have only one, and without it their names would sit forty pixels
+   higher than everything beside them. */
+/* Hidden until the script has filled it: an empty strip is a forty-eight
+   pixel band of nothing under every card, and without a script there is no
+   strip to fill. The card then reads exactly as it did before this existed. */
+.card__thumbs { display: none; }
+@media (width >= 48rem) {
+  .card__thumbs.ready {
+    display: flex; gap: 6px; margin-block-start: 10px;
+    min-height: var(--shot-size, 48px);
+  }
+  .card__thumb {
+    flex: 0 1 var(--shot-size, 48px);
+    /* A tap target may not go under 24px, and six photographs in a narrow
+       column would push it there if it were allowed to shrink freely. */
+    min-width: 26px; aspect-ratio: 1;
+    padding: 0; border: 1px solid var(--line); background: none;
+    border-radius: var(--radius, 0); overflow: hidden; cursor: pointer;
+    opacity: .62; transition: opacity .2s ease, border-color .2s ease;
+  }
+  .card__thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .card__thumb:hover, .card__thumb:focus-visible { opacity: 1; }
+  .card__thumb.is-on { opacity: 1; border-color: var(--accent); }
+  @media (prefers-reduced-motion: reduce) { .card__thumb { transition: none; } }
+}
 
 .card__swatches { display: flex; flex-wrap: wrap; gap: 6px; margin-block-start: 12px; }
 .swatch { width: 27px; height: 27px; border: 1px solid var(--line); background-size: cover; background-position: center; }
@@ -750,20 +828,3 @@ html.menu-open { overflow: hidden; }
 .product__lead { display: flex; align-items: center; gap: .5rem; }
 .product__lead svg { flex: none; color: var(--accent); }
 
-/* --- the dots that say how many photographs there are ---------------------- */
-.card__shots {
-  position: absolute; inset-block-end: 10px; inset-inline: 0;
-  display: flex; justify-content: center; gap: 5px;
-  opacity: 0; transition: opacity .2s ease;
-}
-.card:hover .card__shots, .card:focus-within .card__shots { opacity: 1; }
-.card__shots i {
-  width: 5px; height: 5px; border-radius: 999px;
-  background: rgb(255 255 255 / .55); box-shadow: 0 0 3px rgb(0 0 0 / .35);
-  transition: background .2s ease;
-}
-.card__shots i.on { background: #fff; }
-/* While the cycle runs the frame grows a little more than the plain hover, so
-   the card reads as "showing you the rest" rather than merely hovered. */
-.card[data-showing='yes'] .card__frame img { scale: 1.07; }
-@media (prefers-reduced-motion: reduce) { .card__shots { transition: none; } }
