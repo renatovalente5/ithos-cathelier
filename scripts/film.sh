@@ -73,6 +73,35 @@ encode () {     # $1 = filter, $2 = output name
     "$(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p=0:s=x "$OUT/$2")"
 }
 
+still () {   # $1 = filter, $2 = master name in photos/_covers
+  ffmpeg -v error -ss 0 -i "$SRC" -frames:v 1 -filter_complex "[0:v]$1[v]" -map "[v]" \
+    -q:v 2 "$HERE/photos/_covers/$2.jpg" -y
+  printf '  %-28s %s\n' "$2.jpg" \
+    "$(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p=0:s=x "$HERE/photos/_covers/$2.jpg")"
+}
+
 echo "master ${MW}x${MH}, tall cut ${CW} wide at x=${CX} (focus ${FOCUS})"
 encode "scale=1600:-2"                    "$NAME.mp4"
 encode "crop=$CW:$MH:$CX:0,scale=720:-2"  "$NAME-tall.mp4"
+
+# THE STILL IS THE FILM'S FIRST FRAME, ONE PER CUT.
+#
+# Whatever sits under the film is what the visitor sees before it starts, and
+# what they keep if they asked for less motion, if their connection says it is
+# metered, or if autoplay is refused. A photograph of a different lamp there is
+# a bait-and-switch the owner noticed immediately: a horse appeared and then
+# turned into two other lamps. Frame 0 of each cut is the honest answer -- the
+# still IS the film, paused, so nothing changes when it starts.
+#
+# One per cut, and not one shared, because the cuts are different shapes: a
+# 16:9 still poured into the phone's 2:3 frame would show 37% of its width, and
+# the film would then pull back to the full frame in front of the visitor.
+#
+# These go into photos/_covers/ so scripts/renditions.py makes the web sizes
+# from them exactly as it does for the photographic masters. They do not
+# overwrite those: covers.py writes <brand>.jpg and nothing else, so deleting
+# "film" from covers.json puts the photograph back with nothing to undo.
+still "scale=1920:-2"                     "$NAME-still-wide"
+still "crop=$CW:$MH:$CX:0"                "$NAME-still"
+echo
+echo "now:  python3 scripts/renditions.py"

@@ -1,13 +1,15 @@
 {
-  "_note": "The cover of each brand: one picture filling the first screen, with these words over it. Keep the title SHORT — it is set large and centred, and a long one wraps into a wall. To change the picture, replace photos/_covers/ithos.jpg or cathelier.jpg with a landscape one and run scripts/covers.py.",
+  "_note": "The cover of each brand: one picture filling the first screen, with these words over it. Keep the title SHORT — it is set large and centred, and a long one wraps into a wall.",
 
-  "_note_film": "\"film\" plays a short silent film over the cover picture. Delete the line and the picture stays, with nothing to undo — and the picture is what shows anyway for anyone whose device is set to reduce motion or whose connection says it is metered. Changing the film itself is not a back-office job: the new recording goes in _materiais-ithos-cathelier/filmes/ and somebody runs scripts/film.sh.",
+  "_note_picture": "Where the picture comes from depends on whether \"film\" is set below. With a film, the still under it is the film's own first frame, so nothing changes when it starts playing. Without one, it is photos/_covers/<brand>.jpg — replace that file with a landscape photograph and run scripts/covers.py, then scripts/renditions.py.",
+
+  "_note_film": "\"film\" plays a short silent film over the cover. Delete the line and the brand's photograph comes back, with nothing else to undo — and a still is what shows anyway for anyone whose device is set to reduce motion, whose connection says it is metered, or whose browser refuses to autoplay. Changing the film itself is not a back-office job: the new recording goes in _materiais-ithos-cathelier/filmes/ and somebody runs scripts/film.sh and then scripts/renditions.py.",
 
   "ithos": {
     "title": "A small light, all night",
     "buttonLabel": "See all the lamps",
     "buttonHref": "/lamps/",
-    "alt": "A wooden horse night light standing lit on a round straw mat",
+    "alt": "Two wooden night lights glowing in a dark room, a deer and a koala, on a woven mat",
     "film": "ithos-cover",
     "focus": "50% 52%",
     "focusWide": "50% 44%"

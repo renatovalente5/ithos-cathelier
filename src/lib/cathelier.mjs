@@ -79,7 +79,7 @@ const ASK = [
      three-year guarantee, and a mistake of ours is remade at our cost.</p>`],
 ];
 
-export function home({ occasions, pieces, cover: coverText, coverWidths }) {
+export function home({ occasions, pieces, cover: coverText, coverArt }) {
   const newest = [...pieces].sort((a, b) => (b.order ?? 0) - (a.order ?? 0)).slice(0, 8);
   const feature = occasions.find((o) => o.slug === 'keepsakes') ?? occasions[0];
   const featurePieces = pieces.filter((p) => p.occasion === feature.slug
@@ -91,7 +91,7 @@ export function home({ occasions, pieces, cover: coverText, coverWidths }) {
   })}</div>`;
 
   return `
-${cover(coverText, 'cathelier', coverWidths)}
+${cover(coverText, 'cathelier', coverArt)}
 
 <section class="feature">
   <div class="shell">

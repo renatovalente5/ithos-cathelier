@@ -53,17 +53,38 @@ export const prose = (text) => String(text || '').split(/\n{2,}/)
  * that is not. Passing a square box for a 4:5 file would reserve the wrong
  * space and shift the page the moment the photograph arrived.
  */
-export function coverPicture({ name, alt, sizes, widths }) {
+export function coverPicture({ name, alt, sizes, widths, aspect = [4, 5], wide = null }) {
   /* The widths are the ones that EXIST, counted off disk by the build. The
      cathelier master is an enlarged Instagram still and stops at 1600; a
-     srcset promising 2600 would be 548 broken references all over again. */
-  const set = (ext) => widths.map((w) => `/media/covers/${name}-${w}.${ext} ${w}w`).join(', ');
+     srcset promising 2600 would be 548 broken references all over again.
+
+     ART DIRECTION, AND WHY IT IS NOT AN OPTIMISATION
+
+     When the cover carries a film, this picture is the film's own first frame
+     -- it is what a visitor sees before it starts, and what they keep if they
+     asked for less motion or their connection says it is metered. The film is
+     cut to two shapes, so the still has to be cut to the same two, and the
+     `media` here has to name the same width the film switches at. If it did
+     not, the visitor would watch the cover jump between two framings at the
+     moment the film began, which is worse than either framing.
+
+     Order matters: the browser takes the FIRST source whose media and type it
+     accepts, so the wide pair has to come before the unqualified pair. The
+     <img> falls back to the shape with no media query on it. */
+  const set = (stem, ws, ext) =>
+    ws.map((w) => `/media/covers/${stem}-${w}.${ext} ${w}w`).join(', ');
   const biggest = Math.max(...widths);
+  const [aw, ah] = aspect;
+  const art = wide && wide.widths.length
+    ? `<source media="(min-width: ${esc(wide.from)})" type="image/avif" srcset="${set(wide.name, wide.widths, 'avif')}" sizes="${sizes}">
+      <source media="(min-width: ${esc(wide.from)})" type="image/webp" srcset="${set(wide.name, wide.widths, 'webp')}" sizes="${sizes}">
+      `
+    : '';
   return `<picture class="cover__media">
-      <source type="image/avif" srcset="${set('avif')}" sizes="${sizes}">
-      <source type="image/webp" srcset="${set('webp')}" sizes="${sizes}">
+      ${art}<source type="image/avif" srcset="${set(name, widths, 'avif')}" sizes="${sizes}">
+      <source type="image/webp" srcset="${set(name, widths, 'webp')}" sizes="${sizes}">
       <img class="cover__img" src="/media/covers/${esc(name)}-${biggest}.webp" alt="${esc(alt)}"
-           width="${biggest}" height="${Math.round(biggest * 5 / 4)}" fetchpriority="high" decoding="async">
+           width="${biggest}" height="${Math.round(biggest * ah / aw)}" fetchpriority="high" decoding="async">
     </picture>`;
 }
 

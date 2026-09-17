@@ -847,10 +847,10 @@ html[data-cover='yes'][data-scrolled='no'] .mark--light { opacity: 1; }
   .head[data-anim='yes'],
   .head[data-anim='yes'] :is(.icon-btn, .open-menu__word, .head__sibling),
   .head[data-anim='yes'] .head__sibling img {
-    transition: background-color var(--head-shrink) var(--head-ease),
-                border-block-end-color var(--head-shrink) var(--head-ease),
-                color var(--head-shrink) var(--head-ease),
-                opacity var(--head-shrink) var(--head-ease);
+    transition: background-color var(--head-fade) var(--head-fade-ease),
+                border-block-end-color var(--head-fade) var(--head-fade-ease),
+                color var(--head-fade) var(--head-fade-ease),
+                opacity var(--head-fade) var(--head-fade-ease);
   }
 }
 
@@ -877,7 +877,20 @@ html[data-cover='yes'][data-scrolled='no'] .mark--light { opacity: 1; }
    height is a vw clamp, so every pixel of a drag is a new computed height and
    a transition would have it trailing the rest of the bar for the whole
    gesture). */
-.head { --head-shrink: 220ms; --head-ease: cubic-bezier(.22, .61, .36, 1); }
+/* Duas durações e duas curvas, porque são dois gestos diferentes.
+   O encolher é um movimento e quer uma curva que trave no fim (ease-out).
+   O fundo a aparecer é uma mudança de TOM, e a mesma curva punha-lhe 80% da
+   mudança nos primeiros 80ms: media-se como uma transição e via-se como um
+   salto. Mais tempo e uma curva simétrica, e o gesto lê-se.
+   Nota honesta sobre o que acontece a meio: enquanto o fundo atravessa, a
+   tinta atravessa com ele, e há uma fracção de segundo em que texto claro
+   está sobre um fundo a meio caminho. É inerente a cruzar um chão escuro com
+   um claro -- não há ordem de fade que o evite -- e os dois ESTADOS, que são
+   o que a norma mede, passam os dois com folga. */
+.head {
+  --head-shrink: 220ms; --head-ease: cubic-bezier(.22, .61, .36, 1);
+  --head-fade: 460ms;   --head-fade-ease: cubic-bezier(.4, 0, .2, 1);
+}
 .head[data-anim='yes'] .head__row { transition: min-height var(--head-shrink) var(--head-ease); }
 /* Height AND opacity in ONE declaration. A second `transition` on the same
    element replaces this one rather than adding to it, and this selector
@@ -885,7 +898,7 @@ html[data-cover='yes'][data-scrolled='no'] .mark--light { opacity: 1; }
    later would lose and the wordmark would cross-fade in one frame. */
 .head[data-anim='yes'] .head__mark img {
   transition: height var(--head-shrink) var(--head-ease),
-              opacity var(--head-shrink) var(--head-ease);
+              opacity var(--head-fade) var(--head-fade-ease);
 }
 
 /* The shrink itself is motion, so a reader who asked for less of it does not
@@ -1091,18 +1104,20 @@ html[data-cover='yes'][data-scrolled='no'] .mark--light { opacity: 1; }
    It carries the other shop's OWN lockup, small, and an arrow that points out.
    A label does not point out of the page; a door does.
 
-   It used to carry that shop's name in spaced upper case, and it was hidden
-   below 48rem because the word did not fit beside a burger, a wordmark and a
-   basket. The lockup is narrower than the word it replaced, so the door is now
-   on every screen -- which is the point of it being a door.
+   On a phone it is not here at all. The lockup does FIT beside the burger, the
+   wordmark and the basket -- measured, 74px in a 375px bar -- but fitting was
+   never the question the owner was answering: on a small screen the door to
+   the other shop belongs in the side menu, with the rest of the navigation,
+   and a fourth thing in the bar is a fourth thing to read past.
 
    The arrow is 12px and not smaller. It is aria-hidden, but it is still a
    glyph with a box, and the battery's floor for anything with text in it is
    12px: at 11 it read as a defect, correctly. */
 .head__sibling {
-  display: inline-flex; align-items: center; gap: .35em;
+  display: none; align-items: center; gap: .35em;
   text-decoration: none; color: var(--muted); padding: .5rem;
 }
+@media (width >= 48rem) { .head__sibling { display: inline-flex; } }
 .head__sibling:hover { color: var(--accent); }
 .head__sibling-arrow { font-size: 12px; opacity: .8; }
 
@@ -1544,7 +1559,14 @@ html.menu-open { overflow: hidden; }
   gap: 0 1rem; padding: .85rem var(--gutter); min-height: 58px; text-decoration: none;
   background: var(--sibling-bg, var(--bg-soft));
 }
-.drawer__sibling-name { font-size: 1.05rem; }
+/* A porta no menu lateral mostra o lockup da outra loja, não o nome escrito.
+   O nome não se perdeu: vive no aria-label da ligação, que é o que um leitor
+   de ecrã anuncia, e a linha por baixo continua a dizer o que lá se vende --
+   que é informação, não a marca outra vez. O painel tem fundo próprio e claro,
+   por isso é o lockup escuro que se usa aqui, sem o par claro do cabeçalho. */
+.drawer__sibling-mark { display: block; }
+.drawer__sibling-mark img { display: block; inline-size: auto; block-size: 34px; }
+[data-brand='ithos'] .drawer__sibling-mark img { block-size: 26px; }
 .drawer__sibling-note { grid-column: 1; font-size: .8125rem; color: var(--muted); }
 /* The column must be named. A grid item with a definite row and an automatic
    column is placed BEFORE the fully automatic ones (Grid 8.5 step 3), so the

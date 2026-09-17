@@ -312,6 +312,7 @@ function header({ brand }) {
 function drawer({ brand, identity, counts }) {
   const nav = NAV[brand] ?? NAV.ithos;
   const sibling = SIBLING[brand];
+  const other = MARK[sibling.name];
   const count = (key) => (counts[key] ? `<span class="drawer__count">${counts[key]}</span>` : '');
   const mark = MARK[brand];
 
@@ -331,7 +332,9 @@ function drawer({ brand, identity, counts }) {
 
   <a class="drawer__sibling" href="${sibling.href}" data-other-brand
      aria-label="Go to ${esc(sibling.name)}, ${esc(sibling.note)}">
-    <span class="drawer__sibling-name">${esc(sibling.name)}</span>
+    <span class="drawer__sibling-mark">
+      <img src="${other.src}" alt="" width="${other.w}" height="${other.h}">
+    </span>
     <span class="drawer__sibling-note">${esc(sibling.note)}</span>
     <span aria-hidden="true">↗</span>
   </a>

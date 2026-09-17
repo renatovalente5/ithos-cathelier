@@ -98,12 +98,26 @@ const covers = read('settings/covers.json');
    The cathelier master is an enlarged Instagram still and stops short of the
    widest size; promising a file that was never written is how 548 broken image
    references got shipped once already. */
-const COVER_WIDTHS = [640, 960, 1280, 1600, 2000, 2600];
-const coverWidths = (brand) => {
-  const have = COVER_WIDTHS.filter((w) =>
-    existsSync(join(ROOT, 'public/media/covers', `${brand}-${w}.webp`)));
-  if (!have.length) throw new Error(`No cover renditions for ${brand}. Run scripts/covers.py then scripts/renditions.py.`);
-  return have;
+const COVER_WIDTHS = [640, 720, 960, 1280, 1600, 2000, 2600];
+const haveWidths = (stem) =>
+  COVER_WIDTHS.filter((w) => existsSync(join(ROOT, 'public/media/covers', `${stem}-${w}.webp`)));
+
+/* WHAT GOES UNDER THE FILM.
+   With a film on the cover, the still under it is the film's OWN first frame,
+   in both of the film's shapes -- scripts/film.sh writes the two masters and
+   renditions.py the web sizes. The photographic master stays on disk and stays
+   unused: deleting "film" from covers.json puts it straight back, with nothing
+   else to undo. That is why the name is chosen here and not baked in. */
+const coverArt = (brand) => {
+  const c = covers[brand];
+  const stem = c && c.film ? `${c.film}-still` : brand;
+  const widths = haveWidths(stem);
+  if (!widths.length) {
+    throw new Error(`No cover renditions for ${stem}. Run `
+      + (c && c.film ? `scripts/film.sh ${c.film}` : 'scripts/covers.py')
+      + ' then scripts/renditions.py.');
+  }
+  return { name: stem, widths, wideName: `${stem}-wide`, wideWidths: haveWidths(`${stem}-wide`) };
 };
 
 /* --- content -------------------------------------------------------------- */
@@ -263,7 +277,7 @@ function buildIthos() {
     description: 'Wooden night lights cut, sanded and painted by hand in Castelo Branco, Portugal. '
       + `${lamps.length} designs, each one able to carry an engraved name.`,
     cover: true,
-    body: ithos.home({ products: lamps, identity, cover: covers.ithos, coverWidths: coverWidths('ithos') }),
+    body: ithos.home({ products: lamps, identity, cover: covers.ithos, coverArt: coverArt('ithos') }),
     schema: [{
       '@context': 'https://schema.org', '@type': 'Organization',
       name: 'ithos', url: SITE, email: identity.email, telephone: identity.phone,
@@ -309,7 +323,7 @@ function buildCathelier() {
     description: `Laser-cut wooden keepsakes with your names, dates and words on them. `
       + `${occasions.length} occasions, ${pieces.length} pieces, each with a proof to approve before we cut.`,
     cover: true,
-    body: cath.home({ occasions, pieces, cover: covers.cathelier, coverWidths: coverWidths('cathelier') }),
+    body: cath.home({ occasions, pieces, cover: covers.cathelier, coverArt: coverArt('cathelier') }),
   }));
 
   for (const o of occasions) {

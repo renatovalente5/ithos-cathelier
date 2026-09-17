@@ -277,10 +277,68 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
         the question asked is the one that matters: how much of the film
         survives object-fit: cover at that width. */
   if (temFilme) {
-    const at = tmpl.match(/data-film-at="([\d.]+)rem"/);
+    /* The width is ONE constant in cover.mjs now, read by three things: the
+       video's data-film-at, the picture's art-direction media query, and (via
+       this guard) the stylesheet. So the constant is what gets read here, and
+       the two users of it are checked to be USERS -- a literal copied back in
+       would drift the day somebody moved the breakpoint. */
+    const at = tmpl.match(/const SWITCH_AT = '([\d.]+)rem';/);
     if (!at) {
-      die('cover.mjs: the film element has no data-film-at, and shop.js gives up without it — '
-        + 'the film would never play at any width, which looks exactly like it working');
+      die('cover.mjs: cannot read SWITCH_AT — the width the cover switches shape at');
+    }
+    if (!/data-film-at="\$\{SWITCH_AT\}"/.test(tmpl)) {
+      die('cover.mjs: data-film-at does not use SWITCH_AT. A second copy of that width '
+        + 'is how the film and the still end up switching at different places');
+    }
+    if (!/from: SWITCH_AT/.test(tmpl)) {
+      die("cover.mjs: the picture's wide source does not use SWITCH_AT, so the still and "
+        + 'the film would change shape at different widths and the cover would jump');
+    }
+
+    /* And the two still masters, which are what a visitor sees before the film
+       starts and instead of it when they asked for less motion. Their shapes
+       are written down in cover.mjs for the <img>'s intrinsic ratio; here the
+       real files are measured, so those numbers cannot quietly stop being true. */
+    for (const brand of ['ithos', 'cathelier']) {
+      const c = covers[brand];
+      if (!c || !c.film) continue;
+      /* As formas saem do PRÓPRIO cover.mjs e não de uma cópia aqui. Uma
+         guarda que compara os ficheiros com a sua própria ideia das formas
+         responde a outra pergunta: valida-se a si mesma e deixa passar o
+         template a mentir ao browser sobre a proporção intrínseca. */
+      const leForma = (nome) => {
+        const m = tmpl.match(new RegExp(`const ${nome} = \\[(\\d+), ?(\\d+)\\];`));
+        return m ? [Number(m[1]), Number(m[2])] : null;
+      };
+      const tall = leForma('TALL'); const wide = leForma('WIDE');
+      if (!tall || !wide) { die('cover.mjs: cannot read the TALL / WIDE still shapes'); continue; }
+      const esperado = { '-still': tall, '-still-wide': wide };
+      for (const [sufixo, [aw, ah]] of Object.entries(esperado)) {
+        const master = join(ROOT, 'photos/_covers', `${c.film}${sufixo}.jpg`);
+        if (!existsSync(master)) {
+          die(`covers.json: the ${brand} cover names the film "${c.film}" but `
+            + `photos/_covers/${c.film}${sufixo}.jpg is not there — the cover would fall back `
+            + `to a photograph of something else. Run scripts/film.sh ${c.film}`);
+          continue;
+        }
+        const { w, h } = shapeOf(master);
+        const real = w / h;
+        /* NaN antes de tudo, e de propósito. Isto já esteve escrito como
+           `const { width, height } = shapeOf(...)` -- chaves que shapeOf não
+           tem -- e o resultado não foi um erro: foi `NaN`, e QUALQUER
+           comparação com NaN é falsa. A guarda existia, corria, e não podia
+           disparar. Um número que não é número é a própria falha. */
+        if (!Number.isFinite(real)) {
+          die(`photos/_covers/${c.film}${sufixo}.jpg: could not read a shape from it `
+            + `(got ${JSON.stringify(shapeOf(master))}) — the check cannot run`);
+        } else if (Math.abs(real - aw / ah) > 0.02) {
+          die(`photos/_covers/${c.film}${sufixo}.jpg is ${w}x${h} (${real.toFixed(3)}:1) `
+            + `but cover.mjs tells the browser it is ${aw}/${ah} (${(aw / ah).toFixed(3)}:1)`);
+        }
+        if (!existsSync(join(ROOT, 'public/media/covers', `${c.film}${sufixo}-640.webp`))) {
+          die(`photos/_covers/${c.film}${sufixo}.jpg has no renditions — run scripts/renditions.py`);
+        }
+      }
     }
 
     /* Every shape .cover__media takes, and the width each starts at. */
@@ -338,6 +396,30 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
             + `itself in a ${coverAR.toFixed(2)}:1 cover — re-cut it with scripts/film.sh `
             + `${c.film}, or move data-film-at`);
         }
+      }
+    }
+  }
+
+  /* 3b. THE LIST OF COVER WIDTHS IS WRITTEN TWICE, IN TWO LANGUAGES.
+         scripts/renditions.py decides which renditions get WRITTEN and
+         src/build.mjs decides which get PROMISED in the srcset. They have
+         always been two copies; nothing noticed because they happened to
+         agree. The day they stop, the failure is a promise to a file that was
+         never written -- 548 broken references, which this project has already
+         shipped once. */
+  {
+    const py = readFileSync(join(ROOT, 'scripts/renditions.py'), 'utf8')
+      .match(/^COVER_WIDTHS = \(([^)]*)\)/m);
+    const js = readFileSync(join(ROOT, 'src/build.mjs'), 'utf8')
+      .match(/^const COVER_WIDTHS = \[([^\]]*)\]/m);
+    if (!py || !js) {
+      die('guards: cannot read COVER_WIDTHS from renditions.py and build.mjs, so the two '
+        + 'copies of that list cannot be checked against each other');
+    } else {
+      const nums = (t) => t.split(',').map((x) => x.trim()).filter(Boolean).join(' ');
+      if (nums(py[1]) !== nums(js[1])) {
+        die(`COVER_WIDTHS disagree: renditions.py writes [${nums(py[1])}] and build.mjs `
+          + `promises [${nums(js[1])}]`);
       }
     }
   }

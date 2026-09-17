@@ -36,7 +36,12 @@ OUT = ROOT / 'public' / 'media'
 WIDTHS = (120, 200, 400, 600, 1000)
 # A cover is the full width of the screen, so it needs sizes a thumbnail never
 # does. 2600 covers a 1440px laptop at two device pixels with room to spare.
-COVER_WIDTHS = (640, 960, 1280, 1600, 2000, 2600)
+# 720 está aqui por causa do quadro parado do filme: um corte 2:3 de uma
+# gravação 1080p tem exactamente 720px de largura, e sem este degrau a única
+# rendition possível era 640 -- uma capa permanentemente suave para quem pediu
+# menos movimento. Esta lista tem uma cópia em src/build.mjs e scripts/guards.mjs
+# morre se as duas deixarem de dizer o mesmo.
+COVER_WIDTHS = (640, 720, 960, 1280, 1600, 2000, 2600)
 FORCE = '--force' in sys.argv
 
 

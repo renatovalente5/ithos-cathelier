@@ -40,6 +40,22 @@
  */
 import { esc, coverPicture } from './html.mjs';
 
+/* THE ONE WIDTH THIS WHOLE COVER TURNS ON.
+ *
+ * Below it the cover is a tall frame and the page asks for the tall cut of the
+ * film and the tall still; from it up, the wide ones. Three things have to
+ * agree about that number -- the <picture>'s media query, the video's
+ * data-film-at, and the stylesheet's own breakpoint where .cover__media stops
+ * being tall -- and they agree here, once, by being the same constant.
+ * scripts/guards.mjs checks it against the stylesheet, which cannot import it. */
+const SWITCH_AT = '48rem';
+
+/* The shapes the two cuts are cut to, by scripts/film.sh. They are written
+ * down because the <img> needs an intrinsic ratio, and they are CHECKED --
+ * guards.mjs measures the real files and dies if these stop being true. */
+const TALL = [2, 3];
+const WIDE = [16, 9];
+
 /*
  * THE FILM, AND THE FOUR THINGS IT IS NOT ALLOWED TO BREAK
  *
@@ -75,23 +91,30 @@ function film(c) {
   return `<video class="cover__film"
     data-film="/media/film/${esc(c.film)}.mp4"
     data-film-tall="/media/film/${esc(c.film)}-tall.mp4"
-    data-film-at="48rem" preload="none" muted loop playsinline aria-hidden="true"></video>`;
+    data-film-at="${SWITCH_AT}" preload="none" muted loop playsinline aria-hidden="true"></video>`;
 }
 
 /**
  * @param {object} c      the brand's block of covers.json
- * @param {string} brand  'ithos' | 'cathelier' -- names the picture file
+ * @param {string} brand  'ithos' | 'cathelier'
+ * @param {object} art    {name, widths, wideName, wideWidths} -- the cover
+ *                        renditions that actually exist, counted off disk.
+ *                        With a film these are its own frames; without one,
+ *                        the photographic master, and wideWidths is empty.
  */
-export function cover(c, brand, widths) {
+export function cover(c, brand, art) {
   const focus = `--cover-focus:${esc(c.focus || '50% 50%')};`
     + `--cover-focus-wide:${esc(c.focusWide || c.focus || '50% 50%')}`;
+  const temFilme = !!c.film;
 
   return `
 <section class="cover" style="${focus}">
   ${coverPicture({
-    name: brand,
+    name: art.name,
     alt: c.alt || '',
-    widths,
+    widths: art.widths,
+    aspect: temFilme ? TALL : [4, 5],
+    wide: temFilme ? { name: art.wideName, widths: art.wideWidths, from: SWITCH_AT, aspect: WIDE } : null,
     /* The cover is always the full width of the screen, so the browser needs
        no arithmetic: 100vw is the honest answer at every breakpoint. */
     sizes: '100vw',

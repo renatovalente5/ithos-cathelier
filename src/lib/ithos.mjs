@@ -142,7 +142,7 @@ export function card(p, { eager = false } = {}) {
 </article>`;
 }
 
-export function home({ products, identity, cover: coverText, coverWidths }) {
+export function home({ products, identity, cover: coverText, coverArt }) {
   /* "Bestsellers" and not "Favourites", at the owner's request. Worth knowing
      what changed with the word: a favourite is the shop's own opinion and owes
      nobody evidence, while a bestseller is a claim about what actually sells.
@@ -154,7 +154,7 @@ export function home({ products, identity, cover: coverText, coverWidths }) {
   const rest = products.filter((p) => !p.featured).slice(0, 8);
 
   return `
-${cover(coverText, 'ithos', coverWidths)}
+${cover(coverText, 'ithos', coverArt)}
 
 <section class="section">
   <div class="shell">
