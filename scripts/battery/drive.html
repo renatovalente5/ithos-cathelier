@@ -260,7 +260,20 @@ async function medirDeriva(w, res) {
 
 for (const pag of PAGINAS) {
   const f = document.createElement('iframe');
-  f.style.cssText = `width:${L}px;height:${A}px;border:0;position:absolute;left:-9999px`;
+  /* A MOLDURA TEM DE SER DESENHADA, e durante muito tempo não era.
+   *
+   * Estava em `left:-9999px`, fora de qualquer vista. Uma moldura assim não é
+   * renderizada: a observação de proximidade lá dentro nunca dispara, por isso
+   * as 67 miniaturas dos cartões nunca chegavam a ser construídas e a
+   * verificação de imagens partidas era cega precisamente às imagens que a
+   * dona fotografou partidas. O `requestAnimationFrame` também não corria, e
+   * por isso o voo do cabeçalho ficava por medir em quase todas as corridas.
+   *
+   * Agora fica no sítio, em tamanho real, mas ATRÁS da página do condutor:
+   * z-index negativo debaixo de um corpo opaco. Continua invisível a quem
+   * olha, e passa a existir para o browser. */
+  f.style.cssText = `width:${L}px;height:${A}px;border:0;position:fixed;`
+    + `left:0;top:0;z-index:-1;pointer-events:none`;
   f.src = BASE + pag;
   document.body.appendChild(f);
   await new Promise(r => { f.onload = r; setTimeout(r, 4000); });
@@ -278,6 +291,53 @@ for (const pag of PAGINAS) {
    * Uma imagem NOVA com o mesmo endereço, sem `srcset`, descodifica à
    * primeira. É essa que a bateria usa; a `<img>` da página continua a dar a
    * geometria, que é o que ela sabe de facto. */
+  /* PERCORRER A PÁGINA ANTES DE MEDIR, para as imagens preguiçosas chegarem a
+   * ser pedidas.
+   *
+   * A verificação de imagens partidas só conhece uma imagem depois de alguma
+   * coisa a ter ido buscar, e o condutor nunca rolava: numa página de
+   * catálogo dizia «8 de 28 medidas» e imprimia um ✓ sobre as outras vinte.
+   * A dona fotografou uma miniatura partida que nenhuma corrida teria
+   * apanhado.
+   *
+   * Desce em passos e volta ao topo, e espera que assente: rolar mexe no
+   * cabeçalho pegajoso e em tudo o que vem por baixo dele, e a geometria é
+   * medida a seguir. */
+  try {
+    /* Percorrer a página primeiro: agora que a moldura é desenhada, descer por
+       ela acorda as observações de proximidade que constroem as tiras de
+       miniaturas dos cartões — 67 numa página de catálogo, que de outra forma
+       nunca chegam a existir e por isso nunca são verificadas. Depois volta ao
+       topo e assenta, porque rolar mexe no cabeçalho e em tudo o que vem por
+       baixo, e a geometria é medida a seguir. */
+    const w1 = f.contentWindow;
+    const doc1 = w1.document.documentElement;
+    for (let y = 0; y < doc1.scrollHeight; y += Math.round(A * 0.8)) {
+      w1.scrollTo({ top: y, behavior: 'instant' });
+      await new Promise((r) => setTimeout(r, 130));
+    }
+    w1.scrollTo({ top: 0, behavior: 'instant' });
+    await new Promise((r) => setTimeout(r, 400));
+    /* E só depois tirar a preguiça ao que ficou: uma imagem preguiçosa que
+       nunca entrou na vista continua por pedir, e a verificação de imagens
+       partidas só conhece o que alguém foi buscar. */
+    const preguicosas = [...w1.document.images].filter((i) => i.loading === 'lazy');
+    for (const i of preguicosas) i.loading = 'eager';
+    if (preguicosas.length) {
+      await new Promise((fim) => {
+        const prazo = setTimeout(fim, 3000);
+        let porChegar = preguicosas.filter((i) => !i.complete).length;
+        if (!porChegar) { clearTimeout(prazo); fim(); return; }
+        const conta = () => { if (--porChegar <= 0) { clearTimeout(prazo); fim(); } };
+        for (const i of preguicosas) {
+          if (i.complete) continue;
+          i.addEventListener('load', conta, { once: true });
+          i.addEventListener('error', conta, { once: true });
+        }
+      });
+    }
+  } catch (e) { /* mesma origem; se falhar, a cobertura aparece no denominador */ }
+
   try {
     const w0 = f.contentWindow;
     const capa = w0.document.querySelector('.cover__img');

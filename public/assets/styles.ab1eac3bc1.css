@@ -1299,7 +1299,13 @@ html.menu-open { overflow: hidden; }
 .drawer__cost { margin-block: -.35rem .35rem; padding-inline: var(--gutter); font-size: 12px; color: var(--muted); }
 
 /* --- footer ---------------------------------------------------------------- */
-.foot { margin-block-start: clamp(3rem, 8vw, 6rem); background: var(--bg-soft, var(--bg)); border-block-start: 1px solid var(--line); padding-block: clamp(2rem, 5vw, 3.5rem) 2rem; }
+/* NO TOP MARGIN. It carried clamp(3rem, 8vw, 6rem), which on a page whose last
+   section has a background of its own -- every product page ends with the
+   cream "More from the workshop" band -- painted a white stripe of up to 63px
+   between two coloured blocks. The owner saw it and read it as a mistake,
+   which is what it looked like. The footer's own top padding is what separates
+   it from the text above; the margin was separating it from nothing. */
+.foot { background: var(--bg-soft, var(--bg)); border-block-start: 1px solid var(--line); padding-block: clamp(2.25rem, 5vw, 3.5rem) 2rem; }
 .foot__grid { display: grid; gap: 0; }
 @media (width >= 60rem) { .foot__grid { grid-template-columns: repeat(4, 1fr); gap: 2rem; } }
 
