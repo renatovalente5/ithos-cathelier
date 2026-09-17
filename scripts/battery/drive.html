@@ -258,6 +258,65 @@ async function medirDeriva(w, res) {
     escondidosFocaveis.slice(0, 3).map((e) => e.tagName + '.' + e.className).join(', '));
 }
 
+/* --- a fotografia do produto, e o ampliar ----------------------------------
+ * A pergunta é uma só e pode falhar dos dois lados: o que está pintado tem a
+ * forma do ficheiro? Com `object-fit: contain` a caixa pode ser maior do que a
+ * fotografia, por isso mede-se a ÁREA PINTADA e não a caixa — foi a distinção
+ * que apanhou a moldura a ser reconstruída em quadrado por uma tampa de altura.
+ */
+async function medirFotografia(w, res) {
+  if (!res || !res.tudo) return;
+  const d = w.document;
+  const slide = d.querySelector('.gallery__slide img, .product__gallery .frame img');
+  if (!slide) return;
+
+  const nota = (ok, o, detalhe = '') => {
+    const r = { ok: !!ok, o, detalhe: String(detalhe).slice(0, 180) };
+    res.tudo.push(r); res.total = res.tudo.length;
+    if (!ok) res.falhas.push(r);
+  };
+
+  if (!slide.naturalWidth) { nota(false, 'a fotografia do produto carregou', 'sem pixels'); return; }
+  const b = slide.getBoundingClientRect();
+  const doFicheiro = slide.naturalWidth / slide.naturalHeight;
+  const k = Math.min(b.width / slide.naturalWidth, b.height / slide.naturalHeight);
+  const pintada = { w: slide.naturalWidth * k, h: slide.naturalHeight * k };
+  nota(Math.abs(pintada.w / pintada.h - doFicheiro) < 0.02,
+    'a fotografia do produto não está cortada',
+    `pintada ${(pintada.w / pintada.h).toFixed(3)} · ficheiro ${doFicheiro.toFixed(3)} · ${(slide.currentSrc || slide.src).split('/').pop()}`);
+  nota((slide.currentSrc || slide.src).includes('/media/whole/'),
+    'a ficha serve a fotografia inteira e não o recorte quadrado',
+    (slide.currentSrc || slide.src).split('/media/')[1] || '?');
+
+  const abre = d.querySelector('[data-box-open]');
+  nota(!!abre, 'há um botão para ver a fotografia em grande', abre ? '' : 'nenhum nesta página');
+  if (!abre) return;
+
+  abre.click();
+  await new Promise((r) => setTimeout(r, 900));
+  const box = d.querySelector('.lightbox');
+  const grande = box && box.querySelector('img');
+  nota(box && box.open && grande && grande.getBoundingClientRect().width > 0,
+    'o visualizador abre com a fotografia lá dentro',
+    box ? `open=${box.open} largura=${Math.round(grande ? grande.getBoundingClientRect().width : 0)}` : 'não existe');
+
+  if (box && box.open && grande) {
+    const palco = box.querySelector('.lightbox__stage');
+    nota(palco.scrollWidth <= palco.clientWidth + 1 && palco.scrollHeight <= palco.clientHeight + 1,
+      'no ajuste, a fotografia inteira cabe sem rolar',
+      `${palco.scrollWidth}x${palco.scrollHeight} em ${palco.clientWidth}x${palco.clientHeight}`);
+    const g2 = grande.getBoundingClientRect();
+    nota(Math.abs(g2.width / g2.height - grande.naturalWidth / grande.naturalHeight) < 0.02,
+      'no visualizador a fotografia não está esticada',
+      `${(g2.width / g2.height).toFixed(3)} vs ${(grande.naturalWidth / grande.naturalHeight).toFixed(3)}`);
+    d.querySelector('[data-box-close]')?.click();
+    await new Promise((r) => setTimeout(r, 400));
+    nota(!box.open && !d.documentElement.classList.contains('menu-open'),
+      'ao fechar o visualizador a página volta a rolar',
+      `open=${box.open} trava=${d.documentElement.classList.contains('menu-open')}`);
+  }
+}
+
 for (const pag of PAGINAS) {
   const f = document.createElement('iframe');
   /* A MOLDURA TEM DE SER DESENHADA, e durante muito tempo não era.
@@ -357,6 +416,7 @@ for (const pag of PAGINAS) {
     window.__resultados[pag] = w.__bateria();
     await medirEncolher(w, window.__resultados[pag]);
     await medirDeriva(w, window.__resultados[pag]);
+    await medirFotografia(w, window.__resultados[pag]);
   } catch (e) { window.__resultados[pag] = { erro: String(e) }; }
   f.remove();
   saida.textContent = Object.keys(window.__resultados).length + '/' + PAGINAS.length;

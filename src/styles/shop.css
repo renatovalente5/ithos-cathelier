@@ -442,7 +442,109 @@
 .gallery { position: relative; overflow: hidden; }
 .gallery__track { display: flex; transition: translate .4s cubic-bezier(.22,.61,.36,1); }
 @media (prefers-reduced-motion: reduce) { .gallery__track { transition: none; } }
-.gallery__slide { flex: 0 0 100%; }
+/* THE SLIDE IS THE SHAPE OF THE PHOTOGRAPH, NOT A SQUARE.
+   --shot is written on .gallery by the build: the narrowest ratio among this
+   product's own photographs, so every slide shares one box and the carousel
+   cannot change height as you move through it. `contain` is the other half and
+   the two only work together -- a square file in a 2:3 box under `cover` would
+   crop top AND bottom, which is worse than what was there before.
+   Capped at 78svh so a tall lamp cannot swallow a whole phone screen. */
+.gallery__slide {
+  flex: 0 0 100%;
+  aspect-ratio: var(--shot, 1);
+  background: var(--frame-bg);
+  overflow: hidden;
+}
+/* THE CAP GOES ON THE WIDTH, NOT THE HEIGHT.
+   Capping the height while the slide is still 100% wide does not shrink the
+   frame, it RESHAPES it: measured at 916px tall, a 2:3 slide 721px wide became
+   721x714 -- square again, with the photograph letterboxed inside it. Capping
+   the gallery's width instead keeps the ratio and simply makes the whole frame
+   smaller on a tall screen. The slides stay 100% of it, so the carousel is
+   untouched. */
+.gallery { max-inline-size: calc(78svh * var(--shot, 1)); margin-inline: auto; }
+.gallery__slide > picture { display: block; width: 100%; height: 100%; }
+.gallery__slide img { width: 100%; height: 100%; object-fit: contain; }
+.gallery__track { align-items: flex-start; }
+/* --- the photograph, full size ----------------------------------------------
+   Declared `position: fixed`, like the menu panel, and for the same measured
+   reason: a dialog is fixed only while it is MODAL, and opened with show() --
+   which is how the battery opens one -- it is `position: absolute` and lands
+   at its static position far down the document. */
+.lightbox {
+  position: fixed; inset: 0;
+  width: 100%; max-width: none; height: 100dvh; max-height: 100dvh;
+  margin: 0; border: 0; padding: 0;
+  background: var(--bg); color: var(--ink);
+  display: flex; flex-direction: column;
+}
+.lightbox:not([open]) { display: none; }
+.lightbox::backdrop { background: rgb(33 33 33 / .55); }
+[data-brand='cathelier'] .lightbox::backdrop { background: rgb(74 53 39 / .5); }
+
+.lightbox__bar {
+  flex: none; display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; padding: .5rem var(--gutter); min-height: 56px;
+  border-block-end: 1px solid var(--line-soft, var(--line));
+}
+.lightbox__zoom {
+  min-height: 40px; padding: .35rem 1rem;
+  border: 1px solid var(--line); border-radius: var(--pill, 999px);
+  background: none; color: var(--ink); font: inherit; font-size: 14px; cursor: pointer;
+}
+.lightbox__zoom[aria-pressed='true'] { border-color: var(--accent); color: var(--accent); }
+
+/* THE STAGE IS A SCROLLER, AND THAT IS THE WHOLE ZOOM.
+   At actual size the photograph is given its own pixel width and the stage
+   scrolls, so dragging, the trackpad, the scrollbars, a two-finger swipe and
+   the arrow keys all pan it with no code. Nothing here sets touch-action, so
+   pinch-zoom on a phone is untouched as well. */
+.lightbox__stage {
+  flex: 1 1 auto; min-height: 0;
+  display: flex;
+  overflow: auto; overscroll-behavior: contain;
+  padding: var(--gutter);
+  background: var(--frame-bg);
+}
+/* `margin: auto` and NOT `place-items: center`.
+   Centring by alignment clips the top and the left of anything bigger than the
+   box -- the scroll simply cannot reach it. An auto margin centres a small
+   photograph and gets out of the way of a big one.
+   And the height limit lives on the PICTURE, not the img: in a grid whose row
+   is auto-sized, `max-height: 100%` on the child is circular and resolves to
+   the content's own height, which is why the fit state was still scrolling --
+   measured at 1060px of photograph in a 780px stage. */
+/* `display: contents` on the <picture>, so the <img> IS the flex item.
+   With the picture as a box in between, the img's `max-height: 100%` resolves
+   against a parent whose own height is auto -- a circular percentage, which is
+   simply dropped. Measured: 1060px of photograph inside an 854px stage, still
+   scrolling in the state called "fit". (This is safe here in a way it is not
+   for a card: there is nothing focusable inside a <picture>, which is what
+   made display:contents dangerous the last time this project used it.) */
+.lightbox__stage > picture { display: contents; }
+/* `align-self: center` because a flex item stretches by default: without it
+   the <img> BOX was 721x791 for a 2:3 photograph -- the picture inside was
+   still contained and undistorted, but the box around it was not the
+   photograph, which makes every click and every measurement land somewhere
+   the reader is not looking. */
+.lightbox__img {
+  display: block; margin: auto; align-self: center;
+  width: auto; height: auto; max-width: 100%; max-height: 100%;
+}
+.lightbox[data-zoom='yes'] .lightbox__stage { cursor: grab; }
+.lightbox[data-zoom='yes'] .lightbox__img { max-width: none; max-height: none; width: auto; height: auto; }
+
+/* The button that opens it, over the photograph. Its ground is the photograph,
+   which has no measurable colour, so it is an opaque chip rather than a
+   translucent one -- the same reasoning the cover panel carries. */
+.gallery__open {
+  position: absolute; inset-block-end: 10px; inset-inline-end: 10px;
+  width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--line); border-radius: var(--pill, 999px);
+  background: var(--bg); color: var(--ink); cursor: pointer;
+}
+.gallery__open:hover { color: var(--accent); border-color: var(--accent); }
+
 .gallery__arrow {
   position: absolute; inset-block-start: 50%; translate: 0 -50%;
   width: 40px; height: 40px; display: grid; place-items: center;
@@ -452,9 +554,15 @@
 .gallery__arrow--next { inset-inline-end: 10px; }
 .gallery__arrow:hover { background: #fff; }
 
-.gallery__thumbs { display: flex; gap: 8px; margin-block-start: 8px; overflow-x: auto; scrollbar-width: none; }
-.gallery__thumbs::-webkit-scrollbar { display: none; }
-.gallery__thumb { flex: 0 0 84px; border: 1px solid transparent; padding: 0; }
+/* THEY WRAP. This was a sideways scroller with its scrollbar deleted in both
+   engines, so on a phone the last thumbnails sat off the edge with nothing on
+   screen saying so -- six thumbnails are 544px in a 288px column. It is the
+   same complaint the filter row was rewritten to answer, and both of the
+   battery's overflow guards are structurally blind to it: the page-level one
+   measures the document, which a scroll container never reaches, and the
+   element-level one deliberately exempts everything inside a scroller. */
+.gallery__thumbs { display: flex; flex-wrap: wrap; gap: 8px; margin-block-start: 8px; }
+.gallery__thumb { flex: 0 0 84px; border: 1px solid transparent; padding: 0; background: none; cursor: pointer; }
 .gallery__thumb[aria-selected='true'] { border-color: var(--accent); }
 
 .product__price { margin-block-start: .5rem; font-size: 1.35rem; font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; }

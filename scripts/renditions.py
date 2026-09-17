@@ -67,7 +67,80 @@ def main():
                     im.save(dest, fmt, quality=62 if fmt == 'AVIF' else 78)
                 written += 1
     written, skipped = covers(written, skipped)
+    written, skipped = inteiras(written, skipped)
     print(f'{written} renditions written, {skipped} already there')
+
+
+# --- the WHOLE photograph, for the product page ------------------------------
+#
+# The square masters are a crop, and on a portrait photograph a square crop
+# throws away a third of the frame. Measured across the 90 vertical ithos
+# photographs: 50 of them lose part of the lamp, and Santa loses his hat --
+# 1333x2000 cut to 1333x1333, and the window landed on the bottom third because
+# the woven mat under the lamp scores more edge energy than the lamp does. That
+# is a failure this script's own header names.
+#
+# A card stays square: a grid wants one shape, and a thumbnail being cropped is
+# what every shop does. A PRODUCT page is where somebody decides, and there the
+# photograph is shown whole.
+#
+# So this is a second family, from the uncropped masters, and nothing about the
+# square family changes -- not photos/_square, not focus.json, not the contact
+# sheets, not the cards.
+WHOLE = ROOT / 'public' / 'media' / 'whole'
+# One rung above 1000 for the lightbox, and only where the master can fill it.
+# Encoded harder than the rest on purpose: its job is resolution, not polish.
+ZOOM_W = 1400
+
+
+def _originais():
+    """Exactly the sources square.py uses, named exactly the same way -- the two
+    families must never come to disagree about which photographs exist."""
+    fotos = ROOT / 'photos'
+    for pasta in sorted((fotos / 'ithos').iterdir()):
+        if pasta.is_dir():
+            for f in sorted(pasta.glob('*.jpg')):
+                yield f'ithos/{pasta.name}/{f.stem}', f
+    pool = fotos / 'cathelier' / '_raw'
+    if pool.is_dir():
+        for f in sorted(pool.glob('*.jpg')):
+            yield f'cathelier/pool/{f.stem}', f
+
+
+def inteiras(written, skipped):
+    for key, src in _originais():
+        with Image.open(src) as probe:
+            sw, sh = probe.size
+        # 400 up. The gallery's smallest box is about 288px wide on a 320px
+        # phone, so a 200w whole photograph is a file nothing can ever choose --
+        # 200 files and 1.6 MB of it. The thumbnails under the gallery are the
+        # SQUARE family and are unaffected.
+        # 400 up. The gallery's smallest box is about 288px wide on a 320px
+        # phone, so a 200w whole photograph is a file nothing can ever choose --
+        # 200 files and 1.6 MB of it.
+        # A master narrower than 400 gets ONE rung at its own width, never a
+        # "-400" holding a 361px picture: the srcset would tell the browser a
+        # size the file does not have, which is the same lie as upscaling.
+        larguras = [w for w in WIDTHS if 400 <= w <= sw] or [sw]
+        if sw >= 1250:
+            larguras = larguras + [ZOOM_W]
+        for w in larguras:
+            h = round(sh * w / sw)
+            for fmt, ext in (('AVIF', 'avif'), ('WEBP', 'webp')):
+                dest = WHOLE / f'{key}-{w}.{ext}'
+                if dest.exists() and not FORCE:
+                    skipped += 1
+                    continue
+                dest.parent.mkdir(parents=True, exist_ok=True)
+                with Image.open(src) as im:
+                    im = im.convert('RGB')
+                    if im.width > w:
+                        im = im.resize((w, h), Image.LANCZOS)
+                    forte = w == ZOOM_W
+                    im.save(dest, fmt, quality=(52 if forte else 62) if fmt == 'AVIF'
+                                              else (70 if forte else 78))
+                written += 1
+    return written, skipped
 
 
 def covers(written, skipped):

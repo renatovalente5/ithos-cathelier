@@ -1,4 +1,10 @@
-import { esc, money, picture, prose } from './html.mjs';
+import { esc, money, picture, prose, wholePicture } from './html.mjs';
+import { shapeOf, rungs } from './photo.mjs';
+import { viewer } from './viewer.mjs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const PHOTOS = join(dirname(fileURLToPath(import.meta.url)), '..', '..', 'photos');
 import { icon } from './icons.mjs';
 import { occasionArt } from './occasions-art.mjs';
 import { cover } from './cover.mjs';
@@ -213,21 +219,31 @@ export function all({ pieces, occasions }) {
 }
 
 export function piece({ p, all: everything, shop, occasions }) {
+  /* The same as ithos: the frame takes the shape of this piece's tallest
+     photograph instead of a square, because a square crop of a 361x640
+     Instagram still throws away 44% of it. */
+  /* The masters live in photos/cathelier/_raw; `pool` is the name the SQUARE
+     family and the site addresses use. The two have never been the same word
+     and this is the one place that has to know it. */
+  const shapes = (p.photos || []).map((n) => shapeOf(join(PHOTOS, 'cathelier', '_raw', `${n}.jpg`)));
+  const shot = shapes.length
+    ? shapes.reduce((m, x) => Math.min(m, x.w / x.h), Infinity).toFixed(4) : '1';
   const here = occasions.find((o) => o.slug === p.occasion);
   const related = everything.filter((x) => x.slug !== p.slug && x.occasion === p.occasion).slice(0, 4);
   return `
 <section class="product shell">
   <div class="product__gallery">
     ${(p.photos || []).length > 1 ? `
-    <div class="gallery" data-gallery>
+    <div class="gallery" data-gallery style="--shot:${shot}">
       <div class="gallery__track" data-gallery-track>
-        ${p.photos.map((n, i) => `<div class="frame gallery__slide">${picture({
-          dir: `cathelier/${p.photoFolder}`, name: n, widths: [200, 400],
+        ${p.photos.map((n, i) => `<div class="gallery__slide">${wholePicture({
+          key: `cathelier/${p.photoFolder}/${n}`, shape: shapes[i], widths: rungs(shapes[i].w),
           alt: `${esc(p.name)} — photograph ${i + 1}`,
           sizes: '(min-width: 64rem) 560px, 100vw',
           loading: i === 0 ? 'eager' : 'lazy',
         })}</div>`).join('\n        ')}
       </div>
+      <button class="gallery__open" type="button" data-box-open aria-label="See this photograph full size">${icon('search', 18)}</button>
       <button class="gallery__arrow gallery__arrow--prev" type="button" data-gallery-prev aria-label="Previous photograph">${icon('arrowLeft', 20)}</button>
       <button class="gallery__arrow gallery__arrow--next" type="button" data-gallery-next aria-label="Next photograph">${icon('arrowRight', 20)}</button>
     </div>
@@ -282,6 +298,8 @@ export function piece({ p, all: everything, shop, occasions }) {
     </p>
   </div>
 </section>
+
+${viewer()}
 
 ${related.length ? `<section class="collection" style="background:var(--bg-soft)">
   <div class="shell">

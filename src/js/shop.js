@@ -164,9 +164,15 @@ document.addEventListener('DOMContentLoaded', () => {
     for (const a of $$('a', drawer)) a.addEventListener('click', close);
 
     drawer.addEventListener('close', () => { settle(); giveFocusBack(); });
-    // The third way, for Escape, which reaches none of the above.
+    /* The third way, for Escape, which reaches none of the above -- and it has
+       to ask WHAT Escape closed. This listener is on the window, so once there
+       is a second dialog on the page (the photograph viewer) it would fire for
+       that one too and drag the focus over to the burger, out of the gallery
+       the reader was standing in. */
     addEventListener('keydown', (ev) => {
-      if (ev.key === 'Escape') setTimeout(() => { settle(); giveFocusBack(); }, 0);
+      if (ev.key !== 'Escape') return;
+      const eraAGaveta = drawer.open;
+      setTimeout(() => { settle(); if (eraAGaveta) giveFocusBack(); }, 0);
     });
   }
 
@@ -276,6 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
   sorting();
   cardShots();
   gallery();
+  lightbox();
   productForm();
   basketPage();
   mapConsent();
@@ -914,6 +921,117 @@ function cardShots() {
 
 
 /* --- product gallery ------------------------------------------------------ */
+/* --- the photograph, full size ---------------------------------------------
+ *
+ * Panning is the browser's job, not mine. In "actual size" the photograph is
+ * given its own pixel width inside a scrolling stage, so dragging, the
+ * trackpad, the scrollbars, a two-finger swipe and the keyboard all pan it
+ * without a line of code from me -- and pinch-zoom on a phone keeps working,
+ * because nothing here touches touch-action. Hand-written pan is where this
+ * sort of thing goes wrong, and none of it would beat what is already there.
+ *
+ * The stage ships empty: a product page carries no second copy of a
+ * photograph nobody has asked to see, and the 1400px rendition is fetched only
+ * by someone who wants it.
+ */
+function lightbox() {
+  const box = $('.lightbox');
+  const stage = $('[data-box-stage]');
+  const opener = $('[data-box-open]');
+  const g = $('[data-gallery]');
+  if (!box || !stage || !g) return;
+
+  // Chrome restores a <dialog>'s open attribute across a reload, the same trap
+  // the menu already carries: a dialog that is open cannot be opened again.
+  if (box.open) box.close();
+
+  const zoomBtn = $('[data-box-zoom]', box);
+  let last = null;                      // what to give the focus back to
+
+  const fit = () => {
+    box.dataset.zoom = 'no';
+    zoomBtn?.setAttribute('aria-pressed', 'false');
+    stage.scrollTo(0, 0);
+  };
+
+  const show = (from) => {
+    const src = $('img', from);
+    if (!src) return;
+    stage.replaceChildren();
+    const pic = from.cloneNode(true);
+    const im = $('img', pic);
+    /* The viewer wants the biggest rung there is, and the slide's srcset is
+       written for a 560px column. Asking for the largest candidate by hand
+       would mean composing a URL; raising `sizes` lets the browser pick from
+       the srcset it already has -- which carries the address prefix and the
+       widths that actually exist. */
+    for (const so of $$('source', pic)) so.sizes = '100vw';
+    im.sizes = '100vw';
+    im.removeAttribute('loading');
+    im.removeAttribute('fetchpriority');
+    im.className = 'lightbox__img';
+    stage.append(pic);
+    fit();
+    if (box.open) box.close();
+    box.showModal();
+    document.documentElement.classList.add('menu-open');   // the same derived lock
+    $('[data-box-close]', box)?.focus();
+  };
+
+  const hide = () => {
+    if (box.open) box.close();
+    document.documentElement.classList.remove('menu-open');
+    stage.replaceChildren();            // nothing decoded is kept around
+    (last && last.isConnected ? last : opener)?.focus();
+  };
+
+  opener?.addEventListener('click', () => {
+    last = opener;
+    const slide = $$('.gallery__slide', g).find((sl) => {
+      const r = sl.getBoundingClientRect(); const gr = g.getBoundingClientRect();
+      return Math.abs(r.left - gr.left) < 2;          // the one on screen
+    }) || $('.gallery__slide', g);
+    show($('picture', slide));
+  });
+
+  /* Clicking the photograph itself opens it too -- it is what everyone tries
+     before they look for a button. */
+  g.addEventListener('click', (ev) => {
+    if (ev.target.closest('button, a')) return;
+    const slide = ev.target.closest('.gallery__slide');
+    if (!slide) return;
+    last = opener;
+    show($('picture', slide));
+  });
+
+  zoomBtn?.addEventListener('click', () => {
+    const on = box.dataset.zoom === 'yes';
+    box.dataset.zoom = on ? 'no' : 'yes';
+    zoomBtn.setAttribute('aria-pressed', on ? 'false' : 'true');
+    if (on) stage.scrollTo(0, 0);
+    else {
+      // Land on the middle of the photograph, not its top-left corner.
+      const im = $('img', stage);
+      if (im) requestAnimationFrame(() => stage.scrollTo({
+        left: (stage.scrollWidth - stage.clientWidth) / 2,
+        top: (stage.scrollHeight - stage.clientHeight) / 2,
+      }));
+    }
+  });
+
+  $('[data-box-close]', box)?.addEventListener('click', hide);
+  /* Pressing beside the photograph closes it, and the press has to have
+     STARTED there -- dragging a zoomed photograph past the edge must not shut
+     the viewer under the reader's finger. */
+  let fora = false;
+  box.addEventListener('pointerdown', (ev) => { fora = ev.target === box; });
+  box.addEventListener('click', (ev) => { if (fora && ev.target === box) hide(); });
+  box.addEventListener('close', () => {
+    document.documentElement.classList.remove('menu-open');
+    stage.replaceChildren();
+  });
+}
+
 function gallery() {
   const g = $('[data-gallery]');
   if (!g) return;

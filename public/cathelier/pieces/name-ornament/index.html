@@ -21,7 +21,7 @@
 <link rel="icon" href="/ithos-cathelier/assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" as="font" type="font/woff2" crossorigin
       href="/ithos-cathelier/assets/fonts/kleeone-400-latin.woff2">
-<link rel="stylesheet" href="/ithos-cathelier/assets/styles.ab1eac3bc1.css">
+<link rel="stylesheet" href="/ithos-cathelier/assets/styles.a1d75d9e30.css">
 
 <script type="application/ld+json">[{"@context":"https://schema.org","@type":"Product","name":"Christmas ornament with a name","description":"One for everyone in the house, with the name engraved.","image":"https://renatovalente5.github.io/ithos-cathelier/media/cathelier/pool/04-400.webp","brand":{"@type":"Brand","name":"cathelier"},"offers":{"@type":"Offer","price":"4.50","priceCurrency":"EUR","availability":"https://schema.org/MadeToOrder","url":"https://renatovalente5.github.io/ithos-cathelier/cathelier/pieces/name-ornament/"}},{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"cathelier","item":"https://renatovalente5.github.io/ithos-cathelier/cathelier/"},{"@type":"ListItem","position":2,"name":"Every piece","item":"https://renatovalente5.github.io/ithos-cathelier/cathelier/pieces/"},{"@type":"ListItem","position":3,"name":"Christmas ornament with a name"}]}]</script>
 </head>
@@ -60,19 +60,20 @@
 <section class="product shell">
   <div class="product__gallery">
     
-    <div class="gallery" data-gallery>
+    <div class="gallery" data-gallery style="--shot:0.5625">
       <div class="gallery__track" data-gallery-track>
-        <div class="frame gallery__slide"><picture>
-      <source type="image/avif" srcset="/ithos-cathelier/media/cathelier/pool/04-200.avif 200w, /ithos-cathelier/media/cathelier/pool/04-400.avif 400w" sizes="(min-width: 64rem) 560px, 100vw">
-      <source type="image/webp" srcset="/ithos-cathelier/media/cathelier/pool/04-200.webp 200w, /ithos-cathelier/media/cathelier/pool/04-400.webp 400w" sizes="(min-width: 64rem) 560px, 100vw">
-      <img src="/ithos-cathelier/media/cathelier/pool/04-400.webp" alt="Christmas ornament with a name — photograph 1" width="400" height="400" loading="eager" decoding="async">
+        <div class="gallery__slide"><picture>
+      <source type="image/avif" srcset="/ithos-cathelier/media/whole/cathelier/pool/04-360.avif 360w" sizes="(min-width: 64rem) 560px, 100vw">
+      <source type="image/webp" srcset="/ithos-cathelier/media/whole/cathelier/pool/04-360.webp 360w" sizes="(min-width: 64rem) 560px, 100vw">
+      <img src="/ithos-cathelier/media/whole/cathelier/pool/04-360.webp" alt="Christmas ornament with a name — photograph 1" width="360" height="640" loading="eager" decoding="async">
     </picture></div>
-        <div class="frame gallery__slide"><picture>
-      <source type="image/avif" srcset="/ithos-cathelier/media/cathelier/pool/07-200.avif 200w, /ithos-cathelier/media/cathelier/pool/07-400.avif 400w" sizes="(min-width: 64rem) 560px, 100vw">
-      <source type="image/webp" srcset="/ithos-cathelier/media/cathelier/pool/07-200.webp 200w, /ithos-cathelier/media/cathelier/pool/07-400.webp 400w" sizes="(min-width: 64rem) 560px, 100vw">
-      <img src="/ithos-cathelier/media/cathelier/pool/07-400.webp" alt="Christmas ornament with a name — photograph 2" width="400" height="400" loading="lazy" decoding="async">
+        <div class="gallery__slide"><picture>
+      <source type="image/avif" srcset="/ithos-cathelier/media/whole/cathelier/pool/07-361.avif 361w" sizes="(min-width: 64rem) 560px, 100vw">
+      <source type="image/webp" srcset="/ithos-cathelier/media/whole/cathelier/pool/07-361.webp 361w" sizes="(min-width: 64rem) 560px, 100vw">
+      <img src="/ithos-cathelier/media/whole/cathelier/pool/07-361.webp" alt="Christmas ornament with a name — photograph 2" width="361" height="640" loading="lazy" decoding="async">
     </picture></div>
       </div>
+      <button class="gallery__open" type="button" data-box-open aria-label="See this photograph full size"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/></svg></button>
       <button class="gallery__arrow gallery__arrow--prev" type="button" data-gallery-prev aria-label="Previous photograph"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M19 12H5M11 18l-6-6 6-6"/></svg></button>
       <button class="gallery__arrow gallery__arrow--next" type="button" data-gallery-next aria-label="Next photograph"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M5 12h14M13 6l6 6-6 6"/></svg></button>
     </div>
@@ -138,6 +139,14 @@
     </p>
   </div>
 </section>
+
+<dialog class="lightbox" id="photo" aria-label="Photograph, full size">
+  <div class="lightbox__bar">
+    <button class="lightbox__zoom" type="button" data-box-zoom aria-pressed="false">Actual size</button>
+    <button class="icon-btn lightbox__close" type="button" data-box-close aria-label="Close"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  </div>
+  <div class="lightbox__stage" data-box-stage></div>
+</dialog>
 
 <section class="collection" style="background:var(--bg-soft)">
   <div class="shell">
@@ -280,6 +289,6 @@
      for by name: at 375x812 it covered the second row of lamps, so a
      first-time visitor saw two instead of the four she asked for. -->
 
-<script src="/ithos-cathelier/assets/shop.702694dc65.js" defer></script>
+<script src="/ithos-cathelier/assets/shop.c7f39aacd8.js" defer></script>
 </body>
 </html>

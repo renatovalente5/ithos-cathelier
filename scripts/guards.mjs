@@ -16,6 +16,7 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const CONTENT = join(ROOT, 'content');
+const { shapeOf, rungs } = await import('../src/lib/photo.mjs');
 const PREVIEW = process.env.PREVIEW === 'yes';
 
 const deaths = [];
@@ -169,10 +170,11 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
    photograph added without re-running scripts/renditions.py. */
 {
   const PUB = join(ROOT, 'public', 'media');
-  // What the frame asks for, and what the thumbnail strip asks for.
+  // What the card's frame asks for, and what the thumbnail strip asks for.
   const QUADRO = [200, 400, 600, 1000];
   const TIRA = [120, 200];
   let faltam = 0;
+  const falta = [];
   for (const f of readdirSync(join(CONTENT, 'ithos')).filter((x) => x.endsWith('.json'))) {
     const p = JSON.parse(readFileSync(join(CONTENT, 'ithos', f), 'utf8'));
     if (!p.published) continue;
@@ -189,10 +191,35 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
       }
     }
   }
+  /* --- and the WHOLE family, which nothing else has ever looked at ----------
+     The product page serves uncropped photographs from public/media/whole.
+     check-output.mjs matches `src="` and never reads a srcset, so it sees one
+     rung of each; the battery only knows an image once something fetched it.
+     The ladder is derived from each master's own pixel size by the same
+     function the build uses, so the two cannot come to disagree. */
+  for (const [marca, pasta] of [['ithos', 'ithos'], ['cathelier', '_raw']]) {
+    for (const f of readdirSync(join(CONTENT, marca)).filter((x) => x.endsWith('.json') && !x.startsWith('_'))) {
+      const p = JSON.parse(readFileSync(join(CONTENT, marca, f), 'utf8'));
+      if (!p.published || !p.photoFolder) continue;
+      for (const n of p.photos || []) {
+        const master = marca === 'ithos'
+          ? join(ROOT, 'photos', 'ithos', p.photoFolder, `${n}.jpg`)
+          : join(ROOT, 'photos', 'cathelier', '_raw', `${n}.jpg`);
+        if (!existsSync(master)) { falta.push(`${marca}/${f}: master ${n}.jpg`); faltam++; continue; }
+        const key = marca === 'ithos' ? `ithos/${p.photoFolder}/${n}` : `cathelier/pool/${n}`;
+        for (const w of rungs(shapeOf(master).w)) for (const ext of ['avif', 'webp']) {
+          if (!existsSync(join(PUB, 'whole', `${key}-${w}.${ext}`))) { falta.push(`whole/${key}-${w}.${ext}`); faltam++; }
+        }
+      }
+    }
+  }
+
   if (faltam) {
-    die(`${faltam} rendition(s) a card would ask for are not on disk — run `
+    die(`${faltam} rendition(s) a page would ask for are not on disk — run `
       + `python3 scripts/renditions.py. Nothing else checks these: their `
-      + `addresses are built at runtime and appear in no HTML file.`);
+      + `addresses are built at runtime or live inside a srcset, and neither `
+      + `check-output.mjs nor the battery can see either. First few: `
+      + falta.slice(0, 3).join(', '));
   }
 }
 

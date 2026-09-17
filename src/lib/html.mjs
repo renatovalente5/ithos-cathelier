@@ -66,3 +66,34 @@ export function coverPicture({ name, alt, sizes, widths }) {
            width="${biggest}" height="${Math.round(biggest * 5 / 4)}" fetchpriority="high" decoding="async">
     </picture>`;
 }
+
+/**
+ * The WHOLE photograph, uncropped, for a product page.
+ *
+ * picture() serves the square family, which is a CROP: on a portrait master a
+ * square window throws away a third of the frame, and it threw away Santa's
+ * hat. A card stays square -- a grid wants one shape -- but a product page is
+ * where somebody decides, and there the photograph is shown whole.
+ *
+ * The rungs come from the master's own pixel size, read out of the file by
+ * src/lib/photo.mjs, so a srcset can never name a width the file does not
+ * have. The intrinsic width and height are the real ones, which is what stops
+ * the page jumping as each slide arrives.
+ */
+export function wholePicture({ key, shape, alt, sizes, widths, loading = 'lazy', fetchpriority }) {
+  const set = (ext) => widths.map((w) => `/media/whole/${key}-${w}.${ext} ${w}w`).join(', ');
+  const biggest = Math.max(...widths);
+  const attrs = [
+    `src="/media/whole/${key}-${biggest}.webp"`,
+    `alt="${esc(alt)}"`,
+    `width="${biggest}" height="${Math.round(biggest * shape.h / shape.w)}"`,
+    `loading="${loading}"`,
+    'decoding="async"',
+    fetchpriority ? `fetchpriority="${fetchpriority}"` : '',
+  ].filter(Boolean).join(' ');
+  return `<picture>
+      <source type="image/avif" srcset="${set('avif')}" sizes="${sizes}">
+      <source type="image/webp" srcset="${set('webp')}" sizes="${sizes}">
+      <img ${attrs}>
+    </picture>`;
+}

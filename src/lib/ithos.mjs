@@ -1,4 +1,10 @@
-import { esc, money, picture, prose } from './html.mjs';
+import { esc, money, picture, prose, wholePicture } from './html.mjs';
+import { shapeOf, rungs } from './photo.mjs';
+import { viewer } from './viewer.mjs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const PHOTOS = join(dirname(fileURLToPath(import.meta.url)), '..', '..', 'photos');
 import { icon } from './icons.mjs';
 import { cover } from './cover.mjs';
 
@@ -218,6 +224,25 @@ export function product({ p, all, shop }) {
   const { low, high } = fromPrice(p);
   const photos = p.photos;
   const dir = `ithos/${p.photoFolder}`;
+
+  /* THE FRAME TAKES THE SHAPE OF THIS LAMP'S TALLEST PHOTOGRAPH.
+   *
+   * Not square -- a square frame is what cut Santa's hat off, and it would
+   * band every portrait photograph by 17% a side if the crop were simply
+   * removed. Not per slide either: the slides of one product have to share a
+   * box or the carousel changes height as you move through it.
+   *
+   * So: the narrowest ratio across this lamp's own photographs, written once
+   * as a custom property. Measured over the 26 lamps, 14 then have no band at
+   * all on any photograph and the median worst band is half a percent. The
+   * three that band badly all mix one near-square lifestyle shot with portrait
+   * studio shots, and there the band is the cream the cards already sit on --
+   * a mat, not a failed attempt to match the photograph. A sampled ground
+   * colour was measured and rejected: against each photograph's own edge it is
+   * off by 18 levels at the median and 117 at the upper quartile, so it would
+   * draw a seam instead of hiding one. */
+  const shapes = photos.map((n) => shapeOf(join(PHOTOS, dir, `${n}.jpg`)));
+  const shot = shapes.reduce((m, s) => Math.min(m, s.w / s.h), Infinity).toFixed(4);
   const related = all.filter((x) => x.slug !== p.slug)
     .filter((x) => familiesOf(x.slug).some((f) => familiesOf(p.slug).includes(f)))
     .slice(0, 4);
@@ -232,14 +257,17 @@ export function product({ p, all, shop }) {
   return `
 <section class="product shell">
   <div class="product__gallery">
-    <div class="gallery" data-gallery>
+    <div class="gallery" data-gallery style="--shot:${shot}">
       <div class="gallery__track" data-gallery-track>
-        ${photos.map((n, i) => `<div class="frame gallery__slide" data-index="${i}">
-          ${picture({ dir, name: n, alt: `${p.name} — photograph ${i + 1}`,
+        ${photos.map((n, i) => `<div class="gallery__slide" data-index="${i}">
+          ${wholePicture({ key: `${dir}/${n}`, shape: shapes[i],
+            alt: `${p.name} — photograph ${i + 1}`,
+            widths: rungs(shapes[i].w),
             sizes: '(min-width: 64rem) 560px, 100vw',
             loading: i === 0 ? 'eager' : 'lazy', fetchpriority: i === 0 ? 'high' : undefined })}
         </div>`).join('\n        ')}
       </div>
+      <button class="gallery__open" type="button" data-box-open aria-label="See this photograph full size">${icon('search', 18)}</button>
       ${photos.length > 1 ? `
       <button class="gallery__arrow gallery__arrow--prev" type="button" data-gallery-prev aria-label="Previous photograph">${icon('arrowLeft', 20)}</button>
       <button class="gallery__arrow gallery__arrow--next" type="button" data-gallery-next aria-label="Next photograph">${icon('arrowRight', 20)}</button>` : ''}
@@ -291,6 +319,8 @@ export function product({ p, all, shop }) {
     </details>
   </div>
 </section>
+
+${viewer()}
 
 ${related.length ? `<section class="section section--soft">
   <div class="shell">

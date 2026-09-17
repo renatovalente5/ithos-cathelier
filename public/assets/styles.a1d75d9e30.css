@@ -1,0 +1,1563 @@
+/* ===== styles/base.css ===== */
+/* ===========================================================================
+   The skeleton, and nothing with a personality in it.
+   ===========================================================================
+
+   This file holds what is true of both shops: the reset, the box model, the
+   layout primitives, and the NAMES of the tokens. It sets almost no values.
+
+   The two brands are not variations of one another. ithos is built to the
+   shape of a Polish wooden-lamp shop the owner chose — white, Montserrat,
+   terracotta, a four-column grid of square frames. cathelier is built to the
+   shape of a Portuguese laser-cut shop she chose separately — cream, a brush
+   serif, round occasion badges. Someone landing on one from the other should
+   feel they changed website.
+
+   So every value lives in brands/ithos.css or brands/cathelier.css, and this
+   file only promises that the names exist. If a colour or a typeface appears
+   below, it is a bug.
+   ------------------------------------------------------------------------- */
+
+/* --- the typefaces, served from this domain ------------------------------
+   Not from fonts.gstatic.com. A font request to Google is a transfer of the
+   visitor's IP address to a third party: it has to be named in the privacy
+   policy and, on several readings, consented to. Served from here, the site
+   contacts nobody — which is why it needs no cookie banner at all. */
+
+@font-face { font-family: 'Montserrat'; font-style: normal; font-weight: 300 600;
+  font-display: swap; src: url('/ithos-cathelier/assets/fonts/montserrat-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: 'Montserrat'; font-style: normal; font-weight: 300 600;
+  font-display: swap; src: url('/ithos-cathelier/assets/fonts/montserrat-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+
+@font-face { font-family: 'Cormorant Garamond'; font-style: normal; font-weight: 300 500;
+  font-display: swap; src: url('/ithos-cathelier/assets/fonts/cormorant-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: 'Cormorant Garamond'; font-style: normal; font-weight: 300 500;
+  font-display: swap; src: url('/ithos-cathelier/assets/fonts/cormorant-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+@font-face { font-family: 'Cormorant Garamond'; font-style: italic; font-weight: 300;
+  font-display: swap; src: url('/ithos-cathelier/assets/fonts/cormorant-300-italico-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+
+@font-face { font-family: 'Klee One'; font-style: normal; font-weight: 400;
+  font-display: swap; src: url('/ithos-cathelier/assets/fonts/kleeone-400-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: 'Klee One'; font-style: normal; font-weight: 400;
+  font-display: swap; src: url('/ithos-cathelier/assets/fonts/kleeone-400-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+@font-face { font-family: 'Klee One'; font-style: normal; font-weight: 600;
+  font-display: swap; src: url('/ithos-cathelier/assets/fonts/kleeone-600-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: 'Klee One'; font-style: normal; font-weight: 600;
+  font-display: swap; src: url('/ithos-cathelier/assets/fonts/kleeone-600-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+
+@font-face { font-family: 'Grandstander'; font-style: normal; font-weight: 100 700;
+  font-display: swap; src: url('/ithos-cathelier/assets/fonts/grandstander-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD; }
+@font-face { font-family: 'Grandstander'; font-style: normal; font-weight: 100 700;
+  font-display: swap; src: url('/ithos-cathelier/assets/fonts/grandstander-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF; }
+
+/* --- reset ---------------------------------------------------------------- */
+
+*, *::before, *::after { box-sizing: border-box; }
+* { margin: 0; }
+
+html {
+  /* Reserved so that hiding the scrollbar while the menu is open does not
+     shift the whole page 15px sideways on a machine with classic scrollbars.
+     On macOS overlay scrollbars it costs nothing. */
+  scrollbar-gutter: stable;
+  -webkit-text-size-adjust: 100%;
+  overflow-x: clip;                 /* no page scrolls sideways, ever */
+  scroll-behavior: smooth;
+  /* The header is sticky, so without this every anchor lands BEHIND it.
+     Measured before adding it: /contact/#faq put the heading 85px under the
+     bar -- completely hidden, with the page looking as if the link had gone
+     nowhere. The value is the RESTING header plus a little air, not the
+     shrunk one: a jump from the top of a page happens while the header is
+     still at full height, and over-clearing when it is shrunk only leaves a
+     gap. Each brand raises it where its header is taller. */
+  scroll-padding-block-start: 94px;
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+body {
+  min-height: 100dvh;
+  font-family: var(--font-body);
+  font-size: var(--size-body);
+  line-height: 1.7;
+  color: var(--ink);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+img, picture, svg, video { display: block; max-width: 100%; }
+img { height: auto; }
+input, button, select, textarea { font: inherit; color: inherit; }
+button { background: none; border: 0; padding: 0; cursor: pointer; }
+a { color: inherit; }
+[hidden] { display: none !important; }
+
+h1, h2, h3, h4 { font-weight: inherit; line-height: 1.2; text-wrap: balance; }
+p { text-wrap: pretty; }
+
+/* Keyboard focus must stay visible. It is also the one ring that must never
+   read as "this item is selected" — on the first build the drawer threw focus
+   at the first menu link on open, and the owner read the ring as a selection
+   and asked why. Focus goes somewhere neutral; the ring stays. */
+:where(a, button, input, select, textarea, summary):focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.skip {
+  position: fixed; inset-block-start: 0; inset-inline-start: 0; z-index: 200;
+  padding: .75rem 1.25rem; background: var(--ink); color: var(--bg);
+  transform: translateY(-120%);
+}
+.skip:focus { transform: none; }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0;
+  overflow: hidden; clip-path: inset(50%); white-space: nowrap;
+}
+
+/* --- layout primitives ----------------------------------------------------
+   The gutter is set once, here, and every page inherits it. A page that wants
+   to bleed to the edges pulls back with negative margin rather than removing
+   the padding, so nothing can end up flush against the glass by accident. */
+
+:root {
+  --gutter: clamp(1rem, 4vw, 2.5rem);
+  --shell: 1222px;                  /* the model shop's content width */
+}
+
+.shell { width: 100%; max-width: var(--shell); margin-inline: auto; padding-inline: var(--gutter); }
+.shell--narrow { max-width: 46rem; }
+.bleed { margin-inline: calc(var(--gutter) * -1); }
+
+.stack > * + * { margin-block-start: var(--stack, 1rem); }
+.measure { max-width: 62ch; }
+
+/* --- the product grid -----------------------------------------------------
+   Four across on a desktop, two on a phone. The owner asked for exactly this
+   and named the number: "4 em cada total de ecrã". Three in between, because
+   four at tablet width makes a 170px frame that shows nothing. */
+.grid-products {
+  display: grid;
+  gap: var(--grid-gap, 30px);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+@media (width >= 48rem) { .grid-products { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+/* Four across only once there is room for four to be BIG.
+ *
+ * The owner asked for the products to carry more weight. On a 1280 laptop four
+ * columns gave a 273px frame; three give 390px, which is half again as much
+ * photograph for the same screen. Four returns above 90rem, where each one is
+ * still 340px — wider than the four-up ever was on a laptop.
+ *
+ * The phone is untouched: two columns, four lamps on a screen, which is the
+ * number she asked for by name. */
+@media (width >= 90rem) { .grid-products { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+
+/* Every product frame is 1:1. This is the single most visible thing the owner
+   asked for, and the reason scripts/square.py exists. */
+.frame { aspect-ratio: 1; overflow: hidden; background: var(--frame-bg); }
+
+/* <picture> is a wrapper with no size of its own, and an <img> inside it sizes
+   against THAT, not against the frame. Without these two lines the square
+   frames were the photograph's natural width and the hero stopped short of the
+   right edge. */
+.frame > picture, .hero__photo > picture { display: block; width: 100%; height: 100%; }
+.frame img, .hero__photo img { width: 100%; height: 100%; object-fit: cover; }
+
+/* --- tables that refuse to shrink ---------------------------------------- */
+.table-wrap { overflow-x: auto; }
+
+
+/* ===== styles/brands/ithos.css ===== */
+/* ===========================================================================
+   ithos — built to the shape of the shop the owner chose as her model.
+   ===========================================================================
+
+   Measured from that shop rather than guessed at:
+
+     body            Montserrat 14px, #212121 on white
+     product name    Montserrat 500, 14px, #333
+     price           Montserrat 600, 14px, #A5523B
+     button          Montserrat 600, 13px, uppercase, white on #A5523B
+     grid            4 columns, 30px gap, 1:1 frames from 600px sources
+     swatches        35px boxes holding 27px images
+     content width   1222px
+
+   One substitution in the whole file. Their headline face is Canela, which is
+   licensed; Cormorant Garamond at 300 is the nearest free relative — the same
+   high contrast, the same long delicate serifs, the same air at large sizes.
+   ------------------------------------------------------------------------- */
+
+[data-brand='ithos'] {
+  --bg: #FFFFFF;
+  --bg-soft: #FAF7F4;
+  --bg-trust: #FBF6F1;
+  --ink: #212121;
+  --ink-soft: #565656;
+  --muted: #6E6E6E;           /* the model shop uses #777, which is 4.48:1 on
+                                 white — it fails by two hundredths, and two
+                                 hundredths is still a fail */
+  --line: #E8E3DD;
+  --line-soft: #F1ECE6;
+  --accent: #A5523B;          /* the terracotta on prices and buttons */
+  --accent-deep: #8C4230;
+  --accent-ink: #FFFFFF;
+  --frame-bg: #F6F1EC;
+
+  /* The cover panel. 72% and not more so the photograph reads through it, and
+     not less because the worst case has to hold: composited over a BLACK
+     photograph this cream lands at #B8B1AA, and #4A3226 on that is 5.58:1.
+     Over the actual terracotta it is far better -- 5.58 is the floor, not the
+     measurement. scripts/battery samples the real pixels and checks. */
+  --cover-panel: rgb(255 246 236 / .72);
+  --cover-ink: #4A3226;
+
+  --font-body: 'Montserrat', system-ui, sans-serif;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --size-body: 14px;
+
+  --radius: 0px;              /* that shop is square-cornered throughout */
+}
+
+/* --- type ----------------------------------------------------------------- */
+
+/* The serif is for the HERO LINE AND NOTHING ELSE.
+ *
+ * That is the correction that came out of reading the model shop properly.
+ * Its section headings are Montserrat 22/600 and its product titles are
+ * Montserrat 34/500 — the serif appears exactly once per page, over the
+ * photograph, and that is what makes it feel like a moment instead of a
+ * typeface choice. I had it on every heading, which spends it. */
+[data-brand='ithos'] h1,
+[data-brand='ithos'] h2 {
+  font-family: var(--font-body);
+  font-weight: 600;
+  letter-spacing: normal;
+  color: #242424;
+}
+[data-brand='ithos'] h1 { font-size: clamp(1.55rem, 1.1rem + 1.6vw, 2.15rem); }
+[data-brand='ithos'] h2 { font-size: clamp(1.25rem, 1.05rem + .7vw, 1.375rem); }
+[data-brand='ithos'] h3 { font-family: var(--font-body); font-weight: 500; font-size: 1rem; }
+[data-brand='ithos'] .display { font-family: var(--font-display); font-weight: 300; }
+
+/* The product title, at their size and weight. */
+[data-brand='ithos'] .product__detail h1 { font-size: clamp(1.5rem, 1.1rem + 1.7vw, 2.125rem); font-weight: 500; color: #333; }
+
+[data-brand='ithos'] .eyebrow {
+  font-size: 11px; font-weight: 600; letter-spacing: .18em;
+  text-transform: uppercase; color: var(--muted);
+}
+[data-brand='ithos'] .lede { font-size: 15px; color: var(--muted); line-height: 1.8; }
+/* On a phone the catalogue's opening paragraph is the only thing standing
+   between the fold and the products. The owner asked for four lamps on a
+   screen and named the number, so it is measured, not estimated: at 375x812
+   the budget is 812 minus two card heights, and this paragraph has to live
+   inside what is left. */
+@media (width < 30rem) {
+  [data-brand='ithos'] .lede { font-size: 13.5px; line-height: 1.65; }
+  [data-brand='ithos'] h1 { font-size: 1.65rem; }
+}
+
+/* --- header ---------------------------------------------------------------
+   Burger left, wordmark dead centre, cart right. The centring is absolute and
+   not a grid column: with a grid, the logo shifted left when the cart counter
+   went from one digit to two. */
+
+/* The owner asked for this twice: the mark large, and without the
+   "handmade in Portugal" line under it. Both are honoured in the asset itself
+   — assets/brand/ithos-wordmark.svg has the strapline path removed and the
+   viewBox tightened, so nothing here has to crop it. */
+
+/* --- the footer is WARM, and it is the one thing that stops a white shop
+   reading as a spreadsheet. Theirs is this exact peach. */
+[data-brand='ithos'] .foot { background: #FCE1C5; border-block-start: 0; }
+[data-brand='ithos'] .foot__group,
+[data-brand='ithos'] .foot__end { border-color: rgb(140 66 48 / .18); }
+/* Everything that prints on the peach, in one list. The last two times a new
+   class appeared in the footer it inherited a grey chosen against white and
+   went straight to 4.06:1 — under the minimum, and invisible to anyone reading
+   the CSS rather than measuring it. */
+[data-brand='ithos'] .foot__group a,
+[data-brand='ithos'] .foot__end,
+[data-brand='ithos'] .foot__end a,
+[data-brand='ithos'] .foot__note,
+[data-brand='ithos'] .foot__cost { color: #6B4A38; }   /* 6.28:1 on the peach */
+[data-brand='ithos'] .foot__group summary { color: #3A2219; }
+[data-brand='ithos'] .foot__social a { border-color: rgb(140 66 48 / .28); color: #6B4A38; }
+[data-brand='ithos'] .foot__social a:hover { color: var(--accent-deep); border-color: var(--accent-deep); }
+/* The word beside the three lines, in this shop's voice: small, spaced,
+   upper case — the same register as the eyebrow (11px) one step up. */
+[data-brand='ithos'] .open-menu__word { font-weight: 400; color: var(--ink-soft); }
+
+/* Removing the link bar took 28px off the ithos header (112 -> 84, measured at
+   1280 and 1440), because its second grid row went with it. Some of that comes
+   back as a bigger wordmark rather than as empty air: with nothing else in the
+   middle track, the mark IS the header. */
+@media (width >= 64rem) {
+  [data-brand='ithos'] .head__row { --head-h: 96px; }
+  [data-brand='ithos'] { scroll-padding-block-start: 106px; }   /* the taller header here */
+  [data-brand='ithos'] .head__mark img { height: clamp(64px, 5.5vw, 76px); }
+}
+
+/* --- product card ---------------------------------------------------------
+   Frame, swatches, name, price — in that order, which is the order that shop
+   uses and the order the owner pointed at. The swatches are the "bolinhas" she
+   asked for: little squares of the actual finish, so nobody has to read the
+   words "itho rato" to know what they are choosing. */
+
+/* --- buttons -------------------------------------------------------------- */
+
+/* --- section headings ----------------------------------------------------- */
+
+
+/* ===== styles/brands/cathelier.css ===== */
+/* ===========================================================================
+   cathelier — built to the shape of the second shop the owner chose.
+   ===========================================================================
+
+   Measured from that shop rather than guessed at:
+
+     body        Klee One 400, 14px in copy, letter-spacing 0.72px
+     navigation  Klee One 400, 21.6px, SENTENCE CASE — not uppercase, not
+                 letter-spaced. This is the part the owner picked out by name.
+     headings    Grandstander at weight 100. Not 500. The whole character of
+                 that shop is a hairline display face over a brush serif, and
+                 at 500 it reads as a different shop entirely.
+     header      a three-column grid, logo left, nav centre, icons right
+     ink         #6B4E3C, with #634A3A under it
+     structure   announcement bar, centred crest, full-bleed seasonal banner,
+                 a row of ROUND occasion badges, then featured collections
+
+   Both of its typefaces are free, so unlike the ithos side there is no
+   substitution here: this is the same lettering.
+
+   And this is deliberately nothing like the ithos world. Someone arriving here
+   from the lamps should feel they changed website — same workshop, different
+   shop. Where ithos is white, square-cornered and terracotta, this is cream,
+   round, and brown. */
+
+[data-brand='cathelier'] {
+  --bg: #FFF8F2;
+  --bg-soft: #FFFFFF;
+  --bg-trust: #F7EDE3;
+  --ink: #6B4E3C;
+  /* The model shop's own muted brown is rgb(107 78 60 / .62), and on its cream
+     that is 2.96:1 — 54 separate failures on one page. These are the same
+     brown at the opacity that actually passes, flattened to a solid value so
+     the answer does not change with whichever of the three backgrounds it
+     lands on. Measured by painting the colour onto a canvas and reading it
+     back: reading it with a regular expression breaks on color-mix(). */
+  --ink-soft: #7A5C48;        /* 5.6:1 on cream */
+  --muted: #816757;           /* 4.5:1 on the darkest of the three grounds */
+  --line: #EADDCF;
+  --line-soft: #F2E7DA;
+  --accent: #634A3A;
+
+  /* Same 72% panel, but the cover ink is DARKER than the body ink on purpose:
+     --ink (#6B4E3C) over the worst-case panel is 3.58:1, which fails. #4A3527
+     is 5.44:1 on the same worst case. A brand colour that works on the page
+     does not automatically work over a photograph. */
+  --cover-panel: rgb(255 248 242 / .72);
+  --cover-ink: #4A3527;
+  --accent-deep: #4B372A;
+  --accent-ink: #FFF8F2;
+  --frame-bg: #F7EFE6;
+  --sibling-bg: #FFFFFF;
+
+  --font-body: 'Klee One', Georgia, serif;
+  --font-display: 'Grandstander', system-ui, sans-serif;
+  --size-body: 16px;
+
+  --radius: 14px;             /* that shop is round-cornered throughout */
+  --pill: 999px;
+  --grid-gap: 22px;
+}
+
+[data-brand='cathelier'] body { line-height: 1.75; }
+
+/* --- type ----------------------------------------------------------------- */
+
+[data-brand='cathelier'] h1,
+[data-brand='cathelier'] h2,
+[data-brand='cathelier'] h3,
+[data-brand='cathelier'] .display {
+  font-family: var(--font-display);
+  font-weight: 100;
+  letter-spacing: .022em;
+  /* No colour here, and that is the point. A brand rule with an attribute
+     selector outranks `.hero__title`, so setting it painted the hero headline
+     brown on brown: 1.08:1, which is invisible. Headings INHERIT, the body
+     sets the colour, and a dark panel can therefore still turn its own text
+     white. Measured, not looked at — it looked like a shadow. */
+}
+[data-brand='cathelier'] h1 { font-size: clamp(1.6rem, 1.1rem + 2.2vw, 2.5rem); }
+[data-brand='cathelier'] h2 { font-size: clamp(1.35rem, 1rem + 1.4vw, 1.9rem); }
+[data-brand='cathelier'] h3 { font-size: 1rem; font-weight: 300; }
+
+[data-brand='cathelier'] .eyebrow {
+  font-family: var(--font-body);
+  font-size: 13px; font-weight: 400; letter-spacing: .045em;
+  text-transform: none; color: var(--muted);
+}
+[data-brand='cathelier'] .lede { font-size: 16px; color: var(--ink-soft); line-height: 1.85; }
+
+/* --- the announcement bar --------------------------------------------------
+   That shop runs one above everything, and it is where a seasonal line lives:
+   "Christmas orders close on the 10th" and nothing else. */
+/* --- header ----------------------------------------------------------------
+   Sentence case, Klee One, and no letter-spacing to speak of. The uppercase
+   spaced-out version I had before belongs to the other brand; this one reads
+   like handwriting on a label, which is the whole point. */
+[data-brand='cathelier'] .head { background: var(--bg); }
+[data-brand='cathelier'] .head__mark img { height: clamp(40px, 5vw, 54px); }
+/* Sentence case and the body face, like everything else in this shop — the
+   spaced upper case beside it belongs to the other brand. */
+[data-brand='cathelier'] .open-menu__word {
+  font-family: var(--font-body); font-size: 14px; letter-spacing: .03em;
+  text-transform: none; color: var(--ink-soft);
+}
+
+@media (width >= 64rem) {
+  [data-brand='cathelier'] .head__row { --head-h: 92px; }
+  [data-brand='cathelier'] { scroll-padding-block-start: 102px; }   /* the taller header here */
+  [data-brand='cathelier'] .head__mark img { height: clamp(50px, 4.2vw, 62px); }
+}
+[data-brand='cathelier'] .head__sibling {
+  font-family: var(--font-body); font-size: 14px; letter-spacing: .03em; text-transform: none;
+}
+[data-brand='cathelier'] .drawer__nav a { font-size: 1.15rem; letter-spacing: .03em; }
+
+/* --- the round occasion badges ----------------------------------------------
+   The row of circles under the banner, which is how that shop's whole
+   navigation works and exactly how the owner described hers: by date and by
+   occasion, not by what the thing is made of. */
+.occasions {
+  display: grid; gap: 1rem 0;
+  grid-template-columns: repeat(auto-fit, minmax(84px, 1fr));
+  padding-block: clamp(1.5rem, 4vw, 2.75rem);
+}
+.occasion { display: grid; justify-items: center; gap: .55rem; text-decoration: none; text-align: center; }
+.occasion__badge {
+  width: clamp(56px, 12vw, 74px); aspect-ratio: 1; border-radius: 999px;
+  display: grid; place-items: center; overflow: hidden;
+  background: var(--frame-bg); border: 1px solid var(--line);
+  color: var(--accent);
+  transition: border-color .2s ease, transform .2s ease;
+}
+.occasion:hover .occasion__badge { border-color: var(--accent); transform: translateY(-2px); }
+@media (prefers-reduced-motion: reduce) { .occasion__badge { transition: none; } .occasion:hover .occasion__badge { transform: none; } }
+.occasion__badge img { width: 100%; height: 100%; object-fit: cover; }
+.occasion__name {
+  font-family: var(--font-body); font-size: 13px; font-weight: 400;
+  letter-spacing: .03em; color: var(--ink-soft); line-height: 1.3;
+  max-width: 13ch;
+}
+.occasion:hover .occasion__name { color: var(--accent); }
+
+/* --- collection blocks ------------------------------------------------------ */
+.collection { padding-block: clamp(2rem, 5vw, 3.5rem); }
+.collection__head { text-align: center; max-width: 46rem; margin-inline: auto; }
+.collection__head .eyebrow { display: block; margin-block-end: .5rem; }
+
+/* --- cards, round instead of square ----------------------------------------- */
+[data-brand='cathelier'] .frame { border-radius: var(--radius); }
+[data-brand='cathelier'] .card__name { font-family: var(--font-body); font-size: 15px; font-weight: 400; color: var(--ink); text-align: center; letter-spacing: .03em; }
+[data-brand='cathelier'] .card__price { color: var(--accent); text-align: center; font-size: 13px; }
+[data-brand='cathelier'] .filter { font-family: var(--font-body); font-size: 14px; letter-spacing: .03em; text-transform: none; }
+[data-brand='cathelier'] .btn { border-radius: var(--pill); font-family: var(--font-body); font-size: 15px; font-weight: 400; letter-spacing: .04em; text-transform: none; }
+[data-brand='cathelier'] .field input, [data-brand='cathelier'] .field textarea,
+[data-brand='cathelier'] .field select { border-radius: 10px; }
+[data-brand='cathelier'] .choice { border-radius: 10px; }
+[data-brand='cathelier'] .reassure { border-radius: var(--radius); }
+[data-brand='cathelier'] .foot__group summary { font-family: var(--font-body); font-size: 15px; font-weight: 400; letter-spacing: .03em; text-transform: none; }
+
+/* --- a piece with no photograph yet ------------------------------------------
+   Forty-one pieces are written and not one has been photographed. Rather than
+   a broken image or a grey box, the frame shows the piece's name set the way
+   it would be engraved. It is honest about being a placeholder, it keeps the
+   grid working, and it disappears by itself the moment a photograph lands. */
+.awaiting {
+  display: grid; place-items: center; padding: 1rem; text-align: center;
+  background:
+    repeating-linear-gradient(103deg, rgb(107 78 60 / .045) 0 2px, transparent 2px 9px),
+    var(--frame-bg);
+}
+.awaiting span {
+  font-family: var(--font-display); font-size: 13px; font-weight: 500;
+  letter-spacing: .06em; color: var(--muted); max-width: 14ch; line-height: 1.4;
+}
+
+/* --- how it works, in three steps -------------------------------------------
+   The proof-before-cutting promise is the single thing that separates this
+   workshop from a print shop, and it was buried in a paragraph at the bottom.
+   It is the second thing on the page now. */
+.steps { padding-block: clamp(2rem, 5vw, 3.5rem); }
+.steps__list {
+  list-style: none; padding: 0; margin: 2rem 0 0;
+  display: grid; gap: 2rem;
+}
+@media (width >= 48rem) { .steps__list { grid-template-columns: repeat(3, 1fr); gap: 2.5rem; } }
+.steps__list li { text-align: center; }
+.steps__n {
+  display: grid; place-items: center; width: 40px; aspect-ratio: 1; margin-inline: auto;
+  border: 1px solid var(--line); border-radius: 999px;
+  font-family: var(--font-display); font-weight: 200; font-size: 18px; color: var(--accent);
+}
+.steps__list h3 { margin-block: .9rem .35rem; }
+.steps__list p { font-size: 14px; color: var(--ink-soft); line-height: 1.75; }
+
+.collection--alt { background: var(--bg-soft); }
+
+/* --- the announcement line ------------------------------------------------- */
+.announce {
+  margin: 0; padding-block: .75rem; text-align: center;
+  background: var(--bg-trust); color: var(--ink-soft);
+  font-family: var(--font-body); font-size: 15px; letter-spacing: .03em;
+}
+
+/* --- image with text -------------------------------------------------------
+   The block that carries the weight of that shop's home page: a column of
+   copy with a solid button, beside a photograph. Two of them, alternating
+   sides, which is what stops a long page of product grids reading as a
+   catalogue dump. */
+.feature { padding-block: clamp(2rem, 5vw, 3.5rem); }
+.feature__row { display: grid; gap: clamp(1.5rem, 4vw, 3rem); align-items: center; }
+@media (width >= 56rem) {
+  .feature__row { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); }
+  .feature--flip .feature__text { order: 2; }
+}
+.feature__text { text-align: center; }
+@media (width >= 56rem) { .feature__text { text-align: start; } }
+.feature__text p { font-size: 15px; line-height: 1.85; color: var(--ink-soft); }
+.feature__text p + p { margin-block-start: 1rem; }
+.feature__text .btn { margin-block-start: 1.75rem; }
+.feature__art { display: grid; gap: 10px; grid-template-columns: repeat(3, 1fr); }
+.feature__art .frame:first-child { grid-column: span 3; aspect-ratio: 16 / 9; }
+
+/* --- questions, on the home page ------------------------------------------
+   Two columns of pills. That shop puts them here rather than only on a
+   contact page, and it is right to: the questions people have about a
+   personalised piece are the reason they do not order one. */
+.ask { padding-block: clamp(2rem, 5vw, 3.5rem); }
+.ask__grid { display: grid; gap: .75rem; margin-block-start: 1.75rem; }
+@media (width >= 56rem) { .ask__grid { grid-template-columns: 1fr 1fr; gap: .75rem 1.25rem; } }
+.ask__item { background: var(--bg-soft); border: 1px solid var(--line); border-radius: 12px; }
+.ask__item summary {
+  display: flex; align-items: center; gap: .75rem;
+  padding: 1rem 1.15rem; cursor: pointer; list-style: none;
+  font-family: var(--font-body); font-size: 15px; color: var(--ink);
+}
+.ask__item summary::-webkit-details-marker { display: none; }
+.ask__item summary::after { content: '⌄'; margin-inline-start: auto; color: var(--muted); }
+.ask__item[open] summary::after { content: '⌃'; }
+.ask__item svg { flex: none; color: var(--accent); }
+.ask__item > div { padding: 0 1.15rem 1.15rem; font-size: 14px; line-height: 1.8; color: var(--ink-soft); }
+.ask__item > div p + p { margin-block-start: .75rem; }
+
+/* --- the product page ------------------------------------------------------
+   A big, light title, the way that shop sets them: Grandstander at 100, half
+   again the size everything else on the page uses. At 500 and 24px it read as
+   a paragraph heading; the point of a hairline face is that it can be large
+   without shouting. */
+[data-brand='cathelier'] .product__detail h1 {
+  font-size: clamp(1.9rem, 1.2rem + 2.6vw, 3.1rem);
+  font-weight: 100; line-height: 1.15;
+}
+[data-brand='cathelier'] .product__price { font-family: var(--font-body); font-size: 21px; font-weight: 400; }
+[data-brand='cathelier'] .field > label { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; font-weight: 400; }
+.field__req { color: var(--muted); letter-spacing: 0; text-transform: none; font-size: 12px; }
+[data-brand='cathelier'] .product__form { gap: .9rem; }
+
+/* An <a> inside an <h2> is inline: it gets the glyphs' box, not the heading's
+   line box, so it measured 22px tall — below the 24px minimum, on a link that
+   is the only way out of 41 pages. */
+[data-brand='cathelier'] .collection__head h2 a {
+  color: inherit; text-decoration: none;
+  display: inline-block; min-height: 28px;
+}
+[data-brand='cathelier'] .collection__head h2 a:hover { color: var(--accent); text-decoration: underline; text-underline-offset: 6px; }
+
+
+/* ===== styles/shop.css ===== */
+/* ===========================================================================
+   The furniture: the parts that behave the same in both shops.
+   ===========================================================================
+   Everything here reads its colours and typefaces from the brand tokens, so a
+   drawer on the ithos side and a drawer on the cathelier side share a skeleton
+   and share no appearance. */
+
+/* --- the cover ------------------------------------------------------------
+   There is no shared cover any more, and that is the point.
+
+   Both shops used to render the same <section class="hero">: one photograph
+   under a flat rgb(24 18 14 / .62) panel, with only the aspect-ratio and the
+   words telling them apart. Measured, that panel covered 42% of the cover at
+   320px, 62% at 768 on the ithos side and 90% on the cathelier side — where it
+   left 28 pixels of photograph. And a proportion is invisible to somebody who
+   only ever sees one of the two shops, so the panel made the two covers the
+   same object wearing two sentences.
+
+   What is left here is the one line they still share: the quiet link under the
+   cover. Everything else lives in the brand file, because the two covers are
+   now different objects — a seamless band of lamp photographs on one side, a
+   field of ten drawn doors on the other — and neither would survive being
+   swapped for the other.
+
+   Nothing sits on top of a photograph any more, so contrast is measured
+   against a token instead of against pixels, which is the only thing the
+   battery can actually do. */
+.hero { position: relative; }
+
+/* --- the cover ------------------------------------------------------------
+   One photograph filling the first screen, with the brand's words over it.
+
+   THE SHAPE IS THE TALLEST ONE, AND EVERY WIDER SCREEN IS A BAND OF IT
+   The master is 4:5 because `object-fit: cover` can take a wide band out of a
+   tall picture and never the other way round. The three steps below are not
+   taste: a studio portrait shows `width / aspect` pixels of its subject, and
+   the horse lamp is 1856px tall in a 3719px frame, so anything past 2:1 cuts
+   its legs off. 16/9 with the viewport cap tops out near 1.92:1 on a 1920px
+   screen, which still leaves the lamp -- and the round straw base under it --
+   whole in the frame.
+
+   THE WORDS SIT ON A FLAT PANEL, NOT ON THE PHOTOGRAPH
+   Text straight on a photograph has no contrast that can be measured: the
+   ground is whatever the picture is at that pixel, and it changes the day the
+   owner swaps the file. A gradient is worse than nothing, because the guard
+   reads the declared colour -- the strong end -- and passes while the weak end
+   is unreadable. So the panel is FLAT and nearly opaque: at 92% the darkest
+   photograph underneath can shift it by at most 8% toward black, which is a
+   worst case that can be computed instead of hoped for. */
+.cover {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+}
+.cover__media,
+.cover__words { grid-area: 1 / 1; }
+
+.cover__media {
+  display: block;
+  inline-size: 100%;
+  aspect-ratio: 4 / 5;
+  /* On a phone the cover should be the screen, not a postcard on it. 150vw is
+     the floor; the viewport cap stops a short landscape phone from pushing
+     everything else below the fold entirely. */
+  min-block-size: min(70svh, 150vw);
+  max-block-size: calc(100svh - 3.5rem);
+  overflow: hidden;
+}
+.cover__img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  object-position: var(--cover-focus, 50% 50%);
+}
+
+.cover__words {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: end;
+  padding: clamp(1rem, 4vw, 3rem);
+}
+.cover__panel {
+  inline-size: min(100%, 34rem);
+  padding: clamp(1.1rem, 3.5vw, 2rem);
+  border-radius: var(--radius);
+  background: var(--cover-panel);
+  color: var(--cover-ink);
+}
+.cover__title {
+  margin: 0;
+  color: inherit;
+  font-size: clamp(1.75rem, 5.2vw, 3.25rem);
+  line-height: 1.08;
+  text-wrap: balance;
+}
+.cover__text {
+  margin: .7rem 0 0;
+  color: inherit;
+  font-size: clamp(.95rem, 2.2vw, 1.1rem);
+  max-inline-size: 34ch;
+}
+.cover__btn { margin-block-start: clamp(.9rem, 2.5vw, 1.4rem); }
+
+@media (width >= 48rem) {
+  .cover__media {
+    aspect-ratio: 4 / 3;
+    min-block-size: 0;
+    max-block-size: calc(100svh - 5rem);
+  }
+  .cover__img { object-position: var(--cover-focus-wide, 50% 50%); }
+  .cover__words { padding: clamp(2rem, 4vw, 4rem); }
+}
+@media (width >= 64rem) {
+  .cover__media { aspect-ratio: 16 / 9; }
+}
+
+.hero__cta {
+  display: inline-flex; align-items: center; min-height: 26px;
+  font-size: 12px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase;
+  text-decoration: none;
+}
+
+/* --- breadcrumbs ---------------------------------------------------------- */
+.crumbs { padding-block: .5rem .25rem; font-size: 12px; color: var(--muted); }
+.crumbs ol { display: flex; flex-wrap: wrap; gap: .4rem; list-style: none; padding: 0; margin: 0; }
+.crumbs li + li::before { content: '/'; margin-inline-end: .4rem; color: var(--line); }
+.crumbs a, .crumbs span { text-decoration: none; display: inline-flex; align-items: center; min-height: 26px; }
+.crumbs a:hover { color: var(--accent); }
+
+
+/* --- header, basket counter, cards, buttons: SHAPE ONLY --------------------
+   These came out of brands/ithos.css, where they had no brand scope and
+   therefore governed cathelier too. That is how `.head__mark { position:
+   absolute }` survived: the cathelier header was told to put its mark in grid
+   column 1 while a rule in the other brand's file had already taken it out of
+   the grid entirely. The navigation then printed straight through the
+   wordmark, which is what the owner photographed.
+
+   base.css promises that a brand file holds values and this one holds shape.
+   It is a promise worth keeping. */
+
+.head { position: sticky; inset-block-start: 0; z-index: 50; background: var(--bg); border-block-end: 1px solid var(--line-soft, var(--line)); }
+.head__row { min-height: var(--head-h, 84px); }
+
+/* --- the header shrinks on the way down ------------------------------------
+   EXACTLY TWO THINGS MOVE, AND THEY MOVE ON ONE CLOCK.
+   Everything else in the bar -- the three lines, the word beside them, the
+   door to the other brand, the basket -- is centred by the grid, so it rides
+   the row's height and needs no timing of its own. Only the row's min-height
+   and the wordmark's height actually change, and until now only the first of
+   them was animated: the wordmark went from 61px to 40px IN ONE FRAME while
+   the bar glided around it for 200ms. The biggest thing in the header was the
+   one thing that jumped, which is what the owner was seeing.
+
+   One duration and one curve for both, and that is a correctness requirement
+   rather than a preference. A block's height is max(min-height, content), and
+   with both endpoints moving under the SAME easing the gap between them is a
+   straight blend of two positive numbers and can never close mid-flight.
+   Give the two different curves and the content can take over the height
+   part-way down, which is a stutter nobody would be able to explain.
+
+   The transitions hang off data-anim, not off .head, so they can be switched
+   off for the two moments when a size change is not a shrink: the first
+   decision after load, and a window being dragged (the wordmark's resting
+   height is a vw clamp, so every pixel of a drag is a new computed height and
+   a transition would have it trailing the rest of the bar for the whole
+   gesture). */
+.head { --head-shrink: 220ms; --head-ease: cubic-bezier(.22, .61, .36, 1); }
+.head[data-anim='yes'] .head__row { transition: min-height var(--head-shrink) var(--head-ease); }
+.head[data-anim='yes'] .head__mark img { transition: height var(--head-shrink) var(--head-ease); }
+
+/* The shrink itself is motion, so a reader who asked for less of it does not
+   get a header that changes size at all -- doing it instantly instead of
+   smoothly would be worse, not better.
+   BOTH rules have to sit inside this gate, and the brand files must not carry
+   copies: `[data-brand='ithos'] .head[data-shrunk='yes'] .head__row` outranks
+   an ungated rule here, so gating only this file would leave ithos sliding
+   96 -> 62 and stopping dead at 76 -- the worst of both. The brand copies are
+   deleted; this one rule serves both, because (0,3,0) beats the brands'
+   (0,2,0) resting values. */
+@media (prefers-reduced-motion: no-preference) {
+  .head[data-shrunk='yes'] .head__row { --head-h: 62px; }
+  .head[data-shrunk='yes'] .head__mark img { height: 40px; }
+}
+/* An SVG with a viewBox and no intrinsic size collapses to nothing when it is
+   given `width: auto` and no height. Moving these rules between files dropped
+   the height and the ithos wordmark went to zero pixels wide — the link was
+   still there, the file still resolved, and every guard passed. Only looking
+   at the page found it, which is why there is now a battery check that the
+   mark has a size. */
+.head__mark img { width: auto; height: clamp(46px, 7vw, 64px); }
+[data-brand='cathelier'] .head__mark img { height: clamp(40px, 5vw, 54px); }
+/* the shrunk height lives with the other shrink rule, inside the
+   prefers-reduced-motion gate further up */
+.drawer__mark { height: 34px; width: auto; }
+
+.icon-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  width: 44px; height: 44px; color: var(--ink);
+}
+.icon-btn:hover { color: var(--accent); }
+
+.cart-count {
+  min-width: 20px; height: 20px; padding-inline: 5px;
+  display: grid; place-items: center; margin-inline-start: -8px; margin-block-start: -14px;
+  background: var(--accent); color: var(--accent-ink);
+  border-radius: 999px; font-size: 12px; font-weight: 600; font-variant-numeric: tabular-nums;
+}
+.cart-count[data-empty='yes'] { display: none; }
+
+.card { display: flex; flex-direction: column; }
+.card__media { display: block; text-decoration: none; }
+/* The name is now the card's only link, and a bare line of text is a 20px
+   target -- the whole card used to be the link, so this was never a question
+   before. Block and a little padding puts it over the 24px floor and makes the
+   whole name row clickable, which is what a reader aims at anyway. */
+.card__link {
+  text-decoration: none; color: inherit;
+  display: block; padding-block: 3px;
+}
+.card__frame { position: relative; }
+
+/* --- the slow drift from one photograph to the next -------------------------
+   TWO LAYERS, AND ONLY ONE OF THEM IS EVER THE CARD.
+
+   Layer A is the <picture> the build wrote. It is in normal flow, its opacity
+   is never set, and it rests at scale 1. It IS the card. It is never parked at
+   opacity 0 and never absolutely positioned -- the resting state has to be the
+   correct state, the same lesson the side panel above carries.
+
+   Layer B does not exist in the HTML at all. The script clones A when it first
+   needs a second photograph and REMOVES it again when the card comes to rest,
+   so a card nobody has hovered is byte-for-byte what the server sent.
+
+   Only B's opacity moves. A stays fully opaque underneath it, which is why the
+   dissolve has no dip: fade two layers against each other and the picture sags
+   at the halfway mark, because two 50% images do not add up to one. */
+.card__frame > picture {
+  transition: scale var(--shot-zoom, 2600ms) cubic-bezier(.4, 0, .6, 1);
+}
+.card__frame > picture.over {
+  position: absolute; inset: 0;
+  opacity: 0;
+  transition: opacity var(--shot-fade, 900ms) linear;
+}
+.card__frame > picture.over.up { opacity: 1; }
+/* Set by the script while a step is being set up: the incoming layer has to be
+   placed without animating into place. */
+.card__frame > picture.still { transition: none !important; }
+.card[data-showing='yes'] .card__frame > picture:not(.over) { scale: var(--shot-scale, 1.05); }
+/* Going in is slow on purpose; coming back is not. A pointer that leaves
+   should let go of the picture at once, not creep back over two and a half
+   seconds after the reader has moved on. */
+.card:not([data-showing]) .card__frame > picture { transition-duration: 400ms; }
+
+@media (prefers-reduced-motion: reduce) {
+  .card__frame > picture,
+  .card__frame > picture.over { transition: none; }
+  .card[data-showing='yes'] .card__frame > picture:not(.over) { scale: 1; }
+}
+
+/* --- the other photographs, underneath --------------------------------------
+   From 48rem only. On a phone there is no pointer to rest anywhere, the row
+   would add forty pixels to every card in a two-column grid -- the catalogue's
+   opening paragraph was tightened on purpose once to keep four lamps above the
+   fold -- and it would put sixty-seven more images on the page for a gesture
+   that does not exist there. The product page carries the full gallery.
+
+   The empty row on a single-photograph lamp is deliberate: five of the
+   twenty-six have only one, and without it their names would sit forty pixels
+   higher than everything beside them. */
+/* Hidden until the script has filled it: an empty strip is a forty-eight
+   pixel band of nothing under every card, and without a script there is no
+   strip to fill. The card then reads exactly as it did before this existed. */
+.card__thumbs { display: none; }
+@media (width >= 48rem) {
+  .card__thumbs.ready {
+    display: flex; gap: 6px; margin-block-start: 10px;
+    min-height: var(--shot-size, 48px);
+  }
+  .card__thumb {
+    flex: 0 1 var(--shot-size, 48px);
+    /* A tap target may not go under 24px, and six photographs in a narrow
+       column would push it there if it were allowed to shrink freely. */
+    min-width: 26px; aspect-ratio: 1;
+    padding: 0; border: 1px solid var(--line); background: none;
+    border-radius: var(--radius, 0); overflow: hidden; cursor: pointer;
+    opacity: .62; transition: opacity .2s ease, border-color .2s ease;
+  }
+  .card__thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .card__thumb:hover, .card__thumb:focus-visible { opacity: 1; }
+  .card__thumb.is-on { opacity: 1; border-color: var(--accent); }
+  @media (prefers-reduced-motion: reduce) { .card__thumb { transition: none; } }
+}
+
+.card__swatches { display: flex; flex-wrap: wrap; gap: 6px; margin-block-start: 12px; }
+/* `display` is the load-bearing word. Width and height do not apply to a
+   non-replaced INLINE element, so these were 0x0 boxes with a hairline round
+   them -- the rule looked right and drew nothing. */
+.swatch {
+  display: inline-block; width: 27px; height: 27px;
+  border: 1px solid var(--line); border-radius: var(--radius, 0);
+  background-size: cover; background-position: center;
+}
+.swatch[aria-pressed='true'] { outline: 1px solid var(--accent); outline-offset: 2px; }
+
+.card__name { margin-block-start: 10px; line-height: 1.5; }
+.card__price { margin-block-start: 4px; font-variant-numeric: tabular-nums; color: var(--accent); }
+.card__from { font-weight: 400; color: var(--muted); font-size: 12px; }
+
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: .6em;
+  min-height: 48px; padding-inline: 2rem;
+  background: var(--accent); color: var(--accent-ink);
+  border: 1px solid var(--accent); border-radius: var(--radius, 0);
+  text-decoration: none; transition: background .18s ease, border-color .18s ease;
+}
+.btn:hover { background: var(--accent-deep); border-color: var(--accent-deep); }
+.btn--ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+.btn--ghost:hover { background: transparent; border-color: var(--ink); color: var(--ink); }
+.btn--wide { width: 100%; }
+.btn[aria-disabled='true'] { opacity: .45; cursor: not-allowed; }
+
+.section { padding-block: clamp(2.5rem, 6vw, 5rem); }
+.section--soft { background: var(--bg-soft); }
+.section__head { text-align: center; margin-block-end: clamp(1.5rem, 4vw, 2.75rem); }
+
+/* --- header and drawer: three tracks, never overlapping -------------------
+   The logo lives in a column of its own. Before this it was absolutely centred
+   while the navigation sat in normal flow beside it, and at the width where
+   the navigation reached the middle the two printed on top of each other.
+
+   The drawer's close button had a subtler version of the same fault:
+   `.icon-btn:last-of-type` matches by TAG, not by class, so the only <button>
+   in the row was "the last of its type" and collected a `margin-left: auto`
+   meant for the cart. Two auto margins share the space between them, which
+   parked the ✕ in the middle of the row, right beside the wordmark. */
+.head__row {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  grid-template-areas: 'left mark right';
+  align-items: center;
+  /* Enough air that the navigation reads as a separate thing from the mark
+     even when it fills its whole track. At 1rem they were 20px apart, which
+     is not overlapping but looks like it is. */
+  gap: clamp(1rem, 3vw, 2.75rem);
+}
+.head__left { grid-area: left; display: flex; align-items: center; gap: 1.5rem; min-width: 0; }
+.head__right { grid-area: right; display: flex; align-items: center; justify-content: flex-end; gap: .35rem; }
+/* The target is 44px even when the artwork is 40. Shrunk, the ithos wordmark
+   is 39.7x40 -- the only control on the site under 44px, sitting between a
+   44px burger and a 44px basket, and it is the way back to the top of the
+   shop. The art keeps its size; the box around it does not. */
+.head__mark {
+  grid-area: mark; justify-self: center;
+  display: grid; place-items: center;
+  min-width: 44px; min-height: 44px;
+}
+
+.drawer__top {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 1rem;
+}
+.drawer__mark { justify-self: center; }
+.drawer__cart { justify-self: end; }
+.drawer__top .icon-btn { justify-self: start; }
+.drawer__cart.icon-btn { justify-self: end; }
+
+/* --- the other brand, in the header --------------------------------------
+   It carries its own name and an arrow that points out. A label does not point
+   out of the page; a door does. */
+.head__sibling {
+  display: none; align-items: center; gap: .35em;
+  font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
+  text-decoration: none; color: var(--muted); padding: .5rem .75rem;
+}
+.head__sibling:hover { color: var(--accent); }
+@media (width >= 48rem) { .head__sibling { display: inline-flex; } }
+
+/* --- the word beside the three lines --------------------------------------
+   From 48rem the button carries the word as well as the drawing. On a phone
+   there is no room and the icon is universal; on a wide screen a lone burger
+   floating in a 480px track reads as an orphan, and the word is what makes the
+   left flank carry ink at all now that the link bar is gone.
+
+   The button keeps aria-label="Open the menu", which CONTAINS the visible word
+   — WCAG 2.5.3 wants the accessible name to contain the visible label, and
+   "menu" is inside "Open the menu". */
+.open-menu__word { display: none; }
+@media (width >= 48rem) {
+  .open-menu { gap: .6rem; padding-inline: .5rem .75rem; }
+  .open-menu__word { display: inline; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; }
+}
+
+/* --- sort by ----------------------------------------------------------------
+   Built by the script, so it is never on a page that cannot use it. A native
+   <select>: it is one tab stop, it is the control every phone already knows
+   how to open full screen, and it needs no keyboard handling written by hand. */
+.sortby {
+  display: flex; align-items: center; gap: .6rem;
+  margin-block-start: 1rem; justify-content: flex-end;
+}
+.sortby__label { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.sortby__select {
+  min-height: 40px; padding: .35rem .6rem;
+  border: 1px solid var(--line); border-radius: var(--pill, 999px);
+  background: var(--bg); color: var(--ink);
+  font: inherit; font-size: 14px; cursor: pointer;
+}
+.sortby__select:hover { border-color: var(--accent); }
+[data-brand='cathelier'] .sortby__label { text-transform: none; letter-spacing: .03em; font-size: 13px; }
+
+/* --- filters --------------------------------------------------------------
+   They WRAP. A row that scrolls sideways on a phone hides what is in it: the
+   first build hid 154px of chips on one page and 927px on another, and the
+   owner photographed the cut-off one and asked why. Two rows, then a "+N" that
+   opens the rest, so nothing is ever off the screen without a way to know. */
+.filters { display: flex; flex-wrap: wrap; gap: 8px; }
+.filter {
+  flex: none; min-height: 40px; padding: .45em .85em;
+  border: 1px solid var(--line); background: transparent; color: var(--muted);
+  border-radius: var(--pill, 999px); font-size: 12px; letter-spacing: .02em;
+  transition: color .18s, border-color .18s, background .18s;
+}
+.filter:hover { border-color: var(--accent); color: var(--accent); }
+.filter[aria-pressed='true'] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.filter--more { color: var(--accent); border-style: dashed; }
+
+/* --- product page ---------------------------------------------------------- */
+/* The column must be minmax(0, 1fr) at EVERY width, not just the wide one.
+   A grid column defaults to `auto`, which sizes to its content's max-content —
+   and the gallery track is six slides at 100% each. On a phone that made the
+   column 560px inside a 375px screen and the whole page scrolled sideways.
+   Only the six-photo product showed it; the four-photo ones did not. */
+.product { display: grid; grid-template-columns: minmax(0, 1fr);
+  gap: clamp(1.5rem, 4vw, 3.5rem); padding-block: clamp(1rem, 3vw, 2rem) clamp(2.5rem, 6vw, 4.5rem); }
+@media (width >= 64rem) { .product { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); align-items: start; } }
+
+.gallery { position: relative; overflow: hidden; }
+.gallery__track { display: flex; transition: translate .4s cubic-bezier(.22,.61,.36,1); }
+@media (prefers-reduced-motion: reduce) { .gallery__track { transition: none; } }
+/* THE SLIDE IS THE SHAPE OF THE PHOTOGRAPH, NOT A SQUARE.
+   --shot is written on .gallery by the build: the narrowest ratio among this
+   product's own photographs, so every slide shares one box and the carousel
+   cannot change height as you move through it. `contain` is the other half and
+   the two only work together -- a square file in a 2:3 box under `cover` would
+   crop top AND bottom, which is worse than what was there before.
+   Capped at 78svh so a tall lamp cannot swallow a whole phone screen. */
+.gallery__slide {
+  flex: 0 0 100%;
+  aspect-ratio: var(--shot, 1);
+  background: var(--frame-bg);
+  overflow: hidden;
+}
+/* THE CAP GOES ON THE WIDTH, NOT THE HEIGHT.
+   Capping the height while the slide is still 100% wide does not shrink the
+   frame, it RESHAPES it: measured at 916px tall, a 2:3 slide 721px wide became
+   721x714 -- square again, with the photograph letterboxed inside it. Capping
+   the gallery's width instead keeps the ratio and simply makes the whole frame
+   smaller on a tall screen. The slides stay 100% of it, so the carousel is
+   untouched. */
+.gallery { max-inline-size: calc(78svh * var(--shot, 1)); margin-inline: auto; }
+.gallery__slide > picture { display: block; width: 100%; height: 100%; }
+.gallery__slide img { width: 100%; height: 100%; object-fit: contain; }
+.gallery__track { align-items: flex-start; }
+/* --- the photograph, full size ----------------------------------------------
+   Declared `position: fixed`, like the menu panel, and for the same measured
+   reason: a dialog is fixed only while it is MODAL, and opened with show() --
+   which is how the battery opens one -- it is `position: absolute` and lands
+   at its static position far down the document. */
+.lightbox {
+  position: fixed; inset: 0;
+  width: 100%; max-width: none; height: 100dvh; max-height: 100dvh;
+  margin: 0; border: 0; padding: 0;
+  background: var(--bg); color: var(--ink);
+  display: flex; flex-direction: column;
+}
+.lightbox:not([open]) { display: none; }
+.lightbox::backdrop { background: rgb(33 33 33 / .55); }
+[data-brand='cathelier'] .lightbox::backdrop { background: rgb(74 53 39 / .5); }
+
+.lightbox__bar {
+  flex: none; display: flex; align-items: center; justify-content: space-between;
+  gap: 1rem; padding: .5rem var(--gutter); min-height: 56px;
+  border-block-end: 1px solid var(--line-soft, var(--line));
+}
+.lightbox__zoom {
+  min-height: 40px; padding: .35rem 1rem;
+  border: 1px solid var(--line); border-radius: var(--pill, 999px);
+  background: none; color: var(--ink); font: inherit; font-size: 14px; cursor: pointer;
+}
+.lightbox__zoom[aria-pressed='true'] { border-color: var(--accent); color: var(--accent); }
+
+/* THE STAGE IS A SCROLLER, AND THAT IS THE WHOLE ZOOM.
+   At actual size the photograph is given its own pixel width and the stage
+   scrolls, so dragging, the trackpad, the scrollbars, a two-finger swipe and
+   the arrow keys all pan it with no code. Nothing here sets touch-action, so
+   pinch-zoom on a phone is untouched as well. */
+.lightbox__stage {
+  flex: 1 1 auto; min-height: 0;
+  display: flex;
+  overflow: auto; overscroll-behavior: contain;
+  padding: var(--gutter);
+  background: var(--frame-bg);
+}
+/* `margin: auto` and NOT `place-items: center`.
+   Centring by alignment clips the top and the left of anything bigger than the
+   box -- the scroll simply cannot reach it. An auto margin centres a small
+   photograph and gets out of the way of a big one.
+   And the height limit lives on the PICTURE, not the img: in a grid whose row
+   is auto-sized, `max-height: 100%` on the child is circular and resolves to
+   the content's own height, which is why the fit state was still scrolling --
+   measured at 1060px of photograph in a 780px stage. */
+/* `display: contents` on the <picture>, so the <img> IS the flex item.
+   With the picture as a box in between, the img's `max-height: 100%` resolves
+   against a parent whose own height is auto -- a circular percentage, which is
+   simply dropped. Measured: 1060px of photograph inside an 854px stage, still
+   scrolling in the state called "fit". (This is safe here in a way it is not
+   for a card: there is nothing focusable inside a <picture>, which is what
+   made display:contents dangerous the last time this project used it.) */
+.lightbox__stage > picture { display: contents; }
+/* `align-self: center` because a flex item stretches by default: without it
+   the <img> BOX was 721x791 for a 2:3 photograph -- the picture inside was
+   still contained and undistorted, but the box around it was not the
+   photograph, which makes every click and every measurement land somewhere
+   the reader is not looking. */
+.lightbox__img {
+  display: block; margin: auto; align-self: center;
+  width: auto; height: auto; max-width: 100%; max-height: 100%;
+}
+.lightbox[data-zoom='yes'] .lightbox__stage { cursor: grab; }
+.lightbox[data-zoom='yes'] .lightbox__img { max-width: none; max-height: none; width: auto; height: auto; }
+
+/* The button that opens it, over the photograph. Its ground is the photograph,
+   which has no measurable colour, so it is an opaque chip rather than a
+   translucent one -- the same reasoning the cover panel carries. */
+.gallery__open {
+  position: absolute; inset-block-end: 10px; inset-inline-end: 10px;
+  width: 44px; height: 44px; display: inline-flex; align-items: center; justify-content: center;
+  border: 1px solid var(--line); border-radius: var(--pill, 999px);
+  background: var(--bg); color: var(--ink); cursor: pointer;
+}
+.gallery__open:hover { color: var(--accent); border-color: var(--accent); }
+
+.gallery__arrow {
+  position: absolute; inset-block-start: 50%; translate: 0 -50%;
+  width: 40px; height: 40px; display: grid; place-items: center;
+  background: rgb(255 255 255 / .85); color: var(--ink); border-radius: 999px;
+}
+.gallery__arrow--prev { inset-inline-start: 10px; }
+.gallery__arrow--next { inset-inline-end: 10px; }
+.gallery__arrow:hover { background: #fff; }
+
+/* THEY WRAP. This was a sideways scroller with its scrollbar deleted in both
+   engines, so on a phone the last thumbnails sat off the edge with nothing on
+   screen saying so -- six thumbnails are 544px in a 288px column. It is the
+   same complaint the filter row was rewritten to answer, and both of the
+   battery's overflow guards are structurally blind to it: the page-level one
+   measures the document, which a scroll container never reaches, and the
+   element-level one deliberately exempts everything inside a scroller. */
+.gallery__thumbs { display: flex; flex-wrap: wrap; gap: 8px; margin-block-start: 8px; }
+.gallery__thumb { flex: 0 0 84px; border: 1px solid transparent; padding: 0; background: none; cursor: pointer; }
+.gallery__thumb[aria-selected='true'] { border-color: var(--accent); }
+
+.product__price { margin-block-start: .5rem; font-size: 1.35rem; font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; }
+.product__lead { margin-block-start: .5rem; font-size: 13px; color: var(--muted); }
+.product__form { margin-block-start: 1.75rem; display: grid; gap: 1.25rem; }
+.product__buy { display: flex; gap: .75rem; align-items: stretch; min-width: 0; }
+/* The button has to be allowed to shrink. `width: 100%` in a flex row next to
+   a fixed-width stepper resolves against the container, not the space left
+   over, and 2rem of padding each side made its minimum wider than a 320px
+   phone. */
+.product__buy .btn { flex: 1 1 auto; min-width: 0; padding-inline: 1rem; }
+.product__text { margin-block-start: 2rem; font-size: 14px; line-height: 1.85; color: var(--ink-soft, var(--ink)); }
+.product__safety { margin-block-start: 1.5rem; border-block-start: 1px solid var(--line); padding-block-start: 1rem; }
+.product__safety summary { cursor: pointer; font-size: 13px; font-weight: 600; letter-spacing: .06em; }
+.product__safety ul { margin-block-start: .75rem; padding-inline-start: 1.1rem; font-size: 13px; color: var(--muted); line-height: 1.8; }
+
+/* --- fields ---------------------------------------------------------------- */
+/* `min-width: 0` on a fieldset is not cosmetic. Browsers give <fieldset> a
+   default `min-width: min-content`, which is the one element in HTML that
+   refuses to shrink below its content — so at 320px the form's rows measured
+   321 inside a 288 column and the whole page scrolled sideways. The grid
+   children need the same, because a grid item's default `min-width: auto`
+   has the same effect. */
+.field { border: 0; padding: 0; margin: 0; min-width: 0; }
+.product__form > * { min-width: 0; }
+.field legend, .field > label { font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; display: block; margin-block-end: .5rem; }
+.field__optional { font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--muted); }
+.field__help { font-size: 12px; color: var(--muted); margin-block-end: .6rem; line-height: 1.6; }
+.field input[type='text'], .field input[type='email'], .field select, .field textarea {
+  width: 100%; min-height: 48px; padding: .6rem .85rem;
+  border: 1px solid var(--line); background: var(--bg); border-radius: var(--radius, 0);
+}
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--accent); outline: none; }
+
+.choices { display: grid; gap: .5rem; }
+.choice { display: flex; align-items: flex-start; gap: .65rem; padding: .7rem .85rem; border: 1px solid var(--line); cursor: pointer; font-size: 13px; }
+.choice:has(input:checked) { border-color: var(--accent); }
+.choice:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
+.choice input { margin-block-start: .25rem; accent-color: var(--accent); }
+.choice em { font-style: normal; color: var(--accent); }
+
+.qty { display: flex; align-items: center; border: 1px solid var(--line); flex: none; }
+.qty__btn { width: 44px; height: 48px; display: grid; place-items: center; color: var(--muted); }
+.qty__btn:hover { color: var(--accent); }
+.qty__input { width: 48px; height: 48px; text-align: center; border: 0; background: none; font-variant-numeric: tabular-nums; -moz-appearance: textfield; }
+.qty__input::-webkit-outer-spin-button, .qty__input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+/* --- the reassurance box -------------------------------------------------- */
+.reassure { margin-block-start: 1.75rem; padding: 1.25rem; background: var(--bg-soft, var(--bg)); display: grid; gap: .8rem; }
+.reassure p { display: flex; align-items: center; gap: .75rem; font-size: 13px; color: var(--ink-soft, var(--ink)); margin: 0; }
+.reassure svg { flex: none; color: var(--accent); }
+
+/* --- drawer ----------------------------------------------------------------
+
+   THE PAGE BEHIND A MODAL DIALOG SCROLLS.
+   It is a common belief that showModal() locks it; it does not. Two
+   independent measurements in Chrome, with the panel open and a real wheel
+   over the backdrop: scrollY 0 -> 478 in one, 0 -> 1000 in the other. The spec
+   does not require the lock (whatwg/html#7732), so it cannot be relied on in
+   any engine. With a full-screen drawer nobody could see the page move; with a
+   panel the shop slides about beside the menu.
+
+   The lock is a CLASS, deliberately, and not `html:has(.drawer[open])`. The
+   battery opens the drawer with show() to measure it, which sets the same
+   `open` attribute — a :has() lock would engage for the whole battery run,
+   take the scrollbar away, change clientWidth and quietly alter every
+   geometry measurement it then made. A class set in the click path never fires
+   for show().
+   `hidden`, not `clip`: clip destroys the scrollport and the page jumps to the
+   top, so closing the menu loses the reader's place. */
+html.menu-open { overflow: hidden; }
+
+
+.drawer {
+  width: 100%; max-width: none; margin: 0; border: 0; padding: 0;
+  background: var(--bg); color: var(--ink);
+  overscroll-behavior: contain; display: flex; flex-direction: column;
+
+  /* `position: fixed` is DECLARED and not left to the UA. A dialog is fixed
+     only while it is MODAL; opened with show() it is `position: absolute` and
+     sits at its static position near the bottom of the document — measured at
+     y=2940 on a 3457px page. The battery opens it with show() on purpose, so
+     without this line every geometry check would be measuring a box parked
+     down by the footer. */
+  position: fixed;
+  inset-block: 0;
+  inset-inline: 0 auto;
+
+  /* KEEP THIS MAX-HEIGHT. The UA sheet carries
+     `dialog:modal { max-height: calc(100% - 6px - 2em) }`, which wins over
+     `inset-block: 0` with an automatic height and takes about 34px off the
+     BOTTOM of the panel — which is exactly where the telephone number and the
+     call-cost line are pinned. Simplifying this line away shortens the panel
+     from the end nobody looks at. */
+  height: 100dvh; max-height: 100dvh;
+}
+
+/* The scrim. LITERAL colours, never var().
+   ::backdrop only inherits custom properties from its originating element
+   since the 2023 spec change. Where it does not, `background: var(--scrim)` is
+   invalid at computed-value time, which computes to `unset` — and since
+   background-color does not inherit, that is `initial`, i.e. TRANSPARENT. Not
+   the UA's 10% black: nothing at all. Behind a 400px panel that is the whole
+   design gone, silently.
+   It used to be `var(--bg)`, painted OPAQUE, because the drawer covered the
+   screen and the backdrop was never seen. A panel that leaves the shop
+   visible beside it is the entire point of what was asked for. */
+.drawer::backdrop { background: rgb(33 33 33 / .42); }
+[data-brand='cathelier'] .drawer::backdrop { background: rgb(74 53 39 / .38); }
+
+.drawer:not([open]) { display: none; }
+
+/* --- the panel, from 48rem -------------------------------------------------
+   48rem and not 64rem. 64rem was never a width in its own right: it was the
+   width at which the horizontal link bar appeared, and the bar is gone, so the
+   number has nothing left to mean. 48rem is where the header already changes
+   (.head__sibling), and 768px is a width the battery drives.
+
+   The width is the owner's sentence turned into a number. "Só um bocado do
+   ecrã" — only a bit of the screen — is `48vw`: never as much as half, at any
+   width. The rem term is what actually applies on a laptop (352px / 400px at
+   1440); the vw term only bites on a tablet, where 25rem of 768px would have
+   been 52% and wrong. */
+@media (width >= 48rem) {
+  .drawer {
+    width: min(22rem, 48vw);
+    /* The gutter is set on :root as clamp(1rem, 4vw, 2.5rem), and 4vw is 4% of
+       the VIEWPORT, not of the panel — so the wider the screen the fatter the
+       panel's padding, which is precisely backwards. Measured: 40px a side
+       inside a 400px panel, leaving 340px for rows designed against a
+       full-width drawer. Redefining the token here moves every child at once:
+       .drawer__top, __nav, __sibling, __contact all read it. */
+    --gutter: 1.25rem;
+    border-inline-end: 1px solid var(--line);
+  }
+  /* The header is visible BESIDE the panel now, and it already carries the
+     wordmark and the basket. Showing them again 40px away is the kind of
+     duplicate the owner photographs. The ✕ stays, and the grid keeps its
+     1fr auto 1fr so it stays where it is. */
+  .drawer__mark, .drawer__cart { display: none; }
+  /* Same reasoning the other way round: the panel's door to the other brand
+     carries a description, the header's is a bare label. While the panel is
+     open the richer one speaks. */
+  .menu-open .head__sibling { visibility: hidden; }
+
+  /* Square, like the other one. This shop is round-cornered everywhere else
+     (--radius: 14px), but the owner looked at the panel and wanted its corners
+     straight, so the radius is not inherited here. The shadow stays: it is
+     what still tells the two panels apart. */
+  [data-brand='cathelier'] .drawer {
+    width: min(25rem, 48vw);
+    border-inline-end: 0;
+    border-radius: 0;
+    box-shadow: 0 0 44px rgb(107 78 60 / .18);
+  }
+}
+
+/* --- the panel comes out of the button ------------------------------------
+   A KEYFRAME on [open], not a transition from a resting off-screen position.
+
+   The obvious way to animate a <dialog> is `translate: -100%` at rest,
+   `translate: 0` when open, with `display` and `overlay` made transitionable
+   by `allow-discrete` and the entry value supplied by @starting-style. It is
+   also a trap, and I walked into it: the resting state of the menu becomes
+   "entirely off the left edge of the screen", and it is only ever ON screen
+   because an animation ran. Anything that stops that animation leaves a shop
+   whose menu button appears to do nothing. I measured a panel sitting at
+   x=-352 with the attribute set and the rule present -- in that instance
+   because the browser pane was hidden and rAF never fired, but a stalled
+   frame budget or an engine without @starting-style would read the same way
+   to a customer.
+
+   With a keyframe the resting state is the CORRECT state -- in place, flush
+   to the edge -- and the animation only decorates the arrival. If it never
+   runs, the menu simply appears. The exit is not animated, which is the
+   honest price: closing instantly is unremarkable, a menu that never appears
+   is not. */
+@media (prefers-reduced-motion: no-preference) {
+  .drawer[open] { animation: panel-in .26s cubic-bezier(.22, .61, .36, 1) both; }
+  .drawer[open]::backdrop { animation: veil-in .26s ease both; }
+}
+@keyframes panel-in { from { translate: -100% 0; } }
+@keyframes veil-in { from { opacity: 0; } }
+
+.drawer__top { min-height: 72px; padding-inline: var(--gutter); border-block-end: 1px solid var(--line-soft, var(--line)); flex: none; }
+.drawer__mark { height: 34px; width: auto; }
+/* The drawer has three parts, and only the middle one moves: the wordmark
+ * stays reachable at the top and the telephone at the bottom however long the
+ * list gets.
+ *
+ * The middle used to hold two accordions — ten occasions for cathelier, four
+ * families for ithos — because ten occasions laid out flat were 1100px of
+ * content in an 844px screen. The owner asked for both to go, and the pages
+ * they led to lost nothing: each occasion is linked from ten to fourteen other
+ * pages, and the families were anchors into a catalogue that has the same four
+ * as filter chips at the top.
+ *
+ * The guard that came with them stays, and this is the part that matters: it
+ * asks whether the middle needs scrolling at all, which a scrolling list would
+ * have made true by construction — which is how the last blind guard got
+ * here. */
+/* overflow-x is PINNED, not left to compute. When one axis is not `visible`
+   the other computes to `auto`, so .drawer__body was a horizontal scroll
+   container by accident — and the battery's two overflow guards are both blind
+   to it: the page-level one measures documentElement.scrollWidth, which a
+   scroll container never reaches, and the element-level one deliberately
+   exempts every descendant of a scroller. A long name would have scrolled
+   sideways inside the panel with two ✓ printed over it. */
+.drawer__body { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; }
+.drawer__nav { display: flex; flex-direction: column; padding-inline: var(--gutter); }
+
+.drawer__nav a { display: flex; align-items: center; gap: 1rem; min-height: 58px; text-decoration: none; border-block-end: 1px solid var(--line-soft, var(--line)); font-size: 1.1rem; }
+
+/* On a short phone the drawer was 578px of content in a 568px screen: the
+   call-cost line fell off the bottom. The guard that exists to catch exactly
+   this never ran, because the battery opened every page in an iframe 900px
+   tall — `578 <= 901` is true for every phone ever made.
+   
+   The rows tighten rather than the list scrolling. A scrolling list would make
+   the guard unfalsifiable, which is how this got here. 52px is still more than
+   twice the 24px minimum. */
+@media (height < 40rem) {
+  .drawer__nav a { min-height: 52px; }
+  .drawer__sibling { min-height: 52px; padding-block: .6rem; }
+  .drawer__contact { padding-block: .5rem 1rem; }
+  .drawer__contact a { min-height: 44px; }
+  .drawer__top { min-height: 62px; }
+}
+.drawer__nav a > span:first-child { flex: 1; }
+.drawer__count { font-size: .85rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+
+.drawer__sibling {
+  display: grid; grid-template-columns: 1fr auto; align-items: center;
+  gap: 0 1rem; padding: .85rem var(--gutter); min-height: 58px; text-decoration: none;
+  background: var(--sibling-bg, var(--bg-soft));
+}
+.drawer__sibling-name { font-size: 1.05rem; }
+.drawer__sibling-note { grid-column: 1; font-size: .8125rem; color: var(--muted); }
+/* The column must be named. A grid item with a definite row and an automatic
+   column is placed BEFORE the fully automatic ones (Grid 8.5 step 3), so the
+   arrow took column 1 and it read "↗ cathelier" instead of "cathelier ↗". */
+.drawer__sibling > span:last-child { grid-column: 2; grid-row: 1 / span 2; color: var(--accent); }
+
+.drawer__contact { flex: none; padding-block: 1rem 1.5rem; border-block-start: 1px solid var(--line-soft, var(--line)); }
+.drawer__contact a { display: flex; align-items: center; gap: .85rem; min-height: 48px; padding-inline: var(--gutter); text-decoration: none; font-size: 1rem; }
+.drawer__contact a:first-child { color: var(--accent); }
+.drawer__contact svg { flex: none; }
+.drawer__cost { margin-block: -.35rem .35rem; padding-inline: var(--gutter); font-size: 12px; color: var(--muted); }
+
+/* --- footer ---------------------------------------------------------------- */
+/* NO TOP MARGIN. It carried clamp(3rem, 8vw, 6rem), which on a page whose last
+   section has a background of its own -- every product page ends with the
+   cream "More from the workshop" band -- painted a white stripe of up to 63px
+   between two coloured blocks. The owner saw it and read it as a mistake,
+   which is what it looked like. The footer's own top padding is what separates
+   it from the text above; the margin was separating it from nothing. */
+.foot { background: var(--bg-soft, var(--bg)); border-block-start: 1px solid var(--line); padding-block: clamp(2.25rem, 5vw, 3.5rem) 2rem; }
+.foot__grid { display: grid; gap: 0; }
+@media (width >= 60rem) { .foot__grid { grid-template-columns: repeat(4, 1fr); gap: 2rem; } }
+
+.foot__group { border-block-end: 1px solid var(--line); }
+.foot__group summary { display: flex; align-items: center; justify-content: space-between; min-height: 52px; cursor: pointer; font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; list-style: none; }
+.foot__group summary::-webkit-details-marker { display: none; }
+.foot__group summary::after { content: '+'; font-size: 1.1rem; color: var(--muted); }
+.foot__group[open] summary::after { content: '\2212'; }
+.foot__group ul { list-style: none; padding: 0 0 1rem; margin: 0; display: grid; font-size: 13px; }
+/* A link on its own line in a list is a target, not a word inside a sentence:
+   the standard's exemption does not cover it. These were 16px tall. */
+.foot__group a { text-decoration: none; color: var(--muted); display: inline-flex; align-items: center; min-height: 28px; }
+.foot__group a:hover { color: var(--accent); }
+@media (width >= 60rem) {
+  .foot__group { border: 0; }
+  .foot__group summary { pointer-events: none; min-height: auto; margin-block-end: 1rem; }
+  .foot__group summary::after { display: none; }
+}
+
+.foot__note { display: block; font-size: 12px; color: var(--muted); margin-block-start: -.15rem; }
+.foot__social { display: flex; gap: .6rem; margin-block-start: 1.75rem; }
+.foot__social a { width: 44px; height: 44px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); }
+.foot__social a:hover { color: var(--accent); border-color: var(--accent); }
+.foot__end { margin-block-start: 1.75rem; padding-block-start: 1.25rem; border-block-start: 1px solid var(--line); font-size: 12px; color: var(--muted); }
+
+/* --- back to top ----------------------------------------------------------- */
+.to-top {
+  position: fixed; inset-block-end: 1.25rem; inset-inline-end: 1.25rem; z-index: 40;
+  width: 46px; height: 46px; display: grid; place-items: center;
+  background: var(--accent); color: var(--accent-ink); border-radius: 999px;
+  box-shadow: 0 6px 20px rgb(0 0 0 / .18);
+}
+.to-top[hidden] { display: none; }
+
+/* --- cookies --------------------------------------------------------------- */
+.cookies { position: fixed; inset-block-end: 0; inset-inline: 0; z-index: 60; padding: 1.25rem var(--gutter); background: var(--bg); border-block-start: 1px solid var(--line); font-size: 13px; display: grid; gap: .85rem; }
+@media (width >= 48rem) { .cookies { inset-inline-start: auto; max-width: 30rem; margin: 1.25rem; border: 1px solid var(--line); } }
+.cookies__buttons { display: flex; gap: .6rem; flex-wrap: wrap; }
+.cookies .btn { min-height: 42px; padding-inline: 1.25rem; }
+
+/* --- odds and ends --------------------------------------------------------- */
+.small { font-size: 12px; }
+.muted { color: var(--muted); }
+
+/* --- prose pages ----------------------------------------------------------- */
+.page-prose { font-size: 15px; line-height: 1.85; color: var(--ink-soft, var(--ink)); }
+.page-prose h1 { margin-block-end: 1.5rem; }
+.page-prose h2 { margin-block: 2.5rem 1rem; }
+.page-prose h3 { margin-block: 1.75rem .5rem; }
+.page-prose p + p, .page-prose ul + p, .page-prose p + ul, .page-prose ol { margin-block-start: 1rem; }
+.page-prose ul, .page-prose ol { padding-inline-start: 1.25rem; display: grid; gap: .5rem; }
+.page-prose a { color: var(--accent); text-underline-offset: 3px; }
+/* …but not a button. `.page-prose a` outranks `.btn`, so a button inside a
+   prose page had its label repainted in the accent — on the accent. Terracotta
+   on terracotta, 1:1, a solid block where "Back to the basket" should be. It
+   is on the thank-you page and the cancelled-order page, which is to say on
+   both ends of a purchase. */
+.page-prose a.btn { color: var(--accent-ink); text-decoration: none; }
+.page-prose a.btn--ghost { color: var(--ink); }
+.page-prose hr { border: 0; border-block-start: 1px solid var(--line); margin-block: 2rem; }
+.blank { display: inline-block; min-width: 6rem; max-width: 100%; flex: 1;
+  border-block-end: 1px solid var(--line); vertical-align: baseline; }
+.page-prose table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.page-prose th, .page-prose td { text-align: start; padding: .7rem .75rem; border-block-end: 1px solid var(--line); }
+.page-prose th { font-weight: 600; color: var(--ink); }
+/* A link alone in a table cell is a target too. The email address on the
+   identification page was 17px tall. */
+.page-prose td a { display: inline-flex; align-items: center; min-height: 26px; }
+.page-prose .table-wrap { margin-block-start: 1rem; }
+
+/* --- contact ---------------------------------------------------------------- */
+.contact-cards { display: grid; gap: .75rem; margin-block: 1.75rem; }
+@media (width >= 44rem) { .contact-cards { grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); } }
+.contact-card {
+  display: flex; gap: .9rem; align-items: flex-start; padding: 1rem;
+  border: 1px solid var(--line); border-radius: var(--radius, 0);
+  text-decoration: none; font-size: 13px; line-height: 1.5; color: var(--ink-soft, var(--ink));
+}
+.contact-card:hover { border-color: var(--accent); }
+.contact-card svg { flex: none; color: var(--accent); margin-block-start: .15rem; }
+.contact-card strong { color: var(--ink); }
+
+/* --- the map, and the one consent question on the site ---------------------- */
+.map { margin-block-start: 1.25rem; border: 1px solid var(--line); border-radius: var(--radius, 0); overflow: hidden; }
+.map__ask {
+  display: flex; gap: .9rem; align-items: flex-start; text-align: start;
+  width: 100%; padding: 1.5rem; background: var(--bg-soft, var(--bg));
+  font-size: 13px; line-height: 1.6; color: var(--ink-soft, var(--ink));
+}
+.map__ask:hover { background: var(--frame-bg); }
+.map__ask svg { flex: none; color: var(--accent); margin-block-start: .15rem; }
+.map__ask strong { color: var(--ink); }
+.map iframe { display: block; width: 100%; height: 360px; border: 0; }
+
+/* --- questions -------------------------------------------------------------- */
+.faq { margin-block-start: 1.25rem; }
+.faq__item { border-block-end: 1px solid var(--line); }
+.faq__item summary {
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+  min-height: 58px; cursor: pointer; font-size: 15px; color: var(--ink); list-style: none;
+}
+.faq__item summary::-webkit-details-marker { display: none; }
+.faq__item summary::after { content: '+'; font-size: 1.25rem; color: var(--muted); }
+.faq__item[open] summary::after { content: '\2212'; }
+.faq__item > div { padding-block-end: 1.25rem; font-size: 14px; line-height: 1.8; }
+.faq__item > div p + p { margin-block-start: .75rem; }
+
+/* --- basket ------------------------------------------------------------------ */
+.basket { display: grid; gap: 2rem; margin-block-start: 1.5rem; }
+@media (width >= 60rem) { .basket { grid-template-columns: minmax(0, 1fr) 20rem; align-items: start; } }
+.basket__lines { display: grid; gap: 1rem; }
+.basket-line {
+  display: grid; grid-template-columns: 84px minmax(0, 1fr) auto; gap: 1rem;
+  padding-block-end: 1rem; border-block-end: 1px solid var(--line); align-items: start;
+}
+.basket-line__name { font-size: 14px; color: var(--ink); }
+.basket-line__opts { font-size: 12px; color: var(--muted); margin-block-start: .25rem; line-height: 1.6; }
+.basket-line__price { font-size: 14px; font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; text-align: end; }
+.basket-line__drop {
+  font-size: 12px; color: var(--muted); margin-block-start: .35rem; text-decoration: underline;
+  display: inline-flex; align-items: center; min-height: 26px;   /* it was 20px tall */
+}
+.basket__total { padding: 1.25rem; background: var(--bg-soft, var(--bg)); border: 1px solid var(--line); border-radius: var(--radius, 0); }
+.basket__sums { display: grid; grid-template-columns: 1fr auto; gap: .6rem 1rem; margin-block: 1.25rem; font-size: 14px; }
+.basket__sums dd { margin: 0; text-align: end; font-variant-numeric: tabular-nums; }
+.basket__grand { font-weight: 600; color: var(--ink); font-size: 16px; padding-block-start: .6rem; border-block-start: 1px solid var(--line); }
+
+/* --- the maker's block ------------------------------------------------------
+   The model shop signs its home page: a short hello on the left and a
+   photograph of the two people who make the things on the right, with their
+   names under it. It is the most human thing on that page and it was the piece
+   I had reduced to a centred paragraph.
+
+   Ours carries a lamp for now. A photograph of the workshop, or of her at the
+   bench, would be worth more than anything else that could go in this space. */
+.maker { display: grid; gap: clamp(1.5rem, 4vw, 3rem); align-items: center; }
+@media (width >= 56rem) { .maker { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } }
+.maker__text { font-size: 17px; line-height: 1.8; color: var(--muted); }
+.maker__text h2 { margin-block-end: 1.25rem; }
+.maker__text p + p { margin-block-start: 1rem; }
+.maker__sign { margin-block-start: 1.5rem; color: var(--ink); }
+.maker__photo { aspect-ratio: 4 / 3; }
+
+.product__blurb { margin-block-start: 1rem; font-size: 15px; line-height: 1.8; color: var(--muted); }
+.product__lead { display: flex; align-items: center; gap: .5rem; }
+.product__lead svg { flex: none; color: var(--accent); }
+
