@@ -66,6 +66,10 @@
 * { margin: 0; }
 
 html {
+  /* Reserved so that hiding the scrollbar while the menu is open does not
+     shift the whole page 15px sideways on a machine with classic scrollbars.
+     On macOS overlay scrollbars it costs nothing. */
+  scrollbar-gutter: stable;
   -webkit-text-size-adjust: 100%;
   overflow-x: clip;                 /* no page scrolls sideways, ever */
   scroll-behavior: smooth;

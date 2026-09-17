@@ -53,24 +53,113 @@ document.addEventListener('DOMContentLoaded', () => {
   const drawer = $('#menu');
   const opener = $('.open-menu');
   if (drawer && opener) {
-    const close = () => { if (drawer.open) drawer.close(); };
+    /* THE LOCK IS DERIVED, NEVER MAINTAINED.
+     *
+     * `settle()` reads the dialog and makes the page agree with it. It says
+     * nothing about what just happened, so it is safe to call from anywhere,
+     * in any order, as many times as you like -- and that is the point.
+     *
+     * The obvious shape is add-on-open / remove-on-close, and it fails twice
+     * here, both measured. (1) The close event is QUEUED, so a close-then-open
+     * in one turn delivers it after the panel is open again and strips the
+     * lock off a panel the reader is looking at. (2) Worse, in the browser I
+     * verified this in, `close()` fired no close event at all: the listener
+     * was attached -- a synthetic dispatch ran it -- and a real showModal()
+     * followed by close() logged nothing. A page left at `overflow: hidden`
+     * cannot be scrolled, which for a shop is the worst outcome on the list,
+     * so the lock is not allowed to depend on one event arriving.
+     *
+     * Escape closes a modal dialog natively without passing through any of
+     * this, so keydown is a third, independent way for the truth to be
+     * re-read. Whichever hooks fire, the answer is the same. */
+    const settle = () => {
+      document.documentElement.classList.toggle('menu-open', drawer.open);
+      opener.setAttribute('aria-expanded', drawer.open ? 'true' : 'false');
+    };
+    const giveFocusBack = () => {
+      if (drawer.open) return;
+      /* focus() on a display:none element is a silent no-op and focus falls to
+         <body>, which sends the next Tab back to the top of the document. The
+         burger is rendered at every width now, but a window dragged across a
+         breakpoint with the panel open is the sort of thing nobody tests. */
+      (opener.offsetParent !== null ? opener : $('.head__mark'))?.focus();
+    };
+    const close = () => { if (drawer.open) drawer.close(); settle(); giveFocusBack(); };
+
+    /* A RELOAD BRINGS THE MENU BACK, AND BRINGS IT BACK BROKEN.
+     * Chrome restores the `open` attribute of a <dialog> the way it restores a
+     * half-filled form, so reloading with the menu open returns a page whose
+     * menu is open NON-MODALLY: no backdrop, no focus trap, the rest of the
+     * page not inert -- and showModal() then throws InvalidStateError, because
+     * a dialog that is already open cannot be opened again. From that moment
+     * the button does nothing at all. Found by driving the browser, not by
+     * reading: a plain reload of /lamps/ came back with open="" in markup the
+     * server never sent. The existing close-on-link-click covers going BACK,
+     * which is a different path and was the only one anybody had walked. */
+    if (drawer.open) drawer.close();
+    settle();
+
     opener.addEventListener('click', () => {
+      if (drawer.open) drawer.close();   // never showModal() an open dialog
+
+      /* Close the groups. The comment above .drawer__body has claimed since it
+         was written that the taxonomy "is closed when the drawer opens", and
+         nothing ever closed it -- it was true of the FIRST opening only,
+         because the markup ships without `open`. Measured on cathelier in a
+         400px panel: the ten occasions expanded are 710px of content in a
+         470px box, so a returning visitor gets a menu that opens already
+         scrolled, with the telephone below the fold. The battery never saw it
+         because the battery only ever meets the state that shipped. */
+      for (const g of $$('details', drawer)) g.open = false;
+
       drawer.showModal();
-      opener.setAttribute('aria-expanded', 'true');
+      /* The page behind a modal dialog SCROLLS -- measured, with a real wheel:
+         eight ticks moved it 800px with the panel open. Nobody could see that
+         while the drawer covered the screen; beside a panel the shop slides
+         about. The class is set here and not by `html:has(.drawer[open])`
+         because the battery opens the drawer with show() to measure it, and a
+         :has() lock would engage for its whole run, take away the scrollbar
+         and quietly change every geometry it then read. */
+      settle();
       // Focus goes to the CLOSE button, never to the first menu link. It used
       // to go to the link, and the focus ring round it read as "this page is
-      // selected" — the owner saw it on her phone and asked why. On the close
-      // button the same ring tells the truth. The ring itself stays: it is
-      // what keyboard users navigate by.
+      // selected" -- the owner saw it on her phone and asked why. On the close
+      // button the same ring tells the truth.
       $('.close-menu', drawer)?.focus();
     });
+
     $('.close-menu', drawer)?.addEventListener('click', close);
+
+    /* Clicking beside the panel closes it. On a phone the menu covers the
+       screen and there is no beside; on a wide screen the shop is visible next
+       to it, and clicking the shop is what everyone tries first. A click on
+       the backdrop reports the <dialog> ITSELF as the target, because a
+       backdrop is a pseudo-element and cannot be one.
+
+       But the target alone is not enough. A `click` fires on the nearest
+       common ancestor of where the button went down and where it came up, so
+       pressing on the telephone number and sliding a few pixels onto the page
+       dispatches a click whose target IS the dialog -- and the menu would shut
+       under the finger of someone trying to select a phone number. The press
+       has to have STARTED outside the panel too. */
+    let pressedOutside = false;
+    drawer.addEventListener('pointerdown', (ev) => {
+      const r = drawer.getBoundingClientRect();
+      pressedOutside = ev.clientX < r.left || ev.clientX > r.right
+                    || ev.clientY < r.top || ev.clientY > r.bottom;
+    });
+    drawer.addEventListener('click', (ev) => {
+      if (pressedOutside && ev.target === drawer) close();
+    });
+
     // Following a link closes the drawer: without this, going back in the
     // browser restores the page with the drawer still open over it.
     for (const a of $$('a', drawer)) a.addEventListener('click', close);
-    drawer.addEventListener('close', () => {
-      opener.setAttribute('aria-expanded', 'false');
-      opener.focus();
+
+    drawer.addEventListener('close', () => { settle(); giveFocusBack(); });
+    // The third way, for Escape, which reaches none of the above.
+    addEventListener('keydown', (ev) => {
+      if (ev.key === 'Escape') setTimeout(() => { settle(); giveFocusBack(); }, 0);
     });
   }
 

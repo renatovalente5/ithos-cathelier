@@ -114,12 +114,19 @@
 [data-brand='ithos'] .foot__group summary { color: #3A2219; }
 [data-brand='ithos'] .foot__social a { border-color: rgb(140 66 48 / .28); color: #6B4A38; }
 [data-brand='ithos'] .foot__social a:hover { color: var(--accent-deep); border-color: var(--accent-deep); }
-[data-brand='ithos'] .head__nav a {
-  font-size: 13px; font-weight: 300; text-transform: uppercase; letter-spacing: normal;
-  color: var(--ink-soft); text-decoration: none; padding-block: .35rem;
+/* The word beside the three lines, in this shop's voice: small, spaced,
+   upper case — the same register as the eyebrow (11px) one step up. */
+[data-brand='ithos'] .open-menu__word { font-weight: 400; color: var(--ink-soft); }
+
+/* Removing the link bar took 28px off the ithos header (112 -> 84, measured at
+   1280 and 1440), because its second grid row went with it. Some of that comes
+   back as a bigger wordmark rather than as empty air: with nothing else in the
+   middle track, the mark IS the header. */
+@media (width >= 64rem) {
+  [data-brand='ithos'] .head__row { --head-h: 96px; }
+  [data-brand='ithos'] .head__mark img { height: clamp(64px, 5.5vw, 76px); }
+  [data-brand='ithos'] .head[data-shrunk='yes'] .head__row { --head-h: 62px; }
 }
-[data-brand='ithos'] .head__nav a:hover,
-[data-brand='ithos'] .head__nav a[aria-current='page'] { color: var(--accent); }
 
 /* --- product card ---------------------------------------------------------
    Frame, swatches, name, price — in that order, which is the order that shop

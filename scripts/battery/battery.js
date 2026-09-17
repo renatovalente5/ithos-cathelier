@@ -315,7 +315,76 @@ window.__bateria = function () {
     nota(drawer.querySelectorAll('.drawer__nav a').length >= 3,
       'a drawer foi medida com as entradas lá dentro',
       `${drawer.querySelectorAll('.drawer__nav a').length} entradas`);
+
+    // Não rola de lado DENTRO do painel. As duas guardas de transbordo que já
+    // existem são ambas cegas a isto: a da página mede `documentElement
+    // .scrollWidth`, que um contentor de rolamento nunca alcança, e a dos
+    // elementos isenta de propósito tudo o que desce de um rolador. Um nome
+    // comprido rolaria de lado no painel com dois ✓ impressos por cima.
+    const corpoLateral = drawer.querySelector('.drawer__body');
+    if (corpoLateral) {
+      nota(corpoLateral.scrollWidth <= corpoLateral.clientWidth + 1,
+        'o menu não rola de lado por dentro',
+        `${corpoLateral.scrollWidth}px em ${corpoLateral.clientWidth}px`);
+    }
   }
+
+  /* --- o painel, medido COMO PAINEL ----------------------------------------
+   * Tudo acima foi medido com a gaveta aberta por `show()`, que é deliberado:
+   * `showModal()` põe o resto da página inerte e a página deixa de se poder
+   * medir. Só que uma gaveta não-modal é `position: absolute` e assenta na sua
+   * posição estática, lá para baixo ao pé do rodapé — medi y=2940 numa página
+   * de 3457px. Ou seja: a largura do painel, o encosto à esquerda, a altura
+   * cheia e o véu por trás são exactamente as coisas que a bateria NÃO via.
+   *
+   * Esta passagem abre-o a sério, mede só o que a modalidade cria, e fecha.
+   * A pergunta do meio é a frase da dona escrita de forma a poder falhar: num
+   * ecrã grande o menu ocupa só um bocado. Tem limite dos dois lados — um
+   * painel de 80px passaria num teste que só perguntasse «menos de metade». */
+  if (drawer) {
+    const estavaAberto = drawer.open;
+    if (drawer.open) drawer.close();
+    try {
+      drawer.showModal();
+      // Aterrar a animação de entrada antes de medir: o painel entra a
+      // deslizar e uma medição no primeiro quadro apanha-o a meio caminho.
+      // `finish()` é síncrono e põe-no no estado final — mede-se geometria,
+      // não movimento.
+      for (const a of (drawer.getAnimations ? drawer.getAnimations() : [])) {
+        try { a.finish(); } catch (e) { /* já terminada */ }
+      }
+      const r = drawer.getBoundingClientRect();
+      /* Contra a área de LAYOUT e não contra `innerWidth`. `innerWidth` conta
+         a barra de rolamento clássica junto, e com ela um painel que ocupa o
+         ecrã todo mede 305 de 320 — a guarda acusava 20 falhas que eram da
+         própria guarda. A largura que o CSS vê é `clientWidth`. */
+      const vw = de.clientWidth, vh = de.clientHeight;
+      nota(Math.abs(r.x) <= 1 && Math.round(r.height) >= vh - 1,
+        'o menu está encostado à esquerda e ocupa o ecrã todo em altura',
+        `x=${Math.round(r.x)} altura=${Math.round(r.height)} de ${vh}`);
+
+      // Limite dos DOIS lados: um painel de 80px passaria num teste que só
+      // perguntasse «menos de metade», e não seria um menu.
+      const largo = vw >= 768;
+      nota(largo ? (r.width < vw * 0.5 && r.width > 300) : (r.width >= vw - 1),
+        largo ? 'num ecrã grande o menu ocupa só um bocado' : 'num telemóvel o menu ocupa o ecrã',
+        `${Math.round(r.width)}px de ${vw}px (${(r.width / vw * 100).toFixed(1)}%)`);
+
+      // O véu tem de DEIXAR VER a página. Era `var(--bg)`, opaco, porque a
+      // gaveta tapava o ecrã e ninguém o via. E um `var()` que não resolva no
+      // ::backdrop não cai no cinzento do browser: cai em transparente.
+      const veu = getComputedStyle(drawer, '::backdrop').backgroundColor;
+      const n = (veu.match(/[\d.]+/g) || []).map(Number);
+      const alfa = n.length === 4 ? n[3] : 1;
+      nota(!largo || (alfa > 0.05 && alfa < 0.95),
+        'o véu por trás do menu deixa ver a loja', `${veu} (alfa ${alfa})`);
+    } catch (e) {
+      nota(false, 'o menu abre como modal', String(e.message || e));
+    }
+    try { drawer.close(); } catch (e) { /* já fechada */ }
+    if (estavaAberto) { try { drawer.show(); } catch (e) { /* nada */ } }
+  }
+
 
   // --- nada no cabeçalho pisa a marca ---------------------------------------
   //
@@ -347,15 +416,40 @@ window.__bateria = function () {
     nota(pisam.length === 0, 'nada no cabeçalho se sobrepõe à marca', pisam.join(', '));
   }
 
-  // --- e a gaveta: fechar à esquerda, marca ao meio, cesto à direita --------
+  /* --- e a gaveta: fechar à esquerda, marca ao meio, cesto à direita -------
+   * A partir de 48rem a gaveta é um painel COM O CABEÇALHO AO LADO, e o
+   * cabeçalho já tem a marca e o cesto — repeti-los a 40px de distância era o
+   * género de duplicado que a dona fotografa. Por isso lá estão escondidos de
+   * propósito, e as duas perguntas de baixo deixam de se poder fazer.
+   *
+   * O que NÃO se faz é saltá-las em silêncio: uma pergunta que desaparece é
+   * como esta bateria ficou cega à gaveta durante o projecto inteiro. Fazem-se
+   * as perguntas do outro lado — que a marca está mesmo escondida, e que a do
+   * cabeçalho está visível para tomar o lugar dela. Ambas podem falhar. */
   if (drawerIsShown) {
     const fechar = drawer.querySelector('.close-menu')?.getBoundingClientRect();
-    const dm = drawer.querySelector('.drawer__mark')?.getBoundingClientRect();
-    if (dm) nota(dm.width >= 24 && dm.height >= 24, 'a marca da gaveta tem tamanho',
-      `${Math.round(dm.width)}x${Math.round(dm.height)}`);
-    if (fechar && dm) {
-      nota(fechar.right < dm.left - 8, 'o botão de fechar não está colado à marca',
-        `fechar acaba em ${Math.round(fechar.right)}, a marca comeca em ${Math.round(dm.left)}`);
+    const marca = drawer.querySelector('.drawer__mark');
+    const dm = marca?.getBoundingClientRect();
+    const eEstreito = de.clientWidth < 768;
+
+    if (eEstreito) {
+      if (dm) nota(dm.width >= 24 && dm.height >= 24, 'a marca da gaveta tem tamanho',
+        `${Math.round(dm.width)}x${Math.round(dm.height)}`);
+      if (fechar && dm) {
+        nota(fechar.right < dm.left - 8, 'o botão de fechar não está colado à marca',
+          `fechar acaba em ${Math.round(fechar.right)}, a marca comeca em ${Math.round(dm.left)}`);
+      }
+    } else {
+      nota(!dm || (dm.width === 0 && dm.height === 0),
+        'no painel, a marca de dentro está escondida (a do cabeçalho serve)',
+        dm ? `${Math.round(dm.width)}x${Math.round(dm.height)}` : 'não existe');
+      const hm = document.querySelector('.head__mark img')?.getBoundingClientRect();
+      nota(hm && hm.width >= 24 && hm.height >= 24,
+        'e a marca do cabeçalho está visível ao lado do painel',
+        hm ? `${Math.round(hm.width)}x${Math.round(hm.height)}` : 'não existe');
+      const cestos = [...document.querySelectorAll('[data-cart-count]')]
+        .filter((e) => e.getClientRects().length).length;
+      nota(cestos === 1, 'só há um cesto no ecrã', `${cestos} visíveis`);
     }
   }
 

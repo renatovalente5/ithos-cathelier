@@ -246,49 +246,19 @@
 .head__sibling:hover { color: var(--accent); }
 @media (width >= 48rem) { .head__sibling { display: inline-flex; } }
 
-/* Below 64rem neither brand shows horizontal navigation: it is the burger and
-   the drawer, on both. Above it, each brand takes the shape of the shop it is
-   modelled on — cathelier puts its mark on the left with the links beside it,
-   ithos stacks the mark over a centred row of links. */
-.head__nav { display: none; }
-@media (width >= 64rem) {
-  .head__nav { display: flex; gap: 1.5rem; min-width: 0; }
-  .head__nav a { text-decoration: none; white-space: nowrap; }
-  [data-brand='cathelier'] .head__left .open-menu { display: none; }
+/* --- the word beside the three lines --------------------------------------
+   From 48rem the button carries the word as well as the drawing. On a phone
+   there is no room and the icon is universal; on a wide screen a lone burger
+   floating in a 480px track reads as an orphan, and the word is what makes the
+   left flank carry ink at all now that the link bar is gone.
 
-  /* On a wide screen the cathelier mark moves to the LEFT column, which is
-     what the shop it is modelled on actually does — I had copied its phone
-     layout onto the desktop by mistake.
-     
-     It also removes the failure for good. A centred mark with the navigation
-     in a 1fr track beside it looks safe and is not: `min-width: 0` lets the
-     links OVERFLOW their track instead of widening it, so the box measures
-     clear while the last link prints two pixels into the wordmark. Measuring
-     the <nav> said there was a 43px gap. Measuring the last <a> said -2. With
-     the mark in its own auto track, the navigation has nowhere to go but the
-     middle. */
-  [data-brand='cathelier'] .head__row {
-    grid-template-columns: auto minmax(0, 1fr) auto;
-    grid-template-areas: 'mark nav right';
-  }
-  [data-brand='cathelier'] .head__mark { justify-self: start; }
-  [data-brand='cathelier'] .head__nav { grid-area: nav; justify-content: center; overflow: hidden; }
-  [data-brand='cathelier'] .head__left { display: none; }
-
-  /* ithos is a TWO-ROW header, which is what the shop it is modelled on
-     actually does at this width: the wordmark centred on its own line, the
-     navigation centred underneath it. I had read a narrow screenshot and
-     concluded that shop had no horizontal navigation at all. */
-  [data-brand='ithos'] .head__row {
-    grid-template-areas: 'left mark right' 'nav nav nav';
-    row-gap: .35rem;
-  }
-  [data-brand='ithos'] .head__nav {
-    grid-area: nav; justify-content: center; gap: 2rem;
-    border-block-start: 1px solid var(--line-soft);
-    padding-block-start: .5rem;
-  }
-  [data-brand='ithos'] .head__left { display: none; }
+   The button keeps aria-label="Open the menu", which CONTAINS the visible word
+   — WCAG 2.5.3 wants the accessible name to contain the visible label, and
+   "menu" is inside "Open the menu". */
+.open-menu__word { display: none; }
+@media (width >= 48rem) {
+  .open-menu { gap: .6rem; padding-inline: .5rem .75rem; }
+  .open-menu__word { display: inline; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; }
 }
 
 /* --- filters --------------------------------------------------------------
@@ -385,15 +355,139 @@
 .reassure p { display: flex; align-items: center; gap: .75rem; font-size: 13px; color: var(--ink-soft, var(--ink)); margin: 0; }
 .reassure svg { flex: none; color: var(--accent); }
 
-/* --- drawer ---------------------------------------------------------------- */
+/* --- drawer ----------------------------------------------------------------
+
+   THE PAGE BEHIND A MODAL DIALOG SCROLLS.
+   It is a common belief that showModal() locks it; it does not. Two
+   independent measurements in Chrome, with the panel open and a real wheel
+   over the backdrop: scrollY 0 -> 478 in one, 0 -> 1000 in the other. The spec
+   does not require the lock (whatwg/html#7732), so it cannot be relied on in
+   any engine. With a full-screen drawer nobody could see the page move; with a
+   panel the shop slides about beside the menu.
+
+   The lock is a CLASS, deliberately, and not `html:has(.drawer[open])`. The
+   battery opens the drawer with show() to measure it, which sets the same
+   `open` attribute — a :has() lock would engage for the whole battery run,
+   take the scrollbar away, change clientWidth and quietly alter every
+   geometry measurement it then made. A class set in the click path never fires
+   for show().
+   `hidden`, not `clip`: clip destroys the scrollport and the page jumps to the
+   top, so closing the menu loses the reader's place. */
+html.menu-open { overflow: hidden; }
+
+
 .drawer {
-  width: 100%; max-width: none; height: 100dvh; max-height: 100dvh;
-  margin: 0; border: 0; padding: 0;
+  width: 100%; max-width: none; margin: 0; border: 0; padding: 0;
   background: var(--bg); color: var(--ink);
   overscroll-behavior: contain; display: flex; flex-direction: column;
+
+  /* `position: fixed` is DECLARED and not left to the UA. A dialog is fixed
+     only while it is MODAL; opened with show() it is `position: absolute` and
+     sits at its static position near the bottom of the document — measured at
+     y=2940 on a 3457px page. The battery opens it with show() on purpose, so
+     without this line every geometry check would be measuring a box parked
+     down by the footer. */
+  position: fixed;
+  inset-block: 0;
+  inset-inline: 0 auto;
+
+  /* KEEP THIS MAX-HEIGHT. The UA sheet carries
+     `dialog:modal { max-height: calc(100% - 6px - 2em) }`, which wins over
+     `inset-block: 0` with an automatic height and takes about 34px off the
+     BOTTOM of the panel — which is exactly where the telephone number and the
+     call-cost line are pinned. Simplifying this line away shortens the panel
+     from the end nobody looks at. */
+  height: 100dvh; max-height: 100dvh;
 }
-.drawer::backdrop { background: var(--bg); }
+
+/* The scrim. LITERAL colours, never var().
+   ::backdrop only inherits custom properties from its originating element
+   since the 2023 spec change. Where it does not, `background: var(--scrim)` is
+   invalid at computed-value time, which computes to `unset` — and since
+   background-color does not inherit, that is `initial`, i.e. TRANSPARENT. Not
+   the UA's 10% black: nothing at all. Behind a 400px panel that is the whole
+   design gone, silently.
+   It used to be `var(--bg)`, painted OPAQUE, because the drawer covered the
+   screen and the backdrop was never seen. A panel that leaves the shop
+   visible beside it is the entire point of what was asked for. */
+.drawer::backdrop { background: rgb(33 33 33 / .42); }
+[data-brand='cathelier'] .drawer::backdrop { background: rgb(74 53 39 / .38); }
+
 .drawer:not([open]) { display: none; }
+
+/* --- the panel, from 48rem -------------------------------------------------
+   48rem and not 64rem. 64rem was never a width in its own right: it was the
+   width at which the horizontal link bar appeared, and the bar is gone, so the
+   number has nothing left to mean. 48rem is where the header already changes
+   (.head__sibling), and 768px is a width the battery drives.
+
+   The width is the owner's sentence turned into a number. "Só um bocado do
+   ecrã" — only a bit of the screen — is `48vw`: never as much as half, at any
+   width. The rem term is what actually applies on a laptop (352px / 400px at
+   1440); the vw term only bites on a tablet, where 25rem of 768px would have
+   been 52% and wrong. */
+@media (width >= 48rem) {
+  .drawer {
+    width: min(22rem, 48vw);
+    /* The gutter is set on :root as clamp(1rem, 4vw, 2.5rem), and 4vw is 4% of
+       the VIEWPORT, not of the panel — so the wider the screen the fatter the
+       panel's padding, which is precisely backwards. Measured: 40px a side
+       inside a 400px panel, leaving 340px for rows designed against a
+       full-width drawer. Redefining the token here moves every child at once:
+       .drawer__top, __nav, __sibling, __contact all read it. */
+    --gutter: 1.25rem;
+    border-inline-end: 1px solid var(--line);
+  }
+  /* One column. Two columns of 155px wrap the longer occasion names onto a
+     second line, and a row designed at 46px renders at 65px. */
+  .drawer__occasions { grid-template-columns: 1fr; }
+
+  /* The header is visible BESIDE the panel now, and it already carries the
+     wordmark and the basket. Showing them again 40px away is the kind of
+     duplicate the owner photographs. The ✕ stays, and the grid keeps its
+     1fr auto 1fr so it stays where it is. */
+  .drawer__mark, .drawer__cart { display: none; }
+  /* Same reasoning the other way round: the panel's door to the other brand
+     carries a description, the header's is a bare label. While the panel is
+     open the richer one speaks. */
+  .menu-open .head__sibling { visibility: hidden; }
+
+  [data-brand='cathelier'] .drawer {
+    width: min(25rem, 48vw);
+    border-inline-end: 0;
+    border-start-end-radius: var(--radius);
+    border-end-end-radius: var(--radius);
+    box-shadow: 0 0 44px rgb(107 78 60 / .18);
+  }
+}
+
+/* --- the panel comes out of the button ------------------------------------
+   A KEYFRAME on [open], not a transition from a resting off-screen position.
+
+   The obvious way to animate a <dialog> is `translate: -100%` at rest,
+   `translate: 0` when open, with `display` and `overlay` made transitionable
+   by `allow-discrete` and the entry value supplied by @starting-style. It is
+   also a trap, and I walked into it: the resting state of the menu becomes
+   "entirely off the left edge of the screen", and it is only ever ON screen
+   because an animation ran. Anything that stops that animation leaves a shop
+   whose menu button appears to do nothing. I measured a panel sitting at
+   x=-352 with the attribute set and the rule present -- in that instance
+   because the browser pane was hidden and rAF never fired, but a stalled
+   frame budget or an engine without @starting-style would read the same way
+   to a customer.
+
+   With a keyframe the resting state is the CORRECT state -- in place, flush
+   to the edge -- and the animation only decorates the arrival. If it never
+   runs, the menu simply appears. The exit is not animated, which is the
+   honest price: closing instantly is unremarkable, a menu that never appears
+   is not. */
+@media (prefers-reduced-motion: no-preference) {
+  .drawer[open] { animation: panel-in .26s cubic-bezier(.22, .61, .36, 1) both; }
+  .drawer[open]::backdrop { animation: veil-in .26s ease both; }
+}
+@keyframes panel-in { from { translate: -100% 0; } }
+@keyframes veil-in { from { opacity: 0; } }
+
 .drawer__top { min-height: 72px; padding-inline: var(--gutter); border-block-end: 1px solid var(--line-soft, var(--line)); flex: none; }
 .drawer__mark { height: 34px; width: auto; }
 /* The drawer has three parts, and only the middle one moves.
@@ -411,7 +505,14 @@
  * list would have made "it fits" true by construction, which is how the last
  * blind guard got here. It now asserts something that can still be false —
  * that with everything CLOSED, nothing needs scrolling. */
-.drawer__body { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; }
+/* overflow-x is PINNED, not left to compute. When one axis is not `visible`
+   the other computes to `auto`, so .drawer__body was a horizontal scroll
+   container by accident — and the battery's two overflow guards are both blind
+   to it: the page-level one measures documentElement.scrollWidth, which a
+   scroll container never reaches, and the element-level one deliberately
+   exempts every descendant of a scroller. A long name would have scrolled
+   sideways inside the panel with two ✓ printed over it. */
+.drawer__body { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; }
 .drawer__nav { display: flex; flex-direction: column; padding-inline: var(--gutter); }
 
 .drawer__group { border-block-end: 1px solid var(--line-soft, var(--line)); }

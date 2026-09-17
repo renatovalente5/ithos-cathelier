@@ -97,14 +97,18 @@
    like handwriting on a label, which is the whole point. */
 [data-brand='cathelier'] .head { background: var(--bg); }
 [data-brand='cathelier'] .head__mark img { height: clamp(40px, 5vw, 54px); }
-[data-brand='cathelier'] .head__nav { gap: 2rem; }
-[data-brand='cathelier'] .head__nav a {
-  font-family: var(--font-body); font-size: 17px; font-weight: 400;
-  letter-spacing: .03em; text-transform: none; color: var(--ink-soft);
-  padding-block: .4rem;
+/* Sentence case and the body face, like everything else in this shop — the
+   spaced upper case beside it belongs to the other brand. */
+[data-brand='cathelier'] .open-menu__word {
+  font-family: var(--font-body); font-size: 14px; letter-spacing: .03em;
+  text-transform: none; color: var(--ink-soft);
 }
-[data-brand='cathelier'] .head__nav a:hover,
-[data-brand='cathelier'] .head__nav a[aria-current='page'] { color: var(--accent); }
+
+@media (width >= 64rem) {
+  [data-brand='cathelier'] .head__row { --head-h: 92px; }
+  [data-brand='cathelier'] .head__mark img { height: clamp(50px, 4.2vw, 62px); }
+  [data-brand='cathelier'] .head[data-shrunk='yes'] .head__row { --head-h: 62px; }
+}
 [data-brand='cathelier'] .head__sibling {
   font-family: var(--font-body); font-size: 14px; letter-spacing: .03em; text-transform: none;
 }

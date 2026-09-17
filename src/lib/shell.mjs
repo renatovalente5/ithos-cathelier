@@ -157,33 +157,34 @@ function announcement({ brand, shipping }) {
   return `<p class="announce">Free shipping on orders over €${Number(c.freeOver).toFixed(0)}</p>`;
 }
 
-function header({ brand, path }) {
-  const nav = NAV[brand] ?? NAV.ithos;
+function header({ brand }) {
   const mark = MARK[brand];
   const home = brand === 'cathelier' ? '/cathelier/' : '/';
   const sibling = SIBLING[brand];
 
-  /* Three slots, always, and the CSS decides where each one sits.
+  /* ONE HEADER AT EVERY WIDTH: burger, mark, the other brand, basket.
    *
-   * The logo used to be absolutely centred while the navigation sat in normal
-   * flow beside it. At the width where the navigation grew past the halfway
-   * point, the two drew on top of each other — the owner photographed
-   * "THE WORKSHOP" printed across the cathelier wordmark. A grid column cannot
-   * do that: the logo has a track of its own and nothing else can enter it. */
+   * There used to be a horizontal bar of links from 64rem up, and two
+   * brand-specific grid shapes that existed only to place it — cathelier with
+   * its mark pushed left, ithos in two rows. The owner asked for the phone's
+   * arrangement to hold on a big screen too, so the bar and both shapes are
+   * gone from the markup rather than hidden by a media query. Hidden-but-
+   * present is this project's signature failure: a rule surviving where nobody
+   * looks is how `.head__mark { position: absolute }` printed the navigation
+   * through the wordmark.
+   *
+   * Three slots, always, and the CSS decides where each one sits. The logo
+   * used to be absolutely centred while the navigation sat in normal flow
+   * beside it, and at the width where the navigation grew past the halfway
+   * point the two drew on top of each other — the owner photographed "THE
+   * WORKSHOP" printed across the cathelier wordmark. A grid column cannot do
+   * that: the logo has a track of its own and nothing else can enter it. */
   return `<header class="head" data-shrunk="no">
   <div class="shell head__row">
     <div class="head__left">
       <button class="icon-btn open-menu" type="button" aria-expanded="false" aria-controls="menu"
-              aria-label="Open the menu">${icon('menu', 24)}</button>
+              aria-label="Open the menu">${icon('menu', 24)}<span class="open-menu__word">Menu</span></button>
     </div>
-
-    <!-- A DIRECT CHILD of the grid, and it has to be. It used to live inside
-         .head__left, where grid-area on it did nothing at all: only children
-         of the grid can be placed in it. The mark vanished and the links piled
-         into the corner. -->
-    <nav class="head__nav" aria-label="Main">
-      ${nav.map(([h, t2]) => `<a href="${h}"${path === h ? ' aria-current="page"' : ''}>${esc(t2)}</a>`).join('\n      ')}
-    </nav>
 
     <a class="head__mark" href="${home}" aria-label="${esc(mark.alt)} — home">
       <img src="${mark.src}" alt="${esc(mark.alt)}" width="${mark.w}" height="${mark.h}">
@@ -287,10 +288,18 @@ function footer({ brand, identity }) {
       ['/legal/returns-form/', 'Cancellation form'],
       [i.complaintsBook, 'Complaints book'],
     ]],
+    /* The cathelier rows are here because the horizontal bar went away.
+       Counted on the built site: of 55 cathelier-branded pages, 12 had no link
+       to /cathelier/pieces/ or /cathelier/quote/ outside the header and the
+       drawer, and all 55 had none to /cathelier/about/. A link inside a closed
+       <dialog> is followed by a crawler but is not a route a reader can see. */
     ['The shop', [
       ['/about/', 'The workshop'],
       ['/lamps/', 'Wooden night lights'],
       ['/cathelier/', 'Personalised pieces'],
+      ['/cathelier/pieces/', 'All the pieces'],
+      ['/cathelier/quote/', 'Ask for a quote'],
+      ['/cathelier/about/', 'How a piece is made'],
       ['/contact/', 'Contact'],
     ]],
     ['Terms', [
