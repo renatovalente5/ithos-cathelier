@@ -49,11 +49,6 @@ in the sitemap, and both the build and `check-output` report them apart from the
 page count — a file count has never been able to tell a signpost from a
 destination.
 
-Each one carries a date. Past it, the guards start asking for it to be deleted:
-they serve bookmarks made before the move and nothing else, and with
-`robots.txt` set to `Disallow: /` there will never be a traffic figure to say
-when they stopped being used.
-
 ### The browser battery
 
 Measures what only a browser knows: real contrast, tap targets, sideways

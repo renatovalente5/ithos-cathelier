@@ -588,6 +588,32 @@ window.__bateria = function () {
       `${Math.round(r.width)}×${Math.round(r.height)}`);
   }
 
+  /* O BOTÃO DO MENU TEM DE TER AS TRÊS LINHAS, E NÃO TINHA.
+     A partir de 48rem o botão passa a levar a palavra além do desenho. O
+     .icon-btn declara `width: 44px` — que é o alvo de toque — e o conteúdo
+     passou a medir perto de 100px: num contentor flex quem paga é quem
+     encolhe, e o único com tamanho próprio era o SVG. Ficava a ZERO de
+     largura. O botão lia-se "MENU" sem hambúrguer nenhum e a palavra saía para
+     fora da caixa, e nada dava por isso: o SVG continuava no DOM, visível,
+     opaco e da cor certa — só sem largura. Medir a cor ou a existência não
+     chegava; era preciso medir a caixa. */
+  {
+    const bt = document.querySelector('.open-menu');
+    if (bt) {
+      const r = bt.getBoundingClientRect();
+      const svg = bt.querySelector('svg');
+      const s = svg && svg.getBoundingClientRect();
+      nota(s && s.width >= 16 && s.height >= 16, 'o botão do menu mostra o desenho',
+        s ? `${s.width.toFixed(1)}x${s.height.toFixed(1)}` : 'não tem svg nenhum');
+      // E o conteúdo cabe na caixa: se transbordar, o alvo de toque declarado
+      // deixa de ser onde as coisas estão desenhadas.
+      nota(bt.scrollWidth <= Math.ceil(r.width) + 1, 'e o conteúdo dele cabe lá dentro',
+        `conteúdo ${bt.scrollWidth}, caixa ${r.width.toFixed(1)}`);
+      nota(r.width >= 24 && r.height >= 24, 'e continua a ser um alvo de toque',
+        `${r.width.toFixed(1)}x${r.height.toFixed(1)}`);
+    }
+  }
+
   /* O ATALHO DO CÍRCULO TEM DE FILTRAR MESMO.
      Os círculos da home da cathelier deixaram de apontar a páginas próprias e
      passaram a apontar a esta lista com a ocasião no fragmento. Ninguém mais

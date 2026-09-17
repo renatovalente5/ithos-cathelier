@@ -115,8 +115,9 @@
 [data-brand='ithos'] .foot__group summary { color: #3A2219; }
 [data-brand='ithos'] .foot__social a { border-color: rgb(140 66 48 / .28); color: #6B4A38; }
 [data-brand='ithos'] .foot__social a:hover { color: var(--accent-deep); border-color: var(--accent-deep); }
-/* The word beside the three lines, in this shop's voice: small, spaced,
-   upper case — the same register as the eyebrow (11px) one step up. */
+/* The word beside the three lines, in this shop's voice: spaced upper case.
+   It sat at 12px, one step above the 11px eyebrow, and read as a caption on a
+   control rather than as the control's name. */
 [data-brand='ithos'] .open-menu__word { font-weight: 400; color: var(--ink-soft); }
 
 /* Removing the link bar took 28px off the ithos header (112 -> 84, measured at

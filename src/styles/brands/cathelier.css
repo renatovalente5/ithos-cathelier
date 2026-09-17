@@ -100,7 +100,7 @@
 /* Sentence case and the body face, like everything else in this shop — the
    spaced upper case beside it belongs to the other brand. */
 [data-brand='cathelier'] .open-menu__word {
-  font-family: var(--font-body); font-size: 14px; letter-spacing: .03em;
+  font-family: var(--font-body); font-size: 16px; letter-spacing: .03em;
   text-transform: none; color: var(--ink-soft);
 }
 

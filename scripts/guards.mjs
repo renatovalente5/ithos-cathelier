@@ -215,17 +215,6 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
     }
   }
 
-  /* UM STUB É DÍVIDA, E ESTA É A ÚNICA COISA QUE ALGUM DIA A VAI COBRAR.
-     O site não tem analítica e o robots.txt da pré-visualização é
-     `Disallow: /`, por isso nunca existirá um sinal de tráfego a dizer que já
-     ninguém usa uma destas moradas. Sem uma data escrita, ficavam para sempre.
-     Isto avisa, nunca mata: apagar dez ficheiros é decisão da dona, não do
-     build. */
-  const hoje = new Date().toISOString().slice(0, 10);
-  for (const r of REDIRECTS.filter((x) => x.until && x.until < hoje)) {
-    pending(`redirects.mjs: the stub at ${r.from} was due to be deleted on ${r.until} `
-      + '— bookmarks from before the move have had their time');
-  }
 }
 
 /* --- covers ---------------------------------------------------------------

@@ -308,8 +308,9 @@ p { text-wrap: pretty; }
 [data-brand='ithos'] .foot__group summary { color: #3A2219; }
 [data-brand='ithos'] .foot__social a { border-color: rgb(140 66 48 / .28); color: #6B4A38; }
 [data-brand='ithos'] .foot__social a:hover { color: var(--accent-deep); border-color: var(--accent-deep); }
-/* The word beside the three lines, in this shop's voice: small, spaced,
-   upper case — the same register as the eyebrow (11px) one step up. */
+/* The word beside the three lines, in this shop's voice: spaced upper case.
+   It sat at 12px, one step above the 11px eyebrow, and read as a caption on a
+   control rather than as the control's name. */
 [data-brand='ithos'] .open-menu__word { font-weight: 400; color: var(--ink-soft); }
 
 /* Removing the link bar took 28px off the ithos header (112 -> 84, measured at
@@ -438,7 +439,7 @@ p { text-wrap: pretty; }
 /* Sentence case and the body face, like everything else in this shop — the
    spaced upper case beside it belongs to the other brand. */
 [data-brand='cathelier'] .open-menu__word {
-  font-family: var(--font-body); font-size: 14px; letter-spacing: .03em;
+  font-family: var(--font-body); font-size: 16px; letter-spacing: .03em;
   text-transform: none; color: var(--ink-soft);
 }
 
@@ -1185,8 +1186,18 @@ html[data-cover='yes'][data-scrolled='no'] :is(.head__mark, .head__sibling-mark)
    "menu" is inside "Open the menu". */
 .open-menu__word { display: none; }
 @media (width >= 48rem) {
-  .open-menu { gap: .6rem; padding-inline: .5rem .75rem; }
-  .open-menu__word { display: inline; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; }
+  /* `width: auto` E `flex: none` NO DESENHO, e as duas são obrigatórias.
+     O .icon-btn tem `width: 44px` fixo, que é o alvo de toque. A partir daqui
+     este botão passa a levar também a palavra, um intervalo e vinte pixels de
+     enchimento -- perto de cem pixels de conteúdo dentro de uma caixa de 44 --
+     e num contentor flex quem paga é quem encolhe: o SVG, que é o único com
+     tamanho próprio, era espremido até **zero** e as três linhas
+     desapareciam. Medido: 0x24 com a palavra, 24x24 sem ela, igual a 12px,
+     14px e 16px. O botão lia-se "MENU" sem hambúrguer nenhum, e a palavra
+     transbordava para fora do alvo declarado. A altura continua nos 44. */
+  .open-menu { width: auto; gap: .6rem; padding-inline: .5rem .75rem; }
+  .open-menu svg { flex: none; }
+  .open-menu__word { display: inline; font-size: 14px; letter-spacing: .18em; text-transform: uppercase; }
 }
 
 /* An option that is out of stock. Greyed AND labelled: colour alone is not a
