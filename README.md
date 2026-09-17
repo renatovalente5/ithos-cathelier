@@ -72,3 +72,14 @@ have exactly one photograph:
 
 These need one plain studio photograph each, of the whole piece on the brown
 backdrop, like the other twenty-two.
+
+## A note about analysis agents
+
+Agents spawned to *analyse* this repository have write access to it. During the
+cover study, four of them edited `src/lib/ithos.mjs`, `src/lib/cathelier.mjs`
+and both brand stylesheets while I was working, and those edits were swept into
+an unrelated commit by a `git add -A`.
+
+The work was good and it survived verification, so it stayed. That was luck.
+**Run `git status` after every analysis workflow, before staging anything**, and
+stage by path rather than with `-A` while one is running.
