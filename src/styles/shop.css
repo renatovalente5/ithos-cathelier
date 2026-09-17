@@ -429,40 +429,86 @@ html[data-cover='yes'][data-scrolled='no'] :is(.head__mark, .head__sibling-mark)
 }
 
 /* --- the other photographs, underneath --------------------------------------
-   From 48rem only. On a phone there is no pointer to rest anywhere, the row
-   would add forty pixels to every card in a two-column grid -- the catalogue's
-   opening paragraph was tightened on purpose once to keep four lamps above the
-   fold -- and it would put sixty-seven more images on the page for a gesture
-   that does not exist there. The product page carries the full gallery.
+   A PARTIR DE TODAS AS LARGURAS, agora também no telemóvel, a pedido da dona.
+   Estiveram só a partir de 48rem por três razões, e vale a pena dizer o que
+   aconteceu a cada uma: num telemóvel não há ponteiro para pousar (verdade, e
+   continua a ser -- a deriva automática continua presa a um ponteiro fino;
+   mas TOCAR numa miniatura sempre funcionou, é um acto deliberado); a tira
+   acrescenta uma faixa a cada cartão de uma grelha de duas colunas (verdade, e
+   é o preço do que foi pedido); e punha sessenta e sete imagens a mais na
+   página (falso desde que os botões passaram a ir vazios -- o script só
+   constrói a tira do cartão que está prestes a ser visto).
 
-   The empty row on a single-photograph lamp is deliberate: five of the
-   twenty-six have only one, and without it their names would sit forty pixels
-   higher than everything beside them. */
-/* Hidden until the script has filled it: an empty strip is a forty-eight
-   pixel band of nothing under every card, and without a script there is no
-   strip to fill. The card then reads exactly as it did before this existed. */
-.card__thumbs { display: none; }
-@media (width >= 48rem) {
+   ABAIXO DE 48rem A TIRA CORRE DE LADO EM VEZ DE ENCOLHER.
+   Medido: a 390px o cartão tem 164px e a 320px tem 129px. Seis miniaturas a
+   encolher dentro de 164px dão 24,0px -- exactamente o mínimo de um alvo de
+   toque, sem folga nenhuma -- e dentro de 129px nem quatro lá cabem. Encolher
+   até caber era passar por baixo do chão, por isso ficam do tamanho que devem
+   ter e é a tira que rola. É o mesmo padrão da fila de ocasiões da cathelier.
+   A altura não muda com o número de fotografias, que é o que mantém os nomes
+   de dois cartões vizinhos alinhados.
+
+   A partir de 48rem a coluna é larga e encolher é melhor do que rolar: mostra
+   as seis de uma vez em vez de esconder duas atrás de um gesto.
+
+   A fila vazia num candeeiro de uma só fotografia é de propósito: cinco dos
+   vinte e seis têm uma, e sem ela o nome deles ficava mais acima do que o de
+   quem está ao lado. */
+/* Hidden until the script has filled it: an empty strip is a band of nothing
+   under every card, and without a script there is no strip to fill. The card
+   then reads exactly as it did before this existed. */
+.card__thumbs { display: none; --shot-size: 32px; }
+/* A FILA VAZIA TEM DE OCUPAR O LUGAR, E NÃO OCUPAVA.
+   O comentário acima sempre disse que a fila num candeeiro de uma só
+   fotografia era de propósito, mas `.card__thumbs--none` ficava preso no
+   `display: none` da linha de cima e media ZERO: o nome do Caracol estava
+   cinquenta pixels acima do nome do Ouriço, ao lado dele, na mesma linha da
+   grelha. A intenção estava escrita e não estava a acontecer. Quem a marca
+   como pronta é o script, tal como às outras, senão sem JavaScript era o
+   contrário -- os de uma fotografia é que ficavam mais altos. */
+.card__thumbs.ready {
+  display: flex; gap: 4px; margin-block-start: 8px;
+  min-height: calc(var(--shot-size) / var(--frame-ratio, .75));
+}
+.card__thumb {
+  /* A mesma forma da fotografia grande: um botão quadrado sobre um ficheiro
+     3:4 voltava a cortá-lo, e a tira deixava de parecer a mesma fotografia
+     em pequeno. */
+  aspect-ratio: var(--frame-ratio, .75);
+  padding: 0; border: 1px solid var(--line); background: none;
+  border-radius: var(--radius, 0); overflow: hidden; cursor: pointer;
+  opacity: .62; transition: opacity .2s ease, border-color .2s ease;
+}
+/* Um botão ainda sem fotografia guarda o lugar e não desenha nada: um
+   contorno vazio a piscar antes da imagem chegar é pior do que espaço. */
+.card__thumb:empty { border-color: transparent; }
+.card__thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.card__thumb:hover, .card__thumb:focus-visible { opacity: 1; }
+.card__thumb.is-on { opacity: 1; border-color: var(--accent); }
+@media (prefers-reduced-motion: reduce) { .card__thumb { transition: none; } }
+
+@media (width < 48rem) {
   .card__thumbs.ready {
-    display: flex; gap: 6px; margin-block-start: 10px;
-    min-height: var(--shot-size, 48px);
+    overflow-x: auto; overflow-y: hidden;
+    /* A barra de rolagem roubava a altura à tira e desalinhava os nomes. */
+    scrollbar-width: none;
+    scroll-snap-type: x proximity;
   }
+  .card__thumbs.ready::-webkit-scrollbar { display: none; }
   .card__thumb {
-    flex: 0 1 var(--shot-size, 48px);
-    /* A tap target may not go under 24px, and six photographs in a narrow
-       column would push it there if it were allowed to shrink freely. */
-    /* A mesma forma da fotografia grande: um botão quadrado sobre um
-       ficheiro 3:4 voltava a cortá-lo, e a tira deixava de parecer a mesma
-       fotografia em pequeno. */
-    min-width: 26px; aspect-ratio: var(--frame-ratio, .75);
-    padding: 0; border: 1px solid var(--line); background: none;
-    border-radius: var(--radius, 0); overflow: hidden; cursor: pointer;
-    opacity: .62; transition: opacity .2s ease, border-color .2s ease;
+    flex: 0 0 var(--shot-size, 32px);
+    scroll-snap-align: start;
+    /* A tira corta o que sai dela, e um anel de foco desenhado por fora era
+       cortado com o resto. Para dentro, fica visível. */
+    outline-offset: -2px;
   }
-  .card__thumb img { display: block; width: 100%; height: 100%; object-fit: cover; }
-  .card__thumb:hover, .card__thumb:focus-visible { opacity: 1; }
-  .card__thumb.is-on { opacity: 1; border-color: var(--accent); }
-  @media (prefers-reduced-motion: reduce) { .card__thumb { transition: none; } }
+}
+
+@media (width >= 48rem) {
+  .card__thumbs { --shot-size: 48px; }
+  .card__thumbs.ready { gap: 6px; margin-block-start: 10px; }
+  /* Aqui encolhem, mas nunca abaixo do alvo de toque. */
+  .card__thumb { flex: 0 1 var(--shot-size); min-width: 26px; }
 }
 
 .card__swatches { display: flex; flex-wrap: wrap; gap: 6px; margin-block-start: 12px; }

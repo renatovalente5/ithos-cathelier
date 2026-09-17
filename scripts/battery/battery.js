@@ -588,6 +588,34 @@ window.__bateria = function () {
       `${Math.round(r.width)}×${Math.round(r.height)}`);
   }
 
+  /* AS OUTRAS FOTOGRAFIAS, TAMBÉM NO TELEMÓVEL.
+     A tira esteve escondida abaixo de 48rem e passou a aparecer em todas as
+     larguras. Aqui mede-se o que é determinista -- o espaço reservado e o
+     tamanho de cada miniatura -- e NÃO se mede se as imagens já chegaram: isso
+     depende de um IntersectionObserver, que num separador oculto não dispara.
+     Uma guarda que dependa disso acusa o ambiente e não o site. */
+  for (const card of document.querySelectorAll('.card[data-shots]')) {
+    const tira = card.querySelector('.card__thumbs');
+    if (!tira) continue;
+    const quantas = card.dataset.shots.split(',').filter(Boolean).length;
+    const alt = tira.getBoundingClientRect().height;
+    const nome = card.querySelector('.card__name')?.textContent.trim() || card.dataset.product;
+    // O lugar é guardado mesmo num candeeiro de uma só fotografia: sem isso o
+    // nome dele sobe e desalinha do vizinho na mesma linha da grelha.
+    nota(alt >= 24, `${nome}: a tira das outras fotografias guarda o lugar`, `${alt.toFixed(1)}px`);
+    for (const t of card.querySelectorAll('.card__thumb')) {
+      const r = t.getBoundingClientRect();
+      nota(r.width >= 24 && r.height >= 24, `${nome}: a miniatura é um alvo de toque`,
+        `${r.width.toFixed(1)}x${r.height.toFixed(1)} · ${quantas} fotografias`);
+    }
+    // E quando não cabem, a tira rola -- nunca é a página que rola de lado.
+    if (tira.scrollWidth > tira.clientWidth + 1) {
+      nota(getComputedStyle(tira).overflowX === 'auto' || getComputedStyle(tira).overflowX === 'scroll',
+        `${nome}: as miniaturas que não cabem ficam numa tira que rola`,
+        `${tira.scrollWidth} em ${tira.clientWidth}`);
+    }
+  }
+
   /* O BOTÃO DO MENU TEM DE TER AS TRÊS LINHAS, E NÃO TINHA.
      A partir de 48rem o botão passa a levar a palavra além do desenho. O
      .icon-btn declara `width: 44px` — que é o alvo de toque — e o conteúdo

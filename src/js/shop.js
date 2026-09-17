@@ -743,21 +743,40 @@ function cardShots() {
     const shots = card.dataset.shots.split(',').filter(Boolean);
     const frame = $('.card__frame', card);
     const base = frame && $('picture', frame);
+    /* Um candeeiro de uma só fotografia não tem tira, mas guarda o lugar dela:
+       sem isso o nome dele fica cinquenta pixels acima do nome do vizinho, na
+       mesma linha da grelha. Quem guarda o lugar é o script, e não o CSS, para
+       que sem JavaScript não haja lugar nenhum guardado em lado nenhum. */
+    /* O LUGAR É GUARDADO JÁ; SÓ AS IMAGENS É QUE ESPERAM.
+       A tira só ganhava altura quando o observador a enchia, e até lá media
+       zero: o cartão dava um salto de quarenta e três pixels à passagem do
+       leitor. Ficava escondido abaixo da dobra porque o observador dispara
+       300px antes, mas escondido não é resolvido -- e num telemóvel, onde a
+       tira passou a existir, é onde menos se perdoa. Agora todos os cartões
+       reservam o espaço à primeira pintura, com os botões vazios e sem
+       contorno (ver `.card__thumb:empty`), e o que o observador faz é só pôr
+       lá as fotografias. Inclui os de uma só fotografia, que reservam e nunca
+       enchem: sem isso o nome deles ficava mais alto que o do vizinho. */
+    const reserva = $('.card__thumbs', card);
+    if (reserva) reserva.classList.add('ready');
     if (!frame || !base || shots.length < 2) continue;
-    /* Fill the strip, but only where it is shown. On a phone there is no
-       pointer to rest anywhere and the strip is display:none, so not one of
-       these images is built and not one byte is fetched. */
+    /* Fill the strip. It is shown at every width now -- the owner asked for
+       the other photographs on a phone too -- so the only thing still gated
+       on a pointer is the automatic drift, further down. */
     const strip = $('.card__thumbs', card);
     const thumbs = $$('.card__thumb', card);
     const fillStrip = () => {
-      if (!strip || strip.classList.contains('ready')) return;
+      if (!strip || strip.dataset.filled) return;
       const dir = card.dataset.dir;
       thumbs.forEach((t, n) => {
         const name = shots[n];
         const im = document.createElement('img');
         im.src = `${BASE}/media/${dir}/${name}-200.webp`;
         im.srcset = `${BASE}/media/${dir}/${name}-120.webp 120w, ${BASE}/media/${dir}/${name}-200.webp 200w`;
-        im.sizes = '56px';
+        /* 32px no telemóvel e 56 a partir de 48rem, que é o que o CSS
+           desenha. Dizer 56 em todo o lado fazia um telemóvel de DPR 3 pedir
+           o ficheiro de 200w para uma caixa de 32. */
+        im.sizes = '(min-width: 48rem) 56px, 32px';
         im.width = 200; im.height = 200;
         im.alt = '';
         im.loading = 'lazy';
@@ -765,14 +784,17 @@ function cardShots() {
         im.fetchPriority = 'low';
         t.append(im);
       });
-      strip.classList.add('ready');
+      strip.dataset.filled = 'yes';
     };
     /* And it follows the reader down the page. `loading="lazy"` did not help
        here: the images are created after layout, and Chrome's threshold
        reaches about 1250px below the fold, so all sixty-seven were fetched at
        once -- 176 KB for twenty-six cards of which four are on screen. An
-       observer builds a card's strip when the card is close to being seen. */
-    if (strip && matchMedia('(min-width: 48rem)').matches) {
+       observer builds a card's strip when the card is close to being seen.
+       Isto vale ainda mais desde que a tira aparece no telemóvel: é lá que os
+       sessenta e sete ficheiros de uma vez doíam mais, e é lá que o observador
+       os reduz ao punhado que está à vista. */
+    if (strip) {
       if (typeof IntersectionObserver === 'function') {
         const eye = new IntersectionObserver((entries) => {
           for (const e of entries) {
