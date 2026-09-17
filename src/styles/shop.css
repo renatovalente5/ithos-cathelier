@@ -939,7 +939,16 @@ html.menu-open { overflow: hidden; }
    scroll container never reaches, and the element-level one deliberately
    exempts every descendant of a scroller. A long name would have scrolled
    sideways inside the panel with two ✓ printed over it. */
-.drawer__body { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain; }
+/* Uma COLUNA e não um bloco, e a razão é a linha de baixo: a porta para a
+   outra loja é empurrada para o fundo com `margin-block-start: auto`, e uma
+   margem automática só empurra dentro de um contentor flex ou grid. Como
+   bloco, a margem valia zero e a porta ficava colada à navegação com o vazio
+   todo por baixo dela. */
+.drawer__body {
+  flex: 1 1 auto; min-height: 0;
+  display: flex; flex-direction: column;
+  overflow-y: auto; overflow-x: hidden; overscroll-behavior: contain;
+}
 .drawer__nav { display: flex; flex-direction: column; padding-inline: var(--gutter); }
 
 .drawer__nav a { display: flex; align-items: center; gap: 1rem; min-height: 58px; text-decoration: none; border-block-end: 1px solid var(--line-soft, var(--line)); font-size: 1.1rem; }
@@ -966,6 +975,13 @@ html.menu-open { overflow: hidden; }
   display: grid; grid-template-columns: 1fr auto; align-items: center;
   gap: 0 1rem; padding: .85rem var(--gutter); min-height: 58px; text-decoration: none;
   background: var(--sibling-bg, var(--bg-soft));
+  /* Ao fundo do menu, encostada ao bloco de contactos. O espaço livre fica
+     ACIMA dela e não por baixo, que é onde estava.
+     A margem automática encolhe sozinha até zero quando o conteúdo já enche a
+     coluna, por isso num telemóvel baixo -- onde este menu já teve 578px de
+     conteúdo para 568px de ecrã -- ela não empurra nada para fora: volta a
+     ficar logo a seguir à navegação, e a coluna rola como antes. */
+  margin-block-start: auto;
 }
 /* A porta no menu lateral mostra o lockup da outra loja, não o nome escrito.
    O nome não se perdeu: vive no aria-label da ligação, que é o que um leitor
