@@ -400,6 +400,38 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
     }
   }
 
+  /* 2b. THE COVER'S FOUR LAYERS DECLARE THEIR ORDER.
+         This one is not about tidiness, it is about a bug that fixed itself
+         at the wrong moment. The layers share one grid cell, and without a
+         z-index their paint order is emergent: an element whose opacity is
+         BELOW 1 creates a stacking context and paints with the positioned
+         boxes, above the veil, and the instant its opacity reaches exactly 1
+         it stops creating one and drops below. So the film played bright for
+         the 0.9s of its fade and went dark in a single frame at the end --
+         measured, 0.99 rendered without the veil and 1.0 with it.
+         Every layer therefore says where it belongs, and the veil has to sit
+         above the film and below the words, or the whole contrast argument
+         above is about a ground that is not on top of the picture. */
+  {
+    const ordem = ['cover__media', 'cover__film', 'cover__veil', 'cover__words'];
+    const z = {};
+    for (const nome of ordem) {
+      const m = css.match(new RegExp(`\\.${nome}\\s*(?:,[^{]*)?\\{[^}]*?z-index:\\s*(-?\\d+)`, 's'));
+      if (!m) {
+        die(`shop.css: .${nome} declares no z-index. The cover's layers share one grid cell `
+          + 'and an undeclared order changes by itself when an opacity transition lands on 1');
+      } else z[nome] = Number(m[1]);
+    }
+    if (Object.keys(z).length === ordem.length) {
+      for (let i = 1; i < ordem.length; i += 1) {
+        if (z[ordem[i]] <= z[ordem[i - 1]]) {
+          die(`shop.css: .${ordem[i]} (z-index ${z[ordem[i]]}) is not above `
+            + `.${ordem[i - 1]} (z-index ${z[ordem[i - 1]]}) — the cover's layers are out of order`);
+        }
+      }
+    }
+  }
+
   /* 3b. THE LIST OF COVER WIDTHS IS WRITTEN TWICE, IN TWO LANGUAGES.
          scripts/renditions.py decides which renditions get WRITTEN and
          src/build.mjs decides which get PROMISED in the srcset. They have

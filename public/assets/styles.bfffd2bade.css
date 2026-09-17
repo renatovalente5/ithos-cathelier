@@ -650,10 +650,24 @@ p { text-wrap: pretty; }
      that this rule and .head__row cannot drift apart about what it is. */
   margin-block-start: calc(-1 * var(--head-h));
 }
+/* AS QUATRO CAMADAS, COM A ORDEM DECLARADA E NÃO DEIXADA AO ACASO.
+   Sem estes z-index a ordem era EMERGENTE, e mudava sozinha a meio de uma
+   transição: um elemento com `opacity` abaixo de 1 cria um contexto de
+   empilhamento e é pintado com os posicionados, ACIMA do véu; no instante em
+   que a opacidade chega exactamente a 1 deixa de o criar e cai para BAIXO
+   dele. O filme aparecia claro durante os 0,9s do desvanecimento e escurecia
+   de repente no último quadro -- que foi exactamente o que a dona descreveu.
+   Medido: a 0,99 a capa vinha sem véu, a 1,0 vinha com ele.
+   Os quatro são itens de grelha, e `z-index` aplica-se a itens de grelha sem
+   precisarem de `position` -- é o que torna isto declarável em vez de
+   remendado com `position: relative` em cada um. */
 .cover__media,
 .cover__film,
 .cover__veil,
 .cover__words { grid-area: 1 / 1; }
+.cover__media { z-index: 0; }
+.cover__film  { z-index: 1; }
+.cover__veil  { z-index: 2; }
 
 .cover__media {
   display: block;
@@ -706,7 +720,7 @@ p { text-wrap: pretty; }
 
 .cover__words {
   position: relative;
-  z-index: 1;
+  z-index: 3;
   display: grid;
   place-items: center;
   text-align: center;
