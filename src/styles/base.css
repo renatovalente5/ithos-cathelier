@@ -172,8 +172,11 @@ p { text-wrap: pretty; }
    O número está aqui, em scripts/cards.py (que corta) e em src/lib/photo.mjs (a
    proporção que o HTML declara), e scripts/guards.mjs compara os três com os
    ficheiros no disco. A variável existe para os sítios que precisam de outra
-   forma, como a fotografia da oficina, os declararem em vez de a repetirem. */
-.frame { aspect-ratio: var(--frame-ratio, 3 / 4); overflow: hidden; background: var(--frame-bg); }
+   forma, como a fotografia da oficina, os declararem em vez de a repetirem.
+   É um NÚMERO (largura/altura) e não `3 / 4`: `aspect-ratio` aceita os dois,
+   mas `calc()` só aceita o número, e a galeria da ficha precisa dele para
+   calcular a sua largura máxima. Um nome, não dois. */
+.frame { aspect-ratio: var(--frame-ratio, .75); overflow: hidden; background: var(--frame-bg); }
 
 /* <picture> is a wrapper with no size of its own, and an <img> inside it sizes
    against THAT, not against the frame. Without these two lines the square

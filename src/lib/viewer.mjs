@@ -18,7 +18,6 @@ import { icon } from './icons.mjs';
 export function viewer() {
   return `<dialog class="lightbox" id="photo" aria-label="Photograph, full size">
   <div class="lightbox__bar">
-    <button class="lightbox__zoom" type="button" data-box-zoom aria-pressed="false">Actual size</button>
     <button class="icon-btn lightbox__close" type="button" data-box-close aria-label="Close">${icon('close', 24)}</button>
   </div>
   <div class="lightbox__stage" data-box-stage></div>

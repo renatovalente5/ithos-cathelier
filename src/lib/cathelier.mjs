@@ -1,5 +1,5 @@
 import { esc, money, picture, prose, wholePicture } from './html.mjs';
-import { shapeOf, rungs } from './photo.mjs';
+import { shapeOf, rungs, cardFocus } from './photo.mjs';
 import { viewer } from './viewer.mjs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -226,17 +226,15 @@ export function piece({ p, all: everything, shop, occasions }) {
      family and the site addresses use. The two have never been the same word
      and this is the one place that has to know it. */
   const shapes = (p.photos || []).map((n) => shapeOf(join(PHOTOS, 'cathelier', '_raw', `${n}.jpg`)));
-  const shot = shapes.length
-    ? shapes.reduce((m, x) => Math.min(m, x.w / x.h), Infinity).toFixed(4) : '1';
   const here = occasions.find((o) => o.slug === p.occasion);
   const related = everything.filter((x) => x.slug !== p.slug && x.occasion === p.occasion).slice(0, 4);
   return `
 <section class="product shell">
   <div class="product__gallery">
     ${(p.photos || []).length > 1 ? `
-    <div class="gallery" data-gallery style="--shot:${shot}">
+    <div class="gallery" data-gallery>
       <div class="gallery__track" data-gallery-track>
-        ${p.photos.map((n, i) => `<div class="gallery__slide">${wholePicture({
+        ${p.photos.map((n, i) => `<div class="gallery__slide" style="--focus:${cardFocus(`cathelier/${p.photoFolder}/${n}`, shapes[i])}">${wholePicture({
           key: `cathelier/${p.photoFolder}/${n}`, shape: shapes[i], widths: rungs(shapes[i].w),
           alt: `${esc(p.name)} — photograph ${i + 1}`,
           sizes: '(min-width: 64rem) 560px, 100vw',

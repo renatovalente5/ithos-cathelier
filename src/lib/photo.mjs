@@ -11,7 +11,7 @@
  * would be the tail wagging the dog. Verified against Pillow on all 209 JPEGs
  * in photos/ -- 209 agree, 0 disagree.
  */
-import { openSync, readSync, closeSync, existsSync } from 'node:fs';
+import { openSync, readSync, closeSync, existsSync, readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -138,4 +138,44 @@ export function cardWidths(dir, name) {
   /* Nunca vazio: um srcset sem candidatos é uma imagem sem endereço nenhum, e
      é melhor prometer o degrau mais pequeno e falhar alto do que servir nada. */
   return tem.length ? tem : [CARD_WIDTHS[0]];
+}
+
+/* ONDE A FOTOGRAFIA FICA DENTRO DA MOLDURA DO CARTÃO.
+ *
+ * A ficha do produto mostra o ficheiro INTEIRO -- é o que a lupa abre e é o que
+ * resolveu o Pai Natal decapitado -- mas a moldura é a do cartão, 3:4, para a
+ * fotografia não mudar de forma entre a montra e a ficha. Com `object-fit:
+ * cover` isso corta, e cortar pelo MEIO é o que este projecto já pagou para
+ * deixar de fazer.
+ *
+ * Então devolve-se aqui o `object-position` que reproduz exactamente o corte
+ * que scripts/cards.py faz ao master: mesma janela, mesmo foco. O ficheiro de
+ * focos é o mesmo, escrito à mão, e não há segunda fonte de verdade.
+ *
+ * A aritmética: a janela visível, em pixels do original, é `larg / R` (ou
+ * `alt * R` quando a fotografia é mais larga do que a moldura). cards.py
+ * coloca-a com o topo em `foco*alt - janela/2`, preso às bordas. E uma
+ * percentagem de object-position é a fracção do que TRANSBORDA que fica antes
+ * da janela -- ou seja `topo / (alt - janela)`.
+ */
+const FOCOS = (() => {
+  const f = join(RAIZ, 'photos', 'focus.json');
+  try { return existsSync(f) ? JSON.parse(readFileSync(f, 'utf8')) : {}; } catch { return {}; }
+})();
+
+export function cardFocus(key, shape) {
+  const foco = typeof FOCOS[key] === 'number' ? FOCOS[key] : 0.5;
+  const R = CARD_RATIO[0] / CARD_RATIO[1];
+  const { w, h } = shape;
+  const pct = (topo, sobra) => (sobra <= 0 ? 50 : Math.max(0, Math.min(100, (topo / sobra) * 100)));
+  if (w / h <= R) {                       // mais alta do que a moldura: corta em altura
+    const janela = Math.round(w / R);
+    const sobra = h - janela;
+    const topo = Math.max(0, Math.min(sobra, Math.round(foco * h - janela / 2)));
+    return `50% ${pct(topo, sobra).toFixed(1)}%`;
+  }
+  const janela = Math.round(h * R);       // mais larga: corta nos lados
+  const sobra = w - janela;
+  const esq = Math.max(0, Math.min(sobra, Math.round(foco * w - janela / 2)));
+  return `${pct(esq, sobra).toFixed(1)}% 50%`;
 }

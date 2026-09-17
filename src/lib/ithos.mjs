@@ -1,5 +1,5 @@
 import { esc, money, picture, prose, wholePicture } from './html.mjs';
-import { shapeOf, rungs } from './photo.mjs';
+import { shapeOf, rungs, cardFocus } from './photo.mjs';
 import { viewer } from './viewer.mjs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -248,7 +248,6 @@ export function product({ p, all, shop }) {
    * off by 18 levels at the median and 117 at the upper quartile, so it would
    * draw a seam instead of hiding one. */
   const shapes = photos.map((n) => shapeOf(join(PHOTOS, dir, `${n}.jpg`)));
-  const shot = shapes.reduce((m, s) => Math.min(m, s.w / s.h), Infinity).toFixed(4);
   const related = all.filter((x) => x.slug !== p.slug)
     .filter((x) => familiesOf(x.slug).some((f) => familiesOf(p.slug).includes(f)))
     .slice(0, 4);
@@ -263,9 +262,9 @@ export function product({ p, all, shop }) {
   return `
 <section class="product shell">
   <div class="product__gallery">
-    <div class="gallery" data-gallery style="--shot:${shot}">
+    <div class="gallery" data-gallery>
       <div class="gallery__track" data-gallery-track>
-        ${photos.map((n, i) => `<div class="gallery__slide" data-index="${i}">
+        ${photos.map((n, i) => `<div class="gallery__slide" data-index="${i}" style="--focus:${cardFocus(`${dir}/${n}`, shapes[i])}">
           ${wholePicture({ key: `${dir}/${n}`, shape: shapes[i],
             alt: `${p.name} — photograph ${i + 1}`,
             widths: rungs(shapes[i].w),

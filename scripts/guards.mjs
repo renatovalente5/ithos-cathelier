@@ -414,7 +414,7 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
     const py = readFileSync(join(ROOT, 'scripts/cards.py'), 'utf8')
       .match(/^PROPORCAO = (\d+) \/ (\d+)/m);
     const css = readFileSync(join(ROOT, 'src/styles/base.css'), 'utf8')
-      .match(/--frame-ratio,\s*(\d+)\s*\/\s*(\d+)\s*\)/);
+      .match(/--frame-ratio,\s*(\.?\d*\.?\d+)\s*\)/);
     const declarado = CARD_RATIO[0] / CARD_RATIO[1];
     if (!py) die('cards.py: cannot read PROPORCAO, the shape it cuts the card masters to');
     else if (Math.abs(Number(py[1]) / Number(py[2]) - declarado) > 1e-6) {
@@ -422,8 +422,8 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
         + `declares ${CARD_RATIO[0]}/${CARD_RATIO[1]} to the browser`);
     }
     if (!css) die('base.css: cannot read the .frame default aspect-ratio');
-    else if (Math.abs(Number(css[1]) / Number(css[2]) - declarado) > 1e-6) {
-      die(`the card shape disagrees: base.css draws ${css[1]}/${css[2]} and photo.mjs `
+    else if (Math.abs(Number(css[1]) - declarado) > 1e-3) {
+      die(`the card shape disagrees: base.css draws ${css[1]} and photo.mjs `
         + `declares ${CARD_RATIO[0]}/${CARD_RATIO[1]} — the grid will jump when the `
         + 'photographs arrive');
     }

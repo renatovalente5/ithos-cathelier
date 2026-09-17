@@ -454,7 +454,7 @@ html[data-cover='yes'][data-scrolled='no'] :is(.head__mark, .head__sibling-mark)
     /* A mesma forma da fotografia grande: um botão quadrado sobre um
        ficheiro 3:4 voltava a cortá-lo, e a tira deixava de parecer a mesma
        fotografia em pequeno. */
-    min-width: 26px; aspect-ratio: var(--frame-ratio, 3 / 4);
+    min-width: 26px; aspect-ratio: var(--frame-ratio, .75);
     padding: 0; border: 1px solid var(--line); background: none;
     border-radius: var(--radius, 0); overflow: hidden; cursor: pointer;
     opacity: .62; transition: opacity .2s ease, border-color .2s ease;
@@ -647,16 +647,18 @@ html[data-cover='yes'][data-scrolled='no'] :is(.head__mark, .head__sibling-mark)
 .gallery { position: relative; overflow: hidden; }
 .gallery__track { display: flex; transition: translate .4s cubic-bezier(.22,.61,.36,1); }
 @media (prefers-reduced-motion: reduce) { .gallery__track { transition: none; } }
-/* THE SLIDE IS THE SHAPE OF THE PHOTOGRAPH, NOT A SQUARE.
-   --shot is written on .gallery by the build: the narrowest ratio among this
-   product's own photographs, so every slide shares one box and the carousel
-   cannot change height as you move through it. `contain` is the other half and
-   the two only work together -- a square file in a 2:3 box under `cover` would
-   crop top AND bottom, which is worse than what was there before.
-   Capped at 78svh so a tall lamp cannot swallow a whole phone screen. */
+/* A MOLDURA DA FICHA É A DO CARTÃO, E O FICHEIRO CONTINUA INTEIRO.
+   Era a forma de cada fotografia (--shot), e por isso a fotografia mudava de
+   forma entre a montra e a ficha: 3:4 no cartão, 2:3 aqui, à frente de quem
+   tinha acabado de clicar. Agora é a mesma moldura em todo o lado.
+   O que está no DOM continua a ser o ficheiro INTEIRO -- é isso que a lupa
+   abre, e é o que resolveu o Pai Natal decapitado. Aqui ele é `cover`ido pela
+   moldura, e --focus, escrito pela construção, reproduz EXACTAMENTE o corte
+   que scripts/cards.py faz ao master: mesma janela, mesmo foco escrito à mão.
+   Cortar pelo meio é o que este projecto já pagou para deixar de fazer. */
 .gallery__slide {
   flex: 0 0 100%;
-  aspect-ratio: var(--shot, 1);
+  aspect-ratio: var(--frame-ratio, .75);
   background: var(--frame-bg);
   overflow: hidden;
 }
@@ -667,9 +669,13 @@ html[data-cover='yes'][data-scrolled='no'] :is(.head__mark, .head__sibling-mark)
    the gallery's width instead keeps the ratio and simply makes the whole frame
    smaller on a tall screen. The slides stay 100% of it, so the carousel is
    untouched. */
-.gallery { max-inline-size: calc(78svh * var(--shot, 1)); margin-inline: auto; }
+.gallery { max-inline-size: calc(78svh * var(--frame-ratio, .75)); margin-inline: auto; }
 .gallery__slide > picture { display: block; width: 100%; height: 100%; }
-.gallery__slide img { width: 100%; height: 100%; object-fit: contain; }
+.gallery__slide img {
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: var(--focus, 50% 50%);
+}
 .gallery__track { align-items: flex-start; }
 /* --- the photograph, full size ----------------------------------------------
    Declared `position: fixed`, like the menu panel, and for the same measured
@@ -736,8 +742,6 @@ html[data-cover='yes'][data-scrolled='no'] :is(.head__mark, .head__sibling-mark)
   display: block; margin: auto; align-self: center;
   width: auto; height: auto; max-width: 100%; max-height: 100%;
 }
-.lightbox[data-zoom='yes'] .lightbox__stage { cursor: grab; }
-.lightbox[data-zoom='yes'] .lightbox__img { max-width: none; max-height: none; width: auto; height: auto; }
 
 /* The button that opens it, over the photograph. Its ground is the photograph,
    which has no measurable colour, so it is an opaque chip rather than a
@@ -1189,7 +1193,7 @@ html.menu-open { overflow: hidden; }
 .maker__text h2 { margin-block-end: 1.25rem; }
 .maker__text p + p { margin-block-start: 1rem; }
 .maker__sign { margin-block-start: 1.5rem; color: var(--ink); }
-.maker__photo { --frame-ratio: 4 / 3; }
+.maker__photo { --frame-ratio: 1.3333; }
 
 .product__blurb { margin-block-start: 1rem; font-size: 15px; line-height: 1.8; color: var(--muted); }
 .product__lead { display: flex; align-items: center; gap: .5rem; }

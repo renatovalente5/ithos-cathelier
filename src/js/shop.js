@@ -965,14 +965,12 @@ function lightbox() {
   // the menu already carries: a dialog that is open cannot be opened again.
   if (box.open) box.close();
 
-  const zoomBtn = $('[data-box-zoom]', box);
   let last = null;                      // what to give the focus back to
 
-  const fit = () => {
-    box.dataset.zoom = 'no';
-    zoomBtn?.setAttribute('aria-pressed', 'false');
-    stage.scrollTo(0, 0);
-  };
+  /* Sem botão de tamanho real: a lupa mostra a fotografia inteira à maior
+     dimensão que cabe, e mais nada. Um segundo estado dentro de um visor que
+     já é um estado era uma escolha a pedir outra escolha. */
+  const fit = () => stage.scrollTo(0, 0);
 
   const show = (from) => {
     const src = $('img', from);
@@ -1022,21 +1020,6 @@ function lightbox() {
     if (!slide) return;
     last = opener;
     show($('picture', slide));
-  });
-
-  zoomBtn?.addEventListener('click', () => {
-    const on = box.dataset.zoom === 'yes';
-    box.dataset.zoom = on ? 'no' : 'yes';
-    zoomBtn.setAttribute('aria-pressed', on ? 'false' : 'true');
-    if (on) stage.scrollTo(0, 0);
-    else {
-      // Land on the middle of the photograph, not its top-left corner.
-      const im = $('img', stage);
-      if (im) requestAnimationFrame(() => stage.scrollTo({
-        left: (stage.scrollWidth - stage.clientWidth) / 2,
-        top: (stage.scrollHeight - stage.clientHeight) / 2,
-      }));
-    }
   });
 
   $('[data-box-close]', box)?.addEventListener('click', hide);
