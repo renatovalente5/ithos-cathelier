@@ -26,6 +26,95 @@
    against a token instead of against pixels, which is the only thing the
    battery can actually do. */
 .hero { position: relative; }
+
+/* --- the cover ------------------------------------------------------------
+   One photograph filling the first screen, with the brand's words over it.
+
+   THE SHAPE IS THE TALLEST ONE, AND EVERY WIDER SCREEN IS A BAND OF IT
+   The master is 4:5 because `object-fit: cover` can take a wide band out of a
+   tall picture and never the other way round. The three steps below are not
+   taste: a studio portrait shows `width / aspect` pixels of its subject, and
+   the horse lamp is 1856px tall in a 3719px frame, so anything past 2:1 cuts
+   its legs off. 16/9 with the viewport cap tops out near 1.92:1 on a 1920px
+   screen, which still leaves the lamp -- and the round straw base under it --
+   whole in the frame.
+
+   THE WORDS SIT ON A FLAT PANEL, NOT ON THE PHOTOGRAPH
+   Text straight on a photograph has no contrast that can be measured: the
+   ground is whatever the picture is at that pixel, and it changes the day the
+   owner swaps the file. A gradient is worse than nothing, because the guard
+   reads the declared colour -- the strong end -- and passes while the weak end
+   is unreadable. So the panel is FLAT and nearly opaque: at 92% the darkest
+   photograph underneath can shift it by at most 8% toward black, which is a
+   worst case that can be computed instead of hoped for. */
+.cover {
+  position: relative;
+  isolation: isolate;
+  display: grid;
+}
+.cover__media,
+.cover__words { grid-area: 1 / 1; }
+
+.cover__media {
+  display: block;
+  inline-size: 100%;
+  aspect-ratio: 4 / 5;
+  /* On a phone the cover should be the screen, not a postcard on it. 150vw is
+     the floor; the viewport cap stops a short landscape phone from pushing
+     everything else below the fold entirely. */
+  min-block-size: min(70svh, 150vw);
+  max-block-size: calc(100svh - 3.5rem);
+  overflow: hidden;
+}
+.cover__img {
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+  object-position: var(--cover-focus, 50% 50%);
+}
+
+.cover__words {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: end;
+  padding: clamp(1rem, 4vw, 3rem);
+}
+.cover__panel {
+  inline-size: min(100%, 34rem);
+  padding: clamp(1.1rem, 3.5vw, 2rem);
+  border-radius: var(--radius);
+  background: var(--cover-panel);
+  color: var(--cover-ink);
+}
+.cover__title {
+  margin: 0;
+  color: inherit;
+  font-size: clamp(1.75rem, 5.2vw, 3.25rem);
+  line-height: 1.08;
+  text-wrap: balance;
+}
+.cover__text {
+  margin: .7rem 0 0;
+  color: inherit;
+  font-size: clamp(.95rem, 2.2vw, 1.1rem);
+  max-inline-size: 34ch;
+}
+.cover__btn { margin-block-start: clamp(.9rem, 2.5vw, 1.4rem); }
+
+@media (width >= 48rem) {
+  .cover__media {
+    aspect-ratio: 4 / 3;
+    min-block-size: 0;
+    max-block-size: calc(100svh - 5rem);
+  }
+  .cover__img { object-position: var(--cover-focus-wide, 50% 50%); }
+  .cover__words { padding: clamp(2rem, 4vw, 4rem); }
+}
+@media (width >= 64rem) {
+  .cover__media { aspect-ratio: 16 / 9; }
+}
+
 .hero__cta {
   display: inline-flex; align-items: center; min-height: 26px;
   font-size: 12px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase;

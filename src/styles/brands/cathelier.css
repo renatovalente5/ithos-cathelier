@@ -39,6 +39,13 @@
   --line: #EADDCF;
   --line-soft: #F2E7DA;
   --accent: #634A3A;
+
+  /* Same 72% panel, but the cover ink is DARKER than the body ink on purpose:
+     --ink (#6B4E3C) over the worst-case panel is 3.58:1, which fails. #4A3527
+     is 5.44:1 on the same worst case. A brand colour that works on the page
+     does not automatically work over a photograph. */
+  --cover-panel: rgb(255 248 242 / .72);
+  --cover-ink: #4A3527;
   --accent-deep: #4B372A;
   --accent-ink: #FFF8F2;
   --frame-bg: #F7EFE6;
@@ -102,97 +109,6 @@
   font-family: var(--font-body); font-size: 14px; letter-spacing: .03em; text-transform: none;
 }
 [data-brand='cathelier'] .drawer__nav a { font-size: 1.15rem; letter-spacing: .03em; }
-
-/* --- the cover: ten doors ----------------------------------------------------
-   The model shop opens with a seasonal banner and a row of round occasion
-   badges. This shop cannot have the banner and can have the badges, so the
-   badges ARE the banner.
-
-   The arithmetic that settles it. Every photograph this shop owns is a 361px
-   Instagram frame — ten of them, shared between all 41 pieces. The cover box is
-   753px wide at 768 and 1425px at 1440, so a photograph in it is shown at 2.09x
-   and 3.95x (4.17x and 7.89x on a retina screen), where one pixel of the file is
-   painted as a square of 15.6 pixels. The ceiling for these files is about 470px
-   of display width, and the old cover crossed it at the first breakpoint. At 768
-   that cover was 259px of brown panel over 28px of photograph — a panel with a
-   picture on it, not a cover.
-
-   The photographs are not gone, they moved to where they stay sharp: the
-   product frames (280-332px) and the two feature mosaics, which put four of
-   them at 332px, or 0.92x — untouched.
-
-   What the cover shows instead is the catalogue itself. Ten occasions, ten
-   marks, and each mark is a drawing of the piece that occasion really sells:
-   the daisy for Mother's Day, the birth disc with its rows of data, the
-   trophy. Drawn and not photographed for the reason in occasions-art.mjs — at
-   80px a photograph of a small engraved disc is a beige smudge.
-
-   The other shop could not wear this cover. ithos sells into one occasion, the
-   bedroom, so a row of doors there would be ten ways to the same place.
-
-   Two shapes. Ten circles with names under them need four rows at 320px, which
-   is 444px of cover before the line is set; so the phone lays them as two
-   columns of rows with the mark beside the name, 48px tall. The circles come
-   back at 48rem, where five fit on a line. */
-[data-brand='cathelier'] .hero--doors {
-  background: var(--bg-trust);                  /* #F7EDE3, full bleed */
-  padding-block: clamp(1.25rem, 4vw, 2.5rem) clamp(1.25rem, 3.5vw, 2.25rem);
-  border-block-end: 1px solid var(--line);
-}
-
-/* (0,2,0), which beats `[data-brand='cathelier'] h1` at (0,1,1). The old
-   `.hero__title` was (0,1,0) and lost, so the cover headline was rendering at
-   the generic h1 size — 40px instead of the 2.5rem the cover asked for. */
-[data-brand='cathelier'] .doors__line {
-  font-family: var(--font-display); font-weight: 200; letter-spacing: .02em;
-  font-size: clamp(1.6rem, 1.1rem + 2.2vw, 2.5rem);
-  line-height: 1.2; color: var(--ink);          /* #6B4E3C on #F7EDE3 */
-  max-width: 28ch; margin-inline: auto; text-align: center;
-  padding-block-end: clamp(.9rem, 2.5vw, 1.5rem);
-}
-
-.doors { display: grid; gap: .4rem; grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.door {
-  display: flex; align-items: center; gap: .6rem;
-  min-height: 48px; padding: .2rem .4rem .2rem .2rem;
-  border-radius: var(--pill); text-decoration: none;
-  transition: background-color .2s ease;
-}
-.door:hover { background: var(--bg); }
-.door__mark {
-  flex: none; width: 40px; aspect-ratio: 1; border-radius: 999px;
-  display: grid; place-items: center; overflow: hidden;
-  background: var(--bg); border: 1px solid var(--line); color: var(--accent);
-  transition: border-color .2s ease;
-}
-.door:hover .door__mark { border-color: var(--accent); }
-/* The mark is sized here and not by the attribute, so one drawing serves 40px
-   and 96px. No `fill` in this rule: the drawings carry fill="none" on the
-   element and a CSS fill would overrule the attribute and blacken every one. */
-.door__mark svg { width: 62%; height: 62%; }
-.door__name {
-  font-family: var(--font-body); font-size: 14px; font-weight: 400;
-  letter-spacing: .03em; line-height: 1.25; color: var(--ink);
-}
-
-@media (width >= 48rem) {
-  .doors { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 1.5rem .75rem; }
-  .door { flex-direction: column; gap: .55rem; text-align: center; min-height: 0; padding: .4rem; border-radius: var(--radius); }
-  .door__mark { width: clamp(76px, 8vw, 96px); }
-  .door__name { font-size: 15px; max-width: 13ch; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .door, .door__mark { transition: none; }
-}
-
-[data-brand='cathelier'] .doors__more { text-align: center; padding-block-start: clamp(1rem, 3vw, 1.5rem); }
-[data-brand='cathelier'] .hero__cta {
-  color: var(--accent);                         /* #634A3A on #F7EDE3 */
-  letter-spacing: .12em;
-  padding-block-end: 4px;
-  border-block-end: 1px solid rgb(99 74 58 / .45);
-}
-[data-brand='cathelier'] .hero__cta:hover { color: var(--accent-deep); border-block-end-color: var(--accent-deep); }
 
 /* --- the round occasion badges ----------------------------------------------
    The row of circles under the banner, which is how that shop's whole

@@ -33,6 +33,14 @@
   --accent-ink: #FFFFFF;
   --frame-bg: #F6F1EC;
 
+  /* The cover panel. 72% and not more so the photograph reads through it, and
+     not less because the worst case has to hold: composited over a BLACK
+     photograph this cream lands at #B8B1AA, and #4A3226 on that is 5.58:1.
+     Over the actual terracotta it is far better -- 5.58 is the floor, not the
+     measurement. scripts/battery samples the real pixels and checks. */
+  --cover-panel: rgb(255 246 236 / .72);
+  --cover-ink: #4A3226;
+
   --font-body: 'Montserrat', system-ui, sans-serif;
   --font-display: 'Cormorant Garamond', Georgia, serif;
   --size-body: 14px;
@@ -88,84 +96,6 @@
    "handmade in Portugal" line under it. Both are honoured in the asset itself
    — assets/brand/ithos-wordmark.svg has the strapline path removed and the
    viewBox tightened, so nothing here has to crop it. */
-
-/* --- the cover: a shelf of lamps -------------------------------------------
-   The model shop's cover is a full-width photograph with one serif line and a
-   quiet link. This is that, with the one substitution the material forces: the
-   full-width photograph is made of four square ones laid edge to edge.
-
-   Why, in numbers. The old cover stretched one square master to 16/7, which
-   keeps 43.8% of its height — and that master was already a 1:1 crop of a
-   1024x1536 portrait, so 70.8% of the file never reached the screen. On a
-   studio shot of one object on a plain ground there is no spare matter: the
-   band either has the middle of the lamp or it has nothing. Measured across the
-   90 squares, a 43.8% band keeps a median 49% of the edge energy; on the whale
-   it kept 26%, which is a white curve, an eye and half a straw mat. The
-   silhouette IS the product — it is what tells a whale from a sheep.
-
-   So nothing is cropped. Every cell is 1:1 over a 1:1 master, which is the same
-   deal the product grid already gets, and the widest the photograph is ever
-   shown is 360px at a 1440 viewport: 0.36x of the 1000px file. The old cover
-   showed it at 1.43x, and 2.85x on a retina screen.
-
-   The joins are the whole trick and they are measurable: the four ground
-   colours are #9C6C4B, #AE7E5D, #B1805F and #AD7D5C. Put any lamp shot on the
-   round straw mat in here and the band breaks in two.
-
-   Gap is zero and the corners are square, because this shop is square. Do not
-   add a gap: the gap is what turns a band back into four pictures. */
-[data-brand='ithos'] .hero--shelf { padding-block-start: clamp(1.25rem, 3.5vw, 2.5rem); }
-
-/* The one serif line on the page, and it sits on white rather than on pixels.
-   The brand rule `[data-brand='ithos'] h1` is (0,1,1) and outranked the old
-   `.hero__title` (0,1,0), so the cover's clamp never applied and the headline
-   rendered at 34.4px instead of 49.6px. This selector is (0,2,0) and wins. */
-[data-brand='ithos'] .shelf__line {
-  font-family: var(--font-display); font-weight: 300;
-  font-size: clamp(1.75rem, 1rem + 3.4vw, 3.1rem);
-  line-height: 1.15; color: #242424;          /* 15.5:1 on white */
-  max-width: 24ch; margin-inline: auto; text-align: center;
-  padding-block-end: clamp(.9rem, 2.5vw, 1.6rem);
-}
-
-[data-brand='ithos'] .shelf {
-  display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 0; background: var(--frame-bg);
-}
-[data-brand='ithos'] .shelf__cell { display: block; aspect-ratio: 1; overflow: hidden; }
-[data-brand='ithos'] .shelf__cell > picture { display: block; width: 100%; height: 100%; }
-[data-brand='ithos'] .shelf__cell img { width: 100%; height: 100%; object-fit: cover; }
-/* The ring goes INSIDE the cell: these run to the edge of the glass, and an
-   outline offset by 3px is clipped there and reads as a missing side. */
-[data-brand='ithos'] .shelf__cell:focus-visible { outline-offset: -5px; }
-
-/* Two cells on a phone, three at a tablet, four on a laptop — the number of
-   pieces changes, the crop never does. Cells that are not showing are `lazy`,
-   so a phone does not fetch the two it cannot see. */
-[data-brand='ithos'] .shelf__cell:nth-child(n + 3) { display: none; }
-@media (width >= 48rem) {
-  [data-brand='ithos'] .shelf { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  [data-brand='ithos'] .shelf__cell:nth-child(3) { display: block; }
-}
-@media (width >= 80rem) {
-  [data-brand='ithos'] .shelf { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-  [data-brand='ithos'] .shelf__cell:nth-child(4) { display: block; }
-}
-
-[data-brand='ithos'] .shelf__cell img { transition: scale .5s cubic-bezier(.22,.61,.36,1); }
-[data-brand='ithos'] .shelf__cell:hover img { scale: 1.03; }
-@media (prefers-reduced-motion: reduce) {
-  [data-brand='ithos'] .shelf__cell img { transition: none; }
-  [data-brand='ithos'] .shelf__cell:hover img { scale: 1; }
-}
-
-[data-brand='ithos'] .shelf__more { text-align: center; padding-block-start: clamp(1.1rem, 3vw, 1.75rem); }
-[data-brand='ithos'] .hero__cta {
-  color: var(--accent);                        /* #A5523B on white = 5.43:1 */
-  padding-block-end: 4px;
-  border-block-end: 1px solid rgb(165 82 59 / .45);
-}
-[data-brand='ithos'] .hero__cta:hover { color: var(--accent-deep); border-block-end-color: var(--accent-deep); }
 
 /* --- the footer is WARM, and it is the one thing that stops a white shop
    reading as a spreadsheet. Theirs is this exact peach. */

@@ -140,6 +140,73 @@ window.__bateria = function () {
   }
   nota(maus.length === 0, `contraste de ${textos.length} textos`, maus.slice(0, 5).join(' · '));
 
+  // --- contraste POR CIMA DA FOTOGRAFIA DA CAPA ----------------------------
+  /* O teste de cima não serve para a capa, e não é um pormenor.
+     Ele resolve o fundo subindo pelos antepassados até encontrar um opaco, e
+     para as palavras da capa esse fundo é o painel translúcido composto sobre
+     o BRANCO do corpo — o caso mais favorável que existe. O fundo verdadeiro é
+     a fotografia, que muda de pixel para pixel e muda outra vez no dia em que a
+     dona trocar o ficheiro.
+     Por isso aqui a fotografia é DESENHADA numa tela, lê-se a região que fica
+     debaixo do painel, compõe-se o painel com a sua opacidade por cima de cada
+     amostra e mede-se o pior caso. É a única forma de a medição continuar
+     verdadeira quando a fotografia deixar de ser esta. */
+  const capaImg = document.querySelector('.cover__img');
+  const capaPainel = document.querySelector('.cover__panel');
+  if (capaImg && capaPainel) {
+    /* A fonte dos pixels é a cópia que o condutor descodificou, quando existe:
+       a `<img>` da página passa segundos com `naturalWidth` a zero dentro de
+       uma moldura escondida. A geometria continua a sair da `<img>`, que é o
+       que está mesmo desenhado no ecrã. */
+    const fonte = window.__capaFoto && window.__capaFoto.naturalWidth
+      ? window.__capaFoto : capaImg;
+    if (!fonte.naturalWidth) {
+      nota(false, 'contraste da capa sobre a fotografia', 'a fotografia não chegou a carregar');
+    } else {
+      const cx = capaImg.getBoundingClientRect();
+      const px = capaPainel.getBoundingClientRect();
+      const [iw, ih] = [fonte.naturalWidth, fonte.naturalHeight];
+      // object-fit: cover — a escala é a MAIOR das duas, e o resto sai da caixa.
+      const k = Math.max(cx.width / iw, cx.height / ih);
+      const [dw, dh] = [iw * k, ih * k];
+      const pos = getComputedStyle(capaImg).objectPosition.match(/[\d.]+/g) || ['50', '50'];
+      const ox = (cx.width - dw) * (parseFloat(pos[0]) / 100);
+      const oy = (cx.height - dh) * (parseFloat(pos[1]) / 100);
+      // o rectângulo do painel, em coordenadas da fotografia original
+      const sx = (px.left - cx.left - ox) / k;
+      const sy = (px.top - cx.top - oy) / k;
+      const sw = px.width / k;
+      const sh = px.height / k;
+
+      const N = 24;
+      const t = document.createElement('canvas');
+      t.width = N; t.height = N;
+      const c = t.getContext('2d', { willReadFrequently: true });
+      let pior = Infinity, onde = '';
+      try {
+        c.drawImage(fonte, sx, sy, sw, sh, 0, 0, N, N);
+        const dados = c.getImageData(0, 0, N, N).data;
+        const painel = getComputedStyle(capaPainel).backgroundColor;
+        const tinta = getComputedStyle(capaPainel).color;
+        for (let n = 0; n < N * N; n++) {
+          const foto = `rgb(${dados[n * 4]},${dados[n * 4 + 1]},${dados[n * 4 + 2]})`;
+          // o painel, com a sua opacidade, COMPOSTO SOBRE ESTE pixel da foto
+          const fundo = `rgb(${rgbDe(painel, foto).join(',')})`;
+          const [a, b] = [lum(tinta, fundo), lum(fundo)].sort((q, w) => w - q);
+          const r = (a + 0.05) / (b + 0.05);
+          if (r < pior) { pior = r; onde = foto; }
+        }
+      } catch (e) {
+        pior = NaN; onde = String(e.message || e);
+      }
+      // O título da capa é grande (3:1 basta pela norma), mas a frase por baixo
+      // não é: mede-se pelo mínimo dos dois, que é o do texto pequeno.
+      nota(pior >= 4.5, 'contraste da capa sobre a fotografia',
+        Number.isFinite(pior) ? `pior pixel ${pior.toFixed(2)}:1 sobre ${onde} (min 4.5)` : onde);
+    }
+  }
+
+
   // --- alvos de toque ------------------------------------------------------
   /* Duas isenções, e as duas são da própria norma (WCAG 2.5.8):
      · um campo dentro de uma <label> tem como alvo A ETIQUETA INTEIRA, que é

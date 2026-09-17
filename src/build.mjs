@@ -80,6 +80,19 @@ const read = (p) => JSON.parse(readFileSync(join(CONTENT, p), 'utf8'));
 const identity = read('settings/identity.json');
 const shipping = read('settings/shipping.json');
 const shop = read('settings/shop.json');
+const covers = read('settings/covers.json');
+
+/* Which cover renditions actually exist, counted off disk rather than assumed.
+   The cathelier master is an enlarged Instagram still and stops short of the
+   widest size; promising a file that was never written is how 548 broken image
+   references got shipped once already. */
+const COVER_WIDTHS = [640, 960, 1280, 1600, 2000, 2600];
+const coverWidths = (brand) => {
+  const have = COVER_WIDTHS.filter((w) =>
+    existsSync(join(ROOT, 'public/media/covers', `${brand}-${w}.webp`)));
+  if (!have.length) throw new Error(`No cover renditions for ${brand}. Run scripts/covers.py then scripts/renditions.py.`);
+  return have;
+};
 
 /* --- content -------------------------------------------------------------- */
 
@@ -209,7 +222,7 @@ function buildIthos() {
     title: 'ithos — handmade wooden night lights for children’s rooms',
     description: 'Wooden night lights cut, sanded and painted by hand in Castelo Branco, Portugal. '
       + `${lamps.length} designs, each one able to carry an engraved name.`,
-    body: ithos.home({ products: lamps, identity }),
+    body: ithos.home({ products: lamps, identity, cover: covers.ithos, coverWidths: coverWidths('ithos') }),
     schema: [{
       '@context': 'https://schema.org', '@type': 'Organization',
       name: 'ithos', url: SITE, email: identity.email, telephone: identity.phone,
@@ -254,7 +267,7 @@ function buildCathelier() {
     title: 'cathelier — personalised pieces, cut and engraved to order',
     description: `Laser-cut wooden keepsakes with your names, dates and words on them. `
       + `${occasions.length} occasions, ${pieces.length} pieces, each with a proof to approve before we cut.`,
-    body: cath.home({ occasions, pieces }),
+    body: cath.home({ occasions, pieces, cover: covers.cathelier, coverWidths: coverWidths('cathelier') }),
   }));
 
   for (const o of occasions) {

@@ -70,6 +70,29 @@ for (const pag of PAGINAS) {
   document.body.appendChild(f);
   await new Promise(r => { f.onload = r; setTimeout(r, 4000); });
   await new Promise(r => setTimeout(r, 900));
+
+  /* A fotografia da capa, descodificada aqui e entregue à bateria.
+   *
+   * A verificação do contraste da capa desenha a fotografia numa tela, e uma
+   * tela vazia não tem cor nenhuma — mediria o painel sobre preto e diria que
+   * está tudo bem. Mas não se pode esperar pela própria `<img>` da página:
+   * numa moldura fora do ecrã o browser troca de candidato do `srcset` a meio
+   * e fica com `complete` a verdade e `naturalWidth` a zero, e assim ficou
+   * seis segundos seguidos nas duas corridas em que isto foi medido.
+   *
+   * Uma imagem NOVA com o mesmo endereço, sem `srcset`, descodifica à
+   * primeira. É essa que a bateria usa; a `<img>` da página continua a dar a
+   * geometria, que é o que ela sabe de facto. */
+  try {
+    const w0 = f.contentWindow;
+    const capa = w0.document.querySelector('.cover__img');
+    if (capa && capa.currentSrc) {
+      const foto = new w0.Image();
+      foto.src = capa.currentSrc;
+      await new Promise(r => { foto.onload = r; foto.onerror = r; setTimeout(r, 6000); });
+      if (foto.naturalWidth) w0.__capaFoto = foto;
+    }
+  } catch (e) { /* outra origem não acontece aqui; se acontecer, a verificação acusa */ }
   try {
     const w = f.contentWindow;
     const s = w.document.createElement('script');

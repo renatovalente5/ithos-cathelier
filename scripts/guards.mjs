@@ -114,6 +114,39 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
   }
 }
 
+/* --- covers ---------------------------------------------------------------
+   The cover is the first thing anybody sees, and every word on it is typed in
+   the back office. An emptied headline does not break a build -- it publishes
+   a photograph with a blank panel on it, which nobody notices from a diff.
+   The picture is checked too: the page points at renditions, and a cover
+   swapped without running the two scripts would be twelve broken references
+   on the busiest page of the site. */
+{
+  const covers = read('settings/covers.json');
+  for (const brand of ['ithos', 'cathelier']) {
+    const c = covers[brand];
+    if (!c) { die(`covers.json: "${brand}" has no cover at all`); continue; }
+    if (!c.title) die(`covers.json: the ${brand} cover has no title`);
+    if (!c.alt) die(`covers.json: the ${brand} cover photograph has no alt text`);
+    if ((c.buttonLabel && !c.buttonHref) || (c.buttonHref && !c.buttonLabel)) {
+      die(`covers.json: the ${brand} cover button has a label or an address but not both`);
+    }
+    for (const key of ['focus', 'focusWide']) {
+      if (c[key] && !/^\s*[\d.]+%\s+[\d.]+%\s*$/.test(c[key])) {
+        die(`covers.json: ${brand}.${key} must be two percentages, like "50% 44%" — got "${c[key]}"`);
+      }
+    }
+    if (!existsSync(join(ROOT, 'photos/_covers', `${brand}.jpg`))) {
+      die(`covers.json: photos/_covers/${brand}.jpg is missing — run scripts/covers.py`);
+    }
+    if (!existsSync(join(ROOT, 'public/media/covers', `${brand}-640.webp`))) {
+      die(`covers.json: the ${brand} cover has no renditions — run scripts/renditions.py`);
+    }
+    if (!c.text) pending(`covers.json: the ${brand} cover has no sentence under the title`);
+  }
+}
+
+
 /* --- report --------------------------------------------------------------- */
 for (const w of warnings) console.warn(`  warning: ${w}`);
 if (deaths.length) {

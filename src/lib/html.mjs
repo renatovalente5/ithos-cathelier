@@ -44,3 +44,25 @@ export function picture({ dir, name, alt, sizes, widths = [200, 400, 600, 1000],
 /** Line-broken prose from a content field. */
 export const prose = (text) => String(text || '').split(/\n{2,}/)
   .map((p) => `<p>${esc(p.trim())}</p>`).join('\n      ');
+
+/**
+ * The <picture> for a brand cover.
+ *
+ * Separate from picture() because that one writes width and height equal --
+ * every product master is square, and a cover is the one image on the site
+ * that is not. Passing a square box for a 4:5 file would reserve the wrong
+ * space and shift the page the moment the photograph arrived.
+ */
+export function coverPicture({ name, alt, sizes, widths }) {
+  /* The widths are the ones that EXIST, counted off disk by the build. The
+     cathelier master is an enlarged Instagram still and stops at 1600; a
+     srcset promising 2600 would be 548 broken references all over again. */
+  const set = (ext) => widths.map((w) => `/media/covers/${name}-${w}.${ext} ${w}w`).join(', ');
+  const biggest = Math.max(...widths);
+  return `<picture class="cover__media">
+      <source type="image/avif" srcset="${set('avif')}" sizes="${sizes}">
+      <source type="image/webp" srcset="${set('webp')}" sizes="${sizes}">
+      <img class="cover__img" src="/media/covers/${esc(name)}-${biggest}.webp" alt="${esc(alt)}"
+           width="${biggest}" height="${Math.round(biggest * 5 / 4)}" fetchpriority="high" decoding="async">
+    </picture>`;
+}
