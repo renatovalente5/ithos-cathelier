@@ -63,6 +63,25 @@ CX=$(python3 -c "print(max(0, min($MW-$CW, int($MW*$FOCUS - $CW/2)))//2*2)")
 
 mkdir -p "$OUT"
 
+# O BRILHO DO FILME, E PORQUE É AQUI QUE ELE SE MEXE.
+#
+# A dona achou a capa escura de mais. O véu por cima dela não é o manípulo: o
+# mínimo dele é fixado pelo texto PEQUENO da barra, que no topo é lido contra
+# ele, e está a 58% para um chão de 55,9%. Baixá-lo tornaria a palavra «Menu»
+# ilegível sobre um LED aceso.
+#
+# O brilho do próprio filme, esse, é livre: o limite do véu é calculado sobre
+# BRANCO PURO, portanto nenhuma gravação o pode piorar, por mais clara que
+# seja. Gamma e não brightness, porque gamma levanta os meios-tons e as sombras
+# e deixa as altas luzes onde estão -- e as altas luzes aqui são os LEDs, que
+# já estão no máximo e não têm para onde subir.
+#
+# 1.5 foi medido: o composto passa de mediana 39 para 56. A 1.75 fica baço.
+# E a mesma correcção vai nos QUATRO derivados -- os dois filmes e os dois
+# quadros parados -- porque foi uma discordância entre eles que já pôs a capa a
+# dar um salto de luz no instante em que o filme arrancava.
+COR="eq=gamma=1.5"
+
 pingpong () {   # $1 = the filter that shapes one pass
   echo "[0:v]$1,split[a][b];[b]reverse[r];[a][r]concat=n=2:v=1,format=yuv420p[v]"
 }
@@ -81,8 +100,8 @@ still () {   # $1 = filter, $2 = master name in photos/_covers
 }
 
 echo "master ${MW}x${MH}, tall cut ${CW} wide at x=${CX} (focus ${FOCUS})"
-encode "scale=1600:-2"                    "$NAME.mp4"
-encode "crop=$CW:$MH:$CX:0,scale=720:-2"  "$NAME-tall.mp4"
+encode "$COR,scale=1600:-2"               "$NAME.mp4"
+encode "$COR,crop=$CW:$MH:$CX:0,scale=720:-2" "$NAME-tall.mp4"
 
 # THE STILL IS THE FILM'S FIRST FRAME, ONE PER CUT.
 #
@@ -101,7 +120,7 @@ encode "crop=$CW:$MH:$CX:0,scale=720:-2"  "$NAME-tall.mp4"
 # from them exactly as it does for the photographic masters. They do not
 # overwrite those: covers.py writes <brand>.jpg and nothing else, so deleting
 # "film" from covers.json puts the photograph back with nothing to undo.
-still "scale=1920:-2"                     "$NAME-still-wide"
-still "crop=$CW:$MH:$CX:0"                "$NAME-still"
+still "$COR,scale=1920:-2"                "$NAME-still-wide"
+still "$COR,crop=$CW:$MH:$CX:0"           "$NAME-still"
 echo
 echo "now:  python3 scripts/renditions.py"
