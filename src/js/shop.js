@@ -196,13 +196,36 @@ document.addEventListener('DOMContentLoaded', () => {
        was tripping the old 120 threshold by three pixels -- the page jumped,
        settled, and then slid another 22-34px on its own. */
     const SHRINK_AT = 240, GROW_AT = 150;
+
+    /* TWO STATES, ONE CLOCK.
+       The bar loses its background at the very top and takes it back the
+       moment the page moves; separately, and much further down, it shrinks.
+       Those are different questions with different answers, but they are the
+       same READING of the same number, so they are decided together in one
+       handler. A second scroll listener would be a second rAF, a second write
+       to the same element's style in the same frame, and two pieces of code
+       that can disagree about where the page is.
+
+       The background needs its own band for the same reason the shrink has
+       one: at a single threshold, a page resting within a pixel of it flickers
+       between the two states forever. 12 and 2 is a small band, because the
+       gesture it has to track is "has the reader moved at all", but it is not
+       zero -- and 2 rather than 0 because elastic overscroll goes negative. */
+    const LIFT_AT = 12, DROP_AT = 2;
     let queued = false;
     const decide = () => {
       queued = false;
-      const now = head.dataset.shrunk === 'yes';
       const y = scrollY;
-      const next = y >= SHRINK_AT ? true : y <= GROW_AT ? false : now;
-      if (next !== now) head.dataset.shrunk = next ? 'yes' : 'no';
+
+      const shrunkNow = head.dataset.shrunk === 'yes';
+      const shrunkNext = y >= SHRINK_AT ? true : y <= GROW_AT ? false : shrunkNow;
+      if (shrunkNext !== shrunkNow) head.dataset.shrunk = shrunkNext ? 'yes' : 'no';
+
+      /* On the ROOT, because the one-line script in <head> already wrote it
+         there before the first paint and the stylesheet reads it there. */
+      const movedNow = document.documentElement.dataset.scrolled === 'yes';
+      const movedNext = y >= LIFT_AT ? true : y <= DROP_AT ? false : movedNow;
+      if (movedNext !== movedNow) document.documentElement.dataset.scrolled = movedNext ? 'yes' : 'no';
     };
     headSettle = decide;
 
@@ -1098,63 +1121,72 @@ function productForm() {
 /* --- the film on the cover -------------------------------------------------
    WHAT DECIDES, AND WHAT MERELY FOLLOWS
 
-   Three questions decide whether the film runs, and none of them is asked
-   once: the screen can be resized, the reader can change their motion setting
-   while the page is open, and the cover scrolls away. So there is no "start
-   the film" step anywhere below. `settle()` asks the three questions, looks at
-   whether the cover is on screen, and makes the element agree -- the same
-   shape as the drawer's lock, and for the same reason: it can be called from
-   any of the five listeners, in any order, and the answer is always the state
-   the page should be in.
+   Nothing here "starts the film". Three questions decide whether it runs and
+   which cut of it runs, and not one of them is asked once: the screen can be
+   resized, the reader can change their motion setting while the page is open,
+   the connection can change, and the cover scrolls away. So `settle()` asks
+   them all, looks at whether the cover is on screen, and makes the element
+   agree -- the same shape as the drawer's lock, and for the same reason: it
+   can be called from any of the five listeners, in any order, and the answer
+   is always the state the page should be in.
 
-   The first call is what fetches the file. Until then there is no `src`, so a
-   phone, a reader who asked for stillness and anyone on a metered connection
-   pay nothing at all for a film they are never shown -- not a request, not a
-   redirect, nothing.
+   The first call is what fetches a file. Until then there is no `src`, so a
+   reader who asked for stillness and anyone on a metered connection pay
+   nothing at all -- not a request, not a redirect.
 
-   THE BREAKPOINT IS READ, NOT REPEATED
+   TWO CUTS, BECAUSE A FILM IS A SHAPE AND NOT JUST A FILE
 
-   `data-film-from` is written by the template and mirrors the one place the
-   stylesheet turns the cover into a 16:9 frame. A copy of that number here
-   would be a second truth, and this project has already had a media query in a
-   script quietly disagree with the one in the stylesheet. scripts/guards.mjs
-   checks the two still say the same thing.
+   The cover is a tall frame on a phone and a wide one on a laptop. Pouring the
+   wide film into the phone's frame keeps only 37% of its width, and the lamps
+   live near the edges: the visitor would get the middle of a close-up, at the
+   full weight of the wide file. So there are two encodes, cut from the same
+   master to the two shapes, and `data-film-at` names the width where the page
+   stops asking for the tall one. That number mirrors the stylesheet, is
+   written in ONE place, and is read from the attribute rather than copied into
+   this file -- a media query here that drifts from the one in the CSS is a bug
+   this project has already paid for once. scripts/guards.mjs checks the two
+   still agree, and checks the shapes against the real files on disk.
+
+   Crossing that width mid-visit swaps the source, which means the film stops
+   and the photograph shows through until the new cut has a frame to paint.
+   That is the honest behaviour and not a flaw to paper over: the resting state
+   is the photograph, and anything that is not yet playing should be showing it.
 
    AND THE FADE WAITS FOR A REAL FRAME
 
-   `data-on` goes on at `playing` and not at `loadeddata`, because a video that
-   has loaded has not necessarily painted: fading in on the earlier event
-   shows a black rectangle for a beat where the photograph used to be. Coming
-   back on screen does not fade again -- `data-on` only comes off when the
-   answer to the three questions changes. */
+   `data-on` goes on at `playing`, never at `loadeddata`: a video that has
+   loaded has not necessarily painted, and fading in on the earlier event shows
+   a black rectangle for a beat where the photograph used to be. */
 function coverFilm() {
   const film = $('.cover__film');
-  if (!film || !film.dataset.film || !film.dataset.filmFrom) return;
+  if (!film || !film.dataset.film || !film.dataset.filmTall || !film.dataset.filmAt) return;
 
-  const wide = matchMedia(`(min-width: ${film.dataset.filmFrom})`);
+  const wide = matchMedia(`(min-width: ${film.dataset.filmAt})`);
   const calm = matchMedia('(prefers-reduced-motion: reduce)');
   /* Chrome and the Android browsers answer this; Safari and Firefox do not,
-     and an absent answer is not a no -- it is silence, and silence here means
-     carry on. Only an explicit "this connection is metered or very slow" stops
-     the film. */
+     and an absent answer is not a no -- it is silence, and silence means carry
+     on. Only an explicit "this connection is metered or very slow" stops it. */
   const link = navigator.connection;
   const metered = () => !!link
     && (link.saveData === true || /(^|-)2g$/.test(link.effectiveType || ''));
 
-  const allowed = () => wide.matches && !calm.matches && !metered();
+  const allowed = () => !calm.matches && !metered();
+  const cut = () => (wide.matches ? film.dataset.film : film.dataset.filmTall);
   let onScreen = true;
 
   const settle = () => {
     if (!allowed()) {
       delete film.dataset.on;
-      if (film.src) film.pause();
+      if (film.getAttribute('src')) film.pause();
       return;
     }
-    if (!film.src) {
-      /* The attribute already carries the base path: the build puts it there,
-         the same way it does for every src on the page. */
-      film.muted = true;      // the attribute says so too; Safari wants both
-      film.src = film.dataset.film;
+    /* Compared through getAttribute, because reading `.src` gives an absolute
+       URL back and would never equal the path we asked for -- which would set
+       the source again on every scroll frame and restart the download. */
+    if (film.getAttribute('src') !== cut()) {
+      delete film.dataset.on;
+      film.muted = true;          // the attribute says so too; Safari wants both
+      film.setAttribute('src', cut());
     }
     if (!onScreen || document.visibilityState === 'hidden') { film.pause(); return; }
     /* A refused autoplay is not a failure to handle, it is an answer: the

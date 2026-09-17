@@ -38,8 +38,8 @@
      photograph this cream lands at #B8B1AA, and #4A3226 on that is 5.58:1.
      Over the actual terracotta it is far better -- 5.58 is the floor, not the
      measurement. scripts/battery samples the real pixels and checks. */
-  --cover-panel: rgb(255 246 236 / .72);
-  --cover-ink: #4A3226;
+  --cover-veil: rgb(16 10 7 / .58);
+  --cover-ink: #FFFFFF;
 
   --font-body: 'Montserrat', system-ui, sans-serif;
   --font-display: 'Cormorant Garamond', Georgia, serif;
@@ -123,8 +123,10 @@
    back as a bigger wordmark rather than as empty air: with nothing else in the
    middle track, the mark IS the header. */
 @media (width >= 64rem) {
-  [data-brand='ithos'] .head__row { --head-h: 96px; }
-  [data-brand='ithos'] { scroll-padding-block-start: 106px; }   /* the taller header here */
+  /* --head-h lives on the ROOT and not on .head__row, because the cover
+     reads it too: it is what the cover is pulled up by so the bar can
+     float on it. One declaration, two readers, no way to disagree. */
+  [data-brand='ithos'] { --head-h: 96px; scroll-padding-block-start: 106px; }
   [data-brand='ithos'] .head__mark img { height: clamp(64px, 5.5vw, 76px); }
 }
 

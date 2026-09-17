@@ -222,8 +222,8 @@ p { text-wrap: pretty; }
      photograph this cream lands at #B8B1AA, and #4A3226 on that is 5.58:1.
      Over the actual terracotta it is far better -- 5.58 is the floor, not the
      measurement. scripts/battery samples the real pixels and checks. */
-  --cover-panel: rgb(255 246 236 / .72);
-  --cover-ink: #4A3226;
+  --cover-veil: rgb(16 10 7 / .58);
+  --cover-ink: #FFFFFF;
 
   --font-body: 'Montserrat', system-ui, sans-serif;
   --font-display: 'Cormorant Garamond', Georgia, serif;
@@ -307,8 +307,10 @@ p { text-wrap: pretty; }
    back as a bigger wordmark rather than as empty air: with nothing else in the
    middle track, the mark IS the header. */
 @media (width >= 64rem) {
-  [data-brand='ithos'] .head__row { --head-h: 96px; }
-  [data-brand='ithos'] { scroll-padding-block-start: 106px; }   /* the taller header here */
+  /* --head-h lives on the ROOT and not on .head__row, because the cover
+     reads it too: it is what the cover is pulled up by so the bar can
+     float on it. One declaration, two readers, no way to disagree. */
+  [data-brand='ithos'] { --head-h: 96px; scroll-padding-block-start: 106px; }
   [data-brand='ithos'] .head__mark img { height: clamp(64px, 5.5vw, 76px); }
 }
 
@@ -370,8 +372,8 @@ p { text-wrap: pretty; }
      --ink (#6B4E3C) over the worst-case panel is 3.58:1, which fails. #4A3527
      is 5.44:1 on the same worst case. A brand colour that works on the page
      does not automatically work over a photograph. */
-  --cover-panel: rgb(255 248 242 / .72);
-  --cover-ink: #4A3527;
+  --cover-veil: rgb(16 10 7 / .58);
+  --cover-ink: #FFFFFF;
   --accent-deep: #4B372A;
   --accent-ink: #FFF8F2;
   --frame-bg: #F7EFE6;
@@ -421,7 +423,6 @@ p { text-wrap: pretty; }
    Sentence case, Klee One, and no letter-spacing to speak of. The uppercase
    spaced-out version I had before belongs to the other brand; this one reads
    like handwriting on a label, which is the whole point. */
-[data-brand='cathelier'] .head { background: var(--bg); }
 [data-brand='cathelier'] .head__mark img { height: clamp(40px, 5vw, 54px); }
 /* Sentence case and the body face, like everything else in this shop — the
    spaced upper case beside it belongs to the other brand. */
@@ -431,12 +432,9 @@ p { text-wrap: pretty; }
 }
 
 @media (width >= 64rem) {
-  [data-brand='cathelier'] .head__row { --head-h: 92px; }
-  [data-brand='cathelier'] { scroll-padding-block-start: 102px; }   /* the taller header here */
+  /* On the root, not on .head__row: the cover reads it too (see ithos.css). */
+  [data-brand='cathelier'] { --head-h: 92px; scroll-padding-block-start: 102px; }
   [data-brand='cathelier'] .head__mark img { height: clamp(50px, 4.2vw, 62px); }
-}
-[data-brand='cathelier'] .head__sibling {
-  font-family: var(--font-body); font-size: 14px; letter-spacing: .03em; text-transform: none;
 }
 [data-brand='cathelier'] .drawer__nav a { font-size: 1.15rem; letter-spacing: .03em; }
 
@@ -645,8 +643,16 @@ p { text-wrap: pretty; }
   position: relative;
   isolation: isolate;
   display: grid;
+  /* The bar floats ON the cover instead of sitting above it, so the cover
+     starts at the very top of the page and runs up behind it. --head-h is the
+     bar's RESTING height -- the height it has while anybody is still looking
+     at the cover -- and it is declared once per brand on the root element so
+     that this rule and .head__row cannot drift apart about what it is. */
+  margin-block-start: calc(-1 * var(--head-h));
 }
 .cover__media,
+.cover__film,
+.cover__veil,
 .cover__words { grid-area: 1 / 1; }
 
 .cover__media {
@@ -655,9 +661,11 @@ p { text-wrap: pretty; }
   aspect-ratio: 4 / 5;
   /* On a phone the cover should be the screen, not a postcard on it. 150vw is
      the floor; the viewport cap stops a short landscape phone from pushing
-     everything else below the fold entirely. */
+     everything else below the fold entirely. Note what the floor does to the
+     SHAPE: on a 390x844 phone it wins at 585px, so the frame is really 2:3 and
+     not 4:5, which is the shape the tall film is cut to. */
   min-block-size: min(70svh, 150vw);
-  max-block-size: calc(100svh - 3.5rem);
+  max-block-size: calc(100svh - 3rem);
   overflow: hidden;
 }
 .cover__img {
@@ -667,15 +675,12 @@ p { text-wrap: pretty; }
   object-position: var(--cover-focus, 50% 50%);
 }
 
-/* The film sits in the same grid cell as the photograph, between it and the
-   words. It starts invisible and with no source at all: until shop.js turns it
-   on, this is an empty box over the picture, and the cover looks exactly as it
-   does with no JavaScript. The fade is what stops the first frame appearing as
-   a jump-cut out of the photograph -- and it is skipped for anyone who asked
-   for less motion, who in any case never gets this far. */
+/* The film sits between the photograph and the veil. It starts invisible and
+   with no source at all: until shop.js turns it on, this is an empty box over
+   the picture, and the cover looks exactly as it does with no JavaScript. The
+   fade is what stops the first frame arriving as a jump-cut -- and it is
+   skipped for anyone who asked for less motion, who never gets this far. */
 .cover__film {
-  grid-area: 1 / 1;
-  z-index: 0;
   inline-size: 100%;
   block-size: 100%;
   object-fit: cover;
@@ -687,43 +692,60 @@ p { text-wrap: pretty; }
   .cover__film { transition: opacity .9s ease; }
 }
 
+/* THE ONE FLAT GROUND ON THE COVER.
+   Everything readable on this screen -- the headline, the button's label, and
+   the whole header bar floating above it -- is read against THIS and nothing
+   else. It is one colour at one opacity over the entire cover, which is what
+   makes the worst case arithmetic instead of hope: the brightest thing any
+   picture or film can put underneath is white, and scripts/guards.mjs checks
+   the composite over white rather than over this particular photograph.
+   It must never become a gradient. A gradient's declared colour is its strong
+   end, so a guard reads the strong end and passes while the weak end is
+   unreadable -- the failure this veil exists to make impossible. */
+.cover__veil { background: var(--cover-veil); }
+
 .cover__words {
   position: relative;
   z-index: 1;
-  display: flex;
-  align-items: end;
+  display: grid;
+  place-items: center;
+  text-align: center;
   padding: clamp(1rem, 4vw, 3rem);
+  /* The bar is standing on the top of this box, so the words are centred in
+     what is left BELOW it rather than in the box -- otherwise the headline
+     sits visibly high on every screen. */
+  padding-block-start: calc(var(--head-h) + clamp(1rem, 4vw, 3rem));
 }
-.cover__panel {
-  inline-size: min(100%, 34rem);
-  padding: clamp(1.1rem, 3.5vw, 2rem);
-  border-radius: var(--radius);
-  background: var(--cover-panel);
-  color: var(--cover-ink);
+.cover__block {
+  display: grid;
+  justify-items: center;
+  gap: clamp(1.1rem, 3vw, 1.75rem);
+  /* In rem and NOT in ch. `ch` resolves against the font of the element it is
+     written on, and this block inherits the 14px body size: 26ch here measured
+     241px, which put every single word of a 64px headline on its own line. */
+  inline-size: min(100%, 44rem);
 }
-.cover__title {
+/* TWO classes, and that is a correctness requirement rather than tidiness.
+   Both brand files carry `[data-brand='…'] h1 { font-size: … }`, which at
+   (0,1,1) outranks a lone `.cover__title` at (0,1,0) -- the old cover's
+   font-size was dead code for exactly that reason, and the headline quietly
+   took the brand's body-copy h1 size. (0,2,0) is what it takes to win. */
+.cover .cover__title {
   margin: 0;
-  color: inherit;
-  font-size: clamp(1.75rem, 5.2vw, 3.25rem);
-  line-height: 1.08;
+  color: var(--cover-ink);
+  font-size: clamp(2rem, 6.5vw, 4rem);
+  line-height: 1.04;
   text-wrap: balance;
 }
-.cover__text {
-  margin: .7rem 0 0;
-  color: inherit;
-  font-size: clamp(.95rem, 2.2vw, 1.1rem);
-  max-inline-size: 34ch;
-}
-.cover__btn { margin-block-start: clamp(.9rem, 2.5vw, 1.4rem); }
+.cover__btn { margin: 0; }
 
 @media (width >= 48rem) {
   .cover__media {
     aspect-ratio: 4 / 3;
     min-block-size: 0;
-    max-block-size: calc(100svh - 5rem);
+    max-block-size: calc(100svh - 3rem);
   }
   .cover__img { object-position: var(--cover-focus-wide, 50% 50%); }
-  .cover__words { padding: clamp(2rem, 4vw, 4rem); }
 }
 @media (width >= 64rem) {
   .cover__media { aspect-ratio: 16 / 9; }
@@ -754,8 +776,83 @@ p { text-wrap: pretty; }
    base.css promises that a brand file holds values and this one holds shape.
    It is a promise worth keeping. */
 
+/* --head-h is declared on the ROOT and not on .head__row, because two
+   different things read it: the bar's own height, and the negative top margin
+   that pulls the cover up underneath the bar so it can float on it. Written
+   once, read twice, and therefore unable to disagree. The brand files raise it
+   on wide screens, also on the root. The SHRUNK value stays on the row, which
+   is right: shrinking is a state of the bar, and the cover never sees it
+   because by the time the bar has shrunk the cover is off the screen. */
+html { --head-h: 84px; }
+
 .head { position: sticky; inset-block-start: 0; z-index: 50; background: var(--bg); border-block-end: 1px solid var(--line-soft, var(--line)); }
-.head__row { min-height: var(--head-h, 84px); }
+.head__row { min-height: var(--head-h); }
+
+/* --- the bar has no ground of its own until you move ------------------------
+   AT THE TOP THE BAR IS NOT A BAR, IT IS FOUR CONTROLS STANDING ON THE COVER.
+
+   Two states, and the second one is the safe one. `data-scrolled` is written
+   on the ROOT by a one-line script in the head -- before the first paint, and
+   reading the real scroll position, so a reload part-way down a page does not
+   start with a transparent bar over the text. Its absence is what a browser
+   with no JavaScript sees, and absence means the bar keeps its background:
+   the rule below needs data-scrolled='no' to be there, not merely not 'yes'.
+   A bar that loses its ground only when a script says so can never be left
+   floating illegibly over the page body by a script that failed to load.
+
+   The lightening is separate, and narrower: only the two pages that have a
+   cover get it, because only there is the bar standing on something dark.
+   Everywhere else 'no background' is invisible -- var(--bg) is the same colour
+   the body already is -- and the ink must stay dark. That is why this is
+   keyed on data-cover and not on data-scrolled alone. */
+html[data-scrolled='no'] .head {
+  background: transparent;
+  border-block-end-color: transparent;
+}
+html[data-cover='yes'][data-scrolled='no'] .head :is(.icon-btn, .open-menu__word, .head__sibling) {
+  color: var(--cover-ink);
+}
+/* Hover cannot be the accent here: terracotta on the veil measures 1.2:1.
+   It stays white and underlines instead, which is a change a reader can see
+   without a change a reader cannot read. */
+html[data-cover='yes'][data-scrolled='no'] .head .icon-btn:hover { color: var(--cover-ink); }
+html[data-cover='yes'][data-scrolled='no'] .head :is(.open-menu__word, .head__sibling):hover {
+  text-decoration: underline; text-underline-offset: .25em;
+}
+/* The wordmark is a file, not text, so it cannot inherit a colour: an <img>
+   renders its own document and never sees this page's custom properties. The
+   light lockup is a second file, generated from the artwork at build time by
+   swapping the ink -- the shapes are the owner's, untouched. Both are in the
+   markup, stacked, and one of them is transparent. */
+.head__mark img,
+.head__sibling-mark img { grid-area: 1 / 1; }
+/* The two lockups have to OVERLAP, so their parent has to be a grid. As a
+   plain inline <span> they simply stacked: the door to the other shop measured
+   156x123 with one mark above the other. */
+.head__sibling-mark { display: grid; place-items: center; }
+/* Sized per SHAPE and not per brand-that-owns-it: the door in the ithos shop
+   shows the cathelier lockup, which is wide (117x54), and the door in the
+   cathelier shop shows the ithos one, which is nearly square (119x120). One
+   height for both would make one of them a postage stamp. */
+.head__sibling-mark img { inline-size: auto; block-size: 30px; }
+[data-brand='ithos'] .head__sibling-mark img { block-size: 20px; }
+.mark--light { opacity: 0; }
+html[data-cover='yes'][data-scrolled='no'] .mark--dark { opacity: 0; }
+html[data-cover='yes'][data-scrolled='no'] .mark--light { opacity: 1; }
+
+/* The state changes instantly; only the FADE is motion, so only the fade sits
+   behind the gate. A reader who asked for less motion still gets a bar that
+   is transparent at the top and solid below it -- they just get it at once. */
+@media (prefers-reduced-motion: no-preference) {
+  .head[data-anim='yes'],
+  .head[data-anim='yes'] :is(.icon-btn, .open-menu__word, .head__sibling),
+  .head[data-anim='yes'] .head__sibling img {
+    transition: background-color var(--head-shrink) var(--head-ease),
+                border-block-end-color var(--head-shrink) var(--head-ease),
+                color var(--head-shrink) var(--head-ease),
+                opacity var(--head-shrink) var(--head-ease);
+  }
+}
 
 /* --- the header shrinks on the way down ------------------------------------
    EXACTLY TWO THINGS MOVE, AND THEY MOVE ON ONE CLOCK.
@@ -782,7 +879,14 @@ p { text-wrap: pretty; }
    gesture). */
 .head { --head-shrink: 220ms; --head-ease: cubic-bezier(.22, .61, .36, 1); }
 .head[data-anim='yes'] .head__row { transition: min-height var(--head-shrink) var(--head-ease); }
-.head[data-anim='yes'] .head__mark img { transition: height var(--head-shrink) var(--head-ease); }
+/* Height AND opacity in ONE declaration. A second `transition` on the same
+   element replaces this one rather than adding to it, and this selector
+   carries an element name -- (0,3,1) -- so any list-of-classes rule written
+   later would lose and the wordmark would cross-fade in one frame. */
+.head[data-anim='yes'] .head__mark img {
+  transition: height var(--head-shrink) var(--head-ease),
+              opacity var(--head-shrink) var(--head-ease);
+}
 
 /* The shrink itself is motion, so a reader who asked for less of it does not
    get a header that changes size at all -- doing it instantly instead of
@@ -984,15 +1088,23 @@ p { text-wrap: pretty; }
 .drawer__cart.icon-btn { justify-self: end; }
 
 /* --- the other brand, in the header --------------------------------------
-   It carries its own name and an arrow that points out. A label does not point
-   out of the page; a door does. */
+   It carries the other shop's OWN lockup, small, and an arrow that points out.
+   A label does not point out of the page; a door does.
+
+   It used to carry that shop's name in spaced upper case, and it was hidden
+   below 48rem because the word did not fit beside a burger, a wordmark and a
+   basket. The lockup is narrower than the word it replaced, so the door is now
+   on every screen -- which is the point of it being a door.
+
+   The arrow is 12px and not smaller. It is aria-hidden, but it is still a
+   glyph with a box, and the battery's floor for anything with text in it is
+   12px: at 11 it read as a defect, correctly. */
 .head__sibling {
-  display: none; align-items: center; gap: .35em;
-  font-size: 12px; letter-spacing: .12em; text-transform: uppercase;
-  text-decoration: none; color: var(--muted); padding: .5rem .75rem;
+  display: inline-flex; align-items: center; gap: .35em;
+  text-decoration: none; color: var(--muted); padding: .5rem;
 }
 .head__sibling:hover { color: var(--accent); }
-@media (width >= 48rem) { .head__sibling { display: inline-flex; } }
+.head__sibling-arrow { font-size: 12px; opacity: .8; }
 
 /* --- the word beside the three lines --------------------------------------
    From 48rem the button carries the word as well as the drawing. On a phone

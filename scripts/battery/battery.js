@@ -106,12 +106,41 @@ window.__bateria = function () {
     // O quarto número é a opacidade quando existe: um fundo a 0 não é fundo.
     return !(n && n.length === 4 && Number(n[3]) === 0);
   };
+  /* O CHÃO DE UM TEXTO QUE ESTÁ POR CIMA DA CAPA.
+     Subir a árvore à procura do primeiro fundo opaco é certo em toda a parte
+     menos aqui. Em cima da capa não há fundo opaco nenhum -- nem no título,
+     nem na barra enquanto flutua -- por isso a subida caía no branco do
+     `body` e dava 1,00:1 a texto branco: uma falha a apontar para um chão que
+     ali não está. E a correcção preguiçosa (isentar os dois elementos) seria
+     pior, porque cala a pergunta em vez de a corrigir.
+     O chão verdadeiro é o véu, e o véu tem um pior caso conhecido: ele próprio
+     sobre BRANCO, que é o mais claro que qualquer fotografia ou filme pode
+     pôr por baixo. É isso que se devolve, e é por isso que este número é
+     verdadeiro para a fotografia de hoje e para a que lá puserem amanhã. */
+  const veuDaCapa = document.querySelector('.cover__veil');
+  const rectDoVeu = veuDaCapa ? veuDaCapa.getBoundingClientRect() : null;
+  const sobreAsCapa = (el) => {
+    if (!rectDoVeu || !rectDoVeu.height) return false;
+    const r = el.getBoundingClientRect();
+    if (!r.width || !r.height) return false;
+    return r.top < rectDoVeu.bottom && r.bottom > rectDoVeu.top
+      && r.left < rectDoVeu.right && r.right > rectDoVeu.left;
+  };
   const fundoDe = (el) => {
     let e = el;
-    while (e && e !== document.documentElement) {
+    /* O `body` sai do ciclo e passa a ser só o último recurso. Estava dentro
+       dele, e como é opaco devolvia o branco da página ANTES de se chegar a
+       perguntar se o texto estava por cima da capa -- a correcção existia e
+       nunca era alcançada. O véu não é antepassado de ninguém (é irmão, na
+       mesma célula da grelha), por isso a subida nunca lhe toca: tem de ser
+       perguntado à parte, e depois da subida falhar. */
+    while (e && e !== document.body && e !== document.documentElement) {
       const c = getComputedStyle(e).backgroundColor;
       if (opaco(c)) return c;
       e = e.parentElement;
+    }
+    if (veuDaCapa && sobreAsCapa(el)) {
+      return `rgb(${rgbDe(getComputedStyle(veuDaCapa).backgroundColor, 'rgb(255,255,255)').join(',')})`;
     }
     return getComputedStyle(document.body).backgroundColor || 'rgb(255,255,255)';
   };
@@ -151,20 +180,51 @@ window.__bateria = function () {
      debaixo do painel, compõe-se o painel com a sua opacidade por cima de cada
      amostra e mede-se o pior caso. É a única forma de a medição continuar
      verdadeira quando a fotografia deixar de ser esta. */
+  const capa = document.querySelector('.cover');
   const capaImg = document.querySelector('.cover__img');
-  const capaPainel = document.querySelector('.cover__panel');
-  if (capaImg && capaPainel) {
+  const veu = document.querySelector('.cover__veil');
+  const titulo = document.querySelector('.cover__title');
+
+  if (capa) {
+    /* A PERGUNTA QUE TEM DE FALHAR EM VOZ ALTA.
+       As medições a seguir são todas sobre o véu. Se ele desaparecer do
+       template, um `if (veu)` calava-as: a verificação não imprimiria ✗, saía
+       do relatório, e ninguém repararia que as palavras da capa passaram a
+       estar em cima da fotografia a 1:1. Por isso a existência do véu é ela
+       própria uma verificação, e corre em TODA a página que tenha capa. */
+    nota(!!veu && !!capaImg && !!titulo, 'a capa tem fotografia, véu e título',
+      `foto=${!!capaImg} véu=${!!veu} título=${!!titulo}`);
+  }
+
+  if (capaImg && veu && titulo) {
     /* A fonte dos pixels é a cópia que o condutor descodificou, quando existe:
        a `<img>` da página passa segundos com `naturalWidth` a zero dentro de
        uma moldura escondida. A geometria continua a sair da `<img>`, que é o
        que está mesmo desenhado no ecrã. */
     const fonte = window.__capaFoto && window.__capaFoto.naturalWidth
       ? window.__capaFoto : capaImg;
+    /* A tinta sai do PRÓPRIO título e não do contentor. Enquanto as palavras
+       estavam num painel, isto lia a cor do painel -- e na ithos o painel
+       computava #4A3226 enquanto o h1 computava #242424. Media-se com rigor
+       uma cor que não estava no ecrã. */
+    const tinta = getComputedStyle(titulo).color;
+    const corDoVeu = getComputedStyle(veu).backgroundColor;
+
+    /* 1. O LIMITE, que vale para qualquer fotografia ou filme que lá ponham.
+          O chão mais claro possível é branco, e nada é mais claro do que
+          branco -- por isso este número não depende desta fotografia nem
+          deste filme, e continua verdadeiro quando a dona os trocar. */
+    const limite = razao(tinta, `rgb(${rgbDe(corDoVeu, 'rgb(255,255,255)').join(',')})`);
+    nota(limite >= 4.5, 'contraste da capa sobre o quadro mais claro que pode existir',
+      `${limite.toFixed(2)}:1 com o véu sobre branco (min 4.5)`);
+
+    /* 2. E a fotografia que lá está agora, medida a sério, que é sempre
+          melhor do que o limite mas diz quanta folga há. */
     if (!fonte.naturalWidth) {
       nota(false, 'contraste da capa sobre a fotografia', 'a fotografia não chegou a carregar');
     } else {
       const cx = capaImg.getBoundingClientRect();
-      const px = capaPainel.getBoundingClientRect();
+      const px = titulo.getBoundingClientRect();
       const [iw, ih] = [fonte.naturalWidth, fonte.naturalHeight];
       // object-fit: cover — a escala é a MAIOR das duas, e o resto sai da caixa.
       const k = Math.max(cx.width / iw, cx.height / ih);
@@ -172,7 +232,7 @@ window.__bateria = function () {
       const pos = getComputedStyle(capaImg).objectPosition.match(/[\d.]+/g) || ['50', '50'];
       const ox = (cx.width - dw) * (parseFloat(pos[0]) / 100);
       const oy = (cx.height - dh) * (parseFloat(pos[1]) / 100);
-      // o rectângulo do painel, em coordenadas da fotografia original
+      // o rectângulo do TÍTULO, em coordenadas da fotografia original
       const sx = (px.left - cx.left - ox) / k;
       const sy = (px.top - cx.top - oy) / k;
       const sw = px.width / k;
@@ -186,46 +246,54 @@ window.__bateria = function () {
       try {
         c.drawImage(fonte, sx, sy, sw, sh, 0, 0, N, N);
         const dados = c.getImageData(0, 0, N, N).data;
-        const painel = getComputedStyle(capaPainel).backgroundColor;
-        const tinta = getComputedStyle(capaPainel).color;
         for (let n = 0; n < N * N; n++) {
           const foto = `rgb(${dados[n * 4]},${dados[n * 4 + 1]},${dados[n * 4 + 2]})`;
-          // o painel, com a sua opacidade, COMPOSTO SOBRE ESTE pixel da foto
-          const fundo = `rgb(${rgbDe(painel, foto).join(',')})`;
-          const [a, b] = [lum(tinta, fundo), lum(fundo)].sort((q, w) => w - q);
-          const r = (a + 0.05) / (b + 0.05);
+          // o véu, com a sua opacidade, COMPOSTO SOBRE ESTE pixel da foto
+          const fundo = `rgb(${rgbDe(corDoVeu, foto).join(',')})`;
+          const r = razao(tinta, fundo);
           if (r < pior) { pior = r; onde = foto; }
         }
       } catch (e) {
         pior = NaN; onde = String(e.message || e);
       }
-      // O título da capa é grande (3:1 basta pela norma), mas a frase por baixo
-      // não é: mede-se pelo mínimo dos dois, que é o do texto pequeno.
       nota(pior >= 4.5, 'contraste da capa sobre a fotografia',
         Number.isFinite(pior) ? `pior pixel ${pior.toFixed(2)}:1 sobre ${onde} (min 4.5)` : onde);
     }
-  }
 
-  /* E QUANDO O FUNDO É UM FILME
-     A medição de cima amostra a fotografia. Numa capa com filme a fotografia
-     continua lá por baixo, mas não é ela que se vê: o chão do painel muda 25
-     vezes por segundo, e medir um quadro não diz nada sobre o seguinte. Medir
-     o quadro actual seria pior do que não medir, porque daria um ✓ sobre uma
-     pergunta que não foi feita.
-     O que se mede é o limite: o painel composto sobre PRETO. Nenhum quadro de
-     nenhum filme pode ser mais escuro do que preto, portanto se este número
-     passa, passam todos — e passa a ser verdade para o filme que a dona lá
-     puser amanhã, sem ninguém ter de vir cá medir outra vez. */
-  if (document.querySelector('.cover__film') && capaPainel) {
-    const painel = getComputedStyle(capaPainel).backgroundColor;
-    const tinta = getComputedStyle(capaPainel).color;
-    const fundo = `rgb(${rgbDe(painel, 'rgb(0,0,0)').join(',')})`;
-    const [a, b] = [lum(tinta, fundo), lum(fundo)].sort((q, w) => w - q);
-    const r = (a + 0.05) / (b + 0.05);
-    nota(r >= 4.5, 'contraste da capa sobre o quadro mais escuro que um filme pode ter',
-      `${r.toFixed(2)}:1 com o painel sobre preto (min 4.5)`);
-  }
+    /* 3. A BARRA, QUE NO TOPO ESTÁ EM CIMA DA CAPA E NÃO TEM CHÃO PRÓPRIO.
+          Isto é a parte que nenhuma verificação anterior fazia: ao rolar para
+          o topo a barra fica transparente, e a partir daí as suas palavras
+          são lidas contra o véu, exactamente como o título. Medir o fundo
+          declarado da barra daria um ✓ sobre um fundo que ali não existe. */
+    const barra = document.querySelector('.head');
+    if (barra) {
+      const antes = document.documentElement.dataset.scrolled;
+      document.documentElement.dataset.scrolled = 'no';
+      const fundoBarra = getComputedStyle(barra).backgroundColor;
+      const transparente = /rgba\(0, 0, 0, 0\)|transparent/.test(fundoBarra);
+      const chao = transparente
+        ? `rgb(${rgbDe(corDoVeu, 'rgb(255,255,255)').join(',')})`   // o véu sobre o pior caso
+        : fundoBarra;
+      const textos = [...barra.querySelectorAll('*')]
+        .filter((e) => [...e.childNodes].some((n) => n.nodeType === 3 && n.textContent.trim()))
+        .filter((e) => { const r = e.getBoundingClientRect(); return r.width && r.height; });
+      let piorBarra = Infinity, qual = '';
+      for (const e of textos) {
+        const r = razao(getComputedStyle(e).color, chao);
+        if (r < piorBarra) { piorBarra = r; qual = (e.textContent || '').trim().slice(0, 18); }
+      }
+      if (antes === undefined) delete document.documentElement.dataset.scrolled;
+      else document.documentElement.dataset.scrolled = antes;
 
+      if (textos.length) {
+        nota(piorBarra >= 4.5, 'contraste da barra enquanto flutua sobre a capa',
+          `${piorBarra.toFixed(2)}:1 no pior texto ("${qual}") sobre ${chao} (min 4.5)`);
+      } else {
+        nota(false, 'contraste da barra enquanto flutua sobre a capa',
+          'a barra não tem texto nenhum para medir — o teste não está a fazer pergunta nenhuma');
+      }
+    }
+  }
 
   // --- alvos de toque ------------------------------------------------------
   /* Duas isenções, e as duas são da própria norma (WCAG 2.5.8):

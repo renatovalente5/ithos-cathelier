@@ -65,7 +65,7 @@ function prefix(html) {
        site is served from a subfolder. Putting it here means shop.js can
        assign the attribute verbatim and never do prefix arithmetic of its
        own -- which is the whole point of there being one place. */
-    .replace(/(\s(?:href|src|content|action|data-film)=")\/(?!\/)/g, `$1${BASE}/`)
+    .replace(/(\s(?:href|src|content|action|data-film(?:-tall)?)=")\/(?!\/)/g, `$1${BASE}/`)
     .replace(/(\ssrcset=")([^"]+)"/g, (m, head, list) =>
       head + list.replace(/(^|,\s*)\/(?!\/)/g, `$1${BASE}/`) + '"');
 }
@@ -166,6 +166,31 @@ function assets() {
 
   cpSync(join(HERE, 'fonts'), join(OUT, 'assets', 'fonts'), { recursive: true });
   cpSync(join(ROOT, 'assets', 'brand'), join(OUT, 'assets'), { recursive: true });
+
+  /* THE LIGHT LOCKUPS, DERIVED AND NEVER DRAWN.
+   *
+   * At the top of a cover the header has no background and stands on a dark
+   * veil, so the marks have to be light there. They cannot simply inherit a
+   * colour: an <img> renders its own document, and the ithos artwork's own
+   * `var(--ithos-tinta, …)` hooks have therefore never fired once -- it has
+   * always painted its fallback. So a second file is written here with the
+   * same shapes and one ink.
+   *
+   * Every fill that is not `none` is swapped, which is what a reversed
+   * one-colour lockup is, and the count is checked: an artwork re-exported
+   * with its colours in `style=` or in a class would match nothing, and the
+   * silent result would be a dark mark written to the light file's name --
+   * invisible on the veil, and no error anywhere. */
+  for (const file of ['ithos-wordmark.svg', 'cathelier.svg']) {
+    const src = readFileSync(join(ROOT, 'assets', 'brand', file), 'utf8');
+    let swapped = 0;
+    const light = src.replace(/fill="(?!none")[^"]*"/g, () => { swapped += 1; return 'fill="#FFFFFF"'; });
+    if (!swapped) {
+      throw new Error(`${file}: no fill="…" to lighten — the light lockup would be a dark one. `
+        + 'Has the artwork been re-exported with its colours somewhere else?');
+    }
+    writeFileSync(join(OUT, 'assets', file.replace(/\.svg$/, '-light.svg')), light);
+  }
   if (existsSync(join(HERE, 'js', 'shop.js'))) {
     const API = (process.env.API_URL || '').replace(/\/$/, '');
     const js = readFileSync(join(HERE, 'js', 'shop.js'), 'utf8')
@@ -237,6 +262,7 @@ function buildIthos() {
     title: 'ithos — handmade wooden night lights for children’s rooms',
     description: 'Wooden night lights cut, sanded and painted by hand in Castelo Branco, Portugal. '
       + `${lamps.length} designs, each one able to carry an engraved name.`,
+    cover: true,
     body: ithos.home({ products: lamps, identity, cover: covers.ithos, coverWidths: coverWidths('ithos') }),
     schema: [{
       '@context': 'https://schema.org', '@type': 'Organization',
@@ -282,6 +308,7 @@ function buildCathelier() {
     title: 'cathelier — personalised pieces, cut and engraved to order',
     description: `Laser-cut wooden keepsakes with your names, dates and words on them. `
       + `${occasions.length} occasions, ${pieces.length} pieces, each with a proof to approve before we cut.`,
+    cover: true,
     body: cath.home({ occasions, pieces, cover: covers.cathelier, coverWidths: coverWidths('cathelier') }),
   }));
 

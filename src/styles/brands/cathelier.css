@@ -44,8 +44,8 @@
      --ink (#6B4E3C) over the worst-case panel is 3.58:1, which fails. #4A3527
      is 5.44:1 on the same worst case. A brand colour that works on the page
      does not automatically work over a photograph. */
-  --cover-panel: rgb(255 248 242 / .72);
-  --cover-ink: #4A3527;
+  --cover-veil: rgb(16 10 7 / .58);
+  --cover-ink: #FFFFFF;
   --accent-deep: #4B372A;
   --accent-ink: #FFF8F2;
   --frame-bg: #F7EFE6;
@@ -95,7 +95,6 @@
    Sentence case, Klee One, and no letter-spacing to speak of. The uppercase
    spaced-out version I had before belongs to the other brand; this one reads
    like handwriting on a label, which is the whole point. */
-[data-brand='cathelier'] .head { background: var(--bg); }
 [data-brand='cathelier'] .head__mark img { height: clamp(40px, 5vw, 54px); }
 /* Sentence case and the body face, like everything else in this shop — the
    spaced upper case beside it belongs to the other brand. */
@@ -105,12 +104,9 @@
 }
 
 @media (width >= 64rem) {
-  [data-brand='cathelier'] .head__row { --head-h: 92px; }
-  [data-brand='cathelier'] { scroll-padding-block-start: 102px; }   /* the taller header here */
+  /* On the root, not on .head__row: the cover reads it too (see ithos.css). */
+  [data-brand='cathelier'] { --head-h: 92px; scroll-padding-block-start: 102px; }
   [data-brand='cathelier'] .head__mark img { height: clamp(50px, 4.2vw, 62px); }
-}
-[data-brand='cathelier'] .head__sibling {
-  font-family: var(--font-body); font-size: 14px; letter-spacing: .03em; text-transform: none;
 }
 [data-brand='cathelier'] .drawer__nav a { font-size: 1.15rem; letter-spacing: .03em; }
 

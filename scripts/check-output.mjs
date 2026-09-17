@@ -88,7 +88,7 @@ for (const file of pages) {
   // thing: an address the page will fetch. It is fetched by script rather than
   // by the parser, which is exactly why it needs checking -- nothing about a
   // missing prefix shows up until somebody loads the home page.
-  for (const m of html.matchAll(/(?:href|src|data-film)="(\/[^"#?]*)/g)) {
+  for (const m of html.matchAll(/(?:href|src|poster|data-film(?:-tall)?)="(\/[^"#?]*)/g)) {
     let target = m[1];
     if (BASE) {
       if (!target.startsWith(BASE + '/')) {

@@ -1,69 +1,81 @@
 /*
- * The cover: one photograph filling the first screen, and the brand's words
- * over it.
+ * The cover: one picture filling the first screen, a few words over it, and
+ * the header floating on top of both.
  *
- * Both are read from content/settings/covers.json, so the owner changes the
- * headline, the sentence under it and the button from the back office without
- * anyone touching a template. Replacing the picture is replacing one file in
- * photos/_covers/ and running scripts/covers.py.
+ * The words are read from content/settings/covers.json, so the owner changes
+ * the headline and the button from the back office without anyone touching a
+ * template. Replacing the picture is replacing one file in photos/_covers/ and
+ * running scripts/covers.py; replacing the film is scripts/film.sh.
  *
- * WHY THE SCRIM IS FLAT AND NOT A GRADIENT
+ * WHY THERE IS A FLAT VEIL AND NOT A PANEL, AND NOT A GRADIENT
  *
- * Text over a photograph has no measurable contrast: the ground is whatever
- * the picture happens to be at that pixel. A gradient is worse than useless
- * here -- the guard reads the declared colour, which is the strong end, and
- * passes while the weak end is unreadable. So the words sit on a FLAT panel at
- * a known opacity, and the worst case can be computed rather than hoped for.
- * The panel is 72% cream, so at most 28% of whatever is behind shows through,
- * and the worst thing that can be behind is black: that composite still reads
- * better than 5.5:1 against the ink, above the 4.5:1 minimum. And it is
- * scripts/guards.mjs that computes it, not this paragraph -- a number written
- * in prose stops being true the day somebody nudges the token.
+ * Text over a picture has no contrast anybody can measure: the ground is
+ * whatever the picture happens to be at that pixel. The words used to sit on a
+ * cream PANEL for exactly that reason -- a small flat rectangle whose worst
+ * case was arithmetic. Centring the words and taking the panel away was
+ * measured before it was done, on the built pages: a centred block over the
+ * ithos photograph reads 1.11:1 with the brand's ink and 2.02:1 in white, and
+ * over the cathelier photograph 1.00:1 and 1.28:1. That is not "a bit low", it
+ * is invisible, and it fails even the 3:1 that large text is allowed.
  *
- * THIS IS WHY A FILM BEHIND THE WORDS IS SAFE
+ * So the flat ground did not go away, it grew: the whole cover now carries one
+ * veil at one declared opacity, and the words sit on it in white. A gradient
+ * would be worse than useless -- a guard reads the declared colour, which is
+ * the strong end, and passes while the weak end is unreadable.
  *
- * A moving picture has a different ground in every frame, and no measurement
- * of one frame would say anything about the next. It needs none: the bound
- * above is over BLACK, and nothing a film can do is darker than black. The
- * film changes what is behind the panel, never what the panel guarantees.
+ * WHERE 56% COMES FROM, AND WHY IT IS NOT A TASTE DECISION
+ *
+ * The worst ground is the brightest pixel the picture can hold, and this
+ * picture holds the brightest one there is: every single one of the film's 922
+ * frames contains a clipped white pixel, because the subject is lit LEDs, and
+ * 909 of them have one inside the box the headline sits in. So the bound is
+ * the same one a sheet of white paper would give, and it is honest for every
+ * film and photograph the owner will ever put here. Black over white at 53.5%
+ * is where small white text reaches 4.5:1. The veil is set above that, and
+ * scripts/guards.mjs computes it rather than trusting this paragraph.
+ *
+ * The header's own words are what force the small-text threshold. Were the bar
+ * icons alone, 42% would do -- non-text controls are allowed 3:1 -- but the
+ * burger has the word "Menu" beside it and words are read, not recognised.
  */
 import { esc, coverPicture } from './html.mjs';
 
 /*
- * THE FILM, AND EVERYTHING IT IS NOT ALLOWED TO BREAK
+ * THE FILM, AND THE FOUR THINGS IT IS NOT ALLOWED TO BREAK
  *
  * A night light's whole argument is that it glows in a dark room, and that is
- * the one thing a photograph of it cannot show. So the film earns its place.
- * What it must not do is take anything away from the page that is already
- * there, and that is four separate promises, each kept somewhere different:
+ * the one thing a photograph of it cannot show. What the film must not do is
+ * take anything away from the page that is already there:
  *
- * 1. THE RESTING STATE IS THE PHOTOGRAPH. The element below carries no `src`.
- *    Nothing is fetched and nothing moves until shop.js decides it should, so
- *    a page with no JavaScript, a refused autoplay and a file that 404s all
- *    land in the same place: the cover as it was before any of this existed.
- *    That is why there is no `poster` either -- a poster would be a second
- *    resting state to keep matched to the first.
+ * 1. THE RESTING STATE IS STILL THE PHOTOGRAPH. The element below carries no
+ *    src. Nothing is fetched and nothing moves until shop.js decides it
+ *    should, so a page with no JavaScript, a refused autoplay and a file that
+ *    404s all land in the same place: the cover as it was before any of this
+ *    existed. That is also why there is no poster -- a poster would be a
+ *    second resting state to keep matched to the first.
  *
- * 2. IT NEVER PLAYS ON A PHONE. Not for the bytes, though 2 MB on somebody's
- *    data is reason enough. The cover is 4:5 on a phone and the film is 16:9:
- *    filling that shape crops the sides away, and the lamps live near them.
- *    The film runs from 64rem up, which is exactly where the CSS makes the
- *    cover 16:9 and the two shapes agree. That number is written once, in
- *    data-film-from, and shop.js reads it from there rather than keeping its
- *    own copy -- a media query in the script that drifts from the one in the
- *    stylesheet is a bug this project has already paid for once.
+ * 2. IT IS CUT TO THE SHAPE OF THE SCREEN IT PLAYS ON. The cover is a tall
+ *    frame on a phone and a wide one on a laptop, and a 16:9 film poured into
+ *    a phone's frame loses 62% of its width -- which is where the lamps live.
+ *    So there are two encodes, and data-film-at names the width where the page
+ *    stops asking for the tall one. That number mirrors the stylesheet and is
+ *    read from this one attribute rather than copied into the script, because
+ *    a media query in JavaScript that drifts from the one in the CSS is a bug
+ *    this project has already paid for.
  *
- * 3. IT NEVER PLAYS FOR SOMEBODY WHO ASKED FOR STILLNESS. A moving background
- *    behind text is the exact thing prefers-reduced-motion exists to stop.
+ * 3. IT NEVER PLAYS FOR SOMEBODY WHO ASKED FOR STILLNESS, or on a connection
+ *    that says it is metered.
  *
- * 4. IT IS DECORATION, NOT CONTENT. Everything the film says, the photograph
- *    under it already says in its alt text, so this is aria-hidden and has no
- *    controls -- which also keeps it out of the tab order.
+ * 4. IT IS DECORATION. Everything the film says, the photograph under it
+ *    already says in its alt text, so this is aria-hidden and has no controls,
+ *    which also keeps it out of the tab order.
  */
 function film(c) {
   if (!c.film) return '';
-  return `<video class="cover__film" data-film="/media/film/${esc(c.film)}.mp4"
-    data-film-from="64rem" preload="none" muted loop playsinline aria-hidden="true"></video>`;
+  return `<video class="cover__film"
+    data-film="/media/film/${esc(c.film)}.mp4"
+    data-film-tall="/media/film/${esc(c.film)}-tall.mp4"
+    data-film-at="48rem" preload="none" muted loop playsinline aria-hidden="true"></video>`;
 }
 
 /**
@@ -85,10 +97,10 @@ export function cover(c, brand, widths) {
     sizes: '100vw',
   })}
   ${film(c)}
+  <div class="cover__veil"></div>
   <div class="cover__words">
-    <div class="cover__panel">
+    <div class="cover__block">
       <h1 class="cover__title">${esc(c.title)}</h1>
-      ${c.text ? `<p class="cover__text">${esc(c.text)}</p>` : ''}
       ${c.buttonLabel && c.buttonHref
         ? `<a class="btn cover__btn" href="${esc(c.buttonHref)}">${esc(c.buttonLabel)}</a>`
         : ''}

@@ -86,6 +86,13 @@ export const SIBLING = {
   cathelier: { href: '/', name: 'ithos', note: 'wooden night lights' },
 };
 
+/* The light lockup of a mark, generated from the artwork by src/build.mjs.
+ * An <img> renders its own document and never sees this page's custom
+ * properties, so a mark cannot be recoloured by CSS -- which is why the ithos
+ * artwork's own `var(--ithos-tinta, …)` hooks have never once fired here. The
+ * second file is the answer: same shapes, one ink. */
+const lightMark = (src) => src.replace(/\.svg$/, '-light.svg');
+
 const MARK = {
   ithos: { src: '/assets/ithos-wordmark.svg', w: 119, h: 120, alt: 'ithos' },
   cathelier: { src: '/assets/cathelier.svg', w: 117, h: 54, alt: 'cathelier' },
@@ -99,11 +106,34 @@ const MARK = {
  * number appears, and nowhere else. */
 const CALL_COST = '(Call to the national mobile network)';
 
+/* THE ONE LINE OF SCRIPT THAT IS NOT IN shop.js, AND WHY.
+ *
+ * The header has no background while the page is at the top. Deciding that in
+ * shop.js would be a frame too late: the bar would paint solid, then go
+ * transparent, and every arrival on the home page would start with a flinch.
+ * This runs while the parser is still inside <head>, so the first pixel ever
+ * painted is already the right one.
+ *
+ * It reads the real scroll position rather than assuming zero, because a
+ * reload or a Back lands part-way down a page without firing a scroll event --
+ * the same trap the header's shrink already documents in shop.js.
+ *
+ * And its ABSENCE is the safe state. A browser with no JavaScript never gets
+ * the attribute, the stylesheet's rule needs data-scrolled='no' to be present
+ * rather than merely not 'yes', and the bar keeps its background for good. A
+ * failed script cannot leave white controls floating over white page. */
+const MARCA_DE_POSICAO = "document.documentElement.dataset.scrolled=scrollY>12?'yes':'no'";
+
 export function page(o) {
   const {
     brand = 'ithos', title, description, path, body,
     site, identity, image, schema = [], counts = {}, shipping = null, shop = null, asset = {},
     bodyClass = '', noindex = false, crumbs = null, extraHead = '', preview = false,
+    /* True on the two pages that open with a cover. It rides on <html> so the
+       stylesheet can lighten the header's ink there and nowhere else -- on the
+       other 102 pages the bar at rest is standing on the page's own background
+       and its ink must stay dark. */
+    cover = false,
     /* Where the canonical points. On a mirrored page it is the OTHER copy --
        the ithos one -- which is what stops two addresses with the same words
        competing with each other. */
@@ -116,7 +146,7 @@ export function page(o) {
   const og = image ? (image.startsWith('http') ? image : abs(image)) : abs('/assets/share.jpg');
 
   return `<!doctype html>
-<html lang="en" data-brand="${brand}">
+<html lang="en" data-brand="${brand}"${cover ? ' data-cover="yes"' : ''}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -164,6 +194,8 @@ ${(() => {
     ? `<script type="application/ld+json">${JSON.stringify(all.length === 1 ? all[0] : all)}</script>`
     : '';
 })()}
+
+  <script>${MARCA_DE_POSICAO}</script>
 </head>
 <body class="${esc(bodyClass)}" id="top">
 <a class="skip" href="#main">Skip to content</a>
@@ -219,6 +251,12 @@ function header({ brand }) {
   const mark = MARK[brand];
   const home = brand === 'cathelier' ? '/cathelier/' : '/';
   const sibling = SIBLING[brand];
+  /* The door to the other shop shows that shop's OWN mark, small, instead of
+     its name in words -- the owner's request, and it reads faster: a reader
+     recognises the other brand before finishing a word. The name has not gone
+     anywhere, it is in the link's aria-label, which is what a screen reader
+     announces and what the images (alt="") deliberately do not repeat. */
+  const other = MARK[sibling.name];
 
   /* ONE HEADER AT EVERY WIDTH: burger, mark, the other brand, basket.
    *
@@ -245,13 +283,20 @@ function header({ brand }) {
     </div>
 
     <a class="head__mark" href="${home}" aria-label="${esc(mark.alt)} — home">
-      <img src="${mark.src}" alt="${esc(mark.alt)}" width="${mark.w}" height="${mark.h}">
+      <img class="mark--dark" src="${mark.src}" alt="${esc(mark.alt)}"
+           width="${mark.w}" height="${mark.h}">
+      <img class="mark--light" src="${lightMark(mark.src)}" alt="" aria-hidden="true"
+           width="${mark.w}" height="${mark.h}">
     </a>
 
     <div class="head__right">
       <a class="head__sibling" href="${sibling.href}" data-other-brand
          aria-label="Go to ${esc(sibling.name)}, ${esc(sibling.note)}">
-        <span>${esc(sibling.name)}</span><span aria-hidden="true">↗</span>
+        <span class="head__sibling-mark">
+          <img class="mark--dark" src="${other.src}" alt="" width="${other.w}" height="${other.h}">
+          <img class="mark--light" src="${lightMark(other.src)}" alt=""
+               width="${other.w}" height="${other.h}">
+        </span><span class="head__sibling-arrow" aria-hidden="true">↗</span>
       </a>
       <a class="icon-btn" href="${brandPath('/cart/', brand)}" aria-label="Basket">
         ${icon('cart', 22)}<span class="cart-count" data-cart-count data-empty="yes"></span>

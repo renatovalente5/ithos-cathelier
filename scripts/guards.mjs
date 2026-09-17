@@ -13,6 +13,7 @@
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { execFileSync } from 'node:child_process';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const CONTENT = join(ROOT, 'content');
@@ -170,76 +171,223 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
     if (!existsSync(join(ROOT, 'public/media/covers', `${brand}-640.webp`))) {
       die(`covers.json: the ${brand} cover has no renditions — run scripts/renditions.py`);
     }
-    if (!c.text) pending(`covers.json: the ${brand} cover has no sentence under the title`);
+    /* The headline is set large and centred now, so its LENGTH is a layout
+       decision the owner takes by typing. Thirty-eight characters is roughly
+       two lines at the widest step of the clamp; past that it stops being a
+       headline and starts being a paragraph in headline clothing. A warning
+       and not a death: it is their shop, and a long title is ugly, not broken. */
+    if (c.title && c.title.length > 38) {
+      warnings.push(`covers.json: the ${brand} cover title is ${c.title.length} characters — `
+        + 'it is set large and centred, and past about 38 it wraps into a wall');
+    }
+    if (c.text) {
+      die(`covers.json: ${brand}.text is set but nothing reads it any more — `
+        + 'the cover carries a short title and a button, and no sentence. Delete the field.');
+    }
 
     /* The film is optional and deleting the line is meant to be safe, so a
        missing "film" is silence. A film that is NAMED and not on disk is not:
-       that is a 2 MB request for nothing on the busiest page of the site. */
+       that is a wasted request on the busiest page of the site. Both cuts are
+       required, because the page asks for one or the other at every width and
+       neither is a fallback for the other. */
     if (c.film) {
       if (!/^[a-z0-9-]+$/.test(c.film)) {
         die(`covers.json: ${brand}.film must be a plain file name — got "${c.film}"`);
-      } else if (!existsSync(join(ROOT, 'public/media/film', `${c.film}.mp4`))) {
-        die(`covers.json: the ${brand} cover names the film "${c.film}" and `
-          + `public/media/film/${c.film}.mp4 is not there — run scripts/film.sh ${c.film}`);
+      } else {
+        for (const cut of [`${c.film}.mp4`, `${c.film}-tall.mp4`]) {
+          if (!existsSync(join(ROOT, 'public/media/film', cut))) {
+            die(`covers.json: the ${brand} cover names the film "${c.film}" and `
+              + `public/media/film/${cut} is not there — run scripts/film.sh ${c.film}`);
+          }
+        }
       }
     }
   }
 }
 
-/* --- the film's breakpoint, and the panel it plays behind -------------------
-   Two numbers in this project are written down in more than one language, and
-   both have already gone wrong somewhere: a width that the stylesheet and a
-   script have to agree on, and an opacity that a paragraph of prose claims is
-   safe. Neither is checked by reading the site, because on the day they
-   disagree the page still renders -- it just renders the wrong thing. */
+/* --- the cover's two numbers, checked and not claimed -----------------------
+   Two things on the cover are written down in more than one language, and both
+   have already gone wrong somewhere in this project: a WIDTH that a stylesheet
+   and a script have to agree on, and an OPACITY that a paragraph of prose
+   claims is safe. Neither shows up by looking at the site, because on the day
+   they disagree the page still renders -- it just renders the wrong thing. */
 {
   const css = readFileSync(join(ROOT, 'src/styles/shop.css'), 'utf8');
+  const tmpl = readFileSync(join(ROOT, 'src/lib/cover.mjs'), 'utf8');
   const covers = read('settings/covers.json');
+  const temFilme = Object.values(covers).some((c) => c && c.film);
 
-  /* 1. The film runs from the width at which the cover becomes 16:9, because
-        that is the width at which the cover and the film are the same shape.
-        The template writes that number into data-film-from and shop.js reads
-        it from there; here we check it is still the number the stylesheet
-        uses, rather than one somebody moved and the other did not. */
-  if (Object.values(covers).some((c) => c && c.film)) {
-    const wide = css.match(/@media \(width >= ([\d.]+rem)\) \{\s*\.cover__media \{ aspect-ratio: 16 \/ 9/);
-    const template = readFileSync(join(ROOT, 'src/lib/cover.mjs'), 'utf8')
-      .match(/data-film-from="([^"]+)"/);
-    if (!wide) {
-      die('shop.css: cannot find the breakpoint where .cover__media becomes 16/9, '
-        + 'so the film\'s breakpoint cannot be checked against it');
-    } else if (!template) {
-      die('cover.mjs: the film element has no data-film-from');
-    } else if (wide[1] !== template[1]) {
-      die(`the film starts at ${template[1]} (cover.mjs) but the cover only becomes `
-        + `16:9 at ${wide[1]} (shop.css) — between the two it would be cropped`);
-    }
+  /* 1. THE COVER STILL HAS A FLAT GROUND UNDER ITS WORDS.
+        This is the one that guards everything else here: every contrast number
+        below is about the veil, and if the template stops emitting a veil they
+        all become arithmetic about an element that is not on the page. It is
+        checked against the template's text rather than against a built page so
+        that it dies before the build, and it names the class explicitly so
+        that renaming the class without telling anybody dies too. */
+  if (!/class="cover__veil"/.test(tmpl)) {
+    die('cover.mjs emits no cover__veil — text over a picture has no contrast '
+      + 'anybody can measure, and every check below would be measuring nothing');
   }
 
-  /* 2. The words sit on a panel that lets some of the picture -- or the film
-        -- through, so the worst ground the ink can ever land on is the panel
-        composited over black. cover.mjs claims that is still above 4.5:1.
-        Claims in comments rot; this one is arithmetic, so it is done. */
-  const lum = (hex) => {
-    const n = hex.replace('#', '');
-    const ch = [0, 2, 4].map((i) => parseInt(n.slice(i, i + 2), 16) / 255)
+  /* 2. THE VEIL IS FLAT, AND WHITE TEXT SURVIVES THE BRIGHTEST PICTURE.
+        The worst ground is the brightest pixel a picture can hold, and the
+        brightest there is, is white -- so the bound is the veil composited
+        over white, and it holds for every photograph and film the owner will
+        ever put there. A gradient has no single declared colour: its strong
+        end is what a guard would read, and it would pass while its weak end
+        was unreadable, which is the exact failure this check exists for. */
+  const lum = (r, g, b) => {
+    const ch = [r, g, b].map((v) => v / 255)
       .map((v) => (v <= 0.03928 ? v / 12.92 : ((v + 0.055) / 1.055) ** 2.4));
     return 0.2126 * ch[0] + 0.7152 * ch[1] + 0.0722 * ch[2];
   };
+  const doHex = (h) => {
+    const n = h.replace('#', '');
+    return [0, 2, 4].map((i) => parseInt(n.slice(i, i + 2), 16));
+  };
   for (const brand of ['ithos', 'cathelier']) {
     const sheet = readFileSync(join(ROOT, 'src/styles/brands', `${brand}.css`), 'utf8');
-    const panel = sheet.match(/--cover-panel:\s*rgb\((\d+) (\d+) (\d+) \/ ([\d.]+)\)/);
+    const veil = sheet.match(/--cover-veil:\s*([^;]+);/);
     const ink = sheet.match(/--cover-ink:\s*(#[0-9a-fA-F]{6})/);
-    if (!panel || !ink) { die(`${brand}.css: cannot read --cover-panel / --cover-ink`); continue; }
-    const a = Number(panel[4]);
-    /* over black: the panel keeps only its own alpha of itself */
-    const over = '#' + panel.slice(1, 4)
-      .map((v) => Math.round(Number(v) * a).toString(16).padStart(2, '0')).join('');
-    const [hi, lo] = [lum(over), lum(ink[1])].sort((x, y) => y - x);
+    if (!veil || !ink) { die(`${brand}.css: cannot read --cover-veil / --cover-ink`); continue; }
+    if (/gradient/i.test(veil[1])) {
+      die(`${brand}.css: --cover-veil is a gradient. It has to be one flat colour at one `
+        + 'opacity, or its worst case cannot be computed and this check is theatre');
+      continue;
+    }
+    const m = veil[1].match(/rgb\(\s*(\d+)\s+(\d+)\s+(\d+)\s*\/\s*([\d.]+)\s*\)/);
+    if (!m) { die(`${brand}.css: --cover-veil must be rgb(R G B / A) — got "${veil[1].trim()}"`); continue; }
+    const a = Number(m[4]);
+    const over = [1, 2, 3].map((i) => a * Number(m[i]) + (1 - a) * 255);   // the veil over WHITE
+    const [hi, lo] = [lum(...over), lum(...doHex(ink[1]))].sort((x, y) => y - x);
     const ratio = (hi + 0.05) / (lo + 0.05);
+    /* 4.5 and not 3: the header floats on this veil too, and the bar's own
+       words -- "Menu", and the arrow beside the other shop's mark -- are small
+       text. Were the bar icons alone, 3:1 would do. */
     if (ratio < 4.5) {
-      die(`${brand}: the cover panel at ${a} opacity over a black frame reads `
-        + `${ratio.toFixed(2)}:1 against the ink — below the 4.5:1 minimum`);
+      die(`${brand}: the cover veil over a white frame reads ${ratio.toFixed(2)}:1 against `
+        + `${ink[1]} — below the 4.5:1 that the header's own small words need`);
+    }
+  }
+
+  /* 3. THE FILM IS CUT TO THE SHAPE IT IS POURED INTO.
+        Not a string comparison of two breakpoints, which passes the moment
+        somebody changes both to the same wrong number. The real files are
+        measured, the cover's real shapes are read out of the stylesheet, and
+        the question asked is the one that matters: how much of the film
+        survives object-fit: cover at that width. */
+  if (temFilme) {
+    const at = tmpl.match(/data-film-at="([\d.]+)rem"/);
+    if (!at) {
+      die('cover.mjs: the film element has no data-film-at, and shop.js gives up without it — '
+        + 'the film would never play at any width, which looks exactly like it working');
+    }
+
+    /* Every shape .cover__media takes, and the width each starts at. */
+    const shapes = [[0, 4 / 5]];
+    for (const q of css.matchAll(/@media \(width >= ([\d.]+)rem\)([\s\S]*?)\n\}/g)) {
+      const ar = q[2].match(/\.cover__media\s*\{[^}]*aspect-ratio:\s*(\d+)\s*\/\s*(\d+)/);
+      if (ar) shapes.push([Number(q[1]), Number(ar[1]) / Number(ar[2])]);
+    }
+    if (shapes.length < 2) {
+      die('guards: found no @media rule changing .cover__media aspect-ratio, so the film\'s '
+        + 'shapes cannot be checked. Has the cover block been reformatted?');
+    }
+    const shapeAt = (rem) => shapes.filter(([w]) => w <= rem).pop()[1];
+
+    const ffprobe = (file) => {
+      const out = execFileSync('ffprobe', ['-v', 'error', '-select_streams', 'v:0',
+        '-show_entries', 'stream=width,height', '-of', 'csv=p=0:s=x', file], { encoding: 'utf8' });
+      const [w, h] = out.trim().split('x').map(Number);
+      return w / h;
+    };
+    const switchAt = at ? Number(at[1]) : null;
+    for (const brand of ['ithos', 'cathelier']) {
+      const c = covers[brand];
+      if (!c || !c.film || switchAt === null) continue;
+      /* The tall cut serves everything below the switch, where the cover is at
+         its tallest; the wide cut serves the switch upwards, where it is at its
+         widest. Each is checked against the shape that crops it hardest. */
+      const abaixo = shapes.filter(([w]) => w < switchAt).map(([, r]) => r);
+      const acima = shapes.filter(([w]) => w >= switchAt).map(([, r]) => r);
+      if (!abaixo.length || !acima.length) {
+        die(`cover.mjs: data-film-at is ${switchAt}rem, and the cover has no shape `
+          + `${abaixo.length ? 'on or above' : 'below'} that width. One of the two cuts would `
+          + 'never be asked for, and the other would be poured into a frame it was not cut to');
+        continue;
+      }
+      const casos = [
+        ['tall', `${c.film}-tall.mp4`, Math.min(...abaixo)],
+        ['wide', `${c.film}.mp4`, Math.max(...acima)],
+      ];
+      for (const [qual, file, coverAR] of casos) {
+        const path = join(ROOT, 'public/media/film', file);
+        if (!existsSync(path)) continue;          // already reported above
+        let filmAR;
+        try { filmAR = ffprobe(path); } catch {
+          warnings.push(`guards: ffprobe is not available, so the ${brand} film's shape was not checked`);
+          break;
+        }
+        /* object-fit: cover keeps min(1, coverAR/filmAR) of the width and
+           min(1, filmAR/coverAR) of the height. */
+        const keptW = Math.min(1, coverAR / filmAR);
+        const keptH = Math.min(1, filmAR / coverAR);
+        const kept = Math.min(keptW, keptH);
+        if (kept < 0.8) {
+          die(`${brand}: the ${qual} cut of the film keeps only ${(kept * 100).toFixed(0)}% of `
+            + `itself in a ${coverAR.toFixed(2)}:1 cover — re-cut it with scripts/film.sh `
+            + `${c.film}, or move data-film-at`);
+        }
+      }
+    }
+  }
+
+  /* 4. THE BAR'S BACKGROUND BELONGS TO ONE FILE.
+        A brand file that declares its own `.head { background }` outranks the
+        shared rule and silently undoes the floating header in ONE of the two
+        shops. That is precisely what cathelier.css did, and nothing could have
+        told anybody: both shops build, both pass, and only one changed. */
+  for (const brand of ['ithos', 'cathelier']) {
+    const sheet = readFileSync(join(ROOT, 'src/styles/brands', `${brand}.css`), 'utf8')
+      .replace(/\/\*[\s\S]*?\*\//g, '');
+    const rule = sheet.match(/\[data-brand='[a-z]+'\]\s+\.head\s*\{[^}]*background[^}]*\}/);
+    if (rule) {
+      die(`${brand}.css: this file declares a background on .head — it outranks the shared rule `
+        + 'and would leave the bar solid in this shop and floating in the other');
+    }
+  }
+
+  /* 5. THE FLOATING STATE IS NOT MOTION, AND MUST NOT BE GATED AS IF IT WERE.
+        The shrink is motion and lives inside the reduced-motion gate, which is
+        right. The background is a STATE: a reader who asked for less motion
+        still wants a bar that is transparent at the top and solid below it,
+        they just want it without the fade. Gating the state itself would leave
+        them with a permanently transparent bar over the cover, forever, and no
+        check anywhere. The floor below is the other half: if the rule is ever
+        deleted, this dies instead of quietly passing on an empty list. */
+  {
+    const semComentarios = css.replace(/\/\*[\s\S]*?\*\//g, '');
+    const portoes = [...semComentarios.matchAll(/@media \(prefers-reduced-motion: no-preference\)\s*\{/g)]
+      .map((m) => {
+        let i = m.index + m[0].length, depth = 1;
+        while (i < semComentarios.length && depth > 0) {
+          if (semComentarios[i] === '{') depth += 1;
+          if (semComentarios[i] === '}') depth -= 1;
+          i += 1;
+        }
+        return [m.index, i];
+      });
+    const estados = [...semComentarios.matchAll(/html\[data-scrolled='no'\]/g)];
+    if (!estados.length) {
+      die("shop.css: nothing keys on html[data-scrolled='no'] — the header has no rule that "
+        + 'takes its background away at the top, so the whole floating bar is gone');
+    }
+    for (const m of estados) {
+      if (portoes.some(([a, b]) => m.index > a && m.index < b)) {
+        die("shop.css: a html[data-scrolled='no'] rule sits inside the prefers-reduced-motion "
+          + 'gate. That is a state, not motion: gating it leaves a reader who asked for less '
+          + 'motion with a permanently transparent bar over the cover');
+      }
     }
   }
 }
