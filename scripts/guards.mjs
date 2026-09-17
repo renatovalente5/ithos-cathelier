@@ -400,6 +400,27 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
     }
   }
 
+  /* 1b. O LIMIAR DA BARRA ESTÁ ESCRITO EM DOIS SÍTIOS E TEM DE DIZER O MESMO.
+         A linha inline no <head> decide o estado ANTES da primeira pintura, e
+         o decide() do shop.js decide-o a partir daí. Se discordarem, a barra
+         entra num estado e salta para o outro no primeiro quadro -- um flash
+         que só aparece a quem recarrega a meio da página, que é precisamente
+         quem nunca se testa. */
+  {
+    const shell = readFileSync(join(ROOT, 'src/lib/shell.mjs'), 'utf8');
+    const js = readFileSync(join(ROOT, 'src/js/shop.js'), 'utf8');
+    const noHead = shell.match(/dataset\.scrolled\s*=\s*scrollY\s*>\s*(\d+)/);
+    const noScript = js.match(/const ON_AT = (\d+)/);
+    if (!noHead || !noScript) {
+      die('guards: cannot read the bar threshold from shell.mjs and shop.js, so the two '
+        + 'copies of it cannot be checked against each other');
+    } else if (noHead[1] !== noScript[1]) {
+      die(`the bar's threshold disagrees: the inline script in shell.mjs says ${noHead[1]}px `
+        + `and shop.js says ${noScript[1]}px — a reload part-way down a page would paint one `
+        + 'state and jump to the other');
+    }
+  }
+
   /* 2a. THE BAR IS FROSTED, SO ITS GROUND HAS A WORST CASE TOO.
          Once it stops being opaque, what the bar's own words are read against
          stops being `--bg` and becomes `alpha x --bg` plus whatever is

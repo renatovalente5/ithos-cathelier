@@ -195,37 +195,33 @@ document.addEventListener('DOMContentLoaded', () => {
        turns the campaign line on. A keyboard reader pressing the skip link
        was tripping the old 120 threshold by three pixels -- the page jumped,
        settled, and then slid another 22-34px on its own. */
-    const SHRINK_AT = 240, GROW_AT = 150;
-
-    /* TWO STATES, ONE CLOCK.
-       The bar loses its background at the very top and takes it back the
-       moment the page moves; separately, and much further down, it shrinks.
-       Those are different questions with different answers, but they are the
-       same READING of the same number, so they are decided together in one
-       handler. A second scroll listener would be a second rAF, a second write
-       to the same element's style in the same frame, and two pieces of code
-       that can disagree about where the page is.
-
-       The background needs its own band for the same reason the shrink has
-       one: at a single threshold, a page resting within a pixel of it flickers
-       between the two states forever. 12 and 2 is a small band, because the
-       gesture it has to track is "has the reader moved at all", but it is not
-       zero -- and 2 rather than 0 because elastic overscroll goes negative. */
-    const LIFT_AT = 12, DROP_AT = 2;
+    /* UM LIMIAR SÓ, E É A BARRA TER SAÍDO DO FLUXO QUE O PERMITE.
+       Eram dois: o fundo aparecia aos 12px e a barra encolhia aos 240, com
+       90px de histerese. Esses 240 não eram gosto -- com a barra em `sticky`,
+       encolher tirava 34px à altura do documento, e uma página cujo scroll
+       total ficasse mesmo em cima da linha encolhia, era travada para baixo
+       dela, crescia, e baloiçava enquanto alguém lá estivesse; e o «Skip to
+       content», que aterra a y=123, disparava um limiar mais baixo e punha a
+       página a deslizar debaixo de quem tinha acabado de saltar.
+       Agora a barra é `fixed`. Mudar de tamanho não mexe na altura do
+       documento nem na posição de nada, por isso os dois motivos
+       desapareceram, e o fundo, a sombra, a altura e o logótipo passam a poder
+       mexer no mesmo gesto e cedo -- que é o que a barra do weldstaff.pt faz,
+       e pela mesma razão.
+       A banda continua a existir, mas só contra tremura: sem ela uma página
+       parada a um pixel da linha pisca entre os dois estados. */
+    const ON_AT = 40, OFF_AT = 8;
     let queued = false;
     const decide = () => {
       queued = false;
       const y = scrollY;
-
-      const shrunkNow = head.dataset.shrunk === 'yes';
-      const shrunkNext = y >= SHRINK_AT ? true : y <= GROW_AT ? false : shrunkNow;
-      if (shrunkNext !== shrunkNow) head.dataset.shrunk = shrunkNext ? 'yes' : 'no';
-
-      /* On the ROOT, because the one-line script in <head> already wrote it
-         there before the first paint and the stylesheet reads it there. */
-      const movedNow = document.documentElement.dataset.scrolled === 'yes';
-      const movedNext = y >= LIFT_AT ? true : y <= DROP_AT ? false : movedNow;
-      if (movedNext !== movedNow) document.documentElement.dataset.scrolled = movedNext ? 'yes' : 'no';
+      const agora = head.dataset.shrunk === 'yes';
+      const seguinte = y >= ON_AT ? true : y <= OFF_AT ? false : agora;
+      if (seguinte === agora) return;
+      head.dataset.shrunk = seguinte ? 'yes' : 'no';
+      /* Na RAIZ, porque a linha de script no <head> já lá escreveu antes da
+         primeira pintura e é lá que a folha de estilos o lê. */
+      document.documentElement.dataset.scrolled = seguinte ? 'yes' : 'no';
     };
     headSettle = decide;
 

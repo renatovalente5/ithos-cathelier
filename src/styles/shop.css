@@ -6,57 +6,29 @@
    and share no appearance. */
 
 /* --- the cover ------------------------------------------------------------
-   There is no shared cover any more, and that is the point.
+   One picture filling the first screen, with a few words over it and the bar
+   floating on top of both.
 
-   Both shops used to render the same <section class="hero">: one photograph
-   under a flat rgb(24 18 14 / .62) panel, with only the aspect-ratio and the
-   words telling them apart. Measured, that panel covered 42% of the cover at
-   320px, 62% at 768 on the ithos side and 90% on the cathelier side — where it
-   left 28 pixels of photograph. And a proportion is invisible to somebody who
-   only ever sees one of the two shops, so the panel made the two covers the
-   same object wearing two sentences.
+   TWO SHAPES, AND THEY ARE THE FILM'S SHAPES
+   When the cover carries a film, the picture under it is that film's own first
+   frame, cut to the same two shapes the film is cut to and switching at the
+   same width -- otherwise the cover would jump between two framings at the
+   moment the film began. Without a film it is the brand's photograph, and the
+   4:5 master is the tallest shape any screen asks for, because `object-fit:
+   cover` takes a wide band out of a tall picture and never the other way round.
 
-   What is left here is the one line they still share: the quiet link under the
-   cover. Everything else lives in the brand file, because the two covers are
-   now different objects — a seamless band of lamp photographs on one side, a
-   field of ten drawn doors on the other — and neither would survive being
-   swapped for the other.
-
-   Nothing sits on top of a photograph any more, so contrast is measured
-   against a token instead of against pixels, which is the only thing the
-   battery can actually do. */
-.hero { position: relative; }
-
-/* --- the cover ------------------------------------------------------------
-   One photograph filling the first screen, with the brand's words over it.
-
-   THE SHAPE IS THE TALLEST ONE, AND EVERY WIDER SCREEN IS A BAND OF IT
-   The master is 4:5 because `object-fit: cover` can take a wide band out of a
-   tall picture and never the other way round. The three steps below are not
-   taste: a studio portrait shows `width / aspect` pixels of its subject, and
-   the horse lamp is 1856px tall in a 3719px frame, so anything past 2:1 cuts
-   its legs off. 16/9 with the viewport cap tops out near 1.92:1 on a 1920px
-   screen, which still leaves the lamp -- and the round straw base under it --
-   whole in the frame.
-
-   THE WORDS SIT ON A FLAT PANEL, NOT ON THE PHOTOGRAPH
-   Text straight on a photograph has no contrast that can be measured: the
-   ground is whatever the picture is at that pixel, and it changes the day the
-   owner swaps the file. A gradient is worse than nothing, because the guard
-   reads the declared colour -- the strong end -- and passes while the weak end
-   is unreadable. So the panel is FLAT and nearly opaque: at 92% the darkest
-   photograph underneath can shift it by at most 8% toward black, which is a
-   worst case that can be computed instead of hoped for. */
+   THE WORDS SIT ON A FLAT VEIL, NOT ON THE PICTURE
+   Text straight on a picture has no contrast that can be measured: the ground
+   is whatever the picture is at that pixel, and it changes the day the owner
+   swaps the file. A gradient is worse than nothing, because a guard reads the
+   declared colour -- the strong end -- and passes while the weak end is
+   unreadable. So the whole cover carries ONE flat veil, and the worst ground
+   it can ever be is itself over white. See src/lib/cover.mjs for the numbers
+   and scripts/guards.mjs for the arithmetic that checks them. */
 .cover {
   position: relative;
   isolation: isolate;
   display: grid;
-  /* The bar floats ON the cover instead of sitting above it, so the cover
-     starts at the very top of the page and runs up behind it. --head-h is the
-     bar's RESTING height -- the height it has while anybody is still looking
-     at the cover -- and it is declared once per brand on the root element so
-     that this rule and .head__row cannot drift apart about what it is. */
-  margin-block-start: calc(-1 * var(--head-h));
 }
 /* AS QUATRO CAMADAS, COM A ORDEM DECLARADA E NÃO DEIXADA AO ACASO.
    Sem estes z-index a ordem era EMERGENTE, e mudava sozinha a meio de uma
@@ -207,6 +179,15 @@
    because by the time the bar has shrunk the cover is off the screen. */
 html { --head-h: 84px; }
 
+/* A barra já não ocupa espaço, por isso o espaço dela é devolvido aqui -- e a
+   partir de --head-h, que é a altura EM REPOUSO. Ligá-lo à altura encolhida
+   faria a página inteira subir 34px a meio do gesto, que é precisamente o
+   defeito que sair do fluxo veio evitar.
+   Nas duas páginas com capa não se devolve nada: aí é a capa que passa por
+   baixo da barra, de propósito. */
+body { padding-block-start: var(--head-h); }
+html[data-cover='yes'] body { padding-block-start: 0; }
+
 /* A BARRA DEPOIS DE DESCER: VIDRO FOSCO, NÃO UM BLOCO BRANCO.
    Quatro coisas em vez de uma, e é o conjunto que faz a diferença: fundo a
    92% em vez de opaco, desfoque do que passa por trás, uma sombra baixa em vez
@@ -216,8 +197,16 @@ html { --head-h: 84px; }
    chão da barra nunca desce abaixo de `alfa × --bg`. A 92% a tinta mais fraca
    do cabeçalho lê 6,13:1 na ithos e 4,84:1 na cathelier; scripts/guards.mjs
    calcula-o e mata a construção se deixar de dar. */
+/* FORA DO FLUXO, E É ISSO QUE FAZ O RESTO FUNCIONAR.
+   Com `sticky` a barra ocupava espaço, e encolhê-la mudava a altura do
+   documento -- por isso o encolher tinha de viver longe, aos 240px e com 90px
+   de histerese: para não baloiçar numa página curta, e para o «Skip to
+   content», que aterra a y=123, não o disparar. Fora do fluxo esse custo
+   desaparece, e é por isso que tudo passa a poder acontecer junto e cedo: o
+   fundo, a sombra, a altura da barra e o logótipo mexem no MESMO gesto e no
+   mesmo relógio. O espaço que ela deixava é devolvido no `body`. */
 .head {
-  position: sticky; inset-block-start: 0; z-index: 50;
+  position: fixed; inset-block-start: 0; inset-inline: 0; z-index: 50;
   background: var(--head-bg, var(--bg));
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
@@ -262,41 +251,41 @@ html[data-cover='yes'][data-scrolled='no'] .head .icon-btn:hover { color: var(--
 html[data-cover='yes'][data-scrolled='no'] .head :is(.open-menu__word, .head__sibling):hover {
   text-decoration: underline; text-underline-offset: .25em;
 }
-/* The wordmark is a file, not text, so it cannot inherit a colour: an <img>
-   renders its own document and never sees this page's custom properties. The
-   light lockup is a second file, generated from the artwork at build time by
-   swapping the ink -- the shapes are the owner's, untouched. Both are in the
-   markup, stacked, and one of them is transparent. */
-.head__mark img,
-.head__sibling-mark img { grid-area: 1 / 1; }
-/* The two lockups have to OVERLAP, so their parent has to be a grid. As a
-   plain inline <span> they simply stacked: the door to the other shop measured
-   156x123 with one mark above the other. */
-.head__sibling-mark { display: grid; place-items: center; }
+/* O LOGÓTIPO CLAREIA POR FILTRO, NÃO POR DUAS IMAGENS A CRUZAREM-SE.
+   Um <img> desenha o seu próprio documento e não vê as custom properties desta
+   página, por isso durante um tempo isto foram DOIS ficheiros empilhados, um
+   deles gerado claro na construção. Funcionava, mas a meio do cruzamento havia
+   os dois desenhos sobrepostos a 50%, e obrigava a manter um segundo ficheiro
+   em passo com o primeiro.
+   `brightness(0) invert(1)` faz a mesma coisa com uma imagem só: achata a arte
+   a branco puro, que é exactamente o que o ficheiro claro continha. É assim
+   que a barra do weldstaff.pt o faz, e transita no mesmo relógio que o resto.
+   A arte não é redesenhada -- é a do cliente, pintada a uma cor, que é o uso
+   normal de um lockup invertido. */
+html[data-cover='yes'][data-scrolled='no'] :is(.head__mark, .head__sibling-mark) img {
+  filter: brightness(0) invert(1);
+}
+.head__sibling-mark { display: inline-flex; align-items: center; }
 /* Sized per SHAPE and not per brand-that-owns-it: the door in the ithos shop
    shows the cathelier lockup, which is wide (117x54), and the door in the
    cathelier shop shows the ithos one, which is nearly square (119x120). One
    height for both would make one of them a postage stamp. */
 .head__sibling-mark img { inline-size: auto; block-size: 30px; }
 [data-brand='ithos'] .head__sibling-mark img { block-size: 20px; }
-.mark--light { opacity: 0; }
-html[data-cover='yes'][data-scrolled='no'] .mark--dark { opacity: 0; }
-html[data-cover='yes'][data-scrolled='no'] .mark--light { opacity: 1; }
 
 /* The state changes instantly; only the FADE is motion, so only the fade sits
    behind the gate. A reader who asked for less motion still gets a bar that
    is transparent at the top and solid below it -- they just get it at once. */
 @media (prefers-reduced-motion: no-preference) {
   .head[data-anim='yes'],
-  .head[data-anim='yes'] :is(.icon-btn, .open-menu__word, .head__sibling),
-  .head[data-anim='yes'] .head__sibling img {
-    transition: background-color var(--head-fade) var(--head-fade-ease),
-                border-block-end-color var(--head-fade) var(--head-fade-ease),
-                box-shadow var(--head-fade) var(--head-fade-ease),
-                -webkit-backdrop-filter var(--head-fade) var(--head-fade-ease),
-                backdrop-filter var(--head-fade) var(--head-fade-ease),
-                color var(--head-fade) var(--head-fade-ease),
-                opacity var(--head-fade) var(--head-fade-ease);
+  .head[data-anim='yes'] :is(.icon-btn, .open-menu__word, .head__sibling) {
+    transition: background-color var(--head-move) var(--head-ease),
+                border-block-end-color var(--head-move) var(--head-ease),
+                box-shadow var(--head-move) var(--head-ease),
+                -webkit-backdrop-filter var(--head-move) var(--head-ease),
+                backdrop-filter var(--head-move) var(--head-ease),
+                color var(--head-move) var(--head-ease),
+                opacity var(--head-move) var(--head-ease);
   }
 }
 
@@ -333,18 +322,20 @@ html[data-cover='yes'][data-scrolled='no'] .mark--light { opacity: 1; }
    está sobre um fundo a meio caminho. É inerente a cruzar um chão escuro com
    um claro -- não há ordem de fade que o evite -- e os dois ESTADOS, que são
    o que a norma mede, passam os dois com folga. */
-.head {
-  --head-shrink: 220ms; --head-ease: cubic-bezier(.22, .61, .36, 1);
-  --head-fade: 350ms;   --head-fade-ease: cubic-bezier(.4, 0, .2, 1);
-}
-.head[data-anim='yes'] .head__row { transition: min-height var(--head-shrink) var(--head-ease); }
+/* UM RELÓGIO SÓ, e isso é requisito de correcção e não arrumação.
+   Eram dois -- 220ms para o tamanho e 350ms para a cor -- e com os dois gestos
+   a acontecerem agora ao mesmo tempo isso via-se: a barra acabava de encolher
+   enquanto o fundo ainda vinha a caminho. Uma duração e uma curva para tudo o
+   que mexe, e o gesto lê-se como um só. */
+.head { --head-move: 350ms; --head-ease: cubic-bezier(.4, 0, .2, 1); }
+.head[data-anim='yes'] .head__row { transition: min-height var(--head-move) var(--head-ease); }
 /* Height AND opacity in ONE declaration. A second `transition` on the same
    element replaces this one rather than adding to it, and this selector
    carries an element name -- (0,3,1) -- so any list-of-classes rule written
    later would lose and the wordmark would cross-fade in one frame. */
-.head[data-anim='yes'] .head__mark img {
-  transition: height var(--head-shrink) var(--head-ease),
-              opacity var(--head-fade) var(--head-fade-ease);
+.head[data-anim='yes'] :is(.head__mark, .head__sibling-mark) img {
+  transition: height var(--head-move) var(--head-ease),
+              filter var(--head-move) var(--head-ease);
 }
 
 /* The shrink itself is motion, so a reader who asked for less of it does not

@@ -39,6 +39,21 @@ window.__bateria = function () {
   const de = document.documentElement;
   nota(de.scrollWidth <= de.clientWidth + 1, 'não rola de lado',
     `scrollWidth ${de.scrollWidth} > clientWidth ${de.clientWidth}`);
+
+  /* A BARRA MEDE-SE SOZINHA, PORQUE SAIU DO FLUXO.
+     A verificação acima lê `documentElement.scrollWidth`, e uma barra
+     `position: fixed` nunca o faz crescer: pode transbordar 200px para fora do
+     ecrã a 320px de largura e o documento não dá por nada. Desde que a barra
+     deixou de ser `sticky`, é preciso perguntar-lhe directamente. */
+  const barraFixa = document.querySelector('.head');
+  if (barraFixa) {
+    const r = barraFixa.getBoundingClientRect();
+    const transborda = barraFixa.scrollWidth > barraFixa.clientWidth + 1
+      || r.right > innerWidth + 1 || r.left < -1;
+    nota(!transborda, 'a barra não transborda de lado',
+      `conteúdo ${barraFixa.scrollWidth}px em ${barraFixa.clientWidth}px, `
+      + `caixa ${Math.round(r.left)}..${Math.round(r.right)} num ecrã de ${innerWidth}px`);
+  }
   // Um filho de um rolador HORIZONTAL passa da margem por desenho — é para isso
   // que o rolador existe. O que não pode passar é a página, e isso mede-se
   // acima, no `scrollWidth`. Sem esta excepção, a fila de filtros do catálogo

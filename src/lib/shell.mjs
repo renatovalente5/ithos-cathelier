@@ -86,13 +86,6 @@ export const SIBLING = {
   cathelier: { href: '/', name: 'ithos', note: 'wooden night lights' },
 };
 
-/* The light lockup of a mark, generated from the artwork by src/build.mjs.
- * An <img> renders its own document and never sees this page's custom
- * properties, so a mark cannot be recoloured by CSS -- which is why the ithos
- * artwork's own `var(--ithos-tinta, …)` hooks have never once fired here. The
- * second file is the answer: same shapes, one ink. */
-const lightMark = (src) => src.replace(/\.svg$/, '-light.svg');
-
 const MARK = {
   ithos: { src: '/assets/ithos-wordmark.svg', w: 119, h: 120, alt: 'ithos' },
   cathelier: { src: '/assets/cathelier.svg', w: 117, h: 54, alt: 'cathelier' },
@@ -122,7 +115,7 @@ const CALL_COST = '(Call to the national mobile network)';
  * the attribute, the stylesheet's rule needs data-scrolled='no' to be present
  * rather than merely not 'yes', and the bar keeps its background for good. A
  * failed script cannot leave white controls floating over white page. */
-const MARCA_DE_POSICAO = "document.documentElement.dataset.scrolled=scrollY>12?'yes':'no'";
+const MARCA_DE_POSICAO = "document.documentElement.dataset.scrolled=scrollY>40?'yes':'no'";
 
 export function page(o) {
   const {
@@ -283,19 +276,14 @@ function header({ brand }) {
     </div>
 
     <a class="head__mark" href="${home}" aria-label="${esc(mark.alt)} — home">
-      <img class="mark--dark" src="${mark.src}" alt="${esc(mark.alt)}"
-           width="${mark.w}" height="${mark.h}">
-      <img class="mark--light" src="${lightMark(mark.src)}" alt="" aria-hidden="true"
-           width="${mark.w}" height="${mark.h}">
+      <img src="${mark.src}" alt="${esc(mark.alt)}" width="${mark.w}" height="${mark.h}">
     </a>
 
     <div class="head__right">
       <a class="head__sibling" href="${sibling.href}" data-other-brand
          aria-label="Go to ${esc(sibling.name)}, ${esc(sibling.note)}">
         <span class="head__sibling-mark">
-          <img class="mark--dark" src="${other.src}" alt="" width="${other.w}" height="${other.h}">
-          <img class="mark--light" src="${lightMark(other.src)}" alt=""
-               width="${other.w}" height="${other.h}">
+          <img src="${other.src}" alt="" width="${other.w}" height="${other.h}">
         </span><span class="head__sibling-arrow" aria-hidden="true">↗</span>
       </a>
       <a class="icon-btn" href="${brandPath('/cart/', brand)}" aria-label="Basket">
