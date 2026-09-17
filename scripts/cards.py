@@ -1,12 +1,12 @@
 #!/usr/bin/env python3
 """
-Turns the portrait photographs into the square frames the shop is built on.
+Turns the portrait photographs into the 3:4 frames the shop's cards are built on.
 
 WHY THIS EXISTS, AND WHY IT IS THE FIRST TOOL IN THE PROJECT.
 
 The reference shop the client chose shows every product in a 1:1 frame. Our
 photographs are not 1:1 — of the 58 studio files, 45 are 1024x1536 and 13 are
-full resolution up to 4000x6000, and NOT ONE of them is square. Going to 1:1
+full resolution up to 4000x6000, and two thirds of them are 2:3. Going to 1:1
 therefore throws away a third of every picture. Which third is the whole
 question: crop from the middle and a lamp standing tall in the frame loses its
 head, and nobody notices until the client does.
@@ -37,8 +37,8 @@ lamps stand on has more edge energy than the lamps do, so the window slides to
 the bottom of the frame and takes the head off anything tall. Sixteen of the
 first 120 needed that undone by hand.
 
-    python3 scripts/square.py --contact    build the review sheets
-    python3 scripts/square.py              write the square masters
+    python3 scripts/cards.py --contact    build the review sheets
+    python3 scripts/cards.py              write the square masters
 """
 import json
 import sys
@@ -52,12 +52,27 @@ except ImportError:
 RAIZ = Path(__file__).resolve().parent.parent
 FOTOS = RAIZ / 'photos'
 FOCOS = FOTOS / 'focus.json'
-SAIDA = FOTOS / '_square'
+SAIDA = FOTOS / '_cards'
 FOLHAS = FOTOS / '_contact'
 
 # The master is generous on purpose: every web size is derived from it later,
 # and the product page gallery on the reference shop serves 893px.
+# A FORMA DO CARTÃO, ESCRITA AQUI E LIDA NOS OUTROS SÍTIOS.
+#
+# Era 1:1. Dois terços dos originais são 2:3, e um quadrado deita fora um terço
+# da fotografia -- medido, e visível: o foguetão ficava decapitado, a girafa
+# perdia os pés, o ouriço era um fragmento. A 3:4 sobrevive 89% do original e
+# nada fica cortado, sem os cartões crescerem tanto que o produto encolha
+# dentro deles (um 2:3 mostraria 100% mas com fundo vazio a mais).
+#
+# O mesmo número existe em src/lib/photo.mjs (a proporção intrínseca que o HTML
+# declara) e em src/styles/base.css (a caixa que o desenha). scripts/guards.mjs
+# compara os três E mede os ficheiros no disco -- se discordarem, o browser
+# reserva uma caixa da altura errada e a página salta quando as fotografias
+# chegam.
+PROPORCAO = 3 / 4          # largura / altura
 LADO = 1600
+ALTO = round(LADO / PROPORCAO)
 
 
 def focos() -> dict:
@@ -78,9 +93,10 @@ def encontrar_foco(im: Image.Image) -> float:
 
     energia = [sum(px[x, y] for x in range(pw)) for y in range(ph)]
 
-    # The crop is as tall as the picture is wide.
-    janela = max(1, round(pw * larg / larg))          # = pw, in thumbnail terms
-    janela = max(1, round(ph * larg / alt))
+    # A janela tem a altura do corte, não a largura da fotografia: com 1:1 eram
+    # a mesma coisa e a linha podia mentir sem se notar; com 3:4 já não são.
+    corte = larg / PROPORCAO                          # altura do corte, no original
+    janela = max(1, round(ph * corte / alt))
     if janela >= ph:
         return 0.5
 
@@ -104,16 +120,22 @@ def encontrar_foco(im: Image.Image) -> float:
 
 
 def cortar(im: Image.Image, foco: float) -> Image.Image:
+    """A janela mais larga possível com a proporção do cartão, colocada pelo foco.
+
+    Uma fotografia mais ALTA do que a proporção é cortada em altura (é o caso
+    dos dois terços que são 2:3, e é aí que o foco decide); uma mais LARGA é
+    cortada nos lados, e aí o foco é horizontal."""
     larg, alt = im.size
-    lado = min(larg, alt)
-    if alt > larg:
-        topo = round(foco * alt - lado / 2)
-        topo = max(0, min(alt - lado, topo))
-        caixa = (0, topo, larg, topo + lado)
-    else:
-        esq = round(foco * larg - lado / 2)
-        esq = max(0, min(larg - lado, esq))
-        caixa = (esq, 0, esq + lado, alt)
+    if larg / alt <= PROPORCAO:          # mais alta do que o cartão
+        janela = min(alt, round(larg / PROPORCAO))
+        topo = round(foco * alt - janela / 2)
+        topo = max(0, min(alt - janela, topo))
+        caixa = (0, topo, larg, topo + janela)
+    else:                                 # mais larga do que o cartão
+        janela = min(larg, round(alt * PROPORCAO))
+        esq = round(foco * larg - janela / 2)
+        esq = max(0, min(larg - janela, esq))
+        caixa = (esq, 0, esq + janela, alt)
     return im.crop(caixa)
 
 
@@ -145,12 +167,12 @@ def main():
             foco = manual if manual is not None else encontrar_foco(im)
             q = cortar(im, foco)
             if q.size[0] > LADO:
-                q = q.resize((LADO, LADO), Image.LANCZOS)
+                q = q.resize((LADO, ALTO), Image.LANCZOS)
 
             produto = chave.split('/')[1]
             if modo_folha:
                 por_produto.setdefault(produto, []).append(
-                    (chave.split('/')[-1], q.copy().resize((300, 300), Image.LANCZOS), manual is not None))
+                    (chave.split('/')[-1], q.copy().resize((300, round(300 / PROPORCAO)), Image.LANCZOS), manual is not None))
             else:
                 destino = SAIDA / f'{chave}.jpg'
                 destino.parent.mkdir(parents=True, exist_ok=True)
@@ -180,7 +202,7 @@ def main():
             folha.save(FOLHAS / f'sheet-{n // 6 + 1:02d}.jpg', 'JPEG', quality=88)
         print(f'{len(nomes)} products over {(len(nomes) + 5) // 6} sheets in {FOLHAS.relative_to(RAIZ)}')
     else:
-        print(f'{feitos} square masters in {SAIDA.relative_to(RAIZ)}, '
+        print(f'{feitos} card masters in {SAIDA.relative_to(RAIZ)}, '
               f'{len(guardados)} of them framed by hand')
 
 

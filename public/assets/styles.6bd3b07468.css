@@ -168,7 +168,13 @@ p { text-wrap: pretty; }
 
 /* Every product frame is 1:1. This is the single most visible thing the owner
    asked for, and the reason scripts/square.py exists. */
-.frame { aspect-ratio: 1; overflow: hidden; background: var(--frame-bg); }
+/* 3:4 e não 1:1. Dois terços das fotografias do estúdio são 2:3, e um quadrado
+   deitava fora um terço de cada uma -- o foguetão sem bico, a girafa sem pés.
+   O número está aqui, em scripts/cards.py (que corta) e em src/lib/photo.mjs (a
+   proporção que o HTML declara), e scripts/guards.mjs compara os três com os
+   ficheiros no disco. A variável existe para os sítios que precisam de outra
+   forma, como a fotografia da oficina, os declararem em vez de a repetirem. */
+.frame { aspect-ratio: var(--frame-ratio, 3 / 4); overflow: hidden; background: var(--frame-bg); }
 
 /* <picture> is a wrapper with no size of its own, and an <img> inside it sizes
    against THAT, not against the frame. Without these two lines the square
@@ -1045,7 +1051,10 @@ html[data-cover='yes'][data-scrolled='no'] :is(.head__mark, .head__sibling-mark)
     flex: 0 1 var(--shot-size, 48px);
     /* A tap target may not go under 24px, and six photographs in a narrow
        column would push it there if it were allowed to shrink freely. */
-    min-width: 26px; aspect-ratio: 1;
+    /* A mesma forma da fotografia grande: um botão quadrado sobre um
+       ficheiro 3:4 voltava a cortá-lo, e a tira deixava de parecer a mesma
+       fotografia em pequeno. */
+    min-width: 26px; aspect-ratio: var(--frame-ratio, 3 / 4);
     padding: 0; border: 1px solid var(--line); background: none;
     border-radius: var(--radius, 0); overflow: hidden; cursor: pointer;
     opacity: .62; transition: opacity .2s ease, border-color .2s ease;
@@ -1780,7 +1789,7 @@ html.menu-open { overflow: hidden; }
 .maker__text h2 { margin-block-end: 1.25rem; }
 .maker__text p + p { margin-block-start: 1rem; }
 .maker__sign { margin-block-start: 1.5rem; color: var(--ink); }
-.maker__photo { aspect-ratio: 4 / 3; }
+.maker__photo { --frame-ratio: 4 / 3; }
 
 .product__blurb { margin-block-start: 1rem; font-size: 15px; line-height: 1.8; color: var(--muted); }
 .product__lead { display: flex; align-items: center; gap: .5rem; }

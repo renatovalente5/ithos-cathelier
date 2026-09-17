@@ -11,7 +11,9 @@
  * would be the tail wagging the dog. Verified against Pillow on all 209 JPEGs
  * in photos/ -- 209 agree, 0 disagree.
  */
-import { openSync, readSync, closeSync } from 'node:fs';
+import { openSync, readSync, closeSync, existsSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const cache = new Map();
 
@@ -67,4 +69,73 @@ export function rungs(w) {
   if (!out.length) return [w];
   if (w >= 1250) out.push(ZOOM_W);
   return out;
+}
+
+/* A FORMA DOS CARTÕES, para a proporção intrínseca que o <img> declara.
+ *
+ * O mesmo número vive em scripts/cards.py (que corta os masters) e em
+ * src/styles/base.css (que desenha a caixa). scripts/guards.mjs compara os
+ * três e mede os ficheiros no disco: se o HTML declarar uma altura que os
+ * ficheiros não têm, o browser reserva a caixa errada e a grelha salta quando
+ * as fotografias chegam -- que é pior do que não reservar nada. */
+export const CARD_RATIO = [3, 4];   // largura, altura
+
+/** A forma de um WebP simples (VP8 com perdas), lida do cabeçalho.
+ *
+ * Existe para as guardas poderem medir o que está PUBLICADO. Os masters dos
+ * cartões são derivados e não entram no repositório, por isso em CI não há
+ * nada em photos/_cards para medir -- mas public/media está versionado, e é
+ * isso que o visitante recebe.
+ *
+ * Só VP8 com perdas, que é o que scripts/renditions.py escreve. Qualquer outra
+ * variante ATIRA em vez de devolver um palpite: uma forma adivinhada seria um
+ * ✓ sobre uma pergunta que não foi feita.
+ */
+export function webpShape(file) {
+  const fd = openSync(file, 'r');
+  try {
+    const head = Buffer.alloc(30);
+    readSync(fd, head, 0, 30, 0);
+    if (head.toString('ascii', 0, 4) !== 'RIFF' || head.toString('ascii', 8, 12) !== 'WEBP') {
+      throw new Error(`${file} is not a WebP`);
+    }
+    const chunk = head.toString('ascii', 12, 16);
+    if (chunk !== 'VP8 ') {
+      throw new Error(`${file}: ${chunk.trim()} WebP, and this reader only knows lossy VP8`);
+    }
+    /* 12 chunk header + 3 frame tag + the 3-byte start code 9D 01 2A, then
+       two 16-bit little-endian values whose top two bits are the scale. */
+    if (!(head[23] === 0x9D && head[24] === 0x01 && head[25] === 0x2A)) {
+      throw new Error(`${file}: no VP8 key-frame start code where one was expected`);
+    }
+    return {
+      w: head.readUInt16LE(26) & 0x3FFF,
+      h: head.readUInt16LE(28) & 0x3FFF,
+    };
+  } finally {
+    closeSync(fd);
+  }
+}
+
+/** A escada que a família dos cartões usa, e as que EXISTEM para uma foto.
+ *
+ * A página prometia [200, 400, 600, 1000] a toda a gente. Cinco fotografias do
+ * estúdio são pequenas e scripts/renditions.py recusa-se, com razão, a escrever
+ * uma rendition maior do que o master -- para a coruja (540px) o `-1000` nunca
+ * chegou a existir, e o `srcset` apontava-lhe. Funcionava porque um ficheiro de
+ * uma geração anterior ainda estava no disco; apagar a pasta e voltar a gerar
+ * mostrou o buraco.
+ *
+ * Lê-se o DISCO e não os masters, porque photos/_cards é derivado e não entra
+ * no repositório: em CI não existe, e public/media existe. */
+export const CARD_WIDTHS = [200, 400, 600, 1000];
+
+const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
+
+export function cardWidths(dir, name) {
+  const tem = CARD_WIDTHS.filter((w) =>
+    existsSync(join(RAIZ, 'public', 'media', dir, `${name}-${w}.webp`)));
+  /* Nunca vazio: um srcset sem candidatos é uma imagem sem endereço nenhum, e
+     é melhor prometer o degrau mais pequeno e falhar alto do que servir nada. */
+  return tem.length ? tem : [CARD_WIDTHS[0]];
 }

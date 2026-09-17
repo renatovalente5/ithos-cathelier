@@ -1,5 +1,7 @@
 /* Small helpers shared by every page builder. Nothing clever lives here. */
 
+import { CARD_RATIO, cardWidths } from './photo.mjs';
+
 /** Escape for HTML text and double-quoted attributes. */
 export const esc = (s) => String(s ?? '')
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
@@ -19,7 +21,11 @@ export const slugify = (s) => String(s).toLowerCase().normalize('NFD')
  * and a cheap phone is who buys a night light at eleven at night. The browser
  * picks; the plain <img> fallback is WebP, which everything reads.
  */
-export function picture({ dir, name, alt, sizes, widths = [200, 400, 600, 1000], loading = 'lazy', fetchpriority }) {
+export function picture({ dir, name, alt, sizes, widths, loading = 'lazy', fetchpriority }) {
+  /* Por omissão, as larguras que EXISTEM para esta fotografia -- não uma lista
+     fixa. Cinco masters do estúdio são pequenos de mais para o degrau de cima e
+     renditions.py não o escreve; a lista fixa prometia-o na mesma. */
+  widths = widths && widths.length ? widths : cardWidths(dir, name);
   const set = (ext) => widths.map((w) => `/media/${dir}/${name}-${w}.${ext} ${w}w`).join(', ');
   // The fallback is the LARGEST width that was actually asked for, not a fixed
   // 600: the cathelier stand-ins only go to 400, and hardcoding 600 wrote 548
@@ -29,7 +35,11 @@ export function picture({ dir, name, alt, sizes, widths = [200, 400, 600, 1000],
   const attrs = [
     `src="/media/${dir}/${name}-${biggest}.webp"`,
     `alt="${esc(alt)}"`,
-    `width="${biggest}" height="${biggest}"`,
+    /* A altura intrínseca vem da forma do cartão, não de um segundo
+       "biggest". Eram iguais enquanto a família era quadrada, e isso
+       escondia a suposição: declarar uma caixa quadrada para ficheiros
+       3:4 faria a grelha saltar quando as fotografias chegassem. */
+    `width="${biggest}" height="${Math.round(biggest * CARD_RATIO[1] / CARD_RATIO[0])}"`,
     `loading="${loading}"`,
     `decoding="async"`,
     fetchpriority ? `fetchpriority="${fetchpriority}"` : '',

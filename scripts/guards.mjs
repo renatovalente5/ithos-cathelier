@@ -17,7 +17,7 @@ import { execFileSync } from 'node:child_process';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const CONTENT = join(ROOT, 'content');
-const { shapeOf, rungs } = await import('../src/lib/photo.mjs');
+const { shapeOf, rungs, CARD_RATIO, webpShape } = await import('../src/lib/photo.mjs');
 const PREVIEW = process.env.PREVIEW === 'yes';
 
 const deaths = [];
@@ -400,6 +400,68 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
     }
   }
 
+  /* 1a. A FORMA DOS CARTÕES: TRÊS DECLARAÇÕES E OS FICHEIROS.
+         O mesmo número existe em três linguagens -- scripts/cards.py corta os
+         masters, src/lib/photo.mjs declara a proporção intrínseca no <img>, e
+         src/styles/base.css desenha a caixa. Se discordarem, o browser reserva
+         uma caixa com a altura errada e a grelha inteira salta quando as
+         fotografias chegam, que é pior do que não reservar nada.
+         E há um quarto: os FICHEIROS. As três podem concordar e alguém ter-se
+         esquecido de correr os geradores, que é o erro mais provável de todos.
+         Medem-se os publicados e não os masters, porque photos/_cards é
+         derivado e não entra no repositório -- em CI não existe. */
+  {
+    const py = readFileSync(join(ROOT, 'scripts/cards.py'), 'utf8')
+      .match(/^PROPORCAO = (\d+) \/ (\d+)/m);
+    const css = readFileSync(join(ROOT, 'src/styles/base.css'), 'utf8')
+      .match(/--frame-ratio,\s*(\d+)\s*\/\s*(\d+)\s*\)/);
+    const declarado = CARD_RATIO[0] / CARD_RATIO[1];
+    if (!py) die('cards.py: cannot read PROPORCAO, the shape it cuts the card masters to');
+    else if (Math.abs(Number(py[1]) / Number(py[2]) - declarado) > 1e-6) {
+      die(`the card shape disagrees: cards.py cuts ${py[1]}/${py[2]} and photo.mjs `
+        + `declares ${CARD_RATIO[0]}/${CARD_RATIO[1]} to the browser`);
+    }
+    if (!css) die('base.css: cannot read the .frame default aspect-ratio');
+    else if (Math.abs(Number(css[1]) / Number(css[2]) - declarado) > 1e-6) {
+      die(`the card shape disagrees: base.css draws ${css[1]}/${css[2]} and photo.mjs `
+        + `declares ${CARD_RATIO[0]}/${CARD_RATIO[1]} — the grid will jump when the `
+        + 'photographs arrive');
+    }
+
+    /* TODAS as renditions publicadas da família, e não uma amostra.
+       A primeira versão disto olhava para as seis primeiras pastas de cada
+       marca. Deformei a fotografia do cavalo de propósito para a ver morder e
+       não aconteceu nada: o cavalo não estava nas seis. Uma amostra que não
+       cobre o caso não é uma verificação, é um ✓ sobre outra pergunta. São
+       cerca de duzentos ficheiros e lêem-se trinta bytes de cada um. */
+    const amostra = [];
+    const media = join(ROOT, 'public/media');
+    for (const marca of ['ithos', 'cathelier']) {
+      const base = join(media, marca);
+      if (!existsSync(base)) continue;
+      for (const pasta of readdirSync(base)) {
+        const dir = join(base, pasta);
+        for (const f of readdirSync(dir)) {
+          if (f.endsWith('.webp') && !f.endsWith('-120.webp')) amostra.push(join(dir, f));
+        }
+      }
+    }
+    if (!amostra.length) {
+      die('guards: found no card renditions under public/media to measure, so the shape '
+        + 'the visitor actually receives is unchecked');
+    }
+    for (const f of amostra) {
+      let forma;
+      try { forma = webpShape(f); } catch (e) { die(`guards: ${e.message}`); continue; }
+      if (Math.abs(forma.w / forma.h - declarado) > 0.01) {
+        die(`${f.replace(ROOT + '/', '')} is ${forma.w}x${forma.h} `
+          + `(${(forma.w / forma.h).toFixed(3)}:1) but the page declares `
+          + `${CARD_RATIO[0]}/${CARD_RATIO[1]} (${declarado.toFixed(3)}:1) — `
+          + 'run python3 scripts/cards.py then scripts/renditions.py');
+      }
+    }
+  }
+
   /* 1b. O LIMIAR DA BARRA ESTÁ ESCRITO EM DOIS SÍTIOS E TEM DE DIZER O MESMO.
          A linha inline no <head> decide o estado ANTES da primeira pintura, e
          o decide() do shop.js decide-o a partir daí. Se discordarem, a barra
@@ -597,11 +659,33 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
         die(`ithos/${f}: photograph "${n}" has a character that would break the srcset`);
         continue;
       }
-      for (const w of QUADRO) for (const ext of ['avif', 'webp']) {
-        if (!existsSync(join(PUB, 'ithos', p.photoFolder, `${n}-${w}.${ext}`))) faltam++;
+      /* NÃO a escada inteira: scripts/renditions.py recusa-se, com razão, a
+         escrever um degrau maior do que o master, e cinco fotografias do
+         estúdio são pequenas. Exigi-la era pedir ficheiros que o gerador nunca
+         escreve -- e passava só porque sobras de uma geração anterior ainda
+         estavam no disco. O que É defeito é um BURACO: ter 200 e 600 sem 400
+         significa uma geração interrompida a meio. E os dois degraus de baixo
+         têm de existir sempre, porque nenhum master é pequeno ao ponto de os
+         não poder dar. */
+      const presentes = QUADRO.filter((w) =>
+        existsSync(join(PUB, 'ithos', p.photoFolder, `${n}-${w}.webp`)));
+      const primeiroBuraco = QUADRO.findIndex((w, i) =>
+        i < presentes.length && w !== presentes[i]);
+      if (primeiroBuraco !== -1) {
+        falta.push(`ithos/${p.photoFolder}/${n}: a ladder with a hole (${presentes.join(', ')})`);
+        faltam++;
+      }
+      for (const w of presentes) {
+        if (!existsSync(join(PUB, 'ithos', p.photoFolder, `${n}-${w}.avif`))) {
+          falta.push(`ithos/${p.photoFolder}/${n}-${w}.avif (the webp is there, the avif is not)`);
+          faltam++;
+        }
       }
       for (const w of TIRA) {
-        if (!existsSync(join(PUB, 'ithos', p.photoFolder, `${n}-${w}.webp`))) faltam++;
+        if (!existsSync(join(PUB, 'ithos', p.photoFolder, `${n}-${w}.webp`))) {
+          falta.push(`ithos/${p.photoFolder}/${n}-${w}.webp`);
+          faltam++;
+        }
       }
     }
   }

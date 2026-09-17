@@ -26,7 +26,7 @@ except ImportError:
     sys.exit("Pillow is missing:  python3 -m pip install Pillow")
 
 ROOT = Path(__file__).resolve().parent.parent
-SRC = ROOT / 'photos' / '_square'
+SRC = ROOT / 'photos' / '_cards'
 COVERS = ROOT / 'photos' / '_covers'
 OUT = ROOT / 'public' / 'media'
 # 120 is for the thumbnail strip under a product card and nothing else. The
@@ -52,7 +52,7 @@ def main():
     for master in sorted(SRC.rglob('*.jpg')):
         rel = master.relative_to(SRC).with_suffix('')
         with Image.open(master) as probe:
-            source = probe.width
+            source, tall = probe.size
         for w in WIDTHS:
             # Never upscale. These Instagram frames are 360px wide, and writing
             # them out as "-1000" would tell the browser to download a bigger
@@ -68,7 +68,11 @@ def main():
                 with Image.open(master) as im:
                     im = im.convert('RGB')
                     if im.width > w:
-                        im = im.resize((w, w), Image.LANCZOS)
+                        # A altura sai do MASTER e não de uma constante: esta
+                        # família era quadrada e o `resize((w, w))` era verdade
+                        # por acidente. Derivá-la significa que mudar a forma
+                        # do cartão é mudar scripts/cards.py e mais nada aqui.
+                        im = im.resize((w, round(tall * w / source)), Image.LANCZOS)
                     im.save(dest, fmt, quality=62 if fmt == 'AVIF' else 78)
                 written += 1
     written, skipped = covers(written, skipped)
@@ -90,7 +94,7 @@ def main():
 # photograph is shown whole.
 #
 # So this is a second family, from the uncropped masters, and nothing about the
-# square family changes -- not photos/_square, not focus.json, not the contact
+# square family changes -- not photos/_cards, not focus.json, not the contact
 # sheets, not the cards.
 WHOLE = ROOT / 'public' / 'media' / 'whole'
 # One rung above 1000 for the lightbox, and only where the master can fill it.
@@ -99,7 +103,7 @@ ZOOM_W = 1400
 
 
 def _originais():
-    """Exactly the sources square.py uses, named exactly the same way -- the two
+    """Exactly the sources cards.py uses, named exactly the same way -- the two
     families must never come to disagree about which photographs exist."""
     fotos = ROOT / 'photos'
     for pasta in sorted((fotos / 'ithos').iterdir()):
@@ -118,9 +122,7 @@ def inteiras(written, skipped):
             sw, sh = probe.size
         # 400 up. The gallery's smallest box is about 288px wide on a 320px
         # phone, so a 200w whole photograph is a file nothing can ever choose --
-        # 200 files and 1.6 MB of it. The thumbnails under the gallery are the
-        # SQUARE family and are unaffected.
-        # 400 up. The gallery's smallest box is about 288px wide on a 320px
+        # 200 files and 1.6 MB of it.         # 400 up. The gallery's smallest box is about 288px wide on a 320px
         # phone, so a 200w whole photograph is a file nothing can ever choose --
         # 200 files and 1.6 MB of it.
         # A master narrower than 400 gets ONE rung at its own width, never a

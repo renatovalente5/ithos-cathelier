@@ -18,9 +18,9 @@ translation, not rework.
 
 ## The photographs come first
 
-Of the 58 studio files, not one is square, and the shop is built on 1:1 frames.
-`scripts/square.py` finds the subject in each portrait photograph and centres a
-square on it; `photos/focus.json` records, by hand, the sixteen frames where the
+Of the 58 studio files, two thirds are 2:3, and the shop's cards are 3:4 frames.
+`scripts/cards.py` finds the subject in each portrait photograph and centres a
+3:4 window on it; `photos/focus.json` records, by hand, the sixteen frames where the
 guess was wrong. Read the header of that script before touching any of it.
 
 **A cover photograph must show the whole piece.** Some of the studio files are
@@ -33,8 +33,8 @@ picture in a gallery, never as the face of a product card.
 node src/build.mjs                                  # live address, from CNAME
 BASE_URL=http://localhost:4320 PREVIEW=yes node src/build.mjs
 
-python3 scripts/square.py --contact   # review sheets for the square crops
-python3 scripts/square.py             # write the square masters
+python3 scripts/cards.py --contact    # review sheets for the card crops
+python3 scripts/cards.py              # write the card masters
 python3 scripts/renditions.py         # web sizes from the masters
 python3 scripts/fonts.py              # re-download the self-hosted typefaces
 ```

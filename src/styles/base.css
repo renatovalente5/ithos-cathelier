@@ -167,7 +167,13 @@ p { text-wrap: pretty; }
 
 /* Every product frame is 1:1. This is the single most visible thing the owner
    asked for, and the reason scripts/square.py exists. */
-.frame { aspect-ratio: 1; overflow: hidden; background: var(--frame-bg); }
+/* 3:4 e não 1:1. Dois terços das fotografias do estúdio são 2:3, e um quadrado
+   deitava fora um terço de cada uma -- o foguetão sem bico, a girafa sem pés.
+   O número está aqui, em scripts/cards.py (que corta) e em src/lib/photo.mjs (a
+   proporção que o HTML declara), e scripts/guards.mjs compara os três com os
+   ficheiros no disco. A variável existe para os sítios que precisam de outra
+   forma, como a fotografia da oficina, os declararem em vez de a repetirem. */
+.frame { aspect-ratio: var(--frame-ratio, 3 / 4); overflow: hidden; background: var(--frame-bg); }
 
 /* <picture> is a wrapper with no size of its own, and an <img> inside it sizes
    against THAT, not against the frame. Without these two lines the square

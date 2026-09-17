@@ -1,11 +1,11 @@
 node_modules/
 .DS_Store
 
-# Square masters and contact sheets are DERIVED from photos/ithos + photos/focus.json.
+# Card masters and contact sheets are DERIVED from photos/ithos + photos/focus.json.
 # The web renditions under public/ are versioned on purpose (a build step that
 # regenerates everything on every publish cost 197s per save on another project),
 # but these two are review material, not the site.
-photos/_square/
+photos/_cards/
 photos/_contact/
 
 # The photographer's originals and the client's portfolio live ONE folder up, in
