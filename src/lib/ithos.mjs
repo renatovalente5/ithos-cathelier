@@ -42,10 +42,21 @@ export function card(p, { eager = false } = {}) {
   const range = high > low;
   const fams = familiesOf(p.slug).join(' ');
 
+  /* A SWATCH ONLY WHERE THERE IS A COLOUR TO SHOW.
+     This row used to draw one square per variant, with nothing in it: no
+     colour, no picture, and -- because a <span> is inline and width does not
+     apply to one -- no size either. Three marks of nothing under the mushroom,
+     which is what the owner photographed and asked about.
+     And most variants are not colours at all: of the three lamps that have
+     them, two are sizes ("Large 25x22", "30x65 cm"). A size painted as a
+     coloured square says nothing. So the colour is now a field on the value,
+     the square is drawn only when it is filled in, and a variant that is a
+     size simply has no row. */
   const swatches = (p.options || []).find((o) => o.id === 'variant');
-  const dots = swatches
-    ? `<div class="card__swatches" aria-hidden="true">${swatches.values.slice(0, 6)
-        .map((v) => `<span class="swatch" title="${esc(v.name)}"></span>`).join('')}</div>`
+  const coloured = (swatches?.values || []).filter((v) => v.colour);
+  const dots = coloured.length
+    ? `<div class="card__swatches" aria-hidden="true">${coloured.slice(0, 6)
+        .map((v) => `<span class="swatch" style="background:${esc(v.colour)}" title="${esc(v.name)}"></span>`).join('')}</div>`
     : '';
 
   /* The card carries EVERY photograph of the piece, not just the cover.
@@ -91,7 +102,11 @@ export function card(p, { eager = false } = {}) {
         data-thumb="${n}" aria-pressed="${n === 0 ? 'true' : 'false'}" tabindex="${n === 0 ? '0' : '-1'}"
         aria-label="Photograph ${n + 1} of ${shots.length}"></button>`;
 
+  /* data-price is the price the card SHOWS -- the lowest this lamp can actually
+     be bought for, not p.price. Sorting by anything else would reorder the
+     grid by a number the reader cannot see. */
   return `<article class="card" data-product="${esc(p.slug)}" data-family="${esc(fams)}"
+  data-price="${low}"${p.added ? ` data-added="${esc(p.added)}"` : ''}
   data-shots="${esc(shots.join(','))}" data-dir="${esc(dir)}">
   <a class="card__media" href="${href}" tabindex="-1" aria-hidden="true">
     <div class="frame card__frame">

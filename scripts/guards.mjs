@@ -65,6 +65,14 @@ function checkProduct(brand, slug, p) {
       for (const v of o.values) {
         if (ids.has(v.id)) die(`${where}: option "${o.id}" has two values called "${v.id}"`);
         ids.add(v.id);
+        /* The colour is optional -- most variants are sizes, and a size has no
+           colour -- but if it is there it has to be a colour, because it goes
+           straight into a style attribute. Anything else paints nothing and
+           leaves the empty square this field exists to stop. */
+        if ('colour' in v && !/^#[0-9A-Fa-f]{6}$/.test(String(v.colour))) {
+          die(`${where}: option "${o.id}" value "${v.id}" has colour "${v.colour}", `
+            + `which is not a six-digit hex like #B32920`);
+        }
       }
       // The price on the card is the lowest the product can be bought for, so
       // some choice at zero surcharge has to exist. A required option whose

@@ -19,7 +19,7 @@
   "options": [
     {
       "id": "variant",
-      "name": "Modelo",
+      "name": "Model",
       "type": "choice",
       "required": true,
       "personalises": false,

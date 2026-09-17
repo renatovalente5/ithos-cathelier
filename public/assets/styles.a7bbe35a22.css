@@ -889,7 +889,14 @@ p { text-wrap: pretty; }
 }
 
 .card__swatches { display: flex; flex-wrap: wrap; gap: 6px; margin-block-start: 12px; }
-.swatch { width: 27px; height: 27px; border: 1px solid var(--line); background-size: cover; background-position: center; }
+/* `display` is the load-bearing word. Width and height do not apply to a
+   non-replaced INLINE element, so these were 0x0 boxes with a hairline round
+   them -- the rule looked right and drew nothing. */
+.swatch {
+  display: inline-block; width: 27px; height: 27px;
+  border: 1px solid var(--line); border-radius: var(--radius, 0);
+  background-size: cover; background-position: center;
+}
 .swatch[aria-pressed='true'] { outline: 1px solid var(--accent); outline-offset: 2px; }
 
 .card__name { margin-block-start: 10px; line-height: 1.5; }
@@ -981,6 +988,24 @@ p { text-wrap: pretty; }
   .open-menu { gap: .6rem; padding-inline: .5rem .75rem; }
   .open-menu__word { display: inline; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; }
 }
+
+/* --- sort by ----------------------------------------------------------------
+   Built by the script, so it is never on a page that cannot use it. A native
+   <select>: it is one tab stop, it is the control every phone already knows
+   how to open full screen, and it needs no keyboard handling written by hand. */
+.sortby {
+  display: flex; align-items: center; gap: .6rem;
+  margin-block-start: 1rem; justify-content: flex-end;
+}
+.sortby__label { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+.sortby__select {
+  min-height: 40px; padding: .35rem .6rem;
+  border: 1px solid var(--line); border-radius: var(--pill, 999px);
+  background: var(--bg); color: var(--ink);
+  font: inherit; font-size: 14px; cursor: pointer;
+}
+.sortby__select:hover { border-color: var(--accent); }
+[data-brand='cathelier'] .sortby__label { text-transform: none; letter-spacing: .03em; font-size: 13px; }
 
 /* --- filters --------------------------------------------------------------
    They WRAP. A row that scrolls sideways on a phone hides what is in it: the

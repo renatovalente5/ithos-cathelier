@@ -335,24 +335,38 @@ function footer({ brand, identity }) {
          electricity in it. cathelier needs its own, written for keepsakes with
          small parts, magnets and a candle, and those words have to come from
          the owner. */
-      ...(brand === 'cathelier' ? [] : [['/care-and-safety/', 'Care and safety']]),
       ['/legal/returns-form/', 'Cancellation form'],
       [i.complaintsBook, 'Complaints book'],
     ]],
-    /* The cathelier rows are here because the horizontal bar went away.
-       Counted on the built site: of 55 cathelier-branded pages, 12 had no link
-       to /cathelier/pieces/ or /cathelier/quote/ outside the header and the
-       drawer, and all 55 had none to /cathelier/about/. A link inside a closed
-       <dialog> is followed by a crawler but is not a route a reader can see. */
-    ['The shop', [
-      ['/about/', 'The workshop'],
-      ['/lamps/', 'Wooden night lights'],
-      ['/cathelier/', 'Personalised pieces'],
-      ['/cathelier/pieces/', 'All the pieces'],
-      ['/cathelier/quote/', 'Ask for a quote'],
-      ['/cathelier/about/', 'How a piece is made'],
-      ['/contact/', 'Contact'],
-    ]],
+    /* THE FOOTER STAYS IN THE SHOP YOU ARE IN.
+       It listed both shops' pages on every page, so the footer of an ithos
+       page offered "All the pieces" and "Ask for a quote" -- links that take
+       you out of the shop you are reading, with nothing to say they do. The
+       owner noticed. The door between the shops is the one in the bar and in
+       the menu, which names the other brand and points an arrow out of the
+       page; a footer row that looks like every other footer row is not a door,
+       it is a trapdoor.
+
+       These rows exist at all because the horizontal link bar went away, and
+       each shop still has to carry its own: of 55 cathelier pages, 12 had no
+       visible route to the pieces or the quote outside the header and the
+       drawer, and all 55 had none to how a piece is made. So the group is not
+       dropped -- it is narrowed to the shop it belongs to. */
+    ['The shop', brand === 'cathelier'
+      ? [
+        ['/cathelier/', 'Personalised pieces'],
+        ['/cathelier/pieces/', 'All the pieces'],
+        ['/cathelier/quote/', 'Ask for a quote'],
+        ['/cathelier/about/', 'How a piece is made'],
+        ['/contact/', 'Contact'],
+      ]
+      : [
+        ['/', 'Wooden night lights'],
+        ['/lamps/', 'All the lamps'],
+        ['/about/', 'The workshop'],
+        ['/care-and-safety/', 'Care and safety'],
+        ['/contact/', 'Contact'],
+      ]],
     ['Terms', [
       ['/legal/terms/', 'Terms of sale'],
       ['/legal/privacy/', 'Privacy'],

@@ -273,6 +273,7 @@ document.addEventListener('DOMContentLoaded', () => {
   narrow.addEventListener('change', foldFooter);
 
   filters();
+  sorting();
   cardShots();
   gallery();
   productForm();
@@ -499,6 +500,72 @@ async function basketPage() {
 /* --- catalogue filters ----------------------------------------------------
    They wrap to two rows, with a "+N" that opens the rest. Nothing is ever off
    the screen without a way to know it is there. */
+/* --- ordering the catalogue -------------------------------------------------
+ *
+ * Built here and not in the templates, deliberately: a control that cannot
+ * work without a script should not exist without one. If this never runs, the
+ * catalogue is simply in the shop's own order, which is a correct page.
+ *
+ * It reorders the DOM rather than setting CSS `order` on a grid. Visual order
+ * and tab order then stay the same thing -- with CSS order they part company
+ * silently, and a keyboard reader tabs through a sequence nobody can see.
+ *
+ * "Newest" only appears when the products can answer it. There is no date on
+ * any product today: `order` is the arrangement the owner chooses by hand, and
+ * offering it as "newest" would be a control that lies. The moment two
+ * products carry an `added` date in the back office, the option appears.
+ */
+function sorting() {
+  const list = $('[data-product-list]');
+  const bar = $('[data-filters]');
+  if (!list || !bar) return;
+  const cards = $$('.card', list);
+  if (cards.length < 2) return;
+
+  const num = (c) => Number(c.dataset.price || 0);
+  const when = (c) => c.dataset.added || '';
+  const dated = cards.filter((c) => when(c)).length;
+
+  const ORDERS = [
+    ['shop', 'Our order', null],
+    ['low', 'Price: low to high', (a, b) => num(a) - num(b)],
+    ['high', 'Price: high to low', (a, b) => num(b) - num(a)],
+    ...(dated >= 2 ? [['new', 'Newest first', (a, b) => when(b).localeCompare(when(a))]] : []),
+  ];
+
+  // The arrangement the page arrived in, kept so "Our order" can be given back
+  // exactly -- rebuilding it from a field would be a second source of truth.
+  const asBuilt = cards.slice();
+
+  const box = document.createElement('div');
+  box.className = 'sortby';
+  const id = 'sortby-' + Math.random().toString(36).slice(2, 8);
+  const label = document.createElement('label');
+  label.className = 'sortby__label';
+  label.htmlFor = id;
+  label.textContent = 'Sort by';
+  const sel = document.createElement('select');
+  sel.className = 'sortby__select';
+  sel.id = id;
+  for (const [id2, text] of ORDERS) {
+    const o = document.createElement('option');
+    o.value = id2; o.textContent = text;
+    sel.append(o);
+  }
+  box.append(label, sel);
+  bar.after(box);
+
+  sel.addEventListener('change', () => {
+    const chosen = ORDERS.find(([id2]) => id2 === sel.value);
+    const order = chosen && chosen[2] ? asBuilt.slice().sort(chosen[2]) : asBuilt;
+    /* One fragment, one insertion: appending 26 cards one at a time to a live
+       grid is 26 layouts. */
+    const frag = document.createDocumentFragment();
+    for (const c of order) frag.append(c);
+    list.append(frag);
+  });
+}
+
 function filters() {
   const box = $('[data-filters]');
   if (!box) return;

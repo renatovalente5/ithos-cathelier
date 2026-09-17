@@ -28,7 +28,8 @@ function frame(p, sizes, eager = false) {
 
 export function card(p, { eager = false } = {}) {
   const tags = [p.occasion, ...(p.alsoIn || [])].join(' ');
-  return `<article class="card" data-product="${esc(p.slug)}" data-family="${esc(tags)}">
+  return `<article class="card" data-product="${esc(p.slug)}" data-family="${esc(tags)}"
+  data-price="${p.price}"${p.added ? ` data-added="${esc(p.added)}"` : ''}>
   <a class="card__link" href="/cathelier/pieces/${esc(p.slug)}/">
     ${frame(p, '(min-width: 64rem) 280px, (min-width: 48rem) 30vw, 46vw', eager)}
     <h3 class="card__name">${esc(p.name)}</h3>

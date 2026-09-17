@@ -19,7 +19,7 @@
   "options": [
     {
       "id": "variant",
-      "name": "Modelo",
+      "name": "Model",
       "type": "choice",
       "required": true,
       "personalises": false,
@@ -27,17 +27,17 @@
       "values": [
         {
           "id": "1",
-          "name": "Grande (25×22 cm)",
+          "name": "Large (25×22 cm)",
           "extra": 11
         },
         {
           "id": "2",
-          "name": "Pequena (18×16 cm)",
+          "name": "Small (18×16 cm)",
           "extra": 0
         },
         {
           "id": "3",
-          "name": "Conjunto das duas",
+          "name": "Both together",
           "extra": 72
         }
       ]
