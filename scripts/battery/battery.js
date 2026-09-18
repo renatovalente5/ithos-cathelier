@@ -650,6 +650,26 @@ window.__bateria = function () {
     }
   }
 
+  /* NENHUM DESENHO PODE ESTAR ESMAGADO, EM LADO NENHUM.
+     A verificação do botão do menu, mais abaixo, nasceu de um SVG a zero de
+     largura dentro de um contentor flex. É a segunda vez que este projecto
+     põe um ícone ao lado de texto -- agora no "Talk to us" do rodapé -- e a
+     armadilha é sempre a mesma: o SVG é o único item com tamanho próprio, por
+     isso é ele quem encolhe. Uma guarda por botão não chega; esta olha para
+     todos.
+     `getClientRects().length` é a régua certa: um SVG com `display: none`
+     devolve zero rectângulos e sai da conta, e um que esteja desenhado mas
+     espremido devolve um rectângulo de largura zero, que é o defeito. */
+  for (const svg of document.querySelectorAll('svg')) {
+    if (!svg.getClientRects().length) continue;
+    const r = svg.getBoundingClientRect();
+    if (r.width >= 8 && r.height >= 8) continue;
+    const dono = svg.closest('a, button, summary, li') || svg.parentElement;
+    nota(false, 'um desenho ficou sem tamanho',
+      `${r.width.toFixed(1)}x${r.height.toFixed(1)} dentro de ${dono ? dono.tagName.toLowerCase()
+        + (dono.className ? '.' + String(dono.className).split(' ')[0] : '') : '?'}`);
+  }
+
   /* O BOTÃO DO MENU TEM DE TER AS TRÊS LINHAS, E NÃO TINHA.
      A partir de 48rem o botão passa a levar a palavra além do desenho. O
      .icon-btn declara `width: 44px` — que é o alvo de toque — e o conteúdo

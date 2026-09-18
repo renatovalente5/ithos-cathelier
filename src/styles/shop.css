@@ -1166,6 +1166,16 @@ html.menu-open { overflow: hidden; }
    the standard's exemption does not cover it. These were 16px tall. */
 .foot__group a { text-decoration: none; color: var(--muted); display: inline-flex; align-items: center; min-height: 28px; }
 .foot__group a:hover { color: var(--accent); }
+/* O DESENHO NÃO PODE SER ESMAGADO. Estas ligações já eram `inline-flex`, e num
+   contentor flex quem paga é quem encolhe: um SVG sem `flex: none` fica a zero
+   de largura -- visível, opaco, da cor certa e sem desenho nenhum, que é
+   exactamente como o hambúrguer da barra esteve. */
+.foot__group a { gap: .5rem; }
+.foot__group a svg { flex: none; }
+/* O custo da chamada é irmão da ligação e não filho dela, por isso não herda o
+   avanço do desenho: sem isto ficava encostado à margem, desalinhado do número
+   que explica. */
+.foot__with-icon .foot__note { margin-inline-start: calc(16px + .5rem); }
 @media (width >= 60rem) {
   .foot__group { border: 0; }
   .foot__group summary { pointer-events: none; min-height: auto; margin-block-end: 1rem; }

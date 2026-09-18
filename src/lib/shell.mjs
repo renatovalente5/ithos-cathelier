@@ -409,10 +409,14 @@ function footer({ brand, identity }) {
       ['/legal/cancellation/', 'Right to cancel'],
       ['/legal/identification/', 'Who you are buying from'],
     ]],
+    /* O quarto campo é o desenho, e só este grupo o leva: estas três são as
+       maneiras de falar connosco e reconhecem-se pela forma antes de se
+       lerem. Nas outras colunas são páginas, e uma página não tem desenho
+       que a distinga -- vinte ícones diferentes numa lista seriam ruído. */
     ['Talk to us', [
-      [`tel:${i.phone}`, i.phoneText, CALL_COST],
-      [`https://wa.me/${i.whatsapp}`, 'WhatsApp'],
-      [`mailto:${i.email}`, i.email],
+      [`tel:${i.phone}`, i.phoneText, CALL_COST, 'phone'],
+      [`https://wa.me/${i.whatsapp}`, 'WhatsApp', '', 'whatsapp'],
+      [`mailto:${i.email}`, i.email, '', 'mail'],
     ]],
   ];
 
@@ -421,7 +425,8 @@ function footer({ brand, identity }) {
     <div class="foot__grid">
       ${groups.map(([name, links]) => `<details class="foot__group" open>
         <summary>${esc(name)}</summary>
-        <ul>${links.map(([h, t, note]) => `<li><a href="${esc(brandPath(h, brand))}">${esc(t)}</a>${
+        <ul>${links.map(([h, t, note, ic]) => `<li${ic ? ' class="foot__with-icon"' : ''}><a href="${
+          esc(brandPath(h, brand))}">${ic ? icon(ic, 16) : ''}${esc(t)}</a>${
           note ? `<span class="foot__note">${esc(note)}</span>` : ''}</li>`).join('')}</ul>
       </details>`).join('\n      ')}
     </div>
