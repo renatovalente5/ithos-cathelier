@@ -1294,6 +1294,9 @@ html.menu-open { overflow: hidden; }
 .maker__text h2 { margin-block-end: 1.25rem; }
 .maker__text p + p { margin-block-start: 1rem; }
 .maker__sign { margin-block-start: 1.5rem; color: var(--ink); }
+/* Este bloco não tinha botão na ithos, onde é uma apresentação. Na cathelier
+   é um convite e leva um: sem isto encostava ao parágrafo. */
+.maker__text .btn { margin-block-start: 1.75rem; }
 .maker__photo { --frame-ratio: 1.3333; }
 
 .product__blurb { margin-block-start: 1rem; font-size: 15px; line-height: 1.8; color: var(--muted); }

@@ -98,28 +98,68 @@ function occasionRow(occasions) {
 
 
 export function home({ occasions, pieces, cover: coverText, coverArt }) {
-  /* OITO CARTOES, UM POR OCASIAO, E SEM DUAS FOTOGRAFIAS IGUAIS.
-     Oito porque a grelha e de 2 colunas abaixo de 48rem, 3 acima e 4 a partir
-     de 90rem, e oito fecha a fila nas tres larguras.
-     Um por ocasiao porque a fila de circulos esta mesmo por cima: a grelha
-     mostra o que cada circulo promete, pela mesma ordem.
-     E sem repetir fotografia porque nenhuma das 41 pecas foi fotografada
-     ainda -- partilham uma pasta comum de amostras, e as oito primeiras da
-     lista traziam a MESMA imagem tres vezes, duas delas lado a lado, na
-     pagina mais vista da marca. O dia em que houver fotografias a serio isto
-     continua a servir, sem se lhe tocar.
-     A contagem do botao sai de `pieces.length` e nunca de um numero escrito a
-     mao: assim a home nao passa a mentir quando a dona publicar mais uma. */
+  /* AS MESMAS TRÊS SECÇÕES DA ITHOS, pela mesma ordem: as mais vendidas, um
+     bloco de texto com fotografia ao lado, e o resto das peças com o botão
+     para a lista inteira. O bloco do meio é que muda: lá é o "Hello" da
+     oficina, aqui é o orçamento -- é isso que esta marca tem para dizer que a
+     outra não tem, porque aqui as peças fazem-se em quantidade, com um nome
+     diferente em cada uma.
+
+     "Bestsellers" e não "Favourites", como na ithos e a pedido da dona: um
+     favorito é uma opinião da loja e não deve nada a ninguém; um mais-vendido
+     é uma afirmação sobre o que se vende mesmo. As peças que lá estão são as
+     que ela marca no backoffice, e manter o título honesto é manter essa lista
+     junto das vendas a sério. */
   const retrato = (x) => (x.photoFolder && (x.cover || x.photos?.[0])
     ? `${x.photoFolder}/${x.cover || x.photos[0]}` : `sem-fotografia:${x.slug}`);
-  const mostra = [];
-  const usadas = new Set();
-  const cabe = (x) => mostra.length < 8 && !mostra.includes(x) && !usadas.has(retrato(x));
-  const junta = (x) => { if (x) { mostra.push(x); usadas.add(retrato(x)); } };
-  for (const o of occasions) {
-    junta(pieces.find((x) => cabe(x) && (x.occasion === o.slug || (x.alsoIn || []).includes(o.slug))));
-  }
-  for (const x of pieces) if (cabe(x)) junta(x);   // ocasiões a menos, ou fotografias repetidas a mais
+
+  /* NOVE FOTOGRAFIAS DE AMOSTRA PARA QUARENTA E UMA PEÇAS.
+     Nenhuma foi fotografada ainda: partilham uma pasta comum, e nela há nove
+     imagens ao todo. Qualquer fila com mais de nove cartões repete alguma --
+     isso é aritmética e não descuido. O que se pode evitar é o que doía: a
+     MESMA imagem em dois cartões lado a lado, que foi como a dona a viu.
+     Por isso não se corta a fila nem se deixa uma peça de fora; distribui-se
+     uma volta por cada fotografia, à vez. Duas peças com a mesma imagem ficam
+     tantos cartões afastadas quantas as imagens distintas houver -- a 2, 3 ou
+     4 colunas nunca caem ao lado uma da outra. No dia em que cada peça tiver a
+     sua fotografia isto deixa de fazer diferença nenhuma, sem se lhe tocar. */
+  const espalhar = (lista, quantos) => {
+    const grupos = new Map();
+    for (const x of lista) {
+      const k = retrato(x);
+      if (!grupos.has(k)) grupos.set(k, []);
+      grupos.get(k).push(x);
+    }
+    /* O GRUPO MAIS REPETIDO ENTRA PRIMEIRO EM CADA VOLTA.
+       Sem esta ordenação a distância entre duas iguais é o que sobra da volta a
+       contar da posição do grupo -- e com as seis mais vendidas o par caía nos
+       índices 3 e 5, que a 2 colunas é uma mesmo por cima da outra. Pondo o
+       grupo carregado à cabeça, a distância passa a ser o número de
+       fotografias distintas (aqui cinco), e cinco é seguro a 2, a 3 e a 4
+       colunas: nunca ficam lado a lado nem uma por baixo da outra. */
+    const filas = [...grupos.values()].sort((a, b) => b.length - a.length);
+    const saiu = [];
+    for (let i = 0; saiu.length < quantos && filas.some((f) => f[i]); i++) {
+      for (const f of filas) {
+        if (saiu.length >= quantos) break;
+        if (f[i]) saiu.push(f[i]);
+      }
+    }
+    return saiu;
+  };
+
+  /* Oito e não seis: a grelha é de 2 colunas abaixo de 48rem, 3 acima e 4 a
+     partir de 90rem, e oito fecha a fila nas três larguras. São menos, se a
+     dona marcar menos. */
+  const destaques = espalhar(pieces.filter((x) => x.featured), 8);
+  const resto = espalhar(pieces.filter((x) => !x.featured), 8);
+
+  /* A fotografia ao lado do texto procura uma que ainda não esteja na página.
+     Se já não houver nenhuma por usar -- e com nove não há sempre -- fica a da
+     primeira peça em destaque, que é melhor do que uma fila vazia. */
+  const naPagina = new Set([...destaques, ...resto].map(retrato));
+  const aoLado = pieces.find((x) => x.photoFolder && !naPagina.has(retrato(x)))
+    ?? destaques[0] ?? pieces[0];
 
   return `
 ${cover(coverText, 'cathelier', coverArt)}
@@ -130,15 +170,48 @@ ${cover(coverText, 'cathelier', coverArt)}
   </div>
 </section>
 
+<section class="collection">
+  <div class="shell">
+    <div class="collection__head"><h2>Bestsellers</h2></div>
+    <div class="grid-products" style="margin-block-start:2rem">
+      ${destaques.map((p, i) => card(p, { eager: i < 3 })).join('\n      ')}
+    </div>
+  </div>
+</section>
+
 <section class="collection collection--alt">
   <div class="shell">
+    <div class="maker">
+      <div class="maker__text">
+        <h2>Fifty of them, fifty names</h2>
+        <p>Wedding favours, christening keepsakes, place cards, corporate gifts, a
+           season of trophies — anything here can be made in quantity, with a
+           different name cut into every one.</p>
+        <p>Tell us roughly what and roughly how many. There is no form to fight
+           with: a message is enough, and we come back with a price and a date.</p>
+        <a class="btn" href="/cathelier/quote/">Ask for a quote</a>
+      </div>
+      <div class="frame maker__photo">
+        ${picture({
+          dir: `cathelier/${aoLado.photoFolder}`,
+          name: aoLado.cover || aoLado.photos[0],
+          alt: 'Personalised pieces from the workshop',
+          sizes: '(min-width: 56rem) 45vw, 100vw', widths: [200, 400],
+        })}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="collection">
+  <div class="shell">
     <div class="collection__head">
-      <h2>Made to order</h2>
+      <h2>More to choose from</h2>
       <p>Cake toppers, signs, trophies, bookmarks, boxes, keyrings. ${pieces.length}
          pieces in all, and every one of them takes a name.</p>
     </div>
     <div class="grid-products" style="margin-block-start:2rem">
-      ${mostra.map((p, i) => card(p, { eager: i < 3 })).join('\n      ')}
+      ${resto.map((p) => card(p)).join('\n      ')}
     </div>
     <p style="text-align:center;margin-block-start:2.5rem">
       <a class="btn btn--ghost" href="/cathelier/pieces/">See all ${pieces.length} pieces</a>

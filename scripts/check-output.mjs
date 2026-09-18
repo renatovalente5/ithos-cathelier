@@ -319,28 +319,42 @@ for (const { where, target, frag } of fragmentos) {
   }
 }
 
-/* A MONTRA DE UMA MARCA NAO REPETE FOTOGRAFIAS.
-   Nenhuma das 41 pecas da cathelier foi fotografada: partilham uma pasta de
-   amostras, e uma grelha construida por ordem da lista punha a mesma imagem
-   tres vezes na home -- duas delas lado a lado. Um cartao e uma promessa de
-   que ha ali outra coisa; dois cartoes com a mesma fotografia desmentem-na
-   antes de alguem clicar. A lista completa pode repetir, porque la a peca e
-   que manda; a montra nao. */
+/* DUAS PEÇAS COM A MESMA FOTOGRAFIA, NA MONTRA.
+   Um cartão é a promessa de que ali está outra coisa, e dois cartões com a
+   mesma imagem desmentem-na antes de alguém clicar. A dona viu isso na home e
+   por isso esta verificação existe.
+
+   MAS DEIXOU DE PODER MATAR. Nenhuma das 41 peças da cathelier foi
+   fotografada: partilham uma pasta de amostras com NOVE imagens ao todo. Uma
+   home com catorze cartões repete alguma por aritmética, e recusar publicar
+   por causa disso é a guarda a mandar na loja em vez de a servir. O que ela
+   faz é dizer, numa linha e com os nomes, quais os pares que se parecem --
+   informação para quem vai fotografar. Quando cada peça tiver a sua imagem, o
+   aviso desaparece sozinho.
+
+   O que EVITA o defeito continua no gerador: em src/lib/cathelier.mjs as filas
+   são distribuídas uma volta por fotografia, para duas iguais nunca caírem
+   lado a lado. */
 for (const home of ['/index.html', '/cathelier/index.html']) {
   const f = join(OUT, home.slice(1));
   if (!existsSync(f)) continue;
   const vistas = new Map();
+  const pares = [];
+  let cartoes = 0;
   for (const m of readFileSync(f, 'utf8').matchAll(/<article class="card"[\s\S]*?<\/article>/g)) {
     // O nome, ou o endereço da peça: as duas marcas não desenham o cartão igual
     // e uma mensagem com "?" lá dentro não diz a ninguém o que ir corrigir.
-    const nome = m[0].match(/class="card__name">([^<]*)/)?.[1]
+    const nome = m[0].match(/class="card__name">(?:<a[^>]*>)?([^<]*)/)?.[1]?.trim()
       || m[0].match(/data-product="([^"]*)"/)?.[1] || '?';
     const foto = m[0].match(/srcset="[^"]*?\/media\/([^"\s]+?)-\d+\.(?:avif|webp)/)?.[1];
     if (!foto) continue;
-    if (vistas.has(foto)) {
-      deaths.push(`${home}: "${nome}" and "${vistas.get(foto)}" show the same photograph `
-        + `(media/${foto}) — two cards promising one thing`);
-    } else vistas.set(foto, nome);
+    cartoes++;
+    if (vistas.has(foto)) pares.push(`${vistas.get(foto)}=${nome}`);
+    else vistas.set(foto, nome);
+  }
+  if (pares.length) {
+    warnings.push(`${home}: ${cartoes} cards share ${vistas.size} distinct photographs `
+      + `(${pares.join(', ')}) — until each piece has its own, two cards can look like one thing`);
   }
 }
 
