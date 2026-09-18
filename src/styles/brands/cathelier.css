@@ -203,6 +203,23 @@
    num contentor que rola, centrar conteúdo que não cabe empurra o princípio
    para fora do alcance, e `safe` volta ao início nesse caso. */
 [data-brand='cathelier'] .card__thumbs.ready { justify-content: safe center; }
+
+/* A QUARTA COLUNA CHEGA MAIS CEDO NESTA LOJA.
+   A grelha partilhada guarda as quatro colunas para as 90rem porque a dona
+   pediu peso às fotografias da ithos -- vinte e seis candeeiros, cada um uma
+   coisa diferente, e a fotografia é o produto. Aqui são quarenta e uma peças
+   e a leitura é outra: percorre-se a lista à procura da forma certa.
+   Medido: às 1280, que é o portátil mais comum, três colunas davam um cartão
+   de 366px e 627px de altura -- uma fila por ecrã. Com a quarta às 64rem o
+   mesmo ecrã dá 267px e 498px, e às 1024 dá 214px, que continua bem acima dos
+   170px que o comentário da grelha partilhada aponta como o mínimo em que uma
+   fotografia deixa de se ver.
+   Sem `:where()`, de propósito: esta regra TEM de ganhar à de base.css, e
+   ganhar por especificidade é mais seguro do que ganhar pela ordem dos
+   ficheiros. O telemóvel não se toca: duas colunas, como está. */
+@media (width >= 64rem) {
+  [data-brand='cathelier'] .grid-products { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
 [data-brand='cathelier'] .filter { font-family: var(--font-body); font-size: 14px; letter-spacing: .03em; text-transform: none; }
 [data-brand='cathelier'] .btn { border-radius: var(--pill); font-family: var(--font-body); font-size: 15px; font-weight: 400; letter-spacing: .04em; text-transform: none; }
 [data-brand='cathelier'] .field input, [data-brand='cathelier'] .field textarea,
