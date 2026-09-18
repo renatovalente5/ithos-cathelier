@@ -18,11 +18,14 @@ import { cover } from './cover.mjs';
 /* Not one of the 41 pieces has been photographed yet. Until they are, the
    frame carries the piece's name the way it would be engraved — honest about
    being a placeholder, and it leaves by itself the moment a photograph lands. */
-function frame(p, sizes, eager = false) {
+function frame(p, sizes, eager = false, noCartao = false) {
+  // `card__frame` é o que liga a troca lenta de fotografia; a moldura da FICHA
+  // do produto usa a mesma função e não a leva.
+  const cls = noCartao ? 'frame card__frame' : 'frame';
   if (!p.photos?.length || !p.photoFolder) {
-    return `<div class="frame awaiting"><span>${esc(p.name)}</span></div>`;
+    return `<div class="${cls} awaiting"><span>${esc(p.name)}</span></div>`;
   }
-  return `<div class="frame">${picture({
+  return `<div class="${cls}">${picture({
     dir: `cathelier/${p.photoFolder}`, name: p.cover || p.photos[0],
     alt: `${p.name} — laser cut and engraved to order`,
     // Only the widths that exist. The stand-in photographs are 360px wide, so
@@ -32,15 +35,47 @@ function frame(p, sizes, eager = false) {
   })}</div>`;
 }
 
+/* O CARTÃO DA CATHELIER PASSOU A SER O CARTÃO DA ITHOS.
+   A dona pediu aqui o que já lá está: as outras fotografias da peça por baixo
+   da grande, para escolher, e a passagem lenta de uma para a outra enquanto o
+   ponteiro descansa. Todas as 41 peças têm exactamente duas fotografias, e a
+   pasta partilhada tem as larguras de 120 e 200 que a tira pede.
+
+   O trabalho todo já estava feito e era partilhado: o CSS da troca de camadas
+   e das miniaturas vive em shop.css sem marca nenhuma, e o cards() do shop.js
+   pega em qualquer `[data-shots]`. O que faltava era a FORMA do cartão.
+
+   E A LIGAÇÃO TEVE DE SER PARTIDA EM DUAS, como lá. O cartão era um <a> à
+   volta de tudo, e o HTML proíbe um <button> dentro de uma ligação: as
+   miniaturas não tinham onde ficar. Agora a fotografia leva a sua própria
+   ligação, `aria-hidden` e fora da ordem de tabulação, e a ligação a sério é o
+   nome -- um cartão, uma ligação, um nome. */
 export function card(p, { eager = false } = {}) {
   const tags = [p.occasion, ...(p.alsoIn || [])].join(' ');
+  const shots = [p.cover, ...(p.photos || []).filter((n) => n !== p.cover)].filter(Boolean);
+  const temFotos = Boolean(p.photoFolder && shots.length);
+  const href = `/cathelier/pieces/${esc(p.slug)}/`;
+  /* Os botões vão VAZIOS e é o script que lhes põe a fotografia dentro, a
+     partir de `data-shots` e `data-dir`. Com um <img loading="lazy"> escrito
+     aqui, o telemóvel ia buscá-los todos na mesma, escondidos ou não. */
+  const thumb = (name, n) => `<button class="card__thumb${n === 0 ? ' is-on' : ''}" type="button"
+        data-thumb="${n}" aria-pressed="${n === 0 ? 'true' : 'false'}" tabindex="${n === 0 ? '0' : '-1'}"
+        aria-label="Photograph ${n + 1} of ${shots.length}"></button>`;
+
   return `<article class="card" data-product="${esc(p.slug)}" data-family="${esc(tags)}"
-  data-price="${p.price}"${p.added ? ` data-added="${esc(p.added)}"` : ''}>
-  <a class="card__link" href="/cathelier/pieces/${esc(p.slug)}/">
-    ${frame(p, '(min-width: 64rem) 280px, (min-width: 48rem) 30vw, 46vw', eager)}
-    <h3 class="card__name">${esc(p.name)}</h3>
-    <p class="card__price">from ${money(p.price)}</p>
+  data-price="${p.price}"${p.added ? ` data-added="${esc(p.added)}"` : ''}${temFotos
+    ? `
+  data-shots="${esc(shots.join(','))}" data-dir="cathelier/${esc(p.photoFolder)}"` : ''}>
+  <a class="card__media" href="${href}" tabindex="-1" aria-hidden="true">
+    ${frame(p, '(min-width: 64rem) 280px, (min-width: 48rem) 30vw, 46vw', eager, true)}
   </a>
+  ${shots.length > 1
+    ? `<div class="card__thumbs" role="group" aria-label="${esc(p.name)} — ${shots.length} photographs">
+    ${shots.map(thumb).join('\n    ')}
+  </div>`
+    : '<div class="card__thumbs card__thumbs--none" aria-hidden="true"></div>'}
+  <h3 class="card__name"><a class="card__link" href="${href}">${esc(p.name)}</a></h3>
+  <p class="card__price">from ${money(p.price)}</p>
 </article>`;
 }
 

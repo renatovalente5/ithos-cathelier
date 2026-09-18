@@ -455,6 +455,12 @@ p { text-wrap: pretty; }
    navigation works and exactly how the owner described hers: by date and by
    occasion, not by what the thing is made of. */
 :where([data-brand='cathelier']) .occasions {
+  /* SEM BARRA DE ROLAGEM À VISTA. A dona fotografou-a: uma barra cinzenta de
+     sistema por baixo dos círculos, larga e escura, a competir com eles por
+     atenção num sítio onde nada mais tem cromados. O que diz que a fila anda
+     é o círculo cortado ao meio na beira, como na tira das miniaturas dos
+     cartões. */
+  scrollbar-width: none;
   /* NUM TELEMÓVEL É UMA TIRA QUE SE ARRASTA, NÃO UMA GRELHA.
      Medido a 375px: com cinco colunas cada uma dá 66px, e nenhuma destas
      etiquetas cabe lá -- CHRISTMAS em maiúsculas espaçadas mede cerca de 90px.
@@ -475,6 +481,8 @@ p { text-wrap: pretty; }
   margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter);
 }
 :where([data-brand='cathelier']) .occasions > * { flex: 0 0 96px; scroll-snap-align: start; }
+:where([data-brand='cathelier']) .occasions::-webkit-scrollbar { display: none; }
+
 @media (width >= 48rem) {
   :where([data-brand='cathelier']) .occasions {
     display: grid; gap: 1.75rem 0;
@@ -529,6 +537,11 @@ p { text-wrap: pretty; }
 [data-brand='cathelier'] .frame { border-radius: var(--radius); }
 [data-brand='cathelier'] .card__name { font-family: var(--font-body); font-size: 15px; font-weight: 400; color: var(--ink); text-align: center; letter-spacing: .03em; }
 [data-brand='cathelier'] .card__price { color: var(--accent); text-align: center; font-size: 13px; }
+/* A tira das miniaturas centra-se, como tudo o resto neste cartão -- na ithos
+   o nome alinha à esquerda e a tira acompanha-o. `safe` e não `center` seco:
+   num contentor que rola, centrar conteúdo que não cabe empurra o princípio
+   para fora do alcance, e `safe` volta ao início nesse caso. */
+[data-brand='cathelier'] .card__thumbs.ready { justify-content: safe center; }
 [data-brand='cathelier'] .filter { font-family: var(--font-body); font-size: 14px; letter-spacing: .03em; text-transform: none; }
 [data-brand='cathelier'] .btn { border-radius: var(--pill); font-family: var(--font-body); font-size: 15px; font-weight: 400; letter-spacing: .04em; text-transform: none; }
 [data-brand='cathelier'] .field input, [data-brand='cathelier'] .field textarea,

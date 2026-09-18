@@ -731,6 +731,13 @@ function cardShots() {
    * The clicking of a thumbnail works even where the drift does not: it is a
    * deliberate act, so it runs on a phone, under reduced motion, and with a
    * keyboard. Only the automatic drift is gated on a fine pointer. */
+  /* A RESERVA É DE TODOS OS CARTÕES, e vem antes de qualquer desistência.
+     Estava presa ao laço de baixo, que só olha para quem tem `data-shots`: um
+     produto sem fotografia nenhuma ficava sem tira, e o nome dele subia em
+     relação ao do vizinho na mesma linha da grelha -- que é exactamente o que
+     a fila vazia veio evitar. */
+  for (const t of $$('.card__thumbs')) t.classList.add('ready');
+
   const cards = $$('[data-shots]');
   if (!cards.length) return;
 
@@ -764,8 +771,6 @@ function cardShots() {
        contorno (ver `.card__thumb:empty`), e o que o observador faz é só pôr
        lá as fotografias. Inclui os de uma só fotografia, que reservam e nunca
        enchem: sem isso o nome deles ficava mais alto que o do vizinho. */
-    const reserva = $('.card__thumbs', card);
-    if (reserva) reserva.classList.add('ready');
     if (!frame || !base || shots.length < 2) continue;
     /* Fill the strip. It is shown at every width now -- the owner asked for
        the other photographs on a phone too -- so the only thing still gated

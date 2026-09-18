@@ -623,6 +623,12 @@ window.__bateria = function () {
      depende de um IntersectionObserver, que num separador oculto não dispara.
      Uma guarda que dependa disso acusa o ambiente e não o site. */
   for (const card of document.querySelectorAll('.card[data-shots]')) {
+    /* SÓ O QUE ESTÁ NO ECRÃ. Numa lista já filtrada -- e é assim que se chega
+       a /cathelier/pieces/#christmas -- os cartões de fora levam
+       `display: none` e medem zero em tudo. Medi-los dava 177 falhas sobre
+       cartões que ninguém está a ver, e a bateria acusava o filtro a
+       funcionar. É a mesma régua de visibilidade que os alvos de toque usam. */
+    if (card.offsetParent === null) continue;
     const tira = card.querySelector('.card__thumbs');
     if (!tira) continue;
     const quantas = card.dataset.shots.split(',').filter(Boolean).length;
