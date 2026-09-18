@@ -262,11 +262,11 @@ export function basket({ shipping }) {
         <h2>Total</h2>
         <label class="field" for="country" style="margin-block-start:1rem">
           <span style="display:block;margin-block-end:.5rem">Shipping to</span>
-          <select id="country" data-country>
+          <span class="select"><select id="country" data-country>
             ${shipping.zones.flatMap((z) => z.countries
               .filter((c) => shipping.active.includes(c.slice(0, 2)))
               .map((c) => `<option value="${esc(c)}">${esc(COUNTRY[c] || c)}</option>`)).join('\n            ')}
-          </select>
+          </select></span>
         </label>
         <dl class="basket__sums">
           <dt>Pieces</dt><dd data-sum-goods>—</dd>

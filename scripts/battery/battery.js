@@ -588,6 +588,34 @@ window.__bateria = function () {
       `${Math.round(r.width)}×${Math.round(r.height)}`);
   }
 
+  /* TODOS OS DROPDOWNS TÊM A MESMA SETA.
+     Havia dois <select> no sítio -- a ordenação das listas e o país do
+     carrinho -- e ambos mostravam a seta NATIVA do browser: tamanho, traço e
+     cor do sistema, diferentes em cada um. A seta passou a ser desenhada, e
+     quem a desenha é o invólucro `.select`, porque um <select> não aceita
+     ::after. Um <select> novo escrito sem invólucro volta a ter a nativa, e
+     mais ninguém dava por isso: o HTML é válido, a página não parte, e só se
+     vê ao lado do outro. */
+  for (const sel of document.querySelectorAll('select')) {
+    const nome = sel.id || sel.className || 'select';
+    const inv = sel.closest('.select');
+    nota(inv, `${nome}: o dropdown está dentro de um .select`,
+      inv ? '' : 'sem invólucro — ficaria com a seta nativa do browser');
+    nota(getComputedStyle(sel).appearance === 'none', `${nome}: sem a seta nativa`,
+      getComputedStyle(sel).appearance);
+    if (inv) {
+      const a = getComputedStyle(inv, '::after');
+      const lado = parseFloat(a.inlineSize) || 0;
+      nota(lado >= 5 && a.content !== 'none', `${nome}: e com a seta desenhada`,
+        `${a.inlineSize} · ${a.color}`);
+      // A seta fica DENTRO do controlo e não em cima do texto.
+      const fim = parseFloat(a.insetInlineEnd) || 0;
+      const folga = parseFloat(getComputedStyle(sel).paddingInlineEnd) || 0;
+      nota(folga > fim + lado, `${nome}: e o texto não passa por baixo dela`,
+        `enchimento ${folga}px, seta a ${fim}px do fim com ${lado}px de lado`);
+    }
+  }
+
   /* AS OUTRAS FOTOGRAFIAS, TAMBÉM NO TELEMÓVEL.
      A tira esteve escondida abaixo de 48rem e passou a aparecer em todas as
      larguras. Aqui mede-se o que é determinista -- o espaço reservado e o

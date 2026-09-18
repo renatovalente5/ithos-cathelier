@@ -1274,8 +1274,51 @@ html[data-cover='yes'][data-scrolled='no'] :is(.head__mark, .head__sibling-mark)
   margin-block-start: 1rem; justify-content: flex-end;
 }
 .sortby__label { font-size: 12px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+/* --- a seta de um dropdown, a mesma nos dois que existem --------------------
+   ANTES NÃO ERA DESENHADA DE TODO: era a nativa do browser, com tamanho, traço
+   e cor decididos pelo sistema e diferentes em cada um. Numa pílula
+   completamente redonda ficava encostada à curva, com um vão grande entre ela
+   e a palavra.
+
+   Dois lados de uma caixa rodada, e não um SVG em data-URI, porque assim herda
+   a cor da marca com `currentColor` em vez de obrigar a uma cópia para o
+   #212121 da ithos e outra para o #6B4E3C da cathelier. O cinzento e a voz são
+   os mesmos dos `+` e `−` do rodapé.
+
+   O invólucro existe porque um <select> não aceita ::before nem ::after. É uma
+   classe partilhada: há dois dropdowns no sítio -- a ordenação das listas e o
+   país do carrinho -- e dois desenhos diferentes para o mesmo controlo era
+   exactamente o que isto veio arrumar. */
+.select {
+  position: relative; display: inline-flex;
+  /* A FOLGA PARA A SETA VIVE AQUI, NUM SÍTIO SÓ, e é herdada por quem lá está
+     dentro. Foi escrita em `.select > select` e perdeu: `.field select` traz um
+     `padding` ABREVIADO, tem a mesma especificidade e vem depois, por isso
+     repunha o enchimento em 13,6px -- e a seta ocupa dos 15,2 aos 22,2. Um
+     nome de país comprido passava por baixo dela. Cada controlo declara agora
+     o seu próprio enchimento e vai buscar esta medida, que é o que impede os
+     dois de discordarem outra vez. */
+  --arrow-room: 2.1rem;
+}
+.select > select { appearance: none; -webkit-appearance: none; }
+.select::after {
+  content: ''; position: absolute; pointer-events: none;
+  inset-inline-end: .95rem; inset-block-start: 50%;
+  inline-size: 7px; block-size: 7px;
+  border-inline-end: 1.5px solid currentColor;
+  border-block-end: 1.5px solid currentColor;
+  /* A tinta de um quadrado rodado fica abaixo do centro da caixa, por isso a
+     subida é maior do que metade: assim o V assenta na linha do meio. */
+  transform: translateY(-68%) rotate(45deg);
+  color: var(--muted);
+  transition: color .2s ease;
+}
+.select:hover::after { color: var(--accent); }
+@media (prefers-reduced-motion: reduce) { .select::after { transition: none; } }
+
 .sortby__select {
-  min-height: 40px; padding: .35rem .6rem;
+  min-height: 40px;
+  padding-block: .35rem; padding-inline: .9rem var(--arrow-room, .9rem);
   border: 1px solid var(--line); border-radius: var(--pill, 999px);
   background: var(--bg); color: var(--ink);
   font: inherit; font-size: 14px; cursor: pointer;
@@ -1469,6 +1512,8 @@ html[data-cover='yes'][data-scrolled='no'] :is(.head__mark, .head__sibling-mark)
   width: 100%; min-height: 48px; padding: .6rem .85rem;
   border: 1px solid var(--line); background: var(--bg); border-radius: var(--radius, 0);
 }
+.field .select { display: block; }
+.field select { padding-inline-end: var(--arrow-room, .85rem); }
 .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--accent); outline: none; }
 
 .choices { display: grid; gap: .5rem; }

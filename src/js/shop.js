@@ -579,7 +579,14 @@ function sorting() {
     o.value = id2; o.textContent = text;
     sel.append(o);
   }
-  box.append(label, sel);
+  /* O <select> vai dentro de um invólucro só por causa da seta: um <select>
+     não aceita ::before nem ::after, por isso a seta tem de se pendurar em
+     alguma coisa, e pendurá-la na linha inteira dependia de o select ser o
+     último e estar encostado à direita. Assim está presa ao próprio controlo. */
+  const caixa = document.createElement('span');
+  caixa.className = 'select';
+  caixa.append(sel);
+  box.append(label, caixa);
   bar.after(box);
 
   sel.addEventListener('change', () => {
