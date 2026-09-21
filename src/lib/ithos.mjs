@@ -306,7 +306,7 @@ export function product({ p, all, shop }) {
     </form>
 
     <div class="reassure">
-      ${[['truck', 'Shipped across Europe — €5 within mainland Portugal'],
+      ${[['truck', 'Shipped within Portugal — €5 to the mainland'],
          ['leaf', 'Solid pine and water-based paints'],
          ['shield', `${shop.returns.warrantyYears}-year guarantee · ${shop.returns.coolingOffDays} days to change your mind`],
          ['hand', 'Made by hand in Castelo Branco, Portugal']]

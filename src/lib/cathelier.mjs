@@ -313,7 +313,7 @@ export function piece({ p, all: everything, shop, occasions }) {
     <div class="reassure">
       ${[['shield', 'A drawing to approve before anything is cut'],
          ['hand', 'Cut, sanded and finished by hand'],
-         ['truck', 'Shipped across Europe'],
+         ['truck', 'Shipped within Portugal'],
          ['leaf', 'Wood from responsibly managed forests']]
         .map(([i, t]) => `<p>${icon(i, 18)}<span>${esc(t)}</span></p>`).join('\n      ')}
     </div>

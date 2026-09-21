@@ -1,26 +1,27 @@
 {
-  "_note": "Required by law (Portuguese DL 7/2004 art. 10). If any of these is empty the build DIES \u2014 a shop never goes live without the seller's identification on it. The street and postcode are PLACEHOLDERS: the guards let them through only in PREVIEW, and scripts/check-output.mjs kills any page where a \u27e8\u2026\u27e9 marker reaches the HTML, so they cannot go live by accident.",
+  "_note": "Required by law (Portuguese DL 7/2004 art. 10). If any of these is empty the build DIES — a shop never goes live without the seller's identification on it. The street and postcode are PLACEHOLDERS: the guards let them through only in PREVIEW, and scripts/check-output.mjs kills any page where a ⟨…⟩ marker reaches the HTML, so they cannot go live by accident.",
   "legalName": "Cathia Carine Pontes",
-  "tradingName": "ithos \u00b7 cathelier",
-  "legalForm": "Sole trader (Empres\u00e1ria em Nome Individual)",
+  "tradingName": "ithos · cathelier",
+  "legalForm": "Sole trader (Empresária em Nome Individual)",
   "taxNumber": "244156450",
   "email": "ithos@outlook.pt",
   "phone": "+351960274347",
   "phoneText": "+351 960 274 347",
   "whatsapp": "351960274347",
-  "street": "\u27e8street \u2014 to fill in before going live\u27e9",
-  "postcode": "\u27e80000-000\u27e9",
+  "street": "⟨street — to fill in before going live⟩",
+  "postcode": "⟨0000-000⟩",
   "town": "Castelo Branco",
   "country": "Portugal",
   "instagramIthos": "https://www.instagram.com/ithos_woodenlamp/",
   "facebookIthos": "https://www.facebook.com/ithoswoodenlamp",
   "instagramCathelier": "https://www.instagram.com/cathellier/",
   "adr": {
-    "name": "CNIACC \u2014 Centro Nacional de Informa\u00e7\u00e3o e Arbitragem de Conflitos de Consumo",
+    "name": "CNIACC — Centro Nacional de Informação e Arbitragem de Conflitos de Consumo",
     "site": "https://www.cniacc.pt/",
-    "email": "cniacc@unl.pt",
-    "phone": "+351 213 847 484",
-    "address": "Faculdade de Direito da Universidade Nova de Lisboa, Campus de Campolide, 1099-032 Lisboa"
+    "email": "geral@cniacc.pt",
+    "phone": "+351 253 619 107",
+    "address": "Rua D. Afonso Henriques, 1, 4700-030 Braga"
   },
-  "complaintsBook": "https://www.livroreclamacoes.pt/inicio"
+  "complaintsBook": "https://www.livroreclamacoes.pt/inicio",
+  "_adrNote": "Verificado em cniacc.pt a 21 set 2026. O centro MUDOU-SE: estava publicada a morada antiga da Faculdade de Direito da Universidade Nova em Lisboa, com cniacc@unl.pt e +351 213 847 484, todos obsoletos — um consumidor que recorresse não chegava lá. Há uma segunda delegação em Viseu (Largo de Santa Cristina, 3500-181, viseu@cniacc.pt, 232 451 135)."
 }

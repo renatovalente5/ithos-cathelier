@@ -49,7 +49,7 @@ not cut, or if the delivery address is outside the countries we ship to.
 
 Payment is taken by {{PAYMENT_PROVIDER}}, a payment institution supervised by
 the Banco de Portugal. You can pay by {{PAYMENT_METHODS}}. We never see or
-store your card details.
+store your payment details.
 
 **If you pay by Multibanco reference**, the reference is yours for
 {{PAYMENT_REFERENCE_DAYS}} days. Nothing is made and nothing is reserved until
@@ -74,10 +74,11 @@ it, or refund you.
 
 ## Complaints and disputes
 
-There is an electronic complaints book at
-[{{COMPLAINTS_BOOK}}]({{COMPLAINTS_BOOK}}).
+There is an electronic complaints book — *Livro de Reclamações Eletrónico* —
+at [{{COMPLAINTS_BOOK}}]({{COMPLAINTS_BOOK}}).
 
-For out-of-court dispute resolution we are covered by **{{ADR_NAME}}** —
+For out-of-court dispute resolution — *Resolução Alternativa de Litígios de
+Consumo (RAL)* — the competent arbitration centre is **{{ADR_NAME}}** —
 [{{ADR_SITE}}]({{ADR_SITE}}), {{ADR_ADDRESS}}, [{{ADR_EMAIL}}](mailto:{{ADR_EMAIL}}),
 {{ADR_PHONE}}.
 

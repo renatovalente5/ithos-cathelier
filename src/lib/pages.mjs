@@ -320,7 +320,7 @@ export function basket({ shipping }) {
       <button class="btn btn--wide" type="submit" data-to-checkout style="margin-block-start:1.25rem">
         Order and pay</button>
       <p class="small muted" style="margin-block-start:.6rem">
-        You will be taken to ifthenpay to pay by Multibanco or MB WAY. We never see your card details.</p>
+        You will be taken to ifthenpay to pay by Multibanco or MB WAY. We never see your payment details.</p>
     </form>
   </div>
 </section>`;

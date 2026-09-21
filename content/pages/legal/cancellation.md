@@ -3,8 +3,8 @@
 ## Fourteen days
 
 If you are buying as a consumer, you may cancel within **{{COOLING_OFF_DAYS}} days**
-of receiving your order, without giving any reason. The period runs from the day
-the last item reaches you.
+of receiving your order, without giving any reason — this is **article 10 of
+Decree-Law 24/2014**. The period runs from the day the last item reaches you.
 
 To cancel, tell us clearly — an email to [{{EMAIL}}](mailto:{{EMAIL}}) is enough.
 There is a [form you can use]({{FORM_URL}}) if you prefer, but you do not have to.

@@ -10,11 +10,15 @@
 | Email | [{{EMAIL}}](mailto:{{EMAIL}}) |
 | Telephone | [{{PHONE_TEXT}}](tel:{{PHONE}}) *{{CALL_COST}}* |
 
-## Complaints
+## Complaints — Livro de Reclamações
 
-Electronic complaints book: [{{COMPLAINTS_BOOK}}]({{COMPLAINTS_BOOK}})
+Electronic complaints book (*Livro de Reclamações Eletrónico*):
+[{{COMPLAINTS_BOOK}}]({{COMPLAINTS_BOOK}})
 
-## Out-of-court dispute resolution
+## Out-of-court dispute resolution — RAL
+
+*Resolução Alternativa de Litígios de Consumo.* The competent arbitration
+centre for this seller is:
 
 **{{ADR_NAME}}**
 {{ADR_ADDRESS}}
