@@ -26,7 +26,12 @@ part of the order, because it is what we made.
 **When you write to us.** Whatever is in your message, for as long as it takes
 to answer and a reasonable time afterwards.
 
-**Your basket.** It lives in your own browser and never reaches us until you pay.
+**Your basket.** While you are choosing, it lives in your own browser and we
+never see it. It reaches us the moment you press **Order and pay**: we save the
+order — your name, address, telephone, tax number and what you chose — before we
+ask for the payment, because a payment that arrives with nothing to attach it to
+is a payment nobody can fulfil. If you never pay, that order is deleted after
+ninety days.
 
 ## Who else sees it
 
@@ -40,8 +45,10 @@ Nobody else. Your details are not sold, and not used to advertise at you.
 
 ## How long
 
-Invoices are kept ten years, because tax law requires it. Emails are kept for as
-long as they are useful and then deleted.
+Invoices are kept ten years, because tax law requires it. Orders that were never
+paid are deleted after ninety days — long enough for a Multibanco reference to
+be paid late and for us to answer a question about it, and no longer. Emails are
+kept for as long as they are useful and then deleted.
 
 ## What you can ask for
 
