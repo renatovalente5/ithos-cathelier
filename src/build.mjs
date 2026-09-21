@@ -271,6 +271,30 @@ function assets() {
    Named by the hash of its own contents and therefore immutable, with a
    pointer file beside it. The browser is never trusted with a price: the
    basket carries ids and quantities, and the Worker reprices from this. */
+/* O ARTIGO DE PROVA, que existe só aqui.
+ *
+ * Para confirmar que um pagamento verdadeiro percorre a cadeia toda é preciso
+ * comprar alguma coisa -- e expor um produto de um euro à loja é convidar
+ * alguém a comprá-lo. Este entra APENAS no catálogo que o Worker usa para
+ * calcular preços; nenhum gerador de páginas lhe toca, por isso não há listagem
+ * nem ficha nem mapa do site onde ele possa aparecer. Quem o quiser comprar tem
+ * de saber o nome dele de cor.
+ *
+ * O prefixo `zz-` é a convenção: o Worker deixa passar uma encomenda feita SÓ
+ * de artigos `zz-` mesmo com a loja fechada, e é isso que permite ensaiar um
+ * pagamento sem abrir as portas a ninguém.
+ *
+ * Fica. Custa uma linha no JSON, não aparece em lado nenhum, e serve outra vez
+ * no dia em que se mexer nos pagamentos. */
+const ARTIGO_DE_PROVA = ['zz-prova', {
+  brand: 'ithos',
+  name: 'Internal payment test — not for sale',
+  price: 1,
+  made: 'in_stock',
+  photo: '',
+  options: [],
+}];
+
 function catalogueFile() {
   const body = {
     preview: PREVIEW || !shop.open,
@@ -283,7 +307,13 @@ function catalogueFile() {
      * one it did, and know which of them PERSONALISE — because an order
      * carrying an engraved name loses the right to cancel, and that is a legal
      * fact the shop has to be able to state on the invoice. */
-    products: Object.fromEntries([...lamps, ...pieces].map((p) => [p.slug, {
+    /* O artigo de prova vai em ÚLTIMO, e isso não é arrumação.
+       Posto em primeiro, passou a ser «o primeiro produto do catálogo» -- e
+       sete testes que compram o primeiro produto passaram a comprá-lo,
+       atravessando o travão da loja fechada que é exactamente o que eles
+       existem para verificar. Uma peça de andaime não pode mudar o que os
+       testes vêem primeiro. */
+    products: Object.fromEntries([...[...lamps, ...pieces].map((p) => [p.slug, {
       brand: lamps.includes(p) ? 'ithos' : 'cathelier',
       name: p.name,
       price: p.price,
@@ -303,7 +333,7 @@ function catalogueFile() {
               id: v.id, name: v.name, extra: v.extra || 0,
               ...(v.available === false ? { available: false } : {}),
             })) })),
-    }])),
+    }]), ARTIGO_DE_PROVA]),
   };
   const json = JSON.stringify(body);
   const hash = createHash('sha256').update(json).digest('hex').slice(0, 12);
