@@ -319,6 +319,41 @@ for (const { where, target, frag } of fragmentos) {
   }
 }
 
+/* O NOME DE QUEM RECEBE O DINHEIRO NÃO PODE FICAR PARA TRÁS.
+   Trocar de processador de pagamentos envelhece textos em silêncio: os termos
+   diziam «pagamento por cartão através da Stripe» e a privacidade nomeava-a
+   como destinatária dos dados, e as duas continuaram publicadas em quatro
+   moradas depois de a Stripe ter sido apagada do código. Uma página legal que
+   mente sobre quem recebe os dados é das piores maneiras de estar errado.
+
+   A COMPARAÇÃO É COM MAIÚSCULA E COM FRONTEIRA DE PALAVRA, e isso não é
+   pormenor: o candeeiro do tigre fala das «stripes» dele quatro vezes na mesma
+   página. Uma procura ingénua por "stripe" mataria a construção por causa de
+   um animal. */
+{
+  const CONCORRENTES = ['Stripe', 'PayPal', 'Easypay', 'Eupago', 'Mollie', 'Adyen', 'SumUp', 'Redsys'];
+  /* A configuração lê-se daqui e não se supõe: quem manda é o mesmo ficheiro
+     que a construção usou para escrever as páginas. */
+  const shopCfg = JSON.parse(readFileSync(join(ROOT, 'content/settings/shop.json'), 'utf8'));
+  const nosso = (shopCfg.payment?.provider ?? '').toLowerCase();
+  const proibidos = CONCORRENTES.filter((n) => n.toLowerCase() !== nosso);
+  /* As páginas E os ficheiros servidos: o comentário que ficou para trás
+     estava no JavaScript publicado, não no HTML. */
+  const assets = existsSync(join(OUT, 'assets'))
+    ? readdirSync(join(OUT, 'assets')).filter((f) => /\.(js|css)$/.test(f)).map((f) => join(OUT, 'assets', f))
+    : [];
+  for (const f of [...pages, ...assets]) {
+    const texto = readFileSync(f, 'utf8');
+    for (const n of proibidos) {
+      if (new RegExp(`\\b${n}\\b`).test(texto)) {
+        deaths.push(`${f.slice(OUT.length) || '/'}: names ${n}, and the shop is paid through `
+          + `${shopCfg.payment?.provider ?? '(nobody configured)'} — a page that says who takes the `
+          + 'money has to say the right one');
+      }
+    }
+  }
+}
+
 /* DUAS PEÇAS COM A MESMA FOTOGRAFIA, NA MONTRA.
    Um cartão é a promessa de que ali está outra coisa, e dois cartões com a
    mesma imagem desmentem-na antes de alguém clicar. A dona viu isso na home e

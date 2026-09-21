@@ -53,7 +53,7 @@ const NAV_EXTRA = [['/contact/#faq', 'Questions']];
  *   words, not a copy, and the words have to come from the owner.
  * · /404.html -- GitHub Pages serves exactly one, from the site root. A second
  *   copy is a page no address can reach.
- * · /thank-you/ and /order-cancelled/ -- the address Stripe returns to is
+ * · /thank-you/ and /order-cancelled/ -- the address the gateway returns to is
  *   named by the Worker, and a reader arriving from stripe.com is not standing
  *   in either shop. They stay single until the Worker can be told which.
  * · / -- on a cathelier page that is the door OUT. Mirroring it would break

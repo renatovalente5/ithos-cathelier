@@ -33,6 +33,13 @@ export function markers({ identity, shop, shipping }) {
     ADR_NAME: i.adr.name, ADR_SITE: i.adr.site, ADR_EMAIL: i.adr.email,
     ADR_PHONE: i.adr.phone, ADR_ADDRESS: i.adr.address,
     CARRIER: shipping.carrier,
+    /* O NOME DE QUEM RECEBE O PAGAMENTO VIVE NUM SÍTIO SÓ.
+       Estava escrito à mão nos termos e na privacidade, e no dia em que a loja
+       trocou de processador as duas páginas passaram a mentir -- publicadas,
+       em quatro moradas. Um marcador obriga a que mudem juntas. */
+    PAYMENT_PROVIDER: shop.payment?.provider ?? 'the payment provider',
+    PAYMENT_METHODS: shop.payment?.methods ?? 'the methods shown at checkout',
+    PAYMENT_REFERENCE_DAYS: String(shop.payment?.referenceDays ?? 2),
     COOLING_OFF_DAYS: String(shop.returns.coolingOffDays),
     WARRANTY_YEARS: String(shop.returns.warrantyYears),
     FORM_URL: '/legal/returns-form/',
@@ -345,8 +352,8 @@ export function notFound() {
 </section>`;
 }
 
-/* --- after Stripe ---------------------------------------------------------
-   Two pages Stripe sends people back to. Both are noindex: they are the end of
+/* --- depois do pagamento ---------------------------------------------------
+   Two pages the payment page sends people back to. Both are noindex: they are the end of
    a private transaction, not content. */
 
 export function thankYou() {
@@ -366,10 +373,28 @@ export function thankYou() {
       </p>
     </div>
 
+    <!-- O TERCEIRO ESTADO É O NORMAL, e não existia.
+         Com uma referência Multibanco o comprador volta para aqui sem ter
+         pagado -- vai pagar hoje à noite, ou amanhã. A página tinha só «pago»
+         e «espere um minuto e recarregue», e a segunda dizia a quase toda a
+         gente que algo tinha corrido mal quando não tinha corrido mal nada. -->
+    <div data-order-waiting hidden>
+      <p>Your order is <strong data-order-ref-waiting>—</strong>. Keep that
+         reference: it is what we both use if you write to us.</p>
+      <p>We have not received the payment yet, and that is normal if you chose a
+         Multibanco reference — it is yours for {{PAYMENT_REFERENCE_DAYS}} days.
+         Nothing is made and nothing is charged until you pay it.</p>
+      <p>The moment it reaches us we write to you, and the workshop starts. If
+         you have just paid, give it a minute and reload this page.</p>
+      <p style="margin-block-start:2rem">
+        <a class="btn btn--ghost" href="/lamps/">Back to the lamps</a>
+      </p>
+    </div>
+
     <div data-order-pending hidden>
-      <p>The payment has not come through yet. If you have just paid, give it a
-         minute and reload this page.</p>
-      <p>If it stays like this, write to us and nothing will be charged twice.</p>
+      <p>We could not find that order. If you have just paid, give it a minute
+         and reload this page.</p>
+      <p>If it stays like this, write to us — nothing will be charged twice.</p>
     </div>
   </div>
 </section>`;
@@ -379,10 +404,16 @@ export function orderCancelled() {
   return `
 <section class="section">
   <div class="shell shell--narrow page-prose" style="text-align:center">
-    <h1>Nothing was charged</h1>
-    <p class="lede">You closed the payment page, so the order was not placed and
-       your card was not touched.</p>
-    <p>Your basket is still here if you want to pick it up again.</p>
+    <!-- «Nothing was charged» deixou de ser verdade sempre.
+         Quem chegou aqui pode ter uma referência Multibanco emitida e ainda por
+         pagar: nesse caso nada foi cobrado AINDA, que é outra coisa. O texto
+         diz o que se sabe -- não avançámos -- sem jurar o que não se sabe. -->
+    <h1>The order was not placed</h1>
+    <p class="lede">You left the payment page, so we have not taken anything and
+       the order has not gone through.</p>
+    <p>If you were given a Multibanco reference before you left, it may still be
+       valid — paying it will confirm the order. Otherwise your basket is still
+       here if you want to pick it up again.</p>
     <p style="margin-block-start:2rem">
       <a class="btn" href="/cart/">Back to the basket</a>
       <a class="btn btn--ghost" href="/lamps/" style="margin-inline-start:.5rem">Keep looking</a>

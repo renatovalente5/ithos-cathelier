@@ -47,7 +47,15 @@ An order is a proposal until we confirm it by email. We may decline an order —
 if a piece is no longer possible, if the engraving asks for something we will
 not cut, or if the delivery address is outside the countries we ship to.
 
-Payment is by card, through Stripe. We never see or store your card details.
+Payment is taken by {{PAYMENT_PROVIDER}}, a payment institution supervised by
+the Banco de Portugal. You can pay by {{PAYMENT_METHODS}}. We never see or
+store your card details.
+
+**If you pay by Multibanco reference**, the reference is yours for
+{{PAYMENT_REFERENCE_DAYS}} days. Nothing is made and nothing is reserved until
+it is paid: the order is confirmed when the payment reaches us, and we write to
+you then. If the reference expires unpaid, the order simply lapses and you owe
+nothing — put the basket together again whenever you like.
 
 ## Making and delivering
 

@@ -30,7 +30,9 @@ to answer and a reasonable time afterwards.
 
 ## Who else sees it
 
-- **Stripe**, to take the payment. We never see your card number.
+- **{{PAYMENT_PROVIDER}}**, to take the payment: your name, your email and the
+  amount. We never see your card number. If you pay by MB WAY, your telephone
+  number goes to them too, because that is how the request reaches your phone.
 - **{{CARRIER}}**, to deliver the parcel: your name, address and telephone.
 - Our accountant, and the tax authority, for invoices.
 

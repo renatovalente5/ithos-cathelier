@@ -425,29 +425,47 @@ function checkout() {
 async function thankYouPage() {
   const state = $('[data-order-state]');
   if (!state) return;
-  const id = new URLSearchParams(location.search).get('session_id');
+
+  /* `ref` e não `session_id`, e `/order` e não `/session`.
+     Os três nomes vinham do processador anterior e nenhum deles existe (o
+     porquê está no registo do git, e não aqui: um comentário nomeando quem já
+     não recebe o dinheiro viaja no JavaScript servido a toda a gente -- foi a
+     guarda nova a apanhar-me a mim): a página lia um
+     parâmetro que nunca chega, chamava uma rota que foi apagada, e comparava
+     com `'paid'` quando o Worker responde `'paga'`. Estava partida de ponta a
+     ponta contra o Worker novo -- e como o travão da pré-visualização nunca
+     deixou lá chegar ninguém, nada disso tinha aparecido. */
+  const id = new URLSearchParams(location.search).get('ref');
+  const mostrar = (qual) => { state.hidden = true; const d = $(qual); if (d) d.hidden = false; };
+
   if (!id || !API) { state.textContent = 'We could not find that order.'; return; }
 
   try {
-    const r = await fetch(`${API}/session?id=${encodeURIComponent(id)}`);
-    const s = await r.json();
-    if (s.status === 'paid') {
-      // The basket is emptied only once the payment is CONFIRMED. Emptying it
-      // when the customer leaves for Stripe loses the order of anyone who goes
-      // back to change their mind about one line.
+    const r = await fetch(`${API}/order?id=${encodeURIComponent(id)}`);
+    const s = await r.json().catch(() => ({}));
+
+    if (r.ok && s.estado === 'paga') {
+      /* O cesto esvazia-se só quando o pagamento está CONFIRMADO. Esvaziá-lo
+         quando o comprador sai para pagar perde a encomenda de quem volta
+         atrás para mudar de ideias numa linha. E com Multibanco «sair para
+         pagar» e «pagar» podem estar dois dias um do outro. */
       save(BASKET, { country: 'PT', lines: [] });
       paintCount();
-      state.hidden = true;
-      $('[data-order-ok]').hidden = false;
-      $('[data-order-ref]').textContent = s.reference || '—';
+      mostrar('[data-order-ok]');
+      const ref = $('[data-order-ref]'); if (ref) ref.textContent = s.reference || id;
+    } else if (r.ok) {
+      /* Encomenda conhecida, pagamento por chegar: o desfecho NORMAL de uma
+         referência Multibanco. O cesto fica como está -- ainda pode ser preciso. */
+      mostrar('[data-order-waiting]');
+      const ref = $('[data-order-ref-waiting]'); if (ref) ref.textContent = s.reference || id;
     } else {
-      state.hidden = true;
-      $('[data-order-pending]').hidden = false;
+      mostrar('[data-order-pending]');
     }
   } catch {
     state.textContent = 'We could not check that order just now. Your confirmation email is the record.';
   }
 }
+
 
 /* --- the one consent question on the site ---------------------------------
    The map is the only third-party content anywhere here, so it is the only

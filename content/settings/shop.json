@@ -6,8 +6,20 @@
     "toOrder": "Made to order. Up to 20 working days in the workshop.",
     "soldOut": "Sold out for now."
   },
-  "notice": { "active": false, "text": "" },
-  "returns": { "coolingOffDays": 14, "warrantyYears": 3, "returnAddress": "" },
+  "notice": {
+    "active": false,
+    "text": ""
+  },
+  "returns": {
+    "coolingOffDays": 14,
+    "warrantyYears": 3,
+    "returnAddress": ""
+  },
+  "payment": {
+    "provider": "ifthenpay",
+    "methods": "Multibanco reference or MB WAY",
+    "referenceDays": 2
+  },
   "safetyIthos": [
     "This is not a toy. It is a decorative night light.",
     "Not suitable for children under 3 without adult supervision.",
