@@ -500,15 +500,22 @@ async function payPage() {
      referência a expirar um dia mais cedo do que expira, escrito com toda a
      confiança. Constrói-se em UTC e formata-se em UTC, e assim o dia que sai é
      o dia que entrou. */
-  const porExtenso = (iso) => {
-    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso ?? ''));
-    if (!m) return String(iso ?? '');
+  const porExtenso = (data) => {
+    /* Aceita as DUAS formas que a ifthenpay já usou: a especificação deles
+       mostra `2026-07-27` e a conta a sério devolveu `24-09-2026`. O Worker já
+       normaliza, e isto aceita as duas na mesma -- uma encomenda guardada
+       antes dessa correcção continua a ter a forma antiga lá dentro, e a
+       página é lida por quem a tiver. */
+    const t = String(data ?? '');
+    const pt = /^(\d{2})-(\d{2})-(\d{4})$/.exec(t);
+    const m = pt ? [t, pt[3], pt[2], pt[1]] : /^(\d{4})-(\d{2})-(\d{2})$/.exec(t);
+    if (!m) return t;
     const d = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3]));
     try {
       return new Intl.DateTimeFormat('en-GB', {
         day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC',
       }).format(d);
-    } catch { return iso; }
+    } catch { return t; }
   };
 
   const escrever = (sel, texto) => { const el = $(sel); if (el) el.textContent = texto; };
