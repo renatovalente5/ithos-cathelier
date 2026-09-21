@@ -301,6 +301,27 @@ function catalogueFile() {
     currency: 'EUR',
     lead: { inStockDays: shop.lead.inStockDays, toOrderDays: shop.lead.toOrderDays },
     shipping,
+    /* QUEM VENDE VIAJA COM O CATÁLOGO, para os emails não o escreverem à mão.
+     * O Worker escreve duas mensagens por encomenda -- a folha de trabalho e a
+     * confirmação do artigo 6.º do DL 24/2014 -- e ambas têm de identificar o
+     * vendedor, dizer o prazo de livre resolução e apontar para a entidade de
+     * resolução de litígios. Se esses valores forem escritos no Worker, o dia
+     * em que a morada fiscal ou o CNIACC mudarem no site deixa os emails a
+     * mentir, sem um erro em lado nenhum -- foi exactamente o que aconteceu
+     * com a morada antiga do CNIACC, publicada durante meses.
+     * Vai daqui, de content/settings/, que é o único sítio onde se edita. */
+    seller: {
+      legalName: identity.legalName,
+      tradingName: identity.tradingName,
+      taxNumber: identity.taxNumber,
+      email: identity.email,
+      phone: identity.phoneText || identity.phone,
+      address: [identity.street, [identity.postcode, identity.town].filter(Boolean).join(' '), identity.country].filter(Boolean),
+      complaintsBook: identity.complaintsBook,
+      adr: identity.adr,
+      coolingOffDays: shop.returns.coolingOffDays,
+      warrantyYears: shop.returns.warrantyYears,
+    },
     /* The options travel WHOLE, as an array, and not flattened to a price map.
      * The Worker has to do three things with them and only the full shape
      * allows all three: refuse a value the catalogue never offered, price the
