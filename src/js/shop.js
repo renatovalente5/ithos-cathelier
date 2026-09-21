@@ -307,6 +307,7 @@ document.addEventListener('DOMContentLoaded', () => {
   basketPage();
   mapConsent();
   checkout();
+  payPage();
   thankYouPage();
   previewLock();
 });
@@ -334,6 +335,32 @@ function checkout() {
     };
   };
 
+  const metodo = () => (form?.elements?.metodo?.value ?? 'MBWAY');
+
+  /* O CAMPO DO TELEMÓVEL SÓ EXISTE PARA O MB WAY, e pedi-lo a quem vai pagar
+     uma referência Multibanco é pedir um dado que não é preciso para nada --
+     que é o teste do artigo 5.º n.º 1 alínea c) do RGPD, não uma questão de
+     arrumação. `hidden` sozinho não chega quando o CSS declara `display` no
+     elemento; aqui a classe `.field` não o faz, mas escrever os dois é o que
+     torna isto verdade em qualquer folha de estilo.
+     E `required` acompanha a visibilidade: um campo escondido e obrigatório
+     faz o `reportValidity` recusar o formulário sem mostrar onde, e o botão
+     morre sem dizer porquê. */
+  const caixaTelemovel = $('[data-mbway-phone]');
+  const campoTelemovel = caixaTelemovel?.querySelector('input');
+  const acertarTelemovel = () => {
+    if (!caixaTelemovel || !campoTelemovel) return;
+    const mbway = metodo() === 'MBWAY';
+    caixaTelemovel.hidden = !mbway;
+    caixaTelemovel.style.display = mbway ? '' : 'none';
+    campoTelemovel.required = mbway;
+    campoTelemovel.disabled = !mbway;
+  };
+  for (const r of $$('[data-pay-methods] input[name="metodo"]')) {
+    r.addEventListener('change', acertarTelemovel);
+  }
+  acertarTelemovel();
+
   const disparar = async (e) => {
     e?.preventDefault();
     if (go.getAttribute('aria-disabled') === 'true') return;
@@ -349,7 +376,7 @@ function checkout() {
 
     go.setAttribute('aria-disabled', 'true');
     const wasSaying = go.textContent;
-    go.textContent = 'Taking you to payment…';
+    go.textContent = metodo() === 'MBWAY' ? 'Sending the request…' : 'Getting your reference…';
 
     try {
       const cat = await catalogue();
@@ -358,6 +385,8 @@ function checkout() {
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
           hash: cat.hash, country: cur.country || 'PT', lines: cur.lines, cliente: cliente(),
+          metodo: metodo(),
+          telemovel: metodo() === 'MBWAY' ? (campoTelemovel?.value ?? '').trim() : undefined,
         }),
       });
       const data = await r.json().catch(() => ({}));
@@ -369,8 +398,12 @@ function checkout() {
         location.reload();
         return;
       }
-      if (!r.ok || !data.url) { say(reason(data.error)); return; }
-      location.href = data.url;
+      /* `proxima` e não `url`: o comprador já não sai do site. O que vem de
+         volta é uma morada NOSSA, e a página do pagamento lê o resto de
+         `/order` -- assim recarregar funciona, e voltar dois dias depois
+         mostra a mesma referência Multibanco. */
+      if (!r.ok || !data.proxima) { say(reason(data.error)); return; }
+      location.href = data.proxima;
     } catch {
       say('We could not reach the payment service. Please try again in a moment.');
     } finally {
@@ -410,6 +443,10 @@ function checkout() {
       payment_methods_not_configured: 'The shop cannot take payments yet.',
       storage_not_configured: 'The shop cannot take orders yet.',
       email_invalido: 'That email address does not look right. Please check it.',
+      bad_mbway_number: 'That does not look like a Portuguese mobile number. '
+        + 'MB WAY only works with one — or choose a Multibanco reference instead.',
+      bad_payment_method: 'That way of paying is not available. Please pick another one.',
+      payment_unavailable: 'The payment service did not answer. Nothing was charged — please try again in a moment.',
       catalogue_unavailable: 'The shop is briefly unavailable. Please try again in a minute.',
     })[String(code).split(':')[0]]
       /* O Worker devolve `cliente_incompleto:nome,email` — o código traz consigo
@@ -419,6 +456,225 @@ function checkout() {
         ? `Please fill in: ${String(code).split(':')[1]?.split(',').join(', ') || 'the missing fields'}.`
         : 'Something went wrong on our side. Please try again, or write to us.');
   }
+}
+
+/* --- a página onde se paga, que até aqui era da ifthenpay -----------------
+ *
+ * Três desfechos, e o mais frequente não é «pago»: uma referência Multibanco
+ * fica por pagar de propósito, durante dias. Por isso esta página não guarda
+ * nada -- lê tudo de `/order` a cada volta, e pintar é escolher qual dos
+ * blocos se mostra.
+ *
+ * O RELÓGIO DO MB WAY CONTA A PARTIR DE QUANDO O PEDIDO SAIU, e não de quando
+ * a página abriu. São quatro minutos na app, e recarregar a página não os
+ * devolve: ler a hora de nascimento da encomenda é a diferença entre dizer a
+ * verdade e prometer tempo que já não existe.
+ */
+const MBWAY_SEGUNDOS = 240;
+
+async function payPage() {
+  const state = $('[data-pay-state]');
+  if (!state) return;
+
+  const id = new URLSearchParams(location.search).get('ref');
+  const blocos = '[data-pay-mbway],[data-pay-mb],[data-pay-payshop],[data-pay-done],[data-pay-failed],[data-pay-unknown]';
+  const mostrar = (qual) => {
+    state.hidden = true;
+    for (const d of $$(blocos)) d.hidden = true;
+    const el = $(qual);
+    if (el) el.hidden = false;
+  };
+
+  if (!id || !API) { state.textContent = 'We could not find that order.'; return; }
+
+  const euros = (cents) => `€${(cents / 100).toFixed(2).replace('.', ',')}`;
+  /* Uma referência Multibanco lê-se em grupos de três; copia-se sem espaços,
+     porque é para um campo de uma aplicação de banco. São duas formas do mesmo
+     número e cada uma serve para uma coisa. */
+  const emGrupos = (r) => String(r).replace(/\D/g, '').replace(/(\d{3})(?=\d)/g, '$1 ');
+
+  /* A ifthenpay devolve `2026-09-24`, que é uma data de base de dados e não uma
+     coisa que se diga a alguém. E lê-se à mão em vez de se atirar a string ao
+     `new Date()`: essa forma é interpretada como meia-noite UTC, e a quem
+     estiver a oeste de Greenwich o browser mostrava o dia ANTERIOR -- uma
+     referência a expirar um dia mais cedo do que expira, escrito com toda a
+     confiança. Constrói-se em UTC e formata-se em UTC, e assim o dia que sai é
+     o dia que entrou. */
+  const porExtenso = (iso) => {
+    const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso ?? ''));
+    if (!m) return String(iso ?? '');
+    const d = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3]));
+    try {
+      return new Intl.DateTimeFormat('en-GB', {
+        day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC',
+      }).format(d);
+    } catch { return iso; }
+  };
+
+  const escrever = (sel, texto) => { const el = $(sel); if (el) el.textContent = texto; };
+
+  let relogio = null;
+  const pararRelogio = () => { if (relogio) { clearInterval(relogio); relogio = null; } };
+
+  function contar(criada) {
+    const nasceu = Date.parse(criada ?? '');
+    if (!Number.isFinite(nasceu)) return;           // sem hora, sem relógio
+    const pintar = () => {
+      /* O RELÓGIO É PRESO NOS DOIS EXTREMOS, e não só em baixo.
+         `Math.max(0, …)` sozinho parece suficiente e não é: a hora de
+         nascimento vem do servidor e a subtracção é feita com o relógio do
+         telemóvel de quem está a ver. Basta o telemóvel estar atrasado para o
+         tempo decorrido dar NEGATIVO e a conta passar dos quatro minutos --
+         apareceu aqui «Time left: 627:02» num pedido de quatro minutos, com
+         uma diferença de dez horas entre as duas máquinas. Um relógio a
+         prometer dez horas num pedido que expira em quatro é pior do que não
+         ter relógio nenhum.
+         O tecto é o prazo, e quem decide de verdade continua a ser a ifthenpay
+         com o código 101: isto é uma indicação, não a autoridade. */
+      const decorridos = Math.floor((Date.now() - nasceu) / 1000);
+      const faltam = Math.min(MBWAY_SEGUNDOS, Math.max(0, MBWAY_SEGUNDOS - decorridos));
+      escrever('[data-pay-countdown]', `${Math.floor(faltam / 60)}:${String(faltam % 60).padStart(2, '0')}`);
+      if (faltam === 0) pararRelogio();
+    };
+    pintar();
+    pararRelogio();
+    relogio = setInterval(pintar, 1000);
+  }
+
+  /* Os botões de copiar. `navigator.clipboard` não existe em contexto
+     inseguro nem em todos os browsers, e um botão que não faz nada é pior do
+     que não existir -- por isso há uma segunda via, e quando nenhuma resulta o
+     botão diz «select it» em vez de fingir que copiou. */
+  const copiavel = new Map();
+  for (const b of $$('.pay-copy')) {
+    b.addEventListener('click', async () => {
+      const texto = copiavel.get(b.dataset.copy);
+      if (!texto) return;
+      let feito = false;
+      try {
+        if (navigator.clipboard?.writeText) { await navigator.clipboard.writeText(texto); feito = true; }
+      } catch { feito = false; }
+      if (!feito) {
+        try {
+          const t = document.createElement('textarea');
+          t.value = texto; t.setAttribute('readonly', '');
+          t.style.cssText = 'position:fixed;top:-100px;opacity:0';
+          document.body.append(t); t.select();
+          feito = document.execCommand('copy');
+          t.remove();
+        } catch { feito = false; }
+      }
+      const antes = b.textContent;
+      b.textContent = feito ? 'Copied' : 'Select it';
+      if (feito) b.dataset.copied = '';
+      setTimeout(() => { b.textContent = antes; delete b.dataset.copied; }, 2000);
+    });
+  }
+
+  let voltas = 0;
+  let temporizador = null;
+
+  async function ver() {
+    let s;
+    try {
+      const r = await fetch(`${API}/order?id=${encodeURIComponent(id)}`);
+      s = await r.json().catch(() => ({}));
+      if (!r.ok) { mostrar('[data-pay-unknown]'); return false; }
+    } catch {
+      /* Uma falha de rede não muda o que está no ecrã: o que lá está continua
+         verdade, e apagá-lo para escrever «não consegui verificar» tira a
+         referência de quem a estava a copiar. */
+      return true;
+    }
+
+    if (s.estado === 'paga') {
+      /* O cesto esvazia-se só quando o pagamento está CONFIRMADO. Esvaziá-lo
+         ao sair para pagar perde a encomenda de quem volta atrás para mudar
+         uma linha -- e com Multibanco «sair para pagar» e «pagar» podem estar
+         dois dias um do outro. */
+      save(BASKET, { country: 'PT', lines: [] });
+      paintCount();
+      escrever('[data-pay-ref]', s.reference || id);
+      pararRelogio();
+      mostrar('[data-pay-done]');
+      return false;
+    }
+
+    if (s.metodo === 'MBWAY') {
+      if (s.mbway === 'expirado' || s.mbway === 'recusado') {
+        pararRelogio();
+        escrever('[data-pay-failed-title]',
+          s.mbway === 'recusado' ? 'The request was declined' : 'The request expired');
+        escrever('[data-pay-failed-text]', s.mbway === 'recusado'
+          ? 'Nothing was charged. If that was not you, or you changed your mind, your '
+            + 'basket is still here — order again and pick another way to pay.'
+          : 'Nothing was charged. Your basket is still here, so you can order again — '
+            + 'and if MB WAY is being awkward, a Multibanco reference always works.');
+        mostrar('[data-pay-failed]');
+        return false;
+      }
+      escrever('[data-pay-amount]', euros(s.total));
+      contar(s.criada);
+      mostrar('[data-pay-mbway]');
+      return true;
+    }
+
+    if (s.metodo === 'MB' && s.entidade && s.referencia) {
+      copiavel.set('entity', String(s.entidade));
+      copiavel.set('reference', String(s.referencia).replace(/\D/g, ''));
+      copiavel.set('amount', (s.total / 100).toFixed(2));
+      escrever('[data-pay-entity]', s.entidade);
+      escrever('[data-pay-reference]', emGrupos(s.referencia));
+      escrever('[data-pay-amount-mb]', euros(s.total));
+      if (s.expira) {
+        const caixa = $('[data-pay-expiry]');
+        if (caixa) caixa.hidden = false;
+        escrever('[data-pay-expiry-date]', porExtenso(s.expira));
+      }
+      mostrar('[data-pay-mb]');
+      return true;
+    }
+
+    if (s.metodo === 'PAYSHOP' && s.referencia) {
+      copiavel.set('reference-ps', String(s.referencia).replace(/\D/g, ''));
+      copiavel.set('amount-ps', (s.total / 100).toFixed(2));
+      escrever('[data-pay-reference-ps]', emGrupos(s.referencia));
+      escrever('[data-pay-amount-ps]', euros(s.total));
+      mostrar('[data-pay-payshop]');
+      return true;
+    }
+
+    mostrar('[data-pay-unknown]');
+    return false;
+  }
+
+  /* DUAS CADÊNCIAS, e não uma. Com o MB WAY há alguém a olhar para o ecrã com
+     o telemóvel na mão: cinco segundos. Com uma referência, o pagamento chega
+     hoje à noite ou amanhã e sondar não adianta -- vinte segundos durante
+     cinco minutos, para apanhar quem paga logo no home banking, e depois
+     pára. O email é que traz a notícia, e o Worker trata dela sozinho. */
+  async function volta() {
+    const continuar = await ver();
+    voltas++;
+    if (!continuar) return;
+    const mbway = !$('[data-pay-mbway]')?.hidden;
+    if (!mbway && voltas > 15) return;
+    if (mbway && voltas > 60) return;
+    temporizador = setTimeout(volta, mbway ? 5000 : 20000);
+  }
+
+  /* Um separador escondido não pinta nem dispara temporizadores com fiabilidade
+     -- e quem volta ao separador quer o estado de agora, não o de há dez
+     minutos. */
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'visible' && temporizador) {
+      clearTimeout(temporizador);
+      voltas = 0;
+      volta();
+    }
+  });
+
+  volta();
 }
 
 /* --- a página para onde a ifthenpay devolve o comprador ------------------- */

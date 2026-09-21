@@ -313,6 +313,54 @@ export function basket({ shipping }) {
         <label class="field"><span>Tax number <span class="field__optional">optional, for the invoice</span></span>
           <input type="text" name="nif" inputmode="numeric" maxlength="20"></label>
       </div>
+      <!-- A ESCOLHA DO MÉTODO PASSOU A SER AQUI.
+           Era feita numa página da ifthenpay, depois de sair daqui. Agora o
+           pagamento acontece numa página nossa, e por isso a pergunta é feita
+           antes de o botão ser carregado -- o que também é o que a lei quer:
+           o consumidor tem de saber o que vai acontecer ANTES de assumir a
+           obrigação de pagar (artigo 4.º n.º 1 do DL 24/2014). -->
+      <h2 style="margin-block-start:2rem">How you pay</h2>
+      <div class="pay-choice" data-pay-methods>
+        <label class="pay-choice__opt">
+          <input type="radio" name="metodo" value="MBWAY" checked>
+          <span class="pay-choice__body">
+            <span class="pay-choice__name">MB WAY</span>
+            <span class="pay-choice__note">You get the request on your phone and accept it there. Takes a minute.</span>
+          </span>
+        </label>
+        <!-- SÓ APARECE COM O MB WAY ESCOLHIDO: pedir um telemóvel a quem vai
+             pagar uma referência Multibanco é pedir um dado que não serve para
+             nada, que é o teste do artigo 5.º n.º 1 alínea c) do RGPD.
+             E VIVE COLADO À OPÇÃO A QUE PERTENCE, e não no fim da lista, onde
+             ficava órfão debaixo das três como se fosse mais um campo da
+             morada. Fora do <label> do rádio de propósito: um campo de texto
+             dentro do rótulo de um rádio faz cada clique no campo mexer no
+             rádio. -->
+        <label class="field pay-choice__extra" data-mbway-phone>
+          <span>Your MB WAY phone number</span>
+          <input type="tel" name="mbway" inputmode="tel" autocomplete="tel"
+                 placeholder="912 345 678" maxlength="20">
+          <span class="small muted" style="display:block;margin-block-start:.35rem">
+            Portuguese mobile. We send it to ifthenpay to raise the request, and nowhere else.</span>
+        </label>
+
+        <label class="pay-choice__opt">
+          <input type="radio" name="metodo" value="MB">
+          <span class="pay-choice__body">
+            <span class="pay-choice__name">Multibanco reference</span>
+            <span class="pay-choice__note">We give you an entity and a reference to pay at an ATM or in home banking.</span>
+          </span>
+        </label>
+        <label class="pay-choice__opt">
+          <input type="radio" name="metodo" value="PAYSHOP">
+          <span class="pay-choice__body">
+            <span class="pay-choice__name">Payshop</span>
+            <span class="pay-choice__note">A reference to pay in cash at any Payshop agent.</span>
+          </span>
+        </label>
+      </div>
+
+
       <!-- O RÓTULO DO BOTÃO É UMA EXIGÊNCIA LEGAL, não uma escolha de estilo.
            O artigo 5.º n.º 4 do DL 24/2014 obriga a que o botão diga, sem
            ambiguidade, que a encomenda implica pagar. «Checkout» ou «Continuar»
@@ -320,7 +368,7 @@ export function basket({ shipping }) {
       <button class="btn btn--wide" type="submit" data-to-checkout style="margin-block-start:1.25rem">
         Order and pay</button>
       <p class="small muted" style="margin-block-start:.6rem">
-        You will be taken to ifthenpay to pay by Multibanco or MB WAY. We never see your payment details.</p>
+        Payments are handled by ifthenpay. We never see your card, your bank or your MB WAY PIN.</p>
     </form>
   </div>
 </section>`;
@@ -401,6 +449,126 @@ export function thankYou(shop = {}) {
          and reload this page.</p>
       <p>If it stays like this, write to us — nothing will be charged twice.</p>
     </div>
+  </div>
+</section>`;
+}
+
+/* A PÁGINA ONDE SE PAGA, QUE ATÉ AQUI ERA DA IFTHENPAY.
+ *
+ * Três desfechos e um deles não é um erro: uma referência Multibanco fica por
+ * pagar durante dias, de propósito. A página tem de servir tão bem a quem
+ * acabou de a receber como a quem volta dois dias depois para a reler -- por
+ * isso não guarda nada em memória: lê tudo de `/order`, que é o único sítio
+ * onde o estado vive.
+ *
+ * TUDO PINTADO E ESCONDIDO, e não construído por JavaScript. Quem chega com um
+ * ecrã de leitura vê os títulos e a estrutura; o que o JavaScript faz é
+ * escolher qual dos blocos se mostra e preencher os números. */
+export function payPage(shop = {}) {
+  const dias = shop.payment?.referenceDays ?? 2;
+  return `
+<section class="section">
+  <div class="shell shell--narrow page-prose">
+    <h1>Pay for your order</h1>
+    <p class="lede" data-pay-state>Getting your payment ready…</p>
+
+    <!-- MB WAY: o comprador tem quatro minutos para aceitar na app. -->
+    <div data-pay-mbway hidden>
+      <h2>Open your MB WAY app</h2>
+      <p>We sent a payment request to your phone. Open MB WAY, check the amount,
+         and accept it.</p>
+      <p class="pay-amount"><span data-pay-amount>—</span></p>
+      <p class="pay-clock" role="status">
+        Time left: <strong data-pay-countdown>4:00</strong></p>
+      <p class="small muted">Leave this page open — it changes by itself the moment
+         you accept. If the request expires, you can order again and choose a
+         Multibanco reference instead.</p>
+    </div>
+
+    <!-- Multibanco: a referência é o produto. Grande, copiável, e com o valor
+         exacto ao lado, porque pagar um cêntimo a menos não confirma nada. -->
+    <div data-pay-mb hidden>
+      <h2>Pay this Multibanco reference</h2>
+      <p>At an ATM choose <em>Pagamentos e outros serviços</em> → <em>Pagamentos de serviços</em>,
+         or use your bank&rsquo;s app or home banking.</p>
+      <dl class="pay-ref">
+        <div class="pay-ref__row">
+          <dt>Entity</dt>
+          <dd><span data-pay-entity>—</span>
+            <button type="button" class="pay-copy" data-copy="entity">Copy</button></dd>
+        </div>
+        <div class="pay-ref__row">
+          <dt>Reference</dt>
+          <dd><span data-pay-reference>—</span>
+            <button type="button" class="pay-copy" data-copy="reference">Copy</button></dd>
+        </div>
+        <div class="pay-ref__row">
+          <dt>Amount</dt>
+          <dd><span data-pay-amount-mb>—</span>
+            <button type="button" class="pay-copy" data-copy="amount">Copy</button></dd>
+        </div>
+      </dl>
+      <p>The reference is yours for ${dias} days<span data-pay-expiry hidden>, until
+         <strong data-pay-expiry-date>—</strong></span>. Nothing is made and nothing is
+         charged until you pay it.</p>
+      <p class="small muted">The moment the payment reaches us we write to you and the
+         workshop starts. You can close this page — we have the reference in your
+         email too.</p>
+    </div>
+
+    <!-- Payshop: referência de 13 dígitos, paga-se em dinheiro ao balcão. -->
+    <div data-pay-payshop hidden>
+      <h2>Pay this Payshop reference</h2>
+      <p>Take it to any Payshop agent — most newsagents, post offices and many
+         corner shops.</p>
+      <dl class="pay-ref">
+        <div class="pay-ref__row">
+          <dt>Reference</dt>
+          <dd><span data-pay-reference-ps>—</span>
+            <button type="button" class="pay-copy" data-copy="reference-ps">Copy</button></dd>
+        </div>
+        <div class="pay-ref__row">
+          <dt>Amount</dt>
+          <dd><span data-pay-amount-ps>—</span>
+            <button type="button" class="pay-copy" data-copy="amount-ps">Copy</button></dd>
+        </div>
+      </dl>
+      <p>The reference is yours for ${dias} days. Nothing is made and nothing is
+         charged until you pay it.</p>
+    </div>
+
+    <!-- Pago. Não se manda ninguém para outro lado: o comprador acabou de
+         fazer uma coisa e quer ver que resultou, não um redireccionamento. -->
+    <div data-pay-done hidden>
+      <h2>Paid — thank you</h2>
+      <p>Your order is <strong data-pay-ref>—</strong>. Keep that reference: it is
+         what we both use if you write to us.</p>
+      <p>A confirmation is on its way to your inbox. Everything is made to order,
+         so the workshop starts now and we will tell you when it ships.</p>
+      <p style="margin-block-start:2rem"><a class="btn" href="/lamps/">Back to the lamps</a></p>
+    </div>
+
+    <!-- Recusado ou expirado no MB WAY. Não é uma avaria e o texto não trata
+         disto como se fosse: é alguém que carregou em «não» ou deixou passar. -->
+    <div data-pay-failed hidden>
+      <h2 data-pay-failed-title>The request expired</h2>
+      <p data-pay-failed-text>Nothing was charged. Your basket is still here, so you
+         can order again — and if MB WAY is being awkward, a Multibanco reference
+         always works.</p>
+      <p style="margin-block-start:2rem">
+        <a class="btn" href="/cart/">Back to the basket</a></p>
+    </div>
+
+    <div data-pay-unknown hidden>
+      <p>We could not find that order. If you have just paid, give it a minute and
+         reload this page.</p>
+      <p>If it stays like this, write to us — nothing will be charged twice.</p>
+    </div>
+
+    <p class="small muted" style="margin-block-start:2.5rem">
+      Payments are handled by <a href="https://ifthenpay.com/" rel="noopener">ifthenpay</a>,
+      a Portuguese payment institution. We never see your card, your bank or your
+      MB WAY PIN.</p>
   </div>
 </section>`;
 }

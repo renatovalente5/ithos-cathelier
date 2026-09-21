@@ -97,9 +97,26 @@ for (const file of pages) {
   // it is expected — that is what preview is for — so it warns there and kills
   // everywhere else. Counted by marker rather than by page: the address is on
   // all 94 of them and 202 identical lines would bury everything else.
-  for (const m of html.matchAll(/⟨[^⟩]*⟩|\{\{[^}]*\}\}|TODO|FIXME|lorem ipsum/gi)) {
-    const marker = m[0].slice(0, 60);
-    placeholders.set(marker, (placeholders.get(marker) ?? 0) + 1);
+  // `TODO` E `FIXME` PRECISAM DE FRONTEIRA, E DE UMA QUE CONHEÇA ACENTOS.
+  // Isto era `/TODO|FIXME/gi` e passou a acusar a página do cesto: em
+  // português, «método» e o atributo `name="metodo"` têm TODO lá dentro. Com
+  // `\b` continuava a acusar `MÉTODO` -- o `\b` do JavaScript é ASCII e o «É»
+  // não conta como letra, por isso via ali uma fronteira que não existe. A
+  // fronteira tem de ser por classe Unicode, e escrita à mão dos dois lados.
+  // E DEIXAM DE SER INSENSÍVEIS A MAIÚSCULAS, de propósito: «todo» em
+  // minúsculas é uma palavra portuguesa corrente («todo o site»), e aceitá-la
+  // como marcador enchia isto de falsos alarmes em cada comentário. Um
+  // marcador a sério escreve-se em maiúsculas; é a convenção e é o que se
+  // procura. O `lorem ipsum` fica sem fronteira e sem maiúsculas: é uma frase,
+  // não um marcador, e não há palavra portuguesa que a contenha.
+  for (const m of html.matchAll(/⟨[^⟩]*⟩|\{\{[^}]*\}\}/g)) {
+    placeholders.set(m[0].slice(0, 60), (placeholders.get(m[0].slice(0, 60)) ?? 0) + 1);
+  }
+  for (const m of html.matchAll(/(?<![\p{L}\p{N}_])(TODO|FIXME)(?![\p{L}\p{N}_])/gu)) {
+    placeholders.set(m[0], (placeholders.get(m[0]) ?? 0) + 1);
+  }
+  for (const m of html.matchAll(/lorem ipsum/gi)) {
+    placeholders.set(m[0].toLowerCase(), (placeholders.get(m[0].toLowerCase()) ?? 0) + 1);
   }
 
   // Every internal address has to resolve to something on disk, and the site

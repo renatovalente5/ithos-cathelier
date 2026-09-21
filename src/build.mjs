@@ -310,6 +310,11 @@ function catalogueFile() {
      * mentir, sem um erro em lado nenhum -- foi exactamente o que aconteceu
      * com a morada antiga do CNIACC, publicada durante meses.
      * Vai daqui, de content/settings/, que é o único sítio onde se edita. */
+    /* O prazo da referência viaja com o catálogo pela mesma razão que o
+       vendedor: é o Worker que o manda para a ifthenpay ao gerar a referência,
+       e é a página de agradecimento que o escreve ao comprador. Dois sítios a
+       dizer o mesmo número, e um único ficheiro a decidi-lo. */
+    payment: { referenceDays: shop.payment.referenceDays },
     seller: {
       legalName: identity.legalName,
       tradingName: identity.tradingName,
@@ -588,6 +593,7 @@ function buildShared() {
   });
 
   for (const [path, title, description, body] of [
+    ['/pay/', 'Pay for your order', 'Finish your payment by MB WAY, Multibanco or Payshop.', pages.payPage(shop)],
     ['/thank-you/', 'Thank you', 'Your order is placed and the workshop starts now.', pages.thankYou(shop)],
     ['/order-cancelled/', 'Nothing was charged', 'You closed the payment page, so the order was not placed.', pages.orderCancelled()],
   ]) {

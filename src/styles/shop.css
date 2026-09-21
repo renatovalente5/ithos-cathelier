@@ -1329,3 +1329,81 @@ html.menu-open { overflow: hidden; }
 .product__lead { display: flex; align-items: center; gap: .5rem; }
 .product__lead svg { flex: none; color: var(--accent); }
 
+
+/* --- escolher como se paga, e depois pagar ----------------------------------
+   Até aqui isto vivia numa página da ifthenpay. Duas regras dão a esta parte
+   toda a sua forma:
+
+   1. A REFERÊNCIA É O PRODUTO DA PÁGINA. Quem chega à página do Multibanco vem
+      copiar nove dígitos para o telemóvel ou para a aplicação do banco, muitas
+      vezes com o teclado do multibanco à frente. Por isso a referência é
+      grande, tabular e copiável com um toque -- e o valor está ao lado dela,
+      porque pagar um cêntimo a menos não confirma encomenda nenhuma.
+
+   2. O ALVO DE TOQUE NÃO ENCOLHE. Os botões de copiar têm 44px de altura
+      mínima em qualquer largura: são a única coisa que se carrega nesta
+      página, e são carregados com uma mão só. */
+.pay-choice { display: grid; gap: .6rem; margin-block-start: 1rem; }
+.pay-choice__opt {
+  display: flex; gap: .85rem; align-items: flex-start;
+  padding: .9rem 1rem; border: 1px solid var(--line); border-radius: var(--radius, 0);
+  background: var(--bg-soft, var(--bg)); cursor: pointer;
+}
+.pay-choice__opt:hover { border-color: var(--accent); }
+/* `:has()` e não uma classe posta por JavaScript: o estado escolhido é o do
+   rádio, e qualquer outra cópia dele fica desactualizada à primeira vez que
+   alguém navegue com o teclado. */
+.pay-choice__opt:has(input:checked) { border-color: var(--accent); background: var(--frame-bg, var(--bg-soft)); }
+.pay-choice__opt:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
+.pay-choice__opt input { margin-block-start: .25rem; flex: none; accent-color: var(--accent); }
+.pay-choice__body { display: block; min-width: 0; }
+.pay-choice__name { display: block; font-weight: 600; color: var(--ink); }
+.pay-choice__note { display: block; margin-block-start: .2rem; font-size: 13px; line-height: 1.6; color: var(--muted); }
+
+.pay-amount { font-size: clamp(28px, 7vw, 40px); font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; margin-block: 1.25rem; }
+.pay-clock { font-size: 15px; color: var(--muted); }
+.pay-clock strong { color: var(--ink); font-variant-numeric: tabular-nums; }
+
+.pay-ref { margin-block: 1.5rem; display: grid; gap: .5rem; }
+.pay-ref__row {
+  display: flex; flex-wrap: wrap; gap: .35rem 1rem; align-items: center; justify-content: space-between;
+  padding: .85rem 1rem; border: 1px solid var(--line); border-radius: var(--radius, 0);
+  background: var(--bg-soft, var(--bg));
+}
+.pay-ref dt { font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.pay-ref dd {
+  margin: 0; display: flex; align-items: center; gap: .75rem; flex: 1 1 12ch; justify-content: flex-end;
+  font-size: clamp(20px, 5vw, 26px); font-weight: 600; color: var(--ink);
+  font-variant-numeric: tabular-nums; letter-spacing: .04em;
+}
+.pay-copy {
+  flex: none; min-height: 44px; padding-inline: .9rem;
+  font: inherit; font-size: 13px; letter-spacing: .06em; text-transform: uppercase;
+  color: var(--accent); background: transparent; border: 1px solid var(--line);
+  border-radius: var(--radius, 0); cursor: pointer;
+}
+.pay-copy:hover { border-color: var(--accent); }
+.pay-copy[data-copied] { color: var(--accent-ink); background: var(--accent); border-color: var(--accent); }
+/* O campo do telemóvel encosta à opção de cima, e é ela que o explica: um
+   traço do lado esquerdo em vez de uma caixa própria, para não parecer uma
+   quarta forma de pagar. */
+.pay-choice__extra {
+  margin-block-start: -.2rem; margin-inline-start: 1.6rem;
+  padding-inline-start: 1rem; border-inline-start: 2px solid var(--line);
+  max-width: 24rem;
+}
+.pay-choice__extra > span:first-child { font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
+.pay-choice__extra input { width: 100%; }
+
+/* UMA REFERÊNCIA NÃO SE PARTE EM DUAS LINHAS.
+   No telemóvel a linha ficava «123 456 / 789» -- e este número é lido dígito a
+   dígito em frente a um multibanco, muitas vezes por alguém que o está a
+   copiar à mão. Partido ao meio deixa de se ler de uma vez.
+   Abaixo dos 30rem a linha empilha: o rótulo em cima, o número e o botão
+   debaixo, com a largura toda para eles. E `nowrap` no número, que passa a
+   caber porque deixou de dividir o espaço com o rótulo. */
+.pay-ref dd > span { white-space: nowrap; }
+@media (width < 30rem) {
+  .pay-ref__row { flex-direction: column; align-items: stretch; gap: .5rem; }
+  .pay-ref dd { justify-content: space-between; flex: 1 1 auto; }
+}

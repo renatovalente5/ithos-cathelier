@@ -21,7 +21,7 @@
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" as="font" type="font/woff2" crossorigin
       href="/assets/fonts/kleeone-400-latin.woff2">
-<link rel="stylesheet" href="/assets/styles.82c9b18dae.css">
+<link rel="stylesheet" href="/assets/styles.ec5eab082f.css">
 
 
 
@@ -122,6 +122,54 @@
         <label class="field"><span>Tax number <span class="field__optional">optional, for the invoice</span></span>
           <input type="text" name="nif" inputmode="numeric" maxlength="20"></label>
       </div>
+      <!-- A ESCOLHA DO MÉTODO PASSOU A SER AQUI.
+           Era feita numa página da ifthenpay, depois de sair daqui. Agora o
+           pagamento acontece numa página nossa, e por isso a pergunta é feita
+           antes de o botão ser carregado -- o que também é o que a lei quer:
+           o consumidor tem de saber o que vai acontecer ANTES de assumir a
+           obrigação de pagar (artigo 4.º n.º 1 do DL 24/2014). -->
+      <h2 style="margin-block-start:2rem">How you pay</h2>
+      <div class="pay-choice" data-pay-methods>
+        <label class="pay-choice__opt">
+          <input type="radio" name="metodo" value="MBWAY" checked>
+          <span class="pay-choice__body">
+            <span class="pay-choice__name">MB WAY</span>
+            <span class="pay-choice__note">You get the request on your phone and accept it there. Takes a minute.</span>
+          </span>
+        </label>
+        <!-- SÓ APARECE COM O MB WAY ESCOLHIDO: pedir um telemóvel a quem vai
+             pagar uma referência Multibanco é pedir um dado que não serve para
+             nada, que é o teste do artigo 5.º n.º 1 alínea c) do RGPD.
+             E VIVE COLADO À OPÇÃO A QUE PERTENCE, e não no fim da lista, onde
+             ficava órfão debaixo das três como se fosse mais um campo da
+             morada. Fora do <label> do rádio de propósito: um campo de texto
+             dentro do rótulo de um rádio faz cada clique no campo mexer no
+             rádio. -->
+        <label class="field pay-choice__extra" data-mbway-phone>
+          <span>Your MB WAY phone number</span>
+          <input type="tel" name="mbway" inputmode="tel" autocomplete="tel"
+                 placeholder="912 345 678" maxlength="20">
+          <span class="small muted" style="display:block;margin-block-start:.35rem">
+            Portuguese mobile. We send it to ifthenpay to raise the request, and nowhere else.</span>
+        </label>
+
+        <label class="pay-choice__opt">
+          <input type="radio" name="metodo" value="MB">
+          <span class="pay-choice__body">
+            <span class="pay-choice__name">Multibanco reference</span>
+            <span class="pay-choice__note">We give you an entity and a reference to pay at an ATM or in home banking.</span>
+          </span>
+        </label>
+        <label class="pay-choice__opt">
+          <input type="radio" name="metodo" value="PAYSHOP">
+          <span class="pay-choice__body">
+            <span class="pay-choice__name">Payshop</span>
+            <span class="pay-choice__note">A reference to pay in cash at any Payshop agent.</span>
+          </span>
+        </label>
+      </div>
+
+
       <!-- O RÓTULO DO BOTÃO É UMA EXIGÊNCIA LEGAL, não uma escolha de estilo.
            O artigo 5.º n.º 4 do DL 24/2014 obriga a que o botão diga, sem
            ambiguidade, que a encomenda implica pagar. «Checkout» ou «Continuar»
@@ -129,7 +177,7 @@
       <button class="btn btn--wide" type="submit" data-to-checkout style="margin-block-start:1.25rem">
         Order and pay</button>
       <p class="small muted" style="margin-block-start:.6rem">
-        You will be taken to ifthenpay to pay by Multibanco or MB WAY. We never see your payment details.</p>
+        Payments are handled by ifthenpay. We never see your card, your bank or your MB WAY PIN.</p>
     </form>
   </div>
 </section>
@@ -228,6 +276,6 @@
      for by name: at 375x812 it covered the second row of lamps, so a
      first-time visitor saw two instead of the four she asked for. -->
 
-<script src="/assets/shop.a3d7d439e6.js" defer></script>
+<script src="/assets/shop.2108cea139.js" defer></script>
 </body>
 </html>
