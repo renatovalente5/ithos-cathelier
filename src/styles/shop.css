@@ -907,6 +907,22 @@ html[data-cover='yes'][data-scrolled='no'] :is(.head__mark, .head__sibling-mark)
 .field select { padding-inline-end: var(--arrow-room, .85rem); }
 .field input:focus, .field select:focus, .field textarea:focus { border-color: var(--accent); outline: none; }
 
+/* --- o formulário de entrega, no carrinho ----------------------------------
+   Duas colunas a partir de 48rem e uma no telemóvel. A morada e o nome ocupam
+   a linha toda porque são os campos longos; o código postal e a terra andam em
+   par, que é como se escrevem. */
+.checkout { margin-block-start: clamp(2rem, 5vw, 3rem); }
+.checkout__grid { display: grid; gap: 1rem; margin-block-start: 1.25rem; }
+@media (width >= 48rem) {
+  .checkout__grid { grid-template-columns: 1fr 1fr; }
+  /* Nome, email e as duas linhas da morada ocupam a linha inteira: são os
+     campos longos, e um email a meia largura ficava sozinho com um buraco ao
+     lado. Depois emparelham código postal com terra, e telefone com
+     contribuinte -- que é como se escrevem os dois pares. */
+  .checkout__grid .field:nth-child(-n+4) { grid-column: 1 / -1; }
+}
+.checkout .field > span { display: block; margin-block-end: .4rem; }
+
 .choices { display: grid; gap: .5rem; }
 .choice { display: flex; align-items: flex-start; gap: .65rem; padding: .7rem .85rem; border: 1px solid var(--line); cursor: pointer; font-size: 13px; }
 .choice:has(input:checked) { border-color: var(--accent); }

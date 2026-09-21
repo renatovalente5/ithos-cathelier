@@ -319,13 +319,33 @@ document.addEventListener('DOMContentLoaded', () => {
 function checkout() {
   const go = $('[data-to-checkout]');
   if (!go) return;
+  const form = $('[data-checkout-form]');
 
-  go.addEventListener('click', async () => {
+  /* O FORMULÁRIO VALIDA-SE AQUI, E OUTRA VEZ NO SERVIDOR.
+     A validação do browser é uma cortesia -- diz onde está o erro sem ir e
+     voltar. Quem manda é o Worker, que recusa 400 a um pedido sem nome, sem
+     email ou sem morada. O que o browser manda nunca se acredita. */
+  const cliente = () => {
+    if (!form) return null;
+    const v = (n) => (form.elements[n]?.value ?? '').trim();
+    return {
+      nome: v('nome'), email: v('email'), telefone: v('telefone'), nif: v('nif'),
+      morada: { linha1: v('linha1'), linha2: v('linha2'), postal: v('postal'), cidade: v('cidade') },
+    };
+  };
+
+  const disparar = async (e) => {
+    e?.preventDefault();
     if (go.getAttribute('aria-disabled') === 'true') return;
     if (!API) { say('The shop cannot take payments yet.'); return; }
 
     const cur = basket();
     if (!cur.lines.length) return;
+
+    /* `reportValidity` faz o browser mostrar os erros dele e pôr o foco no
+       primeiro campo em falta -- que é melhor do que qualquer mensagem que eu
+       escrevesse, e vem traduzida para a língua de quem lá está. */
+    if (form && !form.reportValidity()) return;
 
     go.setAttribute('aria-disabled', 'true');
     const wasSaying = go.textContent;
@@ -336,7 +356,9 @@ function checkout() {
       const r = await fetch(`${API}/checkout`, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ hash: cat.hash, country: cur.country || 'PT', lines: cur.lines }),
+        body: JSON.stringify({
+          hash: cat.hash, country: cur.country || 'PT', lines: cur.lines, cliente: cliente(),
+        }),
       });
       const data = await r.json().catch(() => ({}));
 
@@ -355,7 +377,13 @@ function checkout() {
       go.removeAttribute('aria-disabled');
       go.textContent = wasSaying;
     }
-  });
+  };
+
+  /* Os dois caminhos: o `submit` do formulário (que o Enter também dispara) e
+     o clique no botão, para o caso de alguém tirar o formulário daqui um dia.
+     O `submit` chega primeiro e o `preventDefault` impede a página de recarregar. */
+  if (form) form.addEventListener('submit', disparar);
+  else go.addEventListener('click', disparar);
 
   function say(text) {
     let box = $('[data-checkout-error]');
@@ -379,12 +407,21 @@ function checkout() {
       unknown_product: 'Something in your basket is no longer available. Please reload the page.',
       option_missing: 'Something in your basket is missing a choice. Open it and pick one.',
       payments_not_configured: 'The shop cannot take payments yet.',
+      payment_methods_not_configured: 'The shop cannot take payments yet.',
+      storage_not_configured: 'The shop cannot take orders yet.',
+      email_invalido: 'That email address does not look right. Please check it.',
       catalogue_unavailable: 'The shop is briefly unavailable. Please try again in a minute.',
-    })[code] || 'Something went wrong on our side. Please try again, or write to us.';
+    })[String(code).split(':')[0]]
+      /* O Worker devolve `cliente_incompleto:nome,email` — o código traz consigo
+         os campos que faltam, e dizê-los é a diferença entre corrigir à
+         primeira e adivinhar. */
+      || (String(code).startsWith('cliente_incompleto')
+        ? `Please fill in: ${String(code).split(':')[1]?.split(',').join(', ') || 'the missing fields'}.`
+        : 'Something went wrong on our side. Please try again, or write to us.');
   }
 }
 
-/* --- the page Stripe sends people back to -------------------------------- */
+/* --- a página para onde a ifthenpay devolve o comprador ------------------- */
 async function thankYouPage() {
   const state = $('[data-order-state]');
   if (!state) return;

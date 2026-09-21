@@ -21,7 +21,7 @@
 <link rel="icon" href="/ithos-cathelier/assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" as="font" type="font/woff2" crossorigin
       href="/ithos-cathelier/assets/fonts/kleeone-400-latin.woff2">
-<link rel="stylesheet" href="/ithos-cathelier/assets/styles.1e27f9dbe7.css">
+<link rel="stylesheet" href="/ithos-cathelier/assets/styles.b4694a48fc.css">
 
 
 
@@ -90,9 +90,47 @@
           <dt class="basket__grand">To pay</dt><dd class="basket__grand" data-sum-total>—</dd>
         </dl>
         <p class="small muted">VAT is not charged: article 53 of the Portuguese VAT code applies.</p>
-        <button class="btn btn--wide" type="button" data-to-checkout style="margin-block-start:1rem">Checkout</button>
       </aside>
     </div>
+
+    <!-- QUEM PERGUNTA ISTO SOMOS NÓS, AGORA.
+         A página de pagamento anterior recolhia o nome, a morada, o telefone e
+         o contribuinte, e a loja lia-os de volta. O Pay by Link da ifthenpay
+         recebe um valor e um identificador, e não pergunta nada a ninguém --
+         por isso, ou isto está aqui, ou não há para onde enviar a encomenda.
+
+         É um <form> a sério e não campos soltos: assim o Enter funciona, o
+         browser valida sozinho, e quem usa leitor de ecrã ouve os erros sem
+         que ninguém os tenha de escrever à mão. -->
+    <form class="checkout" data-checkout-form novalidate>
+      <h2>Where it goes</h2>
+      <div class="checkout__grid">
+        <label class="field"><span>Your name</span>
+          <input type="text" name="nome" autocomplete="name" required maxlength="120"></label>
+        <label class="field"><span>Email</span>
+          <input type="email" name="email" autocomplete="email" required maxlength="160"></label>
+        <label class="field"><span>Address</span>
+          <input type="text" name="linha1" autocomplete="address-line1" required maxlength="160"></label>
+        <label class="field"><span>Flat, floor <span class="field__optional">optional</span></span>
+          <input type="text" name="linha2" autocomplete="address-line2" maxlength="160"></label>
+        <label class="field"><span>Post code</span>
+          <input type="text" name="postal" autocomplete="postal-code" required maxlength="20"></label>
+        <label class="field"><span>Town</span>
+          <input type="text" name="cidade" autocomplete="address-level2" required maxlength="80"></label>
+        <label class="field"><span>Phone <span class="field__optional">optional</span></span>
+          <input type="tel" name="telefone" autocomplete="tel" maxlength="40"></label>
+        <label class="field"><span>Tax number <span class="field__optional">optional, for the invoice</span></span>
+          <input type="text" name="nif" inputmode="numeric" maxlength="20"></label>
+      </div>
+      <!-- O RÓTULO DO BOTÃO É UMA EXIGÊNCIA LEGAL, não uma escolha de estilo.
+           O artigo 5.º n.º 4 do DL 24/2014 obriga a que o botão diga, sem
+           ambiguidade, que a encomenda implica pagar. «Checkout» ou «Continuar»
+           não cumprem: a sanção é o contrato não vincular o consumidor. -->
+      <button class="btn btn--wide" type="submit" data-to-checkout style="margin-block-start:1.25rem">
+        Order and pay</button>
+      <p class="small muted" style="margin-block-start:.6rem">
+        You will be taken to ifthenpay to pay by Multibanco or MB WAY. We never see your card details.</p>
+    </form>
   </div>
 </section>
 </main>
@@ -190,6 +228,6 @@
      for by name: at 375x812 it covered the second row of lamps, so a
      first-time visitor saw two instead of the four she asked for. -->
 
-<script src="/ithos-cathelier/assets/shop.4d31211934.js" defer></script>
+<script src="/ithos-cathelier/assets/shop.678afa506c.js" defer></script>
 </body>
 </html>
