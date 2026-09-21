@@ -537,7 +537,7 @@ function buildShared() {
   });
 
   for (const [path, title, description, body] of [
-    ['/thank-you/', 'Thank you', 'Your order is placed and the workshop starts now.', pages.thankYou()],
+    ['/thank-you/', 'Thank you', 'Your order is placed and the workshop starts now.', pages.thankYou(shop)],
     ['/order-cancelled/', 'Nothing was charged', 'You closed the payment page, so the order was not placed.', pages.orderCancelled()],
   ]) {
     write(path, page({

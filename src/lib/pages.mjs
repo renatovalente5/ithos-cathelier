@@ -356,7 +356,12 @@ export function notFound() {
    Two pages the payment page sends people back to. Both are noindex: they are the end of
    a private transaction, not content. */
 
-export function thankYou() {
+/* O número de dias vem por argumento e NÃO por marcador: a substituição de
+   `{{…}}` só corre nos ficheiros de texto do `content/`, e esta página é um
+   template de JavaScript. O marcador saía literal para o ecrã -- e foi a
+   contagem de marcadores por preencher do check-output que o apanhou, na
+   mesma construção em que nasceu. */
+export function thankYou(shop = {}) {
   return `
 <section class="section">
   <div class="shell shell--narrow page-prose" style="text-align:center">
@@ -382,7 +387,7 @@ export function thankYou() {
       <p>Your order is <strong data-order-ref-waiting>—</strong>. Keep that
          reference: it is what we both use if you write to us.</p>
       <p>We have not received the payment yet, and that is normal if you chose a
-         Multibanco reference — it is yours for {{PAYMENT_REFERENCE_DAYS}} days.
+         Multibanco reference — it is yours for ${shop.payment?.referenceDays ?? 2} days.
          Nothing is made and nothing is charged until you pay it.</p>
       <p>The moment it reaches us we write to you, and the workshop starts. If
          you have just paid, give it a minute and reload this page.</p>
