@@ -1577,15 +1577,26 @@ html[data-cover='yes'][data-scrolled='no'] :is(.head__mark, .head__sibling-mark)
 .gallery__arrow--next { inset-inline-end: 10px; }
 .gallery__arrow:hover { background: #fff; }
 
-/* THEY WRAP. This was a sideways scroller with its scrollbar deleted in both
-   engines, so on a phone the last thumbnails sat off the edge with nothing on
-   screen saying so -- six thumbnails are 544px in a 288px column. It is the
-   same complaint the filter row was rewritten to answer, and both of the
-   battery's overflow guards are structurally blind to it: the page-level one
-   measures the document, which a scroll container never reaches, and the
-   element-level one deliberately exempts everything inside a scroller. */
-.gallery__thumbs { display: flex; flex-wrap: wrap; gap: 8px; margin-block-start: 8px; }
-.gallery__thumb { flex: 0 0 84px; border: 1px solid transparent; padding: 0; background: none; cursor: pointer; }
+/* UMA LINHA SÓ, E ENCOLHEM PARA CABER.
+ *
+ * Isto já foi duas coisas erradas. Primeiro um rolador lateral com a barra de
+ * rolamento apagada nos dois motores: no telemóvel as últimas miniaturas
+ * ficavam fora do ecrã sem nada a dizê-lo -- seis miniaturas são 544px numa
+ * coluna de 288 -- e as duas guardas de transbordo da bateria são cegas a
+ * isso por construção (a da página mede o documento, onde um rolador nunca
+ * chega; a do elemento isenta de propósito tudo o que esteja dentro de um).
+ * Depois passou a envolver, e num telemóvel as quatro fotografias da raposa
+ * ficavam três em cima e uma sozinha por baixo, que foi o que a dona
+ * fotografou.
+ *
+ * A terceira versão não precisa de escolher: `flex: 0 1 84px` mantém os 84px
+ * enquanto houver espaço -- no computador ficam exactamente como estavam -- e
+ * encolhe-os a todos por igual quando não houver. Medido no pior caso do
+ * catálogo, o cogumelo com seis fotografias: 41px cada num ecrã de 320. O
+ * `min-inline-size: 0` é o que autoriza um item de flex a passar abaixo do seu
+ * conteúdo; sem ele, encolher não encolhe nada. */
+.gallery__thumbs { display: flex; flex-wrap: nowrap; gap: 8px; margin-block-start: 8px; }
+.gallery__thumb { flex: 0 1 84px; min-inline-size: 0; border: 1px solid transparent; padding: 0; background: none; cursor: pointer; }
 .gallery__thumb[aria-selected='true'] { border-color: var(--accent); }
 
 .product__price { margin-block-start: .5rem; font-size: 1.35rem; font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; }

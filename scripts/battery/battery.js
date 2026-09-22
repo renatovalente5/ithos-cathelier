@@ -35,6 +35,25 @@ window.__bateria = function () {
   const drawerIsShown = drawer && getComputedStyle(drawer).display !== 'none';
   if (drawer && !drawerIsShown && !drawerWasOpen) drawer.close();
 
+  /* A TIRA DE MINIATURAS DA FICHA CABE NUMA LINHA, SEMPRE.
+     Já foi um rolador lateral com a barra apagada (as últimas ficavam fora do
+     ecrã sem nada a dizê-lo) e já envolveu (num telemóvel, as quatro da raposa
+     ficavam três em cima e uma sozinha por baixo -- foi o que a dona
+     fotografou). Nenhuma das duas coisas dava erro: davam um aspecto.
+     Duas perguntas, porque uma sozinha deixa passar metade: todas na mesma
+     linha, e a tira não transborda para lado nenhum. */
+  const tira = document.querySelector('.gallery__thumbs');
+  if (tira) {
+    const minis = [...tira.querySelectorAll('.gallery__thumb')];
+    const linhas = new Set(minis.map((m) => Math.round(m.getBoundingClientRect().top)));
+    nota(minis.length > 0 && linhas.size === 1,
+      'as miniaturas da ficha estão todas na mesma linha',
+      `${minis.length} miniaturas em ${linhas.size} linha(s)`);
+    nota(tira.scrollWidth <= tira.clientWidth + 1,
+      'e a tira de miniaturas não transborda',
+      `conteúdo ${tira.scrollWidth}px em ${tira.clientWidth}px`);
+  }
+
   // --- transbordo lateral --------------------------------------------------
   const de = document.documentElement;
   nota(de.scrollWidth <= de.clientWidth + 1, 'não rola de lado',
