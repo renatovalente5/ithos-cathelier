@@ -146,10 +146,17 @@
              rádio. -->
         <label class="field pay-choice__extra" data-mbway-phone>
           <span>Your MB WAY phone number</span>
+          <!-- A linha que dizia «Portuguese mobile. We send it to ifthenpay…»
+               saiu a pedido da dona. O que ela dizia não se perdeu: o formato
+               está no atributo placeholder, um número que não sirva devolve uma
+               frase que o explica (bad_mbway_number, em shop.js), e a ida do
+               telefone para a ifthenpay continua escrita na página de
+               privacidade, que é onde o RGPD a quer -- o artigo 13.º admite o
+               aviso em camadas, e a camada existe.
+               SEM CRASES AQUI DENTRO: isto vive dentro de um template literal,
+               e uma crase fecha-o. Foi a quinta vez neste projecto. -->
           <input type="tel" name="mbway" inputmode="tel" autocomplete="tel"
                  placeholder="912 345 678" maxlength="20">
-          <span class="small muted" style="display:block;margin-block-start:.35rem">
-            Portuguese mobile. We send it to ifthenpay to raise the request, and nowhere else.</span>
         </label>
 
         <label class="pay-choice__opt">
