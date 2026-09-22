@@ -26,6 +26,15 @@ by handling beyond what is needed to see what it is.
 
 ## Getting your money back
 
-We refund within 14 days of the piece coming back, by the same method you paid
-with. That includes standard outbound shipping; if you chose a faster option, we
-refund the standard rate.
+We refund within 14 days of the day you tell us you are cancelling. That
+includes the standard outbound shipping; if you chose a faster option, we refund
+the standard rate.
+
+We may hold the money until the piece is back with us, or until you show us you
+have sent it — whichever happens first. That is a right to wait, not a later
+start: the 14 days are counted from the day you told us.
+
+The money goes back the way it came. If you paid by MB WAY or by card, it
+returns to the same card or phone. A Multibanco or Payshop reference has no way
+back, so for those we ask you for an IBAN and transfer it — we use the IBAN only
+to return your money, and keep it no longer than the accounting rules require.

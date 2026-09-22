@@ -35,6 +35,11 @@ const titles = new Map();
 const descriptions = new Map();
 let links = 0, images = 0, indexablePages = 0;
 const placeholders = new Map();
+/* Atravessam as páginas todas: o cesto e os termos são ficheiros diferentes, e
+   a pergunta «os termos dizem o que o cesto oferece?» só se responde com os
+   dois lidos. */
+const oferecidos = [];
+let frasePaga = null;
 
 /* Uniqueness is checked on pages that go into the index. In PREVIEW every page
    is noindex — so the check quietly stopped running in the exact mode the site
@@ -91,6 +96,29 @@ for (const file of pages) {
     where, title, desc, indexable,
     selfCanonical: canonical.endsWith(where) || canonical.endsWith(where.replace(/index\.html$/, '')),
   });
+  }
+
+  /* A FRASE DOS MÉTODOS DE PAGAMENTO TEM DE DIZER O QUE O CESTO OFERECE.
+     `shop.json` tem uma frase escrita à mão que os termos mostram ao
+     comprador, e o artigo 7.º do DL 24/2014 obriga a indicar os meios aceites
+     de forma clara, o mais tardar no início da encomenda. Essa frase esteve a
+     dizer «Multibanco reference or MB WAY» DEPOIS de o Payshop já estar no
+     cesto: ninguém escreve uma frase destas duas vezes, e por isso ela fica
+     para trás sozinha.
+     Aqui lê-se o que o cesto construído oferece mesmo -- os `value` dos rádios
+     -- e no fim exige-se que a frase dos termos nomeie cada um. É a única
+     ligação entre os dois ficheiros, e sem ela a lei fica por cumprir sem erro
+     nenhum em lado nenhum. */
+  if (/name="metodo"/.test(html)) {
+    const achados = [...html.matchAll(/name="metodo" value="([A-Z]+)"/g)].map((m) => m[1]);
+    if (!achados.length) {
+      deaths.push(`${where}: há rádios de método de pagamento mas não consegui ler nenhum valor`);
+    }
+    for (const m of achados) if (!oferecidos.includes(m)) oferecidos.push(m);
+  }
+  if (frasePaga === null) {
+    const m = /You can pay by ([^.<]+)\./.exec(html);
+    if (m) frasePaga = m[1].trim();
   }
 
   /* OS CAMPOS ESTREITOS DO CHECKOUT ANDAM AOS PARES.
@@ -551,6 +579,30 @@ for (const [canonical, group] of byCanonical) {
    `warnings` (as descrições repetidas). Eram recolhidas para um array já
    esvaziado e nunca chegaram aos olhos de ninguém -- uma verificação que
    corre, acerta, e fala para o vazio. */
+/* A frase e o cesto confrontam-se aqui, quando as duas páginas já foram lidas. */
+{
+  const NOME = {
+    MB: 'Multibanco', MBWAY: 'MB WAY', PAYSHOP: 'Payshop',
+    CCARD: 'card', GOOGLE: 'Google Pay', APPLE: 'Apple Pay',
+  };
+  const semNome = oferecidos.filter((m) => !NOME[m]);
+  if (semNome.length) {
+    deaths.push(`o cesto oferece ${semNome.join(', ')} e não há nome para pôr na frase dos termos`);
+  }
+  if (oferecidos.length && frasePaga === null) {
+    deaths.push('o cesto oferece métodos de pagamento e os termos não têm a frase «You can pay by …» '
+      + '— o artigo 7.º do DL 24/2014 obriga a indicá-los ao comprador');
+  } else if (oferecidos.length) {
+    const emFalta = oferecidos
+      .filter((m) => NOME[m])
+      .filter((m) => !frasePaga.toLowerCase().includes(NOME[m].toLowerCase()));
+    if (emFalta.length) {
+      deaths.push(`os termos dizem «You can pay by ${frasePaga}» mas o cesto também oferece `
+        + `${emFalta.map((m) => NOME[m]).join(', ')} — acertar content/settings/shop.json`);
+    }
+  }
+}
+
 for (const w of warnings) console.warn(`  warning: ${w}`);
 
 if (deaths.length) {

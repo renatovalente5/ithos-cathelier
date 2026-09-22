@@ -26,6 +26,12 @@ part of the order, because it is what we made.
 **When you write to us.** Whatever is in your message, for as long as it takes
 to answer and a reasonable time afterwards.
 
+**Your IBAN, but only if we owe you money on a payment that has no way back.**
+A Multibanco or Payshop reference cannot be reversed, so if you cancel an order
+paid that way we ask you for an IBAN to transfer the refund. We use it for that
+transfer and nothing else, and it is kept with the invoice for as long as tax
+law requires.
+
 **Your basket.** While you are choosing, it lives in your own browser and we
 never see it. It reaches us the moment you press **Order and pay**: we save the
 order — your name, address, telephone, tax number and what you chose — before we
