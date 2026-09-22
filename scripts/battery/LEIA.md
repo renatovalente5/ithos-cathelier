@@ -34,3 +34,25 @@ real e medir nela as coisas que só ali podem falhar — se as tipografias
 carregaram, se a folha de estilo é a do resumo certo, se nada rola de lado. Foi
 assim que apareceram os oito `@font-face` sem prefixo, que no local carregavam
 sempre.
+
+## O que o Escape não prova aqui
+
+Não há guarda para «o Escape fecha a gaveta», e a razão não é desleixo: **esta
+bateria não consegue carregar no Escape**. A tecla sintética que o condutor
+manda chega à página com `key: "Escape"` e com `keyCode: 0`, `code: ""` — um
+ouvinte de `keydown` em JavaScript vê-a e dá-a por boa, e o browser não, porque
+quem fecha um `<dialog>` modal é o *close watcher* do motor e esse compara pelo
+`keyCode` (27), não pelo `key`.
+
+O sintoma é enganador ao ponto de se escrever um defeito que não existe: o
+diálogo continua aberto, o evento é `isTrusted: true` e ninguém lhe chamou
+`preventDefault()`. Parece o site a falhar.
+
+O que separa as duas hipóteses é um **controlo**: uma página servida na mesma
+origem, com um `<dialog>` e um `showModal()` e mais nada — zero linhas deste
+projecto. O Escape automatizado também não a fecha. Logo é a ferramenta, não a
+gaveta.
+
+A moral é geral: quando uma tecla «não faz nada», medir os campos do evento
+(`key`, `code`, `keyCode`) antes de acusar a página, e confirmar com uma página
+de controlo que só tem a plataforma lá dentro.
