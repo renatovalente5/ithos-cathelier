@@ -304,7 +304,11 @@ function drawer({ brand, identity, counts }) {
   const count = (key) => (counts[key] ? `<span class="drawer__count">${counts[key]}</span>` : '');
   const mark = MARK[brand];
 
-  return `<dialog class="drawer" id="menu" aria-label="Menu">
+  /* `tabindex="-1"` para o foco poder aterrar NO PAINEL e não num botão.
+     Ver o porquê em src/js/shop.js, onde o foco é dado: um anel à volta do
+     X lê-se como «seleccionado» num telemóvel, e um <dialog> não é nenhum
+     dos elementos a que a regra do anel se aplica. */
+  return `<dialog class="drawer" id="menu" aria-label="Menu" tabindex="-1">
   <div class="drawer__top">
     <button class="icon-btn close-menu" type="button" aria-label="Close the menu">${icon('close', 24)}</button>
     <img class="drawer__mark" src="${mark.src}" alt="${esc(mark.alt)}" width="${mark.w}" height="${mark.h}">

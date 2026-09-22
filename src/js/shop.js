@@ -128,11 +128,27 @@ document.addEventListener('DOMContentLoaded', () => {
          :has() lock would engage for its whole run, take away the scrollbar
          and quietly change every geometry it then read. */
       settle();
-      // Focus goes to the CLOSE button, never to the first menu link. It used
-      // to go to the link, and the focus ring round it read as "this page is
-      // selected" -- the owner saw it on her phone and asked why. On the close
-      // button the same ring tells the truth.
-      $('.close-menu', drawer)?.focus();
+      /* O FOCO ATERRA NO PAINEL, e não num botão dentro dele.
+       *
+       * Isto já esteve em dois sítios errados. Primeiro no primeiro link do
+       * menu, e o anel à volta dele lia-se como «esta página é a que está
+       * seleccionada» -- a dona viu no telemóvel e perguntou porquê. Passou
+       * para o X de fechar, e ela viu o anel outra vez, à volta do X.
+       *
+       * A causa não é o sítio, é o gesto: um `.focus()` feito por JavaScript
+       * conta como foco de teclado no WebKit, por isso o Safari desenha o anel
+       * mesmo quando quem abriu o menu lhe tocou com o dedo.
+       *
+       * O painel resolve as duas coisas. O foco ENTRA no diálogo -- é o que
+       * mantém o Tab lá dentro e o que faz um leitor de ecrã anunciá-lo -- mas
+       * um <dialog> não é `a`, `button`, `input`, `select`, `textarea` nem
+       * `summary`, que é a lista a que a regra do anel se aplica em
+       * base.css:112. Sem anel, sem nada com ar de escolhido, e sem tirar o
+       * anel a ninguém que navegue com o teclado: esse continua a vê-lo assim
+       * que carregar em Tab.
+       *
+       * O `tabindex="-1"` que isto exige está no <dialog>, em shell.mjs. */
+      drawer.focus();
     });
 
     $('.close-menu', drawer)?.addEventListener('click', close);
