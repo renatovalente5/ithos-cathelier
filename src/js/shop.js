@@ -331,11 +331,20 @@ function checkout() {
     const v = (n) => (form.elements[n]?.value ?? '').trim();
     return {
       nome: v('nome'), email: v('email'), telefone: v('telefone'), nif: v('nif'),
-      morada: { linha1: v('linha1'), linha2: v('linha2'), postal: v('postal'), cidade: v('cidade') },
+      /* `linha2` saiu do formulário a pedido da dona: quem tem andar escreve-o
+         na morada, que aceita 160 caracteres. Não se manda o campo em branco --
+         mandar uma chave vazia é dizer ao Worker que a pergunta foi feita e
+         ficou por responder, e ele guardava um `null` que não quer dizer nada. */
+      morada: { linha1: v('linha1'), postal: v('postal'), cidade: v('cidade') },
     };
   };
 
-  const metodo = () => (form?.elements?.metodo?.value ?? 'MBWAY');
+  /* NENHUM MÉTODO COMEÇA ESCOLHIDO, a pedido da dona -- e por isso isto pode
+     devolver uma string vazia. Não se inventa um valor por omissão: um
+     `?? 'MBWAY'` aqui mandava o comprador pagar por um método que ele nunca
+     escolheu. Quem trava é o `required` nos três rádios, que faz o browser
+     dizer, na língua dele, que falta escolher. */
+  const metodo = () => (form?.elements?.metodo?.value ?? '');
 
   /* O CAMPO DO TELEMÓVEL SÓ EXISTE PARA O MB WAY, e pedi-lo a quem vai pagar
      uma referência Multibanco é pedir um dado que não é preciso para nada --

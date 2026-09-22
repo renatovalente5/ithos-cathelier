@@ -1614,7 +1614,20 @@ html[data-cover='yes'][data-scrolled='no'] :is(.head__mark, .head__sibling-mark)
 .field legend, .field > label { font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; display: block; margin-block-end: .5rem; }
 .field__optional { font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--muted); }
 .field__help { font-size: 12px; color: var(--muted); margin-block-end: .6rem; line-height: 1.6; }
-.field input[type='text'], .field input[type='email'], .field select, .field textarea {
+/* A LISTA DE TIPOS TEM DE ESTAR COMPLETA, e não estava.
+   Faltava `tel`, e por isso o campo do telefone no carrinho -- e o do MB WAY
+   na escolha do pagamento -- saíam com o desenho do browser: mais estreitos,
+   mais baixos, com outra borda, ao lado de seis campos iguais entre si. Não
+   havia erro nenhum a apanhá-lo; havia um campo com outro aspecto e ninguém a
+   ligar os dois factos.
+   Os tipos que faltavam entram todos de uma vez, e não só o que doeu: um
+   `number` ou um `search` escritos daqui a um mês tinham exactamente o mesmo
+   destino. `scripts/guards.mjs` compara esta lista com os tipos que as páginas
+   construídas usam mesmo, e morre se aparecer um que esta regra não vista. */
+.field input[type='text'], .field input[type='email'], .field input[type='tel'],
+.field input[type='number'], .field input[type='search'], .field input[type='url'],
+.field input[type='password'], .field input[type='date'], .field input:not([type]),
+.field select, .field textarea {
   width: 100%; min-height: 48px; padding: .6rem .85rem;
   border: 1px solid var(--line); background: var(--bg); border-radius: var(--radius, 0);
 }
@@ -1630,11 +1643,15 @@ html[data-cover='yes'][data-scrolled='no'] :is(.head__mark, .head__sibling-mark)
 .checkout__grid { display: grid; gap: 1rem; margin-block-start: 1.25rem; }
 @media (width >= 48rem) {
   .checkout__grid { grid-template-columns: 1fr 1fr; }
-  /* Nome, email e as duas linhas da morada ocupam a linha inteira: são os
-     campos longos, e um email a meia largura ficava sozinho com um buraco ao
-     lado. Depois emparelham código postal com terra, e telefone com
-     contribuinte -- que é como se escrevem os dois pares. */
-  .checkout__grid .field:nth-child(-n+4) { grid-column: 1 / -1; }
+  /* OS CAMPOS LARGOS DIZEM-SE PELO NOME, E NÃO PELA POSIÇÃO.
+     Aqui estava `:nth-child(-n+4)`, a contar os quatro primeiros: nome, email,
+     morada e a segunda linha da morada. No dia em que a segunda linha saiu do
+     formulário, o quarto lugar passou a ser o código postal -- que ficou com a
+     linha toda, e a terra emparelhou com o telefone, e o contribuinte ficou
+     sozinho. Nada disto deu erro: deu um formulário com os pares trocados.
+     Uma regra que conta posições parte-se sempre que alguém acrescenta ou tira
+     um campo, que é a coisa mais normal que há num formulário. */
+  .checkout__grid .field--wide { grid-column: 1 / -1; }
 }
 .checkout .field > span { display: block; margin-block-end: .4rem; }
 
@@ -2084,11 +2101,11 @@ html.menu-open { overflow: hidden; }
 .pay-choice__name { display: block; font-weight: 600; color: var(--ink); }
 .pay-choice__note { display: block; margin-block-start: .2rem; font-size: 13px; line-height: 1.6; color: var(--muted); }
 
-/* O LOGÓTIPO VAI À DIREITA, NUMA CAIXA DE LARGURA FIXA.
-   À esquerda, no lugar do ícone, as três marcas têm larguras diferentes e
-   empurravam o texto para sítios diferentes em cada linha. Numa caixa própria
-   no fim, a coluna de texto começa e acaba no mesmo sítio nas três, e as
-   marcas alinham-se entre si.
+/* O LOGÓTIPO VAI À ESQUERDA, ANTES DO NOME, NUMA CAIXA DE LARGURA FIXA.
+   A largura fixa é o que torna a esquerda possível: as três marcas têm
+   larguras diferentes -- 49, 32 e 72px -- e postas em fluxo empurravam o nome
+   do método para três sítios diferentes, um por linha. Com a caixa, as marcas
+   centram-se dentro dela e os três nomes começam no mesmo x.
    `flex: none` porque uma caixa de largura fixa num flex encolhe à primeira
    linha de texto comprida -- e o que encolhe primeiro é sempre o SVG, que fica
    visível, opaco, da cor certa e sem desenho nenhum. */
@@ -2104,16 +2121,15 @@ html.menu-open { overflow: hidden; }
    deixar de se reconhecer é mostrar um borrão e chamar-lhe logótipo.
    Abaixo dos 22rem a opção passa a duas linhas: o texto ocupa a largura toda e
    a marca vai por baixo, no tamanho a que se lê. */
-@media (width < 22rem) {
-  /* Uma grelha de duas colunas, e NÃO `flex-wrap`. Com o flex a envolver, a
-     largura mínima do texto empurrava-o para baixo e o rádio ficava sozinho
-     numa linha por cima do nome do método -- um botão de escolha separado
-     daquilo que escolhe. */
-  .pay-choice__opt { display: grid; grid-template-columns: auto 1fr; row-gap: .55rem; }
-  /* A ÁREA VAI INTEIRA, linha E coluna. Com só `grid-column: 2`, um item de
-     posição definida é colocado ANTES dos automáticos e ficava com a célula
-     (1,2) -- a do texto -- empurrando o texto para a linha de baixo. */
-  .pay-choice__marca { grid-area: 2 / 2; inline-size: auto; justify-items: start; }
+/* Num ecrã muito estreito a caixa da marca aperta demais a frase que explica o
+   método. Encolhe -- mas só até onde as marcas ainda se lêem: o Multibanco é o
+   que manda, e abaixo dos ~38px de altura a palavra dele deixa de se ler.
+   Aqui a caixa passa a 3,25rem e as marcas mantêm a altura: cabem porque a
+   mais larga, o Payshop, tem 72px deitados e é a única que encosta. */
+@media (width < 24rem) {
+  .pay-choice__opt { gap: .6rem; padding-inline: .75rem; }
+  .pay-choice__marca { inline-size: 3.25rem; }
+  .pay-choice__marca img { max-inline-size: none; }
 }
 
 .pay-amount { font-size: clamp(28px, 7vw, 40px); font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; margin-block: 1.25rem; }
@@ -2149,7 +2165,10 @@ html.menu-open { overflow: hidden; }
   max-width: 24rem;
 }
 .pay-choice__extra > span:first-child { font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; }
-.pay-choice__extra input { width: 100%; }
+/* O `width: 100%` que aqui estava era um remendo sobre o sintoma: o campo é
+   `type="tel"` e a regra do `.field` não vestia esse tipo. Corrigida a lista lá
+   em cima, isto deixou de ser preciso -- e um remendo que sobrevive à
+   correcção da causa é o que faz a causa parecer resolvida em dois sítios. */
 
 /* UMA REFERÊNCIA NÃO SE PARTE EM DUAS LINHAS.
    No telemóvel a linha ficava «123 456 / 789» -- e este número é lido dígito a

@@ -93,6 +93,33 @@ for (const file of pages) {
   });
   }
 
+  /* OS CAMPOS ESTREITOS DO CHECKOUT ANDAM AOS PARES.
+     A grelha é de duas colunas: os largos levam a linha toda e os estreitos
+     emparelham. Se o número de estreitos for ímpar, o último fica sozinho com
+     um buraco ao lado -- e ninguém repara, porque não é um erro, é uma coisa
+     que parece só um bocado torta.
+     Esta contagem existe porque a regra ANTERIOR contava posições
+     (`:nth-child(-n+4)`) e partiu-se no dia em que um campo saiu do
+     formulário: o código postal ficou com a linha toda e os pares trocaram-se
+     todos, sem um erro em lado nenhum. */
+  if (/class="checkout__grid"/.test(html)) {
+    const grelha = html.slice(html.indexOf('class="checkout__grid"'));
+    const fim = grelha.indexOf('</div>');
+    const dentro = grelha.slice(0, fim < 0 ? grelha.length : fim);
+    const todos = [...dentro.matchAll(/class="field(?: [^"]*)?"/g)].map((m) => m[0]);
+    const largos = todos.filter((c) => c.includes('field--wide')).length;
+    const estreitos = todos.length - largos;
+    if (todos.length && estreitos % 2 !== 0) {
+      deaths.push(`${where}: o formulário de entrega tem ${estreitos} campos estreitos, `
+        + 'que é ímpar — o último fica sozinho numa linha de duas colunas. '
+        + 'Emparelhar, ou marcá-lo com `field--wide`');
+    }
+    if (todos.length && !largos) {
+      deaths.push(`${where}: nenhum campo do formulário de entrega tem \`field--wide\`, `
+        + 'por isso o nome, o email e a morada estão a meia largura');
+    }
+  }
+
   // Text the owner has not filled in must never reach a LIVE page. In preview
   // it is expected — that is what preview is for — so it warns there and kills
   // everywhere else. Counted by marker rather than by page: the address is on

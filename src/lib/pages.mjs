@@ -270,7 +270,7 @@ const MARCAS = {
   payshop: { w: 455.24, h: 120.57, alto: 19 },
 };
 
-function marca(qual, nome) {
+function marca(qual) {
   const m = MARCAS[qual];
   if (!m) throw new Error(`logótipo desconhecido: ${qual}`);
   const largura = Math.round((m.w / m.h) * m.alto);
@@ -328,14 +328,12 @@ export function basket({ shipping }) {
     <form class="checkout" data-checkout-form novalidate>
       <h2>Where it goes</h2>
       <div class="checkout__grid">
-        <label class="field"><span>Your name</span>
+        <label class="field field--wide"><span>Your name</span>
           <input type="text" name="nome" autocomplete="name" required maxlength="120"></label>
-        <label class="field"><span>Email</span>
+        <label class="field field--wide"><span>Email</span>
           <input type="email" name="email" autocomplete="email" required maxlength="160"></label>
-        <label class="field"><span>Address</span>
+        <label class="field field--wide"><span>Address</span>
           <input type="text" name="linha1" autocomplete="address-line1" required maxlength="160"></label>
-        <label class="field"><span>Flat, floor <span class="field__optional">optional</span></span>
-          <input type="text" name="linha2" autocomplete="address-line2" maxlength="160"></label>
         <label class="field"><span>Post code</span>
           <input type="text" name="postal" autocomplete="postal-code" required maxlength="20"></label>
         <label class="field"><span>Town</span>
@@ -354,12 +352,12 @@ export function basket({ shipping }) {
       <h2 style="margin-block-start:2rem">How you pay</h2>
       <div class="pay-choice" data-pay-methods>
         <label class="pay-choice__opt">
-          <input type="radio" name="metodo" value="MBWAY" checked>
+          <input type="radio" name="metodo" value="MBWAY" required>
+          ${marca('mbway')}
           <span class="pay-choice__body">
             <span class="pay-choice__name">MB WAY</span>
             <span class="pay-choice__note">You get the request on your phone and accept it there. Takes a minute.</span>
           </span>
-          ${marca('mbway', 'MB WAY')}
         </label>
         <!-- SÓ APARECE COM O MB WAY ESCOLHIDO: pedir um telemóvel a quem vai
              pagar uma referência Multibanco é pedir um dado que não serve para
@@ -378,20 +376,20 @@ export function basket({ shipping }) {
         </label>
 
         <label class="pay-choice__opt">
-          <input type="radio" name="metodo" value="MB">
+          <input type="radio" name="metodo" value="MB" required>
+          ${marca('multibanco')}
           <span class="pay-choice__body">
             <span class="pay-choice__name">Multibanco reference</span>
             <span class="pay-choice__note">We give you an entity and a reference to pay at an ATM or in home banking.</span>
           </span>
-          ${marca('multibanco', 'Multibanco')}
         </label>
         <label class="pay-choice__opt">
-          <input type="radio" name="metodo" value="PAYSHOP">
+          <input type="radio" name="metodo" value="PAYSHOP" required>
+          ${marca('payshop')}
           <span class="pay-choice__body">
             <span class="pay-choice__name">Payshop</span>
             <span class="pay-choice__note">A reference to pay in cash at any Payshop agent.</span>
           </span>
-          ${marca('payshop', 'Payshop')}
         </label>
       </div>
 
