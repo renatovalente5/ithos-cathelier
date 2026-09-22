@@ -434,6 +434,60 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
       return w / h;
     };
     const switchAt = at ? Number(at[1]) : null;
+
+    /* A FAIXA DE FEITIOS DA CAPA DE ECRÃ CHEIO REFAZ-SE AQUI.
+     *
+     * Numa capa que é o ecrã, a forma da moldura é a forma da JANELA, e a
+     * janela é de todos os feitios. O que impede o filme de ser massacrado não
+     * é uma proporção escrita no CSS -- é a faixa de `aspect-ratio` a que a
+     * regra está presa. Dois números num media query são uma promessa sem
+     * ninguém a confirmá-la, e nos dois extremos dessa faixa é que o corte é
+     * pior. Isto refaz a conta e morre se deixarem de cumprir os mesmos 80%
+     * que o resto deste bloco exige. */
+    const cheio = css.match(
+      /@media \(width >= ([\d.]+)rem\) and \(min-aspect-ratio: ([\d.]+) \/ ([\d.]+)\) and \(max-aspect-ratio: ([\d.]+) \/ ([\d.]+)\)([\s\S]*?)\n\}/);
+    if (cheio && /\.cover__media\s*\{[^}]*min-block-size:\s*100svh/.test(cheio[6])) {
+      const [, desde, minA, minB, maxA, maxB] = cheio;
+      const limites = [Number(minA) / Number(minB), Number(maxA) / Number(maxB)];
+      if (Number(desde) < (at ? Number(at[1]) : 0)) {
+        die(`guards: a capa de ecrã cheio começa aos ${desde}rem, abaixo do data-film-at `
+          + `(${at[1]}rem) — nessas larguras a moldura seria a janela e o filme servido `
+          + 'seria o ALTO, que não foi cortado para isso');
+      }
+      for (const brand of ['ithos', 'cathelier']) {
+        const c = covers[brand];
+        if (!c || !c.film) continue;
+        const path = join(ROOT, 'public/media/film', `${c.film}.mp4`);
+        if (!existsSync(path)) continue;
+        let filmAR;
+        try { filmAR = ffprobe(path); } catch {
+          /* NÃO SE ENGOLE A FALHA EM SILÊNCIO. Este `catch` estava vazio e foi
+             ele que escondeu a primeira versão desta guarda: o bloco estava
+             escrito ANTES do `const ffprobe`, a chamada dava ReferenceError, o
+             catch saía sem dizer nada, e a guarda imprimia êxito sem nunca ter
+             medido coisa nenhuma. Provei-a a falhar alargando a faixa nos dois
+             sentidos e ela não falhou -- e uma guarda que não falha quando o
+             defeito lá está não é uma guarda. */
+          warnings.push(`guards: não consegui medir o filme da ${brand} com o ffprobe, `
+            + 'por isso a faixa de feitios da capa de ecrã cheio NÃO foi verificada');
+          break;
+        }
+        for (const box of limites) {
+          const kept = Math.min(Math.min(1, box / filmAR), Math.min(1, filmAR / box));
+          if (kept < 0.8) {
+            die(`${brand}: com a capa a ocupar o ecrã, uma janela de ${box.toFixed(2)}:1 `
+              + `-- que está DENTRO da faixa declarada no CSS -- deixa só `
+              + `${(kept * 100).toFixed(0)}% do filme largo. Apertar a faixa em shop.css `
+              + 'ou voltar a cortar o filme');
+          }
+        }
+      }
+    } else if (/min-block-size:\s*100svh/.test(css)) {
+      die('guards: há uma capa de ecrã cheio no CSS mas não consegui ler a faixa de '
+        + 'aspect-ratio a que está presa — sem ela não há nada a impedir que uma janela '
+        + 'estreita massacre o filme');
+    }
+
     for (const brand of ['ithos', 'cathelier']) {
       const c = covers[brand];
       if (!c || !c.film || switchAt === null) continue;

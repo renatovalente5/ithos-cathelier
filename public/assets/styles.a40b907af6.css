@@ -801,6 +801,65 @@ p { text-wrap: pretty; }
   .cover__media { aspect-ratio: 16 / 9; }
 }
 
+/* A CAPA É O ECRÃ — ONDE O FILME AGUENTA O CORTE, E SÓ AÍ.
+ *
+ * A dona pediu o filme a ocupar o ecrã todo: numa janela de 1905x925 sobravam
+ * 48px de branco em baixo, que são o `- 3rem` do `max-block-size`. Esse
+ * desconto existia para deixar ver que a página continua; a dona prefere o
+ * ecrã cheio, e é dela a decisão.
+ *
+ * MAS «ECRÃ CHEIO» QUER DIZER QUE A FORMA DA CAPA PASSA A SER A FORMA DA
+ * JANELA, e a janela é de todos os feitios. O `object-fit: cover` corta o que
+ * não couber, e o que está nas bordas do filme são as pernas dos candeeiros.
+ * Medido, com o que sobra do filme largo (16:9) em cada caso:
+ *
+ *     1280x720   93% -> 100%      1024x768 (iPad de lado)  75% -> 42%
+ *     1440x900   93% ->  99%      768x1024 (iPad ao alto) 100% -> 75%
+ *     1905x925   82% ->  86%      390x844  (telemóvel)    100% -> 69%
+ *     2560x1300  87% ->  90%
+ *
+ * Nos ecrãs deitados melhora; nos que são mais altos do que largos, arruína.
+ * Por isso a regra é presa a uma FAIXA DE FEITIOS: de 10/7 (1,43) a 11/5
+ * (2,20), que é exactamente onde um filme de 16:9 mantém 80% de si -- 80,4%
+ * num extremo, 80,8% no outro. O primeiro par que escrevi foi 20/9 e a guarda
+ * apanhou-o: dava 80,0%, que é a fronteira e não uma margem.
+ *
+ * A faixa apanha os portáteis todos que interessam (1280x720, 1440x900,
+ * 1512x982, 1905x925, 2560x1300) e deixa de fora o que não tem salvação: um
+ * ecrã 4:3 não recebe um filme 16:9 sem perder um quarto de si. Aí fica a
+ * regra antiga, que no telemóvel serve a capa exactamente na forma a que o
+ * filme alto foi cortado -- 100% dele, e não se estraga isso para ganhar 48px
+ * num portátil.
+ *
+ * `scripts/guards.mjs` refaz esta conta a partir do próprio media query e do
+ * ficheiro de vídeo, e morre se os dois limites deixarem de cumprir os 80%. */
+@media (width >= 48rem) and (min-aspect-ratio: 10 / 7) and (max-aspect-ratio: 11 / 5) {
+  .cover__media {
+    /* `auto` para a proporção deixar de decidir a altura: quem decide passa a
+       ser o `min-block-size`, e sem isto a regra dos 64rem continuava a impor
+       16/9 e a capa ficava mais alta ou mais baixa do que a janela. */
+    aspect-ratio: auto;
+    min-block-size: 100svh;
+    /* Sem tecto DE PROPÓSITO. Se um dia as palavras da capa precisarem de mais
+       do que um ecrã, a linha da grelha cresce e a fotografia estica com ela;
+       com um tecto ficaria mais baixa do que a linha e reaparecia a faixa de
+       véu sobre o nada que já custou uma correcção. */
+    max-block-size: none;
+    position: relative;
+  }
+  /* E A FOTOGRAFIA TAMBÉM SAI DO FLUXO, pela mesma razão que o filme saiu.
+     Tirar a `aspect-ratio` não chegou: o <picture> passou a não ter altura
+     própria nenhuma e foi buscá-la ao conteúdo, ou seja, à proporção
+     intrínseca da <img>. Numa janela de 1905x925 a capa ficou com 1072px --
+     a altura que a imagem quer -- e o `min-block-size: 100svh` não a limita,
+     porque é um mínimo. Medi e vi 1072 onde esperava 925.
+     Com a imagem fora do fluxo, o <picture> não tem conteúdo a dizer-lhe a
+     altura: fica com o mínimo, e estica com a linha da grelha se as palavras
+     precisarem de mais. Quem decide a altura da capa passa a ser a regra, e
+     não o ficheiro que lá estiver. */
+  .cover__img { position: absolute; inset: 0; }
+}
+
 .hero__cta {
   display: inline-flex; align-items: center; min-height: 26px;
   font-size: 12px; font-weight: 600; letter-spacing: .22em; text-transform: uppercase;
