@@ -900,6 +900,56 @@ for (const [o, n] of esgotados) {
     + `choose it, and the Worker refuses it if anyone tries`);
 }
 
+/* --- os logótipos dos métodos de pagamento --------------------------------
+ *
+ * Não são nossos e não podem ser redesenhados: o que está em assets/brand/pay/
+ * é a obra-de-arte oficial, e a proveniência está no LEIA.md ao lado. Isto
+ * verifica que os três continuam lá e continuam a ser desenhos.
+ *
+ * `existsSync` NÃO CHEGA: um ficheiro de zero bytes existe, e um `cp` que
+ * falhou a meio deixa exactamente isso. Um <img> para um SVG vazio não dá erro
+ * nenhum na página -- dá um espaço em branco do tamanho certo, que é a avaria
+ * que ninguém repara. Por isso lê-se o conteúdo e exige-se que seja um SVG com
+ * a proporção declarada, que é o número de que o CSS depende para os pôr todos
+ * no mesmo tamanho óptico. */
+{
+  const esperado = {
+    'mbway.svg': [143.2, 69.57],
+    'multibanco.svg': [153.98, 181.88],
+    'payshop.svg': [455.24, 120.57],
+  };
+  for (const [nome, [w, h]] of Object.entries(esperado)) {
+    const caminho = join(ROOT, 'assets', 'brand', 'pay', nome);
+    if (!existsSync(caminho)) {
+      die(`assets/brand/pay/${nome} não existe — o método de pagamento fica sem logótipo`);
+      continue;
+    }
+    const svg = readFileSync(caminho, 'utf8');
+    if (svg.length < 500 || !/<svg[\s>]/i.test(svg)) {
+      die(`assets/brand/pay/${nome} tem ${svg.length} bytes e não parece um SVG`
+        + ' — um ficheiro vazio desenha um espaço em branco do tamanho certo, sem erro nenhum');
+      continue;
+    }
+    /* A proporção é o que o CSS e o `marca()` de pages.mjs usam para calcular a
+       largura a partir da altura. Se a obra-de-arte for trocada por outra com
+       outra forma, as caixas ficam com o tamanho errado e ninguém liga os dois
+       factos -- por isso morre aqui, com os dois números à frente. */
+    const vb = /viewBox="([\d.\s-]+)"/i.exec(svg);
+    if (!vb) { die(`assets/brand/pay/${nome} não declara viewBox — sem ela não há proporção para calcular a caixa`); continue; }
+    const [, , , vw, vh] = [null, ...vb[1].trim().split(/\s+/).map(Number)];
+    if (Math.abs(vw / vh - w / h) > 0.01) {
+      die(`assets/brand/pay/${nome} mudou de forma: viewBox diz ${vw}x${vh}, `
+        + `src/lib/pages.mjs conta com ${w}x${h} — acertar os dois ou a caixa fica do tamanho errado`);
+    }
+  }
+  /* E o LEIA.md, que é onde está escrito de onde vieram e que não se mexe
+     neles. Sem ele, o ficheiro seguinte é substituído por um logótipo
+     redesenhado à mão por alguém bem-intencionado. */
+  if (!existsSync(join(ROOT, 'assets', 'brand', 'pay', 'LEIA.md'))) {
+    die('assets/brand/pay/LEIA.md desapareceu — é o único sítio onde está a proveniência da obra-de-arte');
+  }
+}
+
 /* --- report --------------------------------------------------------------- */
 for (const w of warnings) console.warn(`  warning: ${w}`);
 if (deaths.length) {

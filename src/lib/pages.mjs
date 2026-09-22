@@ -248,6 +248,38 @@ export function quote({ identity }) {
 
 /* --- basket ---------------------------------------------------------------- */
 
+/* O LOGÓTIPO DE UM MÉTODO DE PAGAMENTO.
+ *
+ * `alt=""` de propósito, e não por esquecimento: o nome da marca já está no
+ * `.pay-choice__name` a dois centímetros dali, e um `alt="MB WAY"` fazia um
+ * leitor de ecrã dizer «MB WAY MB WAY». Aqui a imagem é mesmo decoração — quem
+ * não a vê não perde nada, porque tudo o que ela diz está escrito.
+ *
+ * As DIMENSÕES vão no atributo para o browser reservar o espaço antes de o SVG
+ * chegar: sem elas a lista dá um salto quando os três carregam.
+ *
+ * AS TRÊS ALTURAS SÃO DIFERENTES E ISSO NÃO É DISTRACÇÃO. O logótipo do
+ * Multibanco é ao alto (o símbolo com a palavra por baixo) e os outros dois
+ * são deitados; à mesma altura, «MULTIBANCO» fica uma mancha. Medido: lê-se a
+ * partir dos ~38px, enquanto o MB WAY se lê aos 24 e o Payshop aos 19. Cada
+ * marca vai ao seu tamanho óptico. O porquê por extenso, e a proveniência da
+ * obra-de-arte, estão em assets/brand/pay/LEIA.md. */
+const MARCAS = {
+  mbway: { w: 143.2, h: 69.57, alto: 24 },
+  multibanco: { w: 153.98, h: 181.88, alto: 38 },
+  payshop: { w: 455.24, h: 120.57, alto: 19 },
+};
+
+function marca(qual, nome) {
+  const m = MARCAS[qual];
+  if (!m) throw new Error(`logótipo desconhecido: ${qual}`);
+  const largura = Math.round((m.w / m.h) * m.alto);
+  return `<span class="pay-choice__marca">`
+    + `<img src="/assets/pay/${esc(qual)}.svg" alt="" width="${largura}" height="${m.alto}"`
+    + ` style="height:${m.alto}px" loading="lazy" decoding="async">`
+    + `</span>`;
+}
+
 export function basket({ shipping }) {
   return `
 <section class="section">
@@ -327,6 +359,7 @@ export function basket({ shipping }) {
             <span class="pay-choice__name">MB WAY</span>
             <span class="pay-choice__note">You get the request on your phone and accept it there. Takes a minute.</span>
           </span>
+          ${marca('mbway', 'MB WAY')}
         </label>
         <!-- SÓ APARECE COM O MB WAY ESCOLHIDO: pedir um telemóvel a quem vai
              pagar uma referência Multibanco é pedir um dado que não serve para
@@ -350,6 +383,7 @@ export function basket({ shipping }) {
             <span class="pay-choice__name">Multibanco reference</span>
             <span class="pay-choice__note">We give you an entity and a reference to pay at an ATM or in home banking.</span>
           </span>
+          ${marca('multibanco', 'Multibanco')}
         </label>
         <label class="pay-choice__opt">
           <input type="radio" name="metodo" value="PAYSHOP">
@@ -357,6 +391,7 @@ export function basket({ shipping }) {
             <span class="pay-choice__name">Payshop</span>
             <span class="pay-choice__note">A reference to pay in cash at any Payshop agent.</span>
           </span>
+          ${marca('payshop', 'Payshop')}
         </label>
       </div>
 

@@ -2001,7 +2001,7 @@ html.menu-open { overflow: hidden; }
       página, e são carregados com uma mão só. */
 .pay-choice { display: grid; gap: .6rem; margin-block-start: 1rem; }
 .pay-choice__opt {
-  display: flex; gap: .85rem; align-items: flex-start;
+  display: flex; gap: .85rem; align-items: center;
   padding: .9rem 1rem; border: 1px solid var(--line); border-radius: var(--radius, 0);
   background: var(--bg-soft, var(--bg)); cursor: pointer;
 }
@@ -2015,6 +2015,38 @@ html.menu-open { overflow: hidden; }
 .pay-choice__body { display: block; min-width: 0; }
 .pay-choice__name { display: block; font-weight: 600; color: var(--ink); }
 .pay-choice__note { display: block; margin-block-start: .2rem; font-size: 13px; line-height: 1.6; color: var(--muted); }
+
+/* O LOGÓTIPO VAI À DIREITA, NUMA CAIXA DE LARGURA FIXA.
+   À esquerda, no lugar do ícone, as três marcas têm larguras diferentes e
+   empurravam o texto para sítios diferentes em cada linha. Numa caixa própria
+   no fim, a coluna de texto começa e acaba no mesmo sítio nas três, e as
+   marcas alinham-se entre si.
+   `flex: none` porque uma caixa de largura fixa num flex encolhe à primeira
+   linha de texto comprida -- e o que encolhe primeiro é sempre o SVG, que fica
+   visível, opaco, da cor certa e sem desenho nenhum. */
+.pay-choice__marca {
+  flex: none; inline-size: 5.25rem;
+  display: grid; place-items: center;
+}
+.pay-choice__marca img { display: block; inline-size: auto; max-inline-size: 100%; }
+/* NUM ECRÃ ESTREITO O LOGÓTIPO MUDA DE LINHA, EM VEZ DE ENCOLHER.
+   A primeira tentativa foi encolher a caixa para 3,75rem: a frase ganhava 25px
+   e o Multibanco caía para 30px de altura -- abaixo dos ~38 a que a palavra
+   deixa de se ler, que é medição e não gosto. Encolher um logótipo até ele
+   deixar de se reconhecer é mostrar um borrão e chamar-lhe logótipo.
+   Abaixo dos 22rem a opção passa a duas linhas: o texto ocupa a largura toda e
+   a marca vai por baixo, no tamanho a que se lê. */
+@media (width < 22rem) {
+  /* Uma grelha de duas colunas, e NÃO `flex-wrap`. Com o flex a envolver, a
+     largura mínima do texto empurrava-o para baixo e o rádio ficava sozinho
+     numa linha por cima do nome do método -- um botão de escolha separado
+     daquilo que escolhe. */
+  .pay-choice__opt { display: grid; grid-template-columns: auto 1fr; row-gap: .55rem; }
+  /* A ÁREA VAI INTEIRA, linha E coluna. Com só `grid-column: 2`, um item de
+     posição definida é colocado ANTES dos automáticos e ficava com a célula
+     (1,2) -- a do texto -- empurrando o texto para a linha de baixo. */
+  .pay-choice__marca { grid-area: 2 / 2; inline-size: auto; justify-items: start; }
+}
 
 .pay-amount { font-size: clamp(28px, 7vw, 40px); font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; margin-block: 1.25rem; }
 .pay-clock { font-size: 15px; color: var(--muted); }

@@ -249,6 +249,13 @@ function assets() {
 
   cpSync(join(HERE, 'fonts'), join(OUT, 'assets', 'fonts'), { recursive: true });
   cpSync(join(ROOT, 'assets', 'brand'), join(OUT, 'assets'), { recursive: true });
+  /* As notas que vivem ao lado da obra-de-arte não são conteúdo do site.
+     Apagam-se DEPOIS de copiar, uma a uma e pelo nome, e não com um filtro no
+     `cpSync`: um filtro que recusa uma pasta deita fora a subárvore toda em
+     silêncio, o que já custou caro noutro projecto. */
+  for (const nota of ['assets/pay/LEIA.md']) {
+    rmSync(join(OUT, nota), { force: true });
+  }
 
   if (existsSync(join(HERE, 'js', 'shop.js'))) {
     const API = (process.env.API_URL || '').replace(/\/$/, '');
