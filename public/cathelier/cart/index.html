@@ -21,7 +21,7 @@
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" as="font" type="font/woff2" crossorigin
       href="/assets/fonts/kleeone-400-latin.woff2">
-<link rel="stylesheet" href="/assets/styles.d5130cf641.css">
+<link rel="stylesheet" href="/assets/styles.717e2b5df9.css">
 
 
 
@@ -175,6 +175,35 @@
             <span class="pay-choice__note">A reference to pay in cash at any Payshop agent.</span>
           </span>
         </label>
+        <!-- OS TRÊS ÚLTIMOS LEVAM O COMPRADOR DAQUI PARA FORA, e as notas
+             dizem-no. O cartão vai para um formulário seguro onde escreve o
+             número -- que é como tem de ser, porque esses dados nunca podem
+             passar por nós. O Google Pay e o Apple Pay não têm outra porta: a
+             ifthenpay só os serve pela página dela. -->
+        <label class="pay-choice__opt">
+          <input type="radio" name="metodo" value="CCARD" required>
+          <span class="pay-choice__marca"><svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="2.5" y="5" width="19" height="14" rx="2.2"/><path d="M2.5 9.5h19" stroke-width="2.6"/><path d="M6 15h4"/></svg></span>
+          <span class="pay-choice__body">
+            <span class="pay-choice__name">Card</span>
+            <span class="pay-choice__note">Visa or Mastercard. You type the number on a secure page — we never see it.</span>
+          </span>
+        </label>
+        <label class="pay-choice__opt">
+          <input type="radio" name="metodo" value="GOOGLE" required>
+          <span class="pay-choice__marca"><img src="/assets/pay/googlepay.svg" alt="" width="68" height="28" style="height:28px" loading="lazy" decoding="async"></span>
+          <span class="pay-choice__body">
+            <span class="pay-choice__name">Google Pay</span>
+            <span class="pay-choice__note">Pay with the card in your Google account.</span>
+          </span>
+        </label>
+        <label class="pay-choice__opt">
+          <input type="radio" name="metodo" value="APPLE" required>
+          <span class="pay-choice__marca"><img src="/assets/pay/applepay.svg" alt="" width="44" height="28" style="height:28px" loading="lazy" decoding="async"></span>
+          <span class="pay-choice__body">
+            <span class="pay-choice__name">Apple Pay</span>
+            <span class="pay-choice__note">Pay with Touch ID or Face ID on your Apple device.</span>
+          </span>
+        </label>
       </div>
 
 
@@ -284,6 +313,6 @@
      for by name: at 375x812 it covered the second row of lamps, so a
      first-time visitor saw two instead of the four she asked for. -->
 
-<script src="/assets/shop.b0c67ecbcf.js" defer></script>
+<script src="/assets/shop.044ae19dae.js" defer></script>
 </body>
 </html>

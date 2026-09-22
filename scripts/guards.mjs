@@ -971,6 +971,8 @@ for (const [o, n] of esgotados) {
     'mbway.svg': [143.2, 69.57],
     'multibanco.svg': [153.98, 181.88],
     'payshop.svg': [455.24, 120.57],
+    'applepay.svg': [165.52107, 105.9651],
+    'googlepay.svg': [41, 17],
   };
   for (const [nome, [w, h]] of Object.entries(esperado)) {
     const caminho = join(ROOT, 'assets', 'brand', 'pay', nome);
@@ -979,7 +981,7 @@ for (const [o, n] of esgotados) {
       continue;
     }
     const svg = readFileSync(caminho, 'utf8');
-    if (svg.length < 500 || !/<svg[\s>]/i.test(svg)) {
+    if (svg.length < 400 || !/<svg[\s>]/i.test(svg)) {
       die(`assets/brand/pay/${nome} tem ${svg.length} bytes e não parece um SVG`
         + ' — um ficheiro vazio desenha um espaço em branco do tamanho certo, sem erro nenhum');
       continue;
@@ -988,9 +990,26 @@ for (const [o, n] of esgotados) {
        largura a partir da altura. Se a obra-de-arte for trocada por outra com
        outra forma, as caixas ficam com o tamanho errado e ninguém liga os dois
        factos -- por isso morre aqui, com os dois números à frente. */
+    /* A PROPORÇÃO PODE VIR DE DOIS SÍTIOS, e isto exigia só um.
+       Os três primeiros ficheiros tinham `viewBox` e eu escrevi a guarda a
+       contar com ela. O ficheiro oficial do Google Pay não tem nenhuma: traz
+       `width="41" height="17"` e mais nada. A guarda matou a construção e a
+       tentação era emendar o SVG -- que é exactamente o que o LEIA.md ao lado
+       proíbe. Emenda-se a guarda: o browser também tira a proporção do par
+       largura/altura, e é o que faz a imagem escalar bem com `height` em CSS. */
     const vb = /viewBox="([\d.\s-]+)"/i.exec(svg);
-    if (!vb) { die(`assets/brand/pay/${nome} não declara viewBox — sem ela não há proporção para calcular a caixa`); continue; }
-    const [, , , vw, vh] = [null, ...vb[1].trim().split(/\s+/).map(Number)];
+    let vw; let vh;
+    if (vb) {
+      [vw, vh] = vb[1].trim().split(/\s+/).map(Number).slice(2);
+    } else {
+      vw = Number((/\bwidth="([\d.]+)(?:px)?"/i.exec(svg) || [])[1]);
+      vh = Number((/\bheight="([\d.]+)(?:px)?"/i.exec(svg) || [])[1]);
+    }
+    if (!Number.isFinite(vw) || !Number.isFinite(vh) || !vh) {
+      die(`assets/brand/pay/${nome} não declara nem viewBox nem largura/altura `
+        + '— sem proporção não há como calcular a caixa, e a imagem sai esticada');
+      continue;
+    }
     if (Math.abs(vw / vh - w / h) > 0.01) {
       die(`assets/brand/pay/${nome} mudou de forma: viewBox diz ${vw}x${vh}, `
         + `src/lib/pages.mjs conta com ${w}x${h} — acertar os dois ou a caixa fica do tamanho errado`);

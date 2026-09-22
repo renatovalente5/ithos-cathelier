@@ -385,7 +385,13 @@ function checkout() {
 
     go.setAttribute('aria-disabled', 'true');
     const wasSaying = go.textContent;
-    go.textContent = metodo() === 'MBWAY' ? 'Sending the request…' : 'Getting your reference…';
+    /* O botão diz o que vai acontecer, e são três coisas diferentes: um pedido
+     que chega ao telemóvel, uma referência que aparece a seguir, ou uma saída
+     do site. Quem sai merece sabê-lo antes de a página mudar debaixo dos pés. */
+  const SAEM = ['CCARD', 'GOOGLE', 'APPLE'];
+  go.textContent = metodo() === 'MBWAY' ? 'Sending the request…'
+    : SAEM.includes(metodo()) ? 'Taking you to pay…'
+      : 'Getting your reference…';
 
     try {
       const cat = await catalogue();

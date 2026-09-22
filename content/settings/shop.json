@@ -17,7 +17,7 @@
   },
   "payment": {
     "provider": "ifthenpay",
-    "methods": "Multibanco reference, MB WAY or Payshop",
+    "methods": "Multibanco reference, MB WAY, Payshop, card, Google Pay or Apple Pay",
     "referenceDays": 2,
     "_note": "Esta frase é mostrada ao comprador nos termos, e o artigo 7.º do DL 24/2014 obriga a indicar os meios de pagamento aceites de forma clara, o mais tardar no início do processo de encomenda. Esteve a dizer «Multibanco reference or MB WAY» depois de o Payshop já estar no cesto: uma frase escrita à mão que ninguém voltou a ler. scripts/check-output.mjs compara-a agora com as opções que o cesto construído oferece mesmo, e recusa publicar se divergirem — não voltar a editar uma sem a outra."
   },

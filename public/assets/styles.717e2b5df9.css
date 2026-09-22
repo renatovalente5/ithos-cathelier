@@ -2121,15 +2121,25 @@ html.menu-open { overflow: hidden; }
    deixar de se reconhecer é mostrar um borrão e chamar-lhe logótipo.
    Abaixo dos 22rem a opção passa a duas linhas: o texto ocupa a largura toda e
    a marca vai por baixo, no tamanho a que se lê. */
-/* Num ecrã muito estreito a caixa da marca aperta demais a frase que explica o
-   método. Encolhe -- mas só até onde as marcas ainda se lêem: o Multibanco é o
-   que manda, e abaixo dos ~38px de altura a palavra dele deixa de se ler.
-   Aqui a caixa passa a 3,25rem e as marcas mantêm a altura: cabem porque a
-   mais larga, o Payshop, tem 72px deitados e é a única que encosta. */
+/* NUM ECRÃ ESTREITO A MARCA MUDA DE LINHA, EM VEZ DE ENCOLHER OU TRANSBORDAR.
+   Tentei primeiro encolher a caixa para 3,25rem e deixar as marcas
+   transbordarem (`max-inline-size: none`). Medido a 320px: o Payshop ficou 10px
+   POR CIMA do texto e o Google Pay 6px -- «Payshop reference to pay in cash»
+   com o logótipo em cima da frase.
+   E encolher também não serve: a 52px de largura o Google Pay ficaria com 21px
+   de altura, mais pequeno do que o MB WAY a 24 -- e tanto a Google como a Apple
+   proíbem por escrito mostrar a marca delas menor do que as outras.
+   Por isso abaixo dos 24rem a opção passa a duas linhas: rádio e marca em cima,
+   no tamanho a que se lêem, e a frase com a largura toda por baixo. */
 @media (width < 24rem) {
-  .pay-choice__opt { gap: .6rem; padding-inline: .75rem; }
-  .pay-choice__marca { inline-size: 3.25rem; }
-  .pay-choice__marca img { max-inline-size: none; }
+  .pay-choice__opt {
+    display: grid; grid-template-columns: auto 1fr;
+    row-gap: .5rem; padding-inline: .75rem; align-items: center;
+  }
+  .pay-choice__marca { inline-size: auto; justify-items: start; }
+  /* A ÁREA VAI INTEIRA, linha E colunas: um item de posição definida é colocado
+     ANTES dos automáticos, e sem a linha explícita roubava a célula da marca. */
+  .pay-choice__body { grid-area: 2 / 1 / auto / -1; }
 }
 
 .pay-amount { font-size: clamp(28px, 7vw, 40px); font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; margin-block: 1.25rem; }

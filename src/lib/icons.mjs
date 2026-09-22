@@ -9,6 +9,11 @@ const D = {
   menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
   close: '<path d="M6 6l12 12M18 6 6 18"/>',
   cart: '<path d="M4 7h16l-1.4 11.2a2 2 0 0 1-2 1.8H7.4a2 2 0 0 1-2-1.8L4 7Z"/><path d="M9 7V5.5a3 3 0 0 1 6 0V7"/>',
+  /* O cartão da escolha de pagamento. É NOSSO de propósito: as marcas da Visa
+     e da Mastercard têm regras próprias e a obra-de-arte oficial está atrás de
+     acordos de descarga -- ver assets/brand/pay/LEIA.md. Um rectângulo com a
+     banda magnética não é marca de ninguém. */
+  card: '<rect x="2.5" y="5" width="19" height="14" rx="2.2"/><path d="M2.5 9.5h19" stroke-width="2.6"/><path d="M6 15h4"/>',
   search: '<circle cx="11" cy="11" r="6.5"/><path d="m16 16 4 4"/>',
   arrowRight: '<path d="M5 12h14M13 6l6 6-6 6"/>',
   arrowLeft: '<path d="M19 12H5M11 18l-6-6 6-6"/>',

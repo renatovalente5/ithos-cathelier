@@ -264,13 +264,31 @@ export function quote({ identity }) {
  * partir dos ~38px, enquanto o MB WAY se lê aos 24 e o Payshop aos 19. Cada
  * marca vai ao seu tamanho óptico. O porquê por extenso, e a proveniência da
  * obra-de-arte, estão em assets/brand/pay/LEIA.md. */
+/* A APPLE E A GOOGLE PROÍBEM AS DUAS mostrar a sua marca mais pequena do que as
+   outras identidades de pagamento «em formato semelhante». As marcas deitadas
+   desta loja são o MB WAY (24) e o Payshop (19); estas duas vão a 28, que não é
+   menor do que nenhuma. O Multibanco fica nos 38 e não entra na comparação: é
+   um logótipo AO ALTO, outro formato, e a palavra dele deixa de se ler abaixo
+   disso. Medi a alternativa de pôr tudo a 38 -- cumpre à letra e fica pior,
+   com o Apple Pay e o Google Pay a dominar a lista. */
 const MARCAS = {
   mbway: { w: 143.2, h: 69.57, alto: 24 },
   multibanco: { w: 153.98, h: 181.88, alto: 38 },
   payshop: { w: 455.24, h: 120.57, alto: 19 },
+  applepay: { w: 165.52107, h: 105.9651, alto: 28 },
+  googlepay: { w: 41, h: 17, alto: 28 },
 };
 
+/* O CARTÃO LEVA UM ÍCONE NOSSO E NÃO AS MARCAS DA VISA E DA MASTERCARD.
+   A obra-de-arte da Visa que a ifthenpay distribui é o logótipo ANTIGO, que a
+   Visa proíbe por escrito; a oficial das duas está atrás de acordos de
+   descarga. E mostrar marcas de aceitação é opcional: não as mostrar não custa
+   nada, mostrá-las mal custa. O porquê por extenso está em
+   assets/brand/pay/LEIA.md. */
 function marca(qual) {
+  if (qual === 'cartao') {
+    return `<span class="pay-choice__marca">${icon('card', 30)}</span>`;
+  }
   const m = MARCAS[qual];
   if (!m) throw new Error(`logótipo desconhecido: ${qual}`);
   const largura = Math.round((m.w / m.h) * m.alto);
@@ -396,6 +414,35 @@ export function basket({ shipping }) {
           <span class="pay-choice__body">
             <span class="pay-choice__name">Payshop</span>
             <span class="pay-choice__note">A reference to pay in cash at any Payshop agent.</span>
+          </span>
+        </label>
+        <!-- OS TRÊS ÚLTIMOS LEVAM O COMPRADOR DAQUI PARA FORA, e as notas
+             dizem-no. O cartão vai para um formulário seguro onde escreve o
+             número -- que é como tem de ser, porque esses dados nunca podem
+             passar por nós. O Google Pay e o Apple Pay não têm outra porta: a
+             ifthenpay só os serve pela página dela. -->
+        <label class="pay-choice__opt">
+          <input type="radio" name="metodo" value="CCARD" required>
+          ${marca('cartao')}
+          <span class="pay-choice__body">
+            <span class="pay-choice__name">Card</span>
+            <span class="pay-choice__note">Visa or Mastercard. You type the number on a secure page — we never see it.</span>
+          </span>
+        </label>
+        <label class="pay-choice__opt">
+          <input type="radio" name="metodo" value="GOOGLE" required>
+          ${marca('googlepay')}
+          <span class="pay-choice__body">
+            <span class="pay-choice__name">Google Pay</span>
+            <span class="pay-choice__note">Pay with the card in your Google account.</span>
+          </span>
+        </label>
+        <label class="pay-choice__opt">
+          <input type="radio" name="metodo" value="APPLE" required>
+          ${marca('applepay')}
+          <span class="pay-choice__body">
+            <span class="pay-choice__name">Apple Pay</span>
+            <span class="pay-choice__note">Pay with Touch ID or Face ID on your Apple device.</span>
           </span>
         </label>
       </div>
