@@ -713,7 +713,24 @@ p { text-wrap: pretty; }
    the picture, and the cover looks exactly as it does with no JavaScript. The
    fade is what stops the first frame arriving as a jump-cut -- and it is
    skipped for anyone who asked for less motion, who never gets this far. */
+/* O FILME NÃO DIMENSIONA A CAPA. É a fotografia que lhe dá a forma, e o filme
+   é despejado lá dentro.
+   Estava `inline-size: 100%; block-size: 100%`, e um `block-size` em
+   percentagem numa linha de grelha automática conta como `auto` para efeitos
+   de dimensionamento: assim que os metadados do vídeo chegam, o elemento passa
+   a ter proporção intrínseca (16:9) e contribui com a altura toda dela. A
+   fotografia ao lado está travada pelo `max-block-size: calc(100svh - 3rem)` e
+   não acompanha.
+   Medido num ecrã de 1905x1005: a capa abria com 957px, tudo a bater certo; no
+   instante em que os metadados do filme chegavam, a capa saltava para 1072 e a
+   fotografia ficava nos 957 -- 115px em que só havia véu por cima do fundo da
+   página. É a barra escura que aparecia em baixo antes de o filme entrar.
+   `position: absolute` tira-o da conta: um item posicionado não contribui para
+   a altura da linha. O `inset: 0` sobre a área de grelha 1/1 dá-lhe
+   exactamente a caixa da capa, seja ela qual for. */
 .cover__film {
+  position: absolute;
+  inset: 0;
   inline-size: 100%;
   block-size: 100%;
   object-fit: cover;

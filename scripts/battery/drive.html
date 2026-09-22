@@ -38,7 +38,13 @@ const L = Number(new URLSearchParams(location.search).get('w') || 1280);
    query de compactação é `(height < 40rem)`, que NÃO casa em 640 exactos, e o
    conteúdo em repouso do painel cathelier mede 599px. Quarenta e um pixels de
    folga, sem guarda nenhuma até aqui. */
-const ALTURAS = { 320: 568, 375: 667, 390: 844, 768: 1024, 1280: 800, 1366: 640, 1440: 900 };
+/* 1920x1080 NÃO É MAIS UM TAMANHO GRANDE: é a forma que apanha uma classe de
+   defeitos que nenhuma das outras apanha. A capa é `aspect-ratio: 16/9`
+   travada por `max-block-size: calc(100svh - 3rem)`, e o travão só morde
+   quando `largura/16*9 > altura-48`. A 1280x800 dá 720 contra 752 e a
+   proporção ganha -- a capa nunca chega ao travão, e a barra escura que a dona
+   viu a 1905x1005 era invisível a todas as larguras que esta lista tinha. */
+const ALTURAS = { 320: 568, 375: 667, 390: 844, 768: 1024, 1280: 800, 1366: 640, 1440: 900, 1920: 1080 };
 const A = Number(new URLSearchParams(location.search).get('h') || ALTURAS[L] || 900);
 
 /* O carrinho é SEMEADO antes de começar.

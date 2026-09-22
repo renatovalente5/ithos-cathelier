@@ -209,6 +209,42 @@ window.__bateria = function () {
        própria uma verificação, e corre em TODA a página que tenha capa. */
     nota(!!veu && !!capaImg && !!titulo, 'a capa tem fotografia, véu e título',
       `foto=${!!capaImg} véu=${!!veu} título=${!!titulo}`);
+
+    /* A FOTOGRAFIA TEM DE COBRIR A CAPA TODA, E ISTO JÁ FALHOU.
+     *
+     * Num ecrã largo e baixo -- 1905x1005, o da dona -- a capa abria com 957px
+     * e tudo batia certo. Assim que os metadados do filme chegavam, a capa
+     * saltava para 1072 e a fotografia ficava travada nos 957 pelo
+     * `max-block-size: calc(100svh - 3rem)`: 115px em que só havia véu por
+     * cima do fundo da página. Era uma barra escura em baixo, que só
+     * desaparecia quando o filme acabava de entrar.
+     *
+     * A causa era o `block-size: 100%` do filme. Uma percentagem numa linha de
+     * grelha automática conta como `auto` para dimensionar: o vídeo passava a
+     * ter proporção intrínseca e crescia a linha. A fotografia, travada, não
+     * acompanhava.
+     *
+     * Duas medições, porque uma sozinha mente:
+     *  · a de baixo é o RESULTADO, e é a que a dona viu. Vale para qualquer
+     *    causa -- o filme, ou umas palavras que um dia não caibam.
+     *  · a de cima é o MECANISMO, e é síncrona: não depende de o filme chegar
+     *    a carregar dentro de um iframe, onde o autoplay costuma ser recusado.
+     *    Sem ela, esta secção imprimia ✓ sem o filme ter existido. */
+    const filme = document.querySelector('.cover__film');
+    if (filme) {
+      nota(getComputedStyle(filme).position !== 'static',
+        'o filme está fora do fluxo e não dimensiona a capa',
+        `position: ${getComputedStyle(filme).position}`);
+    }
+    if (veu && capaImg) {
+      const cv = veu.getBoundingClientRect();
+      const cf = capaImg.getBoundingClientRect();
+      const emCima = Math.round(cf.top - cv.top);
+      const emBaixo = Math.round(cv.bottom - cf.bottom);
+      nota(emCima <= 1 && emBaixo <= 1,
+        'a fotografia cobre a capa toda — não há faixa de véu sobre o nada',
+        `sobra ${emCima}px em cima e ${emBaixo}px em baixo`);
+    }
   }
 
   if (capaImg && veu && titulo) {
