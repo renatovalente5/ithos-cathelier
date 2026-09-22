@@ -1373,7 +1373,16 @@ html.menu-open { overflow: hidden; }
 .pay-choice__opt:has(input:checked) { border-color: var(--accent); background: var(--frame-bg, var(--bg-soft)); }
 .pay-choice__opt:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
 .pay-choice__opt input { margin-block-start: .25rem; flex: none; accent-color: var(--accent); }
-.pay-choice__body { display: block; min-width: 0; }
+/* `flex: 1 1 auto` E NÃO O `flex: 0 1 auto` POR OMISSÃO.
+   Sem ele o bloco de texto encolhe ao seu conteúdo e a caixa do logótipo fica
+   onde a frase acabar -- e as três frases têm comprimentos diferentes, por
+   isso as três marcas ficavam a três distâncias diferentes da margem. Foi
+   exactamente isto que a caixa de largura fixa existia para evitar, e passou
+   despercebido em duas capturas seguidas até as medir: 510, 545 e 375 px.
+   `min-width: 0` continua a ser preciso: um item de flex não encolhe abaixo do
+   seu conteúdo mínimo sem isto, e uma palavra comprida empurrava o logótipo
+   para fora da caixa. */
+.pay-choice__body { display: block; flex: 1 1 auto; min-width: 0; }
 .pay-choice__name { display: block; font-weight: 600; color: var(--ink); }
 .pay-choice__note { display: block; margin-block-start: .2rem; font-size: 13px; line-height: 1.6; color: var(--muted); }
 
