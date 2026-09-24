@@ -45,6 +45,14 @@ ninety days.
   amount. We never see your bank or card details. If you pay by MB WAY, your telephone
   number goes to them too, because that is how the request reaches your phone.
 - **{{CARRIER}}**, to deliver the parcel: your name, address and telephone.
+- **Resend**, to deliver our emails to you: the confirmation carries your name,
+  what you ordered and the address it is going to, so Resend handles all of it
+  on the way. Their servers for this domain are in Ireland.
+- **Cloudflare**, which runs the checkout and holds the order — everything in
+  the paragraph above — from the moment you press **Order and pay** until it is
+  deleted. They are also who our shop emails leave through.
+- **GitHub**, which serves these pages to your browser and therefore sees the
+  request, including your IP address.
 - Our accountant, and the tax authority, for invoices.
 
 Nobody else. Your details are not sold, and not used to advertise at you.

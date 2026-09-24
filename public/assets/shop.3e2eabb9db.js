@@ -12,7 +12,7 @@
 const BASE = '';
 /* Filled in by the build too. Empty means the shop cannot take money, and the
    checkout button says so rather than failing silently. */
-const API = 'https://ithos-cathelier-api.renato-lima-valente-dcb.workers.dev';
+const API = '';
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
