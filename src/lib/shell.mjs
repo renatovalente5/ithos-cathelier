@@ -1,6 +1,6 @@
 import { esc, safeHref, jsonInScript } from './html.mjs';
 import { icon } from './icons.mjs';
-import { t, lingua, LINGUAS, LOCALE, OG_LOCALE, NOMES, morada, linguaDaRaiz } from './i18n.mjs';
+import { t, lingua, LINGUAS, LOCALE, OG_LOCALE, NOMES, morada, linguaDaRaiz, prefixoDe } from './i18n.mjs';
 
 /* ===========================================================================
    The page shell: <head>, the header, the drawer, the footer.
@@ -149,7 +149,7 @@ export function page(o) {
   const og = image ? (image.startsWith('http') ? image : abs(image)) : abs('/assets/share.jpg');
 
   return `<!doctype html>
-<html lang="${LOCALE[lingua()]}" data-brand="${brand}"${cover ? ' data-cover="yes"' : ''}>
+<html lang="${LOCALE[lingua()]}"${prefixoDe() ? ` data-prefixo="${prefixoDe()}"` : ''} data-brand="${brand}"${cover ? ' data-cover="yes"' : ''}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -229,7 +229,7 @@ ${footer({ brand, identity })}
      for by name: at 375x812 it covered the second row of lamps, so a
      first-time visitor saw two instead of the four she asked for. -->
 
-<script src="/assets/${asset.js || 'shop.js'}" defer></script>
+${asset.textos?.[lingua()] ? `<script src="/assets/${asset.textos[lingua()]}" defer></script>\n` : ''}<script src="/assets/${asset.js || 'shop.js'}" defer></script>
 </body>
 </html>
 `;

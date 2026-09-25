@@ -21,6 +21,8 @@ import * as pages from './lib/pages.mjs';
 import { esc } from './lib/html.mjs';
 import { REDIRECTS } from './lib/redirects.mjs';
 import { stockDe, prateleiras } from './lib/prazos.mjs';
+import { t, lingua, LOCALE, LINGUAS, ORIGEM, definirLingua, linguaDaRaiz, prefixoDe, morada } from './lib/i18n.mjs';
+import { aplicar, lerPaginaTraduzida, RESUMO_TAMANHO } from './lib/traduziveis.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..');
@@ -100,11 +102,25 @@ function prefixCss(css) {
   return css.replace(/url\((['"]?)\/(?!\/)/g, `url($1${BASE}/`);
 }
 
-const read = (p) => JSON.parse(readFileSync(join(CONTENT, p), 'utf8'));
-const identity = read('settings/identity.json');
-const shipping = read('settings/shipping.json');
-const shop = read('settings/shop.json');
-const covers = read('settings/covers.json');
+/* O CONTEÚDO NA LÍNGUA DO PASSO. O de origem (português) está em content/;
+   numa outra língua, cada campo traduzido de content/i18n/<língua>/ vai por
+   cima (ver src/lib/traduziveis.mjs). Um campo sem tradução fica em
+   português; uma tradução desactualizada continua a valer até o Worker a
+   refazer. As contagens ficam para o fim, para se saber o que falta. */
+const resumir = (texto) => createHash('sha256').update(texto).digest('hex').slice(0, RESUMO_TAMANHO);
+const faltasDeTraducao = {};
+function lerNaLingua(p) {
+  const origem = JSON.parse(readFileSync(join(CONTENT, p), 'utf8'));
+  if (lingua() === ORIGEM) return origem;
+  const ficheiro = join(CONTENT, 'i18n', lingua(), p);
+  const traducao = existsSync(ficheiro) ? JSON.parse(readFileSync(ficheiro, 'utf8')) : null;
+  const r = aplicar(`content/${p}`, origem, traducao, resumir);
+  const c = (faltasDeTraducao[lingua()] ??= { desactualizados: 0, emFalta: 0 });
+  c.desactualizados += r.desactualizados; c.emFalta += r.emFalta;
+  return r.obj;
+}
+const read = (p) => lerNaLingua(p);
+let identity; let shipping; let shop; let covers;
 
 /* Which cover renditions actually exist, counted off disk rather than assumed.
    The cathelier master is an enlarged Instagram still and stops short of the
@@ -138,23 +154,48 @@ function loadProducts(brand) {
   const dir = join(CONTENT, brand);
   if (!existsSync(dir)) return [];
   return readdirSync(dir).filter((f) => f.endsWith('.json')).map((f) => {
-    const p = JSON.parse(readFileSync(join(dir, f), 'utf8'));
+    const p = lerNaLingua(`${brand}/${f}`);
     p.slug = f.replace(/\.json$/, '');
     return p;
   }).filter((p) => p.published).sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
 }
 
-const lamps = loadProducts('ithos');
-const pieces = loadProducts('cathelier').filter((p) => p.slug !== '_occasions');
-const occasions = existsSync(join(CONTENT, 'cathelier/_occasions.json'))
-  ? read('cathelier/_occasions.json').filter((o) => o.published).sort((a, b) => a.order - b.order)
-  : [];
-const counts = { lamps: lamps.length, pieces: pieces.length, occasions: occasions.length };
+let lamps; let pieces; let occasions; let counts; let shellArgs; let MARKERS;
+
+/* Lê tudo na língua dada. O gerador chama isto no início de cada passo. */
+function prepararLingua(l) {
+  definirLingua(l);
+  identity = read('settings/identity.json');
+  shipping = read('settings/shipping.json');
+  shop = read('settings/shop.json');
+  covers = read('settings/covers.json');
+  lamps = loadProducts('ithos');
+  pieces = loadProducts('cathelier').filter((p) => p.slug !== '_occasions');
+  occasions = existsSync(join(CONTENT, 'cathelier/_occasions.json'))
+    ? read('cathelier/_occasions.json').filter((o) => o.published).sort((a, b) => a.order - b.order)
+    : [];
+  counts = { lamps: lamps.length, pieces: pieces.length, occasions: occasions.length };
+  shellArgs = { site: SITE, identity, counts, preview: PREVIEW, shipping, shop, asset: ASSET };
+  MARKERS = pages.markers({ identity, shop, shipping });
+}
 
 /* --- writing -------------------------------------------------------------- */
 
 const written = [];
-function write(path, html, { sitemap = true, stub = false } = {}) {
+/* NUMA LÍNGUA QUE NÃO É A DA RAIZ, as ligações internas levam o prefixo dela.
+   Só as das páginas: /assets/, /media/ e /data/ são os mesmos ficheiros para
+   todas as línguas. O seletor de língua escreve moradas absolutas, e é por
+   isso que escapa a esta regra. */
+function comPrefixoDeLingua(html, pre) {
+  return html
+    .replace(/(\shref=")\/(?!\/|assets\/|media\/|data\/)/g, `$1${pre}/`)
+    .replace(/(\scontent="\d+;\s*url=)\/(?!\/)/g, `$1${pre}/`);
+}
+
+function write(pathNaOrigem, html, { sitemap = true, stub = false } = {}) {
+  const path = morada(pathNaOrigem);
+  const pre = prefixoDe();
+  if (pre) html = comPrefixoDeLingua(html, pre);
   /* DUAS ESCRITAS NA MESMA MORADA ERAM UM SUBSTITUIR SILENCIOSO.
      Sem isto, escrever um reencaminhamento em `/cathelier/pieces/` por engano
      apagava a página verdadeira e punha lá um sinal de trânsito -- e nada
@@ -173,7 +214,7 @@ function write(path, html, { sitemap = true, stub = false } = {}) {
   const dest = join(OUT, file);
   mkdirSync(dirname(dest), { recursive: true });
   writeFileSync(dest, prefix(html));
-  written.push({ path, sitemap, stub });
+  written.push({ path, sitemap, stub, lingua: lingua() });
 }
 
 /* --- reencaminhamentos -----------------------------------------------------
@@ -203,19 +244,19 @@ function redirectStub({ to, name }) {
      Não há comentários nesta saída: um stub é lido por quem estiver de
      passagem durante uns milissegundos, e o que aqui vai é servido. */
   return `<!doctype html>
-<html lang="en">
+<html lang="${LOCALE[lingua()]}">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="generator" content="redirect-stub">
 <meta http-equiv="refresh" content="0; url=${esc(to)}">
-<link rel="canonical" href="${SITE}${to.split('#')[0]}">${PREVIEW ? `
+<link rel="canonical" href="${SITE}${morada(to.split('#')[0])}">${PREVIEW ? `
 <meta name="robots" content="noindex, nofollow">` : ''}
-<title>${esc(name)} — moved to the full list | cathelier</title>
+<title>${esc(t('build.stub.titulo', { nome: name }))}</title>
 </head>
 <body>
-<p>This page has moved. \u201C${esc(name)}\u201D is now a filter on the full list of pieces.
-<a id="go" href="${esc(to)}">Go to \u201C${esc(name)}\u201D</a>.</p>
+<p>${esc(t('build.stub.texto', { nome: name }))}
+<a id="go" href="${esc(to)}">${esc(t('build.stub.ir', { nome: name }))}</a>.</p>
 <script>var a=document.getElementById('go');if(a)location.replace(a.href)</script>
 </body>
 </html>
@@ -236,7 +277,7 @@ function redirectStub({ to, name }) {
  * one. A hashed name makes a deploy impossible to miss and lets these be
  * cached for a year instead of ten minutes. */
 const digest = (s) => createHash('sha256').update(s).digest('hex').slice(0, 10);
-const ASSET = { css: '', js: '' };
+const ASSET = { css: '', js: '', textos: {} };
 
 function assets() {
   const css = ['styles/base.css', 'styles/brands/ithos.css', 'styles/brands/cathelier.css', 'styles/shop.css']
@@ -256,6 +297,22 @@ function assets() {
      silêncio, o que já custou caro noutro projecto. */
   for (const nota of ['assets/pay/LEIA.md']) {
     rmSync(join(OUT, nota), { force: true });
+  }
+
+  /* AS FRASES DO shop.js, UMA FICHEIRO POR LÍNGUA. O shop.js é um só para o
+     site todo; o que ele escreve no ecrã vem de window.TEXTOS, que este
+     ficheiro enche antes dele. Sai de src/i18n/<língua>/js.json, com a origem
+     por baixo para o que ainda não estiver traduzido. */
+  const jsOrigem = join(ROOT, 'src', 'i18n', ORIGEM, 'js.json');
+  for (const l of LINGUAS) {
+    const f = join(ROOT, 'src', 'i18n', l, 'js.json');
+    if (!existsSync(f) && !existsSync(jsOrigem)) continue;
+    const ler = (x) => (existsSync(x) ? JSON.parse(readFileSync(x, 'utf8')) : {});
+    const junto = Object.fromEntries(Object.entries({ ...ler(jsOrigem), ...ler(f) })
+      .filter(([k]) => !k.startsWith('_')).map(([k, v]) => [k, typeof v === 'object' && v ? v.t : v]));
+    const corpo = `window.TEXTOS=${JSON.stringify(junto)};\n`;
+    ASSET.textos[l] = `textos.${l}.${digest(corpo)}.js`;
+    writeFileSync(join(OUT, 'assets', ASSET.textos[l]), corpo);
   }
 
   if (existsSync(join(HERE, 'js', 'shop.js'))) {
@@ -318,8 +375,9 @@ const ARTIGO_DE_PROVA = ['zz-prova', {
   options: [],
 }];
 
-function catalogueFile() {
+function catalogueFile(nomesNasLinguas = {}) {
   const body = {
+    ...(Object.keys(nomesNasLinguas).length ? { i18n: nomesNasLinguas } : {}),
     preview: PREVIEW || !shop.open,
     currency: 'EUR',
     lead: { inStockDays: shop.lead.inStockDays, toOrderWeeks: shop.lead.toOrderWeeks },
@@ -400,28 +458,25 @@ function catalogueFile() {
   return { hash, count: Object.keys(body.products).length };
 }
 
-const shellArgs = { site: SITE, identity, counts, preview: PREVIEW, shipping, shop, asset: ASSET };
 
 function buildIthos() {
   write('/', page({
     ...shellArgs, brand: 'ithos', path: '/',
-    title: 'ithos — handmade wooden night lights for children’s rooms',
-    description: 'Wooden night lights cut, sanded and painted by hand in Castelo Branco, Portugal. '
-      + `${lamps.length} designs, each one able to carry an engraved name.`,
+    title: t('build.inicio.titulo'),
+    description: t('build.inicio.descricao', { n: lamps.length }),
     cover: true,
     body: ithos.home({ products: lamps, identity, cover: covers.ithos, coverArt: coverArt('ithos') }),
     schema: [{
       '@context': 'https://schema.org', '@type': 'Organization',
-      name: 'ithos', url: SITE, email: identity.email, telephone: identity.phone,
+      name: 'ithos', url: prefixoDe() ? `${SITE}${prefixoDe()}/` : SITE, email: identity.email, telephone: identity.phone,
     }],
   }));
 
   write('/lamps/', page({
     ...shellArgs, brand: 'ithos', path: '/lamps/',
-    title: `Wooden night lights — all ${lamps.length} designs | ithos`,
-    description: `Every ithos night light: ${lamps.length} handmade designs in solid pine, `
-      + 'from animals to rockets. Each one can carry an engraved name.',
-    crumbs: [{ name: 'Home', href: '/' }, { name: 'Lamps' }],
+    title: t('build.candeeiros.titulo', { n: lamps.length }),
+    description: t('build.candeeiros.descricao', { n: lamps.length }),
+    crumbs: [{ name: t('build.migalha.inicio'), href: '/' }, { name: t('build.migalha.candeeiros') }],
     body: ithos.catalogue({ products: lamps }),
   }));
 
@@ -429,19 +484,19 @@ function buildIthos() {
     const { low } = ithos.fromPrice(p);
     write(`/lamps/${p.slug}/`, page({
       ...shellArgs, brand: 'ithos', path: `/lamps/${p.slug}/`,
-      title: `${p.name} night light — handmade in wood | ithos`,
+      title: t('build.candeeiro.titulo', { nome: p.name }),
       description: p.summary,
       image: `/media/ithos/${p.photoFolder}/${p.cover}-1000.webp`,
-      crumbs: [{ name: 'Home', href: '/' }, { name: 'Lamps', href: '/lamps/' }, { name: p.name }],
+      crumbs: [{ name: t('build.migalha.inicio'), href: '/' }, { name: t('build.migalha.candeeiros'), href: '/lamps/' }, { name: p.name }],
       body: ithos.product({ p, all: lamps, shop }),
       schema: [{
         '@context': 'https://schema.org', '@type': 'Product',
-        name: `${p.name} wooden night light`, description: p.summary,
+        name: t('build.candeeiro.nomeProduto', { nome: p.name }), description: p.summary,
         image: `${SITE}/media/ithos/${p.photoFolder}/${p.cover}-1000.webp`,
         brand: { '@type': 'Brand', name: 'ithos' },
         offers: {
           '@type': 'Offer', price: low.toFixed(2), priceCurrency: 'EUR',
-          availability: 'https://schema.org/MadeToOrder', url: `${SITE}/lamps/${p.slug}/`,
+          availability: 'https://schema.org/MadeToOrder', url: `${SITE}${morada(`/lamps/${p.slug}/`)}`,
         },
       }],
     }));
@@ -451,9 +506,8 @@ function buildIthos() {
 function buildCathelier() {
   write('/cathelier/', page({
     ...shellArgs, brand: 'cathelier', path: '/cathelier/',
-    title: 'cathelier — personalised pieces, cut and engraved to order',
-    description: `Laser-cut wooden keepsakes with your names, dates and words on them. `
-      + `${pieces.length} pieces in ${occasions.length} collections, each with a proof to approve before we cut.`,
+    title: t('build.cathelier.titulo'),
+    description: t('build.cathelier.descricao', { n: pieces.length, m: occasions.length }),
     cover: true,
     body: cath.home({ occasions, pieces, cover: covers.cathelier, coverArt: coverArt('cathelier') }),
   }));
@@ -465,7 +519,8 @@ function buildCathelier() {
      raiz, e esse veste ithos: um leitor da cathelier aterrava com a tipografia
      e as cores da outra marca a oferecer-lhe candeeiros.
      A lista está em src/lib/redirects.mjs e é história, não conteúdo. */
-  for (const r of REDIRECTS) {
+  /* Só na raiz: são moradas que existiram, e existiram antes de haver línguas. */
+  for (const r of lingua() === linguaDaRaiz() ? REDIRECTS : []) {
     const o = occasions.find((x) => x.slug === r.to.split('#')[1]);
     write(r.from, redirectStub({ ...r, name: o ? o.name : r.to.split('#')[1] }),
       { sitemap: false, stub: true });
@@ -482,19 +537,19 @@ function buildCathelier() {
 
   write('/cathelier/pieces/', page({
     ...shellArgs, brand: 'cathelier', path: '/cathelier/pieces/',
-    title: `Every piece — ${pieces.length} personalised designs | cathelier`,
-    description: `All ${pieces.length} cathelier pieces, made to order with your names, dates or words engraved.`,
-    crumbs: [{ name: 'cathelier', href: '/cathelier/' }, { name: 'Every piece' }],
+    title: t('build.pecas.titulo', { n: pieces.length }),
+    description: t('build.pecas.descricao', { n: pieces.length }),
+    crumbs: [{ name: 'cathelier', href: '/cathelier/' }, { name: t('build.migalha.todasPecas') }],
     body: cath.all({ pieces, occasions }),
   }));
 
   for (const p of pieces) {
     write(`/cathelier/pieces/${p.slug}/`, page({
       ...shellArgs, brand: 'cathelier', path: `/cathelier/pieces/${p.slug}/`,
-      title: `${p.name} — personalised and engraved | cathelier`,
+      title: t('build.peca.titulo', { nome: p.name }),
       description: p.summary,
       crumbs: [{ name: 'cathelier', href: '/cathelier/' },
-               { name: 'Every piece', href: '/cathelier/pieces/' }, { name: p.name }],
+               { name: t('build.migalha.todasPecas'), href: '/cathelier/pieces/' }, { name: p.name }],
       body: cath.piece({ p, all: pieces, shop, occasions }),
       image: p.photoFolder && p.cover ? `/media/cathelier/${p.photoFolder}/${p.cover}-400.webp` : undefined,
       /* The 41 cathelier pieces emitted no structured data at all while the 26
@@ -510,7 +565,7 @@ function buildCathelier() {
         offers: {
           '@type': 'Offer', price: Number(p.price).toFixed(2), priceCurrency: 'EUR',
           availability: 'https://schema.org/MadeToOrder',
-          url: `${SITE}/cathelier/pieces/${p.slug}/`,
+          url: `${SITE}${morada(`/cathelier/pieces/${p.slug}/`)}`,
         },
       }],
     }));
@@ -519,8 +574,16 @@ function buildCathelier() {
 
 /* --- the pages both shops share ------------------------------------------ */
 
-const MARKERS = pages.markers({ identity, shop, shipping });
-const readPage = (f) => readFileSync(join(CONTENT, 'pages', f), 'utf8');
+const readPage = (f) => {
+  const origem = readFileSync(join(CONTENT, 'pages', f), 'utf8');
+  if (lingua() === ORIGEM) return origem;
+  const tr = join(CONTENT, 'i18n', lingua(), 'pages', f);
+  const lida = existsSync(tr) ? lerPaginaTraduzida(readFileSync(tr, 'utf8')) : null;
+  const c = (faltasDeTraducao[lingua()] ??= { desactualizados: 0, emFalta: 0 });
+  if (!lida) { c.emFalta++; return origem; }
+  if (lida.h !== resumir(origem)) c.desactualizados++;
+  return lida.texto;
+};
 
 function prose(path, file, { brand = 'ithos', title, description, crumbs, both = false }) {
   const html = pages.markdown(pages.fill(readPage(file), MARKERS));
@@ -568,33 +631,28 @@ function mirror(path, { title, description, crumbs, body, schema = [], noindex =
 }
 
 function buildShared() {
-  prose('/about/', 'about.md', { title: 'The workshop — ithos', crumbs: [{ name: 'Home', href: '/' }, { name: 'The workshop' }],
-    description: 'A small workshop in Castelo Branco, Portugal, where every wooden night light is cut, sanded, painted and wired by hand.' });
+  prose('/about/', 'about.md', { title: t('build.oficina.titulo'), crumbs: [{ name: t('build.migalha.inicio'), href: '/' }, { name: t('build.migalha.oficina') }],
+    description: t('build.oficina.descricao') });
 
   prose('/cathelier/about/', 'cathelier/about.md', { brand: 'cathelier',
-    title: 'The workshop — cathelier', crumbs: [{ name: 'cathelier', href: '/cathelier/' }, { name: 'The workshop' }],
-    description: 'The laser side of a small Portuguese workshop: personalised pieces drawn, cut and engraved to order, with a proof to approve before anything is cut.' });
+    title: t('build.oficinaCath.titulo'), crumbs: [{ name: 'cathelier', href: '/cathelier/' }, { name: t('build.migalha.oficina') }],
+    description: t('build.oficinaCath.descricao') });
 
-  prose('/care-and-safety/', 'care-and-safety.md', { title: 'Care and safety — ithos',
-    crumbs: [{ name: 'Home', href: '/' }, { name: 'Care and safety' }],
-    description: 'How to look after a wooden night light, and what to know before putting one in a child\u2019s room.' });
+  prose('/care-and-safety/', 'care-and-safety.md', { title: t('build.cuidados.titulo'),
+    crumbs: [{ name: t('build.migalha.inicio'), href: '/' }, { name: t('build.migalha.cuidados') }],
+    description: t('build.cuidados.descricao') });
 
-  for (const [file, path, title, description] of [
-    ['legal/terms.md', '/legal/terms/', 'Terms of sale', 'The terms that apply to every purchase on this site, under both the ithos and cathelier names.'],
-    ['legal/privacy.md', '/legal/privacy/', 'Privacy', 'This site sets no analytics or advertising cookies and does not track you. What we hold, why, and for how long.'],
-    ['legal/cancellation.md', '/legal/cancellation/', 'Your right to cancel', 'Fourteen days to change your mind on anything that is not personalised, and what that exception means.'],
-    ['legal/returns-form.md', '/legal/returns-form/', 'Cancellation form', 'The form you may use to cancel an order. An email does the same job.'],
-    ['legal/shipping-and-returns.md', '/legal/shipping-and-returns/', 'Delivery and returns', 'How long things take, where we ship, what it costs, and what happens if something arrives damaged.'],
-    ['legal/identification.md', '/legal/identification/', 'Who you are buying from', 'The seller\u2019s legal identification, published under article 10 of Decree-Law 7/2004.'],
-  ]) {
-    prose(path, file, { both: true, title: `${title} — ${identity.tradingName}`, description,
-      crumbs: [{ name: 'Home', href: '/' }, { name: title }] });
+  for (const nome of ['terms', 'privacy', 'cancellation', 'returns-form', 'shipping-and-returns', 'identification']) {
+    const title = t(`build.legal.${nome}`);
+    prose(`/legal/${nome}/`, `legal/${nome}.md`, { both: true, title: `${title} — ${identity.tradingName}`,
+      description: t(`build.legal.${nome}.descricao`),
+      crumbs: [{ name: t('build.migalha.inicio'), href: '/' }, { name: title }] });
   }
 
   mirror('/contact/', {
-    title: 'Contact — ithos · cathelier',
-    description: 'WhatsApp, email or telephone. Answers in a day, usually less. And the questions we are asked most.',
-    crumbs: [{ name: 'Home', href: '/' }, { name: 'Contact' }],
+    title: t('build.contactos.titulo'),
+    description: t('build.contactos.descricao'),
+    crumbs: [{ name: t('build.migalha.inicio'), href: '/' }, { name: t('build.migalha.contactos') }],
     body: pages.contact({ identity, shop, faq: pages.FAQ(shop) }),
     schema: [{
       '@context': 'https://schema.org', '@type': 'FAQPage',
@@ -607,9 +665,9 @@ function buildShared() {
 
   write('/cathelier/quote/', page({
     ...shellArgs, brand: 'cathelier', path: '/cathelier/quote/',
-    title: 'Ask for a quote — cathelier',
-    description: 'For anything made to measure or in quantity: cake toppers, wedding signs, christening favours, trophies.',
-    crumbs: [{ name: 'cathelier', href: '/cathelier/' }, { name: 'Ask for a quote' }],
+    title: t('build.orcamento.titulo'),
+    description: t('build.orcamento.descricao'),
+    crumbs: [{ name: 'cathelier', href: '/cathelier/' }, { name: t('build.migalha.orcamento') }],
     body: pages.quote({ identity }),
   }));
 
@@ -618,33 +676,37 @@ function buildShared() {
      used to change shop by clicking the most-used control on the site. */
   mirror('/cart/', {
     noindex: true,
-    title: 'Your basket — ithos · cathelier',
-    description: 'What you have chosen so far.',
+    title: t('build.cesto.titulo'),
+    description: t('build.cesto.descricao'),
     body: pages.basket({ shipping, shop }),
   });
 
   mirror('/resellers/', {
     noindex: true,
-    title: 'Resellers — ithos · cathelier',
-    description: 'Sign in to see your reseller prices.',
+    title: t('build.revendedores.titulo'),
+    description: t('build.revendedores.descricao'),
     body: pages.resellers(),
   });
 
-  for (const [path, title, description, body] of [
-    ['/pay/', 'Pay for your order', 'Finish your payment by MB WAY or Multibanco.', pages.payPage(shop)],
-    ['/thank-you/', 'Thank you', 'Your order is placed and the workshop starts now.', pages.thankYou(shop)],
-    ['/order-cancelled/', 'Nothing was charged', 'You closed the payment page, so the order was not placed.', pages.orderCancelled()],
+  for (const [path, chave, body] of [
+    ['/pay/', 'pagar', pages.payPage(shop)],
+    ['/thank-you/', 'obrigado', pages.thankYou(shop)],
+    ['/order-cancelled/', 'cancelada', pages.orderCancelled()],
   ]) {
+    const title = t(`build.${chave}.titulo`);
+    const description = t(`build.${chave}.descricao`);
     write(path, page({
       ...shellArgs, brand: 'ithos', path, noindex: true,
       title: `${title} — ithos · cathelier`, description, body,
     }), { sitemap: false });
   }
 
-  write('/404.html', page({
+  /* O GitHub Pages serve UM 404, o da raiz: um /en/404.html seria uma página a
+     que nenhuma morada chega. */
+  if (lingua() === linguaDaRaiz()) write('/404.html', page({
     ...shellArgs, brand: 'ithos', path: '/404.html', noindex: true,
-    title: 'Not found — ithos · cathelier',
-    description: 'The page you were looking for has moved or never existed.',
+    title: t('build.naoEncontrada.titulo'),
+    description: t('build.naoEncontrada.descricao'),
     body: pages.notFound(),
   }), { sitemap: false });
 }
@@ -659,10 +721,28 @@ mkdirSync(OUT, { recursive: true });
 if (keepMedia) { cpSync(join(ROOT, '.media-cache'), media, { recursive: true }); rmSync(join(ROOT, '.media-cache'), { recursive: true, force: true }); }
 
 assets();
-buildIthos();
-buildCathelier();
-buildShared();
-const cat = catalogueFile();
+/* UM PASSO POR LÍNGUA. A primeira vai para a raiz; as outras para /<língua>/. */
+for (const l of LINGUAS) {
+  prepararLingua(l);
+  buildIthos();
+  buildCathelier();
+  buildShared();
+}
+/* O catálogo é UM só, na língua de origem: é dele que o Worker tira preços e
+   nomes para os emails. Leva os nomes nas outras línguas para o cesto os
+   mostrar na língua de quem compra. */
+const nomesNasLinguas = {};
+for (const l of LINGUAS.filter((x) => x !== ORIGEM)) {
+  prepararLingua(l);
+  nomesNasLinguas[l] = Object.fromEntries([...lamps, ...pieces].map((p) => [p.slug, {
+    name: p.name,
+    options: Object.fromEntries((p.options || []).map((o) => [o.id, {
+      name: o.name, ...(o.values ? { values: Object.fromEntries(o.values.map((v) => [v.id, v.name])) } : {}),
+    }])),
+  }]));
+}
+prepararLingua(ORIGEM);
+const cat = catalogueFile(nomesNasLinguas);
 
 writeFileSync(join(OUT, 'robots.txt'),
   PREVIEW ? 'User-agent: *\nDisallow: /\n' : `User-agent: *\nAllow: /\nSitemap: ${SITE}/sitemap.xml\n`);
@@ -684,3 +764,6 @@ const stubs = written.filter((w) => w.stub).length;
 console.log(`  ${written.length - stubs} pages · ${lamps.length} lamps · ${pieces.length} pieces`
   + (stubs ? ` · ${stubs} redirect stubs (they are not pages)` : ''));
 console.log(`  catalogue.${cat.hash}.json (${cat.count} products)`);
+for (const [l, c] of Object.entries(faltasDeTraducao)) {
+  if (c.emFalta || c.desactualizados) console.log(`  ${l}: ${c.emFalta} textos por traduzir, ${c.desactualizados} desactualizados (o Worker trata deles)`);
+}
