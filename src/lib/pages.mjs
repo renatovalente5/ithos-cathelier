@@ -187,7 +187,7 @@ export function contact({ identity, shop, faq }) {
 
 export const FAQ = (shop) => [
   ['How long does it take?',
-   `<p>A lamp that is in stock leaves the workshop within ${prazos(shop.lead).dias}.
+   `<p>A lamp that is in stock leaves the workshop in ${prazos(shop.lead).dias}.
     If it is out of stock you can still order it: we make yours, and it is with you
     in ${prazos(shop.lead).semanas}. Each product page says which it is.</p>
     <p>Cathelier pieces are always made to order — ${prazos(shop.lead).semanas}, counted

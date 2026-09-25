@@ -60,7 +60,7 @@ shelf, and you owe nothing — put the basket together again whenever you like.
 
 ## Making and delivering
 
-**A lamp in stock** leaves the workshop within {{IN_STOCK_DAYS}} of your payment.
+**A lamp in stock** leaves the workshop {{IN_STOCK_DAYS}} after your payment.
 
 **A lamp out of stock** can still be ordered: we make yours, and it is with you
 in {{TO_ORDER_WEEKS}}. Each product page and the basket say which it is before

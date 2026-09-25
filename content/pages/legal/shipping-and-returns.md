@@ -2,7 +2,7 @@
 
 ## How long it takes
 
-A lamp in stock leaves the workshop within {{IN_STOCK_DAYS}} of your payment.
+A lamp in stock leaves the workshop {{IN_STOCK_DAYS}} after your payment.
 A lamp out of stock is made for you, and is with you in {{TO_ORDER_WEEKS}}.
 Cathelier pieces are always made to order — {{TO_ORDER_WEEKS}}, counted from
 when you approve the drawing. Each product page and the basket say which applies

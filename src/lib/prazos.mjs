@@ -15,16 +15,24 @@ export function semanas(lead) {
   return a === b ? `${a} weeks` : `${a} to ${b} weeks`;
 }
 
+/* «3 to 5 working days». Aceita ainda um número só (`inStockDays: 3`), que
+   era a forma antes de a dona pedir um intervalo. */
+export function dias(lead) {
+  const d = lead.inStockDays;
+  const [a, b] = Array.isArray(d) ? d : [d, d];
+  return a === b ? `${a} working days` : `${a} to ${b} working days`;
+}
+
 export function prazos(lead) {
   const w = semanas(lead);
   return {
-    stock: `In stock — leaves the workshop within ${lead.inStockDays} working days.`,
+    stock: `In stock — leaves the workshop in ${dias(lead)}.`,
     semStock: `Out of stock — we make yours, with you in ${w}.`,
     encomenda: `Made to order — with you in ${w}.`,
     /* Para o cesto, quando a encomenda inteira espera pela peça mais lenta. */
     junto: `Everything ships together, when the last piece is ready.`,
     semanas: w,
-    dias: `${lead.inStockDays} working days`,
+    dias: dias(lead),
   };
 }
 

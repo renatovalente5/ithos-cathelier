@@ -282,7 +282,7 @@ async function stockNaFicha() {
     let frase = linha.dataset.leadNone;
     if (skus && revenda.activa && revenda.stock) {
       const n = quantosHa(skus, revenda.stock);
-      if (n > 0) frase = `${n} in stock — leaves the workshop within ${linha.dataset.leadDays}.`;
+      if (n > 0) frase = `${n} in stock — leaves the workshop in ${linha.dataset.leadDays}.`;
     } else if (skus && ha && skus.every((k) => ha.has(k))) {
       frase = linha.dataset.leadStock;
     }

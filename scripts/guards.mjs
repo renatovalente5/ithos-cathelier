@@ -53,8 +53,9 @@ for (const c of shipping.active) {
    would print "within undefined working days" on every lamp. */
 {
   const lead = read('settings/shop.json').lead ?? {};
-  if (!Number.isInteger(lead.inStockDays) || lead.inStockDays < 1 || lead.inStockDays > 30) {
-    die('shop.json: lead.inStockDays must be a whole number of working days, 1 to 30');
+  const d = lead.inStockDays;
+  if (!Array.isArray(d) || d.length !== 2 || !d.every((n) => Number.isInteger(n) && n >= 1 && n <= 30) || d[0] > d[1]) {
+    die('shop.json: lead.inStockDays must be [fewest, most] working days, like [3, 5]');
   }
   const w = lead.toOrderWeeks;
   if (!Array.isArray(w) || w.length !== 2 || !w.every((n) => Number.isInteger(n) && n >= 1 && n <= 26) || w[0] > w[1]) {
