@@ -17,3 +17,7 @@ photos/_contact/
 # The battery is copied into public/ to run and removed again. It is not the site.
 public/_battery.js
 public/_drive.html
+
+# A cache do wrangler dev guarda a localização aproximada de quem o corre
+# (cidade, código postal, coordenadas, operadora). Nunca num repositório.
+.wrangler/

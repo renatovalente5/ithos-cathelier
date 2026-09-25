@@ -62,6 +62,7 @@ const NAV_EXTRA = [['/contact/#faq', 'Questions']];
 export const MIRRORED = [
   '/contact/',
   '/cart/',
+  '/resellers/',
   '/legal/terms/',
   '/legal/privacy/',
   '/legal/cancellation/',
@@ -412,6 +413,7 @@ function footer({ brand, identity }) {
       ['/legal/privacy/', 'Privacy'],
       ['/legal/cancellation/', 'Right to cancel'],
       ['/legal/identification/', 'Who you are buying from'],
+      ['/resellers/', 'For resellers'],
     ]],
     /* O quarto campo é o desenho, e só este grupo o leva: estas três são as
        maneiras de falar connosco e reconhecem-se pela forma antes de se

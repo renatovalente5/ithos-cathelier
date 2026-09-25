@@ -82,6 +82,41 @@ Consumo (RAL)* — the competent arbitration centre is **{{ADR_NAME}}** —
 [{{ADR_SITE}}]({{ADR_SITE}}), {{ADR_ADDRESS}}, [{{ADR_EMAIL}}](mailto:{{ADR_EMAIL}}),
 {{ADR_PHONE}}.
 
+## For resellers {#resellers}
+
+These conditions apply when a business we have registered as a reseller buys
+at reseller prices. The rest of these terms apply too, except where this
+section says otherwise.
+
+**Who is a reseller.** A business we have registered under its NIF, company
+name and registered address. Registration is ours to grant and to end. You
+sign in with a link or a code sent to the email addresses on the registration.
+
+**Prices.** The retail prices on this site are recommended retail prices: you
+set your own resale price. Your price is the retail price less a discount per
+piece, shown to you while you are signed in; paid options are at their normal
+price. Shipping and order limits are the same as for everyone. VAT is not
+charged: article 53 of the Portuguese VAT code applies. Our price list and
+these conditions are available on request.
+
+**Buying for resale is not a consumer purchase.** The right to cancel within 14
+days (Decree-Law 24/2014) and the {{WARRANTY_YEARS}}-year legal guarantee for
+consumers (Decree-Law 84/2021) do not apply to what you buy for your business.
+Check the pieces when they arrive and tell us about any visible defect within
+8 days (Commercial Code, article 471); hidden defects follow the Civil Code
+(articles 913 to 922). If you are buying something for your own home and not
+for resale, do not use your reseller access: buy as a consumer, and every
+consumer right applies.
+
+**Invoices** are issued in your company's name, with your NIF and registered
+address.
+
+**When you resell,** you are the distributor of what you sell on, and the EU
+General Product Safety Regulation (2023/988) applies to you: keep the
+identification, instructions and warnings that come with each piece with it,
+in Portuguese, and show them when you sell online. If one of your customers
+has a problem with a piece that came from us, tell us.
+
 ## Law
 
 Portuguese law applies. Nothing here takes away rights the law gives you as a

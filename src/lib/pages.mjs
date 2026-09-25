@@ -83,7 +83,12 @@ export function markdown(src) {
 
     if (/^#{1,4} /.test(line)) {
       const level = line.match(/^#+/)[0].length;
-      out.push(`<h${level}>${inline(line.replace(/^#+ /, ''))}</h${level}>`);
+      /* `## Title {#anchor}` gives the heading an id, the way Pandoc and
+         kramdown do, so a page can be linked to one section -- the reseller
+         conditions are, from the sign-in page and from every reseller email. */
+      const comId = line.replace(/^#+ /, '').match(/^(.*?)\s*\{#([a-z0-9-]+)\}\s*$/);
+      const titulo = comId ? comId[1] : line.replace(/^#+ /, '');
+      out.push(`<h${level}${comId ? ` id="${comId[2]}"` : ''}>${inline(titulo)}</h${level}>`);
       i++; continue;
     }
     if (/^---+\s*$/.test(line)) { out.push('<hr>'); i++; continue; }
@@ -682,4 +687,63 @@ export function orderCancelled() {
     </p>
   </div>
 </section>`;
+}
+
+/* The reseller sign-in. It carries no data at all: the price list is fetched
+   from the Worker with a signed session, and a visitor who is not a reseller
+   sees a form and nothing else. Not in the sitemap and not indexed -- it is a
+   door for a handful of businesses, not a page for search engines. */
+export function resellers() {
+  return `
+<section class="section">
+  <div class="shell shell--narrow page-prose resellers" data-resellers>
+    <h1>Resellers</h1>
+
+    <div data-rv-fora>
+      <p class="lede">If we have registered you as a reseller, sign in here to see your price
+        next to the retail price on every piece, and to buy at it.</p>
+
+      <form class="rv-form" data-rv-pedir novalidate>
+        <label class="field"><span>Your NIF</span>
+          <input type="text" name="nif" inputmode="numeric" autocomplete="off" maxlength="11" required></label>
+        <button class="btn" type="submit">Email me a sign-in link</button>
+      </form>
+      <p class="rv-msg" data-rv-pedir-msg role="status" hidden></p>
+
+      <h2>Got the code on another device?</h2>
+      <form class="rv-form" data-rv-codigo novalidate>
+        <label class="field"><span>Your NIF</span>
+          <input type="text" name="nif" inputmode="numeric" autocomplete="off" maxlength="11" required></label>
+        <label class="field"><span>The code from the email</span>
+          <input type="text" name="codigo" autocomplete="one-time-code" autocapitalize="characters" spellcheck="false" maxlength="12" required></label>
+        <label class="check"><input type="checkbox" name="manter"><span>Keep me signed in on this device</span></label>
+        <button class="btn" type="submit">Sign in</button>
+      </form>
+      <p class="rv-msg" data-rv-codigo-msg role="status" hidden></p>
+
+      <p class="small muted">Not a reseller yet? <a href="/contact/">Talk to us</a>.
+        Reseller purchases follow the <a href="/legal/terms/#resellers">reseller conditions</a>.</p>
+    </div>
+
+    <div data-rv-dentro hidden>
+      <p class="lede">Reseller prices are on for <strong data-rv-firma></strong>
+        (NIF <span data-rv-nif></span>).</p>
+      <label class="check"><input type="checkbox" data-rv-manter><span>Keep me signed in on this device</span></label>
+      <p><button class="btn btn--ghost" type="button" data-rv-sair>Sign out</button></p>
+
+      <h2>Your price list</h2>
+      <p class="small muted">Retail prices are recommended retail prices — you set your own.
+        The discount comes off each piece; paid options are at their normal price.
+        VAT is not charged: article 53 of the Portuguese VAT code applies.
+        <a href="/legal/terms/#resellers">Reseller conditions</a>.</p>
+      <div class="rv-table-wrap">
+        <table class="rv-table" data-rv-tabela>
+          <thead><tr><th scope="col">Piece</th><th scope="col">RRP</th><th scope="col">Your price</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+`;
 }

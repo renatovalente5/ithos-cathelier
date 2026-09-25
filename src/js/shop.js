@@ -49,6 +49,172 @@ async function catalogue() {
   return catalogueCache;
 }
 
+/* --- resellers ---------------------------------------------------------------
+   A reseller signs in on /resellers/ (their NIF, then a button or a code from
+   an email) and gets a signed session. With it, every page asks the Worker for
+   the reseller's discount per piece and paints it next to the retail price.
+
+   NOTHING HERE IS TRUSTED FOR MONEY. The discounts are shown so the reseller
+   can see them; the price that is charged is worked out again by the Worker,
+   which checks the session, that the reseller is still active, and that the
+   order carries their NIF.
+
+   Where the session lives: sessionStorage, which ends with the tab -- so a
+   shop's counter tablet does not keep showing the reseller's margin to the
+   next customer. localStorage only if they tick "keep me signed in", which
+   comes unticked: remembering someone on a device is theirs to ask for.
+   A visitor who never signs in has nothing written on their device and
+   costs the Worker no request at all. */
+const REVENDA = 'ic-revenda-v1';
+
+function sessaoRevenda() {
+  for (const nome of ['sessionStorage', 'localStorage']) {
+    try {
+      const v = JSON.parse(window[nome].getItem(REVENDA) || 'null');
+      if (v && typeof v.sessao === 'string') return v;
+    } catch { /* storage blocked: behave as signed out */ }
+  }
+  return null;
+}
+
+function guardarRevenda(dados, manter) {
+  try { window[manter ? 'sessionStorage' : 'localStorage'].removeItem(REVENDA); } catch { /* nothing to clear */ }
+  try { window[manter ? 'localStorage' : 'sessionStorage'].setItem(REVENDA, JSON.stringify({ ...dados, manter: Boolean(manter) })); } catch { /* storage blocked */ }
+}
+
+function esquecerRevenda() {
+  for (const nome of ['sessionStorage', 'localStorage']) {
+    try { window[nome].removeItem(REVENDA); } catch { /* nothing to clear */ }
+  }
+  Object.assign(revenda, { activa: false, sessao: null, nif: null, firma: null, versao: null, descontos: {} });
+}
+
+const revenda = { activa: false, sessao: null, nif: null, firma: null, versao: null, descontos: {} };
+
+/* Asks the Worker for this reseller's discounts. A 401 means the session ended
+   -- expired, signed out elsewhere, or the shop switched the reseller off --
+   and the page quietly goes back to retail. */
+async function carregarRevenda({ fresco = false } = {}) {
+  const s = sessaoRevenda();
+  if (!s || !API) return revenda;
+  try {
+    const r = await fetch(`${API}/revenda/precos`, {
+      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ sessao: s.sessao, fresco }),
+    });
+    if (r.status === 401) {
+      esquecerRevenda();
+      avisarDepois('Your reseller session has ended, so the prices shown are retail prices. Sign in again on the Resellers page to see yours.');
+      avisoRevenda();
+      return revenda;
+    }
+    if (!r.ok) return revenda;
+    const j = await r.json();
+    Object.assign(revenda, {
+      activa: true, sessao: s.sessao, nif: j.nif, firma: j.firma, versao: j.versao, descontos: j.descontos || {},
+    });
+  } catch { /* offline: stay on retail rather than guess */ }
+  return revenda;
+}
+let revendaPronta = null;
+/* After a 409 from the checkout the page asks for the table fresh, or a copy
+   the Worker kept for a minute would show the old version again. */
+let revendaFresca = false;
+try { revendaFresca = sessionStorage.getItem('ic-revenda-fresca') === '1'; sessionStorage.removeItem('ic-revenda-fresca'); } catch { /* storage blocked */ }
+const esperarRevenda = () => (revendaPronta ??= carregarRevenda({ fresco: revendaFresca }));
+
+/** The discount on one piece, in euros, or 0. `preco` is ALWAYS the product's
+ *  base price, `p.price` -- the same condition the Worker applies. */
+function descontoDe(slug, preco) {
+  if (!revenda.activa) return 0;
+  const d = (revenda.descontos[slug] || 0) / 100;
+  return d > 0 && d < preco ? d : 0;
+}
+
+/* THE SAME "FROM" AS THE CARD, and as what the Worker charges: the base price
+   plus the cheapest value still available in each required choice. It is
+   fromPrice() in src/lib/ithos.mjs, again. The product page and the price list
+   used p.price on its own -- identical today, but the day the owner sells out
+   the small acorn the page would have announced a price nobody can pay. */
+function desdeDe(p) {
+  const haveable = (o) => {
+    const on = o.values.filter((v) => v.available !== false);
+    return on.length ? on : o.values;
+  };
+  return (p.options || []).filter((o) => o.type === 'choice' && o.required)
+    .reduce((sum, o) => sum + Math.min(...haveable(o).map((v) => v.extra || 0)), p.price);
+}
+
+/* A notice that survives a reload. The checkout reloads the page when a
+   reseller's session ends or their prices change, and a sentence written
+   before the reload vanished with it -- the reseller saw retail prices come
+   back and no word of why. */
+const AVISO = 'ic-revenda-aviso';
+function avisarDepois(texto) { try { sessionStorage.setItem(AVISO, texto); } catch { /* storage blocked */ } }
+function avisoRevenda() {
+  let texto = null;
+  try { texto = sessionStorage.getItem(AVISO); sessionStorage.removeItem(AVISO); } catch { /* storage blocked */ }
+  const main = $('main');
+  if (!texto || !main) return;
+  const nota = document.createElement('p');
+  nota.className = 'rv-aviso';
+  nota.setAttribute('role', 'status');
+  nota.textContent = texto;
+  main.prepend(nota);
+}
+
+const eurosRv = (n) => `€${n.toFixed(2).replace('.', ',')}`;
+const escRv = (t) => String(t ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
+
+/* Paints the reseller's price on every card and on the product page, and a
+   bar that says the mode is on. Retail stays on the page, labelled as the
+   recommended retail price: the reseller sets their own (Reg. (EU) 2022/720,
+   art. 4(a)). */
+async function revendaNaPagina() {
+  await esperarRevenda();
+  if (!revenda.activa) return;
+  document.documentElement.classList.add('is-reseller');
+
+  const main = $('main');
+  if (main && !$('[data-rv-bar]')) {
+    const bar = document.createElement('div');
+    bar.className = 'rv-bar';
+    bar.dataset.rvBar = '';
+    bar.innerHTML = `<span>Reseller prices on · <strong>${escRv(revenda.firma || revenda.nif)}</strong></span>
+      <a href="${BASE}/resellers/">Your price list</a>
+      <button type="button" data-rv-out>Sign out</button>`;
+    main.prepend(bar);
+    $('[data-rv-out]', bar).addEventListener('click', () => { esquecerRevenda(); location.reload(); });
+  }
+
+  const cat = await catalogue().catch(() => null);
+  for (const card of $$('article.card[data-product]')) {
+    const p = cat?.products[card.dataset.product];
+    if (!p) continue;
+    const low = desdeDe(p);
+    const d = descontoDe(card.dataset.product, p.price);
+    const alvo = $('.card__price', card);
+    /* A card with no reseller price says nothing: with the bar on top saying
+       the mode is on, silence already means "no discount", and the same
+       sentence under 24 of 26 cards was noise. The product page and the price
+       list say it in words. */
+    if (!alvo || !d || $('.rv-price', card)) continue;
+    alvo.insertAdjacentHTML('afterend',
+      `<p class="rv-price">Your price ${alvo.textContent.includes('from') ? 'from ' : ''}<strong>${eurosRv(low - d)}</strong> <span>−${eurosRv(d)}</span></p>`);
+  }
+
+  const form = $('[data-product-form]');
+  const preco = $('.product__price');
+  if (form && preco && !$('.rv-price', preco.parentElement)) {
+    const p = cat?.products[form.dataset.productId];
+    if (p) {
+      const d = descontoDe(form.dataset.productId, p.price);
+      preco.insertAdjacentHTML('afterend', d
+        ? `<p class="rv-price rv-price--big">Your price: <strong>${eurosRv(d)} less</strong> on every piece — from ${eurosRv(desdeDe(p) - d)}</p>`
+        : '<p class="rv-price rv-price--none">This piece has no reseller price: you pay the retail price.</p>');
+    }
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   paintCount();
 
@@ -329,6 +495,9 @@ document.addEventListener('DOMContentLoaded', () => {
   payPage();
   thankYouPage();
   previewLock();
+  avisoRevenda();
+  revendaNaPagina();
+  paginaRevenda();
 });
 
 /* --- checkout -------------------------------------------------------------
@@ -364,6 +533,27 @@ function checkout() {
      escolheu. Quem trava é o `required` nos três rádios, que faz o browser
      dizer, na língua dele, que falta escolher. */
   const metodo = () => (form?.elements?.metodo?.value ?? '');
+
+  /* A RESELLER BUYS WITH THEIR OWN NIF, and says they are buying for the
+     business. The NIF is filled in and locked: the Worker only applies the
+     discount when the order carries the reseller's NIF, and a field they
+     could edit would only lead to a refusal. The box is per purchase, not per
+     account -- whether someone is a consumer is decided by each purchase, and
+     a reseller buying a lamp for their own home is one. */
+  esperarRevenda().then(() => {
+    if (!revenda.activa || !form) return;
+    const nif = form.elements.nif;
+    if (nif) { nif.value = revenda.nif; nif.readOnly = true; }
+    if (!form.querySelector('[name="profissional"]')) {
+      const caixa = document.createElement('label');
+      caixa.className = 'check rv-check';
+      caixa.innerHTML = `<input type="checkbox" name="profissional" required>
+        <span>I am buying for my business, for resale, as <strong>${escRv(revenda.firma || revenda.nif)}</strong>.
+        The consumer rights in the terms do not apply — see the
+        <a href="${BASE}/legal/terms/#resellers">reseller conditions</a>.</span>`;
+      (nif?.closest('.field, label') ?? form.firstElementChild)?.after(caixa);
+    }
+  });
 
   /* O CAMPO DO TELEMÓVEL SÓ EXISTE PARA O MB WAY, e pedi-lo a quem vai pagar
      uma referência Multibanco é pedir um dado que não é preciso para nada --
@@ -404,6 +594,7 @@ function checkout() {
 
     go.setAttribute('aria-disabled', 'true');
     const wasSaying = go.textContent;
+    let recarregar = false;
     /* O botão diz o que vai acontecer, e são três coisas diferentes: um pedido
      que chega ao telemóvel, uma referência que aparece a seguir, ou uma saída
      do site. Quem sai merece sabê-lo antes de a página mudar debaixo dos pés. */
@@ -414,6 +605,7 @@ function checkout() {
 
     try {
       const cat = await catalogue();
+      await esperarRevenda();
       const r = await fetch(`${API}/checkout`, {
         method: 'POST',
         headers: { 'content-type': 'application/json' },
@@ -421,9 +613,32 @@ function checkout() {
           hash: cat.hash, country: cur.country || 'PT', lines: cur.lines, cliente: cliente(),
           metodo: metodo(),
           telemovel: metodo() === 'MBWAY' ? (campoTelemovel?.value ?? '').trim() : undefined,
+          revenda: revenda.activa ? { sessao: revenda.sessao, versao: revenda.versao } : undefined,
         }),
       });
       const data = await r.json().catch(() => ({}));
+
+      /* The reseller's prices changed while they looked, or their session
+         ended. Neither is fixed by pressing again: the page reloads with the
+         prices that are true now, and says so -- never a silent switch to
+         retail. */
+      /* The button stays blocked until the page reloads: it used to come back
+         for the seconds before the reload, with the reseller's prices still on
+         the screen, and a second press placed a retail order. */
+      if (r.status === 409 && data.error === 'reseller_prices_changed') {
+        recarregar = true;
+        try { sessionStorage.setItem('ic-revenda-fresca', '1'); } catch { /* storage blocked */ }
+        avisarDepois('Your reseller prices were just updated. Please check the total and press again.');
+        location.reload();
+        return;
+      }
+      if (r.status === 401 && data.error === 'reseller_session_invalid') {
+        recarregar = true;
+        esquecerRevenda();
+        avisarDepois('Your reseller session has ended, so the prices shown are retail prices. Sign in again on the Resellers page to buy at your price.');
+        location.reload();
+        return;
+      }
 
       if (r.status === 409 && data.error === 'catalogue_changed') {
         catalogueCache = null;
@@ -441,8 +656,10 @@ function checkout() {
     } catch {
       say('We could not reach the payment service. Please try again in a moment.');
     } finally {
-      go.removeAttribute('aria-disabled');
-      go.textContent = wasSaying;
+      if (!recarregar) {
+        go.removeAttribute('aria-disabled');
+        go.textContent = wasSaying;
+      }
     }
   };
 
@@ -482,6 +699,10 @@ function checkout() {
       bad_payment_method: 'That way of paying is not available. Please pick another one.',
       payment_unavailable: 'The payment service did not answer. Nothing was charged — please try again in a moment.',
       catalogue_unavailable: 'The shop is briefly unavailable. Please try again in a minute.',
+      reseller_nif_mismatch: 'A reseller order has to carry your own NIF. Please reload the page.',
+      bad_quantity: 'One of the quantities is not allowed. Please check the basket.',
+      option_unavailable: 'One of the choices in your basket is no longer available. Open it and pick another.',
+      text_too_long: 'One of the texts to engrave is too long. Open it and shorten it.',
     })[String(code).split(':')[0]]
       /* O Worker devolve `cliente_incompleto:nome,email` — o código traz consigo
          os campos que faltam, e dizê-los é a diferença entre corrigir à
@@ -490,6 +711,127 @@ function checkout() {
         ? `Please fill in: ${String(code).split(':')[1]?.split(',').join(', ') || 'the missing fields'}.`
         : 'Something went wrong on our side. Please try again, or write to us.');
   }
+}
+
+/* --- the reseller sign-in page ---------------------------------------------
+   Three ways in, one way out. The email's button lands here with the signed
+   entry in the fragment (#t=…): the fragment never reaches a server or its
+   logs, and it is wiped from the address at once so it does not sit in the
+   history or a bookmark. The code is for someone who read the email on their
+   phone and buys at the shop's computer. */
+async function paginaRevenda() {
+  const raiz = $('[data-resellers]');
+  if (!raiz) return;
+  const fora = $('[data-rv-fora]', raiz);
+  const dentro = $('[data-rv-dentro]', raiz);
+  const dizer = (el, texto) => { if (!el) return; el.textContent = texto; el.hidden = !texto; };
+  const pedirMsg = $('[data-rv-pedir-msg]', raiz);
+  const codigoMsg = $('[data-rv-codigo-msg]', raiz);
+
+  if (!API) {
+    dizer(pedirMsg, 'Reseller sign-in is not available in this preview.');
+    for (const b of $$('button', fora)) b.disabled = true;
+    return;
+  }
+
+  const post = async (caminho, corpo) => {
+    const r = await fetch(`${API}${caminho}`, {
+      method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(corpo),
+    });
+    return { r, j: await r.json().catch(() => ({})) };
+  };
+
+  async function entrar(corpo, manter) {
+    const { r, j } = await post('/revenda/entrar', corpo);
+    if (!r.ok || !j.sessao) return r.status;
+    guardarRevenda({ sessao: j.sessao, nif: j.nif, firma: j.firma }, manter);
+    revendaPronta = null;
+    return 200;
+  }
+
+  async function mostrar() {
+    await esperarRevenda();
+    fora.hidden = revenda.activa;
+    dentro.hidden = !revenda.activa;
+    if (!revenda.activa) return;
+    $('[data-rv-firma]', raiz).textContent = revenda.firma || '';
+    $('[data-rv-nif]', raiz).textContent = revenda.nif || '';
+    $('[data-rv-manter]', raiz).checked = Boolean(sessaoRevenda()?.manter);
+
+    const cat = await catalogue().catch(() => null);
+    const corpo = $('[data-rv-tabela] tbody', raiz);
+    if (!cat || !corpo) return;
+    const url = (slug, p) => `${BASE}${p.brand === 'cathelier' ? '/cathelier/pieces' : '/lamps'}/${slug}/`;
+    const linhas = Object.entries(cat.products)
+      .filter(([slug]) => !slug.startsWith('zz-'))
+      .sort(([, a], [, b]) => (a.brand + a.name).localeCompare(b.brand + b.name));
+    corpo.innerHTML = linhas.map(([slug, p]) => {
+      const d = descontoDe(slug, p.price);
+      const low = desdeDe(p);
+      const desde = (p.options || []).some((o) => o.type === 'choice' && o.values.some((v) => (v.extra || 0) > 0)) ? 'from ' : '';
+      return `<tr><th scope="row"><a href="${url(slug, p)}">${escRv(p.name)}</a> <span class="rv-marca">${escRv(p.brand)}</span></th>
+        <td>${desde}${eurosRv(low)}</td>
+        <td>${d ? `<strong>${desde}${eurosRv(low - d)}</strong> <span class="rv-menos">−${eurosRv(d)}</span>` : '<span class="muted">no reseller price</span>'}</td></tr>`;
+    }).join('');
+  }
+
+  const t = new URLSearchParams(location.hash.slice(1)).get('t');
+  if (t) {
+    history.replaceState(null, '', location.pathname + location.search);
+    const estado = await entrar({ token: t }, false).catch(() => 0);
+    if (estado !== 200) {
+      dizer(pedirMsg, estado === 401
+        ? 'That sign-in link has expired or is no longer valid. Ask for a new one with your NIF.'
+        : 'We could not reach the shop. Check your connection and open the link again.');
+    }
+  }
+
+  $('[data-rv-pedir]', raiz).addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const botao = $('button', e.currentTarget);
+    const nif = e.currentTarget.elements.nif.value;
+    botao.disabled = true;
+    try {
+      const { r, j } = await post('/revenda/pedir', { nif });
+      /* It never says the email WAS sent: the answer is the same for every
+         NIF, so nobody learns who is a reseller, and the Worker may also be
+         holding the email back (one per quarter of an hour). */
+      dizer(pedirMsg, r.ok
+        ? 'If this NIF is registered, an email is on its way to the address we have for you. '
+          + 'It has a button that signs you in on whichever device you open it on, and a code to type here if that is a different one. '
+          + 'Both last 15 minutes. Nothing after a few minutes? Check the spam folder, wait a quarter of an hour and ask again, or talk to us.'
+        : j.error === 'bad_nif' ? 'That NIF does not look right — check the nine digits.'
+          : r.status === 429 ? 'One moment — please wait a few seconds and try again.'
+            : 'Something went wrong on our side. Please try again in a minute.');
+    } catch {
+      dizer(pedirMsg, 'We could not reach the shop. Check your connection and try again.');
+    } finally { botao.disabled = false; }
+  });
+
+  $('[data-rv-codigo]', raiz).addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const f = e.currentTarget;
+    const botao = $('button', f);
+    botao.disabled = true;
+    try {
+      const estado = await entrar({ nif: f.elements.nif.value, codigo: f.elements.codigo.value }, f.elements.manter.checked);
+      if (estado === 200) { dizer(codigoMsg, ''); await mostrar(); revendaNaPagina(); return; }
+      dizer(codigoMsg, estado === 401
+        ? 'That code did not work. It lasts 15 minutes — if it has expired, ask for a new email with the form at the top.'
+        : estado === 429 ? 'One moment — please wait a second and try again.'
+          : 'Something went wrong on our side. Please try again in a minute.');
+    } catch {
+      dizer(codigoMsg, 'We could not reach the shop. Check your connection and try again.');
+    } finally { botao.disabled = false; }
+  });
+
+  $('[data-rv-manter]', raiz).addEventListener('change', (e) => {
+    const s = sessaoRevenda();
+    if (s) guardarRevenda(s, e.currentTarget.checked);
+  });
+  $('[data-rv-sair]', raiz).addEventListener('click', () => { esquecerRevenda(); location.reload(); });
+
+  await mostrar();
 }
 
 /* --- a página onde se paga, que até aqui era da ifthenpay -----------------
@@ -793,6 +1135,9 @@ async function basketPage() {
 
   const cat = await catalogue().catch(() => null);
   if (!cat) { linesBox.innerHTML = '<p class="muted">The basket could not be loaded. Please reload the page.</p>'; return; }
+  // The reseller's prices first: painting retail and then swapping it would
+  // show a total that is not the one they will pay.
+  await esperarRevenda();
 
   const b = basket();
   if (countrySel && b.country) countrySel.value = b.country;
@@ -805,7 +1150,12 @@ async function basketPage() {
   function priceOf(line) {
     const p = cat.products[line.id];
     if (!p) return null;
-    let each = p.price;
+    /* The reseller's discount comes off the piece, per unit; paid options are
+       added at their normal price -- the same sum the Worker does, which is
+       the one that is charged. */
+    const d = descontoDe(line.id, p.price);
+    let each = p.price - d;
+    let pvpEach = p.price;
     const shown = [];
     for (const o of p.options || []) {
       const value = (line.options || {})[o.id];
@@ -814,13 +1164,18 @@ async function basketPage() {
         const v = o.values.find((x) => x.id === value);
         if (!v) continue;
         each += v.extra || 0;
+        pvpEach += v.extra || 0;
         shown.push(`${o.name}: ${v.name}`);
       } else {
         each += o.extra || 0;
+        pvpEach += o.extra || 0;
         shown.push(`${o.name}: “${value}”`);
       }
     }
-    return { name: p.name, brand: p.brand, photo: p.photo, shown, each, total: each * line.qty };
+    return {
+      name: p.name, brand: p.brand, photo: p.photo, shown, each, total: each * line.qty,
+      pvpEach, pvpTotal: pvpEach * line.qty, desconto: d,
+    };
   }
 
   function shippingFor(country, goods) {
@@ -829,7 +1184,9 @@ async function basketPage() {
       ?? s.zones.find((z) => z.countries.includes(country.slice(0, 2)));
     if (!zone) return null;
     const c = s.campaign;
-    if (c?.active && goods >= c.freeOver && (!c.countries.length || c.countries.includes(country))) return 0;
+    // `freeOver > 0`, as the Worker does: a campaign switched on with no
+    // threshold said "free" here and charged shipping there.
+    if (c?.active && c.freeOver > 0 && goods >= c.freeOver && (!c.countries.length || c.countries.includes(country))) return 0;
     return zone.price;
   }
 
@@ -849,9 +1206,10 @@ async function basketPage() {
       <div class="frame">${p.photo
         ? `<img src="${BASE}/media/${p.photo}-200.webp" alt="" width="200" height="200" loading="lazy">` : ''}</div>
       <div>
-        <p class="basket-line__name">${p.name}</p>
-        ${p.shown.length ? `<p class="basket-line__opts">${p.shown.join(' · ')}</p>` : ''}
-        <p class="basket-line__opts">${line.qty} × ${euros(p.each)}</p>
+        <p class="basket-line__name">${escRv(p.name)}</p>
+        ${p.shown.length ? `<p class="basket-line__opts">${p.shown.map(escRv).join(' · ')}</p>` : ''}
+        <p class="basket-line__opts">${line.qty} × ${euros(p.each)}${p.desconto
+          ? ` <span class="rv-rrp">RRP ${euros(p.pvpEach)}</span>` : ''}</p>
         <button class="basket-line__drop" type="button" data-drop="${i}">Remove</button>
       </div>
       <p class="basket-line__price">${euros(p.total)}</p>
@@ -866,7 +1224,11 @@ async function basketPage() {
     }
 
     const goods = priced.reduce((t, x) => t + x.p.total, 0);
-    const post = shippingFor(cur.country || 'PT', goods);
+    /* The same basket pays the same shipping: the free-shipping threshold is
+       measured at retail value, as the Worker does, or a reseller would lose
+       free shipping for paying less. */
+    const pvpGoods = priced.reduce((t, x) => t + x.p.pvpTotal, 0);
+    const post = shippingFor(cur.country || 'PT', pvpGoods);
     $('[data-sum-goods]').textContent = euros(goods);
     $('[data-sum-shipping]').textContent = post === null ? 'we do not ship there'
       : post === 0 ? 'free' : euros(post);

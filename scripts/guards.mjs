@@ -1023,6 +1023,43 @@ for (const [o, n] of esgotados) {
   }
 }
 
+/* --- os preços de revenda nunca são públicos ------------------------------
+   Vivem no KV do Worker e em mais lado nenhum. Este repositório é PÚBLICO, e o
+   catálogo gerado é servido a toda a gente: um campo de revenda num produto
+   ficava à vista, e no histórico do git para sempre, mesmo depois de apagado.
+   O sítio óbvio para o pôr, no backoffice que há-de vir, é o formulário do
+   produto -- que grava aqui. Esta guarda é o que impede esse dia. Procura
+   CHAVES, não texto: as condições de venda falam de revendedores, e devem. */
+{
+  const suspeita = /revend|reseller|wholesale|trade|desconto/i;
+  const achados = [];
+  const varrer = (valor, caminho, onde) => {
+    if (Array.isArray(valor)) { valor.forEach((v, i) => varrer(v, `${caminho}[${i}]`, onde)); return; }
+    if (!valor || typeof valor !== 'object') return;
+    for (const [k, v] of Object.entries(valor)) {
+      if (suspeita.test(k)) achados.push(`${onde}: ${caminho}.${k}`);
+      varrer(v, `${caminho}.${k}`, onde);
+    }
+  };
+  const pastas = [join(CONTENT, 'ithos'), join(CONTENT, 'cathelier'), join(CONTENT, 'settings')];
+  for (const pasta of pastas) {
+    if (!existsSync(pasta)) continue;
+    for (const f of readdirSync(pasta).filter((x) => x.endsWith('.json'))) {
+      try { varrer(JSON.parse(readFileSync(join(pasta, f), 'utf8')), f.replace('.json', ''), `content/${pasta.split('/').pop()}/${f}`); }
+      catch { /* um JSON partido é assunto de outra guarda */ }
+    }
+  }
+  const dados = join(ROOT, 'public', 'data');
+  if (existsSync(dados)) {
+    for (const f of readdirSync(dados).filter((x) => /^catalogue\..+\.json$/.test(x))) {
+      try { varrer(JSON.parse(readFileSync(join(dados, f), 'utf8')), 'catálogo', `public/data/${f}`); } catch { /* idem */ }
+    }
+  }
+  if (achados.length) {
+    die(`um campo que parece de revenda está no conteúdo público — os preços de revenda vivem só no Worker:\n    ${achados.slice(0, 8).join('\n    ')}`);
+  }
+}
+
 /* --- report --------------------------------------------------------------- */
 for (const w of warnings) console.warn(`  warning: ${w}`);
 if (deaths.length) {

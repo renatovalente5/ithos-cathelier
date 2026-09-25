@@ -39,6 +39,14 @@ ask for the payment, because a payment that arrives with nothing to attach it to
 is a payment nobody can fulfil. If you never pay, that order is deleted after
 ninety days.
 
+**If you are a reseller.** Your company name, NIF, registered address and the
+email addresses you gave us, so that you can sign in to see your prices and so
+that your invoices carry the right details. The legal basis is the contract
+between us. When you sign in, your browser keeps a signed session for the tab
+you are in, and on the device only if you tick "keep me signed in"; nothing is
+kept if you never sign in. When you stop being a reseller we delete the record;
+invoices are kept for as long as tax law requires.
+
 ## Who else sees it
 
 - **{{PAYMENT_PROVIDER}}**, to take the payment: your name, your email and the
@@ -50,7 +58,9 @@ ninety days.
   on the way. Their servers for this domain are in Ireland.
 - **Cloudflare**, which runs the checkout and holds the order — everything in
   the paragraph above — from the moment you press **Order and pay** until it is
-  deleted. They are also who our shop emails leave through.
+  deleted, and the records of our resellers. Cloudflare may process this data
+  outside the European Union, under the European Commission's standard
+  contractual clauses. They are also who our shop emails leave through.
 - **GitHub**, which serves these pages to your browser and therefore sees the
   request, including your IP address.
 - Our accountant, and the tax authority, for invoices.

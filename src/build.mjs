@@ -614,6 +614,13 @@ function buildShared() {
     body: pages.basket({ shipping }),
   });
 
+  mirror('/resellers/', {
+    noindex: true,
+    title: 'Resellers — ithos · cathelier',
+    description: 'Sign in to see your reseller prices.',
+    body: pages.resellers(),
+  });
+
   for (const [path, title, description, body] of [
     ['/pay/', 'Pay for your order', 'Finish your payment by MB WAY, Multibanco or Payshop.', pages.payPage(shop)],
     ['/thank-you/', 'Thank you', 'Your order is placed and the workshop starts now.', pages.thankYou(shop)],

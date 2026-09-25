@@ -17,7 +17,10 @@ const PAGINAS = ['/','/lamps/','/lamps/fox/','/lamps/mushroom/',
     its tap targets and its menu. Two of the eight are driven here; measuring
     all sixteen would double the run for very little, since the bodies are
     byte-identical and only the frame differs. */
- '/cathelier/contact/','/cathelier/legal/terms/','/cathelier/cart/'];
+ '/cathelier/contact/','/cathelier/legal/terms/','/cathelier/cart/',
+ /* The reseller sign-in, signed out: the forms have to hold their contrast and
+    their tap targets like any other page. */
+ '/resellers/','/cathelier/resellers/'];
 window.__resultados = {};
 const saida = document.getElementById('saida');
 const L = Number(new URLSearchParams(location.search).get('w') || 1280);

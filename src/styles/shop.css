@@ -1564,3 +1564,39 @@ html.menu-open { overflow: hidden; }
   .pay-ref__row { flex-direction: column; align-items: stretch; gap: .5rem; }
   .pay-ref dd { justify-content: space-between; flex: 1 1 auto; }
 }
+
+/* --- resellers -----------------------------------------------------------------
+   Everything here appears only after a reseller has signed in; a visitor never
+   sees any of it. The reseller's price sits under the retail price and never
+   replaces it: the retail price is the recommended one, and the reseller needs
+   both side by side to see their margin. */
+.rv-bar {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: center;
+  gap: .4rem 1.1rem; padding: .55rem var(--gutter);
+  background: var(--accent); color: var(--accent-ink);
+  font-size: .875rem; text-align: center;
+}
+.rv-bar a { color: inherit; text-underline-offset: .2em; }
+.rv-bar button {
+  min-height: 32px; padding: .2rem .9rem; border: 1px solid currentColor; border-radius: 999px;
+  background: transparent; color: inherit; font: inherit; cursor: pointer;
+}
+.rv-price { margin: .15rem 0 0; font-size: .875rem; color: var(--ink); }
+.rv-price strong { font-weight: 700; }
+.rv-price span { color: var(--muted); margin-inline-start: .25rem; }
+.rv-price--big { font-size: 1rem; margin-block: .35rem .6rem; }
+.rv-price--none { color: var(--muted); }
+.rv-rrp { color: var(--muted); text-decoration: line-through; margin-inline-start: .35rem; }
+.rv-check { display: flex; gap: .6rem; align-items: flex-start; margin-block: .75rem; font-size: .9rem; line-height: 1.45; }
+.rv-check input { margin-block-start: .25rem; inline-size: 1.1rem; block-size: 1.1rem; flex: none; }
+
+.resellers .rv-form { display: grid; gap: .9rem; margin-block: 1rem 0; max-inline-size: 26rem; }
+.resellers .check { display: flex; gap: .6rem; align-items: center; margin-block: .75rem; }
+.resellers .rv-msg { margin-block: .9rem 0; padding: .8rem 1rem; border-inline-start: 3px solid var(--accent); background: var(--frame-bg); }
+.rv-table-wrap { overflow-x: auto; margin-block: 1rem 2rem; }
+.rv-table { inline-size: 100%; border-collapse: collapse; font-size: .9rem; font-variant-numeric: tabular-nums; }
+.rv-table th, .rv-table td { padding: .55rem .6rem; border-block-end: 1px solid var(--line); text-align: start; vertical-align: top; }
+.rv-table td { white-space: nowrap; }
+.rv-table thead th { font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.rv-table .rv-marca, .rv-table .rv-menos { color: var(--muted); font-size: .8rem; }
+.rv-aviso { margin: 0; padding: .7rem var(--gutter); background: var(--frame-bg); border-block-end: 1px solid var(--line); text-align: center; font-size: .9rem; color: var(--ink); }
