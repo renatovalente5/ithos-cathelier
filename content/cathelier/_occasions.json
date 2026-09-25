@@ -7,65 +7,65 @@
     "published": true
   },
   {
-    "slug": "mothers-day",
-    "name": "Mother’s Day",
-    "summary": "A piece carrying her children’s names, to keep in sight all year.",
+    "slug": "easter",
+    "name": "Easter",
+    "summary": "Small pieces for the Easter table and the baskets, with a name on each.",
     "order": 20,
     "published": true
   },
   {
-    "slug": "fathers-day",
-    "name": "Father’s Day",
-    "summary": "“You are my superhero”, and other lines only he understands.",
+    "slug": "special-days",
+    "name": "Special days",
+    "summary": "Mother’s Day and Father’s Day: her children’s names, his superhero shield.",
     "order": 30,
     "published": true
   },
   {
-    "slug": "childrens-day",
-    "name": "Children’s Day",
-    "summary": "Pieces with a name on them, made to outlast a toy.",
+    "slug": "magnets-keyrings",
+    "name": "Magnets & keyrings",
+    "summary": "A photograph for the fridge, or for the keys.",
     "order": 40,
     "published": true
   },
   {
-    "slug": "keepsakes",
-    "name": "Keepsakes",
-    "summary": "For everyone who came: weddings, christenings, communions, birthdays.",
-    "order": 50,
-    "published": true
-  },
-  {
     "slug": "new-baby",
-    "name": "A new baby",
-    "summary": "The name, the date, the time, the weight and the length. All engraved.",
-    "order": 60,
+    "name": "New baby",
+    "summary": "The name, the date, the time, the weight and the length on a disc or a heart — and a piece to share the news.",
+    "order": 50,
     "published": true
   },
   {
     "slug": "names",
     "name": "Names",
-    "summary": "A name for the bedroom wall, the door, or above the bed.",
-    "order": 70,
-    "published": true
-  },
-  {
-    "slug": "home",
-    "name": "For the home",
-    "summary": "Growth charts, panels, plaques and signs for the day itself.",
-    "order": 80,
+    "summary": "A name, or an initial with the name, for the wall, the door or above the bed.",
+    "order": 60,
     "published": true
   },
   {
     "slug": "hanging",
     "name": "Hanging pieces",
     "summary": "Small pieces with a hole and a ribbon, to hang anywhere.",
+    "order": 70,
+    "published": true
+  },
+  {
+    "slug": "wall-decor",
+    "name": "Wall decor",
+    "summary": "Growth charts, family trees and frames: the pieces that stay on the wall for years.",
+    "order": 80,
+    "published": true
+  },
+  {
+    "slug": "custom",
+    "name": "Custom orders",
+    "summary": "Cake toppers, signs, guest books, trophies — made to measure for your day. Or tell us your idea.",
     "order": 90,
     "published": true
   },
   {
-    "slug": "awards",
-    "name": "Awards and gifts",
-    "summary": "For clubs, schools, companies and councils. With your emblem engraved.",
+    "slug": "keepsakes",
+    "name": "Favours & giveaways",
+    "summary": "For everyone who came: christenings, communions, weddings and company gifts.",
     "order": 100,
     "published": true
   }

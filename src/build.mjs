@@ -259,9 +259,24 @@ function assets() {
 
   if (existsSync(join(HERE, 'js', 'shop.js'))) {
     const API = (process.env.API_URL || '').replace(/\/$/, '');
+    const MAPA_ANTIGOS = JSON.stringify(Object.fromEntries(REDIRECTS
+      .map((r) => [r.from.split('/').filter(Boolean).pop(), r.to.split('#')[1]])
+      .filter(([de, para]) => de && para && de !== para)));
     const js = readFileSync(join(HERE, 'js', 'shop.js'), 'utf8')
       .replace("const BASE = '';", `const BASE = '${BASE}';`)
-      .replace("const API = '';", `const API = '${API}';`);
+      .replace("const API = '';", `const API = '${API}';`)
+      /* OS FRAGMENTOS ANTIGOS, tirados da MESMA tabela dos reencaminhamentos.
+         Um /cathelier/pieces/#home partilhado no WhatsApp antes de 25 set 2026
+         abria a lista inteira sem aviso, porque o filtro «home» deixou de
+         existir. O mapa é derivado de REDIRECTS -- de cada `from` cujo slug
+         não é o do `to` -- e não escrito à mão segunda vez: uma lista só. */
+      .replace('const FRAGMENTOS_ANTIGOS = {};', `const FRAGMENTOS_ANTIGOS = ${MAPA_ANTIGOS};`);
+    /* Um replace que não encontra a linha não dá erro nenhum: devolve o texto
+       como estava, e os links antigos voltam a abrir a lista inteira sem
+       ninguém saber. Como o BASE, falha alto. */
+    if (MAPA_ANTIGOS !== '{}' && !js.includes(`const FRAGMENTOS_ANTIGOS = ${MAPA_ANTIGOS};`)) {
+      throw new Error('shop.js has no FRAGMENTOS_ANTIGOS line to fill in — old #home and #fathers-day links would open the whole list');
+    }
     ASSET.js = `shop.${digest(js)}.js`;
     if (BASE && !js.includes(`const BASE = '${BASE}'`)) {
       throw new Error('shop.js has no BASE line to fill in — every fetch in it would miss the prefix');
@@ -429,7 +444,7 @@ function buildCathelier() {
     ...shellArgs, brand: 'cathelier', path: '/cathelier/',
     title: 'cathelier — personalised pieces, cut and engraved to order',
     description: `Laser-cut wooden keepsakes with your names, dates and words on them. `
-      + `${occasions.length} occasions, ${pieces.length} pieces, each with a proof to approve before we cut.`,
+      + `${pieces.length} pieces in ${occasions.length} collections, each with a proof to approve before we cut.`,
     cover: true,
     body: cath.home({ occasions, pieces, cover: covers.cathelier, coverArt: coverArt('cathelier') }),
   }));
@@ -584,7 +599,7 @@ function buildShared() {
   write('/cathelier/quote/', page({
     ...shellArgs, brand: 'cathelier', path: '/cathelier/quote/',
     title: 'Ask for a quote — cathelier',
-    description: 'For anything in quantity: wedding favours, christening keepsakes, place cards, corporate gifts, trophies.',
+    description: 'For anything made to measure or in quantity: cake toppers, wedding signs, christening favours, trophies.',
     crumbs: [{ name: 'cathelier', href: '/cathelier/' }, { name: 'Ask for a quote' }],
     body: pages.quote({ identity }),
   }));

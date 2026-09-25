@@ -10,7 +10,7 @@ import { occasionArt } from './occasions-art.mjs';
 import { cover } from './cover.mjs';
 
 /* ===========================================================================
-   cathelier — navigation by occasion, which is how the model shop works and
+   cathelier — navigation by collection, which is how the model shop works and
    exactly how the owner described hers: by date and by celebration, never by
    what the thing is made of.
    =========================================================================== */
@@ -86,11 +86,21 @@ export function card(p, { eager = false } = {}) {
    forma combinada: nao precisa de servidor, sobrevive ao GitHub Pages e o
    filters() do shop.js le-o ao arrancar. Quem muda isto aqui tem de mudar la,
    e a guarda em guards.mjs recusa um atalho que nao case com nenhum chip. */
+/* O «&» NUNCA FICA SOZINHO NUMA LINHA. Num círculo de 84px, «Magnets &
+   keyrings» partia em «MAGNETS / & / KEYRINGS», com o sinal pendurado ao
+   meio. Um espaço inquebrável antes dele cola-o à palavra da frente. Faz-se
+   aqui e não nos dados: um carácter invisível no JSON é uma armadilha para
+   quem o editar a seguir. */
+const semAmpersandSolto = (nome) => esc(nome).replace(/ &amp; /g, '&nbsp;&amp; ');
+
 function occasionRow(occasions) {
-  return `<nav class="occasions" aria-label="Occasions">
+  /* «Browse» e não «Occasions»: desde 25 set 2026 os separadores são os da
+     lista da dona, e Ímanes, Porta-chaves ou Decoração de parede não são
+     ocasiões. */
+  return `<nav class="occasions" aria-label="Browse the pieces">
   ${occasions.map((o) => `<a class="occasion" href="/cathelier/pieces/#${esc(o.slug)}"${o.summary ? ` title="${esc(o.summary)}"` : ''}>
     <span class="occasion__badge">${occasionArt(o.slug, 30)}</span>
-    <span class="occasion__name">${esc(o.name)}</span>
+    <span class="occasion__name">${semAmpersandSolto(o.name)}</span>
   </a>`).join('\n  ')}
 </nav>`;
 }
@@ -238,10 +248,23 @@ export function all({ pieces, occasions }) {
       ${occasions.map((o) => `<button class="filter" type="button" data-filter="${esc(o.slug)}" aria-pressed="false">${esc(o.name)}</button>`).join('\n      ')}
     </div>
 
+    <!-- OS PEDIDOS ESPECIAIS LEVAM AO ORÇAMENTO. A dona quis as duas coisas:
+         as catorze peças por medida arrumadas aqui, E o separador a levar ao
+         pedido de orçamento. Um círculo não pode ser filtro e link ao mesmo
+         tempo sem uma excepção em cada guarda; assim é um filtro como os
+         outros, e o caminho para o orçamento aparece por cima das peças, só
+         neste. Aparece pelo JavaScript: sem ele a lista mostra tudo e esta
+         frase, fora de contexto, não fazia sentido. -->
+    <div class="custom-note" data-custom-note hidden>
+      <p>Something that is not here? We cut pieces to measure for weddings,
+        christenings, parties, clubs and companies.</p>
+      <a class="btn" href="/cathelier/quote/">Ask for a quote</a>
+    </div>
+
     <div class="grid-products" data-product-list style="margin-block-start:1.5rem">
       ${pieces.map((p, i) => card(p, { eager: i < 4 })).join('\n      ')}
     </div>
-    <p class="lede" data-no-results hidden style="margin-block-start:2rem">Nothing in that occasion yet.</p>
+    <p class="lede" data-no-results hidden style="margin-block-start:2rem">Nothing here yet.</p>
   </div>
 </section>
 `;
@@ -255,8 +278,22 @@ export function piece({ p, all: everything, shop, occasions }) {
      family and the site addresses use. The two have never been the same word
      and this is the one place that has to know it. */
   const shapes = (p.photos || []).map((n) => shapeOf(join(PHOTOS, 'cathelier', '_raw', `${n}.jpg`)));
-  const here = occasions.find((o) => o.slug === p.occasion);
-  const related = everything.filter((x) => x.slug !== p.slug && x.occasion === p.occasion).slice(0, 4);
+  /* «MORE IN» PROCURA IRMÃS EM TODOS OS SEPARADORES DA PEÇA, e não só no
+     principal. Com os separadores de 25 set 2026 a Páscoa ficou com uma peça
+     só, e a ficha dela deixou de ter o bloco -- e a do pendente com as datas
+     também. As irmãs contam-se como o filtro as conta (principal E de
+     passagem), para o link do título mostrar o que a ficha prometeu. */
+  const familias = (x) => [x.occasion, ...(x.alsoIn || [])];
+  let here = occasions.find((o) => o.slug === p.occasion);
+  let related = [];
+  for (const slug of familias(p)) {
+    const irmas = everything.filter((x) => x.slug !== p.slug && familias(x).includes(slug));
+    if (irmas.length) {
+      related = irmas.slice(0, 4);
+      here = occasions.find((o) => o.slug === slug) ?? here;
+      break;
+    }
+  }
   return `
 <section class="product shell">
   <div class="product__gallery">
@@ -336,9 +373,9 @@ ${related.length ? `<section class="collection" style="background:var(--bg-soft)
          flat text with four sibling cards under it and no way through to the
          thing it was naming -- a dead end on every one of the 41 pieces. -->
     <div class="collection__head">
-      <span class="eyebrow">More for</span>
+      <span class="eyebrow">More in</span>
       ${here ? `<h2><a href="/cathelier/pieces/#${esc(here.slug)}">${esc(here.name)}</a></h2>`
-             : '<h2>the same day</h2>'}
+             : '<h2>the same collection</h2>'}
     </div>
     <div class="grid-products" style="margin-block-start:2rem">${related.map((x) => card(x)).join('\n      ')}</div>
   </div>

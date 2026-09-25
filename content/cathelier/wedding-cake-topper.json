@@ -5,10 +5,8 @@
   "featured": true,
   "order": 380,
   "made": "to_order",
-  "occasion": "home",
-  "alsoIn": [
-    "keepsakes"
-  ],
+  "occasion": "custom",
+  "alsoIn": [],
   "summary": "Your names or whatever line you want, laser cut.",
   "text": "Your names or whatever line you want, laser cut.",
   "photoFolder": "pool",

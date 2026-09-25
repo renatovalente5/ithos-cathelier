@@ -21,7 +21,7 @@
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" as="font" type="font/woff2" crossorigin
       href="/assets/fonts/kleeone-400-latin.woff2">
-<link rel="stylesheet" href="/assets/styles.370570515d.css">
+<link rel="stylesheet" href="/assets/styles.90dde2b4ef.css">
 
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"cathelier","item":"https://ithos-cathelier.pt/cathelier/"},{"@type":"ListItem","position":2,"name":"Every piece"}]}</script>
 
@@ -74,15 +74,28 @@
     <div class="filters" data-filters style="margin-block-start:1.25rem;justify-content:center">
       <button class="filter" type="button" data-filter="all" aria-pressed="true">All</button>
       <button class="filter" type="button" data-filter="christmas" aria-pressed="false">Christmas</button>
-      <button class="filter" type="button" data-filter="mothers-day" aria-pressed="false">Mother’s Day</button>
-      <button class="filter" type="button" data-filter="fathers-day" aria-pressed="false">Father’s Day</button>
-      <button class="filter" type="button" data-filter="childrens-day" aria-pressed="false">Children’s Day</button>
-      <button class="filter" type="button" data-filter="keepsakes" aria-pressed="false">Keepsakes</button>
-      <button class="filter" type="button" data-filter="new-baby" aria-pressed="false">A new baby</button>
+      <button class="filter" type="button" data-filter="easter" aria-pressed="false">Easter</button>
+      <button class="filter" type="button" data-filter="special-days" aria-pressed="false">Special days</button>
+      <button class="filter" type="button" data-filter="magnets-keyrings" aria-pressed="false">Magnets &amp; keyrings</button>
+      <button class="filter" type="button" data-filter="new-baby" aria-pressed="false">New baby</button>
       <button class="filter" type="button" data-filter="names" aria-pressed="false">Names</button>
-      <button class="filter" type="button" data-filter="home" aria-pressed="false">For the home</button>
       <button class="filter" type="button" data-filter="hanging" aria-pressed="false">Hanging pieces</button>
-      <button class="filter" type="button" data-filter="awards" aria-pressed="false">Awards and gifts</button>
+      <button class="filter" type="button" data-filter="wall-decor" aria-pressed="false">Wall decor</button>
+      <button class="filter" type="button" data-filter="custom" aria-pressed="false">Custom orders</button>
+      <button class="filter" type="button" data-filter="keepsakes" aria-pressed="false">Favours &amp; giveaways</button>
+    </div>
+
+    <!-- OS PEDIDOS ESPECIAIS LEVAM AO ORÇAMENTO. A dona quis as duas coisas:
+         as catorze peças por medida arrumadas aqui, E o separador a levar ao
+         pedido de orçamento. Um círculo não pode ser filtro e link ao mesmo
+         tempo sem uma excepção em cada guarda; assim é um filtro como os
+         outros, e o caminho para o orçamento aparece por cima das peças, só
+         neste. Aparece pelo JavaScript: sem ele a lista mostra tudo e esta
+         frase, fora de contexto, não fazia sentido. -->
+    <div class="custom-note" data-custom-note hidden>
+      <p>Something that is not here? We cut pieces to measure for weddings,
+        christenings, parties, clubs and companies.</p>
+      <a class="btn" href="/cathelier/quote/">Ask for a quote</a>
     </div>
 
     <div class="grid-products" data-product-list style="margin-block-start:1.5rem">
@@ -107,7 +120,7 @@
   <h3 class="card__name"><a class="card__link" href="/cathelier/pieces/pregnancy-announcement/">Pregnancy announcement</a></h3>
   <p class="card__price">from €18,00</p>
 </article>
-      <article class="card" data-product="family-tree" data-family="home names mothers-day"
+      <article class="card" data-product="family-tree" data-family="wall-decor names special-days"
   data-price="68"
   data-shots="07,04" data-dir="cathelier/pool">
   <a class="card__media" href="/cathelier/pieces/family-tree/" tabindex="-1" aria-hidden="true">
@@ -170,7 +183,7 @@
   <h3 class="card__name"><a class="card__link" href="/cathelier/pieces/engraved-bauble/">Engraved wooden bauble</a></h3>
   <p class="card__price">from €5,50</p>
 </article>
-      <article class="card" data-product="corporate-gift" data-family="awards"
+      <article class="card" data-product="corporate-gift" data-family="keepsakes"
   data-price="8.5"
   data-shots="12,11" data-dir="cathelier/pool">
   <a class="card__media" href="/cathelier/pieces/corporate-gift/" tabindex="-1" aria-hidden="true">
@@ -191,7 +204,7 @@
   <h3 class="card__name"><a class="card__link" href="/cathelier/pieces/corporate-gift/">Branded corporate gift</a></h3>
   <p class="card__price">from €8,50</p>
 </article>
-      <article class="card" data-product="ring-box" data-family="keepsakes home"
+      <article class="card" data-product="ring-box" data-family="custom"
   data-price="34"
   data-shots="02,08" data-dir="cathelier/pool">
   <a class="card__media" href="/cathelier/pieces/ring-box/" tabindex="-1" aria-hidden="true">
@@ -212,7 +225,7 @@
   <h3 class="card__name"><a class="card__link" href="/cathelier/pieces/ring-box/">Ring box</a></h3>
   <p class="card__price">from €34,00</p>
 </article>
-      <article class="card" data-product="keepsake-box" data-family="new-baby keepsakes"
+      <article class="card" data-product="keepsake-box" data-family="custom new-baby"
   data-price="42"
   data-shots="02,08" data-dir="cathelier/pool">
   <a class="card__media" href="/cathelier/pieces/keepsake-box/" tabindex="-1" aria-hidden="true">
@@ -233,7 +246,7 @@
   <h3 class="card__name"><a class="card__link" href="/cathelier/pieces/keepsake-box/">Keepsake box</a></h3>
   <p class="card__price">from €42,00</p>
 </article>
-      <article class="card" data-product="advent-calendar" data-family="christmas childrens-day home"
+      <article class="card" data-product="advent-calendar" data-family="christmas"
   data-price="54"
   data-shots="04,02" data-dir="cathelier/pool">
   <a class="card__media" href="/cathelier/pieces/advent-calendar/" tabindex="-1" aria-hidden="true">
@@ -254,7 +267,7 @@
   <h3 class="card__name"><a class="card__link" href="/cathelier/pieces/advent-calendar/">Advent calendar</a></h3>
   <p class="card__price">from €54,00</p>
 </article>
-      <article class="card" data-product="photo-backdrop" data-family="home childrens-day"
+      <article class="card" data-product="photo-backdrop" data-family="custom"
   data-price="65"
   data-shots="08,06" data-dir="cathelier/pool">
   <a class="card__media" href="/cathelier/pieces/photo-backdrop/" tabindex="-1" aria-hidden="true">
@@ -275,7 +288,7 @@
   <h3 class="card__name"><a class="card__link" href="/cathelier/pieces/photo-backdrop/">Photo backdrop</a></h3>
   <p class="card__price">from €65,00</p>
 </article>
-      <article class="card" data-product="godparent-ask-christening" data-family="keepsakes"
+      <article class="card" data-product="godparent-ask-christening" data-family="custom"
   data-price="14"
   data-shots="03,02" data-dir="cathelier/pool">
   <a class="card__media" href="/cathelier/pieces/godparent-ask-christening/" tabindex="-1" aria-hidden="true">
@@ -296,7 +309,7 @@
   <h3 class="card__name"><a class="card__link" href="/cathelier/pieces/godparent-ask-christening/">Asking the godparents</a></h3>
   <p class="card__price">from €14,00</p>
 </article>
-      <article class="card" data-product="godparent-ask-wedding" data-family="keepsakes"
+      <article class="card" data-product="godparent-ask-wedding" data-family="custom"
   data-price="12"
   data-shots="03,07" data-dir="cathelier/pool">
   <a class="card__media" href="/cathelier/pieces/godparent-ask-wedding/" tabindex="-1" aria-hidden="true">
@@ -338,7 +351,7 @@
   <h3 class="card__name"><a class="card__link" href="/cathelier/pieces/birth-weight-heart/">Birth weight heart</a></h3>
   <p class="card__price">from €12,00</p>
 </article>
-      <article class="card" data-product="door-wreath" data-family="christmas home"
+      <article class="card" data-product="door-wreath" data-family="christmas"
   data-price="38"
   data-shots="06,04" data-dir="cathelier/pool">
   <a class="card__media" href="/cathelier/pieces/door-wreath/" tabindex="-1" aria-hidden="true">
@@ -401,7 +414,7 @@
   <h3 class="card__name"><a class="card__link" href="/cathelier/pieces/name-ornament/">Christmas ornament with a name</a></h3>
   <p class="card__price">from €4,50</p>
 </article>
-      <article class="card" data-product="photo-magnets" data-family="keepsakes hanging"
+      <article class="card" data-product="photo-magnets" data-family="magnets-keyrings keepsakes"
   data-price="2.5"
   data-shots="11,08" data-dir="cathelier/pool">
   <a class="card__media" href="/cathelier/pieces/photo-magnets/" tabindex="-1" aria-hidden="true">
@@ -464,7 +477,7 @@
   <h3 class="card__name"><a class="card__link" href="/cathelier/pieces/communion-favour/">Communion favour</a></h3>
   <p class="card__price">from €2,20</p>
 </article>
-      <article class="card" data-product="easter-favour" data-family="keepsakes hanging"
+      <article class="card" data-product="easter-favour" data-family="easter keepsakes hanging"
   data-price="3.2"
   data-shots="03,09" data-dir="cathelier/pool">
   <a class="card__media" href="/cathelier/pieces/easter-favour/" tabindex="-1" aria-hidden="true">
@@ -485,7 +498,7 @@
   <h3 class="card__name"><a class="card__link" href="/cathelier/pieces/easter-favour/">Easter favour</a></h3>
   <p class="card__price">from €3,20</p>
 </article>
-      <article class="card" data-product="initial-with-name" data-family="names home childrens-day"
+      <article class="card" data-product="initial-with-name" data-family="names wall-decor"
   data-price="28"
   data-shots="04,06" data-dir="cathelier/pool">
   <a class="card__media" href="/cathelier/pieces/initial-with-name/" tabindex="-1" aria-hidden="true">
@@ -506,7 +519,7 @@
   <h3 class="card__name"><a class="card__link" href="/cathelier/pieces/initial-with-name/">Initial with the name</a></h3>
   <p class="card__price">from €28,00</p>
 </article>
-      <article class="card" data-product="wooden-guest-book" data-family="home keepsakes"
+      <article class="card" data-product="wooden-guest-book" data-family="custom"
   data-price="45"
   data-shots="08,07" data-dir="cathelier/pool">
   <a class="card__media" href="/cathelier/pieces/wooden-guest-book/" tabindex="-1" aria-hidden="true">
@@ -569,7 +582,7 @@
   <h3 class="card__name"><a class="card__link" href="/cathelier/pieces/place-cards/">Place cards</a></h3>
   <p class="card__price">from €1,80</p>
 </article>
-      <article class="card" data-product="engraved-frame" data-family="new-baby home mothers-day"
+      <article class="card" data-product="engraved-frame" data-family="wall-decor new-baby special-days"
   data-price="28"
   data-shots="08,11" data-dir="cathelier/pool">
   <a class="card__media" href="/cathelier/pieces/engraved-frame/" tabindex="-1" aria-hidden="true">
@@ -590,7 +603,7 @@
   <h3 class="card__name"><a class="card__link" href="/cathelier/pieces/engraved-frame/">Frame with an engraved photograph</a></h3>
   <p class="card__price">from €28,00</p>
 </article>
-      <article class="card" data-product="wooden-name" data-family="names home childrens-day"
+      <article class="card" data-product="wooden-name" data-family="names wall-decor"
   data-price="32"
   data-shots="04,06" data-dir="cathelier/pool">
   <a class="card__media" href="/cathelier/pieces/wooden-name/" tabindex="-1" aria-hidden="true">
@@ -611,7 +624,7 @@
   <h3 class="card__name"><a class="card__link" href="/cathelier/pieces/wooden-name/">Name in wood</a></h3>
   <p class="card__price">from €32,00</p>
 </article>
-      <article class="card" data-product="dates-pendant" data-family="mothers-day hanging new-baby"
+      <article class="card" data-product="dates-pendant" data-family="hanging special-days"
   data-price="14"
   data-shots="07,05" data-dir="cathelier/pool">
   <a class="card__media" href="/cathelier/pieces/dates-pendant/" tabindex="-1" aria-hidden="true">
@@ -632,7 +645,7 @@
   <h3 class="card__name"><a class="card__link" href="/cathelier/pieces/dates-pendant/">Pendant with the dates</a></h3>
   <p class="card__price">from €14,00</p>
 </article>
-      <article class="card" data-product="welcome-sign" data-family="home keepsakes"
+      <article class="card" data-product="welcome-sign" data-family="custom"
   data-price="38"
   data-shots="06,04" data-dir="cathelier/pool">
   <a class="card__media" href="/cathelier/pieces/welcome-sign/" tabindex="-1" aria-hidden="true">
@@ -653,7 +666,7 @@
   <h3 class="card__name"><a class="card__link" href="/cathelier/pieces/welcome-sign/">Welcome sign</a></h3>
   <p class="card__price">from €38,00</p>
 </article>
-      <article class="card" data-product="commemorative-plaque" data-family="awards home"
+      <article class="card" data-product="commemorative-plaque" data-family="custom"
   data-price="35"
   data-shots="12,04" data-dir="cathelier/pool">
   <a class="card__media" href="/cathelier/pieces/commemorative-plaque/" tabindex="-1" aria-hidden="true">
@@ -674,7 +687,7 @@
   <h3 class="card__name"><a class="card__link" href="/cathelier/pieces/commemorative-plaque/">Commemorative plaque</a></h3>
   <p class="card__price">from €35,00</p>
 </article>
-      <article class="card" data-product="door-plaque" data-family="names childrens-day home"
+      <article class="card" data-product="door-plaque" data-family="names"
   data-price="16"
   data-shots="04,02" data-dir="cathelier/pool">
   <a class="card__media" href="/cathelier/pieces/door-plaque/" tabindex="-1" aria-hidden="true">
@@ -695,7 +708,7 @@
   <h3 class="card__name"><a class="card__link" href="/cathelier/pieces/door-plaque/">Door plaque</a></h3>
   <p class="card__price">from €16,00</p>
 </article>
-      <article class="card" data-product="bathroom-signs" data-family="home"
+      <article class="card" data-product="bathroom-signs" data-family="custom"
   data-price="14"
   data-shots="04,02" data-dir="cathelier/pool">
   <a class="card__media" href="/cathelier/pieces/bathroom-signs/" tabindex="-1" aria-hidden="true">
@@ -716,7 +729,7 @@
   <h3 class="card__name"><a class="card__link" href="/cathelier/pieces/bathroom-signs/">Bathroom signs</a></h3>
   <p class="card__price">from €14,00</p>
 </article>
-      <article class="card" data-product="photo-keyring" data-family="keepsakes hanging mothers-day fathers-day"
+      <article class="card" data-product="photo-keyring" data-family="magnets-keyrings special-days"
   data-price="9.5"
   data-shots="11,05" data-dir="cathelier/pool">
   <a class="card__media" href="/cathelier/pieces/photo-keyring/" tabindex="-1" aria-hidden="true">
@@ -737,7 +750,7 @@
   <h3 class="card__name"><a class="card__link" href="/cathelier/pieces/photo-keyring/">Photo keyring</a></h3>
   <p class="card__price">from €9,50</p>
 </article>
-      <article class="card" data-product="fathers-day-gift" data-family="fathers-day home"
+      <article class="card" data-product="fathers-day-gift" data-family="special-days"
   data-price="21"
   data-shots="12,11" data-dir="cathelier/pool">
   <a class="card__media" href="/cathelier/pieces/fathers-day-gift/" tabindex="-1" aria-hidden="true">
@@ -758,7 +771,7 @@
   <h3 class="card__name"><a class="card__link" href="/cathelier/pieces/fathers-day-gift/">Father’s Day gift</a></h3>
   <p class="card__price">from €21,00</p>
 </article>
-      <article class="card" data-product="childrens-names-panel" data-family="mothers-day names home"
+      <article class="card" data-product="childrens-names-panel" data-family="special-days names wall-decor"
   data-price="34"
   data-shots="06,07" data-dir="cathelier/pool">
   <a class="card__media" href="/cathelier/pieces/childrens-names-panel/" tabindex="-1" aria-hidden="true">
@@ -779,7 +792,7 @@
   <h3 class="card__name"><a class="card__link" href="/cathelier/pieces/childrens-names-panel/">Panel with the children’s names</a></h3>
   <p class="card__price">from €34,00</p>
 </article>
-      <article class="card" data-product="growth-chart" data-family="home childrens-day"
+      <article class="card" data-product="growth-chart" data-family="wall-decor"
   data-price="48"
   data-shots="04,06" data-dir="cathelier/pool">
   <a class="card__media" href="/cathelier/pieces/growth-chart/" tabindex="-1" aria-hidden="true">
@@ -800,7 +813,7 @@
   <h3 class="card__name"><a class="card__link" href="/cathelier/pieces/growth-chart/">Growth chart</a></h3>
   <p class="card__price">from €48,00</p>
 </article>
-      <article class="card" data-product="save-the-date" data-family="keepsakes hanging"
+      <article class="card" data-product="save-the-date" data-family="keepsakes"
   data-price="3.5"
   data-shots="03,07" data-dir="cathelier/pool">
   <a class="card__media" href="/cathelier/pieces/save-the-date/" tabindex="-1" aria-hidden="true">
@@ -821,7 +834,7 @@
   <h3 class="card__name"><a class="card__link" href="/cathelier/pieces/save-the-date/">Wooden save the date</a></h3>
   <p class="card__price">from €3,50</p>
 </article>
-      <article class="card" data-product="event-signage" data-family="home"
+      <article class="card" data-product="event-signage" data-family="custom"
   data-price="12"
   data-shots="04,06" data-dir="cathelier/pool">
   <a class="card__media" href="/cathelier/pieces/event-signage/" tabindex="-1" aria-hidden="true">
@@ -842,7 +855,7 @@
   <h3 class="card__name"><a class="card__link" href="/cathelier/pieces/event-signage/">Event signage</a></h3>
   <p class="card__price">from €12,00</p>
 </article>
-      <article class="card" data-product="birthday-cake-topper" data-family="home keepsakes childrens-day"
+      <article class="card" data-product="birthday-cake-topper" data-family="custom"
   data-price="18"
   data-shots="02,06" data-dir="cathelier/pool">
   <a class="card__media" href="/cathelier/pieces/birthday-cake-topper/" tabindex="-1" aria-hidden="true">
@@ -863,7 +876,7 @@
   <h3 class="card__name"><a class="card__link" href="/cathelier/pieces/birthday-cake-topper/">Birthday cake topper</a></h3>
   <p class="card__price">from €18,00</p>
 </article>
-      <article class="card" data-product="wedding-cake-topper" data-family="home keepsakes"
+      <article class="card" data-product="wedding-cake-topper" data-family="custom"
   data-price="26"
   data-shots="06,02" data-dir="cathelier/pool">
   <a class="card__media" href="/cathelier/pieces/wedding-cake-topper/" tabindex="-1" aria-hidden="true">
@@ -884,7 +897,7 @@
   <h3 class="card__name"><a class="card__link" href="/cathelier/pieces/wedding-cake-topper/">Wedding cake topper</a></h3>
   <p class="card__price">from €26,00</p>
 </article>
-      <article class="card" data-product="wooden-trophy" data-family="awards"
+      <article class="card" data-product="wooden-trophy" data-family="custom"
   data-price="22"
   data-shots="12,04" data-dir="cathelier/pool">
   <a class="card__media" href="/cathelier/pieces/wooden-trophy/" tabindex="-1" aria-hidden="true">
@@ -905,7 +918,7 @@
   <h3 class="card__name"><a class="card__link" href="/cathelier/pieces/wooden-trophy/">Wooden trophy</a></h3>
   <p class="card__price">from €22,00</p>
 </article>
-      <article class="card" data-product="book-of-vouchers" data-family="keepsakes mothers-day fathers-day"
+      <article class="card" data-product="book-of-vouchers" data-family="special-days"
   data-price="22"
   data-shots="06,12" data-dir="cathelier/pool">
   <a class="card__media" href="/cathelier/pieces/book-of-vouchers/" tabindex="-1" aria-hidden="true">
@@ -926,7 +939,7 @@
   <h3 class="card__name"><a class="card__link" href="/cathelier/pieces/book-of-vouchers/">Book of vouchers</a></h3>
   <p class="card__price">from €22,00</p>
 </article>
-      <article class="card" data-product="engraved-candle" data-family="keepsakes"
+      <article class="card" data-product="engraved-candle" data-family="custom"
   data-price="16"
   data-shots="02,03" data-dir="cathelier/pool">
   <a class="card__media" href="/cathelier/pieces/engraved-candle/" tabindex="-1" aria-hidden="true">
@@ -948,7 +961,7 @@
   <p class="card__price">from €16,00</p>
 </article>
     </div>
-    <p class="lede" data-no-results hidden style="margin-block-start:2rem">Nothing in that occasion yet.</p>
+    <p class="lede" data-no-results hidden style="margin-block-start:2rem">Nothing here yet.</p>
   </div>
 </section>
 
@@ -1047,6 +1060,6 @@
      for by name: at 375x812 it covered the second row of lamps, so a
      first-time visitor saw two instead of the four she asked for. -->
 
-<script src="/assets/shop.eba27826c1.js" defer></script>
+<script src="/assets/shop.801bc041a7.js" defer></script>
 </body>
 </html>

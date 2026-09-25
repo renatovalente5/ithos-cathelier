@@ -818,6 +818,26 @@ window.__bateria = function () {
         .find((f) => !f.split(' ').includes(querido));
       nota(!intruso, 'e o que ficou pertence todo a essa ocasião', intruso || 'sim');
     }
+
+    /* A FAIXA DOS PEDIDOS ESPECIAIS só pertence ao separador dela. A dona quis
+       que «Custom orders» levasse ao orçamento, e o caminho é esta faixa: tem
+       de lá estar nesse, com um link que vá mesmo ao orçamento, e em mais
+       nenhum -- uma frase sobre pedidos por medida por cima das bolas de Natal
+       era ruído. */
+    const faixa = document.querySelector('[data-custom-note]');
+    if (faixa) {
+      const vista = !faixa.hidden && faixa.getBoundingClientRect().height > 0;
+      if (querido === 'custom') {
+        nota(vista, 'no separador dos pedidos especiais, a faixa do orçamento está à vista',
+          `hidden=${faixa.hidden} altura=${Math.round(faixa.getBoundingClientRect().height)}`);
+        const ida = faixa.querySelector('a[href]');
+        nota(!!ida && new URL(ida.href).pathname.endsWith('/cathelier/quote/'),
+          'e leva ao pedido de orçamento', ida ? ida.getAttribute('href') : 'sem link');
+      } else {
+        nota(!vista, `no separador «${querido}» a faixa do orçamento não aparece`,
+          'está à vista fora do seu separador');
+      }
+    }
   }
 
   for (const g of closedGroups) g.open = false;

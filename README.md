@@ -6,9 +6,10 @@ One domain, two shops that must not look like each other.
   Built to the shape of the shop the owner chose as the model: a 1:1 product
   frame, a four-column grid, colour swatches on the card, and a gallery-first
   product page.
-* **cathelier** — personalised laser-cut pieces, organised entirely by occasion
-  (Christmas, Mother's Day, christenings, births, names…), in the warm
-  cream-and-brown world of the second shop the owner chose.
+* **cathelier** — personalised laser-cut pieces, organised in the ten collections
+  the owner listed on 25 September 2026 (Christmas, Easter, special days, magnets
+  and keyrings, new baby, names, hanging pieces, wall decor, custom orders, favours),
+  in the warm cream-and-brown world of the second shop the owner chose.
 
 They share one cart, one checkout, one set of legal pages and one back office.
 They share almost no CSS.
@@ -44,7 +45,11 @@ python3 scripts/fonts.py              # re-download the self-hosted typefaces
 `public/` holds 104 HTML files: **94 pages** and **10 redirect stubs**. The stubs
 sit at the ten old cathelier occasion addresses (`/cathelier/christmas/` and the
 rest), which were deleted on 17 September 2026 when an occasion became a filter
-on `/cathelier/pieces/`. They are listed in `src/lib/redirects.mjs`, they are not
+on `/cathelier/pieces/`. When the collections changed on 25 September 2026, five
+of those old words no longer existed; their stubs now point at the collection
+their pieces went to, and the same table feeds the map in `shop.js` that turns an
+old `#home` or `#fathers-day` shared before the change into the new one. They are
+listed in `src/lib/redirects.mjs`, they are not
 in the sitemap, and both the build and `check-output` report them apart from the
 page count — a file count has never been able to tell a signpost from a
 destination.

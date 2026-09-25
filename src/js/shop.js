@@ -13,6 +13,9 @@ const BASE = '';
 /* Filled in by the build too. Empty means the shop cannot take money, and the
    checkout button says so rather than failing silently. */
 const API = '';
+/* Filled in by the build from src/lib/redirects.mjs: an old filter word, shared
+   before the collections changed, and the one it became. */
+const FRAGMENTOS_ANTIGOS = {};
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -969,6 +972,8 @@ function filters() {
       if (show) shown++;
     }
     if (none) none.hidden = shown > 0;
+    const nota = $('[data-custom-note]');
+    if (nota) nota.hidden = want !== 'custom';
     open();                                   // a chosen chip must never hide
   }
 
@@ -991,6 +996,14 @@ function filters() {
     const raw = location.hash.slice(1);
     let want = '';
     try { want = decodeURIComponent(raw); } catch { want = raw; }
+    /* Uma palavra antiga passa a ser a nova, e a morada acerta-se: quem
+       partilhar a seguir já partilha a certa. */
+    /* `hasOwn` e não `FRAGMENTOS_ANTIGOS[want]`: o objecto herda do
+       Object.prototype, e um #constructor na morada devolvia uma função. */
+    if (Object.hasOwn(FRAGMENTOS_ANTIGOS, want)) {
+      want = FRAGMENTOS_ANTIGOS[want];
+      history.replaceState(null, '', `#${encodeURIComponent(want)}`);
+    }
     if (want && chips.some((c) => c.dataset.filter === want)) apply(want);
     // An unknown word shows everything rather than nothing: a stale link is a
     // disappointment, an empty page looks broken. At the start we do not even

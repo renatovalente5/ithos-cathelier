@@ -18,7 +18,7 @@ to keep afterwards — birth discs, growth charts, family trees, names for a
 bedroom wall. And things for clubs, schools and companies, with your emblem on
 them.
 
-Look through it [by occasion](/cathelier/) or [all at once](/cathelier/pieces/).
+Look through it [by collection](/cathelier/) or [all at once](/cathelier/pieces/).
 
 ## Large orders
 

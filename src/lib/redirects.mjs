@@ -18,16 +18,25 @@
  * dizer que se apaguem.
  *
  * O que vai dentro de cada stub está em redirectStub(), em src/build.mjs, e é
- * verificado em scripts/check-output.mjs e conduzido pela bateria. */
+ * verificado em scripts/check-output.mjs e conduzido pela bateria.
+ *
+ * O `from` NUNCA MUDA; o `to` segue a arrumação da loja. A 25 set 2026 a dona
+ * trocou os dez separadores pelos da lista dela. Cinco slugs sobreviveram com o
+ * mesmo sentido e ficaram como estavam. Os outros cinco deixaram de existir, e
+ * a morada antiga de cada um aponta agora para o separador onde as peças dele
+ * foram parar -- nunca para a lista inteira, que para quem vinha à procura do
+ * Dia do Pai é uma parede. */
 export const REDIRECTS = [
   { from: '/cathelier/christmas/', to: '/cathelier/pieces/#christmas' },
-  { from: '/cathelier/mothers-day/', to: '/cathelier/pieces/#mothers-day' },
-  { from: '/cathelier/fathers-day/', to: '/cathelier/pieces/#fathers-day' },
-  { from: '/cathelier/childrens-day/', to: '/cathelier/pieces/#childrens-day' },
+  { from: '/cathelier/mothers-day/', to: '/cathelier/pieces/#special-days' },
+  { from: '/cathelier/fathers-day/', to: '/cathelier/pieces/#special-days' },
+  // O Dia da Criança não tem sucessor: as peças dele eram quase todas nomes.
+  { from: '/cathelier/childrens-day/', to: '/cathelier/pieces/#names' },
   { from: '/cathelier/keepsakes/', to: '/cathelier/pieces/#keepsakes' },
   { from: '/cathelier/new-baby/', to: '/cathelier/pieces/#new-baby' },
   { from: '/cathelier/names/', to: '/cathelier/pieces/#names' },
-  { from: '/cathelier/home/', to: '/cathelier/pieces/#home' },
+  { from: '/cathelier/home/', to: '/cathelier/pieces/#wall-decor' },
   { from: '/cathelier/hanging/', to: '/cathelier/pieces/#hanging' },
-  { from: '/cathelier/awards/', to: '/cathelier/pieces/#awards' },
+  // Os troféus e as placas foram para os pedidos especiais.
+  { from: '/cathelier/awards/', to: '/cathelier/pieces/#custom' },
 ];

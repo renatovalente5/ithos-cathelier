@@ -214,10 +214,12 @@ export function quote({ identity }) {
 <section class="section">
   <div class="shell shell--narrow page-prose">
     <h1>Ask for a quote</h1>
-    <p class="lede">For anything in quantity — wedding favours, christening keepsakes,
-       place cards, corporate gifts, trophies for a season.</p>
-    <p>Tell us roughly what and roughly how many and we will come back with a price
-       and a date. There is no form to fight with: a message is enough.</p>
+    <p class="lede">For anything made to measure, or in quantity — a cake topper with
+       two names, the signs for a wedding, favours for a christening, trophies for
+       a season.</p>
+    <p>Tell us what you have in mind and, if it is more than one, roughly how many.
+       We will come back with a price and a date. There is no form to fight with:
+       a message is enough.</p>
 
     <div class="contact-cards">
       <a class="contact-card" href="https://wa.me/${esc(identity.whatsapp)}" rel="noopener">

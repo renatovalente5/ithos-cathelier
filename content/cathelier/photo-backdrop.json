@@ -5,10 +5,8 @@
   "featured": false,
   "order": 90,
   "made": "to_order",
-  "occasion": "home",
-  "alsoIn": [
-    "childrens-day"
-  ],
+  "occasion": "custom",
+  "alsoIn": [],
   "summary": "The backdrop panel, with the name and the age.",
   "text": "The backdrop panel, with the name and the age.",
   "photoFolder": "pool",

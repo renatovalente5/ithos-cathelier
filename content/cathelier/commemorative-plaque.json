@@ -5,10 +5,8 @@
   "featured": false,
   "order": 280,
   "made": "to_order",
-  "occasion": "awards",
-  "alsoIn": [
-    "home"
-  ],
+  "occasion": "custom",
+  "alsoIn": [],
   "summary": "For institutions, anniversaries and tributes.",
   "text": "For institutions, anniversaries and tributes.",
   "photoFolder": "pool",

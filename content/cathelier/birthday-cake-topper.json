@@ -5,11 +5,8 @@
   "featured": false,
   "order": 370,
   "made": "to_order",
-  "occasion": "home",
-  "alsoIn": [
-    "keepsakes",
-    "childrens-day"
-  ],
+  "occasion": "custom",
+  "alsoIn": [],
   "summary": "The name and the age, cut out.",
   "text": "The name and the age, cut out.",
   "photoFolder": "pool",
