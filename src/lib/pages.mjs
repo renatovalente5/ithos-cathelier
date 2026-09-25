@@ -1,4 +1,4 @@
-import { esc, money } from './html.mjs';
+import { esc, money, safeHref } from './html.mjs';
 import { icon } from './icons.mjs';
 import { prazos } from './prazos.mjs';
 
@@ -74,7 +74,7 @@ export function markdown(src) {
   // the same to a screen reader, which would otherwise announce forty-seven
   // underscores.
   const inline = (s) => esc(s).replace(/_{3,}/g, '<span class="blank" aria-hidden="true"></span>')
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (m, t, h) => `<a href="${h}">${t}</a>`)
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (m, t, h) => `<a href="${safeHref(h, `the link «${t}»`)}">${t}</a>`)
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
     .replace(/(^|[\s(])\*([^*]+)\*/g, '$1<em>$2</em>')
     .replace(/_([^_]+)_/g, '<em>$1</em>');

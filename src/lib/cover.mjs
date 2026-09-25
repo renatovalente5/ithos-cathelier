@@ -38,7 +38,7 @@
  * icons alone, 42% would do -- non-text controls are allowed 3:1 -- but the
  * burger has the word "Menu" beside it and words are read, not recognised.
  */
-import { esc, coverPicture } from './html.mjs';
+import { esc, coverPicture, safeHref } from './html.mjs';
 
 /* THE ONE WIDTH THIS WHOLE COVER TURNS ON.
  *
@@ -125,7 +125,7 @@ export function cover(c, brand, art) {
     <div class="cover__block">
       <h1 class="cover__title">${esc(c.title)}</h1>
       ${c.buttonLabel && c.buttonHref
-        ? `<a class="btn cover__btn" href="${esc(c.buttonHref)}">${esc(c.buttonLabel)}</a>`
+        ? `<a class="btn cover__btn" href="${esc(safeHref(c.buttonHref, 'the cover button'))}">${esc(c.buttonLabel)}</a>`
         : ''}
     </div>
   </div>

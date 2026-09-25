@@ -7,6 +7,28 @@ export const esc = (s) => String(s ?? '')
   .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
   .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 
+/* A LINK THAT COMES FROM CONTENT CAN ONLY GO TO FIVE KINDS OF PLACE.
+   Content is about to be written by someone other than the programmer (the
+   back office), and `esc()` only stops a value breaking out of the quotes --
+   `javascript:alert(1)` has no quotes to break and ran in ithos-cathelier.pt,
+   the page where the buyer types an address, a phone number and a NIF. So:
+   a path on this site, an anchor, https, mailto or tel, and nothing else. A
+   refusal STOPS THE BUILD and says where, the same way an unknown {{MARKER}}
+   does: a link quietly dropped would be a page that lies about where it goes. */
+export function safeHref(h, where = 'a link') {
+  const s = String(h ?? '').trim();
+  if (/^(\/(?!\/)|#|https:\/\/[^\s]|mailto:[^\s]|tel:[+0-9])/i.test(s)) return s;
+  throw new Error(`${where}: "${s.slice(0, 80)}" is not an address this site links to — only /…, #…, https://…, mailto: and tel:`);
+}
+
+/* STRUCTURED DATA INSIDE <script> IS NOT HTML, AND `esc()` DOES NOT APPLY.
+   JSON.stringify leaves `<` alone, so a product called
+   `</script><script>…` closed the tag and ran. \u003c is the same character
+   to every JSON reader and cannot close anything; U+2028/U+2029 are escaped
+   because some engines still treat them as line ends inside a script. */
+export const jsonInScript = (v) => JSON.stringify(v)
+  .replace(/</g, '\\u003c').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029');
+
 /** Prices are written once, here, so the shop cannot disagree with itself. */
 export const money = (n) => `€${Number(n).toFixed(2).replace('.', ',')}`;
 

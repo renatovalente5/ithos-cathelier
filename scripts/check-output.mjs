@@ -55,6 +55,27 @@ for (const file of pages) {
   const html = readFileSync(file, 'utf8');
   const where = file.slice(OUT.length) || '/';
 
+  /* NOTHING IN A PAGE MAY RUN THAT THE PROGRAMMER DID NOT WRITE.
+     The build already refuses these (safeHref, jsonInScript in src/lib/html.mjs);
+     this is the second lock, on what actually came out, because the back office
+     is about to let someone else write content and a single template that
+     forgets the helper would be the whole hole. Three shapes: a link or a form
+     that goes to a script scheme, an inline event handler written into the
+     markup, and structured data that closes its own <script>. */
+  for (const m of html.matchAll(/\s(?:href|src|action|formaction)\s*=\s*["']?\s*(javascript|vbscript|data):/gi)) {
+    deaths.push(`${where}: an address with the ${m[1].toLowerCase()}: scheme — content must never become code`);
+  }
+  /* A `</script>` inside the block ENDS it: what the lazy match returns is the
+     part before the tag, which contains no tag. Looking for tags inside the
+     match therefore proves nothing -- measured, it passed an injected
+     `</script><script>`. What the truncation always breaks is the JSON. */
+  for (const m of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
+    try { JSON.parse(m[1]); } catch {
+      deaths.push(`${where}: structured data is not valid JSON — something inside it closed its <script>`);
+    }
+    if (/<!--/.test(m[1])) deaths.push(`${where}: structured data contains <!-- `);
+  }
+
   /* UM STUB DE REENCAMINHAMENTO NÃO É UMA PÁGINA, e é reconhecido por uma
      marca que o gerador ESCREVE -- nunca por lhe faltar o título ou o <main>.
      Reconhecer pela falta seria abrir a porta ao contrário do que isto

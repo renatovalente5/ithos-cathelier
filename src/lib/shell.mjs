@@ -1,4 +1,4 @@
-import { esc } from './html.mjs';
+import { esc, safeHref, jsonInScript } from './html.mjs';
 import { icon } from './icons.mjs';
 
 /* ===========================================================================
@@ -188,7 +188,7 @@ ${(() => {
      trail is still drawn, because the reader really is standing there. */
   if (canonicalPath !== path) return '';
   return all.length
-    ? `<script type="application/ld+json">${JSON.stringify(all.length === 1 ? all[0] : all)}</script>`
+    ? `<script type="application/ld+json">${jsonInScript(all.length === 1 ? all[0] : all)}</script>`
     : '';
 })()}
 
@@ -435,14 +435,14 @@ function footer({ brand, identity }) {
       ${groups.map(([name, links]) => `<details class="foot__group" open>
         <summary>${esc(name)}</summary>
         <ul>${links.map(([h, t, note, ic]) => `<li${ic ? ' class="foot__with-icon"' : ''}><a href="${
-          esc(brandPath(h, brand))}">${ic ? icon(ic, 16) : ''}${esc(t)}</a>${
+          esc(brandPath(safeHref(h, `the footer link «${t}»`), brand))}">${ic ? icon(ic, 16) : ''}${esc(t)}</a>${
           note ? `<span class="foot__note">${esc(note)}</span>` : ''}</li>`).join('')}</ul>
       </details>`).join('\n      ')}
     </div>
 
     <div class="foot__social">
       ${social.filter(([href]) => href).map(([href, label, ic]) =>
-        `<a href="${esc(href)}" rel="noopener" aria-label="${esc(label)}">${icon(ic, 18)}</a>`).join('\n      ')}
+        `<a href="${esc(safeHref(href, label))}" rel="noopener" aria-label="${esc(label)}">${icon(ic, 18)}</a>`).join('\n      ')}
     </div>
 
     <!-- The seller's identification used to be printed here in full, on all 94
