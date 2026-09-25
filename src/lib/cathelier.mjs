@@ -358,6 +358,11 @@ export function piece({ p, all: everything, shop, occasions }) {
 
     <div class="product__text stack" style="--stack:1rem">${prose(p.text)}</div>
 
+    ${(shop.safetyCathelier || []).length ? `<details class="product__safety">
+      <summary>Care and safety</summary>
+      <ul>${shop.safetyCathelier.map((s) => `<li>${esc(s)}</li>`).join('')}</ul>
+    </details>` : ''}
+
     <p class="small muted" style="margin-block-start:1.25rem">
       Ordering a lot of them? <a href="/cathelier/quote/">Ask for a quote</a> and we will
       price the whole run.

@@ -1,7 +1,13 @@
 {
   "lead": {
-    "inStockDays": [3, 5],
-    "toOrderWeeks": [3, 4],
+    "inStockDays": [
+      3,
+      5
+    ],
+    "toOrderWeeks": [
+      3,
+      4
+    ],
     "_note": "Dois números e nenhuma frase: as frases («In stock — leaves the workshop in 3 to 5 working days», «with you in 3 to 4 weeks») saem destes números em src/lib/prazos.mjs, e o Worker usa os mesmos números nos emails. Uma frase escrita aqui à mão ficava para trás no dia em que o número mudasse. inStockDays: [mínimo, máximo] de dias úteis até sair da oficina, para um candeeiro em stock. toOrderWeeks: [mínimo, máximo] de semanas até chegar, para tudo o que é feito por encomenda — candeeiros sem stock e todas as peças da cathelier."
   },
   "notice": {
@@ -26,5 +32,7 @@
     "Do not leave batteries within reach of a small child.",
     "Wipe with a dry cloth. Never with water or solvents."
   ],
+  "safetyCathelier": [],
+  "_noteSafetyCathelier": "Os avisos de segurança das peças da cathelier (peças pequenas, ímanes, velas…). O Reg. (UE) 2023/988, art. 19.º, pede-os na oferta online. Têm de vir da dona: enquanto a lista estiver vazia, a ficha das peças não mostra nada e as guardas avisam.",
   "open": false
 }

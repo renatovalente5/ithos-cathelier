@@ -63,6 +63,18 @@ for (const c of shipping.active) {
   }
 }
 
+/* THE CATHELIER PIECES NEED SAFETY WARNINGS OF THEIR OWN. The lamp manual
+   (safetyIthos) talks about AA cells and a mains cable, and says nothing about
+   small parts, magnets or a candle. The GPSR (Reg. (EU) 2023/988, art. 19)
+   asks for the warnings in the online offer; the words have to come from the
+   owner, so until she writes them this is a warning, not a death. */
+{
+  const s = read('settings/shop.json');
+  if (!Array.isArray(s.safetyCathelier) || !s.safetyCathelier.filter((x) => String(x).trim()).length) {
+    pending('shop.json: safetyCathelier is empty — the cathelier pieces show no safety warnings (GPSR art. 19); the owner has to write them');
+  }
+}
+
 /* --- the products --------------------------------------------------------- */
 const seenNames = new Map();
 
