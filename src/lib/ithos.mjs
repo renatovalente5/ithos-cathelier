@@ -8,6 +8,7 @@ const PHOTOS = join(dirname(fileURLToPath(import.meta.url)), '..', '..', 'photos
 import { icon } from './icons.mjs';
 import { cover } from './cover.mjs';
 import { prazos } from './prazos.mjs';
+import { t, tn } from './i18n.mjs';
 
 /* ===========================================================================
    ithos — the pages, in the order the model shop puts things.
@@ -26,9 +27,12 @@ const FAMILY = {
 export const familiesOf = (slug) =>
   Object.entries(FAMILY).filter(([, list]) => list.includes(slug)).map(([k]) => k);
 
+/* Os rótulos são CHAVES de tradução (src/i18n/<língua>/ithos.json), lidas ao
+   desenhar: esta tabela é avaliada ao importar, antes de o gerador escolher a
+   língua. */
 const FILTERS = [
-  ['all', 'All'], ['animals', 'Animals'], ['vehicles', 'Vehicles'],
-  ['nature', 'Nature'], ['festive', 'Festive'],
+  ['all', 'filtro.todos'], ['animals', 'filtro.animais'], ['vehicles', 'filtro.veiculos'],
+  ['nature', 'filtro.natureza'], ['festive', 'filtro.festivos'],
 ];
 
 /** The lowest price this lamp can actually be bought for. A card that says a
@@ -113,7 +117,7 @@ export function card(p, { eager = false } = {}) {
    * checks every rendition against the disk instead. */
   const thumb = (name, n) => `<button class="card__thumb${n === 0 ? ' is-on' : ''}" type="button"
         data-thumb="${n}" aria-pressed="${n === 0 ? 'true' : 'false'}" tabindex="${n === 0 ? '0' : '-1'}"
-        aria-label="Photograph ${n + 1} of ${shots.length}"></button>`;
+        aria-label="${esc(t('ithos.cartao.fotoDe', { n: n + 1, total: shots.length }))}"></button>`;
 
   /* data-price is the price the card SHOWS -- the lowest this lamp can actually
      be bought for, not p.price. Sorting by anything else would reorder the
@@ -125,7 +129,7 @@ export function card(p, { eager = false } = {}) {
     <div class="frame card__frame">
       ${picture({
         dir, name: p.cover,
-        alt: `${p.name} — a handmade wooden night light`,
+        alt: t('ithos.cartao.alt', { nome: p.name }),
         sizes: '(min-width: 90rem) 340px, (min-width: 64rem) 30vw, (min-width: 48rem) 30vw, 46vw',
         loading: eager ? 'eager' : 'lazy',
         fetchpriority: eager ? 'high' : undefined,
@@ -133,13 +137,13 @@ export function card(p, { eager = false } = {}) {
     </div>
   </a>
   ${shots.length > 1
-    ? `<div class="card__thumbs" role="group" aria-label="${esc(p.name)} — ${shots.length} photographs">
+    ? `<div class="card__thumbs" role="group" aria-label="${esc(t('ithos.cartao.fotografias', { nome: p.name, n: shots.length }))}">
     ${shots.map(thumb).join('\n    ')}
   </div>`
     : '<div class="card__thumbs card__thumbs--none" aria-hidden="true"></div>'}
   ${dots}
   <h3 class="card__name"><a class="card__link" href="${href}">${esc(p.name)}</a></h3>
-  <p class="card__price">${range ? `<span class="card__from">from </span>` : ''}${money(low)}</p>
+  <p class="card__price">${range ? `<span class="card__from">${esc(t('ithos.cartao.desde'))} </span>` : ''}${money(low)}</p>
 </article>`;
 }
 
@@ -159,7 +163,7 @@ ${cover(coverText, 'ithos', coverArt)}
 
 <section class="section">
   <div class="shell">
-    <div class="section__head"><h2>Bestsellers</h2></div>
+    <div class="section__head"><h2>${esc(t('ithos.inicio.maisVendidos'))}</h2></div>
     <div class="grid-products">
       ${featured.map((p, i) => card(p, { eager: i < 4 })).join('\n      ')}
     </div>
@@ -170,17 +174,16 @@ ${cover(coverText, 'ithos', coverArt)}
   <div class="shell">
     <div class="maker">
       <div class="maker__text">
-        <h2>Hello</h2>
-        <p>Lovely that you are here. We are a small family workshop in Castelo Branco,
-           where we make wooden night lights for children’s rooms by hand, one at a time.</p>
-        <p>Come and look around. We hope you find something here that steals your heart.</p>
+        <h2>${esc(t('ithos.inicio.ola'))}</h2>
+        <p>${esc(t('ithos.inicio.apresentacao'))}</p>
+        <p>${esc(t('ithos.inicio.convite'))}</p>
         <p class="maker__sign">Cathia</p>
       </div>
       <div class="frame maker__photo">
         ${picture({
           dir: `ithos/${(products.find((x) => x.slug === 'sheep') ?? products[0]).photoFolder}`,
           name: (products.find((x) => x.slug === 'sheep') ?? products[0]).cover,
-          alt: 'A wooden night light from the workshop',
+          alt: t('ithos.inicio.fotoOficina'),
           sizes: '(min-width: 56rem) 45vw, 100vw',
         })}
       </div>
@@ -190,12 +193,12 @@ ${cover(coverText, 'ithos', coverArt)}
 
 <section class="section">
   <div class="shell">
-    <div class="section__head"><h2>More from the workshop</h2></div>
+    <div class="section__head"><h2>${esc(t('ithos.inicio.maisDaOficina'))}</h2></div>
     <div class="grid-products">
       ${rest.map((p) => card(p)).join('\n      ')}
     </div>
     <p style="text-align:center;margin-block-start:2.5rem">
-      <a class="btn btn--ghost" href="/lamps/">See all ${products.length} lamps</a>
+      <a class="btn btn--ghost" href="/lamps/">${esc(t('ithos.inicio.verTodos', { n: products.length }))}</a>
     </p>
   </div>
 </section>
@@ -207,21 +210,20 @@ export function catalogue({ products }) {
   return `
 <section class="section" style="padding-block-start:clamp(1rem,2vw,2rem)">
   <div class="shell">
-    <h1>Wooden night lights</h1>
+    <h1>${esc(t('ithos.catalogo.titulo'))}</h1>
     <p class="lede measure" style="margin-block-start:.5rem">
-      ${products.length} designs, handmade in solid pine, ${money(Math.min(...prices))}–${money(Math.max(...prices))}.
-      Each one can carry an engraved name.
+      ${esc(t('ithos.catalogo.lede', { n: products.length, min: money(Math.min(...prices)), max: money(Math.max(...prices)) }))}
     </p>
 
     <div class="filters" data-filters style="margin-block-start:1.25rem">
-      ${FILTERS.map(([id, label], i) =>
-        `<button class="filter" type="button" data-filter="${id}" aria-pressed="${i === 0}">${esc(label)}</button>`).join('\n      ')}
+      ${FILTERS.map(([id, chave], i) =>
+        `<button class="filter" type="button" data-filter="${id}" aria-pressed="${i === 0}">${esc(t(`ithos.${chave}`))}</button>`).join('\n      ')}
     </div>
 
     <div class="grid-products" data-product-list style="margin-block-start:1.5rem">
       ${products.map((p, i) => card(p, { eager: i < 4 })).join('\n      ')}
     </div>
-    <p class="lede" data-no-results hidden style="margin-block-start:2rem">No lamps in that family.</p>
+    <p class="lede" data-no-results hidden style="margin-block-start:2rem">${esc(t('ithos.catalogo.semResultados'))}</p>
   </div>
 </section>
 `;
@@ -254,10 +256,10 @@ export function product({ p, all, shop }) {
     .slice(0, 4);
   const size = p.size || {};
   const dims = [
-    size.height && `${size.height} cm tall`,
-    size.width && `${size.width} cm wide`,
-    size.length && `${size.length} cm long`,
-    size.depth && `${size.depth} cm deep`,
+    size.height && t('ithos.medida.altura', { n: size.height }),
+    size.width && t('ithos.medida.largura', { n: size.width }),
+    size.length && t('ithos.medida.comprimento', { n: size.length }),
+    size.depth && t('ithos.medida.profundidade', { n: size.depth }),
   ].filter(Boolean).join(' · ');
 
   return `
@@ -267,20 +269,20 @@ export function product({ p, all, shop }) {
       <div class="gallery__track" data-gallery-track>
         ${photos.map((n, i) => `<div class="gallery__slide" data-index="${i}" style="--focus:${cardFocus(`${dir}/${n}`, shapes[i])}">
           ${wholePicture({ key: `${dir}/${n}`, shape: shapes[i],
-            alt: `${p.name} — photograph ${i + 1}`,
+            alt: t('ithos.ficha.fotoAlt', { nome: p.name, n: i + 1 }),
             widths: rungs(shapes[i].w),
             sizes: '(min-width: 64rem) 560px, 100vw',
             loading: i === 0 ? 'eager' : 'lazy', fetchpriority: i === 0 ? 'high' : undefined })}
         </div>`).join('\n        ')}
       </div>
-      <button class="gallery__open" type="button" data-box-open aria-label="See this photograph full size">${icon('search', 18)}</button>
+      <button class="gallery__open" type="button" data-box-open aria-label="${esc(t('ithos.ficha.ampliar'))}">${icon('search', 18)}</button>
       ${photos.length > 1 ? `
-      <button class="gallery__arrow gallery__arrow--prev" type="button" data-gallery-prev aria-label="Previous photograph">${icon('arrowLeft', 20)}</button>
-      <button class="gallery__arrow gallery__arrow--next" type="button" data-gallery-next aria-label="Next photograph">${icon('arrowRight', 20)}</button>` : ''}
+      <button class="gallery__arrow gallery__arrow--prev" type="button" data-gallery-prev aria-label="${esc(t('ithos.ficha.anterior'))}">${icon('arrowLeft', 20)}</button>
+      <button class="gallery__arrow gallery__arrow--next" type="button" data-gallery-next aria-label="${esc(t('ithos.ficha.seguinte'))}">${icon('arrowRight', 20)}</button>` : ''}
     </div>
-    ${photos.length > 1 ? `<div class="gallery__thumbs" role="tablist" aria-label="Photographs">
+    ${photos.length > 1 ? `<div class="gallery__thumbs" role="tablist" aria-label="${esc(t('ithos.ficha.fotografias'))}">
       ${photos.map((n, i) => `<button class="frame gallery__thumb" type="button" role="tab"
-        data-gallery-go="${i}" aria-selected="${i === 0}" aria-label="Photograph ${i + 1}">
+        data-gallery-go="${i}" aria-selected="${i === 0}" aria-label="${esc(t('ithos.ficha.foto', { n: i + 1 }))}">
         ${picture({ dir, name: n, alt: '', sizes: '84px', widths: [200, 400] })}
       </button>`).join('\n      ')}
     </div>` : ''}
@@ -306,21 +308,21 @@ export function product({ p, all, shop }) {
 
       <div class="product__buy">
         <div class="qty" data-qty>
-          <button class="qty__btn" type="button" data-qty-down aria-label="One fewer">${icon('minus', 16)}</button>
+          <button class="qty__btn" type="button" data-qty-down aria-label="${esc(t('ithos.quantidade.menos'))}">${icon('minus', 16)}</button>
           <input class="qty__input" type="number" name="quantity" value="1" min="1" max="20"
-                 inputmode="numeric" aria-label="Quantity">
-          <button class="qty__btn" type="button" data-qty-up aria-label="One more">${icon('plus', 16)}</button>
+                 inputmode="numeric" aria-label="${esc(t('ithos.quantidade.rotulo'))}">
+          <button class="qty__btn" type="button" data-qty-up aria-label="${esc(t('ithos.quantidade.mais'))}">${icon('plus', 16)}</button>
         </div>
-        <button class="btn btn--wide" type="submit" data-add>Add to basket</button>
+        <button class="btn btn--wide" type="submit" data-add>${esc(t('ithos.botao.adicionar'))}</button>
       </div>
     </form>
 
     <div class="reassure">
-      ${[['truck', 'Shipped within Portugal — €5 to the mainland'],
-         ['leaf', 'Solid pine and water-based paints'],
-         ['shield', `${shop.returns.warrantyYears}-year guarantee · ${shop.returns.coolingOffDays} days to change your mind`],
-         ['hand', 'Made by hand in Castelo Branco, Portugal']]
-        .map(([i, t]) => `<p>${icon(i, 18)}<span>${esc(t)}</span></p>`).join('\n      ')}
+      ${[['truck', t('ithos.garantias.envio')],
+         ['leaf', t('ithos.garantias.materiais')],
+         ['shield', `${tn('ithos.garantias.anos', shop.returns.warrantyYears)} · ${tn('ithos.garantias.mudarDeIdeias', shop.returns.coolingOffDays)}`],
+         ['hand', t('ithos.garantias.feitoAMao')]]
+        .map(([i, texto]) => `<p>${icon(i, 18)}<span>${esc(texto)}</span></p>`).join('\n      ')}
     </div>
 
     <div class="product__text stack" style="--stack:1rem">
@@ -329,7 +331,7 @@ export function product({ p, all, shop }) {
     </div>
 
     <details class="product__safety">
-      <summary>Care and safety</summary>
+      <summary>${esc(t('ithos.ficha.cuidados'))}</summary>
       <ul>${(shop.safetyIthos || []).map((s) => `<li>${esc(s)}</li>`).join('')}</ul>
     </details>
   </div>
@@ -339,7 +341,7 @@ ${viewer()}
 
 ${related.length ? `<section class="section section--soft">
   <div class="shell">
-    <div class="section__head"><h2>You might also like</h2></div>
+    <div class="section__head"><h2>${esc(t('ithos.ficha.relacionados'))}</h2></div>
     <div class="grid-products">${related.map((x) => card(x)).join('\n      ')}</div>
   </div>
 </section>` : ''}
@@ -352,10 +354,10 @@ ${related.length ? `<section class="section section--soft">
 function optionField(o) {
   if (o.type === 'text') {
     return `<div class="field">
-        <label for="opt-${esc(o.id)}">${esc(o.name)} <span class="field__optional">optional</span></label>
-        ${o.help ? `<p class="field__help">${esc(o.help)} <span class="field__limit">Up to ${o.max || 40} characters.</span></p>` : ''}
+        <label for="opt-${esc(o.id)}">${esc(o.name)} <span class="field__optional">${esc(t('ithos.opcao.opcional'))}</span></label>
+        ${o.help ? `<p class="field__help">${esc(o.help)} <span class="field__limit">${esc(t('ithos.opcao.limite', { n: o.max || 40 }))}</span></p>` : ''}
         <input id="opt-${esc(o.id)}" type="text" maxlength="${o.max || 40}"
-               data-option="${esc(o.id)}" placeholder="A name, a date, a short phrase">
+               data-option="${esc(o.id)}" placeholder="${esc(t('ithos.opcao.exemplo'))}">
       </div>`;
   }
   /* THE TICKED ONE HAS TO BE ONE YOU CAN ACTUALLY BUY.
@@ -378,7 +380,7 @@ function optionField(o) {
             <input type="radio" name="opt-${esc(o.id)}" value="${esc(v.id)}"
                    data-option="${esc(o.id)}"${v.id === chosen.id ? ' checked' : ''}${off ? ' disabled' : ''}>
             <span>${esc(v.name)}${v.extra ? ` <em>+${money(v.extra)}</em>` : ''}${
-      off ? ` <em class="choice__off">${esc(v.note || 'Unavailable')}</em>` : ''}</span>
+      off ? ` <em class="choice__off">${esc(v.note || t('ithos.opcao.indisponivel'))}</em>` : ''}</span>
           </label>`;
   }).join('\n          ')}
         </div>
