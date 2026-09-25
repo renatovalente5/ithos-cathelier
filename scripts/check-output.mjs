@@ -601,7 +601,7 @@ for (const [canonical, group] of byCanonical) {
 /* A frase e o cesto confrontam-se aqui, quando as duas páginas já foram lidas. */
 {
   const NOME = {
-    MB: 'Multibanco', MBWAY: 'MB WAY', PAYSHOP: 'Payshop',
+    MB: 'Multibanco', MBWAY: 'MB WAY',
     CCARD: 'card', GOOGLE: 'Google Pay', APPLE: 'Apple Pay',
   };
   const semNome = oferecidos.filter((m) => !NOME[m]);

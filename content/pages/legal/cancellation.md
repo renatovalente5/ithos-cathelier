@@ -35,6 +35,6 @@ have sent it — whichever happens first. That is a right to wait, not a later
 start: the 14 days are counted from the day you told us.
 
 The money goes back the way it came. If you paid by MB WAY or by card, it
-returns to the same card or phone. A Multibanco or Payshop reference has no way
-back, so for those we ask you for an IBAN and transfer it — we use the IBAN only
+returns to the same card or phone. A Multibanco reference has no way back, so
+for those we ask you for an IBAN and transfer it — we use the IBAN only
 to return your money, and keep it no longer than the accounting rules require.

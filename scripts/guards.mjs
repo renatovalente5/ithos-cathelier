@@ -970,7 +970,6 @@ for (const [o, n] of esgotados) {
   const esperado = {
     'mbway.svg': [143.2, 69.57],
     'multibanco.svg': [153.98, 181.88],
-    'payshop.svg': [455.24, 120.57],
     'applepay.svg': [165.52107, 105.9651],
     'googlepay.svg': [41, 17],
   };

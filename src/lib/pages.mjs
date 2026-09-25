@@ -268,20 +268,18 @@ export function quote({ identity }) {
  * AS TRÊS ALTURAS SÃO DIFERENTES E ISSO NÃO É DISTRACÇÃO. O logótipo do
  * Multibanco é ao alto (o símbolo com a palavra por baixo) e os outros dois
  * são deitados; à mesma altura, «MULTIBANCO» fica uma mancha. Medido: lê-se a
- * partir dos ~38px, enquanto o MB WAY se lê aos 24 e o Payshop aos 19. Cada
+ * partir dos ~38px, enquanto o MB WAY se lê aos 24. Cada
  * marca vai ao seu tamanho óptico. O porquê por extenso, e a proveniência da
  * obra-de-arte, estão em assets/brand/pay/LEIA.md. */
 /* A APPLE E A GOOGLE PROÍBEM AS DUAS mostrar a sua marca mais pequena do que as
    outras identidades de pagamento «em formato semelhante». As marcas deitadas
-   desta loja são o MB WAY (24) e o Payshop (19); estas duas vão a 28, que não é
-   menor do que nenhuma. O Multibanco fica nos 38 e não entra na comparação: é
+   desta loja são o MB WAY (24); estas duas vão a 28, que não é menor. O Multibanco fica nos 38 e não entra na comparação: é
    um logótipo AO ALTO, outro formato, e a palavra dele deixa de se ler abaixo
    disso. Medi a alternativa de pôr tudo a 38 -- cumpre à letra e fica pior,
    com o Apple Pay e o Google Pay a dominar a lista. */
 const MARCAS = {
   mbway: { w: 143.2, h: 69.57, alto: 24 },
   multibanco: { w: 153.98, h: 181.88, alto: 38 },
-  payshop: { w: 455.24, h: 120.57, alto: 19 },
   applepay: { w: 165.52107, h: 105.9651, alto: 28 },
   googlepay: { w: 41, h: 17, alto: 28 },
 };
@@ -413,14 +411,6 @@ export function basket({ shipping }) {
           <span class="pay-choice__body">
             <span class="pay-choice__name">Multibanco reference</span>
             <span class="pay-choice__note">We give you an entity and a reference to pay at an ATM or in home banking.</span>
-          </span>
-        </label>
-        <label class="pay-choice__opt">
-          <input type="radio" name="metodo" value="PAYSHOP" required>
-          ${marca('payshop')}
-          <span class="pay-choice__body">
-            <span class="pay-choice__name">Payshop</span>
-            <span class="pay-choice__note">A reference to pay in cash at any Payshop agent.</span>
           </span>
         </label>
         <!-- OS TRÊS ÚLTIMOS LEVAM O COMPRADOR DAQUI PARA FORA, e as notas
@@ -608,27 +598,6 @@ export function payPage(shop = {}) {
       <p class="small muted">The moment the payment reaches us we write to you and the
          workshop starts. You can close this page — we have the reference in your
          email too.</p>
-    </div>
-
-    <!-- Payshop: referência de 13 dígitos, paga-se em dinheiro ao balcão. -->
-    <div data-pay-payshop hidden>
-      <h2>Pay this Payshop reference</h2>
-      <p>Take it to any Payshop agent — most newsagents, post offices and many
-         corner shops.</p>
-      <dl class="pay-ref">
-        <div class="pay-ref__row">
-          <dt>Reference</dt>
-          <dd><span data-pay-reference-ps>—</span>
-            <button type="button" class="pay-copy" data-copy="reference-ps">Copy</button></dd>
-        </div>
-        <div class="pay-ref__row">
-          <dt>Amount</dt>
-          <dd><span data-pay-amount-ps>—</span>
-            <button type="button" class="pay-copy" data-copy="amount-ps">Copy</button></dd>
-        </div>
-      </dl>
-      <p>The reference is yours for ${dias} days. Nothing is made and nothing is
-         charged until you pay it.</p>
     </div>
 
     <!-- Pago. Não se manda ninguém para outro lado: o comprador acabou de

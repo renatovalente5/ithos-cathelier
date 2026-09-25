@@ -853,7 +853,7 @@ async function payPage() {
   if (!state) return;
 
   const id = new URLSearchParams(location.search).get('ref');
-  const blocos = '[data-pay-mbway],[data-pay-mb],[data-pay-payshop],[data-pay-done],[data-pay-failed],[data-pay-unknown]';
+  const blocos = '[data-pay-mbway],[data-pay-mb],[data-pay-done],[data-pay-failed],[data-pay-unknown]';
   const mostrar = (qual) => {
     state.hidden = true;
     for (const d of $$(blocos)) d.hidden = true;
@@ -1015,15 +1015,6 @@ async function payPage() {
         escrever('[data-pay-expiry-date]', porExtenso(s.expira));
       }
       mostrar('[data-pay-mb]');
-      return true;
-    }
-
-    if (s.metodo === 'PAYSHOP' && s.referencia) {
-      copiavel.set('reference-ps', String(s.referencia).replace(/\D/g, ''));
-      copiavel.set('amount-ps', (s.total / 100).toFixed(2));
-      escrever('[data-pay-reference-ps]', emGrupos(s.referencia));
-      escrever('[data-pay-amount-ps]', euros(s.total));
-      mostrar('[data-pay-payshop]');
       return true;
     }
 
