@@ -54,6 +54,47 @@ window.__bateria = function () {
       `conteúdo ${tira.scrollWidth}px em ${tira.clientWidth}px`);
   }
 
+  /* O FORMULÁRIO DA FICHA RECUSA O QUE O PAGAMENTO IA RECUSAR.
+     O `required` do HTML só é verificado quando o formulário é submetido, e o
+     botão de adicionar era `type="button"`: os oitenta campos obrigatórios do
+     cathelier não valiam nada, e um disco de nascimento com os seis campos
+     vazios entrava no cesto para ser recusado lá à frente, no pagamento, sem
+     dizer o que faltava nem onde.
+     Estas perguntas fazem-se com a loja FECHADA na mesma, porque nenhuma
+     precisa de carregar no botão: `checkValidity()` é uma pergunta ao DOM, e
+     responde o mesmo no dia em que a loja abrir. */
+  const fichaForm = document.querySelector('[data-product-form]');
+  if (fichaForm) {
+    const botao = fichaForm.querySelector('[data-add]');
+    nota(botao?.type === 'submit',
+      'o botão de adicionar ao cesto submete o formulário',
+      `type="${botao?.type}" — com "button" o required não é verificado`);
+    nota(botao?.form === fichaForm,
+      'e pertence ao formulário da ficha',
+      botao?.form ? 'pertence a outro formulário' : 'não pertence a formulário nenhum');
+
+    const obrigatorios = [...fichaForm.querySelectorAll('input[data-option][required]')];
+    if (obrigatorios.length) {
+      const quantos = obrigatorios.length === 1
+        ? 'um campo obrigatório' : `${obrigatorios.length} campos obrigatórios`;
+      nota(fichaForm.checkValidity() === false,
+        `com ${quantos} por preencher, o formulário é inválido`,
+        'o browser deixaria passar');
+    } else {
+      nota(fichaForm.checkValidity() === true,
+        'sem campos obrigatórios, o formulário é válido de início',
+        'algo o torna inválido e o botão não faria nada');
+    }
+
+    /* O TECTO DO CESTO LÊ-SE DO CAMPO. Esteve 20 escrito no JavaScript para as
+       duas marcas, e o cathelier vende às centenas: pedir 150 e voltar a
+       carregar deixava vinte no cesto, em silêncio. */
+    const quantidade = fichaForm.querySelector('.qty__input');
+    nota(Number(quantidade?.max) > 0,
+      'o campo de quantidade declara o tecto',
+      `max="${quantidade?.max}"`);
+  }
+
   // --- transbordo lateral --------------------------------------------------
   const de = document.documentElement;
   nota(de.scrollWidth <= de.clientWidth + 1, 'não rola de lado',

@@ -301,7 +301,7 @@ export function product({ p, all, shop }) {
                  inputmode="numeric" aria-label="Quantity">
           <button class="qty__btn" type="button" data-qty-up aria-label="One more">${icon('plus', 16)}</button>
         </div>
-        <button class="btn btn--wide" type="button" data-add>Add to basket</button>
+        <button class="btn btn--wide" type="submit" data-add>Add to basket</button>
       </div>
     </form>
 

@@ -511,5 +511,16 @@ for (const de of STUBS) {
 }
 
 window.__pronto = true;
-saida.textContent = `pronto: ${Object.keys(window.__resultados).length} páginas e stubs a ${L}x${A}`;
+/* UMA PÁGINA QUE REBENTOU NÃO É UMA PÁGINA MEDIDA.
+   Isto dizia só quantas páginas correram, e a 25 set 2026 escreveu «pronto: 38
+   páginas» com as TRINTA E OITO a devolverem
+   `TypeError: w.__bateria is not a function` -- o ficheiro estava servido com
+   outro nome e nenhuma asserção chegou a correr. Um fim verde por cima de
+   trinta e oito falhas é pior do que um erro: é uma bateria a dizer que
+   mediu o que nunca viu. Agora os erros vão à frente e em maiúsculas. */
+const rebentadas = Object.entries(window.__resultados).filter(([, v]) => v && v.erro);
+saida.textContent = rebentadas.length
+  ? `${rebentadas.length} DE ${Object.keys(window.__resultados).length} PÁGINAS REBENTARAM — `
+    + `${rebentadas[0][0]}: ${rebentadas[0][1].erro}`
+  : `pronto: ${Object.keys(window.__resultados).length} páginas e stubs a ${L}x${A}`;
 </script>

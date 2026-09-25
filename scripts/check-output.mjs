@@ -65,6 +65,25 @@ for (const file of pages) {
   const ehStub = /<meta name="generator" content="redirect-stub">/.test(html);
   if (ehStub) stubs.push({ where, html });
 
+  /* UM CAMPO OBRIGATÓRIO SÓ VALE COM UM BOTÃO QUE SUBMETA.
+     O `required` do HTML só é verificado quando o formulário é submetido. O
+     botão de adicionar ao cesto era `type="button"`, portanto os oitenta
+     campos obrigatórios do cathelier não valiam nada: a peça entrava no cesto
+     vazia e só era recusada no pagamento, sem dizer o que faltava. Medido a
+     conduzir a página, não a lê-la. Esta guarda é a que impede o botão de
+     voltar a ser `type="button"` sem ninguém dar por isso. */
+  const formularioDeProduto = /<form[^>]*data-product-form/.test(html);
+  if (formularioDeProduto) {
+    const botao = html.match(/<button[^>]*data-add[^>]*>/)?.[0] ?? '';
+    if (!/type="submit"/.test(botao)) {
+      deaths.push(`${where}: o botão de adicionar ao cesto não é type="submit" — os campos obrigatórios não são verificados`);
+    }
+    const quantidade = html.match(/<input[^>]*class="qty__input"[^>]*>/)?.[0] ?? '';
+    if (!/\bmax="\d+"/.test(quantidade)) {
+      deaths.push(`${where}: o campo de quantidade não declara um max — o tecto do cesto lê-se dele`);
+    }
+  }
+
   const title = html.match(/<title>([^<]*)<\/title>/)?.[1];
   const desc = html.match(/<meta name="description" content="([^"]*)"/)?.[1];
   const indexable = !/<meta name="robots" content="noindex/.test(html);

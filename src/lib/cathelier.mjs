@@ -306,7 +306,7 @@ export function piece({ p, all: everything, shop, occasions }) {
           <input class="qty__input" type="number" name="quantity" value="1" min="1" max="200" inputmode="numeric" aria-label="Quantity">
           <button class="qty__btn" type="button" data-qty-up aria-label="One more">${icon('plus', 16)}</button>
         </div>
-        <button class="btn btn--wide" type="button" data-add>Add to basket</button>
+        <button class="btn btn--wide" type="submit" data-add>Add to basket</button>
       </div>
     </form>
 

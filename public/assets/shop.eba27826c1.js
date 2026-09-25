@@ -1486,25 +1486,77 @@ function productForm() {
   const slug = form.dataset.productId;
 
   const qty = $('.qty__input', form);
+  /* O TECTO VEM DO PRÓPRIO CAMPO, e não de um 20 escrito aqui três vezes.
+     As duas marcas não vendem o mesmo: o markup do ithos diz 20 e o do
+     cathelier diz 200, porque lá vendem-se lembranças às centenas -- e o
+     servidor aceita 200 (`MAX_QTY`). Com o 20 à mão, quem pedia 150 e voltava
+     a carregar em Adicionar via o cesto passar a VINTE, sem uma palavra:
+     medido, 150 + 150 = 20. Ler o `max` do campo faz do markup a única fonte,
+     e o markup é o que o comprador tem à frente. */
+  const tecto = Number(qty?.max) || 20;
   $('[data-qty-down]', form)?.addEventListener('click', () => { qty.value = Math.max(1, +qty.value - 1); });
-  $('[data-qty-up]', form)?.addEventListener('click', () => { qty.value = Math.min(20, +qty.value + 1); });
+  $('[data-qty-up]', form)?.addEventListener('click', () => { qty.value = Math.min(tecto, +qty.value + 1); });
 
-  add.addEventListener('click', () => {
+  /* Uma linha por baixo do botão, com o mesmo desenho da do checkout: o cesto
+     nunca deve mudar de ideias em silêncio. */
+  function dizer(texto) {
+    let caixa = $('[data-add-msg]', form);
+    if (!caixa) {
+      caixa = document.createElement('p');
+      caixa.dataset.addMsg = '';
+      caixa.className = 'small';
+      caixa.style.cssText = 'margin-block-start:.75rem;color:#8C2F1F';
+      caixa.setAttribute('role', 'status');
+      add.after(caixa);
+    }
+    caixa.textContent = texto;
+  }
+
+  const juntar = (ev) => {
+    /* `submit` e não `click`: assim o Enter dentro de um campo também põe a
+       peça no cesto, e o browser valida ANTES de nós. O `preventDefault`
+       impede a página de recarregar. */
+    ev?.preventDefault();
     if (add.getAttribute('aria-disabled') === 'true') return;
+
+    /* APARAR ANTES DE VALIDAR, e voltar a perguntar.
+       O `required` do HTML só olha para o vazio, e um espaço satisfá-lo. A
+       seguir o `value.trim()` aqui em baixo deitava a opção fora, e a peça ia
+       para o cesto SEM a gravação -- o mesmo defeito com um passo a mais. */
+    for (const el of $$('input[data-option]', form)) {
+      if (el.type !== 'radio') el.value = el.value.trim();
+    }
+    /* O browser mostra os erros dele e põe o foco no primeiro campo em falta,
+       na língua de quem lá está -- é o que o checkout faz, e é melhor do que
+       qualquer mensagem que eu escrevesse. Sem isto, um disco de nascimento
+       com os SEIS campos obrigatórios vazios entrava no cesto e só era
+       recusado no pagamento, sem dizer o que faltava nem onde. */
+    if (!form.reportValidity()) return;
+
     const options = {};
     for (const el of $$('[data-option]', form)) {
       if (el.type === 'radio' && !el.checked) continue;
       if (el.value.trim()) options[el.dataset.option] = el.value.trim();
     }
+    const quantas = Math.min(tecto, Math.max(1, Number(qty.value) || 1));
     const b = basket();
     const same = b.lines.find((l) => l.id === slug && JSON.stringify(l.options) === JSON.stringify(options));
-    if (same) same.qty = Math.min(20, same.qty + Number(qty.value));
-    else b.lines.push({ id: slug, qty: Number(qty.value), options });
+    const antes = same ? same.qty : 0;
+    if (same) same.qty = Math.min(tecto, same.qty + quantas);
+    else b.lines.push({ id: slug, qty: quantas, options });
     setBasket(b);
+
+    /* Se o tecto cortou o pedido, diz-se. Cortar e calar é o defeito que
+       estava aqui. */
+    const ficaram = same ? same.qty : quantas;
+    if (ficaram < antes + quantas) dizer(`The basket holds at most ${tecto} of these, so it now has ${ficaram}.`);
+    else dizer('');
 
     add.textContent = 'Added';
     setTimeout(() => { add.textContent = 'Add to basket'; }, 1600);
-  });
+  };
+
+  form.addEventListener('submit', juntar);
 }
 
 /* --- the film on the cover -------------------------------------------------
@@ -1609,6 +1661,11 @@ async function previewLock() {
   for (const b of $$('[data-add], [data-pay], [data-to-checkout]')) {
     b.setAttribute('aria-disabled', 'true');
     b.title = 'The shop has not opened yet.';
+    /* Com a loja fechada não se valida nada: o botão de adicionar é agora um
+       botão de submissão, e sem isto clicá-lo numa loja fechada mostrava os
+       balões de «preencha este campo» a quem não pode comprar de qualquer
+       maneira. O travão a sério é o `aria-disabled`, lido no `juntar`. */
+    if (b.type === 'submit') b.setAttribute('formnovalidate', '');
     const note = document.createElement('p');
     note.className = 'small muted';
     note.style.marginBlockStart = '.5rem';
