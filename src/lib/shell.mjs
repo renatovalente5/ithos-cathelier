@@ -1,5 +1,6 @@
 import { esc, safeHref, jsonInScript } from './html.mjs';
 import { icon } from './icons.mjs';
+import { t, lingua, LINGUAS, LOCALE, OG_LOCALE, NOMES, morada, linguaDaRaiz } from './i18n.mjs';
 
 /* ===========================================================================
    The page shell: <head>, the header, the drawer, the footer.
@@ -8,11 +9,14 @@ import { icon } from './icons.mjs';
    is read from these two tables. The look is not here — it is in the two brand
    stylesheets, which share almost nothing. */
 
+/* Os rótulos são CHAVES de tradução (src/i18n/<língua>/shell.json), lidas
+   no momento de desenhar -- a tabela é avaliada antes de o gerador escolher a
+   língua, e um texto escrito aqui ficaria na língua de quem o escreveu. */
 export const NAV = {
   ithos: [
-    ['/lamps/', 'Lamps', 'lamps'],
-    ['/about/', 'The workshop'],
-    ['/contact/', 'Contact'],
+    ['/lamps/', 'nav.lamps', 'lamps'],
+    ['/about/', 'nav.workshop'],
+    ['/contact/', 'nav.contact'],
   ],
   cathelier: [
     // "Occasions" came out of the bar at the owner's request, and the ten
@@ -20,14 +24,14 @@ export const NAV = {
     // filter on this one list, reached from the badges on the cathelier home.
     // So this single entry is the whole catalogue, and there is nothing left
     // for the bar to orphan.
-    ['/cathelier/pieces/', 'All pieces', 'pieces'],
-    ['/cathelier/quote/', 'Ask for a quote'],
-    ['/cathelier/about/', 'The workshop'],
+    ['/cathelier/pieces/', 'nav.pieces', 'pieces'],
+    ['/cathelier/quote/', 'nav.quote'],
+    ['/cathelier/about/', 'nav.workshop'],
   ],
 };
 
 /** Only in the drawer: things people look for that do not earn a place in the bar. */
-const NAV_EXTRA = [['/contact/#faq', 'Questions']];
+const NAV_EXTRA = [['/contact/#faq', 'nav.questions']];
 
 /* --- the pages both shops share, in both dresses ---------------------------
  *
@@ -83,8 +87,8 @@ export function brandPath(path, brand) {
 /* The other brand is always reachable, and always announces itself as
    elsewhere: its own name, its own lettering, and an arrow that points out. */
 export const SIBLING = {
-  ithos: { href: '/cathelier/', name: 'cathelier', note: 'personalised pieces' },
-  cathelier: { href: '/', name: 'ithos', note: 'wooden night lights' },
+  ithos: { href: '/cathelier/', name: 'cathelier', note: 'irmao.cathelier' },
+  cathelier: { href: '/', name: 'ithos', note: 'irmao.ithos' },
 };
 
 const MARK = {
@@ -98,7 +102,7 @@ const MARK = {
  * that particular call costs. It was rendered after the whole grid, detached
  * from the telephone it describes. It now follows the number everywhere the
  * number appears, and nowhere else. */
-const CALL_COST = '(Call to the national mobile network)';
+const CALL_COST = () => t('shell.custoChamada');
 
 /* THE ONE LINE OF SCRIPT THAT IS NOT IN shop.js, AND WHY.
  *
@@ -138,12 +142,14 @@ export function page(o) {
   } = o;
 
   const abs = (p) => `${site}${p}`;
-  const canonical = abs(canonicalPath);
+  /* O canonical e o og:url são da página NESTA língua; o hreflang diz ao
+     Google onde está a mesma página nas outras (e qual é a da raiz). */
+  const canonical = abs(morada(canonicalPath));
   const themeColour = brand === 'ithos' ? '#FFFFFF' : '#FFF8F2';
   const og = image ? (image.startsWith('http') ? image : abs(image)) : abs('/assets/share.jpg');
 
   return `<!doctype html>
-<html lang="en" data-brand="${brand}"${cover ? ' data-cover="yes"' : ''}>
+<html lang="${LOCALE[lingua()]}" data-brand="${brand}"${cover ? ' data-cover="yes"' : ''}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -159,7 +165,9 @@ ${noindex || preview ? '<meta name="robots" content="noindex, nofollow">' : ''}
 <meta property="og:description" content="${esc(description)}">
 <meta property="og:url" content="${esc(canonical)}">
 <meta property="og:image" content="${esc(og)}">
-<meta property="og:locale" content="en_GB">
+<meta property="og:locale" content="${OG_LOCALE[lingua()]}">
+${LINGUAS.length > 1 ? [...LINGUAS.map((l) => `<link rel="alternate" hreflang="${LOCALE[l]}" href="${esc(abs(morada(canonicalPath, l)))}">`),
+  `<link rel="alternate" hreflang="x-default" href="${esc(abs(morada(canonicalPath, linguaDaRaiz())))}">`].join('\n') : ''}
 <meta name="twitter:card" content="summary_large_image">
 
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
@@ -177,7 +185,7 @@ ${(() => {
       '@context': 'https://schema.org', '@type': 'BreadcrumbList',
       itemListElement: crumbs.map((c, i) => ({
         '@type': 'ListItem', position: i + 1, name: c.name,
-        ...(c.href ? { item: `${site}${brandPath(c.href, brand)}` } : {}),
+        ...(c.href ? { item: `${site}${morada(brandPath(c.href, brand))}` } : {}),
       })),
     });
   }
@@ -195,20 +203,20 @@ ${(() => {
   <script>${MARCA_DE_POSICAO}</script>
 </head>
 <body class="${esc(bodyClass)}" id="top">
-<a class="skip" href="#main">Skip to content</a>
+<a class="skip" href="#main">${esc(t('shell.saltar'))}</a>
 
 ${announcement({ brand, shipping })}
-${header({ brand, path })}
+${header({ brand, path, site, canonicalPath })}
 ${crumbs ? breadcrumbs(crumbs, brand) : ''}
 
 <main id="main">
 ${body}
 </main>
 
-${drawer({ brand, identity, counts })}
+${drawer({ brand, identity, counts, site, canonicalPath })}
 ${footer({ brand, identity })}
 
-<a class="to-top" href="#top" hidden aria-label="Back to the top of the page">${icon('arrowUp', 22)}</a>
+<a class="to-top" href="#top" hidden aria-label="${esc(t('shell.topo'))}">${icon('arrowUp', 22)}</a>
 
 <!-- There is no site-wide cookie notice, and that is a decision, not an
      omission. This site sets no analytics and no advertising cookies, the
@@ -241,10 +249,21 @@ function announcement({ brand, shipping }) {
   if (brand !== 'cathelier') return '';
   const c = shipping?.campaign;
   if (!c?.active || !(c.freeOver > 0)) return '';
-  return `<p class="announce">Free shipping on orders over €${Number(c.freeOver).toFixed(0)}</p>`;
+  return `<p class="announce">${esc(t('shell.portesGratis', { n: Number(c.freeOver).toFixed(0) }))}</p>`;
 }
 
-function header({ brand }) {
+/* O SELETOR DE LÍNGUA: a MESMA página nas outras línguas. As moradas vão
+   absolutas (com o SITE) de propósito: o gerador acrescenta o prefixo da
+   língua a todas as ligações internas «/…» de uma página, e estas são as
+   únicas que têm de sair dessa regra. */
+function seletorDeLingua({ site, canonicalPath, classe }) {
+  if (LINGUAS.length < 2) return '';
+  return `<nav class="${classe}" aria-label="${esc(t('shell.lingua'))}">${LINGUAS.map((l) => (l === lingua()
+    ? `<span aria-current="true" lang="${LOCALE[l]}">${l.toUpperCase()}</span>`
+    : `<a href="${esc(`${site}${morada(canonicalPath, l)}`)}" hreflang="${LOCALE[l]}" lang="${LOCALE[l]}" title="${esc(NOMES[l])}">${l.toUpperCase()}</a>`)).join('')}</nav>`;
+}
+
+function header({ brand, site, canonicalPath }) {
   const mark = MARK[brand];
   const home = brand === 'cathelier' ? '/cathelier/' : '/';
   const sibling = SIBLING[brand];
@@ -276,21 +295,22 @@ function header({ brand }) {
   <div class="shell head__row">
     <div class="head__left">
       <button class="icon-btn open-menu" type="button" aria-expanded="false" aria-controls="menu"
-              aria-label="Open the menu">${icon('menu', 24)}<span class="open-menu__word">Menu</span></button>
+              aria-label="${esc(t('shell.abrirMenu'))}">${icon('menu', 24)}<span class="open-menu__word">${esc(t('shell.menu'))}</span></button>
     </div>
 
-    <a class="head__mark" href="${home}" aria-label="${esc(mark.alt)} — home">
+    <a class="head__mark" href="${home}" aria-label="${esc(t('shell.inicioDe', { marca: mark.alt }))}">
       <img src="${mark.src}" alt="${esc(mark.alt)}" width="${mark.w}" height="${mark.h}">
     </a>
 
     <div class="head__right">
+      ${seletorDeLingua({ site, canonicalPath, classe: 'linguas' })}
       <a class="head__sibling" href="${sibling.href}" data-other-brand
-         aria-label="Go to ${esc(sibling.name)}, ${esc(sibling.note)}">
+         aria-label="${esc(t('shell.irPara', { nome: sibling.name, nota: t(`shell.${sibling.note}`) }))}">
         <span class="head__sibling-mark">
           <img src="${other.src}" alt="" width="${other.w}" height="${other.h}">
         </span><span class="head__sibling-arrow" aria-hidden="true">↗</span>
       </a>
-      <a class="icon-btn" href="${brandPath('/cart/', brand)}" aria-label="Basket">
+      <a class="icon-btn" href="${brandPath('/cart/', brand)}" aria-label="${esc(t('shell.cesto'))}">
         ${icon('cart', 22)}<span class="cart-count" data-cart-count data-empty="yes"></span>
       </a>
     </div>
@@ -301,7 +321,7 @@ function header({ brand }) {
 /* A native <dialog> opened with showModal(): focus goes in, stays in, and the
    rest of the page goes inert — three promises aria-modal makes and does not
    keep on its own. */
-function drawer({ brand, identity, counts }) {
+function drawer({ brand, identity, counts, site, canonicalPath }) {
   const nav = NAV[brand] ?? NAV.ithos;
   const sibling = SIBLING[brand];
   const other = MARK[sibling.name];
@@ -312,26 +332,26 @@ function drawer({ brand, identity, counts }) {
      Ver o porquê em src/js/shop.js, onde o foco é dado: um anel à volta do
      X lê-se como «seleccionado» num telemóvel, e um <dialog> não é nenhum
      dos elementos a que a regra do anel se aplica. */
-  return `<dialog class="drawer" id="menu" aria-label="Menu" tabindex="-1">
+  return `<dialog class="drawer" id="menu" aria-label="${esc(t('shell.menu'))}" tabindex="-1">
   <div class="drawer__top">
-    <button class="icon-btn close-menu" type="button" aria-label="Close the menu">${icon('close', 24)}</button>
+    <button class="icon-btn close-menu" type="button" aria-label="${esc(t('shell.fecharMenu'))}">${icon('close', 24)}</button>
     <img class="drawer__mark" src="${mark.src}" alt="${esc(mark.alt)}" width="${mark.w}" height="${mark.h}">
-    <a class="icon-btn drawer__cart" href="${brandPath('/cart/', brand)}" aria-label="Basket">
+    <a class="icon-btn drawer__cart" href="${brandPath('/cart/', brand)}" aria-label="${esc(t('shell.cesto'))}">
       ${icon('cart', 22)}<span class="cart-count" data-cart-count data-empty="yes"></span>
     </a>
   </div>
 
   <div class="drawer__body">
-    <nav class="drawer__nav" aria-label="Main">
-      ${[...nav, ...NAV_EXTRA].map(([h, t, k]) => `<a href="${brandPath(h, brand)}"><span>${esc(t)}</span>${count(k)}</a>`).join('\n      ')}
+    <nav class="drawer__nav" aria-label="${esc(t('shell.navPrincipal'))}">
+      ${[...nav, ...NAV_EXTRA].map(([h, chave, k]) => `<a href="${brandPath(h, brand)}"><span>${esc(t(`shell.${chave}`))}</span>${count(k)}</a>`).join('\n      ')}
     </nav>
 
   <a class="drawer__sibling" href="${sibling.href}" data-other-brand
-     aria-label="Go to ${esc(sibling.name)}, ${esc(sibling.note)}">
+     aria-label="${esc(t('shell.irPara', { nome: sibling.name, nota: t(`shell.${sibling.note}`) }))}">
     <span class="drawer__sibling-mark">
       <img src="${other.src}" alt="" width="${other.w}" height="${other.h}">
     </span>
-    <span class="drawer__sibling-note">${esc(sibling.note)}</span>
+    <span class="drawer__sibling-note">${esc(t(`shell.${sibling.note}`))}</span>
     <span aria-hidden="true">↗</span>
   </a>
 
@@ -339,14 +359,15 @@ function drawer({ brand, identity, counts }) {
 
   <div class="drawer__contact">
     <a href="tel:${esc(identity.phone)}">${icon('phone', 18)}<span>${esc(identity.phoneText)}</span></a>
-    <p class="drawer__cost">${esc(CALL_COST)}</p>
+    <p class="drawer__cost">${esc(CALL_COST())}</p>
     <a href="https://wa.me/${esc(identity.whatsapp)}" rel="noopener">${icon('whatsapp', 18)}<span>WhatsApp</span></a>
   </div>
+  ${seletorDeLingua({ site, canonicalPath, classe: 'linguas linguas--gaveta' })}
 </dialog>`;
 }
 
 function breadcrumbs(items, brand) {
-  return `<nav class="crumbs shell" aria-label="Breadcrumb">
+  return `<nav class="crumbs shell" aria-label="${esc(t('shell.migalhas'))}">
   <ol>${items.map((it, i) => (i === items.length - 1
     ? `<li><span aria-current="page">${esc(it.name)}</span></li>`
     : `<li><a href="${brandPath(it.href, brand)}">${esc(it.name)}</a></li>`)).join('')}</ol>
@@ -364,14 +385,14 @@ function breadcrumbs(items, brand) {
 function footer({ brand, identity }) {
   const i = identity;
   const social = brand === 'cathelier'
-    ? [[i.instagramCathelier, 'cathelier on Instagram', 'instagram']]
-    : [[i.instagramIthos, 'ithos on Instagram', 'instagram'],
-       [i.facebookIthos, 'ithos on Facebook', 'facebook']];
+    ? [[i.instagramCathelier, t('shell.noInstagram', { marca: 'cathelier' }), 'instagram']]
+    : [[i.instagramIthos, t('shell.noInstagram', { marca: 'ithos' }), 'instagram'],
+       [i.facebookIthos, t('shell.noFacebook', { marca: 'ithos' }), 'facebook']];
 
   const groups = [
-    ['Customer care', [
-      ['/contact/#faq', 'Questions'],
-      ['/legal/shipping-and-returns/', 'Delivery and returns'],
+    [t('shell.rodape.apoio'), [
+      ['/contact/#faq', t('shell.nav.questions')],
+      ['/legal/shipping-and-returns/', t('shell.rodape.entregas')],
       /* Care and safety is the LAMP manual -- AA cells, the mains remote,
          keeping the cable out of a cot. It is offered where it is true and
          nowhere else: from a cathelier page it would be the only safety page
@@ -379,8 +400,8 @@ function footer({ brand, identity }) {
          electricity in it. cathelier needs its own, written for keepsakes with
          small parts, magnets and a candle, and those words have to come from
          the owner. */
-      ['/legal/returns-form/', 'Cancellation form'],
-      [i.complaintsBook, 'Complaints book'],
+      ['/legal/returns-form/', t('shell.rodape.formulario')],
+      [i.complaintsBook, t('shell.rodape.reclamacoes')],
     ]],
     /* THE FOOTER STAYS IN THE SHOP YOU ARE IN.
        It listed both shops' pages on every page, so the footer of an ithos
@@ -396,34 +417,34 @@ function footer({ brand, identity }) {
        visible route to the pieces or the quote outside the header and the
        drawer, and all 55 had none to how a piece is made. So the group is not
        dropped -- it is narrowed to the shop it belongs to. */
-    ['The shop', brand === 'cathelier'
+    [t('shell.rodape.loja'), brand === 'cathelier'
       ? [
-        ['/cathelier/', 'Personalised pieces'],
-        ['/cathelier/pieces/', 'All the pieces'],
-        ['/cathelier/quote/', 'Ask for a quote'],
-        ['/cathelier/about/', 'How a piece is made'],
-        ['/contact/', 'Contact'],
+        ['/cathelier/', t('shell.rodape.pecasPersonalizadas')],
+        ['/cathelier/pieces/', t('shell.rodape.todasPecas')],
+        ['/cathelier/quote/', t('shell.rodape.pedirOrcamento')],
+        ['/cathelier/about/', t('shell.rodape.comoSeFaz')],
+        ['/contact/', t('shell.rodape.contactos')],
       ]
       : [
-        ['/', 'Wooden night lights'],
-        ['/lamps/', 'All the lamps'],
-        ['/about/', 'The workshop'],
-        ['/care-and-safety/', 'Care and safety'],
-        ['/contact/', 'Contact'],
+        ['/', t('shell.rodape.candeeiros')],
+        ['/lamps/', t('shell.rodape.todosCandeeiros')],
+        ['/about/', t('shell.rodape.oficina')],
+        ['/care-and-safety/', t('shell.rodape.cuidados')],
+        ['/contact/', t('shell.rodape.contactos')],
       ]],
-    ['Terms', [
-      ['/legal/terms/', 'Terms of sale'],
-      ['/legal/privacy/', 'Privacy'],
-      ['/legal/cancellation/', 'Right to cancel'],
-      ['/legal/identification/', 'Who you are buying from'],
-      ['/resellers/', 'For resellers'],
+    [t('shell.rodape.termos'), [
+      ['/legal/terms/', t('shell.rodape.condicoesVenda')],
+      ['/legal/privacy/', t('shell.rodape.privacidade')],
+      ['/legal/cancellation/', t('shell.rodape.resolucao')],
+      ['/legal/identification/', t('shell.rodape.identificacao')],
+      ['/resellers/', t('shell.rodape.revendedores')],
     ]],
     /* O quarto campo é o desenho, e só este grupo o leva: estas três são as
        maneiras de falar connosco e reconhecem-se pela forma antes de se
        lerem. Nas outras colunas são páginas, e uma página não tem desenho
        que a distinga -- vinte ícones diferentes numa lista seriam ruído. */
-    ['Talk to us', [
-      [`tel:${i.phone}`, i.phoneText, CALL_COST, 'phone'],
+    [t('shell.rodape.falar'), [
+      [`tel:${i.phone}`, i.phoneText, CALL_COST(), 'phone'],
       [`https://wa.me/${i.whatsapp}`, 'WhatsApp', '', 'whatsapp'],
       [`mailto:${i.email}`, i.email, '', 'mail'],
     ]],
