@@ -2055,6 +2055,8 @@ html.menu-open { overflow: hidden; }
 }
 .basket-line__name { font-size: 14px; color: var(--ink); }
 .basket-line__opts { font-size: 12px; color: var(--muted); margin-block-start: .25rem; line-height: 1.6; }
+.basket-line__stock { font-size: 12px; color: var(--ink); margin-block-start: .15rem; line-height: 1.6; }
+.basket__lead { margin-block: 0 1rem; font-size: 13px; line-height: 1.6; color: var(--ink); }
 .basket-line__price { font-size: 14px; font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; text-align: end; }
 .basket-line__drop {
   font-size: 12px; color: var(--muted); margin-block-start: .35rem; text-decoration: underline;
@@ -2087,6 +2089,13 @@ html.menu-open { overflow: hidden; }
 .product__blurb { margin-block-start: 1rem; font-size: 15px; line-height: 1.8; color: var(--muted); }
 .product__lead { display: flex; align-items: center; gap: .5rem; }
 .product__lead svg { flex: none; color: var(--accent); }
+/* THE STOCK LINE WAITS FOR THE ANSWER, INVISIBLE AND IN PLACE.
+   It is drawn with the slow case ("Out of stock — we make yours"), which is
+   true of every lamp and is what a reader without the script keeps. With the
+   script it stays invisible until the Worker answers -- `visibility`, not
+   `display`, so nothing below it jumps when it appears -- and shop.js shows
+   it after two and a half seconds whatever happens. */
+html[data-js='yes'] .product__lead[data-lead]:not([data-lead-ready]) { visibility: hidden; }
 
 
 /* --- escolher como se paga, e depois pagar ----------------------------------
@@ -2254,4 +2263,19 @@ html.menu-open { overflow: hidden; }
 .rv-table td { white-space: nowrap; }
 .rv-table thead th { font-size: .75rem; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
 .rv-table .rv-marca, .rv-table .rv-menos { color: var(--muted); font-size: .8rem; }
+.rv-table .rv-stock { font-size: .875rem; font-variant-numeric: tabular-nums; }
+/* ON A PHONE EACH ROW BECOMES A SMALL CARD. Four columns of prices and stock
+   were 626px wide in a 343px column: the reader scrolled sideways to find
+   their own price, which is the one number the page exists for. The name goes
+   on top, and the three figures sit under it with their labels -- the labels
+   come from `data-rotulo` on each cell, so the header row can step aside. */
+@media (width < 40rem) {
+  .rv-table thead { position: absolute; inline-size: 1px; block-size: 1px; overflow: hidden; clip-path: inset(50%); }
+  .rv-table tr { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: .75rem;
+    padding-block: .75rem; border-block-end: 1px solid var(--line); }
+  .rv-table th[scope='row'] { grid-column: 1 / -1; padding: 0 0 .35rem; border: 0; }
+  .rv-table td { padding: 0; border: 0; white-space: normal; }
+  .rv-table td::before { content: attr(data-rotulo); display: block; font-size: .7rem; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--muted); margin-block-end: .15rem; }
+}
 .rv-aviso { margin: 0; padding: .7rem var(--gutter); background: var(--frame-bg); border-block-end: 1px solid var(--line); text-align: center; font-size: .9rem; color: var(--ink); }

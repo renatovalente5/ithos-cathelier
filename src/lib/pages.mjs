@@ -1,5 +1,6 @@
 import { esc, money } from './html.mjs';
 import { icon } from './icons.mjs';
+import { prazos } from './prazos.mjs';
 
 /* ===========================================================================
    The pages that are prose, plus the three that are not.
@@ -40,6 +41,10 @@ export function markers({ identity, shop, shipping }) {
     PAYMENT_PROVIDER: shop.payment?.provider ?? 'the payment provider',
     PAYMENT_METHODS: shop.payment?.methods ?? 'the methods shown at checkout',
     PAYMENT_REFERENCE_DAYS: String(shop.payment?.referenceDays ?? 2),
+    /* Os prazos saem dos mesmos dois números que a ficha do produto e os
+       emails usam. */
+    IN_STOCK_DAYS: prazos(shop.lead).dias,
+    TO_ORDER_WEEKS: prazos(shop.lead).semanas,
     COOLING_OFF_DAYS: String(shop.returns.coolingOffDays),
     WARRANTY_YEARS: String(shop.returns.warrantyYears),
     FORM_URL: '/legal/returns-form/',
@@ -182,9 +187,12 @@ export function contact({ identity, shop, faq }) {
 
 export const FAQ = (shop) => [
   ['How long does it take?',
-   `<p>Everything is made to order. The lamps take up to ${shop.lead.toOrderDays} working
-    days in the workshop, and each product page says so. For cathelier pieces the
-    clock starts when you approve the drawing.</p>`],
+   `<p>A lamp that is in stock leaves the workshop within ${prazos(shop.lead).dias}.
+    If it is out of stock you can still order it: we make yours, and it is with you
+    in ${prazos(shop.lead).semanas}. Each product page says which it is.</p>
+    <p>Cathelier pieces are always made to order — ${prazos(shop.lead).semanas}, counted
+    from when you approve the drawing. If one thing in an order is made to order, the
+    whole order ships together.</p>`],
   ['Can I have a name on it?',
    `<p>Yes, on anything, and it costs nothing extra. Put it in the engraving box on
     the product page — a name, a date, or a short phrase.</p>
@@ -303,7 +311,7 @@ function marca(qual) {
     + `</span>`;
 }
 
-export function basket({ shipping }) {
+export function basket({ shipping, shop }) {
   return `
 <section class="section">
   <div class="shell">
@@ -335,6 +343,15 @@ export function basket({ shipping }) {
           <dt>Shipping</dt><dd data-sum-shipping>—</dd>
           <dt class="basket__grand">To pay</dt><dd class="basket__grand" data-sum-total>—</dd>
         </dl>
+        <!-- O prazo da encomenda inteira, escrito pelo script depois de
+             perguntar ao Worker pelo stock. As frases vêm daqui, dos mesmos
+             números da ficha e dos emails (src/lib/prazos.mjs). -->
+        <p class="basket__lead" data-basket-lead hidden
+           data-lead-stock="${esc(prazos(shop.lead).stock)}"
+           data-lead-order="${esc(prazos(shop.lead).encomenda)}"
+           data-lead-few="There are not enough in stock for these quantities."
+           data-lead-together="${esc(prazos(shop.lead).junto)}"
+           data-lead-weeks="${esc(prazos(shop.lead).semanas)}"></p>
         <p class="small muted">VAT is not charged: article 53 of the Portuguese VAT code applies.</p>
       </aside>
     </div>
@@ -503,8 +520,8 @@ export function thankYou(shop = {}) {
     <div data-order-ok hidden>
       <p>Your order is <strong data-order-ref>—</strong>. Keep that reference: it is
          what we both use if you write to us.</p>
-      <p>A confirmation is on its way to your inbox. Everything is made to order,
-         so the workshop starts now and we will tell you when it ships.</p>
+      <p>A confirmation is on its way to your inbox, with when to expect it.
+         The workshop starts now, and we will tell you when it ships.</p>
       <p style="margin-block-start:2rem">
         <a class="btn" href="/lamps/">Back to the lamps</a>
       </p>
@@ -606,8 +623,8 @@ export function payPage(shop = {}) {
       <h2>Paid — thank you</h2>
       <p>Your order is <strong data-pay-ref>—</strong>. Keep that reference: it is
          what we both use if you write to us.</p>
-      <p>A confirmation is on its way to your inbox. Everything is made to order,
-         so the workshop starts now and we will tell you when it ships.</p>
+      <p>A confirmation is on its way to your inbox, with when to expect it.
+         The workshop starts now, and we will tell you when it ships.</p>
       <p style="margin-block-start:2rem"><a class="btn" href="/lamps/">Back to the lamps</a></p>
     </div>
 
@@ -707,7 +724,7 @@ export function resellers() {
         <a href="/legal/terms/#resellers">Reseller conditions</a>.</p>
       <div class="rv-table-wrap">
         <table class="rv-table" data-rv-tabela>
-          <thead><tr><th scope="col">Piece</th><th scope="col">RRP</th><th scope="col">Your price</th></tr></thead>
+          <thead><tr><th scope="col">Piece</th><th scope="col">RRP</th><th scope="col">Your price</th><th scope="col">In stock</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>

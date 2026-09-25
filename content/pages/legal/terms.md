@@ -52,15 +52,26 @@ the Banco de Portugal. You can pay by {{PAYMENT_METHODS}}. We never see or
 store your payment details.
 
 **If you pay by Multibanco reference**, the reference is yours for
-{{PAYMENT_REFERENCE_DAYS}} days. Nothing is made and nothing is reserved until
-it is paid: the order is confirmed when the payment reaches us, and we write to
-you then. If the reference expires unpaid, the order simply lapses and you owe
-nothing — put the basket together again whenever you like.
+{{PAYMENT_REFERENCE_DAYS}} days. Nothing is made until it is paid: the order is
+confirmed when the payment reaches us, and we write to you then. A lamp that was
+in stock when you ordered is kept for you while the reference is valid. If the
+reference expires unpaid, the order simply lapses, the lamp goes back on the
+shelf, and you owe nothing — put the basket together again whenever you like.
 
 ## Making and delivering
 
-Everything is made to order. The workshop time is shown on each product page and
-starts when payment clears and, for cathelier, when you approve the drawing.
+**A lamp in stock** leaves the workshop within {{IN_STOCK_DAYS}} of your payment.
+
+**A lamp out of stock** can still be ordered: we make yours, and it is with you
+in {{TO_ORDER_WEEKS}}. Each product page and the basket say which it is before
+you pay. If the last one in stock goes to someone else while you are ordering,
+we tell you before taking any payment, and you choose whether to wait.
+
+**Cathelier pieces** are always made to order: {{TO_ORDER_WEEKS}}, counted from
+when you approve the drawing.
+
+If one thing in an order is made to order, the whole order ships together when
+it is ready.
 
 Shipping is by {{CARRIER}}. Delivery times are estimates and start when the
 parcel leaves the workshop.

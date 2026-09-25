@@ -1,10 +1,8 @@
 {
   "lead": {
     "inStockDays": 3,
-    "toOrderDays": 20,
-    "inStock": "In stock. Leaves the workshop within 3 working days.",
-    "toOrder": "Made to order. Up to 20 working days in the workshop.",
-    "soldOut": "Sold out for now."
+    "toOrderWeeks": [3, 4],
+    "_note": "Dois números e nenhuma frase: as frases («In stock — leaves the workshop within 3 working days», «with you in 3 to 4 weeks») saem destes números em src/lib/prazos.mjs, e o Worker usa os mesmos números nos emails. Uma frase escrita aqui à mão ficava para trás no dia em que o número mudasse. inStockDays: dias úteis até sair da oficina, para um candeeiro em stock. toOrderWeeks: [mínimo, máximo] de semanas até chegar, para tudo o que é feito por encomenda — candeeiros sem stock e todas as peças da cathelier."
   },
   "notice": {
     "active": false,

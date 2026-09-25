@@ -47,6 +47,21 @@ for (const c of shipping.active) {
   }
 }
 
+/* --- the lead times -------------------------------------------------------- */
+/* Two numbers, and every sentence about delivery is made from them
+   (src/lib/prazos.mjs, and the Worker's emails). A number that is not one
+   would print "within undefined working days" on every lamp. */
+{
+  const lead = read('settings/shop.json').lead ?? {};
+  if (!Number.isInteger(lead.inStockDays) || lead.inStockDays < 1 || lead.inStockDays > 30) {
+    die('shop.json: lead.inStockDays must be a whole number of working days, 1 to 30');
+  }
+  const w = lead.toOrderWeeks;
+  if (!Array.isArray(w) || w.length !== 2 || !w.every((n) => Number.isInteger(n) && n >= 1 && n <= 26) || w[0] > w[1]) {
+    die('shop.json: lead.toOrderWeeks must be [fewest, most] whole weeks, like [3, 4]');
+  }
+}
+
 /* --- the products --------------------------------------------------------- */
 const seenNames = new Map();
 
@@ -91,6 +106,26 @@ function checkProduct(brand, slug, p) {
          26 lamps at once, and 26 identical warning lines would bury the two
          that matter (the address the owner has still to fill in). One line
          per option says the same thing and can still be read. */
+      /* `stockFrom` SAYS A CHOICE IS MADE OF OTHER CHOICES -- the acorn's
+         "Both together" uses one Large and one Small from the shelf. It must
+         name real values of the same option, none of them combinations
+         themselves, and only on a lamp: a name that points nowhere would make
+         the Worker ask for a shelf that does not exist, and the pair would
+         never be "in stock" whatever the owner counted. */
+      for (const v of o.values.filter((x) => 'stockFrom' in x)) {
+        const de = v.stockFrom;
+        if (brand !== 'ithos' || o.id !== 'variant') {
+          die(`${where}: "${v.id}" has stockFrom, but only a lamp's "variant" option has stock`);
+        } else if (!Array.isArray(de) || de.length < 2) {
+          die(`${where}: "${v.id}" stockFrom must list at least two models, like ["1", "2"]`);
+        } else {
+          for (const id of de) {
+            const alvo = o.values.find((x) => String(x.id) === String(id));
+            if (!alvo) die(`${where}: "${v.id}" stockFrom names "${id}", which is not a model of this lamp`);
+            else if (alvo === v || alvo.stockFrom) die(`${where}: "${v.id}" stockFrom names "${id}", which is itself a combination`);
+          }
+        }
+      }
       for (const v of o.values.filter((x) => x.available === false)) {
         const chave = `${o.name} — ${v.name}`;
         esgotados.set(chave, (esgotados.get(chave) || 0) + 1);

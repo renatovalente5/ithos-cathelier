@@ -8,6 +8,7 @@ const PHOTOS = join(dirname(fileURLToPath(import.meta.url)), '..', '..', 'photos
 import { icon } from './icons.mjs';
 import { occasionArt } from './occasions-art.mjs';
 import { cover } from './cover.mjs';
+import { prazos } from './prazos.mjs';
 
 /* ===========================================================================
    cathelier — navigation by collection, which is how the model shop works and
@@ -322,7 +323,7 @@ export function piece({ p, all: everything, shop, occasions }) {
   <div class="product__detail">
     <h1>${esc(p.name)}</h1>
     <p class="product__price">from ${money(p.price)}</p>
-    <p class="product__lead">${esc(shop.lead.toOrder)}</p>
+    <p class="product__lead">${esc(prazos(shop.lead).encomenda)}</p>
 
     <form class="product__form" data-product-form data-product-id="${esc(p.slug)}">
       <p class="field__help" style="margin-block-end:.25rem">

@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url';
 const PHOTOS = join(dirname(fileURLToPath(import.meta.url)), '..', '..', 'photos');
 import { icon } from './icons.mjs';
 import { cover } from './cover.mjs';
+import { prazos } from './prazos.mjs';
 
 /* ===========================================================================
    ithos — the pages, in the order the model shop puts things.
@@ -289,7 +290,16 @@ export function product({ p, all, shop }) {
     <h1>${esc(p.name)}</h1>
     <p class="product__price">${high > low ? `${money(low)} – ${money(high)}` : money(low)}</p>
     <p class="product__blurb">${esc(p.summary)}</p>
-    <p class="product__lead">${icon('truck', 15)}<span>${esc(p.made === 'to_order' ? shop.lead.toOrder : shop.lead.inStock)}</span></p>
+    <!-- O PRAZO DEPENDE DO STOCK, e o stock só o Worker sabe. A página nasce a
+         dizer o caso mais lento, que é verdade para qualquer candeeiro; o script
+         pergunta ao Worker e troca pela frase certa para o modelo escolhido.
+         Com o script a correr, a frase fica invisível (sem ocupar outro sítio)
+         até à resposta, para não se ler «Out of stock» e logo a seguir «In
+         stock». Ver stockNaFicha em src/js/shop.js. -->
+    <p class="product__lead" data-lead
+       data-lead-stock="${esc(prazos(shop.lead).stock)}"
+       data-lead-none="${esc(prazos(shop.lead).semStock)}"
+       data-lead-days="${esc(prazos(shop.lead).dias)}">${icon('truck', 15)}<span data-lead-text>${esc(prazos(shop.lead).semStock)}</span></p>
 
     <form class="product__form" data-product-form data-product-id="${esc(p.slug)}">
       ${(p.options || []).map(optionField).join('\n      ')}

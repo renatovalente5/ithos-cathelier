@@ -21,11 +21,11 @@
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" as="font" type="font/woff2" crossorigin
       href="/assets/fonts/montserrat-latin.woff2">
-<link rel="stylesheet" href="/assets/styles.e7c8bdadfd.css">
+<link rel="stylesheet" href="/assets/styles.da32395605.css">
 
 
 
-  <script>document.documentElement.dataset.scrolled=scrollY>40?'yes':'no'</script>
+  <script>document.documentElement.dataset.scrolled=scrollY>40?'yes':'no';document.documentElement.dataset.js='yes'</script>
 </head>
 <body class="" id="top">
 <a class="skip" href="#main">Skip to content</a>
@@ -89,6 +89,15 @@
           <dt>Shipping</dt><dd data-sum-shipping>—</dd>
           <dt class="basket__grand">To pay</dt><dd class="basket__grand" data-sum-total>—</dd>
         </dl>
+        <!-- O prazo da encomenda inteira, escrito pelo script depois de
+             perguntar ao Worker pelo stock. As frases vêm daqui, dos mesmos
+             números da ficha e dos emails (src/lib/prazos.mjs). -->
+        <p class="basket__lead" data-basket-lead hidden
+           data-lead-stock="In stock — leaves the workshop within 3 working days."
+           data-lead-order="Made to order — with you in 3 to 4 weeks."
+           data-lead-few="There are not enough in stock for these quantities."
+           data-lead-together="Everything ships together, when the last piece is ready."
+           data-lead-weeks="3 to 4 weeks"></p>
         <p class="small muted">VAT is not charged: article 53 of the Portuguese VAT code applies.</p>
       </aside>
     </div>
@@ -306,6 +315,6 @@
      for by name: at 375x812 it covered the second row of lamps, so a
      first-time visitor saw two instead of the four she asked for. -->
 
-<script src="/assets/shop.89dfeb70d7.js" defer></script>
+<script src="/assets/shop.b776783780.js" defer></script>
 </body>
 </html>

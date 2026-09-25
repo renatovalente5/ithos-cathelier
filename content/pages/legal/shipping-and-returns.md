@@ -2,9 +2,11 @@
 
 ## How long it takes
 
-Everything is made to order. Each product page shows its workshop time, and the
-clock starts when payment clears — and, for cathelier pieces, when you approve
-the drawing.
+A lamp in stock leaves the workshop within {{IN_STOCK_DAYS}} of your payment.
+A lamp out of stock is made for you, and is with you in {{TO_ORDER_WEEKS}}.
+Cathelier pieces are always made to order — {{TO_ORDER_WEEKS}}, counted from
+when you approve the drawing. Each product page and the basket say which applies
+before you pay, and an order ships together when its last piece is ready.
 
 Once it leaves us, delivery is by {{CARRIER}}.
 

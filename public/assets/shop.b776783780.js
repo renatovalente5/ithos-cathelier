@@ -86,10 +86,10 @@ function esquecerRevenda() {
   for (const nome of ['sessionStorage', 'localStorage']) {
     try { window[nome].removeItem(REVENDA); } catch { /* nothing to clear */ }
   }
-  Object.assign(revenda, { activa: false, sessao: null, nif: null, firma: null, versao: null, descontos: {} });
+  Object.assign(revenda, { activa: false, sessao: null, nif: null, firma: null, versao: null, descontos: {}, stock: null });
 }
 
-const revenda = { activa: false, sessao: null, nif: null, firma: null, versao: null, descontos: {} };
+const revenda = { activa: false, sessao: null, nif: null, firma: null, versao: null, descontos: {}, stock: null };
 
 /* Asks the Worker for this reseller's discounts. A 401 means the session ended
    -- expired, signed out elsewhere, or the shop switched the reseller off --
@@ -111,6 +111,9 @@ async function carregarRevenda({ fresco = false } = {}) {
     const j = await r.json();
     Object.assign(revenda, {
       activa: true, sessao: s.sessao, nif: j.nif, firma: j.firma, versao: j.versao, descontos: j.descontos || {},
+      /* How many of each lamp are free. Only resellers get the numbers -- the
+         owner's rule; everyone else is told "in stock" or "out of stock". */
+      stock: j.stock && typeof j.stock === 'object' ? j.stock : null,
     });
   } catch { /* offline: stay on retail rather than guess */ }
   return revenda;
@@ -214,6 +217,94 @@ async function revendaNaPagina() {
     }
   }
 }
+
+/* --- stock -------------------------------------------------------------------
+   The owner's rules: a lamp in stock leaves the workshop in a few working days;
+   one out of stock can still be bought, and is made -- three to four weeks.
+   The public sees "in stock" or "out of stock"; only resellers see how many.
+
+   NOTHING HERE DECIDES. The Worker reserves the unit at checkout, one buyer at
+   a time, and that is the only answer that counts. The page asks so that what
+   the buyer reads before paying is what they get; when the last one goes to
+   someone else in between, the Worker says so (409) and the page tells the
+   buyer and lets them choose to wait -- it never switches the lead time in
+   silence.
+
+   `null` means NOBODY COULD SAY (no Worker, offline) and is not "none": the
+   page then shows the slow case, which is true of every lamp. */
+let stockPromessa = null;
+const stockPublico = () => (stockPromessa ??= (async () => {
+  if (!API) return null;
+  try {
+    const r = await fetch(`${API}/stock`);
+    if (!r.ok) return null;
+    const j = await r.json();
+    return new Set(Array.isArray(j.skus) ? j.skus : []);
+  } catch { return null; }
+})());
+
+/** The stock units one choice of one product uses -- the Worker's `skusDe`,
+    mirrored. A lamp uses itself; a model uses that model; "Both together"
+    uses one of each. Cathelier pieces carry no `stock` and give null. */
+function skusDaEscolha(p, options) {
+  const st = p?.stock;
+  if (!st) return null;
+  const chave = st.option ? String((options || {})[st.option] ?? '') : '';
+  const skus = st.skus?.[chave];
+  return Array.isArray(skus) && skus.length ? skus : null;
+}
+
+/** How many of a choice a reseller could take: the scarcest shelf it uses. */
+const quantosHa = (skus, livres) => Math.min(...skus.map((k) => livres?.[k] ?? 0));
+
+/* THE LINE UNDER THE PRICE on a lamp's page. It is drawn with the slow case
+   and kept invisible while the script asks (html[data-js] in the CSS), so the
+   reader never sees "Out of stock" turn into "In stock". It is shown after the
+   answer, or after two and a half seconds whatever happens: a line that waits
+   forever for a slow Worker is worse than the slow case. */
+async function stockNaFicha() {
+  const linha = $('[data-lead]');
+  const form = $('[data-product-form]');
+  if (!linha || !form) return;
+  const texto = $('[data-lead-text]', linha);
+  const mostrar = () => linha.setAttribute('data-lead-ready', '');
+  const travao = setTimeout(mostrar, 2500);
+
+  const [cat, ha] = await Promise.all([catalogue().catch(() => null), stockPublico(), esperarRevenda()]);
+  const p = cat?.products[form.dataset.productId];
+  const pintar = () => {
+    const escolha = {};
+    for (const el of $$('[data-option]', form)) {
+      if (el.type === 'radio' && !el.checked) continue;
+      if (el.value) escolha[el.dataset.option] = el.value;
+    }
+    const skus = skusDaEscolha(p, escolha);
+    let frase = linha.dataset.leadNone;
+    if (skus && revenda.activa && revenda.stock) {
+      const n = quantosHa(skus, revenda.stock);
+      if (n > 0) frase = `${n} in stock — leaves the workshop within ${linha.dataset.leadDays}.`;
+    } else if (skus && ha && skus.every((k) => ha.has(k))) {
+      frase = linha.dataset.leadStock;
+    }
+    if (texto) texto.textContent = frase;
+  };
+  pintar();
+  clearTimeout(travao);
+  mostrar();
+  form.addEventListener('change', pintar);
+}
+
+/* What the basket last showed the buyer: `stock` or `encomenda`. The checkout
+   sends it, and the Worker refuses (409) an order that was shown "in stock"
+   and can no longer come from the shelf. After such a refusal it stays
+   `encomenda` until the page reloads: the buyer has just been told. */
+let prazoNoCesto = 'encomenda';
+/* The shelves the Worker has just said are empty (the 409's `semStock`). They
+   count as empty from then on, whatever an older answer said. `esgotouAgora`
+   is for a 409 that named none: the whole basket is then made to order. */
+const esgotados = new Set();
+let esgotouAgora = false;
+let reavaliarCesto = () => {};
 
 document.addEventListener('DOMContentLoaded', () => {
   paintCount();
@@ -489,6 +580,7 @@ document.addEventListener('DOMContentLoaded', () => {
   gallery();
   lightbox();
   productForm();
+  stockNaFicha();
   basketPage();
   mapConsent();
   checkout();
@@ -612,6 +704,7 @@ function checkout() {
         body: JSON.stringify({
           hash: cat.hash, country: cur.country || 'PT', lines: cur.lines, cliente: cliente(),
           metodo: metodo(),
+          prazo: prazoNoCesto,
           telemovel: metodo() === 'MBWAY' ? (campoTelemovel?.value ?? '').trim() : undefined,
           revenda: revenda.activa ? { sessao: revenda.sessao, versao: revenda.versao } : undefined,
         }),
@@ -637,6 +730,21 @@ function checkout() {
         esquecerRevenda();
         avisarDepois('Your reseller session has ended, so the prices shown are retail prices. Sign in again on the Resellers page to buy at your price.');
         location.reload();
+        return;
+      }
+
+      /* THE LAST ONE WENT TO SOMEONE ELSE while this buyer was filling in the
+         form. They were shown "in stock", so they are not moved to three or
+         four weeks without being told: the basket repaints as made to order,
+         this says what happened, and the next press is their choice. */
+      if (r.status === 409 && data.error === 'stock_changed') {
+        const foram = Array.isArray(data.semStock) ? data.semStock : [];
+        for (const k of foram) esgotados.add(k);
+        if (!foram.length) esgotouAgora = true;
+        prazoNoCesto = 'encomenda';
+        reavaliarCesto();
+        const caixa = $('[data-basket-lead]');
+        say(`The last one in stock has just been sold. You can still have it: we make yours, and it is with you in ${caixa?.dataset.leadWeeks || 'a few weeks'}. Press the button again to order it that way.`);
         return;
       }
 
@@ -703,6 +811,8 @@ function checkout() {
       bad_quantity: 'One of the quantities is not allowed. Please check the basket.',
       option_unavailable: 'One of the choices in your basket is no longer available. Open it and pick another.',
       text_too_long: 'One of the texts to engrave is too long. Open it and shorten it.',
+      stock_unavailable: 'We could not check the stock just now. Nothing was charged — please try again in a moment.',
+      stock_changed: 'The stock changed while you were ordering. Please check the basket and try again.',
     })[String(code).split(':')[0]]
       /* O Worker devolve `cliente_incompleto:nome,email` — o código traz consigo
          os campos que faltam, e dizê-los é a diferença entre corrigir à
@@ -770,9 +880,27 @@ async function paginaRevenda() {
       const low = desdeDe(p);
       const desde = (p.options || []).some((o) => o.type === 'choice' && o.values.some((v) => (v.extra || 0) > 0)) ? 'from ' : '';
       return `<tr><th scope="row"><a href="${url(slug, p)}">${escRv(p.name)}</a> <span class="rv-marca">${escRv(p.brand)}</span></th>
-        <td>${desde}${eurosRv(low)}</td>
-        <td>${d ? `<strong>${desde}${eurosRv(low - d)}</strong> <span class="rv-menos">−${eurosRv(d)}</span>` : '<span class="muted">no reseller price</span>'}</td></tr>`;
+        <td data-rotulo="RRP">${desde}${eurosRv(low)}</td>
+        <td data-rotulo="Your price">${d ? `<strong>${desde}${eurosRv(low - d)}</strong> <span class="rv-menos">−${eurosRv(d)}</span>` : '<span class="muted">no reseller price</span>'}</td>
+        <td class="rv-stock" data-rotulo="In stock">${stockNaTabela(p)}</td></tr>`;
     }).join('');
+  }
+
+  /* How many are free, per model: "Large 2 · Small 0". The combinations
+     ("Both together") are left out -- they are not made, they are put
+     together from the others, and the two numbers already say how many. */
+  function stockNaTabela(p) {
+    if (!p.stock) return '<span class="muted">made to order</span>';
+    if (!revenda.stock) return '<span class="muted">—</span>';
+    const modelo = (p.options || []).find((o) => o.id === p.stock.option);
+    const partes = Object.entries(p.stock.skus)
+      .filter(([, skus]) => skus.length === 1)
+      .map(([id, [sku]]) => {
+        const n = revenda.stock[sku] ?? 0;
+        const nome = modelo?.values.find((v) => String(v.id) === id)?.name.replace(/\s*\(.*\)$/, '');
+        return `${nome ? `${escRv(nome)} ` : ''}<strong>${n}</strong>`;
+      });
+    return partes.join(' · ');
   }
 
   const t = new URLSearchParams(location.hash.slice(1)).get('t');
@@ -1137,6 +1265,57 @@ async function basketPage() {
   });
 
   const euros = (n) => `€${n.toFixed(2).replace('.', ',')}`;
+  const ha = await stockPublico();
+  const prazoCaixa = $('[data-basket-lead]');
+  const temUm = (k) => Boolean(ha?.has(k)) && !esgotados.has(k);
+  const livresRv = (k) => (esgotados.has(k) ? 0 : revenda.stock?.[k] ?? 0);
+
+  /* THE ORDER'S LEAD TIME, decided as a whole: it comes from the shelf only if
+     EVERY line can, and otherwise all of it is made and ships together. The
+     public answer is yes or no -- the Worker is asked about this exact basket,
+     never told how many there are; a reseller has the numbers and works it
+     out here. Each call carries a turn number, so a slow answer about the
+     basket as it was cannot paint over the basket as it is. */
+  let vez = 0;
+  async function avaliar(priced) {
+    const minha = ++vez;
+    const procura = {};
+    const todas = priced.length > 0 && priced.every(({ p }) => p.skus);
+    for (const { line, p } of priced) for (const k of p.skus ?? []) procura[k] = (procura[k] ?? 0) + line.qty;
+
+    let deStock = false;
+    let pouco = false;
+    if (todas && !esgotouAgora) {
+      if (revenda.activa && revenda.stock) {
+        deStock = Object.entries(procura).every(([k, n]) => livresRv(k) >= n);
+      } else if (Object.keys(procura).every(temUm)) {
+        try {
+          const q = Object.entries(procura).map(([k, n]) => `${k}:${n}`).join(',');
+          const r = await fetch(`${API}/stock?cesto=${encodeURIComponent(q)}`, { cache: 'no-store' });
+          deStock = r.ok && (await r.json()).deStock === true;
+        } catch { deStock = false; }
+        pouco = !deStock;
+      }
+    }
+    if (minha !== vez || !prazoCaixa) return;
+    prazoNoCesto = deStock ? 'stock' : 'encomenda';
+    const d = prazoCaixa.dataset;
+    prazoCaixa.textContent = deStock ? d.leadStock
+      : [d.leadOrder, pouco ? d.leadFew : '', priced.length > 1 ? d.leadTogether : ''].filter(Boolean).join(' ');
+    prazoCaixa.hidden = false;
+  }
+
+  /* One line's own state. Out of stock is said on the line, so a basket that
+     turns into three to four weeks shows which lamp did it. */
+  function estadoDaLinha(p, qty) {
+    if (!p.skus) return 'Made to order';
+    if (revenda.activa && revenda.stock) {
+      const n = Math.min(...p.skus.map(livresRv));
+      return n >= qty ? `In stock (${n})` : n > 0 ? `Only ${n} in stock` : 'Out of stock — made for you';
+    }
+    if (!ha) return '';
+    return !esgotouAgora && p.skus.every(temUm) ? 'In stock' : 'Out of stock — made for you';
+  }
 
   function priceOf(line) {
     const p = cat.products[line.id];
@@ -1166,6 +1345,7 @@ async function basketPage() {
     return {
       name: p.name, brand: p.brand, photo: p.photo, shown, each, total: each * line.qty,
       pvpEach, pvpTotal: pvpEach * line.qty, desconto: d,
+      skus: skusDaEscolha(p, line.options),
     };
   }
 
@@ -1191,7 +1371,7 @@ async function basketPage() {
     const any = priced.length > 0;
     wrap.hidden = !any;
     if (empty) empty.hidden = any;
-    if (!any) return;
+    if (!any) { vez++; prazoNoCesto = 'encomenda'; return; }
 
     linesBox.innerHTML = priced.map(({ line, p }, i) => `<div class="basket-line">
       <div class="frame">${p.photo
@@ -1201,6 +1381,7 @@ async function basketPage() {
         ${p.shown.length ? `<p class="basket-line__opts">${p.shown.map(escRv).join(' · ')}</p>` : ''}
         <p class="basket-line__opts">${line.qty} × ${euros(p.each)}${p.desconto
           ? ` <span class="rv-rrp">RRP ${euros(p.pvpEach)}</span>` : ''}</p>
+        ${(() => { const e = estadoDaLinha(p, line.qty); return e ? `<p class="basket-line__stock">${escRv(e)}</p>` : ''; })()}
         <button class="basket-line__drop" type="button" data-drop="${i}">Remove</button>
       </div>
       <p class="basket-line__price">${euros(p.total)}</p>
@@ -1224,8 +1405,10 @@ async function basketPage() {
     $('[data-sum-shipping]').textContent = post === null ? 'we do not ship there'
       : post === 0 ? 'free' : euros(post);
     $('[data-sum-total]').textContent = post === null ? '—' : euros(goods + post);
+    avaliar(priced);
   }
 
+  reavaliarCesto = paint;
   paint();
 }
 

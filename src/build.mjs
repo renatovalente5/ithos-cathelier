@@ -20,6 +20,7 @@ import * as cath from './lib/cathelier.mjs';
 import * as pages from './lib/pages.mjs';
 import { esc } from './lib/html.mjs';
 import { REDIRECTS } from './lib/redirects.mjs';
+import { stockDe, prateleiras } from './lib/prazos.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..');
@@ -321,7 +322,12 @@ function catalogueFile() {
   const body = {
     preview: PREVIEW || !shop.open,
     currency: 'EUR',
-    lead: { inStockDays: shop.lead.inStockDays, toOrderDays: shop.lead.toOrderDays },
+    lead: { inStockDays: shop.lead.inStockDays, toOrderWeeks: shop.lead.toOrderWeeks },
+    /* AS PRATELEIRAS DO STOCK, com o nome que a dona reconhece. Os números não
+       estão aqui -- este ficheiro é público, e a dona quer que só os
+       revendedores os vejam. Vivem no Worker; aqui diz-se só QUE prateleiras
+       existem, para o Worker recusar um nome mal escrito quando ela acerta. */
+    stock: { skus: prateleiras(lamps) },
     shipping,
     /* QUEM VENDE VIAJA COM O CATÁLOGO, para os emails não o escreverem à mão.
      * O Worker escreve duas mensagens por encomenda -- a folha de trabalho e a
@@ -366,6 +372,9 @@ function catalogueFile() {
       name: p.name,
       price: p.price,
       made: p.made || 'to_order',
+      /* Só os candeeiros têm stock. As peças da cathelier são sempre feitas
+         por encomenda, e não levam o campo. */
+      ...(lamps.includes(p) ? { stock: stockDe(p) } : {}),
       photo: p.photoFolder && p.cover
         ? `${lamps.includes(p) ? 'ithos' : 'cathelier'}/${p.photoFolder}/${p.cover}` : '',
       options: (p.options || []).map((o) => (o.type === 'text'
@@ -611,7 +620,7 @@ function buildShared() {
     noindex: true,
     title: 'Your basket — ithos · cathelier',
     description: 'What you have chosen so far.',
-    body: pages.basket({ shipping }),
+    body: pages.basket({ shipping, shop }),
   });
 
   mirror('/resellers/', {

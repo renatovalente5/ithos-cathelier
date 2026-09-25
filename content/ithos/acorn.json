@@ -38,7 +38,11 @@
         {
           "id": "3",
           "name": "Both together",
-          "extra": 72
+          "extra": 72,
+          "stockFrom": [
+            "1",
+            "2"
+          ]
         }
       ]
     },

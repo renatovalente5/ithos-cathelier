@@ -116,7 +116,10 @@ const CALL_COST = '(Call to the national mobile network)';
  * the attribute, the stylesheet's rule needs data-scrolled='no' to be present
  * rather than merely not 'yes', and the bar keeps its background for good. A
  * failed script cannot leave white controls floating over white page. */
-const MARCA_DE_POSICAO = "document.documentElement.dataset.scrolled=scrollY>40?'yes':'no'";
+/* A segunda metade diz ao CSS que há script: a frase do stock na ficha do
+   candeeiro fica invisível até o Worker responder -- e sem script, visível
+   com o caso mais lento, que é verdade para qualquer candeeiro. */
+const MARCA_DE_POSICAO = "document.documentElement.dataset.scrolled=scrollY>40?'yes':'no';document.documentElement.dataset.js='yes'";
 
 export function page(o) {
   const {
