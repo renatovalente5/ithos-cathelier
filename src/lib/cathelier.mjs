@@ -1,4 +1,4 @@
-import { esc, money, picture, prose, wholePicture } from './html.mjs';
+import { esc, picture, prose, wholePicture } from './html.mjs';
 import { shapeOf, rungs, cardFocus } from './photo.mjs';
 import { viewer } from './viewer.mjs';
 import { join, dirname } from 'node:path';
@@ -9,6 +9,18 @@ import { icon } from './icons.mjs';
 import { occasionArt } from './occasions-art.mjs';
 import { cover } from './cover.mjs';
 import { prazos } from './prazos.mjs';
+import { t, tn } from './i18n.mjs';
+
+/* As frases destas páginas estão em src/i18n/<língua>/cathelier.json e lêem-se
+   com t() DENTRO das funções que desenham: o gerador escolhe a língua depois
+   de importar este ficheiro, e uma frase lida ao importar ficava na língua de
+   quem correu primeiro. */
+
+/* O PREÇO: o número aqui, o símbolo no dicionário. O inglês escreve «€24,00»
+   e o português «24,00 €», por isso a posição do € é da frase e não do
+   número. A vírgula decimal é a de money() em html.mjs, que é quem manda. */
+const valor = (n) => Number(n).toFixed(2).replace('.', ',');
+const desde = (n) => esc(t('cathelier.desde', { preco: valor(n) }));
 
 /* ===========================================================================
    cathelier — navigation by collection, which is how the model shop works and
@@ -28,7 +40,7 @@ function frame(p, sizes, eager = false, noCartao = false) {
   }
   return `<div class="${cls}">${picture({
     dir: `cathelier/${p.photoFolder}`, name: p.cover || p.photos[0],
-    alt: `${p.name} — laser cut and engraved to order`,
+    alt: t('cathelier.foto.alt', { nome: p.name }),
     // Only the widths that exist. The stand-in photographs are 360px wide, so
     // offering a 1000w candidate would be a promise the file cannot keep.
     widths: [200, 400],
@@ -61,7 +73,7 @@ export function card(p, { eager = false } = {}) {
      aqui, o telemóvel ia buscá-los todos na mesma, escondidos ou não. */
   const thumb = (name, n) => `<button class="card__thumb${n === 0 ? ' is-on' : ''}" type="button"
         data-thumb="${n}" aria-pressed="${n === 0 ? 'true' : 'false'}" tabindex="${n === 0 ? '0' : '-1'}"
-        aria-label="Photograph ${n + 1} of ${shots.length}"></button>`;
+        aria-label="${esc(t('cathelier.cartao.foto', { i: n + 1, n: shots.length }))}"></button>`;
 
   return `<article class="card" data-product="${esc(p.slug)}" data-family="${esc(tags)}"
   data-price="${p.price}"${p.added ? ` data-added="${esc(p.added)}"` : ''}${temFotos
@@ -71,12 +83,12 @@ export function card(p, { eager = false } = {}) {
     ${frame(p, '(min-width: 64rem) 280px, (min-width: 48rem) 30vw, 46vw', eager, true)}
   </a>
   ${shots.length > 1
-    ? `<div class="card__thumbs" role="group" aria-label="${esc(p.name)} — ${shots.length} photographs">
+    ? `<div class="card__thumbs" role="group" aria-label="${esc(t('cathelier.cartao.fotos', { nome: p.name, n: shots.length }))}">
     ${shots.map(thumb).join('\n    ')}
   </div>`
     : '<div class="card__thumbs card__thumbs--none" aria-hidden="true"></div>'}
   <h3 class="card__name"><a class="card__link" href="${href}">${esc(p.name)}</a></h3>
-  <p class="card__price">from ${money(p.price)}</p>
+  <p class="card__price">${desde(p.price)}</p>
 </article>`;
 }
 
@@ -98,7 +110,7 @@ function occasionRow(occasions) {
   /* «Browse» e não «Occasions»: desde 25 set 2026 os separadores são os da
      lista da dona, e Ímanes, Porta-chaves ou Decoração de parede não são
      ocasiões. */
-  return `<nav class="occasions" aria-label="Browse the pieces">
+  return `<nav class="occasions" aria-label="${esc(t('cathelier.separadores'))}">
   ${occasions.map((o) => `<a class="occasion" href="/cathelier/pieces/#${esc(o.slug)}"${o.summary ? ` title="${esc(o.summary)}"` : ''}>
     <span class="occasion__badge">${occasionArt(o.slug, 30)}</span>
     <span class="occasion__name">${semAmpersandSolto(o.name)}</span>
@@ -183,7 +195,7 @@ ${cover(coverText, 'cathelier', coverArt)}
 
 <section class="collection">
   <div class="shell">
-    <div class="collection__head"><h2>Bestsellers</h2></div>
+    <div class="collection__head"><h2>${esc(t('cathelier.inicio.maisVendidas'))}</h2></div>
     <div class="grid-products" style="margin-block-start:2rem">
       ${destaques.map((p, i) => card(p, { eager: i < 3 })).join('\n      ')}
     </div>
@@ -194,19 +206,16 @@ ${cover(coverText, 'cathelier', coverArt)}
   <div class="shell">
     <div class="maker">
       <div class="maker__text">
-        <h2>Fifty of them, fifty names</h2>
-        <p>Wedding favours, christening keepsakes, place cards, corporate gifts, a
-           season of trophies — anything here can be made in quantity, with a
-           different name cut into every one.</p>
-        <p>Tell us roughly what and roughly how many. There is no form to fight
-           with: a message is enough, and we come back with a price and a date.</p>
-        <a class="btn" href="/cathelier/quote/">Ask for a quote</a>
+        <h2>${esc(t('cathelier.inicio.quantidade.titulo'))}</h2>
+        <p>${esc(t('cathelier.inicio.quantidade.texto1'))}</p>
+        <p>${esc(t('cathelier.inicio.quantidade.texto2'))}</p>
+        <a class="btn" href="/cathelier/quote/">${esc(t('cathelier.pedirOrcamento'))}</a>
       </div>
       <div class="frame maker__photo">
         ${picture({
           dir: `cathelier/${aoLado.photoFolder}`,
           name: aoLado.cover || aoLado.photos[0],
-          alt: 'Personalised pieces from the workshop',
+          alt: t('cathelier.inicio.quantidade.fotoAlt'),
           sizes: '(min-width: 56rem) 45vw, 100vw', widths: [200, 400],
         })}
       </div>
@@ -217,15 +226,14 @@ ${cover(coverText, 'cathelier', coverArt)}
 <section class="collection">
   <div class="shell">
     <div class="collection__head">
-      <h2>More to choose from</h2>
-      <p>Cake toppers, signs, trophies, bookmarks, boxes, keyrings. ${pieces.length}
-         pieces in all, and every one of them takes a name.</p>
+      <h2>${esc(t('cathelier.inicio.mais.titulo'))}</h2>
+      <p>${esc(tn('cathelier.inicio.mais.texto', pieces.length))}</p>
     </div>
     <div class="grid-products" style="margin-block-start:2rem">
       ${resto.map((p) => card(p)).join('\n      ')}
     </div>
     <p style="text-align:center;margin-block-start:2.5rem">
-      <a class="btn btn--ghost" href="/cathelier/pieces/">See all ${pieces.length} pieces</a>
+      <a class="btn btn--ghost" href="/cathelier/pieces/">${esc(tn('cathelier.inicio.verTodas', pieces.length))}</a>
     </p>
   </div>
 </section>
@@ -237,15 +245,14 @@ export function all({ pieces, occasions }) {
 <section class="collection">
   <div class="shell">
     <div class="collection__head">
-      <h1>Every piece</h1>
+      <h1>${esc(t('cathelier.lista.titulo'))}</h1>
       <p class="lede" style="margin-block-start:.5rem">
-        ${pieces.length} pieces, all made to order. Each one carries the names,
-        the dates or the words you choose.
+        ${esc(tn('cathelier.lista.lede', pieces.length))}
       </p>
     </div>
 
     <div class="filters" data-filters style="margin-block-start:1.25rem;justify-content:center">
-      <button class="filter" type="button" data-filter="all" aria-pressed="true">All</button>
+      <button class="filter" type="button" data-filter="all" aria-pressed="true">${esc(t('cathelier.lista.todas'))}</button>
       ${occasions.map((o) => `<button class="filter" type="button" data-filter="${esc(o.slug)}" aria-pressed="false">${esc(o.name)}</button>`).join('\n      ')}
     </div>
 
@@ -257,15 +264,14 @@ export function all({ pieces, occasions }) {
          neste. Aparece pelo JavaScript: sem ele a lista mostra tudo e esta
          frase, fora de contexto, não fazia sentido. -->
     <div class="custom-note" data-custom-note hidden>
-      <p>Something that is not here? We cut pieces to measure for weddings,
-        christenings, parties, clubs and companies.</p>
-      <a class="btn" href="/cathelier/quote/">Ask for a quote</a>
+      <p>${esc(t('cathelier.lista.porMedida'))}</p>
+      <a class="btn" href="/cathelier/quote/">${esc(t('cathelier.pedirOrcamento'))}</a>
     </div>
 
     <div class="grid-products" data-product-list style="margin-block-start:1.5rem">
       ${pieces.map((p, i) => card(p, { eager: i < 4 })).join('\n      ')}
     </div>
-    <p class="lede" data-no-results hidden style="margin-block-start:2rem">Nothing here yet.</p>
+    <p class="lede" data-no-results hidden style="margin-block-start:2rem">${esc(t('cathelier.lista.vazia'))}</p>
   </div>
 </section>
 `;
@@ -303,18 +309,18 @@ export function piece({ p, all: everything, shop, occasions }) {
       <div class="gallery__track" data-gallery-track>
         ${p.photos.map((n, i) => `<div class="gallery__slide" style="--focus:${cardFocus(`cathelier/${p.photoFolder}/${n}`, shapes[i])}">${wholePicture({
           key: `cathelier/${p.photoFolder}/${n}`, shape: shapes[i], widths: rungs(shapes[i].w),
-          alt: `${esc(p.name)} — photograph ${i + 1}`,
+          alt: t('cathelier.ficha.fotoAlt', { nome: p.name, i: i + 1 }),
           sizes: '(min-width: 64rem) 560px, 100vw',
           loading: i === 0 ? 'eager' : 'lazy',
         })}</div>`).join('\n        ')}
       </div>
-      <button class="gallery__open" type="button" data-box-open aria-label="See this photograph full size">${icon('search', 18)}</button>
-      <button class="gallery__arrow gallery__arrow--prev" type="button" data-gallery-prev aria-label="Previous photograph">${icon('arrowLeft', 20)}</button>
-      <button class="gallery__arrow gallery__arrow--next" type="button" data-gallery-next aria-label="Next photograph">${icon('arrowRight', 20)}</button>
+      <button class="gallery__open" type="button" data-box-open aria-label="${esc(t('cathelier.ficha.ampliar'))}">${icon('search', 18)}</button>
+      <button class="gallery__arrow gallery__arrow--prev" type="button" data-gallery-prev aria-label="${esc(t('cathelier.ficha.anterior'))}">${icon('arrowLeft', 20)}</button>
+      <button class="gallery__arrow gallery__arrow--next" type="button" data-gallery-next aria-label="${esc(t('cathelier.ficha.seguinte'))}">${icon('arrowRight', 20)}</button>
     </div>
-    <div class="gallery__thumbs" role="tablist" aria-label="Photographs">
+    <div class="gallery__thumbs" role="tablist" aria-label="${esc(t('cathelier.ficha.fotografias'))}">
       ${p.photos.map((n, i) => `<button class="frame gallery__thumb" type="button" role="tab"
-        data-gallery-go="${i}" aria-selected="${i === 0}" aria-label="Photograph ${i + 1}">
+        data-gallery-go="${i}" aria-selected="${i === 0}" aria-label="${esc(t('cathelier.ficha.fotografia', { i: i + 1 }))}">
         ${picture({ dir: `cathelier/${p.photoFolder}`, name: n, alt: '', sizes: '84px', widths: [200] })}
       </button>`).join('\n      ')}
     </div>` : frame(p, '(min-width: 64rem) 560px, 100vw', true)}
@@ -322,50 +328,45 @@ export function piece({ p, all: everything, shop, occasions }) {
 
   <div class="product__detail">
     <h1>${esc(p.name)}</h1>
-    <p class="product__price">from ${money(p.price)}</p>
+    <p class="product__price">${desde(p.price)}</p>
     <p class="product__lead">${esc(prazos(shop.lead).encomenda)}</p>
 
     <form class="product__form" data-product-form data-product-id="${esc(p.slug)}">
       <p class="field__help" style="margin-block-end:.25rem">
-        Fill these in and we will send you a drawing to approve. Nothing is cut
-        before you say yes.
+        ${esc(t('cathelier.ficha.ajuda'))}
       </p>
       ${(p.options || []).map((o) => `<div class="field">
-        <label for="opt-${esc(o.id)}">${esc(o.name)}${o.required ? ' <span class="field__req">required</span>' : ''}</label>
+        <label for="opt-${esc(o.id)}">${esc(o.name)}${o.required ? ` <span class="field__req">${esc(t('cathelier.ficha.obrigatorio'))}</span>` : ''}</label>
         <input id="opt-${esc(o.id)}" type="text" maxlength="${o.max || 60}"
                data-option="${esc(o.id)}"${o.required ? ' required' : ''}
                placeholder="${esc(o.example || '')}">
-        <p class="field__limit">Up to ${o.max || 60} characters.</p>
+        <p class="field__limit">${esc(t('cathelier.ficha.limite', { n: o.max || 60 }))}</p>
       </div>`).join('\n      ')}
 
       <div class="product__buy">
         <div class="qty" data-qty>
-          <button class="qty__btn" type="button" data-qty-down aria-label="One fewer">${icon('minus', 16)}</button>
-          <input class="qty__input" type="number" name="quantity" value="1" min="1" max="200" inputmode="numeric" aria-label="Quantity">
-          <button class="qty__btn" type="button" data-qty-up aria-label="One more">${icon('plus', 16)}</button>
+          <button class="qty__btn" type="button" data-qty-down aria-label="${esc(t('cathelier.ficha.menosUm'))}">${icon('minus', 16)}</button>
+          <input class="qty__input" type="number" name="quantity" value="1" min="1" max="200" inputmode="numeric" aria-label="${esc(t('cathelier.ficha.quantidade'))}">
+          <button class="qty__btn" type="button" data-qty-up aria-label="${esc(t('cathelier.ficha.maisUm'))}">${icon('plus', 16)}</button>
         </div>
-        <button class="btn btn--wide" type="submit" data-add>Add to basket</button>
+        <button class="btn btn--wide" type="submit" data-add>${esc(t('cathelier.ficha.adicionar'))}</button>
       </div>
     </form>
 
     <div class="reassure">
-      ${[['shield', 'A drawing to approve before anything is cut'],
-         ['hand', 'Cut, sanded and finished by hand'],
-         ['truck', 'Shipped within Portugal'],
-         ['leaf', 'Wood from responsibly managed forests']]
-        .map(([i, t]) => `<p>${icon(i, 18)}<span>${esc(t)}</span></p>`).join('\n      ')}
+      ${[['shield', 'desenho'], ['hand', 'mao'], ['truck', 'envio'], ['leaf', 'madeira']]
+        .map(([i, k]) => `<p>${icon(i, 18)}<span>${esc(t(`cathelier.ficha.garantia.${k}`))}</span></p>`).join('\n      ')}
     </div>
 
     <div class="product__text stack" style="--stack:1rem">${prose(p.text)}</div>
 
     ${(shop.safetyCathelier || []).length ? `<details class="product__safety">
-      <summary>Care and safety</summary>
+      <summary>${esc(t('cathelier.ficha.cuidados'))}</summary>
       <ul>${shop.safetyCathelier.map((s) => `<li>${esc(s)}</li>`).join('')}</ul>
     </details>` : ''}
 
     <p class="small muted" style="margin-block-start:1.25rem">
-      Ordering a lot of them? <a href="/cathelier/quote/">Ask for a quote</a> and we will
-      price the whole run.
+      ${t('cathelier.ficha.muitas')}
     </p>
   </div>
 </section>
@@ -379,9 +380,9 @@ ${related.length ? `<section class="collection" style="background:var(--bg-soft)
          flat text with four sibling cards under it and no way through to the
          thing it was naming -- a dead end on every one of the 41 pieces. -->
     <div class="collection__head">
-      <span class="eyebrow">More in</span>
+      <span class="eyebrow">${esc(t('cathelier.ficha.maisEm'))}</span>
       ${here ? `<h2><a href="/cathelier/pieces/#${esc(here.slug)}">${esc(here.name)}</a></h2>`
-             : '<h2>the same collection</h2>'}
+             : `<h2>${esc(t('cathelier.ficha.mesmaColecao'))}</h2>`}
     </div>
     <div class="grid-products" style="margin-block-start:2rem">${related.map((x) => card(x)).join('\n      ')}</div>
   </div>
