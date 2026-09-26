@@ -28,6 +28,16 @@ guess was wrong. Read the header of that script before touching any of it.
 deliberate close-ups that run off the frame — good as the second or third
 picture in a gallery, never as the face of a product card.
 
+## Onde vive
+
+O CI (`.github/workflows/publish.yml`) constrói o site e publica `public/` num
+Worker da Cloudflare só de ficheiros (`wrangler.jsonc`), servido em
+ithos-cathelier.pt por uma route; o www vai para o apex por uma Redirect Rule
+da zona. O GitHub Pages foi desligado a 26 set 2026: os termos dele proíbem
+lojas. **Não correr `wrangler deploy` à mão:** o `public/` local não tem as
+versões web das fotografias juntas no painel (só o CI as gera), e publicava um
+site sem elas.
+
 ## Running it
 
 ```bash

@@ -5,21 +5,18 @@ on:
     branches: [main]
   workflow_dispatch:
 
+# O site vive na Cloudflare (wrangler.jsonc); o GitHub Pages foi desligado a 26
+# set 2026 -- os termos dele proíbem lojas. O token só precisa de ler o repo.
 permissions:
   contents: read
-  pages: write
-  id-token: write
 
 concurrency:
-  group: pages
+  group: publish
   cancel-in-progress: true
 
 jobs:
   build:
     runs-on: ubuntu-latest
-    env:
-      # A Cloudflare só entra quando o token existir (ver o passo no fim).
-      TEM_CLOUDFLARE: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -110,32 +107,16 @@ jobs:
           BASE_PATH: ${{ vars.BASE_PATH }}
           PREVIEW: ${{ vars.PREVIEW || 'yes' }}
 
-      - uses: actions/upload-pages-artifact@v3
-        with:
-          path: public
-
-      # A MESMA PASTA public/ VAI PARA A CLOUDFLARE (o Worker só de ficheiros
-      # de wrangler.jsonc). Os termos do GitHub Pages proíbem lojas; enquanto o
-      # domínio não passa para o Worker, publica-se nos dois sítios, e o
-      # GitHub Pages desliga-se depois. Precisa do segredo
-      # CLOUDFLARE_API_TOKEN (modelo «Edit Cloudflare Workers», criado pelo
-      # dono da conta) e da variável CLOUDFLARE_ACCOUNT_ID; sem o segredo,
-      # este passo não corre e nada falha.
+      # A PASTA public/ VAI PARA A CLOUDFLARE: o Worker só de ficheiros de
+      # wrangler.jsonc, servido em ithos-cathelier.pt pela route de lá.
+      # Precisa do segredo CLOUDFLARE_API_TOKEN (modelo «Edit Cloudflare
+      # Workers», limitado à zona, criado pelo dono da conta) e da variável
+      # CLOUDFLARE_ACCOUNT_ID. Sem eles, falha -- e é bom que falhe: não há
+      # outro sítio para onde publicar.
       - name: Publish on Cloudflare
-        if: env.TEM_CLOUDFLARE == 'true'
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
           wranglerVersion: '4.141.0'
           command: deploy
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deploy.outputs.page_url }}
-    steps:
-      - id: deploy
-        uses: actions/deploy-pages@v4
