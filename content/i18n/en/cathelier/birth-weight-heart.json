@@ -4,12 +4,12 @@
     "h": "748c809b1bcd"
   },
   "summary": {
-    "t": "Small, to hang on a cot or a door.",
-    "h": "a02494698703"
+    "t": "Small, to hang on a door or outside the cot.",
+    "h": "cad00023f233"
   },
   "text": {
-    "t": "Small, to hang on a cot or a door.",
-    "h": "a02494698703"
+    "t": "Small, to hang on a door or outside the cot.",
+    "h": "cad00023f233"
   },
   "options.name.name": {
     "t": "Name",
@@ -58,5 +58,9 @@
   "options.length.example": {
     "t": "49 cm",
     "h": "c8d0f4fefc4d"
+  },
+  "gpsr.warnings.0": {
+    "t": "Always hang it out of the baby's reach — outside the cot or on a door, never inside the cot: the cord can wrap around and the piece is small.",
+    "h": "e20732309639"
   }
 }

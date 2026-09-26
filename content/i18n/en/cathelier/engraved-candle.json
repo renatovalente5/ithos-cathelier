@@ -30,5 +30,17 @@
   "options.line.name": {
     "t": "A short line (optional)",
     "h": "6eb0262279e0"
+  },
+  "gpsr.warnings.0": {
+    "t": "Never leave a lit candle unattended.",
+    "h": "ed4f29556d2c"
+  },
+  "gpsr.warnings.1": {
+    "t": "Keep it away from children, pets, draughts and anything that can burn.",
+    "h": "5ffbed2ce6d0"
+  },
+  "gpsr.warnings.2": {
+    "t": "Only light it on a stable, heat-resistant surface.",
+    "h": "0e3a4ce180a7"
   }
 }

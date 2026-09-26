@@ -22,5 +22,9 @@
   "options.line.name": {
     "t": "A short line (optional)",
     "h": "6eb0262279e0"
+  },
+  "gpsr.warnings.0": {
+    "t": "A small piece: keep it out of the reach of small children.",
+    "h": "720d32964390"
   }
 }

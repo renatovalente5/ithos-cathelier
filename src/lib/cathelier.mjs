@@ -366,10 +366,18 @@ export function piece({ p, all: everything, shop, occasions }) {
 
     <div class="product__text stack" style="--stack:1rem">${prose(p.text)}</div>
 
-    ${(shop.safetyCathelier || []).length ? `<details class="product__safety">
+    ${/* OS AVISOS DE SEGURANÇA (Reg. (UE) 2023/988, art. 19.º: na oferta
+        online, bem visíveis). Primeiro os da peça (ímanes, vela, topo de
+        bolo, fio para pendurar…), depois os de todas as peças. Uma peça com
+        um risco próprio mostra-os abertos: um aviso de ímanes fechado numa
+        caixa que ninguém abre não está «bem visível». */ ''}${(() => {
+      const proprios = (p.gpsr?.warnings ?? []).filter((w) => String(w).trim());
+      const todos = [...proprios, ...(shop.safetyCathelier ?? []).filter((w) => String(w).trim())];
+      return todos.length ? `<details class="product__safety"${proprios.length ? ' open' : ''}>
       <summary>${esc(t('cathelier.ficha.cuidados'))}</summary>
-      <ul>${shop.safetyCathelier.map((s) => `<li>${esc(s)}</li>`).join('')}</ul>
-    </details>` : ''}
+      <ul>${todos.map((w) => `<li>${esc(w)}</li>`).join('')}</ul>
+    </details>` : '';
+    })()}
 
     <p class="small muted" style="margin-block-start:1.25rem">
       ${t('cathelier.ficha.muitas')}

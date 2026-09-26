@@ -50,7 +50,11 @@
   "gpsr": {
     "type": "",
     "batch": "",
-    "warnings": []
+    "warnings": [
+      "Nunca deixe a vela acesa sem vigilância.",
+      "Mantenha-a longe de crianças, de animais, de correntes de ar e de tudo o que possa arder.",
+      "Acenda-a só numa superfície estável e resistente ao calor."
+    ]
   },
   "seo": {
     "title": "",

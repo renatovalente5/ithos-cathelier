@@ -32,7 +32,12 @@
     "Não deixe pilhas ao alcance de uma criança pequena.",
     "Limpe com um pano seco. Nunca com água nem com solventes."
   ],
-  "safetyCathelier": [],
-  "_noteSafetyCathelier": "Os avisos de segurança das peças da cathelier (peças pequenas, ímanes, velas…). O Reg. (UE) 2023/988, art. 19.º, pede-os na oferta online. Têm de vir da dona: enquanto a lista estiver vazia, a ficha das peças não mostra nada e as guardas avisam.",
+  "safetyCathelier": [
+    "Peça decorativa: não é um brinquedo.",
+    "Não é adequada a crianças com menos de 3 anos sem a supervisão de um adulto.",
+    "Madeira gravada a laser: mantenha-a longe da água, da humidade e de fontes de calor.",
+    "Limpe com um pano seco. Nunca com água nem com solventes."
+  ],
+  "_noteSafetyCathelier": "Os avisos de segurança que aparecem em TODAS as peças da cathelier (Reg. (UE) 2023/988, art. 19.º: na oferta online). Os de uma peça só (ímanes, vela, topos de bolo…) estão no ficheiro dela, em gpsr.warnings. Escritos a 26 set 2026 a pedido do Renato; a dona muda-os no painel.",
   "open": false
 }

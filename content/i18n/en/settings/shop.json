@@ -22,5 +22,21 @@
   "safetyIthos.4": {
     "t": "Wipe with a dry cloth. Never with water or solvents.",
     "h": "5c2d780f69d4"
+  },
+  "safetyCathelier.0": {
+    "t": "A decorative piece: this is not a toy.",
+    "h": "37e0f6703019"
+  },
+  "safetyCathelier.1": {
+    "t": "Not suitable for children under 3 without adult supervision.",
+    "h": "fb45333b4634"
+  },
+  "safetyCathelier.2": {
+    "t": "Laser-engraved wood: keep it away from water, damp and heat.",
+    "h": "17cb31aa869f"
+  },
+  "safetyCathelier.3": {
+    "t": "Wipe with a dry cloth. Never with water or solvents.",
+    "h": "5c2d780f69d4"
   }
 }

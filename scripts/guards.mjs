@@ -872,6 +872,24 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
    CI and the battery, and break the Fox card the moment a pointer rested on
    it. All 576 of them happen to exist today; the failure is the next
    photograph added without re-running scripts/renditions.py. */
+/* UM RISCO PRÓPRIO PEDE UM AVISO PRÓPRIO. Os avisos gerais da cathelier
+   aparecem em todas as peças; uma peça com ímanes, uma vela, um topo de bolo,
+   vidro ou um fio para pendurar precisa do seu (gpsr.warnings), senão o
+   regulamento de segurança (UE 2023/988, art. 19.º) fica por cumprir nessa
+   ficha. Avisa-se, não se pára: a dona pode estar a meio de escrever. */
+{
+  const RISCOS = [[/íman|iman\b|ímanes/i, 'ímanes'], [/\bvela\b/i, 'vela'], [/topo de bolo/i, 'topo de bolo'], [/vidro/i, 'vidro'], [/pendurar/i, 'para pendurar']];
+  for (const f of readdirSync(join(CONTENT, 'cathelier')).filter((x) => x.endsWith('.json') && !x.startsWith('_'))) {
+    const p = JSON.parse(readFileSync(join(CONTENT, 'cathelier', f), 'utf8'));
+    if (!p.published) continue;
+    const texto = `${p.name} ${p.summary ?? ''} ${p.text ?? ''}`;
+    const proprios = (p.gpsr?.warnings ?? []).filter((w) => String(w).trim());
+    for (const [re, nome] of RISCOS) {
+      if (re.test(texto) && !proprios.length) warnings.push(`cathelier/${f}: fala de ${nome} e não tem aviso de segurança próprio (gpsr.warnings)`);
+    }
+  }
+}
+
 /* O QUE ENTRA NUM ATRIBUTO TEM DE TER A FORMA DE UM NOME. A pasta e os nomes
    das fotografias vão para src e srcset, e o máximo de caracteres para um
    maxlength; o gerador escapa-os, mas o conteúdo é escrito pelo painel, e uma

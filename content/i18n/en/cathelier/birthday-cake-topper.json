@@ -22,5 +22,9 @@
   "options.date.name": {
     "t": "Date (optional)",
     "h": "07cfa971211a"
+  },
+  "gpsr.warnings.0": {
+    "t": "Not edible. Take the topper off the cake before cutting and serving it.",
+    "h": "ffbb34eb306a"
   }
 }

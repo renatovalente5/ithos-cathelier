@@ -30,5 +30,13 @@
   "options.line.name": {
     "t": "A short line (optional)",
     "h": "6eb0262279e0"
+  },
+  "gpsr.warnings.0": {
+    "t": "It has glass and a metal ring: keep it out of the reach of small children.",
+    "h": "0a711aa6ef26"
+  },
+  "gpsr.warnings.1": {
+    "t": "If the glass breaks, pick up the pieces carefully and stop using the keyring.",
+    "h": "02e5d7a7946d"
   }
 }

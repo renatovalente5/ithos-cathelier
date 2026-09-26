@@ -9,8 +9,8 @@
   "alsoIn": [
     "hanging"
   ],
-  "summary": "Pequeno, para pendurar no berço ou numa porta.",
-  "text": "Pequeno, para pendurar no berço ou numa porta.",
+  "summary": "Pequeno, para pendurar numa porta ou por fora do berço.",
+  "text": "Pequeno, para pendurar numa porta ou por fora do berço.",
   "photoFolder": "pool",
   "photos": [
     "05",
@@ -82,7 +82,9 @@
   "gpsr": {
     "type": "",
     "batch": "",
-    "warnings": []
+    "warnings": [
+      "Pendure-o sempre fora do alcance do bebé — por fora do berço ou numa porta, nunca dentro do berço: o fio pode enrolar-se e a peça é pequena."
+    ]
   },
   "seo": {
     "title": "",

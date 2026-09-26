@@ -52,7 +52,9 @@
   "gpsr": {
     "type": "",
     "batch": "",
-    "warnings": []
+    "warnings": [
+      "Contém ímanes. Mantenha-os fora do alcance das crianças: se uma criança engolir um íman, procure ajuda médica imediatamente."
+    ]
   },
   "seo": {
     "title": "",

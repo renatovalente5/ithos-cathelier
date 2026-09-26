@@ -30,5 +30,9 @@
   "options.line.name": {
     "t": "A short line (optional)",
     "h": "6eb0262279e0"
+  },
+  "gpsr.warnings.0": {
+    "t": "Contains magnets. Keep them out of the reach of children: if a child swallows a magnet, get medical help at once.",
+    "h": "2d058453ef00"
   }
 }

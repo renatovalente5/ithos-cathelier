@@ -52,7 +52,10 @@
   "gpsr": {
     "type": "",
     "batch": "",
-    "warnings": []
+    "warnings": [
+      "Tem vidro e uma argola de metal: não o deixe ao alcance de crianças pequenas.",
+      "Se o vidro partir, apanhe os cacos com cuidado e deixe de usar o porta-chaves."
+    ]
   },
   "seo": {
     "title": "",
