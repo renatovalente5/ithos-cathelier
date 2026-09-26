@@ -17,6 +17,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      # A Cloudflare só entra quando o token existir (ver o passo no fim).
+      TEM_CLOUDFLARE: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -26,20 +29,62 @@ jobs:
 
       # AS FOTOGRAFIAS QUE A DONA JUNTA NO PAINEL chegam aqui só como o
       # original (photos/<marca>/<pasta>/<nome>.jpg): as versões web geram-se
-      # agora, e não vão para o git. As que já estavam estão em public/media e
-      # ficam como estão -- os dois scripts saltam o que já existe, por isso
-      # isto custa uns segundos por fotografia nova e não refaz nada.
+      # aqui, e não vão para o git. As do estúdio estão no git e ficam como
+      # estão (o renditions.py salta o que já existe). As do painel, num
+      # checkout novo, NÃO existem -- e sem mais nada refaziam-se todas em cada
+      # publicação, uns 2,5 s por fotografia, para sempre. Por isso ficam numa
+      # cache entre corridas: cada fotografia paga uma vez.
+      # (O cards.py recorta todos os originais em cada corrida -- 1,5 s para
+      # cem -- e os masters não entram na cache: um master guardado nunca é
+      # lido antes de ser escrito outra vez, e só servia para fazer voltar uma
+      # fotografia que a dona tirou.)
       # Pillow fixo em 11.3: é a versão com AVIF de origem e a que gerou as
       # que estão no repositório.
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
+      # A CHAVE tem duas partes. A primeira são os scripts e o focus.json:
+      # mudá-los muda as versões, e então não se restaura nada e refaz-se tudo
+      # uma vez. A segunda são os originais: uma fotografia nova restaura a
+      # cache da corrida anterior (pelo prefixo) e só gera as dela.
+      - name: Restore the web versions made on earlier runs
+        id: versoes
+        uses: actions/cache/restore@v4
+        with:
+          path: ${{ runner.temp }}/versoes
+          key: versoes-v1-${{ hashFiles('scripts/cards.py', 'scripts/renditions.py', 'photos/focus.json') }}-${{ hashFiles('photos/**/*.jpg', '!photos/_cards/**', '!photos/_contact/**') }}
+          restore-keys: |
+            versoes-v1-${{ hashFiles('scripts/cards.py', 'scripts/renditions.py', 'photos/focus.json') }}-
+
+      # O QUE O GIT TEM GANHA SEMPRE: a cache só junta o que falta, e guarda
+      # só o que o git não tem. Uma versão que o programador refez e gravou no
+      # git nunca é tapada por uma cópia velha, e uma que ele apagou não volta.
+      # As de uma fotografia que a dona tirou saem no renditions.py (não têm
+      # original), e o check-output confere que saíram.
+      # cards.py e renditions.py passam à frente de um original que não abre
+      # e avisam: quem decide se alguma página precisa dele são as guardas.
       - name: Photographs added in the back office
+        env:
+          VERSOES: ${{ runner.temp }}/versoes
         run: |
+          if [ -d "$VERSOES" ]; then rsync -a --ignore-existing "$VERSOES/" ./; fi
           python3 -m pip install --quiet Pillow==11.3.0
           python3 scripts/cards.py
           python3 scripts/renditions.py
+          rm -rf "$VERSOES" && mkdir -p "$VERSOES"
+          git -c core.quotePath=false ls-files --others --exclude-standard -- public/media/ithos public/media/cathelier public/media/whole \
+            | rsync -a --files-from=- ./ "$VERSOES/"
+          echo "$(find "$VERSOES" -type f | wc -l | tr -d ' ') web versions of back-office photographs kept for the next run"
+
+      # Guarda-se logo, e não no fim do trabalho: uma guarda que pára a
+      # publicação por outra razão não deita fora as versões já feitas.
+      - name: Keep them for the next run
+        if: steps.versoes.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: ${{ runner.temp }}/versoes
+          key: ${{ steps.versoes.outputs.cache-primary-key }}
 
       # The guards run BEFORE the build and are allowed to kill it. A shop
       # published without the seller's legal identification on it is worse than
@@ -68,6 +113,22 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: public
+
+      # A MESMA PASTA public/ VAI PARA A CLOUDFLARE (o Worker só de ficheiros
+      # de wrangler.jsonc). Os termos do GitHub Pages proíbem lojas; enquanto o
+      # domínio não passa para o Worker, publica-se nos dois sítios, e o
+      # GitHub Pages desliga-se depois. Precisa do segredo
+      # CLOUDFLARE_API_TOKEN (modelo «Edit Cloudflare Workers», criado pelo
+      # dono da conta) e da variável CLOUDFLARE_ACCOUNT_ID; sem o segredo,
+      # este passo não corre e nada falha.
+      - name: Publish on Cloudflare
+        if: env.TEM_CLOUDFLARE == 'true'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          wranglerVersion: '4.141.0'
+          command: deploy
 
   deploy:
     needs: build

@@ -41,6 +41,7 @@ first 120 needed that undone by hand.
     python3 scripts/cards.py              write the square masters
 """
 import json
+import os
 import sys
 from pathlib import Path
 
@@ -160,30 +161,72 @@ def originais():
                 yield f'cathelier/{pasta.name}/{f.stem}', f
 
 
+# UM ORIGINAL QUE NÃO ABRE NÃO PÁRA A LOJA.
+# Os originais já não vêm só do estúdio: a dona junta-os no painel, e um
+# ficheiro que o Pillow não abre (um JPEG partido, ou um texto com nome de
+# fotografia) rebentava aqui -- e, com o passo do CI em `bash -e`, as guardas,
+# o build e a publicação ficavam por correr, nesta publicação e em todas as
+# seguintes, por causa de uma fotografia que nenhuma página talvez use.
+# Agora avisa e segue. QUEM DECIDE SÃO AS GUARDAS: se um produto publicado
+# mostra essa fotografia, scripts/guards.mjs não encontra as versões dela e
+# pára com o nome; se nenhum a mostra, a loja publica.
+ILEGIVEL = (OSError, SyntaxError, ValueError, Image.DecompressionBombError)
+
+
 def main():
     modo_folha = '--contact' in sys.argv
     guardados = focos()
     por_produto = {}
     feitos = 0
+    ilegiveis = []
+    chaves = set()
 
     for chave, caminho in originais():
-        with Image.open(caminho) as im:
-            im = im.convert('RGB')
-            manual = guardados.get(chave)
-            foco = manual if manual is not None else encontrar_foco(im)
-            q = cortar(im, foco)
-            if q.size[0] > LADO:
-                q = q.resize((LADO, ALTO), Image.LANCZOS)
+        chaves.add(chave)
+        destino = SAIDA / f'{chave}.jpg'
+        try:
+            with Image.open(caminho) as im:
+                im = im.convert('RGB')
+                manual = guardados.get(chave)
+                foco = manual if manual is not None else encontrar_foco(im)
+                q = cortar(im, foco)
+                if q.size[0] > LADO:
+                    q = q.resize((LADO, ALTO), Image.LANCZOS)
+        except ILEGIVEL as e:
+            ilegiveis.append(chave)
+            print(f'  warning: {caminho.relative_to(RAIZ)} cannot be opened ({type(e).__name__}: {e}) '
+                  '— skipped; the guards decide whether a page needs it', file=sys.stderr)
+            # Um master antigo com o mesmo nome já não corresponde a nada.
+            if not modo_folha and destino.exists():
+                destino.unlink()
+            continue
 
-            produto = chave.split('/')[1]
-            if modo_folha:
-                por_produto.setdefault(produto, []).append(
-                    (chave.split('/')[-1], q.copy().resize((300, round(300 / PROPORCAO)), Image.LANCZOS), manual is not None))
-            else:
-                destino = SAIDA / f'{chave}.jpg'
-                destino.parent.mkdir(parents=True, exist_ok=True)
-                q.save(destino, 'JPEG', quality=92, optimize=True)
-                feitos += 1
+        produto = chave.split('/')[1]
+        if modo_folha:
+            por_produto.setdefault(produto, []).append(
+                (chave.split('/')[-1], q.copy().resize((300, round(300 / PROPORCAO)), Image.LANCZOS), manual is not None))
+        else:
+            destino.parent.mkdir(parents=True, exist_ok=True)
+            # Escrito ao lado e trocado de uma vez: um master a meio (a corrida
+            # interrompida) nunca fica com o nome do verdadeiro.
+            meio = destino.with_name(destino.name + '.tmp')
+            q.save(meio, 'JPEG', quality=92, optimize=True)
+            os.replace(meio, destino)
+            feitos += 1
+
+    # OS MASTERS DE UMA FOTOGRAFIA QUE SAIU saem também: o renditions.py gera
+    # versões de tudo o que está em photos/_cards, e um master sem original
+    # voltava a pôr no site uma fotografia que a dona tirou.
+    tirados = 0
+    if not modo_folha and chaves:
+        for marca in ('ithos', 'cathelier'):
+            raiz = SAIDA / marca
+            if not raiz.is_dir():
+                continue
+            for f in sorted(raiz.rglob('*')):
+                if f.is_file() and (f.suffix == '.tmp' or f.relative_to(SAIDA).with_suffix('').as_posix() not in chaves):
+                    f.unlink()
+                    tirados += 1
 
     if modo_folha:
         FOLHAS.mkdir(parents=True, exist_ok=True)
@@ -209,7 +252,9 @@ def main():
         print(f'{len(nomes)} products over {(len(nomes) + 5) // 6} sheets in {FOLHAS.relative_to(RAIZ)}')
     else:
         print(f'{feitos} card masters in {SAIDA.relative_to(RAIZ)}, '
-              f'{len(guardados)} of them framed by hand')
+              f'{len(guardados)} of them framed by hand'
+              + (f', {tirados} removed (their photograph is gone)' if tirados else '')
+              + (f', {len(ilegiveis)} original(s) could not be opened: {", ".join(ilegiveis)}' if ilegiveis else ''))
 
 
 

@@ -38,7 +38,15 @@ python3 scripts/cards.py --contact    # review sheets for the card crops
 python3 scripts/cards.py              # write the card masters
 python3 scripts/renditions.py         # web sizes from the masters
 python3 scripts/fonts.py              # re-download the self-hosted typefaces
+python3 scripts/share.py              # the link-preview picture, when a cover changes
 ```
+
+Fotografias juntas no painel: o Worker grava só o original; as versões web
+geram-se no CI e ficam numa cache entre publicações (ver publish.yml), por isso
+cada fotografia custa uns segundos uma vez. `cards.py` e `renditions.py` passam
+à frente de um original que não abre (avisam) e deitam fora os masters e as
+versões de uma fotografia cujo original saiu; quem decide se alguma página
+precisa de uma fotografia em falta são as guardas.
 
 ### Pages and redirect stubs are different numbers
 

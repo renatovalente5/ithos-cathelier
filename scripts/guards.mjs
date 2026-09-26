@@ -968,7 +968,17 @@ for (const brand of ['ithos', 'cathelier']) {
         const master = join(ROOT, 'photos', marca, pastaReal, `${n}.jpg`);
         if (!existsSync(master)) { falta.push(`${marca}/${f}: master ${n}.jpg`); faltam++; continue; }
         const key = `${marca}/${p.photoFolder}/${n}`;
-        for (const w of rungs(shapeOf(master).w)) for (const ext of ['avif', 'webp']) {
+        /* Um original que não é um JPEG legível (juntado no painel) é uma
+           fotografia que falta, dita com o nome -- e não uma pilha de erro
+           que ninguém sabe ler. scripts/cards.py e renditions.py passam-lhe à
+           frente; é aqui que se decide se alguma página precisa dela. */
+        let forma;
+        try { forma = shapeOf(master); } catch {
+          die(`${marca}/${f}: photograph "${n}" (photos/${marca}/${pastaReal}/${n}.jpg) is not a JPEG anyone can open — `
+            + 'take it out of the product in the back office, or replace the file');
+          continue;
+        }
+        for (const w of rungs(forma.w)) for (const ext of ['avif', 'webp']) {
           if (!existsSync(join(PUB, 'whole', `${key}-${w}.${ext}`))) { falta.push(`whole/${key}-${w}.${ext}`); faltam++; }
         }
       }
