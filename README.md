@@ -31,7 +31,9 @@ picture in a gallery, never as the face of a product card.
 ## Onde vive
 
 O CI (`.github/workflows/publish.yml`) constrói o site e publica `public/` num
-Worker da Cloudflare só de ficheiros (`wrangler.jsonc`), servido em
+Worker da Cloudflare de ficheiros (`wrangler.jsonc`) — o único código,
+`worker/intervalos.js`, só corre para o vídeo da capa, porque os ficheiros
+estáticos ignoram pedidos por intervalos e o iOS precisa deles —, servido em
 ithos-cathelier.pt por uma route; o www vai para o apex por uma Redirect Rule
 da zona. O GitHub Pages foi desligado a 26 set 2026: os termos dele proíbem
 lojas. **Não correr `wrangler deploy` à mão:** o `public/` local não é o do CI —
