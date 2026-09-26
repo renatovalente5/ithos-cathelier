@@ -356,7 +356,11 @@ export function piece({ p, all: everything, shop, occasions }) {
     </form>
 
     <div class="reassure">
-      ${[['shield', 'desenho'], ['hand', 'mao'], ['truck', 'envio'], ['leaf', 'madeira']]
+      ${/* Aqui dizia «madeira de florestas com gestão responsável». Desde 27 set
+          2026 (Diretiva 2024/825) uma alegação ambiental genérica sem prova
+          reconhecida é prática comercial desleal, e não há certificação que a
+          sustente. Ficou um facto que o site já diz na página da oficina. Se
+          um dia houver FSC/PEFC, volta -- citando o certificado. */ ''}${[['shield', 'desenho'], ['hand', 'mao'], ['truck', 'envio'], ['pin', 'oficina']]
         .map(([i, k]) => `<p>${icon(i, 18)}<span>${esc(t(`cathelier.ficha.garantia.${k}`))}</span></p>`).join('\n      ')}
     </div>
 
