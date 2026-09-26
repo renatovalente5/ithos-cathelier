@@ -19,8 +19,8 @@
  * Os caminhos usam os ids das opções e dos valores, nunca a posição na lista:
  * reordenar os campos de uma peça não pode trocar as traduções entre eles.
  *
- * As páginas (.md) traduzem-se inteiras: content/i18n/<língua>/pages/x.md, com
- * a primeira linha `<!-- origem: <resumo> -->`. */
+ * As páginas (.md) vivem em content/i18n/<língua>/pages/x.md, com a primeira
+ * linha `<!-- origem: <resumo> partes: … -->` (ver partesDaPagina). */
 
 /** O resumo de um texto: os primeiros 12 algarismos hexadecimais do SHA-256.
  *  Recebe a função de resumo (node:crypto no gerador, WebCrypto no Worker). */
@@ -109,8 +109,38 @@ export function aplicar(caminhoDoFicheiro, origem, traducao, resumir) {
   return { obj, desactualizados, emFalta };
 }
 
-/** Uma página traduzida: o texto e o resumo da origem, lidos da primeira linha. */
+/* AS PÁGINAS TRADUZEM-SE AOS BOCADOS: o texto parte-se antes de cada título de
+   nível 2 («## »), e a primeira parte leva o título da página e a introdução.
+   A primeira linha da página traduzida guarda o resumo da origem inteira e o
+   de cada parte:
+       <!-- origem: 3fa1… partes: 91c0… 5d2e… -->
+   Quando a dona muda um parágrafo, só a parte onde ele está volta a ser
+   traduzida -- o resto fica como estava, revisto ou não. */
+export function partesDaPagina(md) {
+  const partes = []; let actual = [];
+  const fechar = () => { const t = actual.join('\n').trim(); if (t) partes.push(t); actual = []; };
+  for (const linha of String(md ?? '').split('\n')) {
+    if (/^## /.test(linha)) fechar();
+    actual.push(linha);
+  }
+  fechar();
+  return partes;
+}
+
+/** Uma página traduzida: o texto, o resumo da origem e os das partes, lidos da
+ *  primeira linha. `fixo` marca uma página corrigida à mão. */
 export function lerPaginaTraduzida(md) {
-  const m = /^<!-- origem: ([0-9a-f]+)(?: fixo)? -->\n/.exec(md ?? '');
-  return m ? { h: m[1], texto: md.slice(m[0].length), fixo: / fixo -->/.test(m[0]) } : null;
+  const m = /^<!-- origem: ([^\n]*?) -->\n/.exec(md ?? '');
+  if (!m) return null;
+  const [h, ...resto] = m[1].split(/\s+/);
+  if (!/^[0-9a-f]+$/.test(h)) return null;
+  const i = resto.indexOf('partes:');
+  const partes = i < 0 ? [] : resto.slice(i + 1).filter((x) => /^[0-9a-f]+$/.test(x));
+  return { h, texto: md.slice(m[0].length), fixo: resto.includes('fixo'), partes };
+}
+
+/** O inverso de lerPaginaTraduzida. */
+export function escreverPaginaTraduzida({ h, texto, fixo = false, partes = [] }) {
+  const cab = [`origem: ${h}`, ...(fixo ? ['fixo'] : []), ...(partes.length ? ['partes:', ...partes] : [])].join(' ');
+  return `<!-- ${cab} -->\n${String(texto).replace(/\s+$/, '')}\n`;
 }
