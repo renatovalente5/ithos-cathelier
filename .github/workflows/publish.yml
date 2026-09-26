@@ -17,6 +17,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      # A Cloudflare só entra quando o token existir (ver o passo no fim).
+      TEM_CLOUDFLARE: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
     steps:
       - uses: actions/checkout@v4
 
@@ -110,6 +113,22 @@ jobs:
       - uses: actions/upload-pages-artifact@v3
         with:
           path: public
+
+      # A MESMA PASTA public/ VAI PARA A CLOUDFLARE (o Worker só de ficheiros
+      # de wrangler.jsonc). Os termos do GitHub Pages proíbem lojas; enquanto o
+      # domínio não passa para o Worker, publica-se nos dois sítios, e o
+      # GitHub Pages desliga-se depois. Precisa do segredo
+      # CLOUDFLARE_API_TOKEN (modelo «Edit Cloudflare Workers», criado pelo
+      # dono da conta) e da variável CLOUDFLARE_ACCOUNT_ID; sem o segredo,
+      # este passo não corre e nada falha.
+      - name: Publish on Cloudflare
+        if: env.TEM_CLOUDFLARE == 'true'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ vars.CLOUDFLARE_ACCOUNT_ID }}
+          wranglerVersion: '4.141.0'
+          command: deploy
 
   deploy:
     needs: build
