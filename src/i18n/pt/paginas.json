@@ -32,7 +32,7 @@
   "faq.prazo": "Quanto tempo demora?",
   "faq.prazo.resposta": "<p>Um candeeiro em stock sai da oficina em {dias}. Se estiver sem stock, pode encomendá-lo na mesma: fazemos o seu, e chega até si em {semanas}. A página de cada produto diz qual é o caso.</p> <p>As peças da cathelier são sempre feitas por encomenda — {semanas}, a contar do dia em que aprova o desenho. Se alguma peça da encomenda for feita por encomenda, segue tudo junto.</p>",
   "faq.nome": "Pode levar um nome?",
-  "faq.nome.resposta": "<p>Sim, em qualquer peça, e sem custo extra. Escreva-o na caixa da gravação, na página do produto — um nome, uma data ou uma frase curta.</p> <p>Uma coisa a saber: uma peça com um nome é feita só para si, por isso não pode ser devolvida ao abrigo da regra dos 14 dias. Escolher uma cor que já oferecemos não é personalização e não afeta o seu direito de livre resolução.</p>",
+  "faq.nome.resposta": "<p>Sim, em qualquer peça, e sem custo extra. Escreva-o na caixa da gravação, na página do produto — um nome, uma data ou uma frase curta.</p> <p>Uma coisa a saber: uma peça com um nome é feita só para si, por isso só pode desistir dela até começarmos a fazê-la; a partir daí, deixa de ter os 14 dias de livre resolução. Escolher uma cor que já oferecemos não é personalização e não afeta o seu direito de livre resolução.</p>",
   "faq.seguranca": "É seguro no quarto de um bebé?",
   "faq.seguranca.resposta": "<p>São candeeiros de presença decorativos, não são brinquedos. São feitos em pinho maciço com tintas de base aquosa e todas as arestas são lixadas à mão, mas não são testados como brinquedos e não devem ser dados a uma criança pequena para brincar.</p> <p>Se for para o quarto de um bebé, mantenha o cabo longe do berço. <a href=\"/care-and-safety/\">Tudo sobre cuidados e segurança</a>.</p>",
   "faq.pilhas": "Pilhas ou corrente?",
@@ -40,7 +40,7 @@
   "faq.portes": "Quanto custam os portes?",
   "faq.portes.resposta": "<p>Depende de onde estiver. <a href=\"/legal/shipping-and-returns/\">A tabela completa está aqui</a>.</p>",
   "faq.desistir": "Posso mudar de ideias?",
-  "faq.desistir.resposta": "<p>Tem {dias} dias para tudo o que não seja personalizado. <a href=\"/legal/cancellation/\">Como funciona</a>.</p>",
+  "faq.desistir.resposta": "<p>Tem {dias} dias para mudar de ideias. Numa peça personalizada, pode desistir até começarmos a fazê-la; a partir daí, deixa de ter esses dias. <a href=\"/legal/cancellation/\">Como funciona</a>.</p>",
   "faq.quantidade": "Aceitam encomendas grandes?",
   "faq.quantidade.resposta": "<p>Sim — lembranças, marcadores de lugar, ofertas de empresa, troféus de clubes. <a href=\"/cathelier/quote/\">Peça um orçamento</a> e diga-nos mais ou menos quantas.</p>",
 
@@ -187,7 +187,7 @@
   "garantia.pdf": "Abrir o aviso em PDF (A4)",
   "garantia.deslizar": "No telemóvel, deslize o aviso para o lado para o ler inteiro, ou abra-o em PDF.",
 
-  "aviso.personalizada": "Peças com nome, data ou frase são feitas só para si e não têm os {n} dias de livre resolução. A garantia legal mantém-se.",
+  "aviso.personalizada": "Peças com nome, data ou frase são feitas só para si: pode desistir delas até começarmos a fazê-las; a partir daí, deixa de ter os {n} dias de livre resolução. A garantia legal mantém-se.",
 
   "fabricante.rotulo": "Fabricante",
 
@@ -197,14 +197,17 @@
   "retratacao.encomenda": "Número da encomenda",
   "retratacao.encomendaAjuda": "Começa por IC- e está no email de confirmação da encomenda.",
   "retratacao.email": "O email que usou na compra",
-  "retratacao.emailAjuda": "É para aí que enviamos o aviso de receção.",
+  "retratacao.emailAjuda": "Enviamos o aviso de receção para o email com que fez a encomenda.",
   "retratacao.artigos": "Quais os artigos",
   "retratacao.artigosAjuda": "Deixe em branco se desiste da encomenda inteira.",
   "retratacao.confirmar": "Confirmar retratação",
   "retratacao.recebida.titulo": "Recebemos a sua retratação",
-  "retratacao.recebida.texto": "A sua retratação da encomenda {encomenda} chegou-nos a {data}, às {hora} (hora de Portugal continental).",
-  "retratacao.recebida.repetida": "Esta retratação já nos tinha chegado antes: a data e a hora são as da primeira vez.",
-  "retratacao.recebida.aviso": "Vai receber no seu email um aviso de receção, com o que nos enviou e a data e a hora.",
-  "retratacao.recebida.semAviso": "A sua retratação ficou registada, mas o aviso de receção não seguiu agora para o seu email. Vamos enviar-lho nós, por escrito, nas próximas 24 horas. Até lá, guarde esta página: tem a data e a hora.",
-  "retratacao.recebida.devolver": "Se já recebeu a encomenda, devolva as peças no prazo de {n} dias a contar de hoje: <a href=\"/legal/cancellation/\">como devolver e como recebe o dinheiro</a>."
+  "retratacao.recebida.texto": "Enviou a sua retratação da encomenda {encomenda} a {data}, às {hora} (hora de Lisboa).",
+  "retratacao.recebida.emailDiferente": "Enviámos o aviso de receção para o email com que fez a encomenda.",
+  "retratacao.repetida.titulo": "Já tínhamos recebido esta retratação",
+  "retratacao.repetida.texto": "Esta declaração de retratação da encomenda {encomenda} já nos tinha chegado: enviou-a a {data}, às {hora} (hora de Lisboa). Não a registámos outra vez.",
+  "retratacao.repetida.aviso": "O aviso de receção desta declaração já seguiu para o email com que fez a encomenda.",
+  "retratacao.recebida.aviso": "Vai receber no seu email um aviso de receção, com o que nos enviou e a data e a hora em que o enviou.",
+  "retratacao.recebida.semAviso": "A sua retratação ficou registada, mas o aviso de receção não seguiu agora por email. Vamos enviar-lho nós, por escrito, para o email com que fez a encomenda, nas próximas 24 horas. Até lá, guarde esta página: tem a data e a hora em que a enviou.",
+  "retratacao.recebida.devolver": "Se já recebeu a encomenda, devolva as peças no prazo de {n} dias a contar do dia em que enviou a retratação: <a href=\"/legal/cancellation/\">como devolver e como recebe o dinheiro</a>."
 }

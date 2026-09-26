@@ -665,7 +665,7 @@ function buildShared() {
   const blocos = {
     cancellation: pages.botaoRetratar(),
     guarantee: pages.avisoGarantia(),
-    withdraw: pages.formularioRetratacao(shop),
+    withdraw: pages.formularioRetratacao(),
   };
   for (const nome of ['terms', 'privacy', 'cancellation', 'returns-form', 'shipping-and-returns', 'identification',
     'guarantee', 'withdraw']) {

@@ -29,7 +29,7 @@ responder e um tempo razoável depois.
 **Se se retratar pelo formulário do site.** O seu nome, o número da
 encomenda, o email da compra e, se os indicar, os artigos. Usamo-los para
 tratar a retratação e para lhe enviar o aviso de receção, e guardamo-los
-durante 3 anos, como prova de quando a retratação chegou. O fundamento é o
+durante 3 anos, como prova de quando nos enviou a retratação. O fundamento é o
 contrato entre nós e a obrigação legal de acusar a receção; guardá-los depois
 é o interesse legítimo, seu e nosso, de se poder provar essa data.
 
@@ -43,8 +43,15 @@ fatura durante o tempo que a lei fiscal exige.
 nunca o vemos. Chega-nos no momento em que carrega em **Encomendar e pagar**:
 guardamos a encomenda — o seu nome, morada, telefone, contribuinte e o que
 escolheu — antes de pedir o pagamento, porque um pagamento que chega sem nada a
-que se ligar é um pagamento que ninguém consegue cumprir. Se nunca pagar, essa
-encomenda é apagada ao fim de noventa dias.
+que se ligar é um pagamento que ninguém consegue cumprir. Paga ou não, essa
+encomenda é apagada ao fim de noventa dias; depois disso ficam a fatura, se
+pagou, e o que diz o parágrafo seguinte.
+
+**Depois de pagar.** Numa compra como consumidor, guardamos durante 18 meses o
+número da encomenda, o seu nome, o seu email e o nome dos artigos, para a
+função de retratação do site funcionar durante todo o prazo em que se pode
+retratar, mesmo que a peça demore a ser feita e a chegar. O fundamento é a
+obrigação legal de ter essa função disponível e o contrato entre nós.
 
 **Se for revendedor.** A firma, o NIF, a sede e os endereços de email que nos
 deu, para poder entrar e ver os seus preços e para as suas faturas terem os
@@ -65,9 +72,10 @@ durante o tempo que a lei fiscal exige.
   nome, o que encomendou e a morada para onde vai, por isso a Resend trata de
   tudo isso pelo caminho. Os servidores deles para este domínio estão na
   Irlanda.
-- **Cloudflare**, que corre o pagamento e guarda a encomenda — tudo o que está
-  no parágrafo acima — desde o momento em que carrega em **Encomendar e pagar**
-  até ser apagada, e os registos dos nossos revendedores. A Cloudflare pode
+- **Cloudflare**, que corre o pagamento e guarda a encomenda desde o momento em
+  que carrega em **Encomendar e pagar** até ser apagada, o que fica dela para a
+  retratação, as retratações feitas no site e os registos dos nossos
+  revendedores. A Cloudflare pode
   tratar estes dados fora da União Europeia, ao abrigo das cláusulas
   contratuais-tipo da Comissão Europeia. É também por ela que saem os emails da
   loja.
@@ -80,11 +88,13 @@ publicidade.
 
 ## Durante quanto tempo
 
-As faturas guardam-se dez anos, porque a lei fiscal o exige. As encomendas que
-nunca foram pagas são apagadas ao fim de noventa dias — o suficiente para uma
-referência Multibanco ser paga com atraso e para respondermos a uma pergunta
-sobre ela, e não mais. Os emails guardam-se enquanto forem úteis e depois são
-apagados.
+As faturas guardam-se dez anos, porque a lei fiscal o exige. As encomendas,
+pagas ou não, são apagadas do sistema da loja ao fim de noventa dias — o
+suficiente para uma referência Multibanco ser paga com atraso e para
+respondermos a uma pergunta sobre ela. De uma encomenda paga por um consumidor
+ficam, durante 18 meses, o número, o nome, o email e o nome dos artigos, para a
+função de retratação; uma retratação feita no site guarda-se 3 anos. Os emails
+guardam-se enquanto forem úteis e depois são apagados.
 
 ## O que pode pedir
 

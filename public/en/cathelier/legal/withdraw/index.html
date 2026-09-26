@@ -68,7 +68,7 @@
 <section class="section">
   <div class="shell shell--narrow page-prose">
     <h1>Withdraw from the contract</h1>
-<p>If you bought as a consumer, you can cancel the purchase here, on the site, within the 14 days of your <a href="/en/cathelier/legal/cancellation/">right to cancel</a> — European law calls it withdrawal. Fill in the statement and press <strong>Confirm withdrawal</strong>: you get an acknowledgement of receipt by email, with what you sent us and the date and time we received it.</p>
+<p>If you bought as a consumer, you can cancel the purchase here, on the site, within the 14 days of your <a href="/en/cathelier/legal/cancellation/">right to cancel</a> — European law calls it withdrawal. Fill in the statement and press <strong>Confirm withdrawal</strong>: you get an acknowledgement of receipt by email, with what you sent us and the date and time you sent it (Lisbon time).</p>
 <form class="retratar" data-retratacao novalidate hidden aria-labelledby="rt-titulo">
       <h2 id="rt-titulo">Your withdrawal statement</h2>
       <div class="field">
@@ -83,7 +83,7 @@
       </div>
       <div class="field">
         <label for="rt-email">The email you ordered with</label>
-        <p class="field__help" id="rt-email-ajuda">That is where we send the acknowledgement of receipt.</p>
+        <p class="field__help" id="rt-email-ajuda">We send the acknowledgement of receipt to the email address you used for the order.</p>
         <input id="rt-email" aria-describedby="rt-email-ajuda" type="email" name="email" autocomplete="email" required maxlength="160">
       </div>
       <div class="field">
@@ -95,17 +95,20 @@
     </form>
     <p class="retratar__msg" data-retratacao-msg role="status" hidden></p>
     <div class="retratar__ok" data-retratacao-ok hidden>
-      <h2 tabindex="-1" data-retratacao-ok-titulo>We have received your withdrawal</h2>
-      <p>Your withdrawal from order <strong data-retratacao-encomenda></strong> reached us on <strong data-retratacao-data></strong> at <strong data-retratacao-hora></strong> (mainland Portugal time).</p>
-      <p data-retratacao-repetida hidden>This withdrawal had already reached us: the date and time are those of the first time.</p>
-      <p data-retratacao-com-aviso>You will get an acknowledgement of receipt by email, with what you sent us and the date and time.</p>
-      <p data-retratacao-sem-aviso hidden>Your withdrawal has been recorded, but the acknowledgement of receipt could not be emailed to you just now. We will send it to you ourselves, in writing, within the next 24 hours. Until then, keep this page: it has the date and time.</p>
-      <p>If you have already received the order, send the items back within 14 days from today: <a href="/en/cathelier/legal/cancellation/">how to return them and how you get your money back</a>.</p>
+      <h2 tabindex="-1" data-retratacao-ok-titulo data-retratacao-nova>We have received your withdrawal</h2>
+      <h2 tabindex="-1" data-retratacao-ok-titulo data-retratacao-repetida hidden>We had already received this withdrawal</h2>
+      <p data-retratacao-nova>You sent your withdrawal from order <strong data-retratacao-encomenda></strong> on <strong data-retratacao-data></strong> at <strong data-retratacao-hora></strong> (Lisbon time).</p>
+      <p data-retratacao-repetida hidden>This withdrawal statement for order <strong data-retratacao-encomenda></strong> had already reached us: you sent it on <strong data-retratacao-data></strong> at <strong data-retratacao-hora></strong> (Lisbon time). We have not recorded it again.</p>
+      <p data-retratacao-com-aviso hidden>You will get an acknowledgement of receipt by email, with what you sent us and the date and time you sent it.</p>
+      <p data-retratacao-email-diferente hidden>We have sent the acknowledgement to the email address you used for the order.</p>
+      <p data-retratacao-aviso-antigo hidden>The acknowledgement of receipt for this statement has already been sent to the email address you used for the order.</p>
+      <p data-retratacao-sem-aviso hidden>Your withdrawal has been recorded, but the acknowledgement of receipt could not be emailed just now. We will send it to you ourselves, in writing, to the email address you used for the order, within the next 24 hours. Until then, keep this page: it has the date and time you sent it.</p>
+      <p>If you have already received the order, send the items back within 14 days of the day you sent your withdrawal: <a href="/en/cathelier/legal/cancellation/">how to return them and how you get your money back</a>.</p>
     </div>
 <h2>By email, if you prefer</h2>
 <p>You can also withdraw by email. Write to <a href="mailto:ithos@outlook.pt">ithos@outlook.pt</a> with your name, the order number (it starts with IC- and is in your confirmation email), the email you ordered with and, if you are not cancelling the whole order, which items. If the form does not appear on this page, use email: it has the same effect. If you like, copy the <a href="/en/cathelier/legal/returns-form/">cancellation form</a> into your email.</p>
 <h2>What counts</h2>
-<p>What counts is the date you send us your decision: if you send it before the period ends, you have withdrawn in time (article 11 of Decree-Law 24/2014). Personalised pieces do not have this right — see <a href="/en/cathelier/legal/cancellation/">what cannot be cancelled</a>.</p>
+<p>What counts is the date you send us your decision: if you send it before the period ends, you have withdrawn in time (article 11 of Decree-Law 24/2014). For a personalised piece, you can withdraw until we start making it; from then on, this right no longer applies — see <a href="/en/cathelier/legal/cancellation/">what cannot be cancelled</a>.</p>
 <p>We use what you write only to deal with your withdrawal and to send you the acknowledgement of receipt. See <a href="/en/cathelier/legal/privacy/">privacy</a>.</p>
   </div>
 </section>
@@ -207,7 +210,7 @@
      for by name: at 375x812 it covered the second row of lamps, so a
      first-time visitor saw two instead of the four she asked for. -->
 
-<script src="/assets/textos.en.029ec1d4be.js" defer></script>
-<script src="/assets/shop.8231a307d4.js" defer></script>
+<script src="/assets/textos.en.3d9f026937.js" defer></script>
+<script src="/assets/shop.72ba735d6f.js" defer></script>
 </body>
 </html>

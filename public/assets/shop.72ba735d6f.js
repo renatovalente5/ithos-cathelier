@@ -1050,10 +1050,21 @@ async function paginaRevenda() {
  * enviar: sem isso, o texto da página explica como fazer o mesmo por email.
  *
  * O CONTRATO COM O WORKER: POST /retratacao com {nome, encomenda, email,
- * artigos, lingua}; responde 200 {ok: true, recebido: <data ISO>} ou 4xx
- * {error}. A data e a hora que se mostram são as do servidor (`recebido`) --
- * são elas que ficam no aviso de receção, e o relógio de um telemóvel pode
- * estar horas ao lado.
+ * artigos, lingua}; responde 4xx {error} ou
+ *   200 {ok: true, recebidoEm: <ISO>, aviso: <bool>, repetido: <bool>,
+ *        emailDiferente: <bool>}
+ * (um Worker anterior manda a data em `recebido`, e lê-se na mesma).
+ *   · A data e a hora que se mostram são as do servidor -- são elas que ficam
+ *     no aviso de receção, e o relógio de um telemóvel pode estar horas ao
+ *     lado. Dizem-se como a hora em que a pessoa ENVIOU, em hora de Lisboa.
+ *   · `repetido: true` só quando ESTA declaração, igual (nome, email e
+ *     artigos), já tinha chegado: `recebidoEm` é então a da primeira, não sai
+ *     email novo, e a página não o promete. Uma declaração DIFERENTE para a
+ *     mesma encomenda (outros artigos) é nova, e tem o sucesso de sempre.
+ *   · `emailDiferente: true` quando o email escrito não é o da encomenda: o
+ *     Worker grava na mesma e manda o aviso para o email DA ENCOMENDA -- a
+ *     página diz isso, e não que o aviso vai para o que se escreveu.
+ *   · `aviso: false` quando gravou mas o email ao comprador não saiu.
  *
  * `aria-disabled` e não `disabled` enquanto envia: desactivar o botão em que
  * se acabou de carregar tira-lhe o foco, e quem usa teclado ou leitor de ecrã
@@ -1108,35 +1119,46 @@ function retratacao() {
       });
       const j = await r.json().catch(() => ({}));
       if (r.ok && j.ok) {
-        const quando = new Date(j.recebido);
+        const quando = new Date(j.recebidoEm ?? j.recebido);
         const valida = !Number.isNaN(quando.getTime());
-        const escrever = (sel, texto) => { const el = $(sel, ok); if (el) el.textContent = texto; };
+        /* A encomenda, a data e a hora estão nas duas frases (a nova e a
+           repetida): escreve-se em todas. */
+        const escrever = (sel, texto) => { for (const el of $$(sel, ok)) el.textContent = texto; };
         escrever('[data-retratacao-encomenda]', corpo.encomenda);
         escrever('[data-retratacao-data]', valida
           ? quando.toLocaleDateString(LOCALE_DATAS, { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Lisbon' }) : '—');
         escrever('[data-retratacao-hora]', valida
           ? quando.toLocaleTimeString(LOCALE_DATAS, { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Lisbon' }) : '—');
-        /* `aviso: false` quer dizer que a retratação ficou gravada mas o
-           email ao comprador não saiu (e o Worker avisou a dona para o
-           escrever ela). Só nesse caso se troca a frase: um Worker antigo,
-           sem o campo, fica com a de sempre. */
+        /* Só `true` conta: um Worker antigo, sem os campos, fica com a
+           resposta de sempre (nova, com aviso, para o email escrito). */
+        const repetido = j.repetido === true;
         const semAviso = j.aviso === false;
-        const mostrar = (sel, sim) => { const el = $(sel, ok); if (el) el.hidden = !sim; };
-        mostrar('[data-retratacao-com-aviso]', !semAviso);
+        const emailDiferente = j.emailDiferente === true;
+        const mostrar = (sel, sim) => { for (const el of $$(sel, ok)) el.hidden = !sim; };
+        mostrar('[data-retratacao-nova]', !repetido);
+        mostrar('[data-retratacao-repetida]', repetido);
+        /* Um parágrafo sobre o aviso, e um só:
+           · não saiu -- a dona escreve-o em 24 horas (vale para as duas);
+           · repetida -- o aviso desta declaração já seguiu; nenhum novo;
+           · nova, com o email da encomenda -- «vai receber»;
+           · nova, com outro email -- foi para o da encomenda. */
         mostrar('[data-retratacao-sem-aviso]', semAviso);
-        mostrar('[data-retratacao-repetida]', j.repetido === true);
+        mostrar('[data-retratacao-aviso-antigo]', !semAviso && repetido);
+        mostrar('[data-retratacao-com-aviso]', !semAviso && !repetido && !emailDiferente);
+        mostrar('[data-retratacao-email-diferente]', !semAviso && !repetido && emailDiferente);
         dizer('');
         form.hidden = true;
         ok.hidden = false;
-        $('[data-retratacao-ok-titulo]', ok)?.focus();
+        $('[data-retratacao-ok-titulo]:not([hidden])', ok)?.focus();
         return;
       }
       /* Os códigos do Worker (POST /retratacao): bad_email, bad_reference,
          bad_items, missing_name, name_too_long, bad_body, order_not_found
-         (encomenda que não existe OU email que não bate -- o mesmo, de
-         propósito) e too_many_requests. Tudo o resto -- a origem recusada, o
-         armazém em falta, uma rota que ainda não existe -- é «envie por
-         email», que vale sempre. */
+         (só quando a encomenda não existe: um email que não bate é gravado
+         na mesma, com `emailDiferente`) e too_many_requests -- que tranca
+         minutos, não segundos. Tudo o resto -- a origem recusada, o armazém
+         em falta, uma rota que ainda não existe -- é «envie por email», que
+         vale sempre. */
       const e = String(j.error || '');
       dizer(r.status === 429 || e === 'too_many_requests' ? tj('retratacao.erroEspere')
         : e === 'bad_email' ? tj('retratacao.erroEmail')

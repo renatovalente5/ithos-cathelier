@@ -289,16 +289,16 @@
     "h": "d6943382f9d0"
   },
   "retratacao.erroEncomenda": {
-    "t": "We could not find an order with that number and that email. Check both in your confirmation email, or withdraw by email, as explained further down.",
-    "h": "74f4b300246a"
+    "t": "We could not find an order with that number. Check it in your confirmation email, or withdraw by email, as explained further down.",
+    "h": "e86d1f18af29"
   },
   "retratacao.erroArtigos": {
     "t": "The list of items is too long. Write one item per line, up to 20 lines, or leave it blank if you are withdrawing from the whole order.",
     "h": "d0c84f9ad48f"
   },
   "retratacao.erroEspere": {
-    "t": "One moment — wait a few seconds and try again.",
-    "h": "bc077b7f2b53"
+    "t": "Wait a few minutes and try again, or withdraw by email: what counts is the date you send it.",
+    "h": "2c86b5d7344e"
   },
   "retratacao.erroGenerico": {
     "t": "We could not record your withdrawal just now. Send it by email instead, as explained further down: the date you send it is what counts.",

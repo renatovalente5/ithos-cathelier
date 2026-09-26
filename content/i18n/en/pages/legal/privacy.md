@@ -1,4 +1,4 @@
-<!-- origem: cef497b41e9f partes: f64f1fa9ac8a 28df60905360 9b5ed8bfe814 01c6a2af1e5a 710f43d769a6 28179edd1558 c02bf8b6ba04 -->
+<!-- origem: 348a11725e3f partes: f64f1fa9ac8a 28df60905360 9b5ed8bfe814 892c93a5afb1 bd61e0dc0cfa 78b654f33484 c02bf8b6ba04 -->
 # Privacy
 
 ## The short version
@@ -30,7 +30,7 @@ to answer and a reasonable time afterwards.
 **If you withdraw using the form on the site.** Your name, the order number,
 the email you ordered with and, if you give them, the items. We use them to
 deal with your withdrawal and to send you the acknowledgement of receipt, and
-we keep them for 3 years, as proof of when the withdrawal reached us. The legal
+we keep them for 3 years, as proof of when you sent us the withdrawal. The legal
 basis is the contract between us and the legal obligation to acknowledge
 receipt; keeping them afterwards is the legitimate interest, yours and ours,
 in being able to prove that date.
@@ -45,8 +45,15 @@ law requires.
 never see it. It reaches us the moment you press **Order and pay**: we save the
 order — your name, address, telephone, tax number and what you chose — before we
 ask for the payment, because a payment that arrives with nothing to attach it to
-is a payment nobody can fulfil. If you never pay, that order is deleted after
-ninety days.
+is a payment nobody can fulfil. Paid or not, that order is deleted after ninety
+days; after that, what remains is the invoice, if you paid, and what the next
+paragraph describes.
+
+**After you pay.** For a consumer purchase, we keep the order number, your name,
+your email and the names of the items for 18 months, so that the withdrawal
+function on the site works for the whole period in which you can withdraw, even
+if the piece takes a while to be made and to reach you. The legal basis is the
+legal obligation to keep that function available and the contract between us.
 
 **If you are a reseller.** Your company name, NIF, registered address and the
 email addresses you gave us, so that you can sign in to see your prices and so
@@ -65,9 +72,10 @@ invoices are kept for as long as tax law requires.
 - **Resend**, to deliver our emails to you: the confirmation carries your name,
   what you ordered and the address it is going to, so Resend handles all of it
   on the way. Their servers for this domain are in Ireland.
-- **Cloudflare**, which runs the checkout and holds the order — everything in
-  the paragraph above — from the moment you press **Order and pay** until it is
-  deleted, and the records of our resellers. Cloudflare may process this data
+- **Cloudflare**, which runs the checkout and holds the order from the moment
+  you press **Order and pay** until it is deleted, what remains of it for
+  withdrawals, the withdrawals made on the site and the records of our
+  resellers. Cloudflare may process this data
   outside the European Union, under the European Commission's standard
   contractual clauses. They are also who our shop emails leave through.
 - **GitHub**, which serves these pages to your browser and therefore sees the
@@ -78,10 +86,13 @@ Nobody else. Your details are not sold, and not used to advertise at you.
 
 ## How long
 
-Invoices are kept ten years, because tax law requires it. Orders that were never
-paid are deleted after ninety days — long enough for a Multibanco reference to
-be paid late and for us to answer a question about it, and no longer. Emails are
-kept for as long as they are useful and then deleted.
+Invoices are kept ten years, because tax law requires it. Orders, paid or not,
+are deleted from the shop's system after ninety days — long enough for a
+Multibanco reference to be paid late and for us to answer a question about it.
+Of an order paid by a consumer, the number, the name, the email and the names of
+the items remain for 18 months, for the withdrawal function; a withdrawal made
+on the site is kept for 3 years. Emails are kept for as long as they are useful
+and then deleted.
 
 ## What you can ask for
 

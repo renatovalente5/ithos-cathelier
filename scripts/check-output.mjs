@@ -764,6 +764,10 @@ for (const [canonical, group] of byCanonical) {
      (Reg. (UE) 2023/988, art. 19.º al. a)) e, se a peça se personaliza, o
      aviso de que perde os catorze dias (DL 24/2014, art. 4.º n.º 1 al. p));
    · no cesto: o aviso das personalizadas e a ligação para a garantia;
+   · e esse aviso -- na ficha, no cesto e na linha dos candeeiros -- diz A
+     CIRCUNSTÂNCIA em que o direito se perde (a al. p) pede-a): pode desistir
+     «até começarmos a fazê-la». Um aviso que diga só «não têm os 14 dias»
+     contradiz as condições e o email, que deixam desistir até lá;
    · a página do aviso com o ficheiro oficial na língua dela, o texto oficial no
      alt e as duas ligações; a da retratação com o formulário inteiro. */
 {
@@ -777,11 +781,20 @@ for (const [canonical, group] of byCanonical) {
   const ROTULOS_RETRATAR = ['Retrate-se do contrato aqui', 'Withdraw from contract here'];
   const esc = (x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const ligacao = (caminho) => new RegExp(`href="${esc(BASE)}(?:/[a-z]{2})?(?:/cathelier)?${esc(caminho)}"`);
+  /* A circunstância, por língua. Uma língua nova sem ela pára aqui: é preciso
+     dizer como se escreve «até começarmos a fazê-la» nessa língua. */
+  const CIRCUNSTANCIA = { pt: /até começarmos a fazê-l[ao]s?\b/, en: /until we start making (?:it|them)\b/ };
+  const semCircunstancia = (texto, lang) => {
+    const re = CIRCUNSTANCIA[lang];
+    if (!re) return `não sei conferir a circunstância em «${lang}» -- junte-a a CIRCUNSTANCIA em scripts/check-output.mjs`;
+    return re.test(texto) ? '' : `«${texto.trim().slice(0, 90)}…» não diz até quando se pode desistir (DL 24/2014, art. 4.º n.º 1 al. p))`;
+  };
   let fichas = 0;
   for (const f of pages) {
     const html = readFileSync(f, 'utf8');
     if (/<meta name="generator" content="redirect-stub">/.test(html)) continue;
     const onde = f.slice(OUT.length) || '/';
+    const lang = (/<html lang="([a-z]{2})/.exec(html) ?? [])[1];
     const retratar = html.match(/class="foot__withdraw"><a href="([^"]*)">([^<]*)<\/a>/);
     if (!retratar) deaths.push(`${onde}: sem a ligação «retrate-se do contrato aqui» no rodapé (art. 11.º-A da Diretiva 2011/83)`);
     else {
@@ -806,13 +819,28 @@ for (const [canonical, group] of byCanonical) {
       if (personaliza(ficha[1]) && !/class="field__aviso"/.test(html)) {
         deaths.push(`${onde}: a peça personaliza-se e a ficha não avisa que perde os dias de livre resolução (DL 24/2014, art. 4.º n.º 1 al. p))`);
       }
+      for (const [, texto] of html.matchAll(/<p class="field__aviso"[^>]*>([^<]*)<\/p>/g)) {
+        const porque = semCircunstancia(texto, lang);
+        if (porque) { deaths.push(`${onde}: o aviso das personalizadas ${porque}`); break; }
+      }
+      /* A linha dos candeeiros junto ao botão («14 dias para mudar de
+         ideias…»): é a mesma informação, e diz-se da mesma maneira. */
+      const linha = html.match(/<span>[^<]*·\s*(\d+ [^<]*)<\/span>/)?.[1];
+      if (/\/lamps\//.test(onde) && linha) {
+        const porque = semCircunstancia(linha, lang);
+        if (porque) deaths.push(`${onde}: a linha da garantia ${porque}`);
+      } else if (/\/lamps\//.test(onde)) deaths.push(`${onde}: não encontrei a linha «garantia legal · dias para mudar de ideias»`);
     }
     if (/data-basket\b/.test(html) && /data-checkout-form/.test(html)) {
       if (!/data-basket-personal/.test(html)) deaths.push(`${onde}: o cesto não tem o aviso das peças personalizadas`);
+      else {
+        const texto = html.match(/<p class="basket__aviso" data-basket-personal[^>]*>([^<]*)<\/p>/)?.[1] ?? '';
+        const porque = semCircunstancia(texto, lang);
+        if (porque) deaths.push(`${onde}: o aviso das personalizadas no cesto ${porque}`);
+      }
       if (!/class="small basket__direitos"><a href="[^"]*\/legal\/guarantee\/"/.test(html)) deaths.push(`${onde}: o cesto não tem a ligação para o aviso da garantia legal`);
     }
     if (/\/legal\/guarantee\/index\.html$/.test(onde)) {
-      const lang = (/<html lang="([a-z]{2})/.exec(html) ?? [])[1];
       const img = html.match(/<img src="([^"]*\/assets\/legal\/aviso-garantia-legal-([a-z]{2})\.svg)"[^>]*alt="([^"]*)"/);
       if (!img) deaths.push(`${onde}: sem o aviso harmonizado oficial`);
       else {
@@ -829,6 +857,15 @@ for (const [canonical, group] of byCanonical) {
       }
       if (!/<button class="btn" type="submit" data-retratacao-confirmar>(?:Confirmar retratação|Confirm withdrawal)<\/button>/.test(form)) {
         deaths.push(`${onde}: o botão da retratação não diz «confirmar retratação» (art. 11.º-A n.º 3 da Diretiva 2011/83)`);
+      }
+      /* O painel de sucesso tem um bloco para cada resposta do Worker, e o
+         shop.js escolhe entre eles sem se queixar de um que falte: sem o da
+         repetida, uma declaração repetida mostrava a hora da primeira como se
+         fosse nova; sem o do email diferente, não dizia para onde foi o
+         aviso. */
+      const ok = html.match(/<div class="retratar__ok" data-retratacao-ok[\s\S]*?<\/div>/)?.[0] ?? '';
+      for (const bloco of ['nova', 'repetida', 'com-aviso', 'email-diferente', 'aviso-antigo', 'sem-aviso']) {
+        if (!new RegExp(`<p data-retratacao-${bloco}[ >]`).test(ok)) deaths.push(`${onde}: o painel da retratação não tem o bloco «${bloco}» que o shop.js mostra`);
       }
     }
   }

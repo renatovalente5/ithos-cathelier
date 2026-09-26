@@ -157,12 +157,12 @@
     "h": "7e87ee7e1d40"
   },
   "garantias.mudarDeIdeias.um": {
-    "t": "{n} day to change your mind if it isn’t engraved",
-    "h": "3e6a00bc867b"
+    "t": "{n} day to change your mind; if engraved, only until we start making it",
+    "h": "057ce52425d8"
   },
   "garantias.mudarDeIdeias.varios": {
-    "t": "{n} days to change your mind if it isn’t engraved",
-    "h": "4f0ae5dfbf79"
+    "t": "{n} days to change your mind; if engraved, only until we start making it",
+    "h": "b5570b417876"
   },
   "garantias.feitoAMao": {
     "t": "Made by hand in Castelo Branco, Portugal",

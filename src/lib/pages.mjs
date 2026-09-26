@@ -229,8 +229,28 @@ export function avisoGarantia() {
  *
  * TUDO PINTADO AQUI, como na página de pagamento: o script escolhe o bloco
  * que se mostra e escreve a data e a hora que o Worker devolveu -- a hora do
- * servidor, e não a do telemóvel de quem se retrata. */
-export function formularioRetratacao(shop) {
+ * servidor, e não a do telemóvel de quem se retrata.
+ *
+ * TRÊS RESPOSTAS DE SUCESSO, e cada uma diz só o que é verdade para ela
+ * (o contrato está no shop.js, em retratacao()):
+ *   · uma declaração nova -- também quando a encomenda já tinha outra, com
+ *     outros artigos: «Recebemos», a hora dela, e o aviso de receção;
+ *   · `repetido: true` -- ESTA declaração, igual, já tinha chegado: a data é a
+ *     da primeira, e não se promete aviso novo (não sai nenhum);
+ *   · `emailDiferente: true` -- o email escrito não é o da encomenda: o aviso
+ *     foi para o da encomenda, e a página di-lo em vez de apontar para o
+ *     email escrito.
+ * A hora diz-se sempre da mesma maneira, como no aviso de receção do Worker:
+ * a hora em que a pessoa a ENVIOU, em hora de Lisboa (art. 11.º-A n.º 4 da
+ * Diretiva 2011/83: «a data e a hora do envio»). */
+export function formularioRetratacao() {
+  /* A mesma encomenda, data e hora nas duas frases (a nova e a repetida): o
+     script escreve em todos os elementos com a marca. */
+  const quando = {
+    encomenda: '<strong data-retratacao-encomenda></strong>',
+    data: '<strong data-retratacao-data></strong>',
+    hora: '<strong data-retratacao-hora></strong>',
+  };
   const campo = (id, rotulo, input, { ajuda = '', opcional = false } = {}) => `<div class="field">
         <label for="rt-${id}">${esc(rotulo)}${opcional ? ` <span class="field__optional">${esc(t('paginas.entrega.opcional'))}</span>` : ''}</label>
         ${ajuda ? `<p class="field__help" id="rt-${id}-ajuda">${esc(ajuda)}</p>` : ''}
@@ -254,22 +274,29 @@ export function formularioRetratacao(shop) {
     </form>
     <p class="retratar__msg" data-retratacao-msg role="status" hidden></p>
     <div class="retratar__ok" data-retratacao-ok hidden>
-      <h2 tabindex="-1" data-retratacao-ok-titulo>${esc(t('paginas.retratacao.recebida.titulo'))}</h2>
-      <p>${t('paginas.retratacao.recebida.texto', {
-        encomenda: '<strong data-retratacao-encomenda></strong>',
-        data: '<strong data-retratacao-data></strong>',
-        hora: '<strong data-retratacao-hora></strong>',
-      })}</p>
-      <p data-retratacao-repetida hidden>${esc(t('paginas.retratacao.recebida.repetida'))}</p>
+      <h2 tabindex="-1" data-retratacao-ok-titulo data-retratacao-nova>${esc(t('paginas.retratacao.recebida.titulo'))}</h2>
+      <h2 tabindex="-1" data-retratacao-ok-titulo data-retratacao-repetida hidden>${esc(t('paginas.retratacao.repetida.titulo'))}</h2>
+      <p data-retratacao-nova>${t('paginas.retratacao.recebida.texto', quando)}</p>
+      <p data-retratacao-repetida hidden>${t('paginas.retratacao.repetida.texto', quando)}</p>
       ${/* O AVISO DE RECEÇÃO SÓ SE PROMETE QUANDO SAIU. O Worker responde
           `aviso: false` quando gravou a retratação mas o email ao comprador
           falhou -- e nesse caso é a dona quem o escreve (o Worker diz-lho).
           Dizer «vai receber» nessa altura era uma promessa que o código não
-          cumpre. */ ''}<p data-retratacao-com-aviso>${esc(t('paginas.retratacao.recebida.aviso'))}</p>
+          cumpre. E o aviso vai SEMPRE para o email da encomenda: quando o
+          escrito é outro, a página não aponta para ele. */ ''}<p data-retratacao-com-aviso hidden>${esc(t('paginas.retratacao.recebida.aviso'))}</p>
+      <p data-retratacao-email-diferente hidden>${esc(t('paginas.retratacao.recebida.emailDiferente'))}</p>
+      <p data-retratacao-aviso-antigo hidden>${esc(t('paginas.retratacao.repetida.aviso'))}</p>
       <p data-retratacao-sem-aviso hidden>${esc(t('paginas.retratacao.recebida.semAviso'))}</p>
-      <p>${t('paginas.retratacao.recebida.devolver', { n: shop.returns.coolingOffDays })}</p>
+      <p>${t('paginas.retratacao.recebida.devolver', { n: DIAS_PARA_DEVOLVER })}</p>
     </div>`;
 }
+
+/* O PRAZO PARA DEVOLVER AS PEÇAS DEPOIS DE SE RETRATAR É DA LEI, NÃO DA LOJA:
+   14 dias a contar da comunicação da decisão (art. 13.º n.º 1 do DL 24/2014),
+   o mesmo que o Worker põe no aviso de receção (PRAZOS_DA_LEI.devolverDias,
+   em src/messages.js). `shop.returns.coolingOffDays` é outra coisa -- o prazo
+   para desistir, que a loja pode alargar; se o alargar, este não se mexe. */
+export const DIAS_PARA_DEVOLVER = 14;
 
 /* A porta para a função de retratação, na página do direito de livre
    resolução: um botão, logo a seguir ao título, com as palavras que a

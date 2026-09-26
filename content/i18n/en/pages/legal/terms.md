@@ -1,4 +1,4 @@
-<!-- origem: 3d013c40a16d partes: 385996f20f05 95a292592920 74b642e8c44a e12484043fef d12054107dd2 48e0e2a7afa3 55b8cca956e1 c6f0fcc51021 2c4b700d06ac 8d1bbcc50936 37247a30ba8d a42c1b8e95aa -->
+<!-- origem: 886c0e7bced2 partes: 385996f20f05 95a292592920 74b642e8c44a e12484043fef d957d45cebc6 48e0e2a7afa3 55b8cca956e1 7303925a6a5e 5df13b1d4273 8d1bbcc50936 37247a30ba8d a42c1b8e95aa -->
 # Terms of sale
 
 ## Who is selling
@@ -33,10 +33,10 @@ shown. Shipping is added at checkout and shown before you pay.
 
 ## Personalised pieces
 
-Anything carrying a name, a date or words you chose is made for you alone and,
-once we have started it, **cannot be returned** under the right to cancel —
-this is the exception in article 17(c) of Decree-Law 24/2014. The legal
-guarantee still applies.
+Anything carrying a name, a date or words you chose is made for you alone. You
+can cancel a personalised piece until we start making it; from then on, **the
+right to cancel no longer applies** — this is the exception in article 17(1)(c)
+of Decree-Law 24/2014. The legal guarantee still applies.
 
 Choosing a colour we already offer is not personalisation, and does not remove
 your right to cancel.
@@ -83,15 +83,20 @@ parcel leaves the workshop.
 ## If something is wrong
 
 You have a **{{WARRANTY_YEARS}}-year legal guarantee** on everything you buy
-here. If a piece arrives damaged or stops working as it should, write to
-[{{EMAIL}}](mailto:{{EMAIL}}) with a photograph and we will repair it, replace
-it, or refund you. See also [your legal guarantee rights](/legal/guarantee/).
+here, from delivery. If a piece arrives damaged or does not match what you
+ordered, write to [{{EMAIL}}](mailto:{{EMAIL}}), ideally with a photograph. You
+can choose between repair and replacement, free of charge, unless the one you
+choose is impossible or disproportionate; and you are entitled to a price
+reduction or a refund if we do not repair or replace it, if the fault comes
+back, or if it is serious. If the fault appears within 30 days of delivery, you
+can ask straight away for a replacement or a refund (Articles 15 and 16 of
+Decree-Law No 84/2021). See also [your legal guarantee rights](/legal/guarantee/).
 
 ## Repair parts
 
 As the makers, we keep the parts needed to repair each piece available for 10
-years after the last unit of that model is sold (Article 21 of Decree-Law No
-84/2021). If it needs repairing, write to us.
+years after the last unit of that model is placed on the market (Article 21 of
+Decree-Law No 84/2021). If it needs repairing, write to us.
 
 ## Complaints and disputes
 

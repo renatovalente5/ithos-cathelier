@@ -21,8 +21,9 @@ lixada, e não volta a ficar como estava.
 ## Peças para reparação
 
 Como produtores, mantemos disponíveis as peças necessárias para reparar cada
-peça durante 10 anos depois de vendermos a última unidade desse modelo (artigo
-21.º do Decreto-Lei n.º 84/2021). Se precisar de reparação, escreva-nos.
+peça durante 10 anos depois de a última unidade desse modelo ser colocada no
+mercado (artigo 21.º do Decreto-Lei n.º 84/2021). Se precisar de reparação,
+escreva-nos.
 
 ## Pilhas
 

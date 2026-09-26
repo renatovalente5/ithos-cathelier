@@ -18,10 +18,11 @@ acabar, desistiu a tempo (artigo 11.º do Decreto-Lei n.º 24/2014).
 
 ## O que não se pode devolver
 
-**Peças personalizadas.** Tudo o que é feito segundo as suas indicações ou
-claramente destinado só a si — um nome, uma data, as suas palavras gravadas —
-não pode ser devolvido depois de começarmos a fazê-lo. É a alínea c) do artigo
-17.º do Decreto-Lei n.º 24/2014. A garantia legal mantém-se.
+**Peças personalizadas.** Pode desistir de tudo o que é feito segundo as suas
+indicações ou claramente destinado só a si — um nome, uma data, as suas
+palavras gravadas — até começarmos a fazê-lo. A partir daí, deixa de ter o
+direito de livre resolução e a peça não pode ser devolvida: é a alínea c) do
+n.º 1 do artigo 17.º do Decreto-Lei n.º 24/2014. A garantia legal mantém-se.
 
 Escolher entre cores que já oferecemos **não** é personalização. Um candeeiro
 numa cor da nossa lista pode ser devolvido como qualquer outra coisa.
@@ -29,9 +30,10 @@ numa cor da nossa lista pode ser devolvido como qualquer outra coisa.
 ## Devolver a peça
 
 Devolva a peça no prazo de 14 dias a contar do dia em que nos disse. Os portes
-da devolução são por sua conta. Embale-a como chegou, ou melhor — é responsável
-pela perda de valor causada por um manuseamento além do necessário para ver o
-que é.
+da devolução são por sua conta. Embale-a como chegou, ou melhor. Só é
+responsável pela perda de valor que resulte de um manuseamento além do
+necessário para verificar a natureza, as características e o funcionamento da
+peça.
 
 ## Receber o dinheiro de volta
 

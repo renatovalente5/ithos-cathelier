@@ -33,9 +33,10 @@ indicadas. Os portes somam-se no pagamento e são mostrados antes de pagar.
 ## Peças personalizadas
 
 Tudo o que leva um nome, uma data ou palavras escolhidas por si é feito só para
-si e, depois de começado, **não pode ser devolvido** ao abrigo do direito de
-livre resolução — é a exceção da alínea c) do artigo 17.º do Decreto-Lei
-n.º 24/2014. A garantia legal mantém-se.
+si. Pode desistir de uma peça personalizada até começarmos a fazê-la; a partir
+daí, **deixa de ter o direito de livre resolução** — é a exceção da alínea c)
+do n.º 1 do artigo 17.º do Decreto-Lei n.º 24/2014. A garantia legal
+mantém-se.
 
 Escolher uma cor que já oferecemos não é personalização, e não lhe tira o
 direito de livre resolução.
@@ -84,17 +85,23 @@ começam quando a encomenda sai da oficina.
 
 ## Se alguma coisa estiver mal
 
-Tem **{{WARRANTY_YEARS}} anos de garantia legal** em tudo o que compra aqui.
-Se uma peça chegar danificada ou deixar de funcionar como deve, escreva para
-[{{EMAIL}}](mailto:{{EMAIL}}) com uma fotografia e reparamos, substituímos ou
-devolvemos o seu dinheiro. Veja também [os seus direitos de garantia
+Tem **{{WARRANTY_YEARS}} anos de garantia legal** em tudo o que compra aqui, a
+contar da entrega. Se uma peça chegar danificada ou não estiver conforme com o
+que encomendou, escreva para [{{EMAIL}}](mailto:{{EMAIL}}), de preferência com
+uma fotografia. Pode escolher entre a reparação e a substituição, sem custos,
+salvo se a que escolher for impossível ou desproporcionada; e tem direito à
+redução do preço ou ao reembolso se não repararmos nem substituirmos a peça, se
+o defeito voltar ou se for grave. Se a falta aparecer nos primeiros 30 dias
+depois da entrega, pode pedir logo a substituição ou o reembolso (artigos 15.º
+e 16.º do Decreto-Lei n.º 84/2021). Veja também [os seus direitos de garantia
 legal](/legal/guarantee/).
 
 ## Peças para reparação
 
 Como produtores, mantemos disponíveis as peças necessárias para reparar cada
-peça durante 10 anos depois de vendermos a última unidade desse modelo (artigo
-21.º do Decreto-Lei n.º 84/2021). Se precisar de reparação, escreva-nos.
+peça durante 10 anos depois de a última unidade desse modelo ser colocada no
+mercado (artigo 21.º do Decreto-Lei n.º 84/2021). Se precisar de reparação,
+escreva-nos.
 
 ## Reclamações e litígios
 

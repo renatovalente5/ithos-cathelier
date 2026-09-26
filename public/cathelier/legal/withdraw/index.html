@@ -68,7 +68,7 @@
 <section class="section">
   <div class="shell shell--narrow page-prose">
     <h1>Retratar-se do contrato</h1>
-<p>Se comprou como consumidor, pode desistir da compra aqui, no site, dentro dos 14 dias do seu <a href="/cathelier/legal/cancellation/">direito de livre resolução</a> — a lei europeia chama-lhe retratação. Preencha a declaração e carregue em <strong>Confirmar retratação</strong>: recebe por email um aviso de receção, com o que nos enviou e a data e a hora em que o recebemos.</p>
+<p>Se comprou como consumidor, pode desistir da compra aqui, no site, dentro dos 14 dias do seu <a href="/cathelier/legal/cancellation/">direito de livre resolução</a> — a lei europeia chama-lhe retratação. Preencha a declaração e carregue em <strong>Confirmar retratação</strong>: recebe por email um aviso de receção, com o que nos enviou e a data e a hora em que o enviou (hora de Lisboa).</p>
 <form class="retratar" data-retratacao novalidate hidden aria-labelledby="rt-titulo">
       <h2 id="rt-titulo">A sua declaração de retratação</h2>
       <div class="field">
@@ -83,7 +83,7 @@
       </div>
       <div class="field">
         <label for="rt-email">O email que usou na compra</label>
-        <p class="field__help" id="rt-email-ajuda">É para aí que enviamos o aviso de receção.</p>
+        <p class="field__help" id="rt-email-ajuda">Enviamos o aviso de receção para o email com que fez a encomenda.</p>
         <input id="rt-email" aria-describedby="rt-email-ajuda" type="email" name="email" autocomplete="email" required maxlength="160">
       </div>
       <div class="field">
@@ -95,17 +95,20 @@
     </form>
     <p class="retratar__msg" data-retratacao-msg role="status" hidden></p>
     <div class="retratar__ok" data-retratacao-ok hidden>
-      <h2 tabindex="-1" data-retratacao-ok-titulo>Recebemos a sua retratação</h2>
-      <p>A sua retratação da encomenda <strong data-retratacao-encomenda></strong> chegou-nos a <strong data-retratacao-data></strong>, às <strong data-retratacao-hora></strong> (hora de Portugal continental).</p>
-      <p data-retratacao-repetida hidden>Esta retratação já nos tinha chegado antes: a data e a hora são as da primeira vez.</p>
-      <p data-retratacao-com-aviso>Vai receber no seu email um aviso de receção, com o que nos enviou e a data e a hora.</p>
-      <p data-retratacao-sem-aviso hidden>A sua retratação ficou registada, mas o aviso de receção não seguiu agora para o seu email. Vamos enviar-lho nós, por escrito, nas próximas 24 horas. Até lá, guarde esta página: tem a data e a hora.</p>
-      <p>Se já recebeu a encomenda, devolva as peças no prazo de 14 dias a contar de hoje: <a href="/cathelier/legal/cancellation/">como devolver e como recebe o dinheiro</a>.</p>
+      <h2 tabindex="-1" data-retratacao-ok-titulo data-retratacao-nova>Recebemos a sua retratação</h2>
+      <h2 tabindex="-1" data-retratacao-ok-titulo data-retratacao-repetida hidden>Já tínhamos recebido esta retratação</h2>
+      <p data-retratacao-nova>Enviou a sua retratação da encomenda <strong data-retratacao-encomenda></strong> a <strong data-retratacao-data></strong>, às <strong data-retratacao-hora></strong> (hora de Lisboa).</p>
+      <p data-retratacao-repetida hidden>Esta declaração de retratação da encomenda <strong data-retratacao-encomenda></strong> já nos tinha chegado: enviou-a a <strong data-retratacao-data></strong>, às <strong data-retratacao-hora></strong> (hora de Lisboa). Não a registámos outra vez.</p>
+      <p data-retratacao-com-aviso hidden>Vai receber no seu email um aviso de receção, com o que nos enviou e a data e a hora em que o enviou.</p>
+      <p data-retratacao-email-diferente hidden>Enviámos o aviso de receção para o email com que fez a encomenda.</p>
+      <p data-retratacao-aviso-antigo hidden>O aviso de receção desta declaração já seguiu para o email com que fez a encomenda.</p>
+      <p data-retratacao-sem-aviso hidden>A sua retratação ficou registada, mas o aviso de receção não seguiu agora por email. Vamos enviar-lho nós, por escrito, para o email com que fez a encomenda, nas próximas 24 horas. Até lá, guarde esta página: tem a data e a hora em que a enviou.</p>
+      <p>Se já recebeu a encomenda, devolva as peças no prazo de 14 dias a contar do dia em que enviou a retratação: <a href="/cathelier/legal/cancellation/">como devolver e como recebe o dinheiro</a>.</p>
     </div>
 <h2>Por email, se preferir</h2>
 <p>Também se pode retratar por email. Escreva para <a href="mailto:ithos@outlook.pt">ithos@outlook.pt</a> com o seu nome, o número da encomenda (começa por IC- e está no email de confirmação), o email que usou na compra e, se não desistir da encomenda inteira, quais os artigos. Se o formulário não aparecer nesta página, é por aí: um email tem o mesmo efeito. Se preferir, copie para o email o <a href="/cathelier/legal/returns-form/">formulário de livre resolução</a>.</p>
 <h2>O que conta</h2>
-<p>Conta a data em que nos envia a sua decisão: se a enviar antes de o prazo acabar, retratou-se a tempo (artigo 11.º do Decreto-Lei n.º 24/2014). As peças personalizadas não têm este direito — veja <a href="/cathelier/legal/cancellation/">o que não se pode devolver</a>.</p>
+<p>Conta a data em que nos envia a sua decisão: se a enviar antes de o prazo acabar, retratou-se a tempo (artigo 11.º do Decreto-Lei n.º 24/2014). Numa peça personalizada, pode retratar-se até começarmos a fazê-la; a partir daí, deixa de ter este direito — veja <a href="/cathelier/legal/cancellation/">o que não se pode devolver</a>.</p>
 <p>Usamos o que escrever só para tratar a sua retratação e para lhe enviar o aviso de receção. Veja a <a href="/cathelier/legal/privacy/">privacidade</a>.</p>
   </div>
 </section>
@@ -207,7 +210,7 @@
      for by name: at 375x812 it covered the second row of lamps, so a
      first-time visitor saw two instead of the four she asked for. -->
 
-<script src="/assets/textos.pt.918bec5712.js" defer></script>
-<script src="/assets/shop.8231a307d4.js" defer></script>
+<script src="/assets/textos.pt.c9855a61c1.js" defer></script>
+<script src="/assets/shop.72ba735d6f.js" defer></script>
 </body>
 </html>

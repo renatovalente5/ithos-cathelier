@@ -1,4 +1,4 @@
-<!-- origem: a96fa4cfd93a partes: ece0c79184c6 431615403d7d 0852c3991e85 2c4b700d06ac eab60861185f 5a507cf9eef1 a8bc5fe09332 -->
+<!-- origem: 0ed1ace3f629 partes: ece0c79184c6 431615403d7d 0852c3991e85 5df13b1d4273 eab60861185f 5a507cf9eef1 a8bc5fe09332 -->
 # Care and safety
 
 ## These are lights, not toys
@@ -22,8 +22,8 @@ sanded shut, and it will not go back the way it was.
 ## Repair parts
 
 As the makers, we keep the parts needed to repair each piece available for 10
-years after the last unit of that model is sold (Article 21 of Decree-Law No
-84/2021). If it needs repairing, write to us.
+years after the last unit of that model is placed on the market (Article 21 of
+Decree-Law No 84/2021). If it needs repairing, write to us.
 
 ## Batteries
 

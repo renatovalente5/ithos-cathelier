@@ -117,8 +117,8 @@
     "h": "d700b97d557d"
   },
   "faq.nome.resposta": {
-    "t": "<p>Yes, on anything, and it costs nothing extra. Put it in the engraving box on the product page — a name, a date, or a short phrase.</p> <p>One thing to know: a piece with a name on it is made for you alone, so it cannot be returned under the 14-day rule. Choosing a colour we already offer is not personalisation and does not affect your right to cancel.</p>",
-    "h": "d02a3a0f1f28"
+    "t": "<p>Yes, on anything, and it costs nothing extra. Put it in the engraving box on the product page — a name, a date, or a short phrase.</p> <p>One thing to know: a piece with a name on it is made for you alone, so you can only cancel it until we start making it; from then on, the 14-day right to cancel no longer applies. Choosing a colour we already offer is not personalisation and does not affect your right to cancel.</p>",
+    "h": "efb1291c26af"
   },
   "faq.seguranca": {
     "t": "Is it safe in a baby’s room?",
@@ -149,8 +149,8 @@
     "h": "11d8cc3744e8"
   },
   "faq.desistir.resposta": {
-    "t": "<p>You have {dias} days on anything that is not personalised. <a href=\"/legal/cancellation/\">How it works</a>.</p>",
-    "h": "910ac5a52cda"
+    "t": "<p>You have {dias} days to change your mind. For a personalised piece, you can cancel until we start making it; from then on, those days no longer apply. <a href=\"/legal/cancellation/\">How it works</a>.</p>",
+    "h": "a70a978b825c"
   },
   "faq.quantidade": {
     "t": "Do you take large orders?",
@@ -688,8 +688,8 @@
     "h": "8d81ec9d3150"
   },
   "aviso.personalizada": {
-    "t": "Pieces with a name, date or phrase are made just for you and don’t have the {n}-day right to cancel. The legal guarantee still applies.",
-    "h": "d997ee64ee0c"
+    "t": "Pieces with a name, date or phrase are made just for you: you can cancel them until we start making them; from then on, the {n}-day right to cancel no longer applies. The legal guarantee still applies.",
+    "h": "9f9fbacfbc05"
   },
   "fabricante.rotulo": {
     "t": "Manufacturer",
@@ -721,8 +721,8 @@
     "h": "1c28a8da5403"
   },
   "retratacao.emailAjuda": {
-    "t": "That is where we send the acknowledgement of receipt.",
-    "h": "35b3e0f1927b"
+    "t": "We send the acknowledgement of receipt to the email address you used for the order.",
+    "h": "14543733ea01"
   },
   "retratacao.artigos": {
     "t": "Which items",
@@ -742,23 +742,35 @@
     "h": "e8cb6dfe2311"
   },
   "retratacao.recebida.texto": {
-    "t": "Your withdrawal from order {encomenda} reached us on {data} at {hora} (mainland Portugal time).",
-    "h": "df36c1142e6b"
+    "t": "You sent your withdrawal from order {encomenda} on {data} at {hora} (Lisbon time).",
+    "h": "26567a36955b"
   },
-  "retratacao.recebida.repetida": {
-    "t": "This withdrawal had already reached us: the date and time are those of the first time.",
-    "h": "7818bcbc4c59"
+  "retratacao.recebida.emailDiferente": {
+    "t": "We have sent the acknowledgement to the email address you used for the order.",
+    "h": "8151de33c4c0"
+  },
+  "retratacao.repetida.titulo": {
+    "t": "We had already received this withdrawal",
+    "h": "89ba487132ab"
+  },
+  "retratacao.repetida.texto": {
+    "t": "This withdrawal statement for order {encomenda} had already reached us: you sent it on {data} at {hora} (Lisbon time). We have not recorded it again.",
+    "h": "0df1c6a2a7fa"
+  },
+  "retratacao.repetida.aviso": {
+    "t": "The acknowledgement of receipt for this statement has already been sent to the email address you used for the order.",
+    "h": "4a433854bafc"
   },
   "retratacao.recebida.aviso": {
-    "t": "You will get an acknowledgement of receipt by email, with what you sent us and the date and time.",
-    "h": "fa056c4de214"
+    "t": "You will get an acknowledgement of receipt by email, with what you sent us and the date and time you sent it.",
+    "h": "524402feb090"
   },
   "retratacao.recebida.semAviso": {
-    "t": "Your withdrawal has been recorded, but the acknowledgement of receipt could not be emailed to you just now. We will send it to you ourselves, in writing, within the next 24 hours. Until then, keep this page: it has the date and time.",
-    "h": "6cf4464adfd1"
+    "t": "Your withdrawal has been recorded, but the acknowledgement of receipt could not be emailed just now. We will send it to you ourselves, in writing, to the email address you used for the order, within the next 24 hours. Until then, keep this page: it has the date and time you sent it.",
+    "h": "d6860ae2dc17"
   },
   "retratacao.recebida.devolver": {
-    "t": "If you have already received the order, send the items back within {n} days from today: <a href=\"/legal/cancellation/\">how to return them and how you get your money back</a>.",
-    "h": "933160021a6c"
+    "t": "If you have already received the order, send the items back within {n} days of the day you sent your withdrawal: <a href=\"/legal/cancellation/\">how to return them and how you get your money back</a>.",
+    "h": "45985ba47098"
   }
 }
