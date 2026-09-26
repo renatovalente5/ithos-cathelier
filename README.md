@@ -38,6 +38,7 @@ python3 scripts/cards.py --contact    # review sheets for the card crops
 python3 scripts/cards.py              # write the card masters
 python3 scripts/renditions.py         # web sizes from the masters
 python3 scripts/fonts.py              # re-download the self-hosted typefaces
+python3 scripts/share.py              # the link-preview picture, when a cover changes
 ```
 
 Fotografias juntas no painel: o Worker grava só o original; as versões web

@@ -289,7 +289,9 @@ for (const file of pages) {
      verificação de cima só lê as que começam por «/». O candeeiro da coruja
      apontou meses para um -1000 que nunca existiu (o master tem 540 px): a
      pré-visualização numa rede social e o resultado rico do Google saíam sem
-     imagem, com tudo verde. Confere-se a parte a partir de /media/. */
+     imagem, com tudo verde. Confere-se a parte a partir de /media/ -- e a
+     de /assets/: 59 páginas (a entrada, as legais, o cesto) davam como imagem
+     de partilha um /assets/share.jpg que nunca existiu. */
   const imagensDaPagina = [...html.matchAll(/<meta property="og:image" content="([^"]*)"/g)].map((m) => m[1]);
   const juntarImagens = (v) => {
     if (typeof v === 'string') imagensDaPagina.push(v);
@@ -300,7 +302,7 @@ for (const file of pages) {
     try { const j = JSON.parse(m[1]); (Array.isArray(j) ? j : [j]).forEach((x) => juntarImagens(x?.image)); } catch { /* já contado lá em cima */ }
   }
   for (const url of imagensDaPagina) {
-    const i = url.indexOf('/media/');
+    const i = ['/media/', '/assets/'].map((d) => url.indexOf(d)).filter((k) => k !== -1).sort((a, b) => a - b)[0] ?? -1;
     if (i === -1) continue;
     const alvo = url.slice(i + 1).split(/[?#]/)[0];
     if (!existsSync(join(OUT, alvo))) deaths.push(`${where}: the share image ${alvo} does not exist — social previews and search results would show none`);
