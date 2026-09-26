@@ -99,14 +99,20 @@ function pôr(obj, caminho, texto) {
  */
 export function aplicar(caminhoDoFicheiro, origem, traducao, resumir) {
   const obj = structuredClone(origem);
-  let desactualizados = 0; let emFalta = 0;
+  let desactualizados = 0; let emFalta = 0; const invalidos = [];
   for (const [caminho, texto] of campos(caminhoDoFicheiro, origem)) {
     const tr = traducao?.[caminho];
     if (!tr || typeof tr.t !== 'string' || !tr.t.trim()) { emFalta++; continue; }
+    /* Uma tradução que não bate com o português de agora -- uma ligação a
+       mais, um marcador a menos -- não entra: fica o português. Assim uma
+       página traduzida tem sempre as ligações e os marcadores da original, e
+       passa nas verificações sempre que a original passa. */
+    const porque = validar(texto, tr.t);
+    if (porque) { invalidos.push(`${caminho} (${porque})`); emFalta++; continue; }
     if (tr.h !== resumir(texto)) desactualizados++;
     pôr(obj, caminho, tr.t);
   }
-  return { obj, desactualizados, emFalta };
+  return { obj, desactualizados, emFalta, invalidos };
 }
 
 /* AS PÁGINAS TRADUZEM-SE AOS BOCADOS: o texto parte-se antes de cada título de
@@ -143,4 +149,44 @@ export function lerPaginaTraduzida(md) {
 export function escreverPaginaTraduzida({ h, texto, fixo = false, partes = [] }) {
   const cab = [`origem: ${h}`, ...(fixo ? ['fixo'] : []), ...(partes.length ? ['partes:', ...partes] : [])].join(' ');
   return `<!-- ${cab} -->\n${String(texto).replace(/\s+$/, '')}\n`;
+}
+
+/* A VALIDAÇÃO DE UMA TRADUÇÃO. O Worker corre-a antes de gravar e as guardas
+   do site voltam a corrê-la antes de publicar. */
+const todos = (re, s) => [...String(s).matchAll(re)].map((m) => m[0]).sort().join('\u0000');
+const conta = (re, s) => (String(s).match(re) ?? []).length;
+const titulos = (s) => String(s).split('\n').filter((l) => /^#{1,6} /.test(l)).map((l) => l.match(/^#+/)[0]).join(',');
+
+/**
+ * Porque é que uma tradução não serve, ou null se serve. Não julga o estilo --
+ * isso é do modelo --, só o que partiria a página: um marcador perdido, uma
+ * ligação que muda de destino, uma etiqueta a mais, um título que desaparece,
+ * uma resposta cortada a meio ou a falar de outra coisa.
+ */
+export function validar(origem, traducao, { pagina = false } = {}) {
+  if (typeof traducao !== 'string' || !traducao.trim()) return 'vazia';
+  const o = String(origem);
+  const par = (f, nome) => (f(o) === f(traducao) ? null : nome);
+  const r = par((s) => todos(/\{\{[A-Z0-9_]+\}\}/g, s), 'marcadores')
+    ?? par((s) => todos(/(?<!\{)\{[A-Za-z0-9_]+\}(?!\})/g, s), 'variáveis')
+    ?? par((s) => todos(/\]\([^)]*\)/g, s), 'ligações')
+    ?? par((s) => todos(/<\/?[A-Za-z][^>]*>/g, s), 'etiquetas')
+    ?? par((s) => conta(/\*\*/g, s), 'negrito')
+    ?? par((s) => conta(/ithos/g, s), 'marca ithos')
+    ?? par((s) => conta(/cathelier/g, s), 'marca cathelier')
+    ?? par((s) => conta(/```/g, s), 'código');
+  if (r) return r;
+  if (pagina) {
+    const p = par(titulos, 'títulos')
+      ?? par((s) => conta(/^\s*(?:[-*+]|\d+\.)\s/gm, s), 'listas')
+      ?? par((s) => conta(/^\|/gm, s), 'tabelas');
+    if (p) return p;
+  }
+  /* O tamanho só se mede em texto corrido: num nome, «Red Racer» contra «Carro
+     de corrida vermelho» é uma tradução certa com um terço do comprimento. */
+  if (o.length >= 60) {
+    const razao = traducao.length / o.length;
+    if (razao < 0.35 || razao > 2.8) return 'tamanho';
+  }
+  return null;
 }

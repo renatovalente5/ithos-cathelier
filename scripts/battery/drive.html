@@ -20,7 +20,10 @@ const PAGINAS = ['/','/lamps/','/lamps/fox/','/lamps/mushroom/',
  '/cathelier/contact/','/cathelier/legal/terms/','/cathelier/cart/',
  /* The reseller sign-in, signed out: the forms have to hold their contrast and
     their tap targets like any other page. */
- '/resellers/','/cathelier/resellers/'];
+ '/resellers/','/cathelier/resellers/',
+ /* A mesma loja noutra língua: o português vive na raiz e o inglês em /en/,
+    com a mesma moldura e o seletor de língua a mais no cabeçalho e no menu. */
+ '/en/','/en/lamps/fox/','/en/cathelier/pieces/growth-chart/','/en/cart/','/en/legal/terms/'];
 window.__resultados = {};
 const saida = document.getElementById('saida');
 const L = Number(new URLSearchParams(location.search).get('w') || 1280);

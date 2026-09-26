@@ -22,7 +22,7 @@ import { esc } from './lib/html.mjs';
 import { REDIRECTS } from './lib/redirects.mjs';
 import { stockDe, prateleiras } from './lib/prazos.mjs';
 import { t, lingua, LOCALE, LINGUAS, ORIGEM, definirLingua, linguaDaRaiz, prefixoDe, morada } from './lib/i18n.mjs';
-import { aplicar, lerPaginaTraduzida, RESUMO_TAMANHO } from './lib/traduziveis.mjs';
+import { aplicar, lerPaginaTraduzida, validar, RESUMO_TAMANHO } from './lib/traduziveis.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..');
@@ -115,8 +115,9 @@ function lerNaLingua(p) {
   const ficheiro = join(CONTENT, 'i18n', lingua(), p);
   const traducao = existsSync(ficheiro) ? JSON.parse(readFileSync(ficheiro, 'utf8')) : null;
   const r = aplicar(`content/${p}`, origem, traducao, resumir);
-  const c = (faltasDeTraducao[lingua()] ??= { desactualizados: 0, emFalta: 0 });
+  const c = (faltasDeTraducao[lingua()] ??= { desactualizados: 0, emFalta: 0, invalidos: [] });
   c.desactualizados += r.desactualizados; c.emFalta += r.emFalta;
+  c.invalidos.push(...r.invalidos.map((x) => `${p}: ${x}`));
   return r.obj;
 }
 const read = (p) => lerNaLingua(p);
@@ -579,8 +580,12 @@ const readPage = (f) => {
   if (lingua() === ORIGEM) return origem;
   const tr = join(CONTENT, 'i18n', lingua(), 'pages', f);
   const lida = existsSync(tr) ? lerPaginaTraduzida(readFileSync(tr, 'utf8')) : null;
-  const c = (faltasDeTraducao[lingua()] ??= { desactualizados: 0, emFalta: 0 });
+  const c = (faltasDeTraducao[lingua()] ??= { desactualizados: 0, emFalta: 0, invalidos: [] });
   if (!lida) { c.emFalta++; return origem; }
+  /* Como nos campos: uma página traduzida com outras ligações ou outros
+     títulos que a original não entra, e fica a original. */
+  const porque = validar(origem, lida.texto, { pagina: true });
+  if (porque) { c.emFalta++; c.invalidos.push(`pages/${f}: ${porque}`); return origem; }
   if (lida.h !== resumir(origem)) c.desactualizados++;
   return lida.texto;
 };
@@ -766,4 +771,5 @@ console.log(`  ${written.length - stubs} pages · ${lamps.length} lamps · ${pie
 console.log(`  catalogue.${cat.hash}.json (${cat.count} products)`);
 for (const [l, c] of Object.entries(faltasDeTraducao)) {
   if (c.emFalta || c.desactualizados) console.log(`  ${l}: ${c.emFalta} textos por traduzir, ${c.desactualizados} desactualizados (o Worker trata deles)`);
+  if (c.invalidos?.length) console.log(`  ${l}: ${c.invalidos.length} traduç${c.invalidos.length > 1 ? 'ões recusadas' : 'ão recusada'} (fica o português): ${c.invalidos.slice(0, 5).join('; ')}`);
 }

@@ -39,7 +39,9 @@ const placeholders = new Map();
    a pergunta «os termos dizem o que o cesto oferece?» só se responde com os
    dois lidos. */
 const oferecidos = [];
-let frasePaga = null;
+/* A frase dos termos com os métodos de pagamento, por língua (o atributo lang
+   da página): cada língua publicada diz os mesmos métodos, com os nomes dela. */
+const frasesPaga = {};
 
 /* Uniqueness is checked on pages that go into the index. In PREVIEW every page
    is noindex — so the check quietly stopped running in the exact mode the site
@@ -156,9 +158,10 @@ for (const file of pages) {
     }
     for (const m of achados) if (!oferecidos.includes(m)) oferecidos.push(m);
   }
-  if (frasePaga === null) {
-    const m = /You can pay by ([^.<]+)\./.exec(html);
-    if (m) frasePaga = m[1].trim();
+  {
+    const lang = (/<html lang="([^"]+)"/.exec(html) ?? [])[1] ?? '?';
+    const m = !(lang in frasesPaga) && /(?:You can pay by|Pode pagar por) ([^.<]+)\./.exec(html);
+    if (m) frasesPaga[lang] = m[1].trim();
   }
 
   /* OS CAMPOS ESTREITOS DO CHECKOUT ANDAM AOS PARES.
@@ -621,23 +624,24 @@ for (const [canonical, group] of byCanonical) {
    corre, acerta, e fala para o vazio. */
 /* A frase e o cesto confrontam-se aqui, quando as duas páginas já foram lidas. */
 {
-  const NOME = {
-    MB: 'Multibanco', MBWAY: 'MB WAY',
-    CCARD: 'card', GOOGLE: 'Google Pay', APPLE: 'Apple Pay',
+  const NOMES = {
+    en: { MB: 'Multibanco', MBWAY: 'MB WAY', CCARD: 'card', GOOGLE: 'Google Pay', APPLE: 'Apple Pay' },
+    'pt-PT': { MB: 'Multibanco', MBWAY: 'MB WAY', CCARD: 'cartão', GOOGLE: 'Google Pay', APPLE: 'Apple Pay' },
   };
-  const semNome = oferecidos.filter((m) => !NOME[m]);
+  const semNome = oferecidos.filter((m) => !NOMES.en[m]);
   if (semNome.length) {
     deaths.push(`o cesto oferece ${semNome.join(', ')} e não há nome para pôr na frase dos termos`);
   }
-  if (oferecidos.length && frasePaga === null) {
-    deaths.push('o cesto oferece métodos de pagamento e os termos não têm a frase «You can pay by …» '
+  if (oferecidos.length && !Object.keys(frasesPaga).length) {
+    deaths.push('o cesto oferece métodos de pagamento e os termos não têm a frase «Pode pagar por …» '
       + '— o artigo 7.º do DL 24/2014 obriga a indicá-los ao comprador');
-  } else if (oferecidos.length) {
-    const emFalta = oferecidos
-      .filter((m) => NOME[m])
-      .filter((m) => !frasePaga.toLowerCase().includes(NOME[m].toLowerCase()));
+  }
+  for (const [lang, frase] of Object.entries(frasesPaga)) {
+    const NOME = NOMES[lang];
+    if (!NOME) continue;   // uma língua sem nomes conhecidos aqui: a tradução é do Worker
+    const emFalta = oferecidos.filter((m) => NOME[m]).filter((m) => !frase.toLowerCase().includes(NOME[m].toLowerCase()));
     if (emFalta.length) {
-      deaths.push(`os termos dizem «You can pay by ${frasePaga}» mas o cesto também oferece `
+      deaths.push(`os termos (${lang}) dizem «${frase}» mas o cesto também oferece `
         + `${emFalta.map((m) => NOME[m]).join(', ')} — acertar content/settings/shop.json`);
     }
   }

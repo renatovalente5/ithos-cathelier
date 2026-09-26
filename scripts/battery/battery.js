@@ -466,7 +466,13 @@ window.__bateria = function () {
   nota(document.querySelectorAll('h1').length === 1, 'há exactamente um h1',
     String(document.querySelectorAll('h1').length));
   nota(!!document.querySelector('main#main'), 'há um <main> com âncora');
-  nota(document.documentElement.lang === 'en', 'a língua está declarada', document.documentElement.lang);
+  /* A língua é a da morada: o português na raiz, as outras no prefixo delas
+     (/en/…). Uma página inglesa que diga pt-PT lê-se em voz portuguesa. */
+  {
+    const pre = (/^\/(en|fr|de|es|it)\//.exec(location.pathname) ?? [])[1];
+    const esperada = pre ?? 'pt-PT';
+    nota(document.documentElement.lang === esperada, 'a língua está declarada, e é a da morada', `${document.documentElement.lang} (esperada ${esperada})`);
+  }
   const marca = document.documentElement.dataset.brand;
   nota(['ithos', 'cathelier'].includes(marca), 'the brand is in the HTML as served', marca);
 
