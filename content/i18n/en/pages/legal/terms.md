@@ -1,4 +1,4 @@
-<!-- origem: 89de4360be12 partes: 385996f20f05 95a292592920 044bab2972d8 e12484043fef a667075316d8 48e0e2a7afa3 55b8cca956e1 7e5ea25d34d1 8d1bbcc50936 37247a30ba8d a42c1b8e95aa -->
+<!-- origem: 3d013c40a16d partes: 385996f20f05 95a292592920 74b642e8c44a e12484043fef d12054107dd2 48e0e2a7afa3 55b8cca956e1 c6f0fcc51021 2c4b700d06ac 8d1bbcc50936 37247a30ba8d a42c1b8e95aa -->
 # Terms of sale
 
 ## Who is selling
@@ -12,10 +12,12 @@ and **cathelier** names. Ordering means accepting them.
 
 ## The pieces
 
-Everything is made by hand. That means small differences between a piece and its
-photograph: the grain of the wood, the exact tone of the paint, where a painted
-detail sits. These are not faults — they are what separates a handmade piece
-from a factory one, and they do not give a right to return for non-conformity.
+ithos lamps are cut, sanded and painted by hand; cathelier pieces are
+laser-cut and engraved, and finished by hand. So there are small differences
+between a piece and its photograph: the grain of the wood, the exact tone of
+the paint, where a painted detail sits. They are normal in a piece made this
+way. If a piece does not match what you ordered, the legal guarantee always
+applies.
 
 Measurements are approximate, to about a centimetre.
 
@@ -31,9 +33,10 @@ shown. Shipping is added at checkout and shown before you pay.
 
 ## Personalised pieces
 
-Anything carrying a name, a date or words you chose is made for you alone, and
-**cannot be returned** once we have started it — this is the exception in
-article 17(c) of Decree-Law 24/2014.
+Anything carrying a name, a date or words you chose is made for you alone and,
+once we have started it, **cannot be returned** under the right to cancel —
+this is the exception in article 17(c) of Decree-Law 24/2014. The legal
+guarantee still applies.
 
 Choosing a colour we already offer is not personalisation, and does not remove
 your right to cancel.
@@ -82,7 +85,13 @@ parcel leaves the workshop.
 You have a **{{WARRANTY_YEARS}}-year legal guarantee** on everything you buy
 here. If a piece arrives damaged or stops working as it should, write to
 [{{EMAIL}}](mailto:{{EMAIL}}) with a photograph and we will repair it, replace
-it, or refund you.
+it, or refund you. See also [your legal guarantee rights](/legal/guarantee/).
+
+## Repair parts
+
+As the makers, we keep the parts needed to repair each piece available for 10
+years after the last unit of that model is sold (Article 21 of Decree-Law No
+84/2021). If it needs repairing, write to us.
 
 ## Complaints and disputes
 

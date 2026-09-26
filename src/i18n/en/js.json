@@ -268,6 +268,46 @@
     "t": "Where the workshop is",
     "h": "f6e6dd3fff83"
   },
+  "retratacao.indisponivel": {
+    "t": "The form is not available here yet. Withdraw by email instead, as explained further down this page.",
+    "h": "301c27b21e47"
+  },
+  "retratacao.aEnviar": {
+    "t": "Sending…",
+    "h": "e10e08e20d67"
+  },
+  "retratacao.formatoEncomenda": {
+    "t": "The order number is IC- followed by 12 letters and digits, as it appears in your confirmation email.",
+    "h": "422ea7a3f4e0"
+  },
+  "retratacao.erroCampos": {
+    "t": "Please check the fields: your name, the order number (it starts with IC-) and the email you ordered with.",
+    "h": "8fea2684046e"
+  },
+  "retratacao.erroEmail": {
+    "t": "That email address does not look right. Please check it.",
+    "h": "d6943382f9d0"
+  },
+  "retratacao.erroEncomenda": {
+    "t": "We could not find an order with that number and that email. Check both in your confirmation email, or withdraw by email, as explained further down.",
+    "h": "74f4b300246a"
+  },
+  "retratacao.erroArtigos": {
+    "t": "The list of items is too long. Write one item per line, up to 20 lines, or leave it blank if you are withdrawing from the whole order.",
+    "h": "d0c84f9ad48f"
+  },
+  "retratacao.erroEspere": {
+    "t": "One moment — wait a few seconds and try again.",
+    "h": "bc077b7f2b53"
+  },
+  "retratacao.erroGenerico": {
+    "t": "We could not record your withdrawal just now. Send it by email instead, as explained further down: the date you send it is what counts.",
+    "h": "d9ac9ad8999c"
+  },
+  "retratacao.semLigacao": {
+    "t": "We could not reach the shop. Check your connection and try again, or withdraw by email, as explained further down.",
+    "h": "b2fc7f958e83"
+  },
   "cesto.erroCarregar": {
     "t": "The basket could not be loaded. Please reload the page.",
     "h": "42d1d47b7331"

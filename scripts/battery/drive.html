@@ -23,7 +23,13 @@ const PAGINAS = ['/','/lamps/','/lamps/fox/','/lamps/mushroom/',
  '/resellers/','/cathelier/resellers/',
  /* A mesma loja noutra língua: o português vive na raiz e o inglês em /en/,
     com a mesma moldura e o seletor de língua a mais no cabeçalho e no menu. */
- '/en/','/en/lamps/fox/','/en/cathelier/pieces/growth-chart/','/en/cart/','/en/legal/terms/'];
+ '/en/','/en/lamps/fox/','/en/cathelier/pieces/growth-chart/','/en/cart/','/en/legal/terms/',
+ /* As duas páginas legais de 26 set 2026: o aviso harmonizado da garantia
+    legal (o SVG oficial numa caixa que desliza no telemóvel -- a página não
+    pode rolar de lado com ele) e a função de retratação (um formulário, com os
+    alvos e o contraste de qualquer outro). */
+ '/legal/guarantee/','/legal/withdraw/','/cathelier/legal/guarantee/','/cathelier/legal/withdraw/',
+ '/en/legal/guarantee/','/en/legal/withdraw/'];
 window.__resultados = {};
 const saida = document.getElementById('saida');
 const L = Number(new URLSearchParams(location.search).get('w') || 1280);

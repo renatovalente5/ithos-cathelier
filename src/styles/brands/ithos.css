@@ -112,7 +112,8 @@
 [data-brand='ithos'] .foot__end a,
 [data-brand='ithos'] .foot__note,
 [data-brand='ithos'] .foot__cost { color: #6B4A38; }   /* 6.28:1 on the peach */
-[data-brand='ithos'] .foot__group summary { color: #3A2219; }
+[data-brand='ithos'] .foot__group summary,
+[data-brand='ithos'] .foot__withdraw a { color: #3A2219; }
 [data-brand='ithos'] .foot__social a { border-color: rgb(140 66 48 / .28); color: #6B4A38; }
 [data-brand='ithos'] .foot__social a:hover { color: var(--accent-deep); border-color: var(--accent-deep); }
 /* The word beside the three lines, in this shop's voice: spaced upper case.

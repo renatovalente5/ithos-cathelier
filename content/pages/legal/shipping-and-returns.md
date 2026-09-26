@@ -32,5 +32,6 @@ para saber como funciona e o que não abrange.
 
 ## A garantia legal
 
-Tudo tem **{{WARRANTY_YEARS}} anos de garantia**. Se uma peça deixar de ser o
-que deve ser, escreva-nos.
+Tudo tem **{{WARRANTY_YEARS}} anos de garantia legal**, a contar da entrega. Se
+uma peça deixar de ser o que deve ser, escreva-nos. Veja [os seus direitos de
+garantia legal](/legal/guarantee/).

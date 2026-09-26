@@ -1,4 +1,4 @@
-<!-- origem: 46fcf2dfe9b2 partes: d9b93824be36 4a2dcd8532c1 13aa85c49b37 5312d14b36b9 9a5ebd727f78 -->
+<!-- origem: 21ff7eae948f partes: d9b93824be36 8d0f21e51521 a2244fd9f002 5312d14b36b9 9a5ebd727f78 -->
 # Your right to cancel
 
 ## Fourteen days
@@ -7,14 +7,21 @@ If you are buying as a consumer, you may cancel within **{{COOLING_OFF_DAYS}} da
 of receiving your order, without giving any reason — this is **article 10 of
 Decree-Law 24/2014**. The period runs from the day the last item reaches you.
 
-To cancel, tell us clearly — an email to [{{EMAIL}}](mailto:{{EMAIL}}) is enough.
-There is a [form you can use]({{FORM_URL}}) if you prefer, but you do not have to.
+To cancel, tell us clearly. You can do it here on the site: click [Withdraw
+from contract here](/legal/withdraw/) — the link is also at the foot of every
+page — and you get an acknowledgement of receipt by email. Or write to
+[{{EMAIL}}](mailto:{{EMAIL}}): an email is enough. There is a [form you can
+use]({{FORM_URL}}) if you prefer, but you do not have to.
+
+What counts is the date you send us your decision: if you send it before the
+period ends, you have cancelled in time (article 11 of Decree-Law 24/2014).
 
 ## What cannot be cancelled
 
 **Personalised pieces.** Anything made to your specification or clearly meant for
 you alone — a name, a date, your words engraved into it — cannot be cancelled
 once we have started making it. This is article 17(c) of Decree-Law 24/2014.
+The legal guarantee still applies.
 
 Choosing between colours we already offer is **not** personalisation. A lamp in
 a colour from our list can be cancelled like anything else.

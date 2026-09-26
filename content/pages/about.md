@@ -29,9 +29,8 @@ muita luz, ao longo de um ou dois anos, e aquece com isso.
 ## A gravação
 
 Qualquer peça pode levar um nome, uma data ou uma frase curta gravados na
-madeira, e não custa mais nada. É a parte de que mais gostamos, e a razão por
-que a maioria destes candeeiros acaba por ficar numa família mais tempo do que
-a infância para que foram comprados.
+madeira, e não custa mais nada. É a parte de que mais gostamos, e é o que faz
+de um candeeiro o candeeiro daquela criança.
 
 ## A outra metade da oficina
 

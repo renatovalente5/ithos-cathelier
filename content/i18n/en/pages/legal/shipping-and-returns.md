@@ -1,4 +1,4 @@
-<!-- origem: 7dffcd2a4b26 partes: 549f878a8e13 0cd53194c6ae 294e55981e40 4466b93ec9a3 a6b0d512dbeb b2275478fb1b -->
+<!-- origem: 3ad6b3252b76 partes: 549f878a8e13 0cd53194c6ae 294e55981e40 4466b93ec9a3 a6b0d512dbeb 38c758d3e11b -->
 # Delivery and returns
 
 ## How long it takes
@@ -31,5 +31,6 @@ and what it does not cover.
 
 ## The legal guarantee
 
-Everything carries a **{{WARRANTY_YEARS}}-year guarantee**. If a piece stops
-being what it should be, write to us.
+Everything carries a **{{WARRANTY_YEARS}}-year legal guarantee**, from delivery.
+If a piece stops being what it should be, write to us. See [your legal
+guarantee rights](/legal/guarantee/).

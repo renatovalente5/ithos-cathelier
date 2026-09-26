@@ -7,16 +7,21 @@ Se estiver a comprar como consumidor, pode desistir da compra no prazo de
 qualquer motivo — é o **artigo 10.º do Decreto-Lei n.º 24/2014**. O prazo conta
 a partir do dia em que lhe chega o último artigo.
 
-Para desistir, diga-nos de forma clara — um email para
-[{{EMAIL}}](mailto:{{EMAIL}}) chega. Há um [formulário que pode usar]({{FORM_URL}})
-se preferir, mas não é obrigatório.
+Para desistir, diga-nos de forma clara. Pode fazê-lo aqui no site: carregue em
+[Retrate-se do contrato aqui](/legal/withdraw/) — a ligação também está no fundo
+de todas as páginas — e recebe por email um aviso de receção. Ou escreva para
+[{{EMAIL}}](mailto:{{EMAIL}}): um email chega. Há um [formulário que pode
+usar]({{FORM_URL}}) se preferir, mas não é obrigatório.
+
+Conta a data em que nos envia a sua decisão: se a enviar antes de o prazo
+acabar, desistiu a tempo (artigo 11.º do Decreto-Lei n.º 24/2014).
 
 ## O que não se pode devolver
 
 **Peças personalizadas.** Tudo o que é feito segundo as suas indicações ou
 claramente destinado só a si — um nome, uma data, as suas palavras gravadas —
 não pode ser devolvido depois de começarmos a fazê-lo. É a alínea c) do artigo
-17.º do Decreto-Lei n.º 24/2014.
+17.º do Decreto-Lei n.º 24/2014. A garantia legal mantém-se.
 
 Escolher entre cores que já oferecemos **não** é personalização. Um candeeiro
 numa cor da nossa lista pode ser devolvido como qualquer outra coisa.

@@ -26,6 +26,13 @@ encomenda, porque é o que fizemos.
 **Quando nos escreve.** O que estiver na sua mensagem, durante o tempo de
 responder e um tempo razoável depois.
 
+**Se se retratar pelo formulário do site.** O seu nome, o número da
+encomenda, o email da compra e, se os indicar, os artigos. Usamo-los para
+tratar a retratação e para lhe enviar o aviso de receção, e guardamo-los
+durante 3 anos, como prova de quando a retratação chegou. O fundamento é o
+contrato entre nós e a obrigação legal de acusar a receção; guardá-los depois
+é o interesse legítimo, seu e nosso, de se poder provar essa data.
+
 **O seu IBAN, mas só se lhe devermos dinheiro de um pagamento sem volta.** Uma
 referência Multibanco não pode ser revertida, por isso, se cancelar uma
 encomenda paga dessa forma, pedimos-lhe um IBAN para transferir o reembolso.

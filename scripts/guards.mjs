@@ -1142,6 +1142,34 @@ for (const [o, n] of esgotados) {
   }
 }
 
+/* --- o aviso harmonizado da garantia legal não se edita ------------------
+   Regulamento de Execução (UE) 2025/1960, anexo I, nota 1: nenhum elemento do
+   aviso pode ser editado. Os ficheiros em assets/legal/ são os da Comissão,
+   byte a byte, e o SHA-256 de cada um está aqui e no LEIA.md de lá. Um SVG
+   «melhorado» -- recolorido para a marca, recortado, com um logótipo -- deixa
+   de ser o aviso, e esta guarda é o que o impede de ir para o ar. */
+{
+  const { createHash } = await import('node:crypto');
+  const OFICIAIS = {
+    'aviso-garantia-legal-pt.svg': '9069bb0bc5e9f3cf655579038be5646181cc5447a25f3f8ccf2d018eacba0ac1',
+    'aviso-garantia-legal-en.svg': 'd1b4293b75637022b582b3025f789d292e1c845660a0460d855bbe523b9763f7',
+    'aviso-garantia-legal-pt.pdf': 'b145a3014984f474d9bb81c60b5a492a376e64e55695eb089f0554adaa752877',
+    'aviso-garantia-legal-en.pdf': '620b88ee6f916ca6925d6381c60848429575e32977b55d8ce56e37936dfa73be',
+  };
+  for (const [nome, sha] of Object.entries(OFICIAIS)) {
+    const f = join(ROOT, 'assets', 'legal', nome);
+    if (!existsSync(f)) { die(`assets/legal/${nome} desapareceu — é o aviso harmonizado oficial da garantia legal`); continue; }
+    const tem = createHash('sha256').update(readFileSync(f)).digest('hex');
+    if (tem !== sha) {
+      die(`assets/legal/${nome} não é o ficheiro oficial da Comissão (SHA-256 ${tem.slice(0, 12)}…, esperado ${sha.slice(0, 12)}…) — `
+        + 'o aviso não se edita (Reg. de Execução (UE) 2025/1960, anexo I, nota 1)');
+    }
+  }
+  if (!existsSync(join(ROOT, 'assets', 'legal', 'LEIA.md'))) {
+    die('assets/legal/LEIA.md desapareceu — é onde está de onde vieram os ficheiros do aviso e porque não se editam');
+  }
+}
+
 /* --- report --------------------------------------------------------------- */
 for (const w of warnings) console.warn(`  warning: ${w}`);
 if (deaths.length) {

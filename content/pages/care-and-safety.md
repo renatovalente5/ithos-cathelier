@@ -18,6 +18,12 @@ e as cores pintadas vão com ele.
 Se uma luz deixar de funcionar, escreva-nos. Não abra a peça: está colada e
 lixada, e não volta a ficar como estava.
 
+## Peças para reparação
+
+Como produtores, mantemos disponíveis as peças necessárias para reparar cada
+peça durante 10 anos depois de vendermos a última unidade desse modelo (artigo
+21.º do Decreto-Lei n.º 84/2021). Se precisar de reparação, escreva-nos.
+
 ## Pilhas
 
 As versões a pilhas levam duas pilhas AA, que não fornecemos. Tire-as se a peça
@@ -38,4 +44,5 @@ quarto de uma criança.
 
 O pinho maciço reage ao quarto onde vive. Num quarto muito seco pode abrir-se
 uma fissura fina ao longo do veio durante o inverno, e fechar-se outra vez no
-verão. É o material a comportar-se normalmente, e não é um defeito.
+verão. É o comportamento normal da madeira maciça. Se tiver dúvidas,
+escreva-nos: a garantia legal aplica-se sempre.

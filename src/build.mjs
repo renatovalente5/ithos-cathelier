@@ -292,11 +292,15 @@ function assets() {
 
   cpSync(join(HERE, 'fonts'), join(OUT, 'assets', 'fonts'), { recursive: true });
   cpSync(join(ROOT, 'assets', 'brand'), join(OUT, 'assets'), { recursive: true });
+  /* O aviso harmonizado da garantia legal, nos ficheiros oficiais da Comissão
+     (SVG a cores e o PDF A4), para a página /legal/guarantee/. Não são
+     obra-de-arte da loja e por isso não vivem em assets/brand. */
+  cpSync(join(ROOT, 'assets', 'legal'), join(OUT, 'assets', 'legal'), { recursive: true });
   /* As notas que vivem ao lado da obra-de-arte não são conteúdo do site.
      Apagam-se DEPOIS de copiar, uma a uma e pelo nome, e não com um filtro no
      `cpSync`: um filtro que recusa uma pasta deita fora a subárvore toda em
      silêncio, o que já custou caro noutro projecto. */
-  for (const nota of ['assets/pay/LEIA.md']) {
+  for (const nota of ['assets/pay/LEIA.md', 'assets/legal/LEIA.md']) {
     rmSync(join(OUT, nota), { force: true });
   }
 
@@ -489,7 +493,7 @@ function buildIthos() {
       description: p.summary,
       image: `/media/ithos/${p.photoFolder}/${p.cover}-1000.webp`,
       crumbs: [{ name: t('build.migalha.inicio'), href: '/' }, { name: t('build.migalha.candeeiros'), href: '/lamps/' }, { name: p.name }],
-      body: ithos.product({ p, all: lamps, shop }),
+      body: ithos.product({ p, all: lamps, shop, identity }),
       schema: [{
         '@context': 'https://schema.org', '@type': 'Product',
         name: t('build.candeeiro.nomeProduto', { nome: p.name }), description: p.summary,
@@ -551,7 +555,7 @@ function buildCathelier() {
       description: p.summary,
       crumbs: [{ name: 'cathelier', href: '/cathelier/' },
                { name: t('build.migalha.todasPecas'), href: '/cathelier/pieces/' }, { name: p.name }],
-      body: cath.piece({ p, all: pieces, shop, occasions }),
+      body: cath.piece({ p, all: pieces, shop, occasions, identity }),
       image: p.photoFolder && p.cover ? `/media/cathelier/${p.photoFolder}/${p.cover}-400.webp` : undefined,
       /* The 41 cathelier pieces emitted no structured data at all while the 26
          lamps did. Same shop, same basket, same law — and to a search engine
@@ -590,8 +594,8 @@ const readPage = (f) => {
   return lida.texto;
 };
 
-function prose(path, file, { brand = 'ithos', title, description, crumbs, both = false }) {
-  const html = pages.markdown(pages.fill(readPage(file), MARKERS));
+function prose(path, file, { brand = 'ithos', title, description, crumbs, both = false, bloco = '' }) {
+  const html = pages.comBloco(pages.markdown(pages.fill(readPage(file), MARKERS)), bloco);
   const body = pages.prosePage(html);
   if (both) { mirror(path, { title, description, crumbs, body }); return; }
   write(path, page({
@@ -647,10 +651,19 @@ function buildShared() {
     crumbs: [{ name: t('build.migalha.inicio'), href: '/' }, { name: t('build.migalha.cuidados') }],
     description: t('build.cuidados.descricao') });
 
-  for (const nome of ['terms', 'privacy', 'cancellation', 'returns-form', 'shipping-and-returns', 'identification']) {
+  /* Os blocos que não podem ser texto da dona: o botão da função de
+     retratação na página do direito de livre resolução, o aviso oficial da
+     garantia legal e o formulário de retratação (ver src/lib/pages.mjs). */
+  const blocos = {
+    cancellation: pages.botaoRetratar(),
+    guarantee: pages.avisoGarantia(),
+    withdraw: pages.formularioRetratacao(shop),
+  };
+  for (const nome of ['terms', 'privacy', 'cancellation', 'returns-form', 'shipping-and-returns', 'identification',
+    'guarantee', 'withdraw']) {
     const title = t(`build.legal.${nome}`);
     prose(`/legal/${nome}/`, `legal/${nome}.md`, { both: true, title: `${title} — ${identity.tradingName}`,
-      description: t(`build.legal.${nome}.descricao`),
+      description: t(`build.legal.${nome}.descricao`), bloco: blocos[nome],
       crumbs: [{ name: t('build.migalha.inicio'), href: '/' }, { name: title }] });
   }
 

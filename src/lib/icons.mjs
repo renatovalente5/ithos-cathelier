@@ -21,7 +21,11 @@ const D = {
   star: '<path d="m12 3.5 2.6 5.5 5.9.8-4.3 4.2 1 6-5.2-2.8L6.8 20l1-6L3.5 9.8l5.9-.8Z"/>',
   pin: '<path d="M12 21.5s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11Z"/><circle cx="12" cy="10.4" r="2.7"/>',
   truck: '<path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="1.8"/><circle cx="17.5" cy="18" r="1.8"/>',
-  leaf: '<path d="M20 4C9 4 4 9 4 16c0 2.5 1.5 4 1.5 4S8 14 20 4Z"/><path d="M5.5 20C9 13 13 10 18 8"/>',
+  /* A FOLHA SAIU, e não por gosto. Estava ao lado de «Pinho maciço e tintas de
+     base aquosa», e uma folha junto de um produto lê-se como selo ambiental
+     (Diretiva 2024/825; FAQ da Comissão, P2 e P5). No lugar dela, camadas:
+     diz «do que é feito» e não diz «é bom para o planeta». */
+  layers: '<path d="M12 3.5 3 8l9 4.5L21 8Z"/><path d="m3 12 9 4.5 9-4.5"/><path d="m3 16 9 4.5 9-4.5"/>',
   shield: '<path d="M12 3.2 19 6v5.5c0 4.4-3 7.6-7 9.3-4-1.7-7-4.9-7-9.3V6Z"/><path d="m9 12 2 2 4-4"/>',
   hand: '<path d="M8.5 11V5.8a1.4 1.4 0 0 1 2.8 0V11m0-.8V4.6a1.4 1.4 0 1 1 2.8 0V11m0-.6V6a1.4 1.4 0 1 1 2.8 0v8.5a6 6 0 0 1-6 6h-.7a5.5 5.5 0 0 1-4.3-2.1L3 15.5a1.5 1.5 0 0 1 2.3-1.9l1.4 1.5V7.8a1.4 1.4 0 1 1 2.8 0"/>',
   phone: '<path d="M6.5 3.5h3l1.5 4-2 1.5a12 12 0 0 0 6 6l1.5-2 4 1.5v3a2 2 0 0 1-2.2 2A17 17 0 0 1 4.5 5.7 2 2 0 0 1 6.5 3.5Z"/>',

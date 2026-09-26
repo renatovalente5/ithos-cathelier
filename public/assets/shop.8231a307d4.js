@@ -666,6 +666,7 @@ document.addEventListener('DOMContentLoaded', () => {
   avisoRevenda();
   revendaNaPagina();
   paginaRevenda();
+  retratacao();
 });
 
 /* --- checkout -------------------------------------------------------------
@@ -1040,6 +1041,117 @@ async function paginaRevenda() {
   $('[data-rv-sair]', raiz).addEventListener('click', () => { esquecerRevenda(); location.reload(); });
 
   await mostrar();
+}
+
+/* --- a função de retratação ------------------------------------------------
+ *
+ * Artigo 11.º-A da Diretiva 2011/83, pela Diretiva (UE) 2023/2673. O formulário
+ * vem escondido no HTML e só aparece aqui, quando há um Worker para onde o
+ * enviar: sem isso, o texto da página explica como fazer o mesmo por email.
+ *
+ * O CONTRATO COM O WORKER: POST /retratacao com {nome, encomenda, email,
+ * artigos, lingua}; responde 200 {ok: true, recebido: <data ISO>} ou 4xx
+ * {error}. A data e a hora que se mostram são as do servidor (`recebido`) --
+ * são elas que ficam no aviso de receção, e o relógio de um telemóvel pode
+ * estar horas ao lado.
+ *
+ * `aria-disabled` e não `disabled` enquanto envia: desactivar o botão em que
+ * se acabou de carregar tira-lhe o foco, e quem usa teclado ou leitor de ecrã
+ * fica sem saber onde está. O formulário lê-se ANTES do primeiro await --
+ * depois dele, `ev.currentTarget` já é null. */
+function retratacao() {
+  const form = $('[data-retratacao]');
+  if (!form) return;
+  const msg = $('[data-retratacao-msg]');
+  const ok = $('[data-retratacao-ok]');
+  const dizer = (texto) => { if (!msg) return; msg.textContent = texto; msg.hidden = !texto; };
+
+  if (!API) { dizer(tj('retratacao.indisponivel')); return; }
+  form.hidden = false;
+
+  const botao = $('[data-retratacao-confirmar]', form);
+  const campo = form.elements.encomenda;
+  /* O número tal como vem no email é «IC-» e doze caracteres. Aceita-se como
+     a pessoa o escrever -- em minúsculas, com espaços, sem o hífen, ou sem o
+     «IC-» -- e arruma-se antes de validar. */
+  const arrumar = () => {
+    let v = campo.value.toUpperCase().replace(/[\s.]+/g, '');
+    if (/^IC[A-Z0-9]{12}$/.test(v)) v = `IC-${v.slice(2)}`;
+    else if (/^[A-Z0-9]{12}$/.test(v)) v = `IC-${v}`;
+    campo.value = v;
+    campo.setCustomValidity(v && !/^IC-[A-Z0-9]{12}$/.test(v) ? tj('retratacao.formatoEncomenda') : '');
+  };
+  campo.addEventListener('change', arrumar);
+  campo.addEventListener('input', () => campo.setCustomValidity(''));
+
+  let aEnviar = false;
+  form.addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    if (aEnviar) return;
+    for (const el of [form.elements.nome, form.elements.email, form.elements.artigos]) el.value = el.value.trim();
+    arrumar();
+    if (!form.reportValidity()) return;
+
+    const corpo = {
+      nome: form.elements.nome.value,
+      encomenda: campo.value,
+      email: form.elements.email.value,
+      artigos: form.elements.artigos.value,
+      lingua: LINGUA || 'pt',
+    };
+    aEnviar = true;
+    botao.setAttribute('aria-disabled', 'true');
+    dizer(tj('retratacao.aEnviar'));
+    try {
+      const r = await fetch(`${API}/retratacao`, {
+        method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(corpo),
+      });
+      const j = await r.json().catch(() => ({}));
+      if (r.ok && j.ok) {
+        const quando = new Date(j.recebido);
+        const valida = !Number.isNaN(quando.getTime());
+        const escrever = (sel, texto) => { const el = $(sel, ok); if (el) el.textContent = texto; };
+        escrever('[data-retratacao-encomenda]', corpo.encomenda);
+        escrever('[data-retratacao-data]', valida
+          ? quando.toLocaleDateString(LOCALE_DATAS, { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Lisbon' }) : '—');
+        escrever('[data-retratacao-hora]', valida
+          ? quando.toLocaleTimeString(LOCALE_DATAS, { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Lisbon' }) : '—');
+        /* `aviso: false` quer dizer que a retratação ficou gravada mas o
+           email ao comprador não saiu (e o Worker avisou a dona para o
+           escrever ela). Só nesse caso se troca a frase: um Worker antigo,
+           sem o campo, fica com a de sempre. */
+        const semAviso = j.aviso === false;
+        const mostrar = (sel, sim) => { const el = $(sel, ok); if (el) el.hidden = !sim; };
+        mostrar('[data-retratacao-com-aviso]', !semAviso);
+        mostrar('[data-retratacao-sem-aviso]', semAviso);
+        mostrar('[data-retratacao-repetida]', j.repetido === true);
+        dizer('');
+        form.hidden = true;
+        ok.hidden = false;
+        $('[data-retratacao-ok-titulo]', ok)?.focus();
+        return;
+      }
+      /* Os códigos do Worker (POST /retratacao): bad_email, bad_reference,
+         bad_items, missing_name, name_too_long, bad_body, order_not_found
+         (encomenda que não existe OU email que não bate -- o mesmo, de
+         propósito) e too_many_requests. Tudo o resto -- a origem recusada, o
+         armazém em falta, uma rota que ainda não existe -- é «envie por
+         email», que vale sempre. */
+      const e = String(j.error || '');
+      dizer(r.status === 429 || e === 'too_many_requests' ? tj('retratacao.erroEspere')
+        : e === 'bad_email' ? tj('retratacao.erroEmail')
+          : e === 'bad_reference' ? tj('retratacao.formatoEncomenda')
+            : e === 'bad_items' ? tj('retratacao.erroArtigos')
+              : e === 'order_not_found' ? tj('retratacao.erroEncomenda')
+                : ['missing_name', 'name_too_long', 'bad_body'].includes(e) ? tj('retratacao.erroCampos')
+                  : tj('retratacao.erroGenerico'));
+    } catch {
+      dizer(tj('retratacao.semLigacao'));
+    } finally {
+      aEnviar = false;
+      botao.removeAttribute('aria-disabled');
+    }
+  });
 }
 
 /* --- a página onde se paga, que até aqui era da ifthenpay -----------------
@@ -1448,6 +1560,17 @@ async function basketPage() {
     const any = priced.length > 0;
     wrap.hidden = !any;
     if (empty) empty.hidden = any;
+    /* O AVISO DAS PEÇAS PERSONALIZADAS, antes do botão de encomendar: uma
+       linha com um nome, uma data ou uma frase perde os catorze dias, e a lei
+       quer isso dito antes da compra (DL 24/2014, art. 4.º n.º 1 al. p)). A
+       marca é a mesma que o Worker lê -- `personalises` na opção do catálogo
+       -- e só conta com alguma coisa escrita: um candeeiro sem gravação não é
+       personalizado. */
+    const aviso = $('[data-basket-personal]');
+    if (aviso) {
+      aviso.hidden = !priced.some(({ line }) => (cat.products[line.id]?.options || [])
+        .some((o) => o.personalises && String((line.options || {})[o.id] ?? '').trim() !== ''));
+    }
     if (!any) { vez++; prazoNoCesto = 'encomenda'; return; }
 
     linesBox.innerHTML = priced.map(({ line, p }, i) => `<div class="basket-line">

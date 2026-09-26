@@ -1,7 +1,7 @@
 import { esc, money, safeHref } from './html.mjs';
 import { icon } from './icons.mjs';
 import { prazos } from './prazos.mjs';
-import { t, tn } from './i18n.mjs';
+import { t, tn, lingua } from './i18n.mjs';
 
 /* ===========================================================================
    The pages that are prose, plus the three that are not.
@@ -23,10 +23,29 @@ import { t, tn } from './i18n.mjs';
    o põe. */
 const preco = (n) => money(n);
 
+/* A MORADA POSTAL DE QUEM VENDE, numa linha. Uma função só, porque a lei a
+   pede em dois sítios das páginas -- as páginas legais (DL 7/2004, art. 10.º,
+   pelo marcador {{ADDRESS}}) e a ficha de cada produto (Reg. (UE) 2023/988,
+   art. 19.º) -- e duas maneiras de a juntar são duas maneiras de ela divergir.
+   (O catálogo do Worker leva-a às linhas, e junta-as ele.) */
+export const enderecoDe = (i) => [i.street, [i.postcode, i.town].filter(Boolean).join(' '), i.country]
+  .filter(Boolean).join(', ');
+
+/* O FABRICANTE NA OFERTA (Reg. (UE) 2023/988, art. 19.º al. a)): nome, morada
+   postal e endereço eletrónico, em cada ficha de produto. A dona é quem faz as
+   peças e quem as vende, e os três dados saem de content/settings/identity.json
+   -- nunca escritos aqui, pela mesma razão das páginas legais: no dia em que a
+   morada mudar, muda em todo o lado ou em lado nenhum. */
+export function fabricante(identity) {
+  const i = identity;
+  return `<p class="product__maker"><strong>${esc(t('paginas.fabricante.rotulo'))}:</strong> `
+    + `${esc(i.legalName)}, ${esc(enderecoDe(i))} · `
+    + `<a href="mailto:${esc(i.email)}">${esc(i.email)}</a></p>`;
+}
+
 export function markers({ identity, shop, shipping }) {
   const i = identity;
-  const address = [i.street, [i.postcode, i.town].filter(Boolean).join(' '), i.country]
-    .filter(Boolean).join(', ');
+  const address = enderecoDe(i);
 
   const rows = shipping.zones
     .filter((z) => z.countries.some((c) => shipping.active.includes(c.slice(0, 2))))
@@ -139,6 +158,123 @@ export function markdown(src) {
   }
   return out.join('\n');
 }
+
+/* UM BLOCO DO CÓDIGO NUMA PÁGINA ESCRITA EM MARKDOWN.
+   O texto das páginas legais é da dona (content/pages/*.md, editável no
+   painel e traduzido aos bocados); o que não pode ser texto -- o aviso oficial
+   da garantia legal, o formulário de retratação, o botão que leva a ele --
+   entra aqui, antes do primeiro título de secção: a seguir ao título e à
+   introdução da página. Sem nenhum «##», fica no fim. */
+export function comBloco(html, bloco) {
+  if (!bloco) return html;
+  const i = html.indexOf('<h2');
+  return i < 0 ? `${html}\n${bloco}` : `${html.slice(0, i)}${bloco}\n${html.slice(i)}`;
+}
+
+/* --- o aviso harmonizado da garantia legal ---------------------------------
+ *
+ * O FICHEIRO É O DA COMISSÃO, TAL COMO VEM. O Regulamento de Execução (UE)
+ * 2025/1960 (anexo I, nota 1) proíbe editar qualquer elemento do aviso, e a
+ * nota 5 quer-no a cores quando é mostrado online. Os SVG e os PDF estão em
+ * assets/legal/, copiados dos arquivos oficiais sem lhes tocar (ver o LEIA.md
+ * de lá, e a guarda em scripts/guards.mjs que lhes confere o SHA-256).
+ *
+ * O TEXTO ALTERNATIVO É O TEXTO OFICIAL, palavra por palavra: o SVG tem as
+ * letras convertidas em contornos, e um leitor de ecrã não leria nada.
+ *
+ * NO TELEMÓVEL, O AVISO NÃO ENCOLHE. Uma folha A4 inteira em 343 px deixa as
+ * letras com cinco ou seis píxeis, e as orientações da Comissão pedem que se
+ * leia no tamanho em que é mostrado. Por isso fica na largura dele, numa caixa
+ * que se desloca para o lado, com o PDF oficial ao lado para quem preferir.
+ *
+ * A língua do aviso é a da página. Uma língua nova no site sem o aviso dela
+ * pára o gerador: o arquivo da Comissão traz as 24, e é só copiar o ficheiro. */
+const AVISO_GARANTIA = {
+  pt: { svg: '/assets/legal/aviso-garantia-legal-pt.svg', pdf: '/assets/legal/aviso-garantia-legal-pt.pdf' },
+  en: { svg: '/assets/legal/aviso-garantia-legal-en.svg', pdf: '/assets/legal/aviso-garantia-legal-en.pdf' },
+};
+
+export function avisoGarantia() {
+  const a = AVISO_GARANTIA[lingua()];
+  if (!a) {
+    throw new Error(`Não há aviso harmonizado da garantia legal em «${lingua()}». Copie-o do arquivo SVG `
+      + 'da Comissão para assets/legal/ e junte-o a AVISO_GARANTIA em src/lib/pages.mjs.');
+  }
+  const ligacao = `<a href="${esc(t('paginas.garantia.url'))}" rel="noopener">${esc(t('paginas.garantia.urlTexto'))}</a>`;
+  return `<figure class="aviso-garantia">
+      <div class="aviso-garantia__caixa" role="region" tabindex="0" aria-label="${esc(t('paginas.garantia.avisoRegiao'))}">
+        <img src="${a.svg}" width="595" height="842" decoding="async" alt="${esc(t('paginas.garantia.avisoAlt'))}">
+      </div>
+      <figcaption>
+        <p class="aviso-garantia__deslizar">${esc(t('paginas.garantia.deslizar'))}</p>
+        <p>${t('paginas.garantia.portal', { ligacao })}</p>
+        <p><a class="aviso-garantia__pdf" href="${a.pdf}" type="application/pdf">${esc(t('paginas.garantia.pdf'))}</a></p>
+      </figcaption>
+    </figure>`;
+}
+
+/* --- a função de retratação --------------------------------------------------
+ *
+ * Artigo 11.º-A da Diretiva 2011/83, pela Diretiva (UE) 2023/2673: numa loja
+ * online, o consumidor tem de se poder retratar por uma função própria, que
+ * pede o nome, o que identifica o contrato e o email para onde vai o aviso de
+ * receção, e que se envia com um botão «confirmar retratação». Em Portugal, o
+ * artigo 11.º n.º 4 do DL 24/2014 já obriga a acusar a receção em 24 horas,
+ * em suporte duradouro, quando o site deixa desistir por via eletrónica.
+ *
+ * O FORMULÁRIO NASCE ESCONDIDO e é o shop.js que o mostra, quando há Worker
+ * para onde o enviar. Sem JavaScript, um formulário que não vai a lado nenhum
+ * seria uma promessa falsa; o texto da página (content/pages/legal/withdraw.md)
+ * explica como fazer o mesmo por email, e isso vale sempre.
+ *
+ * TUDO PINTADO AQUI, como na página de pagamento: o script escolhe o bloco
+ * que se mostra e escreve a data e a hora que o Worker devolveu -- a hora do
+ * servidor, e não a do telemóvel de quem se retrata. */
+export function formularioRetratacao(shop) {
+  const campo = (id, rotulo, input, { ajuda = '', opcional = false } = {}) => `<div class="field">
+        <label for="rt-${id}">${esc(rotulo)}${opcional ? ` <span class="field__optional">${esc(t('paginas.entrega.opcional'))}</span>` : ''}</label>
+        ${ajuda ? `<p class="field__help" id="rt-${id}-ajuda">${esc(ajuda)}</p>` : ''}
+        ${input.replace('<input', `<input id="rt-${id}"${ajuda ? ` aria-describedby="rt-${id}-ajuda"` : ''}`)
+          .replace('<textarea', `<textarea id="rt-${id}"${ajuda ? ` aria-describedby="rt-${id}-ajuda"` : ''}`)}
+      </div>`;
+  return `<form class="retratar" data-retratacao novalidate hidden aria-labelledby="rt-titulo">
+      <h2 id="rt-titulo">${esc(t('paginas.retratacao.titulo'))}</h2>
+      ${campo('nome', t('paginas.retratacao.nome'),
+        '<input type="text" name="nome" autocomplete="name" required maxlength="120">')}
+      ${campo('encomenda', t('paginas.retratacao.encomenda'),
+        '<input type="text" name="encomenda" required maxlength="24" pattern="IC-[A-Z0-9]{12}" autocapitalize="characters" autocomplete="off" spellcheck="false" placeholder="IC-">',
+        { ajuda: t('paginas.retratacao.encomendaAjuda') })}
+      ${campo('email', t('paginas.retratacao.email'),
+        '<input type="email" name="email" autocomplete="email" required maxlength="160">',
+        { ajuda: t('paginas.retratacao.emailAjuda') })}
+      ${campo('artigos', t('paginas.retratacao.artigos'),
+        '<textarea name="artigos" rows="3" maxlength="600"></textarea>',
+        { ajuda: t('paginas.retratacao.artigosAjuda'), opcional: true })}
+      <button class="btn" type="submit" data-retratacao-confirmar>${esc(t('paginas.retratacao.confirmar'))}</button>
+    </form>
+    <p class="retratar__msg" data-retratacao-msg role="status" hidden></p>
+    <div class="retratar__ok" data-retratacao-ok hidden>
+      <h2 tabindex="-1" data-retratacao-ok-titulo>${esc(t('paginas.retratacao.recebida.titulo'))}</h2>
+      <p>${t('paginas.retratacao.recebida.texto', {
+        encomenda: '<strong data-retratacao-encomenda></strong>',
+        data: '<strong data-retratacao-data></strong>',
+        hora: '<strong data-retratacao-hora></strong>',
+      })}</p>
+      <p data-retratacao-repetida hidden>${esc(t('paginas.retratacao.recebida.repetida'))}</p>
+      ${/* O AVISO DE RECEÇÃO SÓ SE PROMETE QUANDO SAIU. O Worker responde
+          `aviso: false` quando gravou a retratação mas o email ao comprador
+          falhou -- e nesse caso é a dona quem o escreve (o Worker diz-lho).
+          Dizer «vai receber» nessa altura era uma promessa que o código não
+          cumpre. */ ''}<p data-retratacao-com-aviso>${esc(t('paginas.retratacao.recebida.aviso'))}</p>
+      <p data-retratacao-sem-aviso hidden>${esc(t('paginas.retratacao.recebida.semAviso'))}</p>
+      <p>${t('paginas.retratacao.recebida.devolver', { n: shop.returns.coolingOffDays })}</p>
+    </div>`;
+}
+
+/* A porta para a função de retratação, na página do direito de livre
+   resolução: um botão, logo a seguir ao título, com as palavras que a
+   diretiva manda usar. */
+export const botaoRetratar = () => `<p class="retratar-ja"><a class="btn" href="/legal/withdraw/">${esc(t('paginas.retratacao.ligacao'))}</a></p>`;
 
 export const prosePage = (html) => `
 <section class="section">
@@ -449,10 +585,16 @@ export function basket({ shipping, shop }) {
            O artigo 5.º n.º 4 do DL 24/2014 obriga a que o botão diga, sem
            ambiguidade, que a encomenda implica pagar. «Checkout» ou «Continuar»
            não cumprem: a sanção é o contrato não vincular o consumidor. -->
+      <!-- AS PEÇAS PERSONALIZADAS NÃO TÊM OS CATORZE DIAS, e isso tem de ser
+           dito ANTES de encomendar (DL 24/2014, art. 4.º n.º 1 al. p)). Aparece
+           só quando o cesto leva uma linha com um nome, uma data ou uma frase:
+           o script decide, pela mesma marca «personalises» que o Worker usa. -->
+      <p class="basket__aviso" data-basket-personal hidden>${esc(t('paginas.aviso.personalizada', { n: shop.returns.coolingOffDays }))}</p>
       <button class="btn btn--wide" type="submit" data-to-checkout style="margin-block-start:1.25rem">
         ${esc(t('paginas.botao.encomendarEPagar'))}</button>
       <p class="small muted" style="margin-block-start:.6rem">
         ${esc(t('paginas.cesto.ifthenpay'))}</p>
+      <p class="small basket__direitos"><a href="/legal/guarantee/">${esc(t('paginas.garantia.ligacao'))}</a></p>
     </form>
   </div>
 </section>`;

@@ -652,6 +652,138 @@ for (const [canonical, group] of byCanonical) {
   }
 }
 
+/* --- alegações ambientais genéricas ---------------------------------------
+   Diretiva (UE) 2024/825, anexo I da Diretiva 2005/29, pontos 2-A e 4-A: sem
+   certificação reconhecida, «sustentável», «ecológico», «amigo do ambiente»,
+   «verde» e companhia não vão a uma página. A lista e as excepções (frases
+   exactas, como «em verde», a cor do dinossauro) estão em
+   scripts/alegacoes-ambientais.mjs.
+   Lê-se o texto VISÍVEL -- o que está entre etiquetas, os alt, os title, os
+   aria-label, as descrições e as frases que o script escreve (data-lead-…) --
+   e não o HTML cru: um nome de classe ou de ficheiro não é uma alegação. E as
+   frases do shop.js, que chegam ao ecrã sem estarem em HTML nenhum.
+   A GUARDA TESTA-SE PRIMEIRO. Uma lista que deixou de apanhar «ecológico» diz
+   «tudo limpo» sobre qualquer site; por isso, se falhar um caso de teste,
+   morre antes de olhar para as páginas. */
+{
+  const { procurarAlegacoes, autoTeste } = await import('./alegacoes-ambientais.mjs');
+  const falhas = autoTeste();
+  if (falhas.length) {
+    deaths.push(`a guarda das alegações ambientais está partida: ${falhas.join('; ')}`);
+  } else {
+    const ent = (x) => x.replace(/&nbsp;/g, ' ').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
+      .replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&#(\d+);/g, (m, n) => String.fromCodePoint(Number(n)))
+      .replace(/&amp;/g, '&');
+    const visivel = (html) => {
+      const semLixo = html.replace(/<!--[\s\S]*?-->/g, ' ').replace(/<style[\s\S]*?<\/style>/gi, ' ')
+        .replace(/<script(?![^>]*application\/ld\+json)[\s\S]*?<\/script>/gi, ' ');
+      const atributos = [...semLixo.matchAll(/\s(?:alt|title|aria-label|placeholder|content|data-lead-[a-z-]+)="([^"]*)"/g)].map((m) => m[1]);
+      return ent([semLixo.replace(/<[^>]+>/g, ' '), ...atributos].join(' \n '));
+    };
+    const achados = [];
+    for (const f of pages) {
+      for (const a of procurarAlegacoes(visivel(readFileSync(f, 'utf8')))) {
+        achados.push(`${f.slice(OUT.length) || '/'}: «${a.palavra}» em «${a.trecho}»`);
+      }
+    }
+    const pastaAssets = join(OUT, 'assets');
+    for (const f of existsSync(pastaAssets) ? readdirSync(pastaAssets).filter((x) => /^textos\..+\.js$/.test(x)) : []) {
+      const corpo = readFileSync(join(pastaAssets, f), 'utf8');
+      let frases = [];
+      try { frases = Object.values(JSON.parse(corpo.replace(/^window\.TEXTOS=/, '').replace(/;\s*$/, ''))); }
+      catch { deaths.push(`assets/${f}: não consegui ler as frases para procurar alegações ambientais`); }
+      for (const a of procurarAlegacoes(frases.join(' \n '))) achados.push(`assets/${f}: «${a.palavra}» em «${a.trecho}»`);
+    }
+    if (achados.length) {
+      deaths.push(`${achados.length} alegação(ões) ambiental(is) genérica(s) sem certificação (Diretiva (UE) 2024/825) — `
+        + 'tirar, ou, se não for uma alegação (uma cor), juntar a frase exacta a EXCECOES em scripts/alegacoes-ambientais.mjs:\n    '
+        + achados.slice(0, 12).join('\n    '));
+    }
+  }
+}
+
+/* --- o que a lei manda estar À VISTA, página a página ----------------------
+   Promessas das páginas legais que só valem se o código as cumprir em todo o
+   lado -- e que desaparecem sem erro nenhum no dia em que alguém mexe num
+   modelo e se esquece de uma:
+   · a função de retratação, «bem visível» e «permanentemente disponível» (art.
+     11.º-A da Diretiva 2011/83, pela 2023/2673): em TODAS as páginas;
+   · a ligação para o aviso harmonizado da garantia legal, no rodapé de todas;
+   · em cada ficha: a mesma ligação, o fabricante com nome, morada e email
+     (Reg. (UE) 2023/988, art. 19.º al. a)) e, se a peça se personaliza, o
+     aviso de que perde os catorze dias (DL 24/2014, art. 4.º n.º 1 al. p));
+   · no cesto: o aviso das personalizadas e a ligação para a garantia;
+   · a página do aviso com o ficheiro oficial na língua dela, o texto oficial no
+     alt e as duas ligações; a da retratação com o formulário inteiro. */
+{
+  const BASE = (process.env.BASE_PATH || '').replace(/\/$/, '');
+  const identidade = JSON.parse(readFileSync(join(ROOT, 'content/settings/identity.json'), 'utf8'));
+  const hash = existsSync(join(OUT, 'data', 'catalogue-current.txt'))
+    ? readFileSync(join(OUT, 'data', 'catalogue-current.txt'), 'utf8').trim() : '';
+  const catalogo = hash && existsSync(join(OUT, 'data', `catalogue.${hash}.json`))
+    ? JSON.parse(readFileSync(join(OUT, 'data', `catalogue.${hash}.json`), 'utf8')) : { products: {} };
+  const personaliza = (slug) => (catalogo.products[slug]?.options || []).some((o) => o.personalises);
+  const ROTULOS_RETRATAR = ['Retrate-se do contrato aqui', 'Withdraw from contract here'];
+  const esc = (x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const ligacao = (caminho) => new RegExp(`href="${esc(BASE)}(?:/[a-z]{2})?(?:/cathelier)?${esc(caminho)}"`);
+  let fichas = 0;
+  for (const f of pages) {
+    const html = readFileSync(f, 'utf8');
+    if (/<meta name="generator" content="redirect-stub">/.test(html)) continue;
+    const onde = f.slice(OUT.length) || '/';
+    const retratar = html.match(/class="foot__withdraw"><a href="([^"]*)">([^<]*)<\/a>/);
+    if (!retratar) deaths.push(`${onde}: sem a ligação «retrate-se do contrato aqui» no rodapé (art. 11.º-A da Diretiva 2011/83)`);
+    else {
+      if (!ligacao('/legal/withdraw/').test(`href="${retratar[1]}"`)) deaths.push(`${onde}: a ligação de retratação vai para ${retratar[1]}`);
+      if (!ROTULOS_RETRATAR.includes(retratar[2])) deaths.push(`${onde}: a ligação de retratação diz «${retratar[2]}», e a diretiva manda dizer «retrate-se do contrato aqui»`);
+    }
+    const rodape = html.slice(html.indexOf('<footer'));
+    if (!ligacao('/legal/guarantee/').test(rodape)) deaths.push(`${onde}: o rodapé não tem a ligação para o aviso da garantia legal`);
+
+    const ficha = onde.match(/\/(?:lamps|pieces)\/([^/]+)\/index\.html$/);
+    if (ficha) {
+      fichas++;
+      const direitos = html.match(/class="product__rights"><a href="([^"]*)"/);
+      if (!direitos || !ligacao('/legal/guarantee/').test(`href="${direitos[1]}"`)) deaths.push(`${onde}: a ficha não tem a ligação para o aviso da garantia legal`);
+      const fab = html.match(/<p class="product__maker">([\s\S]*?)<\/p>/)?.[1] ?? '';
+      for (const campo of ['legalName', 'street', 'postcode', 'town', 'email']) {
+        if (!fab || !fab.includes(identidade[campo])) {
+          deaths.push(`${onde}: o fabricante na ficha não tem «${campo}» de identity.json (Reg. (UE) 2023/988, art. 19.º al. a))`);
+          break;
+        }
+      }
+      if (personaliza(ficha[1]) && !/class="field__aviso"/.test(html)) {
+        deaths.push(`${onde}: a peça personaliza-se e a ficha não avisa que perde os dias de livre resolução (DL 24/2014, art. 4.º n.º 1 al. p))`);
+      }
+    }
+    if (/data-basket\b/.test(html) && /data-checkout-form/.test(html)) {
+      if (!/data-basket-personal/.test(html)) deaths.push(`${onde}: o cesto não tem o aviso das peças personalizadas`);
+      if (!/class="small basket__direitos"><a href="[^"]*\/legal\/guarantee\/"/.test(html)) deaths.push(`${onde}: o cesto não tem a ligação para o aviso da garantia legal`);
+    }
+    if (/\/legal\/guarantee\/index\.html$/.test(onde)) {
+      const lang = (/<html lang="([a-z]{2})/.exec(html) ?? [])[1];
+      const img = html.match(/<img src="([^"]*\/assets\/legal\/aviso-garantia-legal-([a-z]{2})\.svg)"[^>]*alt="([^"]*)"/);
+      if (!img) deaths.push(`${onde}: sem o aviso harmonizado oficial`);
+      else {
+        if (img[2] !== lang) deaths.push(`${onde}: a página é «${lang}» e o aviso é o de «${img[2]}»`);
+        if (img[3].length < 1000) deaths.push(`${onde}: o alt do aviso tem ${img[3].length} caracteres — tem de ser o texto oficial inteiro`);
+      }
+      if (!/href="https:\/\/europa\.eu\/youreurope\/(?:garantias|guarantees)"/.test(html)) deaths.push(`${onde}: sem a ligação clicável para o portal A sua Europa`);
+      if (!/href="[^"]*\/assets\/legal\/aviso-garantia-legal-[a-z]{2}\.pdf"/.test(html)) deaths.push(`${onde}: sem a ligação para o PDF oficial do aviso`);
+    }
+    if (/\/legal\/withdraw\/index\.html$/.test(onde)) {
+      const form = html.match(/<form class="retratar" data-retratacao[\s\S]*?<\/form>/)?.[0] ?? '';
+      for (const nome of ['nome', 'encomenda', 'email']) {
+        if (!new RegExp(`name="${nome}"[^>]*required`).test(form)) deaths.push(`${onde}: o formulário de retratação não pede «${nome}»`);
+      }
+      if (!/<button class="btn" type="submit" data-retratacao-confirmar>(?:Confirmar retratação|Confirm withdrawal)<\/button>/.test(form)) {
+        deaths.push(`${onde}: o botão da retratação não diz «confirmar retratação» (art. 11.º-A n.º 3 da Diretiva 2011/83)`);
+      }
+    }
+  }
+  if (!fichas) deaths.push('não encontrei nenhuma ficha de produto para conferir o fabricante e os avisos');
+}
+
 for (const w of warnings) console.warn(`  warning: ${w}`);
 
 if (deaths.length) {

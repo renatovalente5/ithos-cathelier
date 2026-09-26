@@ -1,4 +1,4 @@
-<!-- origem: 60db93c229c5 partes: f64f1fa9ac8a 28df60905360 9b5ed8bfe814 b04f37371709 710f43d769a6 28179edd1558 c02bf8b6ba04 -->
+<!-- origem: cef497b41e9f partes: f64f1fa9ac8a 28df60905360 9b5ed8bfe814 01c6a2af1e5a 710f43d769a6 28179edd1558 c02bf8b6ba04 -->
 # Privacy
 
 ## The short version
@@ -26,6 +26,14 @@ part of the order, because it is what we made.
 
 **When you write to us.** Whatever is in your message, for as long as it takes
 to answer and a reasonable time afterwards.
+
+**If you withdraw using the form on the site.** Your name, the order number,
+the email you ordered with and, if you give them, the items. We use them to
+deal with your withdrawal and to send you the acknowledgement of receipt, and
+we keep them for 3 years, as proof of when the withdrawal reached us. The legal
+basis is the contract between us and the legal obligation to acknowledge
+receipt; keeping them afterwards is the legitimate interest, yours and ours,
+in being able to prove that date.
 
 **Your IBAN, but only if we owe you money on a payment that has no way back.**
 A Multibanco reference cannot be reversed, so if you cancel an order paid

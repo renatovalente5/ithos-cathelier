@@ -10,6 +10,8 @@ import { occasionArt } from './occasions-art.mjs';
 import { cover } from './cover.mjs';
 import { prazos } from './prazos.mjs';
 import { t, tn } from './i18n.mjs';
+import { fabricante } from './pages.mjs';
+import { brandPath } from './shell.mjs';
 
 /* As frases destas páginas estão em src/i18n/<língua>/cathelier.json e lêem-se
    com t() DENTRO das funções que desenham: o gerador escolhe a língua depois
@@ -277,7 +279,7 @@ export function all({ pieces, occasions }) {
 `;
 }
 
-export function piece({ p, all: everything, shop, occasions }) {
+export function piece({ p, all: everything, shop, occasions, identity }) {
   /* The same as ithos: the frame takes the shape of this piece's tallest
      photograph instead of a square, because a square crop of a 361x640
      Instagram still throws away 44% of it. */
@@ -340,10 +342,15 @@ export function piece({ p, all: everything, shop, occasions }) {
       ${(p.options || []).map((o) => `<div class="field">
         <label for="opt-${esc(o.id)}">${esc(o.name)}${o.required ? ` <span class="field__req">${esc(t('cathelier.ficha.obrigatorio'))}</span>` : ''}</label>
         <input id="opt-${esc(o.id)}" type="text" maxlength="${Number.isInteger(o.max) && o.max > 0 ? o.max : 60}"
-               data-option="${esc(o.id)}"${o.required ? ' required' : ''}
+               data-option="${esc(o.id)}"${o.required ? ' required' : ''}${o.personalises ? ' aria-describedby="opt-aviso-personalizada"' : ''}
                placeholder="${esc(o.example || '')}">
         <p class="field__limit">${esc(t('cathelier.ficha.limite', { n: o.max || 60 }))}</p>
       </div>`).join('\n      ')}
+      ${/* UMA PEÇA COM UM NOME NÃO TEM OS CATORZE DIAS, e diz-se aqui, junto
+          dos campos, antes de a pôr no cesto (DL 24/2014, art. 4.º n.º 1 al.
+          p)). Só nas peças que têm um campo que personaliza -- que hoje são
+          todas, mas a marca é da opção e não da loja. */ ''}${(p.options || []).some((o) => o.personalises)
+        ? `<p class="field__aviso" id="opt-aviso-personalizada">${esc(t('paginas.aviso.personalizada', { n: shop.returns.coolingOffDays }))}</p>` : ''}
 
       <div class="product__buy">
         <div class="qty" data-qty>
@@ -363,6 +370,7 @@ export function piece({ p, all: everything, shop, occasions }) {
           um dia houver FSC/PEFC, volta -- citando o certificado. */ ''}${[['shield', 'desenho'], ['hand', 'mao'], ['truck', 'envio'], ['pin', 'oficina']]
         .map(([i, k]) => `<p>${icon(i, 18)}<span>${esc(t(`cathelier.ficha.garantia.${k}`))}</span></p>`).join('\n      ')}
     </div>
+    <p class="product__rights"><a href="${brandPath('/legal/guarantee/', 'cathelier')}">${esc(t('paginas.garantia.ligacao'))}</a></p>
 
     <div class="product__text stack" style="--stack:1rem">${prose(p.text)}</div>
 
@@ -382,6 +390,8 @@ export function piece({ p, all: everything, shop, occasions }) {
     <p class="small muted" style="margin-block-start:1.25rem">
       ${t('cathelier.ficha.muitas')}
     </p>
+
+    ${fabricante(identity)}
   </div>
 </section>
 

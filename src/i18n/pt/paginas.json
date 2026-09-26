@@ -176,5 +176,35 @@
   "revenda.peca": "Peça",
   "revenda.pvp": "PVP",
   "revenda.seuPreco": "O seu preço",
-  "revenda.emStock": "Em stock"
+  "revenda.emStock": "Em stock",
+
+  "garantia.ligacao": "Os seus direitos de garantia legal",
+  "garantia.avisoAlt": "GARANTIA LEGAL. Proteção da garantia legal mínima de dois anos para os bens vendidos na União Europeia. Os consumidores podem invocar os seus direitos ao abrigo da garantia legal de conformidade, por exemplo, se os bens: não corresponderem à descrição; não funcionarem como previsto. Os vendedores são responsáveis por qualquer falta de conformidade que exista no momento em que os bens forem entregues e se manifeste no período de garantia legal. Os vendedores nessa situação estão obrigados a oferecer: reparação gratuita ou substituição gratuita; em alguns casos, redução do preço ou reembolso integral. Alguns países têm um período de garantia legal mais longo. Para os bens em segunda mão, pode aplicar-se um período mais curto, mas não inferior a um ano. Para mais informações sobre os seus direitos num determinado país, digitalize o código QR abaixo ou consulte o vendedor. europa.eu/youreurope/garantias. O que fazer se receber bens não conformes: 1. Contactar o vendedor o mais rapidamente possível para expor o problema; 2. Apresentar uma prova de compra, como um recibo, uma fatura ou um extrato bancário. Os vendedores e os produtores também podem oferecer garantias comerciais, que se aplicam independentemente da garantia legal. Por exemplo, pode ver este rótulo GARAN, que representa uma garantia comercial de durabilidade oferecida pelo produtor sem custos adicionais e cobrindo a totalidade do bem.",
+  "garantia.avisoRegiao": "O aviso harmonizado da garantia legal, da União Europeia",
+  "garantia.url": "https://europa.eu/youreurope/garantias",
+  "garantia.urlTexto": "europa.eu/youreurope/garantias",
+  "garantia.portal": "Os seus direitos em cada país da União Europeia, no portal A sua Europa: {ligacao}",
+  "garantia.pdf": "Abrir o aviso em PDF (A4)",
+  "garantia.deslizar": "No telemóvel, deslize o aviso para o lado para o ler inteiro, ou abra-o em PDF.",
+
+  "aviso.personalizada": "Peças com nome, data ou frase são feitas só para si e não têm os {n} dias de livre resolução. A garantia legal mantém-se.",
+
+  "fabricante.rotulo": "Fabricante",
+
+  "retratacao.ligacao": "Retrate-se do contrato aqui",
+  "retratacao.titulo": "A sua declaração de retratação",
+  "retratacao.nome": "O seu nome",
+  "retratacao.encomenda": "Número da encomenda",
+  "retratacao.encomendaAjuda": "Começa por IC- e está no email de confirmação da encomenda.",
+  "retratacao.email": "O email que usou na compra",
+  "retratacao.emailAjuda": "É para aí que enviamos o aviso de receção.",
+  "retratacao.artigos": "Quais os artigos",
+  "retratacao.artigosAjuda": "Deixe em branco se desiste da encomenda inteira.",
+  "retratacao.confirmar": "Confirmar retratação",
+  "retratacao.recebida.titulo": "Recebemos a sua retratação",
+  "retratacao.recebida.texto": "A sua retratação da encomenda {encomenda} chegou-nos a {data}, às {hora} (hora de Portugal continental).",
+  "retratacao.recebida.repetida": "Esta retratação já nos tinha chegado antes: a data e a hora são as da primeira vez.",
+  "retratacao.recebida.aviso": "Vai receber no seu email um aviso de receção, com o que nos enviou e a data e a hora.",
+  "retratacao.recebida.semAviso": "A sua retratação ficou registada, mas o aviso de receção não seguiu agora para o seu email. Vamos enviar-lho nós, por escrito, nas próximas 24 horas. Até lá, guarde esta página: tem a data e a hora.",
+  "retratacao.recebida.devolver": "Se já recebeu a encomenda, devolva as peças no prazo de {n} dias a contar de hoje: <a href=\"/legal/cancellation/\">como devolver e como recebe o dinheiro</a>."
 }
