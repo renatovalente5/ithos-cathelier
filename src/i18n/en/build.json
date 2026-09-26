@@ -54,5 +54,6 @@
   "naoEncontrada.descricao": "The page you were looking for has moved or never existed.",
   "stub.titulo": "{nome} — moved to the full list | cathelier",
   "stub.texto": "This page has moved. “{nome}” is now a filter on the full list of pieces.",
-  "stub.ir": "Go to “{nome}”"
+  "stub.ir": "Go to “{nome}”",
+  "euros": "€{n}"
 }

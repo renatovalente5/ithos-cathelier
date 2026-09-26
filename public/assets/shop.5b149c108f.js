@@ -17,6 +17,77 @@ const API = '';
    before the collections changed, and the one it became. */
 const FRAGMENTOS_ANTIGOS = {"mothers-day":"special-days","fathers-day":"special-days","childrens-day":"names","home":"wall-decor","awards":"custom"};
 
+/* AS FRASES VÊM DE FORA, NA LÍNGUA DA PÁGINA.
+   Este ficheiro é um só para o site todo; o que ele escreve no ecrã está em
+   window.TEXTOS, que /assets/textos.<língua>.<hash>.js enche antes dele (sai
+   de src/i18n/<língua>/js.json, e as chaves vão sem o «js.»). Uma frase que
+   falte não pode partir a loja: aparece entre colchetes, que se vê, e deixa um
+   erro na consola, que se procura -- mas o botão continua a funcionar.
+   `hasOwn` e não `TEXTOS[chave]`: o objecto herda do Object.prototype, e a
+   chave «constructor» devolvia uma função em vez de dizer que falta. */
+const frasesEmFalta = new Set();
+function tj(chave, vars) {
+  try {
+    const textos = window.TEXTOS;
+    const s = textos && typeof textos === 'object' && Object.hasOwn(textos, chave) ? textos[chave] : undefined;
+    if (typeof s !== 'string') {
+      if (!frasesEmFalta.has(chave)) {
+        frasesEmFalta.add(chave);
+        console.error(`i18n: não há a frase «${chave}» em window.TEXTOS`);
+      }
+      return `[${chave}]`;
+    }
+    return vars ? s.replace(/\{(\w+)\}/g, (m, k) => (Object.hasOwn(vars, k) ? String(vars[k]) : m)) : s;
+  } catch (e) {
+    console.error(`i18n: a frase «${chave}» não se deixou escrever`, e);
+    return `[${chave}]`;
+  }
+}
+/** Singular e plural: lê «<chave>.um» ou «<chave>.varios», com {n}. */
+const tjn = (chave, n, vars = {}) => tj(`${chave}.${n === 1 ? 'um' : 'varios'}`, { n, ...vars });
+
+/* A LÍNGUA E O PREFIXO DA PÁGINA. A língua da raiz não leva prefixo; as outras
+   vivem em /<língua>/, e o <html> di-lo em data-prefixo. As moradas de PÁGINAS
+   que este ficheiro constrói levam-no, a par do BASE; as de /media/, /data/ e
+   /assets/ não, porque são os mesmos ficheiros para todas as línguas. */
+const LINGUA = (document.documentElement.lang || '').toLowerCase().split('-')[0];
+const PREFIXO = document.documentElement.dataset.prefixo || '';
+const pagina = (caminho) => `${BASE}${PREFIXO}${caminho}`;
+/* As datas por extenso: o inglês da loja é o britânico («24 September 2026»);
+   as outras línguas usam o atributo lang tal como vem («pt-PT»). */
+const LOCALE_DATAS = LINGUA === 'en' ? 'en-GB' : (document.documentElement.lang || 'en-GB');
+
+/* A morada da página de pagamento vem do Worker, absoluta e SEM língua: o
+   Worker não sabe em que língua o comprador está. Se for uma morada deste
+   site, ganha aqui o prefixo da página; uma morada de fora -- o formulário do
+   cartão, o Pay by Link -- passa como veio. */
+function naLingua(url) {
+  if (!PREFIXO) return url;
+  try {
+    const u = new URL(url, location.href);
+    if (u.origin !== location.origin || !u.pathname.startsWith(`${BASE}/`)
+      || u.pathname.startsWith(`${BASE}${PREFIXO}/`)) return url;
+    u.pathname = `${BASE}${PREFIXO}${u.pathname.slice(BASE.length)}`;
+    return u.href;
+  } catch { return url; }
+}
+
+/* O PREÇO ESCREVE-SE COMO A LÍNGUA O ESCREVE: «€24,00» em inglês e «24,00 €»
+   em português. A vírgula decimal é a da loja nas duas; o sítio do símbolo é
+   a frase «euros» do dicionário. */
+const dinheiro = (n) => tj('euros', { n: Number(n).toFixed(2).replace('.', ',') });
+
+/* O NOME DA PEÇA NA LÍNGUA DA PÁGINA. O catálogo é um só, na língua de origem,
+   porque é dele que o Worker tira preços e nomes para os emails; os nomes nas
+   outras línguas viajam ao lado, em cat.i18n[<língua>][<slug>]. Na língua de
+   origem não há i18n, e o que falte numa tradução fica com o nome de origem. */
+const proprio = (o, k) => (o && typeof o === 'object' && Object.hasOwn(o, k) ? o[k] : undefined);
+const traducaoDe = (cat, slug) => proprio(proprio(cat?.i18n, LINGUA), slug);
+const opcaoTraduzida = (cat, slug, o) => proprio(proprio(traducaoDe(cat, slug), 'options'), o.id);
+const nomeDaPeca = (cat, slug, p) => proprio(traducaoDe(cat, slug), 'name') || p.name;
+const nomeDaOpcao = (cat, slug, o) => proprio(opcaoTraduzida(cat, slug, o), 'name') || o.name;
+const nomeDoValor = (cat, slug, o, v) => proprio(proprio(opcaoTraduzida(cat, slug, o), 'values'), v.id) || v.name;
+
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
 
@@ -103,7 +174,7 @@ async function carregarRevenda({ fresco = false } = {}) {
     });
     if (r.status === 401) {
       esquecerRevenda();
-      avisarDepois('Your reseller session has ended, so the prices shown are retail prices. Sign in again on the Resellers page to see yours.');
+      avisarDepois(tj('revenda.sessaoTerminou'));
       avisoRevenda();
       return revenda;
     }
@@ -165,7 +236,7 @@ function avisoRevenda() {
   main.prepend(nota);
 }
 
-const eurosRv = (n) => `€${n.toFixed(2).replace('.', ',')}`;
+const eurosRv = (n) => dinheiro(n);
 const escRv = (t) => String(t ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c]);
 
 /* Paints the reseller's price on every card and on the product page, and a
@@ -182,9 +253,9 @@ async function revendaNaPagina() {
     const bar = document.createElement('div');
     bar.className = 'rv-bar';
     bar.dataset.rvBar = '';
-    bar.innerHTML = `<span>Reseller prices on · <strong>${escRv(revenda.firma || revenda.nif)}</strong></span>
-      <a href="${BASE}/resellers/">Your price list</a>
-      <button type="button" data-rv-out>Sign out</button>`;
+    bar.innerHTML = `<span>${tj('revenda.barra', { firma: escRv(revenda.firma || revenda.nif) })}</span>
+      <a href="${pagina('/resellers/')}">${escRv(tj('revenda.tabela'))}</a>
+      <button type="button" data-rv-out>${escRv(tj('revenda.sair'))}</button>`;
     main.prepend(bar);
     $('[data-rv-out]', bar).addEventListener('click', () => { esquecerRevenda(); location.reload(); });
   }
@@ -201,8 +272,13 @@ async function revendaNaPagina() {
        sentence under 24 of 26 cards was noise. The product page and the price
        list say it in words. */
     if (!alvo || !d || $('.rv-price', card)) continue;
+    /* «Desde» quando o cartão o diz, e isto lê-se da FORMA do cartão e não da
+       palavra: procurar «from» no texto deixava de funcionar no dia em que o
+       cartão passasse a dizer «desde». Um candeeiro com preços diferentes
+       leva o <span class="card__from">; uma peça da cathelier diz-o sempre. */
+    const temDesde = p.brand === 'cathelier' || Boolean($('.card__from', alvo));
     alvo.insertAdjacentHTML('afterend',
-      `<p class="rv-price">Your price ${alvo.textContent.includes('from') ? 'from ' : ''}<strong>${eurosRv(low - d)}</strong> <span>−${eurosRv(d)}</span></p>`);
+      `<p class="rv-price">${tj(temDesde ? 'revenda.cartaoDesde' : 'revenda.cartao', { preco: eurosRv(low - d), desconto: eurosRv(d) })}</p>`);
   }
 
   const form = $('[data-product-form]');
@@ -212,8 +288,8 @@ async function revendaNaPagina() {
     if (p) {
       const d = descontoDe(form.dataset.productId, p.price);
       preco.insertAdjacentHTML('afterend', d
-        ? `<p class="rv-price rv-price--big">Your price: <strong>${eurosRv(d)} less</strong> on every piece — from ${eurosRv(desdeDe(p) - d)}</p>`
-        : '<p class="rv-price rv-price--none">This piece has no reseller price: you pay the retail price.</p>');
+        ? `<p class="rv-price rv-price--big">${tj('revenda.ficha', { desconto: eurosRv(d), preco: eurosRv(desdeDe(p) - d) })}</p>`
+        : `<p class="rv-price rv-price--none">${escRv(tj('revenda.fichaSemPreco'))}</p>`);
     }
   }
 }
@@ -282,7 +358,7 @@ async function stockNaFicha() {
     let frase = linha.dataset.leadNone;
     if (skus && revenda.activa && revenda.stock) {
       const n = quantosHa(skus, revenda.stock);
-      if (n > 0) frase = `${n} in stock — leaves the workshop in ${linha.dataset.leadDays}.`;
+      if (n > 0) frase = tj('stock.revendaFicha', { n, prazo: linha.dataset.leadDays });
     } else if (skus && ha && skus.every((k) => ha.has(k))) {
       frase = linha.dataset.leadStock;
     }
@@ -640,9 +716,7 @@ function checkout() {
       const caixa = document.createElement('label');
       caixa.className = 'check rv-check';
       caixa.innerHTML = `<input type="checkbox" name="profissional" required>
-        <span>I am buying for my business, for resale, as <strong>${escRv(revenda.firma || revenda.nif)}</strong>.
-        The consumer rights in the terms do not apply — see the
-        <a href="${BASE}/legal/terms/#resellers">reseller conditions</a>.</span>`;
+        <span>${tj('revenda.profissional', { firma: escRv(revenda.firma || revenda.nif), url: pagina('/legal/terms/#resellers') })}</span>`;
       (nif?.closest('.field, label') ?? form.firstElementChild)?.after(caixa);
     }
   });
@@ -674,7 +748,7 @@ function checkout() {
   const disparar = async (e) => {
     e?.preventDefault();
     if (go.getAttribute('aria-disabled') === 'true') return;
-    if (!API) { say('The shop cannot take payments yet.'); return; }
+    if (!API) { say(tj('pagamento.indisponivel')); return; }
 
     const cur = basket();
     if (!cur.lines.length) return;
@@ -691,9 +765,9 @@ function checkout() {
      que chega ao telemóvel, uma referência que aparece a seguir, ou uma saída
      do site. Quem sai merece sabê-lo antes de a página mudar debaixo dos pés. */
   const SAEM = ['CCARD', 'GOOGLE', 'APPLE'];
-  go.textContent = metodo() === 'MBWAY' ? 'Sending the request…'
-    : SAEM.includes(metodo()) ? 'Taking you to pay…'
-      : 'Getting your reference…';
+  go.textContent = metodo() === 'MBWAY' ? tj('checkout.aEnviar')
+    : SAEM.includes(metodo()) ? tj('checkout.aSair')
+      : tj('checkout.aReferencia');
 
     try {
       const cat = await catalogue();
@@ -721,14 +795,14 @@ function checkout() {
       if (r.status === 409 && data.error === 'reseller_prices_changed') {
         recarregar = true;
         try { sessionStorage.setItem('ic-revenda-fresca', '1'); } catch { /* storage blocked */ }
-        avisarDepois('Your reseller prices were just updated. Please check the total and press again.');
+        avisarDepois(tj('revenda.precosMudaram'));
         location.reload();
         return;
       }
       if (r.status === 401 && data.error === 'reseller_session_invalid') {
         recarregar = true;
         esquecerRevenda();
-        avisarDepois('Your reseller session has ended, so the prices shown are retail prices. Sign in again on the Resellers page to buy at your price.');
+        avisarDepois(tj('revenda.sessaoTerminouCompra'));
         location.reload();
         return;
       }
@@ -744,14 +818,13 @@ function checkout() {
         prazoNoCesto = 'encomenda';
         reavaliarCesto();
         const caixa = $('[data-basket-lead]');
-        say(`The last one in stock has just been sold. You can still have it: we make yours, and it is with you in ${caixa?.dataset.leadWeeks || 'a few weeks'}. Press the button again to order it that way.`);
+        say(tj('checkout.esgotou', { prazo: caixa?.dataset.leadWeeks || tj('checkout.algumasSemanas') }));
         return;
       }
 
       if (r.status === 409 && data.error === 'catalogue_changed') {
         catalogueCache = null;
-        say('Prices changed while you were looking. The basket has been updated — '
-          + 'please check the total and try again.');
+        say(tj('checkout.precosMudaram'));
         location.reload();
         return;
       }
@@ -760,9 +833,9 @@ function checkout() {
          `/order` -- assim recarregar funciona, e voltar dois dias depois
          mostra a mesma referência Multibanco. */
       if (!r.ok || !data.proxima) { say(reason(data.error)); return; }
-      location.href = data.proxima;
+      location.href = naLingua(data.proxima);
     } catch {
-      say('We could not reach the payment service. Please try again in a moment.');
+      say(tj('checkout.semLigacao'));
     } finally {
       if (!recarregar) {
         go.removeAttribute('aria-disabled');
@@ -792,34 +865,37 @@ function checkout() {
 
   // An error code is for us; a person needs a sentence and something to do.
   function reason(code) {
-    return ({
-      shop_not_open_yet: 'The shop has not opened yet.',
-      country_not_served: 'We do not ship to that country yet. Write to us and we will see what we can do.',
-      empty_basket: 'Your basket is empty.',
-      unknown_product: 'Something in your basket is no longer available. Please reload the page.',
-      option_missing: 'Something in your basket is missing a choice. Open it and pick one.',
-      payments_not_configured: 'The shop cannot take payments yet.',
-      payment_methods_not_configured: 'The shop cannot take payments yet.',
-      storage_not_configured: 'The shop cannot take orders yet.',
-      email_invalido: 'That email address does not look right. Please check it.',
-      bad_mbway_number: 'That does not look like a Portuguese mobile number. '
-        + 'MB WAY only works with one — or choose a Multibanco reference instead.',
-      bad_payment_method: 'That way of paying is not available. Please pick another one.',
-      payment_unavailable: 'The payment service did not answer. Nothing was charged — please try again in a moment.',
-      catalogue_unavailable: 'The shop is briefly unavailable. Please try again in a minute.',
-      reseller_nif_mismatch: 'A reseller order has to carry your own NIF. Please reload the page.',
-      bad_quantity: 'One of the quantities is not allowed. Please check the basket.',
-      option_unavailable: 'One of the choices in your basket is no longer available. Open it and pick another.',
-      text_too_long: 'One of the texts to engrave is too long. Open it and shorten it.',
-      stock_unavailable: 'We could not check the stock just now. Nothing was charged — please try again in a moment.',
-      stock_changed: 'The stock changed while you were ordering. Please check the basket and try again.',
-    })[String(code).split(':')[0]]
-      /* O Worker devolve `cliente_incompleto:nome,email` — o código traz consigo
-         os campos que faltam, e dizê-los é a diferença entre corrigir à
-         primeira e adivinhar. */
-      || (String(code).startsWith('cliente_incompleto')
-        ? `Please fill in: ${String(code).split(':')[1]?.split(',').join(', ') || 'the missing fields'}.`
-        : 'Something went wrong on our side. Please try again, or write to us.');
+    /* Cada código aponta para uma frase do dicionário. `hasOwn`, como nos
+       fragmentos antigos: um código «constructor» devolvia uma função. */
+    const FRASES = {
+      shop_not_open_yet: 'loja.fechada',
+      country_not_served: 'erro.paisSemEnvio',
+      empty_basket: 'erro.cestoVazio',
+      unknown_product: 'erro.pecaIndisponivel',
+      option_missing: 'erro.falteEscolha',
+      payments_not_configured: 'pagamento.indisponivel',
+      payment_methods_not_configured: 'pagamento.indisponivel',
+      storage_not_configured: 'erro.semEncomendas',
+      email_invalido: 'erro.emailInvalido',
+      bad_mbway_number: 'erro.mbwayNumero',
+      bad_payment_method: 'erro.metodo',
+      payment_unavailable: 'erro.pagamentoSemResposta',
+      catalogue_unavailable: 'erro.catalogo',
+      reseller_nif_mismatch: 'erro.nifRevenda',
+      bad_quantity: 'erro.quantidade',
+      option_unavailable: 'erro.opcaoIndisponivel',
+      text_too_long: 'erro.textoLongo',
+      stock_unavailable: 'erro.stockIndisponivel',
+      stock_changed: 'erro.stockMudou',
+    };
+    const base = String(code).split(':')[0];
+    if (Object.hasOwn(FRASES, base)) return tj(FRASES[base]);
+    /* O Worker devolve `cliente_incompleto:nome,email` — o código traz consigo
+       os campos que faltam, e dizê-los é a diferença entre corrigir à
+       primeira e adivinhar. */
+    return String(code).startsWith('cliente_incompleto')
+      ? tj('erro.preencha', { campos: String(code).split(':')[1]?.split(',').join(', ') || tj('erro.camposEmFalta') })
+      : tj('erro.generico');
   }
 }
 
@@ -839,7 +915,7 @@ async function paginaRevenda() {
   const codigoMsg = $('[data-rv-codigo-msg]', raiz);
 
   if (!API) {
-    dizer(pedirMsg, 'Reseller sign-in is not available in this preview.');
+    dizer(pedirMsg, tj('revenda.entrarIndisponivel'));
     for (const b of $$('button', fora)) b.disabled = true;
     return;
   }
@@ -871,33 +947,40 @@ async function paginaRevenda() {
     const cat = await catalogue().catch(() => null);
     const corpo = $('[data-rv-tabela] tbody', raiz);
     if (!cat || !corpo) return;
-    const url = (slug, p) => `${BASE}${p.brand === 'cathelier' ? '/cathelier/pieces' : '/lamps'}/${slug}/`;
+    const url = (slug, p) => pagina(`${p.brand === 'cathelier' ? '/cathelier/pieces' : '/lamps'}/${slug}/`);
     const linhas = Object.entries(cat.products)
       .filter(([slug]) => !slug.startsWith('zz-'))
-      .sort(([, a], [, b]) => (a.brand + a.name).localeCompare(b.brand + b.name));
+      .sort(([sa, a], [sb, b]) => (a.brand + nomeDaPeca(cat, sa, a)).localeCompare(b.brand + nomeDaPeca(cat, sb, b)));
+    /* Os rótulos das colunas vão em data-rotulo, que a folha de estilos mostra
+       no telemóvel: são texto que se lê, e por isso vêm do dicionário. */
+    const rotulo = {
+      pvp: escRv(tj('revenda.rotuloPvp')), preco: escRv(tj('revenda.rotuloPreco')), stock: escRv(tj('revenda.rotuloStock')),
+    };
     corpo.innerHTML = linhas.map(([slug, p]) => {
       const d = descontoDe(slug, p.price);
       const low = desdeDe(p);
-      const desde = (p.options || []).some((o) => o.type === 'choice' && o.values.some((v) => (v.extra || 0) > 0)) ? 'from ' : '';
-      return `<tr><th scope="row"><a href="${url(slug, p)}">${escRv(p.name)}</a> <span class="rv-marca">${escRv(p.brand)}</span></th>
-        <td data-rotulo="RRP">${desde}${eurosRv(low)}</td>
-        <td data-rotulo="Your price">${d ? `<strong>${desde}${eurosRv(low - d)}</strong> <span class="rv-menos">−${eurosRv(d)}</span>` : '<span class="muted">no reseller price</span>'}</td>
-        <td class="rv-stock" data-rotulo="In stock">${stockNaTabela(p)}</td></tr>`;
+      const desde = (p.options || []).some((o) => o.type === 'choice' && o.values.some((v) => (v.extra || 0) > 0));
+      const preco = (n) => escRv(desde ? tj('precoDesde', { preco: eurosRv(n) }) : eurosRv(n));
+      return `<tr><th scope="row"><a href="${url(slug, p)}">${escRv(nomeDaPeca(cat, slug, p))}</a> <span class="rv-marca">${escRv(p.brand)}</span></th>
+        <td data-rotulo="${rotulo.pvp}">${preco(low)}</td>
+        <td data-rotulo="${rotulo.preco}">${d ? `<strong>${preco(low - d)}</strong> <span class="rv-menos">−${eurosRv(d)}</span>` : `<span class="muted">${escRv(tj('revenda.semPreco'))}</span>`}</td>
+        <td class="rv-stock" data-rotulo="${rotulo.stock}">${stockNaTabela(cat, slug, p)}</td></tr>`;
     }).join('');
   }
 
   /* How many are free, per model: "Large 2 · Small 0". The combinations
      ("Both together") are left out -- they are not made, they are put
      together from the others, and the two numbers already say how many. */
-  function stockNaTabela(p) {
-    if (!p.stock) return '<span class="muted">made to order</span>';
+  function stockNaTabela(cat, slug, p) {
+    if (!p.stock) return `<span class="muted">${escRv(tj('revenda.porEncomenda'))}</span>`;
     if (!revenda.stock) return '<span class="muted">—</span>';
     const modelo = (p.options || []).find((o) => o.id === p.stock.option);
     const partes = Object.entries(p.stock.skus)
       .filter(([, skus]) => skus.length === 1)
       .map(([id, [sku]]) => {
         const n = revenda.stock[sku] ?? 0;
-        const nome = modelo?.values.find((v) => String(v.id) === id)?.name.replace(/\s*\(.*\)$/, '');
+        const valor = modelo?.values.find((v) => String(v.id) === id);
+        const nome = valor && String(nomeDoValor(cat, slug, modelo, valor) ?? '').replace(/\s*\(.*\)$/, '');
         return `${nome ? `${escRv(nome)} ` : ''}<strong>${n}</strong>`;
       });
     return partes.join(' · ');
@@ -908,9 +991,7 @@ async function paginaRevenda() {
     history.replaceState(null, '', location.pathname + location.search);
     const estado = await entrar({ token: t }, false).catch(() => 0);
     if (estado !== 200) {
-      dizer(pedirMsg, estado === 401
-        ? 'That sign-in link has expired or is no longer valid. Ask for a new one with your NIF.'
-        : 'We could not reach the shop. Check your connection and open the link again.');
+      dizer(pedirMsg, estado === 401 ? tj('revenda.linkExpirou') : tj('revenda.semLigacaoLink'));
     }
   }
 
@@ -924,15 +1005,12 @@ async function paginaRevenda() {
       /* It never says the email WAS sent: the answer is the same for every
          NIF, so nobody learns who is a reseller, and the Worker may also be
          holding the email back (one per quarter of an hour). */
-      dizer(pedirMsg, r.ok
-        ? 'If this NIF is registered, an email is on its way to the address we have for you. '
-          + 'It has a button that signs you in on whichever device you open it on, and a code to type here if that is a different one. '
-          + 'Both last 15 minutes. Nothing after a few minutes? Check the spam folder, wait a quarter of an hour and ask again, or talk to us.'
-        : j.error === 'bad_nif' ? 'That NIF does not look right — check the nine digits.'
-          : r.status === 429 ? 'One moment — please wait a few seconds and try again.'
-            : 'Something went wrong on our side. Please try again in a minute.');
+      dizer(pedirMsg, r.ok ? tj('revenda.emailPedido')
+        : j.error === 'bad_nif' ? tj('revenda.nifErrado')
+          : r.status === 429 ? tj('revenda.espereSegundos')
+            : tj('revenda.erroNosso'));
     } catch {
-      dizer(pedirMsg, 'We could not reach the shop. Check your connection and try again.');
+      dizer(pedirMsg, tj('revenda.semLigacao'));
     } finally { botao.disabled = false; }
   });
 
@@ -944,12 +1022,11 @@ async function paginaRevenda() {
     try {
       const estado = await entrar({ nif: f.elements.nif.value, codigo: f.elements.codigo.value }, f.elements.manter.checked);
       if (estado === 200) { dizer(codigoMsg, ''); await mostrar(); revendaNaPagina(); return; }
-      dizer(codigoMsg, estado === 401
-        ? 'That code did not work. It lasts 15 minutes — if it has expired, ask for a new email with the form at the top.'
-        : estado === 429 ? 'One moment — please wait a second and try again.'
-          : 'Something went wrong on our side. Please try again in a minute.');
+      dizer(codigoMsg, estado === 401 ? tj('revenda.codigoFalhou')
+        : estado === 429 ? tj('revenda.espereSegundo')
+          : tj('revenda.erroNosso'));
     } catch {
-      dizer(codigoMsg, 'We could not reach the shop. Check your connection and try again.');
+      dizer(codigoMsg, tj('revenda.semLigacao'));
     } finally { botao.disabled = false; }
   });
 
@@ -989,9 +1066,9 @@ async function payPage() {
     if (el) el.hidden = false;
   };
 
-  if (!id || !API) { state.textContent = 'We could not find that order.'; return; }
+  if (!id || !API) { state.textContent = tj('encomenda.naoEncontrada'); return; }
 
-  const euros = (cents) => `€${(cents / 100).toFixed(2).replace('.', ',')}`;
+  const euros = (cents) => dinheiro(cents / 100);
   /* Uma referência Multibanco lê-se em grupos de três; copia-se sem espaços,
      porque é para um campo de uma aplicação de banco. São duas formas do mesmo
      número e cada uma serve para uma coisa. */
@@ -1016,7 +1093,7 @@ async function payPage() {
     if (!m) return t;
     const d = new Date(Date.UTC(+m[1], +m[2] - 1, +m[3]));
     try {
-      return new Intl.DateTimeFormat('en-GB', {
+      return new Intl.DateTimeFormat(LOCALE_DATAS, {
         day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC',
       }).format(d);
     } catch { return t; }
@@ -1076,7 +1153,7 @@ async function payPage() {
         } catch { feito = false; }
       }
       const antes = b.textContent;
-      b.textContent = feito ? 'Copied' : 'Select it';
+      b.textContent = feito ? tj('pagar.copiado') : tj('pagar.selecione');
       if (feito) b.dataset.copied = '';
       setTimeout(() => { b.textContent = antes; delete b.dataset.copied; }, 2000);
     });
@@ -1115,12 +1192,9 @@ async function payPage() {
       if (s.mbway === 'expirado' || s.mbway === 'recusado') {
         pararRelogio();
         escrever('[data-pay-failed-title]',
-          s.mbway === 'recusado' ? 'The request was declined' : 'The request expired');
-        escrever('[data-pay-failed-text]', s.mbway === 'recusado'
-          ? 'Nothing was charged. If that was not you, or you changed your mind, your '
-            + 'basket is still here — order again and pick another way to pay.'
-          : 'Nothing was charged. Your basket is still here, so you can order again — '
-            + 'and if MB WAY is being awkward, a Multibanco reference always works.');
+          s.mbway === 'recusado' ? tj('mbway.recusadoTitulo') : tj('mbway.expirouTitulo'));
+        escrever('[data-pay-failed-text]',
+          s.mbway === 'recusado' ? tj('mbway.recusadoTexto') : tj('mbway.expirouTexto'));
         mostrar('[data-pay-failed]');
         return false;
       }
@@ -1196,7 +1270,7 @@ async function thankYouPage() {
   const id = new URLSearchParams(location.search).get('ref');
   const mostrar = (qual) => { state.hidden = true; const d = $(qual); if (d) d.hidden = false; };
 
-  if (!id || !API) { state.textContent = 'We could not find that order.'; return; }
+  if (!id || !API) { state.textContent = tj('encomenda.naoEncontrada'); return; }
 
   try {
     const r = await fetch(`${API}/order?id=${encodeURIComponent(id)}`);
@@ -1220,7 +1294,7 @@ async function thankYouPage() {
       mostrar('[data-order-pending]');
     }
   } catch {
-    state.textContent = 'We could not check that order just now. Your confirmation email is the record.';
+    state.textContent = tj('encomenda.naoVerificada');
   }
 }
 
@@ -1233,7 +1307,7 @@ function mapConsent() {
   const box = $('[data-map]');
   if (!box) return;
   const show = () => {
-    box.innerHTML = '<iframe title="Where the workshop is" loading="lazy"'
+    box.innerHTML = `<iframe title="${escRv(tj('mapa.titulo'))}" loading="lazy"`
       + ' referrerpolicy="no-referrer-when-downgrade"'
       + ' src="https://www.google.com/maps?q=Castelo+Branco,+Portugal&output=embed"></iframe>';
   };
@@ -1253,7 +1327,7 @@ async function basketPage() {
   const countrySel = $('[data-country]');
 
   const cat = await catalogue().catch(() => null);
-  if (!cat) { linesBox.innerHTML = '<p class="muted">The basket could not be loaded. Please reload the page.</p>'; return; }
+  if (!cat) { linesBox.innerHTML = `<p class="muted">${escRv(tj('cesto.erroCarregar'))}</p>`; return; }
   // The reseller's prices first: painting retail and then swapping it would
   // show a total that is not the one they will pay.
   await esperarRevenda();
@@ -1264,7 +1338,7 @@ async function basketPage() {
     const cur = basket(); cur.country = countrySel.value; setBasket(cur); paint();
   });
 
-  const euros = (n) => `€${n.toFixed(2).replace('.', ',')}`;
+  const euros = (n) => dinheiro(n);
   const ha = await stockPublico();
   const prazoCaixa = $('[data-basket-lead]');
   const temUm = (k) => Boolean(ha?.has(k)) && !esgotados.has(k);
@@ -1308,13 +1382,13 @@ async function basketPage() {
   /* One line's own state. Out of stock is said on the line, so a basket that
      turns into three to four weeks shows which lamp did it. */
   function estadoDaLinha(p, qty) {
-    if (!p.skus) return 'Made to order';
+    if (!p.skus) return tj('cesto.porEncomenda');
     if (revenda.activa && revenda.stock) {
       const n = Math.min(...p.skus.map(livresRv));
-      return n >= qty ? `In stock (${n})` : n > 0 ? `Only ${n} in stock` : 'Out of stock — made for you';
+      return n >= qty ? tj('cesto.emStockN', { n }) : n > 0 ? tj('cesto.soN', { n }) : tj('cesto.semStock');
     }
     if (!ha) return '';
-    return !esgotouAgora && p.skus.every(temUm) ? 'In stock' : 'Out of stock — made for you';
+    return !esgotouAgora && p.skus.every(temUm) ? tj('cesto.emStock') : tj('cesto.semStock');
   }
 
   function priceOf(line) {
@@ -1335,15 +1409,15 @@ async function basketPage() {
         if (!v) continue;
         each += v.extra || 0;
         pvpEach += v.extra || 0;
-        shown.push(`${o.name}: ${v.name}`);
+        shown.push(`${nomeDaOpcao(cat, line.id, o)}: ${nomeDoValor(cat, line.id, o, v)}`);
       } else {
         each += o.extra || 0;
         pvpEach += o.extra || 0;
-        shown.push(`${o.name}: “${value}”`);
+        shown.push(tj('cesto.opcaoTexto', { opcao: nomeDaOpcao(cat, line.id, o), texto: value }));
       }
     }
     return {
-      name: p.name, brand: p.brand, photo: p.photo, shown, each, total: each * line.qty,
+      name: nomeDaPeca(cat, line.id, p), brand: p.brand, photo: p.photo, shown, each, total: each * line.qty,
       pvpEach, pvpTotal: pvpEach * line.qty, desconto: d,
       skus: skusDaEscolha(p, line.options),
     };
@@ -1380,9 +1454,9 @@ async function basketPage() {
         <p class="basket-line__name">${escRv(p.name)}</p>
         ${p.shown.length ? `<p class="basket-line__opts">${p.shown.map(escRv).join(' · ')}</p>` : ''}
         <p class="basket-line__opts">${line.qty} × ${euros(p.each)}${p.desconto
-          ? ` <span class="rv-rrp">RRP ${euros(p.pvpEach)}</span>` : ''}</p>
+          ? ` <span class="rv-rrp">${escRv(tj('cesto.pvp', { preco: euros(p.pvpEach) }))}</span>` : ''}</p>
         ${(() => { const e = estadoDaLinha(p, line.qty); return e ? `<p class="basket-line__stock">${escRv(e)}</p>` : ''; })()}
-        <button class="basket-line__drop" type="button" data-drop="${i}">Remove</button>
+        <button class="basket-line__drop" type="button" data-drop="${i}">${escRv(tj('cesto.remover'))}</button>
       </div>
       <p class="basket-line__price">${euros(p.total)}</p>
     </div>`).join('');
@@ -1402,8 +1476,8 @@ async function basketPage() {
     const pvpGoods = priced.reduce((t, x) => t + x.p.pvpTotal, 0);
     const post = shippingFor(cur.country || 'PT', pvpGoods);
     $('[data-sum-goods]').textContent = euros(goods);
-    $('[data-sum-shipping]').textContent = post === null ? 'we do not ship there'
-      : post === 0 ? 'free' : euros(post);
+    $('[data-sum-shipping]').textContent = post === null ? tj('cesto.naoEnviamos')
+      : post === 0 ? tj('cesto.gratis') : euros(post);
     $('[data-sum-total]').textContent = post === null ? '—' : euros(goods + post);
     avaliar(priced);
   }
@@ -1442,10 +1516,10 @@ function sorting() {
   const dated = cards.filter((c) => when(c)).length;
 
   const ORDERS = [
-    ['shop', 'Our order', null],
-    ['low', 'Price: low to high', (a, b) => num(a) - num(b)],
-    ['high', 'Price: high to low', (a, b) => num(b) - num(a)],
-    ...(dated >= 2 ? [['new', 'Newest first', (a, b) => when(b).localeCompare(when(a))]] : []),
+    ['shop', tj('ordenar.nossa'), null],
+    ['low', tj('ordenar.precoSobe'), (a, b) => num(a) - num(b)],
+    ['high', tj('ordenar.precoDesce'), (a, b) => num(b) - num(a)],
+    ...(dated >= 2 ? [['new', tj('ordenar.novos'), (a, b) => when(b).localeCompare(when(a))]] : []),
   ];
 
   // The arrangement the page arrived in, kept so "Our order" can be given back
@@ -1458,7 +1532,7 @@ function sorting() {
   const label = document.createElement('label');
   label.className = 'sortby__label';
   label.htmlFor = id;
-  label.textContent = 'Sort by';
+  label.textContent = tj('ordenar.rotulo');
   const sel = document.createElement('select');
   sel.className = 'sortby__select';
   sel.id = id;
@@ -1579,7 +1653,7 @@ function filters() {
       last.hidden = true;
       more.textContent = `+${++hidden}`;
     }
-    more.setAttribute('aria-label', `Show ${hidden} more filters`);
+    more.setAttribute('aria-label', tjn('filtros.mais', hidden));
   }
 
   fromAddress(true);   // before fold(): a pre-chosen chip must not be one of the hidden ones
@@ -2098,11 +2172,11 @@ function productForm() {
     /* Se o tecto cortou o pedido, diz-se. Cortar e calar é o defeito que
        estava aqui. */
     const ficaram = same ? same.qty : quantas;
-    if (ficaram < antes + quantas) dizer(`The basket holds at most ${tecto} of these, so it now has ${ficaram}.`);
+    if (ficaram < antes + quantas) dizer(tj('cesto.tecto', { max: tecto, n: ficaram }));
     else dizer('');
 
-    add.textContent = 'Added';
-    setTimeout(() => { add.textContent = 'Add to basket'; }, 1600);
+    add.textContent = tj('botao.adicionado');
+    setTimeout(() => { add.textContent = tj('botao.adicionar'); }, 1600);
   };
 
   form.addEventListener('submit', juntar);
@@ -2209,7 +2283,7 @@ async function previewLock() {
   if (!cat?.preview) return;
   for (const b of $$('[data-add], [data-pay], [data-to-checkout]')) {
     b.setAttribute('aria-disabled', 'true');
-    b.title = 'The shop has not opened yet.';
+    b.title = tj('loja.fechada');
     /* Com a loja fechada não se valida nada: o botão de adicionar é agora um
        botão de submissão, e sem isto clicá-lo numa loja fechada mostrava os
        balões de «preencha este campo» a quem não pode comprar de qualquer
@@ -2218,7 +2292,7 @@ async function previewLock() {
     const note = document.createElement('p');
     note.className = 'small muted';
     note.style.marginBlockStart = '.5rem';
-    note.textContent = 'The shop has not opened yet — you cannot order just now.';
+    note.textContent = tj('loja.fechadaNota');
     b.after(note);
   }
 }

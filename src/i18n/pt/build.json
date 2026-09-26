@@ -54,5 +54,6 @@
   "naoEncontrada.descricao": "A página que procurava mudou de sítio ou nunca existiu.",
   "stub.titulo": "{nome} — passou para a lista completa | cathelier",
   "stub.texto": "Esta página mudou de sítio. «{nome}» é agora um filtro na lista completa das peças.",
-  "stub.ir": "Ir para «{nome}»"
+  "stub.ir": "Ir para «{nome}»",
+  "euros": "{n} €"
 }

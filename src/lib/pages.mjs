@@ -1,4 +1,4 @@
-import { esc, safeHref } from './html.mjs';
+import { esc, money, safeHref } from './html.mjs';
 import { icon } from './icons.mjs';
 import { prazos } from './prazos.mjs';
 import { t, tn } from './i18n.mjs';
@@ -19,10 +19,9 @@ import { t, tn } from './i18n.mjs';
    tabela dos portes -- sai de src/i18n/<língua>/paginas.json. Isto é chamado
    depois de o gerador escolher a língua, por isso t() já sabe qual é. */
 
-/* O preço na tabela dos portes. O número escreve-se como em money()
-   (html.mjs), mas o lugar do símbolo é da língua: «€8,50» em inglês,
-   «8,50 €» em português -- e money() põe-no sempre à frente. */
-const preco = (n) => t('paginas.preco', { valor: Number(n).toFixed(2).replace('.', ',') });
+/* O preço na tabela dos portes: money() (html.mjs) já põe o € onde a língua
+   o põe. */
+const preco = (n) => money(n);
 
 export function markers({ identity, shop, shipping }) {
   const i = identity;

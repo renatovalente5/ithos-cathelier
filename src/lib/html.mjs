@@ -1,5 +1,6 @@
 /* Small helpers shared by every page builder. Nothing clever lives here. */
 
+import { t } from './i18n.mjs';
 import { CARD_RATIO, cardWidths } from './photo.mjs';
 
 /** Escape for HTML text and double-quoted attributes. */
@@ -30,7 +31,10 @@ export const jsonInScript = (v) => JSON.stringify(v)
   .replace(/</g, '\\u003c').replace(/\u2028/g, '\\u2028').replace(/\u2029/g, '\\u2029');
 
 /** Prices are written once, here, so the shop cannot disagree with itself. */
-export const money = (n) => `€${Number(n).toFixed(2).replace('.', ',')}`;
+/* O preço: o número com vírgula decimal, e o € onde a língua o põe -- à
+   frente em inglês («€24,00»), atrás nas outras («24,00 €»). O sítio do
+   símbolo é uma frase do dicionário (build.euros), como no shop.js. */
+export const money = (n) => t('build.euros', { n: Number(n).toFixed(2).replace('.', ',') });
 
 /** A URL-safe slug from a name. */
 export const slugify = (s) => String(s).toLowerCase().normalize('NFD')

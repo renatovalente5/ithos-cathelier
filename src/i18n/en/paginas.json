@@ -1,6 +1,5 @@
 {
   "_leia": "Frases das páginas escritas pelo código (src/lib/pages.mjs): contactos, perguntas, orçamento, cesto, pagamento, revendedores, e as frases dos marcadores das páginas legais. A origem é pt/; esta é a tradução inglesa. As que levam marcação têm as mesmas etiquetas nas duas línguas.",
-  "preco": "€{valor}",
   "envios.onde": "Where",
   "envios.portes": "Shipping",
   "envios.prazo": "Time",
