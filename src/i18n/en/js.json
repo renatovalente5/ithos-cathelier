@@ -1,101 +1,355 @@
 {
-  "_leia": "Frases que o shop.js escreve no ecrã, no browser. O gerador junta-as em /assets/textos.<língua>.<hash>.js (window.TEXTOS), sem o prefixo «js.». A origem é pt/; esta é a tradução inglesa. «euros» é o formato do preço: {n} é o número já com vírgula.",
-  "euros": "€{n}",
-  "precoDesde": "from {preco}",
-
-  "revenda.sessaoTerminou": "Your reseller session has ended, so the prices shown are retail prices. Sign in again on the Resellers page to see yours.",
-  "revenda.sessaoTerminouCompra": "Your reseller session has ended, so the prices shown are retail prices. Sign in again on the Resellers page to buy at your price.",
-  "revenda.precosMudaram": "Your reseller prices were just updated. Please check the total and press again.",
-  "revenda.barra": "Reseller prices on · <strong>{firma}</strong>",
-  "revenda.tabela": "Your price list",
-  "revenda.sair": "Sign out",
-  "revenda.cartao": "Your price <strong>{preco}</strong> <span>−{desconto}</span>",
-  "revenda.cartaoDesde": "Your price from <strong>{preco}</strong> <span>−{desconto}</span>",
-  "revenda.ficha": "Your price: <strong>{desconto} less</strong> on every piece — from {preco}",
-  "revenda.fichaSemPreco": "This piece has no reseller price: you pay the retail price.",
-  "revenda.profissional": "I am buying for my business, for resale, as <strong>{firma}</strong>. The consumer rights in the terms do not apply — see the <a href=\"{url}\">reseller conditions</a>.",
-  "revenda.entrarIndisponivel": "Reseller sign-in is not available in this preview.",
-  "revenda.rotuloPvp": "RRP",
-  "revenda.rotuloPreco": "Your price",
-  "revenda.rotuloStock": "In stock",
-  "revenda.semPreco": "no reseller price",
-  "revenda.porEncomenda": "made to order",
-  "revenda.linkExpirou": "That sign-in link has expired or is no longer valid. Ask for a new one with your NIF.",
-  "revenda.semLigacaoLink": "We could not reach the shop. Check your connection and open the link again.",
-  "revenda.emailPedido": "If this NIF is registered, an email is on its way to the address we have for you. It has a button that signs you in on whichever device you open it on, and a code to type here if that is a different one. Both last 15 minutes. Nothing after a few minutes? Check the spam folder, wait a quarter of an hour and ask again, or talk to us.",
-  "revenda.nifErrado": "That NIF does not look right — check the nine digits.",
-  "revenda.espereSegundos": "One moment — please wait a few seconds and try again.",
-  "revenda.espereSegundo": "One moment — please wait a second and try again.",
-  "revenda.erroNosso": "Something went wrong on our side. Please try again in a minute.",
-  "revenda.semLigacao": "We could not reach the shop. Check your connection and try again.",
-  "revenda.codigoFalhou": "That code did not work. It lasts 15 minutes — if it has expired, ask for a new email with the form at the top.",
-
-  "stock.revendaFicha": "{n} in stock — leaves the workshop in {prazo}.",
-
-  "pagamento.indisponivel": "The shop cannot take payments yet.",
-  "checkout.aEnviar": "Sending the request…",
-  "checkout.aSair": "Taking you to pay…",
-  "checkout.aReferencia": "Getting your reference…",
-  "checkout.esgotou": "The last one in stock has just been sold. You can still have it: we make yours, and it is with you in {prazo}. Press the button again to order it that way.",
-  "checkout.algumasSemanas": "a few weeks",
-  "checkout.precosMudaram": "Prices changed while you were looking. The basket has been updated — please check the total and try again.",
-  "checkout.semLigacao": "We could not reach the payment service. Please try again in a moment.",
-
-  "loja.fechada": "The shop has not opened yet.",
-  "loja.fechadaNota": "The shop has not opened yet — you cannot order just now.",
-  "erro.paisSemEnvio": "We do not ship to that country yet. Write to us and we will see what we can do.",
-  "erro.cestoVazio": "Your basket is empty.",
-  "erro.pecaIndisponivel": "Something in your basket is no longer available. Please reload the page.",
-  "erro.falteEscolha": "Something in your basket is missing a choice. Open it and pick one.",
-  "erro.semEncomendas": "The shop cannot take orders yet.",
-  "erro.emailInvalido": "That email address does not look right. Please check it.",
-  "erro.mbwayNumero": "That does not look like a Portuguese mobile number. MB WAY only works with one — or choose a Multibanco reference instead.",
-  "erro.metodo": "That way of paying is not available. Please pick another one.",
-  "erro.pagamentoSemResposta": "The payment service did not answer. Nothing was charged — please try again in a moment.",
-  "erro.catalogo": "The shop is briefly unavailable. Please try again in a minute.",
-  "erro.nifRevenda": "A reseller order has to carry your own NIF. Please reload the page.",
-  "erro.quantidade": "One of the quantities is not allowed. Please check the basket.",
-  "erro.opcaoIndisponivel": "One of the choices in your basket is no longer available. Open it and pick another.",
-  "erro.textoLongo": "One of the texts to engrave is too long. Open it and shorten it.",
-  "erro.stockIndisponivel": "We could not check the stock just now. Nothing was charged — please try again in a moment.",
-  "erro.stockMudou": "The stock changed while you were ordering. Please check the basket and try again.",
-  "erro.preencha": "Please fill in: {campos}.",
-  "erro.camposEmFalta": "the missing fields",
-  "erro.generico": "Something went wrong on our side. Please try again, or write to us.",
-
-  "encomenda.naoEncontrada": "We could not find that order.",
-  "encomenda.naoVerificada": "We could not check that order just now. Your confirmation email is the record.",
-  "pagar.copiado": "Copied",
-  "pagar.selecione": "Select it",
-  "mbway.recusadoTitulo": "The request was declined",
-  "mbway.expirouTitulo": "The request expired",
-  "mbway.recusadoTexto": "Nothing was charged. If that was not you, or you changed your mind, your basket is still here — order again and pick another way to pay.",
-  "mbway.expirouTexto": "Nothing was charged. Your basket is still here, so you can order again — and if MB WAY is being awkward, a Multibanco reference always works.",
-
-  "mapa.titulo": "Where the workshop is",
-
-  "cesto.erroCarregar": "The basket could not be loaded. Please reload the page.",
-  "cesto.porEncomenda": "Made to order",
-  "cesto.emStock": "In stock",
-  "cesto.emStockN": "In stock ({n})",
-  "cesto.soN": "Only {n} in stock",
-  "cesto.semStock": "Out of stock — made for you",
-  "cesto.opcaoTexto": "{opcao}: “{texto}”",
-  "cesto.pvp": "RRP {preco}",
-  "cesto.remover": "Remove",
-  "cesto.naoEnviamos": "we do not ship there",
-  "cesto.gratis": "free",
-  "cesto.tecto": "The basket holds at most {max} of these, so it now has {n}.",
-
-  "ordenar.rotulo": "Sort by",
-  "ordenar.nossa": "Our order",
-  "ordenar.precoSobe": "Price: low to high",
-  "ordenar.precoDesce": "Price: high to low",
-  "ordenar.novos": "Newest first",
-
-  "filtros.mais.um": "Show {n} more filters",
-  "filtros.mais.varios": "Show {n} more filters",
-
-  "botao.adicionado": "Added",
-  "botao.adicionar": "Add to basket"
+  "_leia": "Frases que o shop.js escreve no ecrã, no browser. O gerador junta-as em /assets/textos.<língua>.<hash>.js (window.TEXTOS), sem o prefixo «js.». A origem é pt/; esta é a tradução inglesa. «euros» é o formato do preço: {n} é o número já com vírgula. Cada frase leva o resumo (h) do português de onde saiu: quando o português mudar, o Worker refá-la. Uma corrigida à mão que não deva ser refeita leva \"fixo\": true.",
+  "euros": {
+    "t": "€{n}",
+    "h": "256c1e67ecff"
+  },
+  "precoDesde": {
+    "t": "from {preco}",
+    "h": "1b969aa932c8"
+  },
+  "revenda.sessaoTerminou": {
+    "t": "Your reseller session has ended, so the prices shown are retail prices. Sign in again on the Resellers page to see yours.",
+    "h": "14e7ab39fecd"
+  },
+  "revenda.sessaoTerminouCompra": {
+    "t": "Your reseller session has ended, so the prices shown are retail prices. Sign in again on the Resellers page to buy at your price.",
+    "h": "2af39f20f5b1"
+  },
+  "revenda.precosMudaram": {
+    "t": "Your reseller prices were just updated. Please check the total and press again.",
+    "h": "367371109ab6"
+  },
+  "revenda.barra": {
+    "t": "Reseller prices on · <strong>{firma}</strong>",
+    "h": "4aae720fb901"
+  },
+  "revenda.tabela": {
+    "t": "Your price list",
+    "h": "62204c065826"
+  },
+  "revenda.sair": {
+    "t": "Sign out",
+    "h": "2d023dea2a9d"
+  },
+  "revenda.cartao": {
+    "t": "Your price <strong>{preco}</strong> <span>−{desconto}</span>",
+    "h": "200018e0bf6b"
+  },
+  "revenda.cartaoDesde": {
+    "t": "Your price from <strong>{preco}</strong> <span>−{desconto}</span>",
+    "h": "f1bc6c6d13e3"
+  },
+  "revenda.ficha": {
+    "t": "Your price: <strong>{desconto} less</strong> on every piece — from {preco}",
+    "h": "f31c10aa7b56"
+  },
+  "revenda.fichaSemPreco": {
+    "t": "This piece has no reseller price: you pay the retail price.",
+    "h": "ec7220cb1926"
+  },
+  "revenda.profissional": {
+    "t": "I am buying for my business, for resale, as <strong>{firma}</strong>. The consumer rights in the terms do not apply — see the <a href=\"{url}\">reseller conditions</a>.",
+    "h": "08b7f313a640"
+  },
+  "revenda.entrarIndisponivel": {
+    "t": "Reseller sign-in is not available in this preview.",
+    "h": "5d1539c53d30"
+  },
+  "revenda.rotuloPvp": {
+    "t": "RRP",
+    "h": "2187e29a2b3c"
+  },
+  "revenda.rotuloPreco": {
+    "t": "Your price",
+    "h": "c6880a2ee5ba"
+  },
+  "revenda.rotuloStock": {
+    "t": "In stock",
+    "h": "1d313b6a03e4"
+  },
+  "revenda.semPreco": {
+    "t": "no reseller price",
+    "h": "14a17320ff20"
+  },
+  "revenda.porEncomenda": {
+    "t": "made to order",
+    "h": "1cfbc6e7a8f3"
+  },
+  "revenda.linkExpirou": {
+    "t": "That sign-in link has expired or is no longer valid. Ask for a new one with your NIF.",
+    "h": "8e2fa84a7ffc"
+  },
+  "revenda.semLigacaoLink": {
+    "t": "We could not reach the shop. Check your connection and open the link again.",
+    "h": "16afd13290c1"
+  },
+  "revenda.emailPedido": {
+    "t": "If this NIF is registered, an email is on its way to the address we have for you. It has a button that signs you in on whichever device you open it on, and a code to type here if that is a different one. Both last 15 minutes. Nothing after a few minutes? Check the spam folder, wait a quarter of an hour and ask again, or talk to us.",
+    "h": "8d0a58fbe537"
+  },
+  "revenda.nifErrado": {
+    "t": "That NIF does not look right — check the nine digits.",
+    "h": "6dbad9c6fa97"
+  },
+  "revenda.espereSegundos": {
+    "t": "One moment — please wait a few seconds and try again.",
+    "h": "bc077b7f2b53"
+  },
+  "revenda.espereSegundo": {
+    "t": "One moment — please wait a second and try again.",
+    "h": "8260900c3faa"
+  },
+  "revenda.erroNosso": {
+    "t": "Something went wrong on our side. Please try again in a minute.",
+    "h": "93ef30e71da6"
+  },
+  "revenda.semLigacao": {
+    "t": "We could not reach the shop. Check your connection and try again.",
+    "h": "79c6d6722161"
+  },
+  "revenda.codigoFalhou": {
+    "t": "That code did not work. It lasts 15 minutes — if it has expired, ask for a new email with the form at the top.",
+    "h": "21dfc0956d41"
+  },
+  "stock.revendaFicha": {
+    "t": "{n} in stock — leaves the workshop in {prazo}.",
+    "h": "86c3ea3a8687"
+  },
+  "pagamento.indisponivel": {
+    "t": "The shop cannot take payments yet.",
+    "h": "498b9dd0ac72"
+  },
+  "checkout.aEnviar": {
+    "t": "Sending the request…",
+    "h": "a3b90f0aa725"
+  },
+  "checkout.aSair": {
+    "t": "Taking you to pay…",
+    "h": "90b3d9c0bda6"
+  },
+  "checkout.aReferencia": {
+    "t": "Getting your reference…",
+    "h": "1cc8215dd60f"
+  },
+  "checkout.esgotou": {
+    "t": "The last one in stock has just been sold. You can still have it: we make yours, and it is with you in {prazo}. Press the button again to order it that way.",
+    "h": "e453b887f100"
+  },
+  "checkout.algumasSemanas": {
+    "t": "a few weeks",
+    "h": "e90a3d34174c"
+  },
+  "checkout.precosMudaram": {
+    "t": "Prices changed while you were looking. The basket has been updated — please check the total and try again.",
+    "h": "910156425f9a"
+  },
+  "checkout.semLigacao": {
+    "t": "We could not reach the payment service. Please try again in a moment.",
+    "h": "282143c1888f"
+  },
+  "loja.fechada": {
+    "t": "The shop has not opened yet.",
+    "h": "9aabeb05542b"
+  },
+  "loja.fechadaNota": {
+    "t": "The shop has not opened yet — you cannot order just now.",
+    "h": "be75b84e3490"
+  },
+  "erro.paisSemEnvio": {
+    "t": "We do not ship to that country yet. Write to us and we will see what we can do.",
+    "h": "5df3ae51e2de"
+  },
+  "erro.cestoVazio": {
+    "t": "Your basket is empty.",
+    "h": "81a664819bba"
+  },
+  "erro.pecaIndisponivel": {
+    "t": "Something in your basket is no longer available. Please reload the page.",
+    "h": "d6bdb784ab9d"
+  },
+  "erro.falteEscolha": {
+    "t": "Something in your basket is missing a choice. Open it and pick one.",
+    "h": "4facf16857c4"
+  },
+  "erro.semEncomendas": {
+    "t": "The shop cannot take orders yet.",
+    "h": "9adeaef7219e"
+  },
+  "erro.emailInvalido": {
+    "t": "That email address does not look right. Please check it.",
+    "h": "d6943382f9d0"
+  },
+  "erro.mbwayNumero": {
+    "t": "That does not look like a Portuguese mobile number. MB WAY only works with one — or choose a Multibanco reference instead.",
+    "h": "e78f07ab1a23"
+  },
+  "erro.metodo": {
+    "t": "That way of paying is not available. Please pick another one.",
+    "h": "87e5b77ad53b"
+  },
+  "erro.pagamentoSemResposta": {
+    "t": "The payment service did not answer. Nothing was charged — please try again in a moment.",
+    "h": "7d21e398845c"
+  },
+  "erro.catalogo": {
+    "t": "The shop is briefly unavailable. Please try again in a minute.",
+    "h": "4f7e7c947622"
+  },
+  "erro.nifRevenda": {
+    "t": "A reseller order has to carry your own NIF. Please reload the page.",
+    "h": "b1d88ec6fbbd"
+  },
+  "erro.quantidade": {
+    "t": "One of the quantities is not allowed. Please check the basket.",
+    "h": "9cc10716029b"
+  },
+  "erro.opcaoIndisponivel": {
+    "t": "One of the choices in your basket is no longer available. Open it and pick another.",
+    "h": "23d01b8b7b33"
+  },
+  "erro.textoLongo": {
+    "t": "One of the texts to engrave is too long. Open it and shorten it.",
+    "h": "51c8b7b80cc2"
+  },
+  "erro.stockIndisponivel": {
+    "t": "We could not check the stock just now. Nothing was charged — please try again in a moment.",
+    "h": "e636e98193bd"
+  },
+  "erro.stockMudou": {
+    "t": "The stock changed while you were ordering. Please check the basket and try again.",
+    "h": "c866ecfab2ad"
+  },
+  "erro.preencha": {
+    "t": "Please fill in: {campos}.",
+    "h": "d2fcc8d87115"
+  },
+  "erro.camposEmFalta": {
+    "t": "the missing fields",
+    "h": "cc9f15e132f4"
+  },
+  "erro.generico": {
+    "t": "Something went wrong on our side. Please try again, or write to us.",
+    "h": "4eac8fb9e5a6"
+  },
+  "encomenda.naoEncontrada": {
+    "t": "We could not find that order.",
+    "h": "256bbfadfc13"
+  },
+  "encomenda.naoVerificada": {
+    "t": "We could not check that order just now. Your confirmation email is the record.",
+    "h": "0ee190073dce"
+  },
+  "pagar.copiado": {
+    "t": "Copied",
+    "h": "d8dd878fb143"
+  },
+  "pagar.selecione": {
+    "t": "Select it",
+    "h": "8857b8ceb386"
+  },
+  "mbway.recusadoTitulo": {
+    "t": "The request was declined",
+    "h": "b96878a321b7"
+  },
+  "mbway.expirouTitulo": {
+    "t": "The request expired",
+    "h": "3db44cfff98d"
+  },
+  "mbway.recusadoTexto": {
+    "t": "Nothing was charged. If that was not you, or you changed your mind, your basket is still here — order again and pick another way to pay.",
+    "h": "2cdef52e1f87"
+  },
+  "mbway.expirouTexto": {
+    "t": "Nothing was charged. Your basket is still here, so you can order again — and if MB WAY is being awkward, a Multibanco reference always works.",
+    "h": "93d57f8ee1c9"
+  },
+  "mapa.titulo": {
+    "t": "Where the workshop is",
+    "h": "f6e6dd3fff83"
+  },
+  "cesto.erroCarregar": {
+    "t": "The basket could not be loaded. Please reload the page.",
+    "h": "42d1d47b7331"
+  },
+  "cesto.porEncomenda": {
+    "t": "Made to order",
+    "h": "840ecaadd54d"
+  },
+  "cesto.emStock": {
+    "t": "In stock",
+    "h": "1d313b6a03e4"
+  },
+  "cesto.emStockN": {
+    "t": "In stock ({n})",
+    "h": "bc185dc11537"
+  },
+  "cesto.soN": {
+    "t": "Only {n} in stock",
+    "h": "ab8ccea23810"
+  },
+  "cesto.semStock": {
+    "t": "Out of stock — made for you",
+    "h": "0723480800d6"
+  },
+  "cesto.opcaoTexto": {
+    "t": "{opcao}: “{texto}”",
+    "h": "9733e391819b"
+  },
+  "cesto.pvp": {
+    "t": "RRP {preco}",
+    "h": "6f5b714cfc9c"
+  },
+  "cesto.remover": {
+    "t": "Remove",
+    "h": "a3037dc71a43"
+  },
+  "cesto.naoEnviamos": {
+    "t": "we do not ship there",
+    "h": "44ecfb2299dc"
+  },
+  "cesto.gratis": {
+    "t": "free",
+    "h": "afd1d6737dce"
+  },
+  "cesto.tecto": {
+    "t": "The basket holds at most {max} of these, so it now has {n}.",
+    "h": "57c98da94bfd"
+  },
+  "ordenar.rotulo": {
+    "t": "Sort by",
+    "h": "1b8d52ae1c04"
+  },
+  "ordenar.nossa": {
+    "t": "Our order",
+    "h": "eb9ad41660be"
+  },
+  "ordenar.precoSobe": {
+    "t": "Price: low to high",
+    "h": "49e78582f363"
+  },
+  "ordenar.precoDesce": {
+    "t": "Price: high to low",
+    "h": "6f03b65514e9"
+  },
+  "ordenar.novos": {
+    "t": "Newest first",
+    "h": "973ed386bf7b"
+  },
+  "filtros.mais.um": {
+    "t": "Show {n} more filters",
+    "h": "f95861cf6166"
+  },
+  "filtros.mais.varios": {
+    "t": "Show {n} more filters",
+    "h": "747cbc0742ff"
+  },
+  "botao.adicionado": {
+    "t": "Added",
+    "h": "d88febcb6438"
+  },
+  "botao.adicionar": {
+    "t": "Add to basket",
+    "h": "5a3ec32580e8"
+  }
 }

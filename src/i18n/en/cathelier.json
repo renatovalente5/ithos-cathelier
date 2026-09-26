@@ -1,46 +1,175 @@
 {
-  "_leia": "Frases das páginas da cathelier (início, lista de peças, ficha da peça), escritas por src/lib/cathelier.mjs. A origem é pt/; esta é a tradução inglesa.",
-  "foto.alt": "{nome} — laser cut and engraved to order",
-  "cartao.foto": "Photograph {i} of {n}",
-  "cartao.fotos": "{nome} — {n} photographs",
-  "desde": "from €{preco}",
-  "separadores": "Browse the pieces",
-  "pedirOrcamento": "Ask for a quote",
-  "inicio.maisVendidas": "Bestsellers",
-  "inicio.quantidade.titulo": "Fifty of them, fifty names",
-  "inicio.quantidade.texto1": "Wedding favours, christening keepsakes, place cards, corporate gifts, a season of trophies — anything here can be made in quantity, with a different name cut into every one.",
-  "inicio.quantidade.texto2": "Tell us roughly what and roughly how many. There is no form to fight with: a message is enough, and we come back with a price and a date.",
-  "inicio.quantidade.fotoAlt": "Personalised pieces from the workshop",
-  "inicio.mais.titulo": "More to choose from",
-  "inicio.mais.texto.um": "Cake toppers, signs, trophies, bookmarks, boxes, keyrings. {n} piece in all, and it takes a name.",
-  "inicio.mais.texto.varios": "Cake toppers, signs, trophies, bookmarks, boxes, keyrings. {n} pieces in all, and every one of them takes a name.",
-  "inicio.verTodas.um": "See the piece",
-  "inicio.verTodas.varios": "See all {n} pieces",
-  "lista.titulo": "Every piece",
-  "lista.lede.um": "{n} piece, made to order. It carries the names, the dates or the words you choose.",
-  "lista.lede.varios": "{n} pieces, all made to order. Each one carries the names, the dates or the words you choose.",
-  "lista.todas": "All",
-  "lista.porMedida": "Something that is not here? We cut pieces to measure for weddings, christenings, parties, clubs and companies.",
-  "lista.vazia": "Nothing here yet.",
-  "ficha.fotoAlt": "{nome} — photograph {i}",
-  "ficha.ampliar": "See this photograph full size",
-  "ficha.anterior": "Previous photograph",
-  "ficha.seguinte": "Next photograph",
-  "ficha.fotografias": "Photographs",
-  "ficha.fotografia": "Photograph {i}",
-  "ficha.ajuda": "Fill these in and we will send you a drawing to approve. Nothing is cut before you say yes.",
-  "ficha.obrigatorio": "required",
-  "ficha.limite": "Up to {n} characters.",
-  "ficha.menosUm": "One fewer",
-  "ficha.quantidade": "Quantity",
-  "ficha.maisUm": "One more",
-  "ficha.adicionar": "Add to basket",
-  "ficha.garantia.desenho": "A drawing to approve before anything is cut",
-  "ficha.garantia.mao": "Cut, sanded and finished by hand",
-  "ficha.garantia.envio": "Shipped within Portugal",
-  "ficha.garantia.madeira": "Wood from responsibly managed forests",
-  "ficha.cuidados": "Care and safety",
-  "ficha.muitas": "Ordering a lot of them? <a href=\"/cathelier/quote/\">Ask for a quote</a> and we will price the whole run.",
-  "ficha.maisEm": "More in",
-  "ficha.mesmaColecao": "the same collection"
+  "_leia": "Frases das páginas da cathelier (início, lista de peças, ficha da peça), escritas por src/lib/cathelier.mjs. A origem é pt/; esta é a tradução inglesa. Cada frase leva o resumo (h) do português de onde saiu: quando o português mudar, o Worker refá-la. Uma corrigida à mão que não deva ser refeita leva \"fixo\": true.",
+  "foto.alt": {
+    "t": "{nome} — laser cut and engraved to order",
+    "h": "849533dab309"
+  },
+  "cartao.foto": {
+    "t": "Photograph {i} of {n}",
+    "h": "e74c4eb89742"
+  },
+  "cartao.fotos": {
+    "t": "{nome} — {n} photographs",
+    "h": "4611291c6ad8"
+  },
+  "desde": {
+    "t": "from €{preco}",
+    "h": "1d687e32e573"
+  },
+  "separadores": {
+    "t": "Browse the pieces",
+    "h": "6f88e4fc4765"
+  },
+  "pedirOrcamento": {
+    "t": "Ask for a quote",
+    "h": "f115441b2660"
+  },
+  "inicio.maisVendidas": {
+    "t": "Bestsellers",
+    "h": "13b3152c8c33"
+  },
+  "inicio.quantidade.titulo": {
+    "t": "Fifty of them, fifty names",
+    "h": "05fdf02cefa9"
+  },
+  "inicio.quantidade.texto1": {
+    "t": "Wedding favours, christening keepsakes, place cards, corporate gifts, a season of trophies — anything here can be made in quantity, with a different name cut into every one.",
+    "h": "7fbf852bf54f"
+  },
+  "inicio.quantidade.texto2": {
+    "t": "Tell us roughly what and roughly how many. There is no form to fight with: a message is enough, and we come back with a price and a date.",
+    "h": "b74fe628d1ff"
+  },
+  "inicio.quantidade.fotoAlt": {
+    "t": "Personalised pieces from the workshop",
+    "h": "b3c14efbbb33"
+  },
+  "inicio.mais.titulo": {
+    "t": "More to choose from",
+    "h": "d286ab34ac53"
+  },
+  "inicio.mais.texto.um": {
+    "t": "Cake toppers, signs, trophies, bookmarks, boxes, keyrings. {n} piece in all, and it takes a name.",
+    "h": "325b338610fb"
+  },
+  "inicio.mais.texto.varios": {
+    "t": "Cake toppers, signs, trophies, bookmarks, boxes, keyrings. {n} pieces in all, and every one of them takes a name.",
+    "h": "a37a14c51a80"
+  },
+  "inicio.verTodas.um": {
+    "t": "See the piece",
+    "h": "41a29dc2b4ce"
+  },
+  "inicio.verTodas.varios": {
+    "t": "See all {n} pieces",
+    "h": "75ff3f65a773"
+  },
+  "lista.titulo": {
+    "t": "Every piece",
+    "h": "fa953a1853eb"
+  },
+  "lista.lede.um": {
+    "t": "{n} piece, made to order. It carries the names, the dates or the words you choose.",
+    "h": "9d4342d8571a"
+  },
+  "lista.lede.varios": {
+    "t": "{n} pieces, all made to order. Each one carries the names, the dates or the words you choose.",
+    "h": "c2031d895176"
+  },
+  "lista.todas": {
+    "t": "All",
+    "h": "aff4d19d6ee4"
+  },
+  "lista.porMedida": {
+    "t": "Something that is not here? We cut pieces to measure for weddings, christenings, parties, clubs and companies.",
+    "h": "fee2c2578882"
+  },
+  "lista.vazia": {
+    "t": "Nothing here yet.",
+    "h": "6e96207fc116"
+  },
+  "ficha.fotoAlt": {
+    "t": "{nome} — photograph {i}",
+    "h": "5d4645d8e8a2"
+  },
+  "ficha.ampliar": {
+    "t": "See this photograph full size",
+    "h": "037bfeeb0b76"
+  },
+  "ficha.anterior": {
+    "t": "Previous photograph",
+    "h": "b72977ca0936"
+  },
+  "ficha.seguinte": {
+    "t": "Next photograph",
+    "h": "d2c3fb19f79f"
+  },
+  "ficha.fotografias": {
+    "t": "Photographs",
+    "h": "dc20d7237d6a"
+  },
+  "ficha.fotografia": {
+    "t": "Photograph {i}",
+    "h": "98044972d2bd"
+  },
+  "ficha.ajuda": {
+    "t": "Fill these in and we will send you a drawing to approve. Nothing is cut before you say yes.",
+    "h": "df6f98894084"
+  },
+  "ficha.obrigatorio": {
+    "t": "required",
+    "h": "ee8ce56b0f6a"
+  },
+  "ficha.limite": {
+    "t": "Up to {n} characters.",
+    "h": "a44d88f4e6f6"
+  },
+  "ficha.menosUm": {
+    "t": "One fewer",
+    "h": "fa9ac666a157"
+  },
+  "ficha.quantidade": {
+    "t": "Quantity",
+    "h": "917b54f0f81b"
+  },
+  "ficha.maisUm": {
+    "t": "One more",
+    "h": "335bb674a270"
+  },
+  "ficha.adicionar": {
+    "t": "Add to basket",
+    "h": "5a3ec32580e8"
+  },
+  "ficha.garantia.desenho": {
+    "t": "A drawing to approve before anything is cut",
+    "h": "605f6aadc0d3"
+  },
+  "ficha.garantia.mao": {
+    "t": "Cut, sanded and finished by hand",
+    "h": "3e120b7aa84f"
+  },
+  "ficha.garantia.envio": {
+    "t": "Shipped within Portugal",
+    "h": "9fcfa5d3e87a"
+  },
+  "ficha.garantia.madeira": {
+    "t": "Wood from responsibly managed forests",
+    "h": "1f828e7a8a9d"
+  },
+  "ficha.cuidados": {
+    "t": "Care and safety",
+    "h": "53864910aee8"
+  },
+  "ficha.muitas": {
+    "t": "Ordering a lot of them? <a href=\"/cathelier/quote/\">Ask for a quote</a> and we will price the whole run.",
+    "h": "9fb4f415b352"
+  },
+  "ficha.maisEm": {
+    "t": "More in",
+    "h": "ba4b9e8d22c9"
+  },
+  "ficha.mesmaColecao": {
+    "t": "the same collection",
+    "h": "6ae169baf7d9"
+  }
 }

@@ -356,7 +356,7 @@ function optionField(o) {
     return `<div class="field">
         <label for="opt-${esc(o.id)}">${esc(o.name)} <span class="field__optional">${esc(t('ithos.opcao.opcional'))}</span></label>
         ${o.help ? `<p class="field__help">${esc(o.help)} <span class="field__limit">${esc(t('ithos.opcao.limite', { n: o.max || 40 }))}</span></p>` : ''}
-        <input id="opt-${esc(o.id)}" type="text" maxlength="${o.max || 40}"
+        <input id="opt-${esc(o.id)}" type="text" maxlength="${Number.isInteger(o.max) && o.max > 0 ? o.max : 40}"
                data-option="${esc(o.id)}" placeholder="${esc(t('ithos.opcao.exemplo'))}">
       </div>`;
   }

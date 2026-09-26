@@ -16,6 +16,7 @@
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { validar } from './traduziveis.mjs';
 
 const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 
@@ -64,12 +65,22 @@ function carregar(l) {
       for (const [k, v] of Object.entries(j)) {
         if (k.startsWith('_')) continue;
         d[`${modulo}.${k}`] = typeof v === 'object' && v !== null ? v.t : v;
+        if (typeof v === 'object' && v !== null && v.h) (maquina[l] ??= []).push(`${modulo}.${k}`);
       }
     }
+  }
+  /* As frases escritas pela máquina ({t, h}) passam pela mesma validação que
+     o conteúdo: uma que não bata com o português (uma etiqueta a mais, um
+     sinal solto, uma variável perdida) não entra, e fica o português. Estas
+     frases vão cruas para o HTML. */
+  if (l !== ORIGEM && maquina[l]) {
+    const origem = carregar(ORIGEM);
+    for (const k of maquina[l]) if (origem[k] !== undefined && validar(origem[k], d[k])) delete d[k];
   }
   dicionarios[l] = d;
   return d;
 }
+const maquina = {};
 
 /**
  * Uma frase do código, na língua actual. `{nome}` é trocado por vars.nome.

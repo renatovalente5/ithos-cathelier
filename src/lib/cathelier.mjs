@@ -337,7 +337,7 @@ export function piece({ p, all: everything, shop, occasions }) {
       </p>
       ${(p.options || []).map((o) => `<div class="field">
         <label for="opt-${esc(o.id)}">${esc(o.name)}${o.required ? ` <span class="field__req">${esc(t('cathelier.ficha.obrigatorio'))}</span>` : ''}</label>
-        <input id="opt-${esc(o.id)}" type="text" maxlength="${o.max || 60}"
+        <input id="opt-${esc(o.id)}" type="text" maxlength="${Number.isInteger(o.max) && o.max > 0 ? o.max : 60}"
                data-option="${esc(o.id)}"${o.required ? ' required' : ''}
                placeholder="${esc(o.example || '')}">
         <p class="field__limit">${esc(t('cathelier.ficha.limite', { n: o.max || 60 }))}</p>

@@ -872,6 +872,24 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
    CI and the battery, and break the Fox card the moment a pointer rested on
    it. All 576 of them happen to exist today; the failure is the next
    photograph added without re-running scripts/renditions.py. */
+/* O QUE ENTRA NUM ATRIBUTO TEM DE TER A FORMA DE UM NOME. A pasta e os nomes
+   das fotografias vão para src e srcset, e o máximo de caracteres para um
+   maxlength; o gerador escapa-os, mas o conteúdo é escrito pelo painel, e uma
+   sessão roubada só pode mudar TEXTO -- nunca meter código no site. Vale para
+   as duas marcas e para o que não está publicado (publicar é um clique). */
+for (const brand of ['ithos', 'cathelier']) {
+  for (const f of readdirSync(join(CONTENT, brand)).filter((x) => x.endsWith('.json') && !x.startsWith('_'))) {
+    const p = JSON.parse(readFileSync(join(CONTENT, brand, f), 'utf8'));
+    if (p.photoFolder !== undefined && !/^[a-z0-9._-]{1,60}$/.test(String(p.photoFolder))) die(`${brand}/${f}: photoFolder "${p.photoFolder}" is not a plain folder name`);
+    for (const n of p.photos ?? []) {
+      if (typeof n !== 'string' || !/^[A-Za-z0-9._-]{1,80}$/.test(n)) die(`${brand}/${f}: photograph "${n}" is not a plain file name`);
+    }
+    for (const o of p.options ?? []) {
+      if (o.max !== undefined && !(Number.isInteger(o.max) && o.max > 0 && o.max <= 500)) die(`${brand}/${f}: option "${o.id}" has max ${JSON.stringify(o.max)}, not a whole number of characters`);
+    }
+  }
+}
+
 {
   const PUB = join(ROOT, 'public', 'media');
   // What the card's frame asks for, and what the thumbnail strip asks for.

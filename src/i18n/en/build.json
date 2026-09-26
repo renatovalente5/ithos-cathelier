@@ -1,59 +1,227 @@
 {
-  "_leia": "Títulos, descrições e migalhas das páginas, escritos pelo gerador (src/build.mjs).",
-  "migalha.inicio": "Home",
-  "migalha.candeeiros": "Lamps",
-  "migalha.todasPecas": "Every piece",
-  "migalha.oficina": "The workshop",
-  "migalha.cuidados": "Care and safety",
-  "migalha.contactos": "Contact",
-  "migalha.orcamento": "Ask for a quote",
-  "inicio.titulo": "ithos — handmade wooden night lights for children’s rooms",
-  "inicio.descricao": "Wooden night lights cut, sanded and painted by hand in Castelo Branco, Portugal. {n} designs, each one able to carry an engraved name.",
-  "candeeiros.titulo": "Wooden night lights — all {n} designs | ithos",
-  "candeeiros.descricao": "Every ithos night light: {n} handmade designs in solid pine, from animals to rockets. Each one can carry an engraved name.",
-  "candeeiro.titulo": "{nome} night light — handmade in wood | ithos",
-  "candeeiro.nomeProduto": "{nome} wooden night light",
-  "cathelier.titulo": "cathelier — personalised pieces, cut and engraved to order",
-  "cathelier.descricao": "Laser-cut wooden keepsakes with your names, dates and words on them. {n} pieces in {m} collections, each with a proof to approve before we cut.",
-  "pecas.titulo": "Every piece — {n} personalised designs | cathelier",
-  "pecas.descricao": "All {n} cathelier pieces, made to order with your names, dates or words engraved.",
-  "peca.titulo": "{nome} — personalised and engraved | cathelier",
-  "oficina.titulo": "The workshop — ithos",
-  "oficina.descricao": "A small workshop in Castelo Branco, Portugal, where every wooden night light is cut, sanded, painted and wired by hand.",
-  "oficinaCath.titulo": "The workshop — cathelier",
-  "oficinaCath.descricao": "The laser side of a small Portuguese workshop: personalised pieces drawn, cut and engraved to order, with a proof to approve before anything is cut.",
-  "cuidados.titulo": "Care and safety — ithos",
-  "cuidados.descricao": "How to look after a wooden night light, and what to know before putting one in a child’s room.",
-  "legal.terms": "Terms of sale",
-  "legal.terms.descricao": "The terms that apply to every purchase on this site, under both the ithos and cathelier names.",
-  "legal.privacy": "Privacy",
-  "legal.privacy.descricao": "This site sets no analytics or advertising cookies and does not track you. What we hold, why, and for how long.",
-  "legal.cancellation": "Your right to cancel",
-  "legal.cancellation.descricao": "Fourteen days to change your mind on anything that is not personalised, and what that exception means.",
-  "legal.returns-form": "Cancellation form",
-  "legal.returns-form.descricao": "The form you may use to cancel an order. An email does the same job.",
-  "legal.shipping-and-returns": "Delivery and returns",
-  "legal.shipping-and-returns.descricao": "How long things take, where we ship, what it costs, and what happens if something arrives damaged.",
-  "legal.identification": "Who you are buying from",
-  "legal.identification.descricao": "The seller’s legal identification, published under article 10 of Decree-Law 7/2004.",
-  "contactos.titulo": "Contact — ithos · cathelier",
-  "contactos.descricao": "WhatsApp, email or telephone. Answers in a day, usually less. And the questions we are asked most.",
-  "orcamento.titulo": "Ask for a quote — cathelier",
-  "orcamento.descricao": "For anything made to measure or in quantity: cake toppers, wedding signs, christening favours, trophies.",
-  "cesto.titulo": "Your basket — ithos · cathelier",
-  "cesto.descricao": "What you have chosen so far.",
-  "revendedores.titulo": "Resellers — ithos · cathelier",
-  "revendedores.descricao": "Sign in to see your reseller prices.",
-  "pagar.titulo": "Pay for your order",
-  "pagar.descricao": "Finish your payment by MB WAY or Multibanco.",
-  "obrigado.titulo": "Thank you",
-  "obrigado.descricao": "Your order is placed and the workshop starts now.",
-  "cancelada.titulo": "Nothing was charged",
-  "cancelada.descricao": "You closed the payment page, so the order was not placed.",
-  "naoEncontrada.titulo": "Not found — ithos · cathelier",
-  "naoEncontrada.descricao": "The page you were looking for has moved or never existed.",
-  "stub.titulo": "{nome} — moved to the full list | cathelier",
-  "stub.texto": "This page has moved. “{nome}” is now a filter on the full list of pieces.",
-  "stub.ir": "Go to “{nome}”",
-  "euros": "€{n}"
+  "_leia": "Títulos, descrições e migalhas das páginas, escritos pelo gerador (src/build.mjs). Cada frase leva o resumo (h) do português de onde saiu: quando o português mudar, o Worker refá-la. Uma corrigida à mão que não deva ser refeita leva \"fixo\": true.",
+  "migalha.inicio": {
+    "t": "Home",
+    "h": "325dfc37c9ba"
+  },
+  "migalha.candeeiros": {
+    "t": "Lamps",
+    "h": "f23ec2483e13"
+  },
+  "migalha.todasPecas": {
+    "t": "Every piece",
+    "h": "fa953a1853eb"
+  },
+  "migalha.oficina": {
+    "t": "The workshop",
+    "h": "9cd657069f2a"
+  },
+  "migalha.cuidados": {
+    "t": "Care and safety",
+    "h": "53864910aee8"
+  },
+  "migalha.contactos": {
+    "t": "Contact",
+    "h": "baf2c13e6ce7"
+  },
+  "migalha.orcamento": {
+    "t": "Ask for a quote",
+    "h": "f115441b2660"
+  },
+  "inicio.titulo": {
+    "t": "ithos — handmade wooden night lights for children’s rooms",
+    "h": "59c6a87bdabd"
+  },
+  "inicio.descricao": {
+    "t": "Wooden night lights cut, sanded and painted by hand in Castelo Branco, Portugal. {n} designs, each one able to carry an engraved name.",
+    "h": "5d1061be257b"
+  },
+  "candeeiros.titulo": {
+    "t": "Wooden night lights — all {n} designs | ithos",
+    "h": "2c0bb69d3872"
+  },
+  "candeeiros.descricao": {
+    "t": "Every ithos night light: {n} handmade designs in solid pine, from animals to rockets. Each one can carry an engraved name.",
+    "h": "ed454f911d02"
+  },
+  "candeeiro.titulo": {
+    "t": "{nome} night light — handmade in wood | ithos",
+    "h": "249f64fb6711"
+  },
+  "candeeiro.nomeProduto": {
+    "t": "{nome} wooden night light",
+    "h": "daffda3b33de"
+  },
+  "cathelier.titulo": {
+    "t": "cathelier — personalised pieces, cut and engraved to order",
+    "h": "322a58dae508"
+  },
+  "cathelier.descricao": {
+    "t": "Laser-cut wooden keepsakes with your names, dates and words on them. {n} pieces in {m} collections, each with a proof to approve before we cut.",
+    "h": "c14b92d69807"
+  },
+  "pecas.titulo": {
+    "t": "Every piece — {n} personalised designs | cathelier",
+    "h": "3401c694f31b"
+  },
+  "pecas.descricao": {
+    "t": "All {n} cathelier pieces, made to order with your names, dates or words engraved.",
+    "h": "ef7b23486c04"
+  },
+  "peca.titulo": {
+    "t": "{nome} — personalised and engraved | cathelier",
+    "h": "98aae30a37ce"
+  },
+  "oficina.titulo": {
+    "t": "The workshop — ithos",
+    "h": "bdc42a145fec"
+  },
+  "oficina.descricao": {
+    "t": "A small workshop in Castelo Branco, Portugal, where every wooden night light is cut, sanded, painted and wired by hand.",
+    "h": "4a74be300519"
+  },
+  "oficinaCath.titulo": {
+    "t": "The workshop — cathelier",
+    "h": "a73f14e3c48c"
+  },
+  "oficinaCath.descricao": {
+    "t": "The laser side of a small Portuguese workshop: personalised pieces drawn, cut and engraved to order, with a proof to approve before anything is cut.",
+    "h": "6f3cba23373a"
+  },
+  "cuidados.titulo": {
+    "t": "Care and safety — ithos",
+    "h": "f94b19b1a6f5"
+  },
+  "cuidados.descricao": {
+    "t": "How to look after a wooden night light, and what to know before putting one in a child’s room.",
+    "h": "7069ca0e897a"
+  },
+  "legal.terms": {
+    "t": "Terms of sale",
+    "h": "112d2efe0b39"
+  },
+  "legal.terms.descricao": {
+    "t": "The terms that apply to every purchase on this site, under both the ithos and cathelier names.",
+    "h": "c7766f2b953a"
+  },
+  "legal.privacy": {
+    "t": "Privacy",
+    "h": "2bb2d8436a5c"
+  },
+  "legal.privacy.descricao": {
+    "t": "This site sets no analytics or advertising cookies and does not track you. What we hold, why, and for how long.",
+    "h": "aee31d1de69f"
+  },
+  "legal.cancellation": {
+    "t": "Your right to cancel",
+    "h": "f889a06b8926"
+  },
+  "legal.cancellation.descricao": {
+    "t": "Fourteen days to change your mind on anything that is not personalised, and what that exception means.",
+    "h": "56ec0667099a"
+  },
+  "legal.returns-form": {
+    "t": "Cancellation form",
+    "h": "a62acec7bf59"
+  },
+  "legal.returns-form.descricao": {
+    "t": "The form you may use to cancel an order. An email does the same job.",
+    "h": "7ad388dbfd12"
+  },
+  "legal.shipping-and-returns": {
+    "t": "Delivery and returns",
+    "h": "1971e3c54d80"
+  },
+  "legal.shipping-and-returns.descricao": {
+    "t": "How long things take, where we ship, what it costs, and what happens if something arrives damaged.",
+    "h": "d75ac00a7b6f"
+  },
+  "legal.identification": {
+    "t": "Who you are buying from",
+    "h": "88ed47e982bf"
+  },
+  "legal.identification.descricao": {
+    "t": "The seller’s legal identification, published under article 10 of Decree-Law 7/2004.",
+    "h": "bf7aa265a233"
+  },
+  "contactos.titulo": {
+    "t": "Contact — ithos · cathelier",
+    "h": "fdf88bcb7161"
+  },
+  "contactos.descricao": {
+    "t": "WhatsApp, email or telephone. Answers in a day, usually less. And the questions we are asked most.",
+    "h": "6a1b38bc75fc"
+  },
+  "orcamento.titulo": {
+    "t": "Ask for a quote — cathelier",
+    "h": "b4549ff07de7"
+  },
+  "orcamento.descricao": {
+    "t": "For anything made to measure or in quantity: cake toppers, wedding signs, christening favours, trophies.",
+    "h": "f56c658c3c77"
+  },
+  "cesto.titulo": {
+    "t": "Your basket — ithos · cathelier",
+    "h": "b819cec1d6d9"
+  },
+  "cesto.descricao": {
+    "t": "What you have chosen so far.",
+    "h": "b253d948b470"
+  },
+  "revendedores.titulo": {
+    "t": "Resellers — ithos · cathelier",
+    "h": "9df12fe781ae"
+  },
+  "revendedores.descricao": {
+    "t": "Sign in to see your reseller prices.",
+    "h": "e6f3c2e7d399"
+  },
+  "pagar.titulo": {
+    "t": "Pay for your order",
+    "h": "2046b0430fb4"
+  },
+  "pagar.descricao": {
+    "t": "Finish your payment by MB WAY or Multibanco.",
+    "h": "f8ed31a1803e"
+  },
+  "obrigado.titulo": {
+    "t": "Thank you",
+    "h": "b506fc18190d"
+  },
+  "obrigado.descricao": {
+    "t": "Your order is placed and the workshop starts now.",
+    "h": "c4f4432bfd70"
+  },
+  "cancelada.titulo": {
+    "t": "Nothing was charged",
+    "h": "fe3c3373ecff"
+  },
+  "cancelada.descricao": {
+    "t": "You closed the payment page, so the order was not placed.",
+    "h": "c394d3d9ecfe"
+  },
+  "naoEncontrada.titulo": {
+    "t": "Not found — ithos · cathelier",
+    "h": "3d429bb61c4c"
+  },
+  "naoEncontrada.descricao": {
+    "t": "The page you were looking for has moved or never existed.",
+    "h": "34bc7ec08e5e"
+  },
+  "stub.titulo": {
+    "t": "{nome} — moved to the full list | cathelier",
+    "h": "c95a5d439fde"
+  },
+  "stub.texto": {
+    "t": "This page has moved. “{nome}” is now a filter on the full list of pieces.",
+    "h": "36cce68efea5"
+  },
+  "stub.ir": {
+    "t": "Go to “{nome}”",
+    "h": "e066dba82631"
+  },
+  "euros": {
+    "t": "€{n}",
+    "h": "256c1e67ecff"
+  }
 }

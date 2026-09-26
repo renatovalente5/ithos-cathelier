@@ -1,47 +1,179 @@
 {
-  "_leia": "Frases da moldura das páginas (cabeçalho, menu, rodapé). A origem é pt/; esta é a tradução inglesa.",
-  "nav.lamps": "Lamps",
-  "nav.workshop": "The workshop",
-  "nav.contact": "Contact",
-  "nav.pieces": "All pieces",
-  "nav.quote": "Ask for a quote",
-  "nav.questions": "Questions",
-  "irmao.ithos": "wooden night lights",
-  "irmao.cathelier": "personalised pieces",
-  "custoChamada": "(Call to the national mobile network)",
-  "saltar": "Skip to content",
-  "topo": "Back to the top of the page",
-  "portesGratis": "Free shipping on orders over €{n}",
-  "abrirMenu": "Open the menu",
-  "menu": "Menu",
-  "inicioDe": "{marca} — home",
-  "irPara": "Go to {nome}, {nota}",
-  "cesto": "Basket",
-  "fecharMenu": "Close the menu",
-  "navPrincipal": "Main",
-  "migalhas": "Breadcrumb",
-  "noInstagram": "{marca} on Instagram",
-  "noFacebook": "{marca} on Facebook",
-  "rodape.apoio": "Customer care",
-  "rodape.entregas": "Delivery and returns",
-  "rodape.formulario": "Cancellation form",
-  "rodape.reclamacoes": "Complaints book",
-  "rodape.loja": "The shop",
-  "rodape.pecasPersonalizadas": "Personalised pieces",
-  "rodape.todasPecas": "All the pieces",
-  "rodape.pedirOrcamento": "Ask for a quote",
-  "rodape.comoSeFaz": "How a piece is made",
-  "rodape.candeeiros": "Wooden night lights",
-  "rodape.todosCandeeiros": "All the lamps",
-  "rodape.oficina": "The workshop",
-  "rodape.cuidados": "Care and safety",
-  "rodape.contactos": "Contact",
-  "rodape.termos": "Terms",
-  "rodape.condicoesVenda": "Terms of sale",
-  "rodape.privacidade": "Privacy",
-  "rodape.resolucao": "Right to cancel",
-  "rodape.identificacao": "Who you are buying from",
-  "rodape.revendedores": "For resellers",
-  "rodape.falar": "Talk to us",
-  "lingua": "Language"
+  "_leia": "Frases da moldura das páginas (cabeçalho, menu, rodapé). A origem é pt/; esta é a tradução inglesa. Cada frase leva o resumo (h) do português de onde saiu: quando o português mudar, o Worker refá-la. Uma corrigida à mão que não deva ser refeita leva \"fixo\": true.",
+  "nav.lamps": {
+    "t": "Lamps",
+    "h": "f23ec2483e13"
+  },
+  "nav.workshop": {
+    "t": "The workshop",
+    "h": "9cd657069f2a"
+  },
+  "nav.contact": {
+    "t": "Contact",
+    "h": "baf2c13e6ce7"
+  },
+  "nav.pieces": {
+    "t": "All pieces",
+    "h": "fa953a1853eb"
+  },
+  "nav.quote": {
+    "t": "Ask for a quote",
+    "h": "f115441b2660"
+  },
+  "nav.questions": {
+    "t": "Questions",
+    "h": "cf96d9da5781"
+  },
+  "irmao.ithos": {
+    "t": "wooden night lights",
+    "h": "6f87a2baa186"
+  },
+  "irmao.cathelier": {
+    "t": "personalised pieces",
+    "h": "017e0c9a687c"
+  },
+  "custoChamada": {
+    "t": "(Call to the national mobile network)",
+    "h": "7dc82747a5e1"
+  },
+  "saltar": {
+    "t": "Skip to content",
+    "h": "8d82be62715e"
+  },
+  "topo": {
+    "t": "Back to the top of the page",
+    "h": "350be986fb20"
+  },
+  "portesGratis": {
+    "t": "Free shipping on orders over €{n}",
+    "h": "0d9c737ed2f9"
+  },
+  "abrirMenu": {
+    "t": "Open the menu",
+    "h": "3723e68815c2"
+  },
+  "menu": {
+    "t": "Menu",
+    "h": "99af6606ff9d"
+  },
+  "inicioDe": {
+    "t": "{marca} — home",
+    "h": "7cb871704e7f"
+  },
+  "irPara": {
+    "t": "Go to {nome}, {nota}",
+    "h": "e34392906c94"
+  },
+  "cesto": {
+    "t": "Basket",
+    "h": "43cfe34edb3d"
+  },
+  "fecharMenu": {
+    "t": "Close the menu",
+    "h": "7a5b4944e711"
+  },
+  "navPrincipal": {
+    "t": "Main",
+    "h": "afc19f1734c1"
+  },
+  "migalhas": {
+    "t": "Breadcrumb",
+    "h": "31591bad64b8"
+  },
+  "noInstagram": {
+    "t": "{marca} on Instagram",
+    "h": "a5a2ae445be4"
+  },
+  "noFacebook": {
+    "t": "{marca} on Facebook",
+    "h": "5485f0fac2b7"
+  },
+  "rodape.apoio": {
+    "t": "Customer care",
+    "h": "87ddee388561"
+  },
+  "rodape.entregas": {
+    "t": "Delivery and returns",
+    "h": "1971e3c54d80"
+  },
+  "rodape.formulario": {
+    "t": "Cancellation form",
+    "h": "a62acec7bf59"
+  },
+  "rodape.reclamacoes": {
+    "t": "Complaints book",
+    "h": "5dc0f1f9dd85"
+  },
+  "rodape.loja": {
+    "t": "The shop",
+    "h": "ee03cdaa6a1f"
+  },
+  "rodape.pecasPersonalizadas": {
+    "t": "Personalised pieces",
+    "h": "eba27f2bbfc3"
+  },
+  "rodape.todasPecas": {
+    "t": "All the pieces",
+    "h": "fa953a1853eb"
+  },
+  "rodape.pedirOrcamento": {
+    "t": "Ask for a quote",
+    "h": "f115441b2660"
+  },
+  "rodape.comoSeFaz": {
+    "t": "How a piece is made",
+    "h": "5fb695c7eb58"
+  },
+  "rodape.candeeiros": {
+    "t": "Wooden night lights",
+    "h": "6ce612b2cdff"
+  },
+  "rodape.todosCandeeiros": {
+    "t": "All the lamps",
+    "h": "380b107c3331"
+  },
+  "rodape.oficina": {
+    "t": "The workshop",
+    "h": "9cd657069f2a"
+  },
+  "rodape.cuidados": {
+    "t": "Care and safety",
+    "h": "53864910aee8"
+  },
+  "rodape.contactos": {
+    "t": "Contact",
+    "h": "baf2c13e6ce7"
+  },
+  "rodape.termos": {
+    "t": "Terms",
+    "h": "c395cbc2ad42"
+  },
+  "rodape.condicoesVenda": {
+    "t": "Terms of sale",
+    "h": "112d2efe0b39"
+  },
+  "rodape.privacidade": {
+    "t": "Privacy",
+    "h": "2bb2d8436a5c"
+  },
+  "rodape.resolucao": {
+    "t": "Right to cancel",
+    "h": "93ae9632e4c5"
+  },
+  "rodape.identificacao": {
+    "t": "Who you are buying from",
+    "h": "88ed47e982bf"
+  },
+  "rodape.revendedores": {
+    "t": "For resellers",
+    "h": "8526ca6905b7"
+  },
+  "rodape.falar": {
+    "t": "Talk to us",
+    "h": "c0e6b9a64cbd"
+  },
+  "lingua": {
+    "t": "Language",
+    "h": "dca49b9ef917"
+  }
 }

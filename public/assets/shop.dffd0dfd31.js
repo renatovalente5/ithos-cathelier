@@ -1452,7 +1452,7 @@ async function basketPage() {
 
     linesBox.innerHTML = priced.map(({ line, p }, i) => `<div class="basket-line">
       <div class="frame">${p.photo
-        ? `<img src="${BASE}/media/${p.photo}-200.webp" alt="" width="200" height="200" loading="lazy">` : ''}</div>
+        ? `<img src="${escRv(`${BASE}/media/${p.photo}-200.webp`)}" alt="" width="200" height="200" loading="lazy">` : ''}</div>
       <div>
         <p class="basket-line__name">${escRv(p.name)}</p>
         ${p.shown.length ? `<p class="basket-line__opts">${p.shown.map(escRv).join(' · ')}</p>` : ''}

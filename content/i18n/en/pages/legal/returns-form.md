@@ -3,7 +3,7 @@
 
 You do not have to use this form — a clear email to
 [{{EMAIL}}](mailto:{{EMAIL}}) does the same job. It is here because the law says
-it must be.
+it must be (the model form in Annex B to Decree-Law 24/2014).
 
 Copy it, fill it in, and send it to [{{EMAIL}}](mailto:{{EMAIL}}) or to
 {{LEGAL_NAME}}, {{ADDRESS}}.

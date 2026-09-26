@@ -1,180 +1,655 @@
 {
-  "_leia": "Frases das páginas escritas pelo código (src/lib/pages.mjs): contactos, perguntas, orçamento, cesto, pagamento, revendedores, e as frases dos marcadores das páginas legais. A origem é pt/; esta é a tradução inglesa. As que levam marcação têm as mesmas etiquetas nas duas línguas.",
-  "envios.onde": "Where",
-  "envios.portes": "Shipping",
-  "envios.prazo": "Time",
-  "envios.dias": "{min}–{max} working days",
-  "envios.nenhum": "We are not shipping anywhere yet.",
-  "pagamento.prestador": "the payment provider",
-  "pagamento.metodos": "the methods shown at checkout",
-  "iva": "VAT is not charged: article 53 of the Portuguese VAT code applies.",
-  "dias.um": "{n} day",
-  "dias.varios": "{n} days",
-
-  "botao.verCandeeiros": "See the lamps",
-  "botao.verPecas": "See the pieces",
-  "botao.voltarCandeeiros": "Back to the lamps",
-  "botao.voltarCesto": "Back to the basket",
-  "botao.continuarAVer": "Keep looking",
-  "botao.copiar": "Copy",
-  "botao.encomendarEPagar": "Order and pay",
-
-  "contacto.titulo": "Contact",
-  "contacto.entrada": "Ask us anything. We answer in a day, usually less.",
-  "contacto.whatsapp": "The fastest way to reach us",
-  "contacto.email": "For orders and quotes",
-  "contacto.ondeEstamos": "Where we are",
-  "contacto.oficina": "The workshop is in {cidade}, {pais}. It is a workshop rather than a shop, so come by arrangement — send a message first.",
-  "contacto.mapa": "Show the map",
-  "contacto.mapaAviso": "This loads Google Maps, which means your browser contacts Google and Google may set cookies. Nothing else on this site does that.",
-  "contacto.perguntas": "Questions",
-
-  "faq.prazo": "How long does it take?",
-  "faq.prazo.resposta": "<p>A lamp that is in stock leaves the workshop in {dias}. If it is out of stock you can still order it: we make yours, and it is with you in {semanas}. Each product page says which it is.</p> <p>Pieces from cathelier are always made to order — {semanas}, counted from when you approve the drawing. If one thing in an order is made to order, the whole order ships together.</p>",
-  "faq.nome": "Can I have a name on it?",
-  "faq.nome.resposta": "<p>Yes, on anything, and it costs nothing extra. Put it in the engraving box on the product page — a name, a date, or a short phrase.</p> <p>One thing to know: a piece with a name on it is made for you alone, so it cannot be returned under the 14-day rule. Choosing a colour we already offer is not personalisation and does not affect your right to cancel.</p>",
-  "faq.seguranca": "Is it safe in a baby’s room?",
-  "faq.seguranca.resposta": "<p>These are decorative night lights, not toys. They are made of solid pine with water-based paints and every edge is sanded by hand, but they are not tested as toys and should not be handed to a small child to play with.</p> <p>If it is going in a cot room, keep the cable out of the cot. <a href=\"/care-and-safety/\">Everything about care and safety</a>.</p>",
-  "faq.pilhas": "Batteries or mains?",
-  "faq.pilhas.resposta": "<p>Both, at the same price. The battery version takes two AA cells, which are not included. The mains version comes with a remote that dims it, times it and makes it pulse.</p>",
-  "faq.portes": "What does delivery cost?",
-  "faq.portes.resposta": "<p>It depends where you are. <a href=\"/legal/shipping-and-returns/\">The full table is here</a>.</p>",
-  "faq.desistir": "Can I change my mind?",
-  "faq.desistir.resposta": "<p>You have {dias} days on anything that is not personalised. <a href=\"/legal/cancellation/\">How it works</a>.</p>",
-  "faq.quantidade": "Do you take large orders?",
-  "faq.quantidade.resposta": "<p>Yes — favours, place cards, corporate gifts, club trophies. <a href=\"/cathelier/quote/\">Ask for a quote</a> and say roughly how many.</p>",
-
-  "orcamento.titulo": "Ask for a quote",
-  "orcamento.entrada": "For anything made to measure, or in quantity — a cake topper with two names, the signs for a wedding, favours for a christening, trophies for a season.",
-  "orcamento.texto": "Tell us what you have in mind and, if it is more than one, roughly how many. We will come back with a price and a date. There is no form to fight with: a message is enough.",
-  "orcamento.whatsapp": "Send a photo of what you have in mind",
-  "orcamento.assunto": "Quote",
-  "orcamento.email": "For drawings and longer lists",
-  "orcamento.ajuda": "What helps us answer quickly",
-  "orcamento.ajuda.quantas": "Roughly how many.",
-  "orcamento.ajuda.para": "What it is for, and the date it is needed by.",
-  "orcamento.ajuda.palavras": "The names, dates or words that go on it — or just say \"50 different names\".",
-  "orcamento.ajuda.imagem": "Any picture of something close to what you want.",
-  "orcamento.passos": "How it goes from there",
-  "orcamento.passos.preco": "We answer with a price and a date.",
-  "orcamento.passos.desenho": "You approve a drawing. Nothing is cut before that.",
-  "orcamento.passos.fazemos": "We make it, and it comes to you ready to give.",
-
-  "cesto.titulo": "Your basket",
-  "cesto.vazio": "There is nothing in it yet.",
-  "cesto.total": "Total",
-  "cesto.enviarPara": "Shipping to",
-  "cesto.pecas": "Pieces",
-  "cesto.portes": "Shipping",
-  "cesto.aPagar": "To pay",
-  "cesto.stockInsuficiente": "There are not enough in stock for these quantities.",
-  "cesto.ifthenpay": "Payments are handled by ifthenpay. We never see your card, your bank or your MB WAY PIN.",
-
-  "entrega.titulo": "Where it goes",
-  "entrega.nome": "Your name",
-  "entrega.email": "Email",
-  "entrega.morada": "Address",
-  "entrega.postal": "Post code",
-  "entrega.localidade": "Town",
-  "entrega.telefone": "Phone",
-  "entrega.opcional": "optional",
-  "entrega.nif": "Tax number",
-  "entrega.nifNota": "optional, for the invoice",
-
-  "metodo.titulo": "How you pay",
-  "metodo.mbway.nota": "You get the request on your phone and accept it there. Takes a minute.",
-  "metodo.mbway.telemovel": "Your MB WAY phone number",
-  "metodo.mb.nome": "Multibanco reference",
-  "metodo.mb.nota": "We give you an entity and a reference to pay at an ATM or in home banking.",
-  "metodo.cartao.nome": "Card",
-  "metodo.cartao.nota": "Visa or Mastercard. You type the number on a secure page — we never see it.",
-  "metodo.google.nota": "Pay with the card in your Google account.",
-  "metodo.apple.nota": "Pay with Touch ID or Face ID on your Apple device.",
-
-  "pais.PT": "Portugal (mainland)",
-  "pais.PT-20": "Azores",
-  "pais.PT-30": "Madeira",
-  "pais.ES": "Spain",
-  "pais.FR": "France",
-  "pais.GB": "United Kingdom",
-  "pais.DE": "Germany",
-  "pais.CH": "Switzerland",
-  "pais.AT": "Austria",
-  "pais.BE": "Belgium",
-  "pais.NL": "Netherlands",
-  "pais.LU": "Luxembourg",
-  "pais.IT": "Italy",
-  "pais.IE": "Ireland",
-  "pais.DK": "Denmark",
-  "pais.SE": "Sweden",
-  "pais.FI": "Finland",
-  "pais.PL": "Poland",
-  "pais.CZ": "Czechia",
-  "pais.SK": "Slovakia",
-  "pais.HU": "Hungary",
-  "pais.SI": "Slovenia",
-  "pais.HR": "Croatia",
-  "pais.RO": "Romania",
-  "pais.BG": "Bulgaria",
-  "pais.GR": "Greece",
-  "pais.EE": "Estonia",
-  "pais.LV": "Latvia",
-  "pais.LT": "Lithuania",
-  "pais.MT": "Malta",
-  "pais.CY": "Cyprus",
-  "pais.NO": "Norway",
-
-  "naoEncontrada.titulo": "There is nothing here",
-  "naoEncontrada.texto": "The page you were looking for has moved or never existed.",
-
-  "encomenda.referencia": "Your order is {ref}. Keep that reference: it is what we both use if you write to us.",
-  "encomenda.confirmacao": "A confirmation is on its way to your inbox, with when to expect it. The workshop starts now, and we will tell you when it ships.",
-  "encomenda.naoEncontrada": "We could not find that order. If you have just paid, give it a minute and reload this page.",
-  "encomenda.escreva": "If it stays like this, write to us — nothing will be charged twice.",
-
-  "obrigado.titulo": "Thank you",
-  "obrigado.aVerificar": "Checking your payment…",
-  "obrigado.porPagar": "We have not received the payment yet, and that is normal if you chose a Multibanco reference — it is yours for {dias}. Nothing is made and nothing is charged until you pay it.",
-  "obrigado.quandoChegar": "The moment it reaches us we write to you, and the workshop starts. If you have just paid, give it a minute and reload this page.",
-
-  "pagar.titulo": "Pay for your order",
-  "pagar.aPreparar": "Getting your payment ready…",
-  "pagar.mbway.titulo": "Open your MB WAY app",
-  "pagar.mbway.texto": "We sent a payment request to your phone. Open MB WAY, check the amount, and accept it.",
-  "pagar.mbway.tempo": "Time left: {tempo}",
-  "pagar.mbway.aviso": "Leave this page open — it changes by itself the moment you accept. If the request expires, you can order again and choose a Multibanco reference instead.",
-  "pagar.mb.titulo": "Pay this Multibanco reference",
-  "pagar.mb.como": "At an ATM choose <em>Pagamentos e outros serviços</em> → <em>Pagamentos de serviços</em>, or use your bank&rsquo;s app or home banking.",
-  "pagar.mb.entidade": "Entity",
-  "pagar.mb.referencia": "Reference",
-  "pagar.mb.valor": "Amount",
-  "pagar.mb.validade": "The reference is yours for {dias}<span data-pay-expiry hidden>, until {data}</span>. Nothing is made and nothing is charged until you pay it.",
-  "pagar.mb.depois": "The moment the payment reaches us we write to you and the workshop starts. You can close this page — we have the reference in your email too.",
-  "pagar.pago": "Paid — thank you",
-  "pagar.expirou.titulo": "The request expired",
-  "pagar.expirou.texto": "Nothing was charged. Your basket is still here, so you can order again — and if MB WAY is being awkward, a Multibanco reference always works.",
-  "pagar.ifthenpay": "Payments are handled by {ifthenpay}, a Portuguese payment institution. We never see your card, your bank or your MB WAY PIN.",
-
-  "cancelada.titulo": "The order was not placed",
-  "cancelada.entrada": "You left the payment page, so we have not taken anything and the order has not gone through.",
-  "cancelada.texto": "If you were given a Multibanco reference before you left, it may still be valid — paying it will confirm the order. Otherwise your basket is still here if you want to pick it up again.",
-
-  "revenda.titulo": "Resellers",
-  "revenda.entrada": "If we have registered you as a reseller, sign in here to see your price next to the retail price on every piece, and to buy at it.",
-  "revenda.nif": "Your NIF",
-  "revenda.pedirLigacao": "Email me a sign-in link",
-  "revenda.outroDispositivo": "Got the code on another device?",
-  "revenda.codigo": "The code from the email",
-  "revenda.manter": "Keep me signed in on this device",
-  "revenda.entrar": "Sign in",
-  "revenda.aindaNao": "Not a reseller yet? <a href=\"/contact/\">Talk to us</a>. Reseller purchases follow the <a href=\"/legal/terms/#resellers\">reseller conditions</a>.",
-  "revenda.ativos": "Reseller prices are on for {firma} (NIF {nif}).",
-  "revenda.sair": "Sign out",
-  "revenda.tabela": "Your price list",
-  "revenda.precos": "Retail prices are recommended retail prices — you set your own. The discount comes off each piece; paid options are at their normal price.",
-  "revenda.condicoes": "Reseller conditions",
-  "revenda.peca": "Piece",
-  "revenda.pvp": "RRP",
-  "revenda.seuPreco": "Your price",
-  "revenda.emStock": "In stock"
+  "_leia": "Frases das páginas escritas pelo código (src/lib/pages.mjs): contactos, perguntas, orçamento, cesto, pagamento, revendedores, e as frases dos marcadores das páginas legais. A origem é pt/; esta é a tradução inglesa. As que levam marcação têm as mesmas etiquetas nas duas línguas. Cada frase leva o resumo (h) do português de onde saiu: quando o português mudar, o Worker refá-la. Uma corrigida à mão que não deva ser refeita leva \"fixo\": true.",
+  "envios.onde": {
+    "t": "Where",
+    "h": "8e7290e44546"
+  },
+  "envios.portes": {
+    "t": "Shipping",
+    "h": "0364fc85087f"
+  },
+  "envios.prazo": {
+    "t": "Time",
+    "h": "f367581dbb69"
+  },
+  "envios.dias": {
+    "t": "{min}–{max} working days",
+    "h": "9cfae2df532f"
+  },
+  "envios.nenhum": {
+    "t": "We are not shipping anywhere yet.",
+    "h": "97a1840f2e1d"
+  },
+  "pagamento.prestador": {
+    "t": "the payment provider",
+    "h": "e86a8e107835"
+  },
+  "pagamento.metodos": {
+    "t": "the methods shown at checkout",
+    "h": "384a4dfed7c5"
+  },
+  "iva": {
+    "t": "VAT is not charged: article 53 of the Portuguese VAT code applies.",
+    "h": "3c0f7787b526"
+  },
+  "dias.um": {
+    "t": "{n} day",
+    "h": "d54500ed5184"
+  },
+  "dias.varios": {
+    "t": "{n} days",
+    "h": "7814b9e1895d"
+  },
+  "botao.verCandeeiros": {
+    "t": "See the lamps",
+    "h": "b9b27b8d5ef5"
+  },
+  "botao.verPecas": {
+    "t": "See the pieces",
+    "h": "1288dfafd327"
+  },
+  "botao.voltarCandeeiros": {
+    "t": "Back to the lamps",
+    "h": "ed9e683fb671"
+  },
+  "botao.voltarCesto": {
+    "t": "Back to the basket",
+    "h": "de107e2bc2ab"
+  },
+  "botao.continuarAVer": {
+    "t": "Keep looking",
+    "h": "5f9098b17021"
+  },
+  "botao.copiar": {
+    "t": "Copy",
+    "h": "39dcf1cbeb5a"
+  },
+  "botao.encomendarEPagar": {
+    "t": "Order and pay",
+    "h": "f1e67dcc48a0"
+  },
+  "contacto.titulo": {
+    "t": "Contact",
+    "h": "baf2c13e6ce7"
+  },
+  "contacto.entrada": {
+    "t": "Ask us anything. We answer in a day, usually less.",
+    "h": "ada4e5cee5a5"
+  },
+  "contacto.whatsapp": {
+    "t": "The fastest way to reach us",
+    "h": "3afa1c2b0d77"
+  },
+  "contacto.email": {
+    "t": "For orders and quotes",
+    "h": "a511a40948a9"
+  },
+  "contacto.ondeEstamos": {
+    "t": "Where we are",
+    "h": "578153c95865"
+  },
+  "contacto.oficina": {
+    "t": "The workshop is in {cidade}, {pais}. It is a workshop rather than a shop, so come by arrangement — send a message first.",
+    "h": "d57a64424c03"
+  },
+  "contacto.mapa": {
+    "t": "Show the map",
+    "h": "fc5f8b77c7ca"
+  },
+  "contacto.mapaAviso": {
+    "t": "This loads Google Maps, which means your browser contacts Google and Google may set cookies. Nothing else on this site does that.",
+    "h": "87b4c56bbc74"
+  },
+  "contacto.perguntas": {
+    "t": "Questions",
+    "h": "cf96d9da5781"
+  },
+  "faq.prazo": {
+    "t": "How long does it take?",
+    "h": "43c0eed19ea0"
+  },
+  "faq.prazo.resposta": {
+    "t": "<p>A lamp that is in stock leaves the workshop in {dias}. If it is out of stock you can still order it: we make yours, and it is with you in {semanas}. Each product page says which it is.</p> <p>Pieces from cathelier are always made to order — {semanas}, counted from when you approve the drawing. If one thing in an order is made to order, the whole order ships together.</p>",
+    "h": "768121560cb3"
+  },
+  "faq.nome": {
+    "t": "Can I have a name on it?",
+    "h": "d700b97d557d"
+  },
+  "faq.nome.resposta": {
+    "t": "<p>Yes, on anything, and it costs nothing extra. Put it in the engraving box on the product page — a name, a date, or a short phrase.</p> <p>One thing to know: a piece with a name on it is made for you alone, so it cannot be returned under the 14-day rule. Choosing a colour we already offer is not personalisation and does not affect your right to cancel.</p>",
+    "h": "d02a3a0f1f28"
+  },
+  "faq.seguranca": {
+    "t": "Is it safe in a baby’s room?",
+    "h": "786111119216"
+  },
+  "faq.seguranca.resposta": {
+    "t": "<p>These are decorative night lights, not toys. They are made of solid pine with water-based paints and every edge is sanded by hand, but they are not tested as toys and should not be handed to a small child to play with.</p> <p>If it is going in a cot room, keep the cable out of the cot. <a href=\"/care-and-safety/\">Everything about care and safety</a>.</p>",
+    "h": "e4b1f1680a3b"
+  },
+  "faq.pilhas": {
+    "t": "Batteries or mains?",
+    "h": "d61f0775cd72"
+  },
+  "faq.pilhas.resposta": {
+    "t": "<p>Both, at the same price. The battery version takes two AA cells, which are not included. The mains version comes with a remote that dims it, times it and makes it pulse.</p>",
+    "h": "1c43bacca49f"
+  },
+  "faq.portes": {
+    "t": "What does delivery cost?",
+    "h": "002a0580fb4a"
+  },
+  "faq.portes.resposta": {
+    "t": "<p>It depends where you are. <a href=\"/legal/shipping-and-returns/\">The full table is here</a>.</p>",
+    "h": "3000d50e9e74"
+  },
+  "faq.desistir": {
+    "t": "Can I change my mind?",
+    "h": "11d8cc3744e8"
+  },
+  "faq.desistir.resposta": {
+    "t": "<p>You have {dias} days on anything that is not personalised. <a href=\"/legal/cancellation/\">How it works</a>.</p>",
+    "h": "910ac5a52cda"
+  },
+  "faq.quantidade": {
+    "t": "Do you take large orders?",
+    "h": "ba0a518c9052"
+  },
+  "faq.quantidade.resposta": {
+    "t": "<p>Yes — favours, place cards, corporate gifts, club trophies. <a href=\"/cathelier/quote/\">Ask for a quote</a> and say roughly how many.</p>",
+    "h": "43cc258fd6d7"
+  },
+  "orcamento.titulo": {
+    "t": "Ask for a quote",
+    "h": "f115441b2660"
+  },
+  "orcamento.entrada": {
+    "t": "For anything made to measure, or in quantity — a cake topper with two names, the signs for a wedding, favours for a christening, trophies for a season.",
+    "h": "0380b9ebb77a"
+  },
+  "orcamento.texto": {
+    "t": "Tell us what you have in mind and, if it is more than one, roughly how many. We will come back with a price and a date. There is no form to fight with: a message is enough.",
+    "h": "b3e6dff87baf"
+  },
+  "orcamento.whatsapp": {
+    "t": "Send a photo of what you have in mind",
+    "h": "707edcc39dcd"
+  },
+  "orcamento.assunto": {
+    "t": "Quote",
+    "h": "56eddfe3d6ed"
+  },
+  "orcamento.email": {
+    "t": "For drawings and longer lists",
+    "h": "373b44570702"
+  },
+  "orcamento.ajuda": {
+    "t": "What helps us answer quickly",
+    "h": "fb0b56495d34"
+  },
+  "orcamento.ajuda.quantas": {
+    "t": "Roughly how many.",
+    "h": "698fe72a6b59"
+  },
+  "orcamento.ajuda.para": {
+    "t": "What it is for, and the date it is needed by.",
+    "h": "4137cfd734ef"
+  },
+  "orcamento.ajuda.palavras": {
+    "t": "The names, dates or words that go on it — or just say \"50 different names\".",
+    "h": "5669eacd1b4e"
+  },
+  "orcamento.ajuda.imagem": {
+    "t": "Any picture of something close to what you want.",
+    "h": "082635c95011"
+  },
+  "orcamento.passos": {
+    "t": "How it goes from there",
+    "h": "8334221d359c"
+  },
+  "orcamento.passos.preco": {
+    "t": "We answer with a price and a date.",
+    "h": "3f6cb4715eb9"
+  },
+  "orcamento.passos.desenho": {
+    "t": "You approve a drawing. Nothing is cut before that.",
+    "h": "f774519ce1ce"
+  },
+  "orcamento.passos.fazemos": {
+    "t": "We make it, and it comes to you ready to give.",
+    "h": "72fb7eb6d190"
+  },
+  "cesto.titulo": {
+    "t": "Your basket",
+    "h": "359fb9347f7c"
+  },
+  "cesto.vazio": {
+    "t": "There is nothing in it yet.",
+    "h": "2281f87c6c29"
+  },
+  "cesto.total": {
+    "t": "Total",
+    "h": "c9b3c38247f7"
+  },
+  "cesto.enviarPara": {
+    "t": "Shipping to",
+    "h": "9ca1cb1ca61c"
+  },
+  "cesto.pecas": {
+    "t": "Pieces",
+    "h": "d6bc9cdf61ac"
+  },
+  "cesto.portes": {
+    "t": "Shipping",
+    "h": "0364fc85087f"
+  },
+  "cesto.aPagar": {
+    "t": "To pay",
+    "h": "10b395a46468"
+  },
+  "cesto.stockInsuficiente": {
+    "t": "There are not enough in stock for these quantities.",
+    "h": "65990687ec27"
+  },
+  "cesto.ifthenpay": {
+    "t": "Payments are handled by ifthenpay. We never see your card, your bank or your MB WAY PIN.",
+    "h": "6a4a4ec4a2ec"
+  },
+  "entrega.titulo": {
+    "t": "Where it goes",
+    "h": "59a1b3aed4f5"
+  },
+  "entrega.nome": {
+    "t": "Your name",
+    "h": "ecc6fc9c3961"
+  },
+  "entrega.email": {
+    "t": "Email",
+    "h": "969ccbd3cf63"
+  },
+  "entrega.morada": {
+    "t": "Address",
+    "h": "e34927ebb610"
+  },
+  "entrega.postal": {
+    "t": "Post code",
+    "h": "df82d9dc6b7c"
+  },
+  "entrega.localidade": {
+    "t": "Town",
+    "h": "b34f88fd7946"
+  },
+  "entrega.telefone": {
+    "t": "Phone",
+    "h": "2f151735cce7"
+  },
+  "entrega.opcional": {
+    "t": "optional",
+    "h": "80621acfc2e1"
+  },
+  "entrega.nif": {
+    "t": "Tax number",
+    "h": "ccbec60334f4"
+  },
+  "entrega.nifNota": {
+    "t": "optional, for the invoice",
+    "h": "cdf7a803964c"
+  },
+  "metodo.titulo": {
+    "t": "How you pay",
+    "h": "5071de06247b"
+  },
+  "metodo.mbway.nota": {
+    "t": "You get the request on your phone and accept it there. Takes a minute.",
+    "h": "a7b2184a18b9"
+  },
+  "metodo.mbway.telemovel": {
+    "t": "Your MB WAY phone number",
+    "h": "7103886c8861"
+  },
+  "metodo.mb.nome": {
+    "t": "Multibanco reference",
+    "h": "27b4ab54d4da"
+  },
+  "metodo.mb.nota": {
+    "t": "We give you an entity and a reference to pay at an ATM or in home banking.",
+    "h": "c2a7e8b9bad0"
+  },
+  "metodo.cartao.nome": {
+    "t": "Card",
+    "h": "4bef4f3140f1"
+  },
+  "metodo.cartao.nota": {
+    "t": "Visa or Mastercard. You type the number on a secure page — we never see it.",
+    "h": "4e0550f011c5"
+  },
+  "metodo.google.nota": {
+    "t": "Pay with the card in your Google account.",
+    "h": "f19fcf0e4459"
+  },
+  "metodo.apple.nota": {
+    "t": "Pay with Touch ID or Face ID on your Apple device.",
+    "h": "78fc740f267d"
+  },
+  "pais.PT": {
+    "t": "Portugal (mainland)",
+    "h": "1f3a8e9db1d0"
+  },
+  "pais.PT-20": {
+    "t": "Azores",
+    "h": "7385ceda99b5"
+  },
+  "pais.PT-30": {
+    "t": "Madeira",
+    "h": "2c5d0fa1ca38"
+  },
+  "pais.ES": {
+    "t": "Spain",
+    "h": "435716390e83"
+  },
+  "pais.FR": {
+    "t": "France",
+    "h": "07a9e9afb966"
+  },
+  "pais.GB": {
+    "t": "United Kingdom",
+    "h": "b7b48516bc9d"
+  },
+  "pais.DE": {
+    "t": "Germany",
+    "h": "212b93a4ce97"
+  },
+  "pais.CH": {
+    "t": "Switzerland",
+    "h": "f89f342dd4b2"
+  },
+  "pais.AT": {
+    "t": "Austria",
+    "h": "54e4e194d906"
+  },
+  "pais.BE": {
+    "t": "Belgium",
+    "h": "c9d48615f2ca"
+  },
+  "pais.NL": {
+    "t": "Netherlands",
+    "h": "5cfc589a6786"
+  },
+  "pais.LU": {
+    "t": "Luxembourg",
+    "h": "e8a2f0b7cf9d"
+  },
+  "pais.IT": {
+    "t": "Italy",
+    "h": "e883cdb753d6"
+  },
+  "pais.IE": {
+    "t": "Ireland",
+    "h": "b62093ae50b4"
+  },
+  "pais.DK": {
+    "t": "Denmark",
+    "h": "c4218e7b3336"
+  },
+  "pais.SE": {
+    "t": "Sweden",
+    "h": "57c02bc64c2e"
+  },
+  "pais.FI": {
+    "t": "Finland",
+    "h": "ca2bfad8b48f"
+  },
+  "pais.PL": {
+    "t": "Poland",
+    "h": "c8fcda1200e4"
+  },
+  "pais.CZ": {
+    "t": "Czechia",
+    "h": "90b1d99c6d7d"
+  },
+  "pais.SK": {
+    "t": "Slovakia",
+    "h": "addc161dce54"
+  },
+  "pais.HU": {
+    "t": "Hungary",
+    "h": "e16203e7daa7"
+  },
+  "pais.SI": {
+    "t": "Slovenia",
+    "h": "7283b86a26b6"
+  },
+  "pais.HR": {
+    "t": "Croatia",
+    "h": "4318a4611ec1"
+  },
+  "pais.RO": {
+    "t": "Romania",
+    "h": "02c19492dc99"
+  },
+  "pais.BG": {
+    "t": "Bulgaria",
+    "h": "d2a356bd5371"
+  },
+  "pais.GR": {
+    "t": "Greece",
+    "h": "0e730591b535"
+  },
+  "pais.EE": {
+    "t": "Estonia",
+    "h": "f71e1736e784"
+  },
+  "pais.LV": {
+    "t": "Latvia",
+    "h": "b9a335359eb6"
+  },
+  "pais.LT": {
+    "t": "Lithuania",
+    "h": "489679bdbc10"
+  },
+  "pais.MT": {
+    "t": "Malta",
+    "h": "71e9eb10755c"
+  },
+  "pais.CY": {
+    "t": "Cyprus",
+    "h": "f1cb83d2d66f"
+  },
+  "pais.NO": {
+    "t": "Norway",
+    "h": "96583110564c"
+  },
+  "naoEncontrada.titulo": {
+    "t": "There is nothing here",
+    "h": "a593a0550988"
+  },
+  "naoEncontrada.texto": {
+    "t": "The page you were looking for has moved or never existed.",
+    "h": "34bc7ec08e5e"
+  },
+  "encomenda.referencia": {
+    "t": "Your order is {ref}. Keep that reference: it is what we both use if you write to us.",
+    "h": "e2b18f623e86"
+  },
+  "encomenda.confirmacao": {
+    "t": "A confirmation is on its way to your inbox, with when to expect it. The workshop starts now, and we will tell you when it ships.",
+    "h": "a4a5486ece75"
+  },
+  "encomenda.naoEncontrada": {
+    "t": "We could not find that order. If you have just paid, give it a minute and reload this page.",
+    "h": "7e89fe2dd7a0"
+  },
+  "encomenda.escreva": {
+    "t": "If it stays like this, write to us — nothing will be charged twice.",
+    "h": "f5303221c2eb"
+  },
+  "obrigado.titulo": {
+    "t": "Thank you",
+    "h": "b506fc18190d"
+  },
+  "obrigado.aVerificar": {
+    "t": "Checking your payment…",
+    "h": "d93ea68a86e9"
+  },
+  "obrigado.porPagar": {
+    "t": "We have not received the payment yet, and that is normal if you chose a Multibanco reference — it is yours for {dias}. Nothing is made and nothing is charged until you pay it.",
+    "h": "c5dac1b9f492"
+  },
+  "obrigado.quandoChegar": {
+    "t": "The moment it reaches us we write to you, and the workshop starts. If you have just paid, give it a minute and reload this page.",
+    "h": "6b477b29daf1"
+  },
+  "pagar.titulo": {
+    "t": "Pay for your order",
+    "h": "2046b0430fb4"
+  },
+  "pagar.aPreparar": {
+    "t": "Getting your payment ready…",
+    "h": "96b995618356"
+  },
+  "pagar.mbway.titulo": {
+    "t": "Open your MB WAY app",
+    "h": "609289610954"
+  },
+  "pagar.mbway.texto": {
+    "t": "We sent a payment request to your phone. Open MB WAY, check the amount, and accept it.",
+    "h": "632c978e4f97"
+  },
+  "pagar.mbway.tempo": {
+    "t": "Time left: {tempo}",
+    "h": "af3307f10422"
+  },
+  "pagar.mbway.aviso": {
+    "t": "Leave this page open — it changes by itself the moment you accept. If the request expires, you can order again and choose a Multibanco reference instead.",
+    "h": "40e45600063d"
+  },
+  "pagar.mb.titulo": {
+    "t": "Pay this Multibanco reference",
+    "h": "5384419b57bf"
+  },
+  "pagar.mb.como": {
+    "t": "At an ATM choose <em>Pagamentos e outros serviços</em> → <em>Pagamentos de serviços</em>, or use your bank&rsquo;s app or home banking.",
+    "h": "8742a106c77c"
+  },
+  "pagar.mb.entidade": {
+    "t": "Entity",
+    "h": "118e993f6124"
+  },
+  "pagar.mb.referencia": {
+    "t": "Reference",
+    "h": "6fac4ad8493d"
+  },
+  "pagar.mb.valor": {
+    "t": "Amount",
+    "h": "b2f530c46991"
+  },
+  "pagar.mb.validade": {
+    "t": "The reference is yours for {dias}<span data-pay-expiry hidden>, until {data}</span>. Nothing is made and nothing is charged until you pay it.",
+    "h": "1c2c9940e5e5"
+  },
+  "pagar.mb.depois": {
+    "t": "The moment the payment reaches us we write to you and the workshop starts. You can close this page — we have the reference in your email too.",
+    "h": "bc14d861f22d"
+  },
+  "pagar.pago": {
+    "t": "Paid — thank you",
+    "h": "031d950e9d17"
+  },
+  "pagar.expirou.titulo": {
+    "t": "The request expired",
+    "h": "3db44cfff98d"
+  },
+  "pagar.expirou.texto": {
+    "t": "Nothing was charged. Your basket is still here, so you can order again — and if MB WAY is being awkward, a Multibanco reference always works.",
+    "h": "890561f55801"
+  },
+  "pagar.ifthenpay": {
+    "t": "Payments are handled by {ifthenpay}, a Portuguese payment institution. We never see your card, your bank or your MB WAY PIN.",
+    "h": "faef6768ac20"
+  },
+  "cancelada.titulo": {
+    "t": "The order was not placed",
+    "h": "17508ea2ea63"
+  },
+  "cancelada.entrada": {
+    "t": "You left the payment page, so we have not taken anything and the order has not gone through.",
+    "h": "c2ddff4cad3e"
+  },
+  "cancelada.texto": {
+    "t": "If you were given a Multibanco reference before you left, it may still be valid — paying it will confirm the order. Otherwise your basket is still here if you want to pick it up again.",
+    "h": "b4555b672af8"
+  },
+  "revenda.titulo": {
+    "t": "Resellers",
+    "h": "67dd27fd3059"
+  },
+  "revenda.entrada": {
+    "t": "If we have registered you as a reseller, sign in here to see your price next to the retail price on every piece, and to buy at it.",
+    "h": "136f4440de14"
+  },
+  "revenda.nif": {
+    "t": "Your NIF",
+    "h": "650447d6b229"
+  },
+  "revenda.pedirLigacao": {
+    "t": "Email me a sign-in link",
+    "h": "c1fe910bd8a0"
+  },
+  "revenda.outroDispositivo": {
+    "t": "Got the code on another device?",
+    "h": "08131480f71f"
+  },
+  "revenda.codigo": {
+    "t": "The code from the email",
+    "h": "8c7fcf104d6a"
+  },
+  "revenda.manter": {
+    "t": "Keep me signed in on this device",
+    "h": "2b77dcef235a"
+  },
+  "revenda.entrar": {
+    "t": "Sign in",
+    "h": "4105811890ae"
+  },
+  "revenda.aindaNao": {
+    "t": "Not a reseller yet? <a href=\"/contact/\">Talk to us</a>. Reseller purchases follow the <a href=\"/legal/terms/#resellers\">reseller conditions</a>.",
+    "h": "062e2a79cf8c"
+  },
+  "revenda.ativos": {
+    "t": "Reseller prices are on for {firma} (NIF {nif}).",
+    "h": "6c2d71389098"
+  },
+  "revenda.sair": {
+    "t": "Sign out",
+    "h": "2d023dea2a9d"
+  },
+  "revenda.tabela": {
+    "t": "Your price list",
+    "h": "62204c065826"
+  },
+  "revenda.precos": {
+    "t": "Retail prices are recommended retail prices — you set your own. The discount comes off each piece; paid options are at their normal price.",
+    "h": "b44cb8af9b40"
+  },
+  "revenda.condicoes": {
+    "t": "Reseller conditions",
+    "h": "99bbccb9414b"
+  },
+  "revenda.peca": {
+    "t": "Piece",
+    "h": "b4d0649449a6"
+  },
+  "revenda.pvp": {
+    "t": "RRP",
+    "h": "2187e29a2b3c"
+  },
+  "revenda.seuPreco": {
+    "t": "Your price",
+    "h": "c6880a2ee5ba"
+  },
+  "revenda.emStock": {
+    "t": "In stock",
+    "h": "1d313b6a03e4"
+  }
 }

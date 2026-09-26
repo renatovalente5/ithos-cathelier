@@ -1,49 +1,187 @@
 {
-  "_leia": "Frases das páginas dos candeeiros ithos (início, catálogo, ficha do candeeiro), escritas por src/lib/ithos.mjs. A origem é pt/; esta é a tradução inglesa.",
-  "filtro.todos": "All",
-  "filtro.animais": "Animals",
-  "filtro.veiculos": "Vehicles",
-  "filtro.natureza": "Nature",
-  "filtro.festivos": "Festive",
-  "cartao.fotoDe": "Photograph {n} of {total}",
-  "cartao.alt": "{nome} — a handmade wooden night light",
-  "cartao.fotografias": "{nome} — {n} photographs",
-  "cartao.desde": "from",
-  "inicio.maisVendidos": "Bestsellers",
-  "inicio.ola": "Hello",
-  "inicio.apresentacao": "Lovely that you are here. We are a small family workshop in Castelo Branco, where we make wooden night lights for children’s rooms by hand, one at a time.",
-  "inicio.convite": "Come and look around. We hope you find something here that steals your heart.",
-  "inicio.fotoOficina": "A wooden night light from the workshop",
-  "inicio.maisDaOficina": "More from the workshop",
-  "inicio.verTodos": "See all {n} lamps",
-  "catalogo.titulo": "Wooden night lights",
-  "catalogo.lede": "{n} designs, handmade in solid pine, {min}–{max}. Each one can carry an engraved name.",
-  "catalogo.semResultados": "No lamps in that family.",
-  "medida.altura": "{n} cm tall",
-  "medida.largura": "{n} cm wide",
-  "medida.comprimento": "{n} cm long",
-  "medida.profundidade": "{n} cm deep",
-  "ficha.fotoAlt": "{nome} — photograph {n}",
-  "ficha.ampliar": "See this photograph full size",
-  "ficha.anterior": "Previous photograph",
-  "ficha.seguinte": "Next photograph",
-  "ficha.fotografias": "Photographs",
-  "ficha.foto": "Photograph {n}",
-  "ficha.cuidados": "Care and safety",
-  "ficha.relacionados": "You might also like",
-  "quantidade.menos": "One fewer",
-  "quantidade.rotulo": "Quantity",
-  "quantidade.mais": "One more",
-  "botao.adicionar": "Add to basket",
-  "garantias.envio": "Shipped within Portugal — €5 to the mainland",
-  "garantias.materiais": "Solid pine and water-based paints",
-  "garantias.anos.um": "{n}-year guarantee",
-  "garantias.anos.varios": "{n}-year guarantee",
-  "garantias.mudarDeIdeias.um": "{n} day to change your mind",
-  "garantias.mudarDeIdeias.varios": "{n} days to change your mind",
-  "garantias.feitoAMao": "Made by hand in Castelo Branco, Portugal",
-  "opcao.opcional": "optional",
-  "opcao.limite": "Up to {n} characters.",
-  "opcao.exemplo": "A name, a date, a short phrase",
-  "opcao.indisponivel": "Unavailable"
+  "_leia": "Frases das páginas dos candeeiros ithos (início, catálogo, ficha do candeeiro), escritas por src/lib/ithos.mjs. A origem é pt/; esta é a tradução inglesa. Cada frase leva o resumo (h) do português de onde saiu: quando o português mudar, o Worker refá-la. Uma corrigida à mão que não deva ser refeita leva \"fixo\": true.",
+  "filtro.todos": {
+    "t": "All",
+    "h": "bd02b9a7d71d"
+  },
+  "filtro.animais": {
+    "t": "Animals",
+    "h": "ce3f58666657"
+  },
+  "filtro.veiculos": {
+    "t": "Vehicles",
+    "h": "7b27d9d273f4"
+  },
+  "filtro.natureza": {
+    "t": "Nature",
+    "h": "f58c2019b303"
+  },
+  "filtro.festivos": {
+    "t": "Festive",
+    "h": "4cd2d0bd5abd"
+  },
+  "cartao.fotoDe": {
+    "t": "Photograph {n} of {total}",
+    "h": "980f41852f21"
+  },
+  "cartao.alt": {
+    "t": "{nome} — a handmade wooden night light",
+    "h": "2ae8e8a967b0"
+  },
+  "cartao.fotografias": {
+    "t": "{nome} — {n} photographs",
+    "h": "4611291c6ad8"
+  },
+  "cartao.desde": {
+    "t": "from",
+    "h": "1e06e6dac28b"
+  },
+  "inicio.maisVendidos": {
+    "t": "Bestsellers",
+    "h": "a6011eeaaa1a"
+  },
+  "inicio.ola": {
+    "t": "Hello",
+    "h": "5251c3c68010"
+  },
+  "inicio.apresentacao": {
+    "t": "Lovely that you are here. We are a small family workshop in Castelo Branco, where we make wooden night lights for children’s rooms by hand, one at a time.",
+    "h": "905a187e8dc7"
+  },
+  "inicio.convite": {
+    "t": "Come and look around. We hope you find something here that steals your heart.",
+    "h": "ad4c89107c40"
+  },
+  "inicio.fotoOficina": {
+    "t": "A wooden night light from the workshop",
+    "h": "6440c31d23ec"
+  },
+  "inicio.maisDaOficina": {
+    "t": "More from the workshop",
+    "h": "007cd3f4765c"
+  },
+  "inicio.verTodos": {
+    "t": "See all {n} lamps",
+    "h": "bba43191ee6d"
+  },
+  "catalogo.titulo": {
+    "t": "Wooden night lights",
+    "h": "df60e0e815d5"
+  },
+  "catalogo.lede": {
+    "t": "{n} designs, handmade in solid pine, {min}–{max}. Each one can carry an engraved name.",
+    "h": "fa83ebd0250b"
+  },
+  "catalogo.semResultados": {
+    "t": "No lamps in that family.",
+    "h": "72ce8da60b4d"
+  },
+  "medida.altura": {
+    "t": "{n} cm tall",
+    "h": "086e981a1d11"
+  },
+  "medida.largura": {
+    "t": "{n} cm wide",
+    "h": "6eb3ce223ef0"
+  },
+  "medida.comprimento": {
+    "t": "{n} cm long",
+    "h": "7133e54e0135"
+  },
+  "medida.profundidade": {
+    "t": "{n} cm deep",
+    "h": "9624e1f913f2"
+  },
+  "ficha.fotoAlt": {
+    "t": "{nome} — photograph {n}",
+    "h": "2c4939c5a1ac"
+  },
+  "ficha.ampliar": {
+    "t": "See this photograph full size",
+    "h": "037bfeeb0b76"
+  },
+  "ficha.anterior": {
+    "t": "Previous photograph",
+    "h": "b72977ca0936"
+  },
+  "ficha.seguinte": {
+    "t": "Next photograph",
+    "h": "d2c3fb19f79f"
+  },
+  "ficha.fotografias": {
+    "t": "Photographs",
+    "h": "dc20d7237d6a"
+  },
+  "ficha.foto": {
+    "t": "Photograph {n}",
+    "h": "e7e04f531924"
+  },
+  "ficha.cuidados": {
+    "t": "Care and safety",
+    "h": "53864910aee8"
+  },
+  "ficha.relacionados": {
+    "t": "You might also like",
+    "h": "037fb67f5104"
+  },
+  "quantidade.menos": {
+    "t": "One fewer",
+    "h": "fa9ac666a157"
+  },
+  "quantidade.rotulo": {
+    "t": "Quantity",
+    "h": "917b54f0f81b"
+  },
+  "quantidade.mais": {
+    "t": "One more",
+    "h": "335bb674a270"
+  },
+  "botao.adicionar": {
+    "t": "Add to basket",
+    "h": "5a3ec32580e8"
+  },
+  "garantias.envio": {
+    "t": "Shipped within Portugal — €5 to the mainland",
+    "h": "d2a5951839b0"
+  },
+  "garantias.materiais": {
+    "t": "Solid pine and water-based paints",
+    "h": "1c4d8872849d"
+  },
+  "garantias.anos.um": {
+    "t": "{n}-year guarantee",
+    "h": "55d41eab34c9"
+  },
+  "garantias.anos.varios": {
+    "t": "{n}-year guarantee",
+    "h": "141c0dbfc49e"
+  },
+  "garantias.mudarDeIdeias.um": {
+    "t": "{n} day to change your mind",
+    "h": "4f6c7f630251"
+  },
+  "garantias.mudarDeIdeias.varios": {
+    "t": "{n} days to change your mind",
+    "h": "16c98e91270a"
+  },
+  "garantias.feitoAMao": {
+    "t": "Made by hand in Castelo Branco, Portugal",
+    "h": "50401e557c40"
+  },
+  "opcao.opcional": {
+    "t": "optional",
+    "h": "80621acfc2e1"
+  },
+  "opcao.limite": {
+    "t": "Up to {n} characters.",
+    "h": "a44d88f4e6f6"
+  },
+  "opcao.exemplo": {
+    "t": "A name, a date, a short phrase",
+    "h": "206a346c8bdf"
+  },
+  "opcao.indisponivel": {
+    "t": "Unavailable",
+    "h": "60cf6b61c55f"
+  }
 }

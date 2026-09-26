@@ -52,14 +52,16 @@ export function picture({ dir, name, alt, sizes, widths, loading = 'lazy', fetch
      fixa. Cinco masters do estúdio são pequenos de mais para o degrau de cima e
      renditions.py não o escreve; a lista fixa prometia-o na mesma. */
   widths = widths && widths.length ? widths : cardWidths(dir, name);
-  const set = (ext) => widths.map((w) => `/media/${dir}/${name}-${w}.${ext} ${w}w`).join(', ');
+  /* esc() nos nomes: vêm do conteúdo (a pasta e o nome da fotografia), e o
+     conteúdo escreve-o o painel. Um nome com aspas não pode abrir um atributo. */
+  const set = (ext) => esc(widths.map((w) => `/media/${dir}/${name}-${w}.${ext} ${w}w`).join(', '));
   // The fallback is the LARGEST width that was actually asked for, not a fixed
   // 600: the cathelier stand-ins only go to 400, and hardcoding 600 wrote 548
   // references to files that do not exist. The intrinsic size matches it, so
   // the browser reserves the right box before anything loads.
   const biggest = Math.max(...widths);
   const attrs = [
-    `src="/media/${dir}/${name}-${biggest}.webp"`,
+    `src="${esc(`/media/${dir}/${name}-${biggest}.webp`)}"`,
     `alt="${esc(alt)}"`,
     /* A altura intrínseca vem da forma do cartão, não de um segundo
        "biggest". Eram iguais enquanto a família era quadrada, e isso
@@ -138,10 +140,10 @@ export function coverPicture({ name, alt, sizes, widths, aspect = [4, 5], wide =
  * the page jumping as each slide arrives.
  */
 export function wholePicture({ key, shape, alt, sizes, widths, loading = 'lazy', fetchpriority }) {
-  const set = (ext) => widths.map((w) => `/media/whole/${key}-${w}.${ext} ${w}w`).join(', ');
+  const set = (ext) => esc(widths.map((w) => `/media/whole/${key}-${w}.${ext} ${w}w`).join(', '));
   const biggest = Math.max(...widths);
   const attrs = [
-    `src="/media/whole/${key}-${biggest}.webp"`,
+    `src="${esc(`/media/whole/${key}-${biggest}.webp`)}"`,
     `alt="${esc(alt)}"`,
     `width="${biggest}" height="${Math.round(biggest * shape.h / shape.w)}"`,
     `loading="${loading}"`,

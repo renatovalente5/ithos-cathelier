@@ -1,5 +1,11 @@
 {
-  "_leia": "O visor das fotografias em tamanho real (src/lib/viewer.mjs). A origem é pt/; esta é a tradução inglesa.",
-  "rotulo": "Photograph, full size",
-  "fechar": "Close"
+  "_leia": "O visor das fotografias em tamanho real (src/lib/viewer.mjs). A origem é pt/; esta é a tradução inglesa. Cada frase leva o resumo (h) do português de onde saiu: quando o português mudar, o Worker refá-la. Uma corrigida à mão que não deva ser refeita leva \"fixo\": true.",
+  "rotulo": {
+    "t": "Photograph, full size",
+    "h": "6d615ac74627"
+  },
+  "fechar": {
+    "t": "Close",
+    "h": "0f2bd88ef0ac"
+  }
 }

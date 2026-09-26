@@ -67,6 +67,11 @@ for (const file of pages) {
   for (const m of html.matchAll(/\s(?:href|src|action|formaction)\s*=\s*["']?\s*(javascript|vbscript|data):/gi)) {
     deaths.push(`${where}: an address with the ${m[1].toLowerCase()}: scheme — content must never become code`);
   }
+  /* The inline handler promised above, which was never actually checked: no
+     template writes one, so any `on…=` inside a tag came from content. */
+  for (const m of html.matchAll(/<[a-z][^>]*?\son[a-z]+\s*=/gi)) {
+    deaths.push(`${where}: an inline event handler in the markup (${m[0].slice(0, 60)}…) — content must never become code`);
+  }
   /* A `</script>` inside the block ENDS it: what the lazy match returns is the
      part before the tag, which contains no tag. Looking for tags inside the
      match therefore proves nothing -- measured, it passed an injected

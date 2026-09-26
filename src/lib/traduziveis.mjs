@@ -71,6 +71,13 @@ export function campos(caminhoDoFicheiro, obj) {
   return out;
 }
 
+/** Os campos que são uma POSIÇÃO numa lista de frases sem id (os avisos de
+ *  segurança). Tirar o segundo aviso faz do terceiro o segundo: a tradução
+ *  guardada na posição 2 passa a ser a de outro texto. Nestes, uma tradução só
+ *  serve com o resumo certo -- desactualizada ou «fixo», não se aplica, e fica
+ *  o português até o Worker a refazer. */
+export const posicional = (campo) => /^(gpsr\.warnings|safetyIthos|safetyCathelier)\.\d+$/.test(campo);
+
 /* Pôr um texto num caminho de campos. Os segmentos depois de «options» e
    «values»/«zones» são ids, não posições; nos avisos de segurança são
    posições (são listas de frases sem id). */
@@ -109,7 +116,10 @@ export function aplicar(caminhoDoFicheiro, origem, traducao, resumir) {
        passa nas verificações sempre que a original passa. */
     const porque = validar(texto, tr.t);
     if (porque) { invalidos.push(`${caminho} (${porque})`); emFalta++; continue; }
-    if (tr.h !== resumir(texto)) desactualizados++;
+    if (tr.h !== resumir(texto)) {
+      if (posicional(caminho)) { emFalta++; continue; }
+      desactualizados++;
+    }
     pôr(obj, caminho, tr.t);
   }
   return { obj, desactualizados, emFalta, invalidos };
@@ -171,11 +181,25 @@ export function validar(origem, traducao, { pagina = false } = {}) {
     ?? par((s) => todos(/(?<!\{)\{[A-Za-z0-9_]+\}(?!\})/g, s), 'variáveis')
     ?? par((s) => todos(/\]\([^)]*\)/g, s), 'ligações')
     ?? par((s) => todos(/<\/?[A-Za-z][^>]*>/g, s), 'etiquetas')
+    /* E os sinais soltos: «<img src=x onerror=…» sem o «>» do fim passava na
+       contagem das etiquetas (fecha-se no HTML a seguir), e «<!--» engolia o
+       resto da página. */
+    ?? par((s) => `${conta(/</g, s)}:${conta(/>/g, s)}:${conta(/<!/g, s)}`, 'sinais < >')
     ?? par((s) => conta(/\*\*/g, s), 'negrito')
-    ?? par((s) => conta(/ithos/g, s), 'marca ithos')
-    ?? par((s) => conta(/cathelier/g, s), 'marca cathelier')
+    /* Os números: um prazo, um preço, um artigo de lei. «14 dias» traduzido
+       para «30 days» passava em tudo o resto -- e uma frase inteira com uma
+       referência legal desaparecida também. */
+    ?? par((s) => todos(/\d+/g, s), 'números')
     ?? par((s) => conta(/```/g, s), 'código');
   if (r) return r;
+  /* As marcas contam-se sem olhar a maiúsculas (a dona pode escrever «A Ithos
+     nasceu…» e o modelo, obediente, escreve «ithos»); e a tradução não pode
+     ter mais maiúsculas nelas do que o original. */
+  for (const m of ['ithos', 'cathelier']) {
+    const ci = new RegExp(m, 'gi'); const baixa = new RegExp(m, 'g');
+    if (conta(ci, o) !== conta(ci, traducao)) return `marca ${m}`;
+    if (conta(ci, traducao) - conta(baixa, traducao) > conta(ci, o) - conta(baixa, o)) return `marca ${m}`;
+  }
   if (pagina) {
     const p = par(titulos, 'títulos')
       ?? par((s) => conta(/^\s*(?:[-*+]|\d+\.)\s/gm, s), 'listas')
