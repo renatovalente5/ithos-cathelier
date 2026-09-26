@@ -28,13 +28,14 @@
   // IP para onde os A apontam deixa de importar -- a origem nunca é
   // contactada). O www não está aqui: vai para o apex por uma Redirect Rule
   // da zona.
-  // «teste» é o ensaio disso num subdomínio descartável; sai a seguir.
+  // (Ensaiado a 26 set 2026 em teste.ithos-cathelier.pt, a apontar para um
+  // IP que não leva a lado nenhum: páginas, 404, ficheiros e robots.txt vieram
+  // todos do Worker.)
   "routes": [
-    { "pattern": "ithos-cathelier.pt/*", "zone_name": "ithos-cathelier.pt" },
-    { "pattern": "teste.ithos-cathelier.pt/*", "zone_name": "ithos-cathelier.pt" }
+    { "pattern": "ithos-cathelier.pt/*", "zone_name": "ithos-cathelier.pt" }
   ],
-  // O endereço de ensaio em workers.dev fica ligado enquanto o domínio não
-  // passa para a Cloudflare; depois desliga-se (e as pré-visualizações também).
-  "workers_dev": true,
+  // O endereço workers.dev serviu de ensaio até o domínio passar para aqui;
+  // desligado, para o site não existir também noutra morada.
+  "workers_dev": false,
   "preview_urls": false
 }
