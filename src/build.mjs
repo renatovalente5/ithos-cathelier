@@ -671,7 +671,7 @@ function buildShared() {
     'guarantee', 'withdraw']) {
     const title = t(`build.legal.${nome}`);
     prose(`/legal/${nome}/`, `legal/${nome}.md`, { both: true, title: `${title} — ${identity.tradingName}`,
-      description: t(`build.legal.${nome}.descricao`), bloco: blocos[nome],
+      description: t(`build.legal.${nome}.descricao`, { dias: shop.returns.coolingOffDays }), bloco: blocos[nome],
       crumbs: [{ name: t('build.migalha.inicio'), href: '/' }, { name: title }] });
   }
 

@@ -117,8 +117,8 @@
     "h": "f889a06b8926"
   },
   "legal.cancellation.descricao": {
-    "t": "Fourteen days to change your mind, and until when you can cancel a personalised piece.",
-    "h": "9c1af014ad31"
+    "t": "{dias} days to change your mind, and until when you can cancel a personalised piece.",
+    "h": "9094d0362ea3"
   },
   "legal.returns-form": {
     "t": "Cancellation form",
