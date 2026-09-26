@@ -1,5 +1,5 @@
 {
-  "name": "Easter favour",
+  "name": "Lembrança de Páscoa",
   "price": 3.2,
   "published": true,
   "featured": false,
@@ -10,8 +10,8 @@
     "keepsakes",
     "hanging"
   ],
-  "summary": "Rabbits, carrots and “Happy Easter”, in wood.",
-  "text": "Rabbits, carrots and “Happy Easter”, in wood.",
+  "summary": "Coelhos, cenouras e «Feliz Páscoa», em madeira.",
+  "text": "Coelhos, cenouras e «Feliz Páscoa», em madeira.",
   "photoFolder": "pool",
   "photos": [
     "03",
@@ -21,7 +21,7 @@
   "options": [
     {
       "id": "names",
-      "name": "Name or names",
+      "name": "Nome ou nomes",
       "type": "text",
       "required": true,
       "personalises": true,
@@ -31,17 +31,17 @@
     },
     {
       "id": "date",
-      "name": "Date",
+      "name": "Data",
       "type": "text",
       "required": true,
       "personalises": true,
       "max": 30,
       "extra": 0,
-      "example": "28 June 2026"
+      "example": "28 de junho de 2026"
     },
     {
       "id": "line",
-      "name": "A short line (optional)",
+      "name": "Uma frase curta (opcional)",
       "type": "text",
       "required": false,
       "personalises": true,

@@ -1,25 +1,21 @@
 {
   "_note": "The cover of each brand: one picture filling the first screen, with these words over it. Keep the title SHORT — it is set large and centred, and a long one wraps into a wall.",
-
   "_note_picture": "Where the picture comes from depends on whether \"film\" is set below. With a film, the still under it is the film's own first frame, so nothing changes when it starts playing. Without one, it is photos/_covers/<brand>.jpg — replace that file with a landscape photograph and run scripts/covers.py, then scripts/renditions.py.",
-
   "_note_film": "\"film\" plays a short silent film over the cover. Delete the line and the brand's photograph comes back, with nothing else to undo — and a still is what shows anyway for anyone whose device is set to reduce motion, whose connection says it is metered, or whose browser refuses to autoplay. Changing the film itself is not a back-office job: the new recording goes in _materiais-ithos-cathelier/filmes/ and somebody runs scripts/film.sh and then scripts/renditions.py.",
-
   "ithos": {
-    "title": "A small light, all night",
-    "buttonLabel": "See all the lamps",
+    "title": "Uma luz pequena, a noite toda",
+    "buttonLabel": "Ver todos os candeeiros",
     "buttonHref": "/lamps/",
-    "alt": "Two wooden night lights glowing in a dark room, a deer and a koala, on a woven mat",
+    "alt": "Dois candeeiros de presença em madeira acesos num quarto escuro, um veado e um coala, sobre uma esteira",
     "film": "ithos-cover",
     "focus": "50% 52%",
     "focusWide": "50% 44%"
   },
-
   "cathelier": {
-    "title": "Your names, cut into it",
-    "buttonLabel": "See all the pieces",
+    "title": "Os vossos nomes, cortados na madeira",
+    "buttonLabel": "Ver todas as peças",
     "buttonHref": "/cathelier/pieces/",
-    "alt": "A large daisy cut in white wood, laid on kraft paper",
+    "alt": "Uma margarida grande cortada em madeira branca, pousada em papel kraft",
     "focus": "50% 34%",
     "focusWide": "50% 41%"
   }

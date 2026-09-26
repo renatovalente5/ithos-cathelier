@@ -1,5 +1,5 @@
 {
-  "name": "Engraved wooden bauble",
+  "name": "Bola de Natal gravada",
   "price": 5.5,
   "published": true,
   "featured": false,
@@ -9,8 +9,8 @@
   "alsoIn": [
     "hanging"
   ],
-  "summary": "Two halves of wood that click together, with the name in between.",
-  "text": "Two halves of wood that click together, with the name in between.",
+  "summary": "Duas metades de madeira que encaixam, com o nome no meio.",
+  "text": "Duas metades de madeira que encaixam, com o nome no meio.",
   "photoFolder": "pool",
   "photos": [
     "04",
@@ -20,7 +20,7 @@
   "options": [
     {
       "id": "name",
-      "name": "Name",
+      "name": "Nome",
       "type": "text",
       "required": true,
       "personalises": true,

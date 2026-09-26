@@ -1,5 +1,5 @@
 {
-  "name": "Birth disc",
+  "name": "Disco de nascimento",
   "price": 24,
   "published": true,
   "featured": true,
@@ -7,8 +7,8 @@
   "made": "to_order",
   "occasion": "new-baby",
   "alsoIn": [],
-  "summary": "A round disc carrying everything about the day they arrived.",
-  "text": "A round disc with the name, the date, the time, the weight and the length engraved into it.\n\nIt is the piece people hang over a cot and then never take down.",
+  "summary": "Um disco redondo com tudo sobre o dia em que chegou.",
+  "text": "Um disco redondo com o nome, a data, a hora, o peso e o comprimento gravados.\n\nÉ a peça que se pendura por cima do berço e que depois nunca mais se tira.",
   "photoFolder": "pool",
   "photos": [
     "05",
@@ -18,7 +18,7 @@
   "options": [
     {
       "id": "name",
-      "name": "Name",
+      "name": "Nome",
       "type": "text",
       "required": true,
       "personalises": true,
@@ -28,7 +28,7 @@
     },
     {
       "id": "surname",
-      "name": "Surname",
+      "name": "Apelido",
       "type": "text",
       "required": true,
       "personalises": true,
@@ -38,17 +38,17 @@
     },
     {
       "id": "born",
-      "name": "Date of birth",
+      "name": "Data de nascimento",
       "type": "text",
       "required": true,
       "personalises": true,
       "max": 30,
       "extra": 0,
-      "example": "16 June 2025"
+      "example": "16 de junho de 2025"
     },
     {
       "id": "time",
-      "name": "Time",
+      "name": "Hora",
       "type": "text",
       "required": true,
       "personalises": true,
@@ -58,7 +58,7 @@
     },
     {
       "id": "weight",
-      "name": "Weight",
+      "name": "Peso",
       "type": "text",
       "required": true,
       "personalises": true,
@@ -68,7 +68,7 @@
     },
     {
       "id": "length",
-      "name": "Length",
+      "name": "Comprimento",
       "type": "text",
       "required": true,
       "personalises": true,

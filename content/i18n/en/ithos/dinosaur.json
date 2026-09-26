@@ -1,0 +1,54 @@
+{
+  "name": {
+    "t": "Dinosaur",
+    "h": "0b51b9ae7844"
+  },
+  "summary": {
+    "t": "Big, long, and covered in stars.",
+    "h": "5a1eb2043708"
+  },
+  "text": {
+    "t": "The largest pieces in the range — up to 71 cm long. There is the long-necked one in deep blue, speckled with light, and the plated one in green.\n\nThey are big on purpose: they live on the floor against a wall and light a whole room.",
+    "h": "27b8f1bf2c17"
+  },
+  "options.variant.name": {
+    "t": "Model",
+    "h": "a5ab3212dad1"
+  },
+  "options.variant.values.1.name": {
+    "t": "30×65 cm",
+    "h": "fda7f4629146"
+  },
+  "options.variant.values.2.name": {
+    "t": "41×71 cm",
+    "h": "6297173c2654"
+  },
+  "options.power.name": {
+    "t": "Power",
+    "h": "0853883db432"
+  },
+  "options.power.help": {
+    "t": "Batteries are not included. The mains version comes with a remote: on, off, dimmer, timer and a slow pulse.",
+    "h": "57676081542e"
+  },
+  "options.power.values.batteries.name": {
+    "t": "2 x AA batteries (3V)",
+    "h": "cbc7c37b342d"
+  },
+  "options.power.values.mains.name": {
+    "t": "Mains cable with remote",
+    "h": "f8e28d7f7f6c"
+  },
+  "options.power.values.mains.note": {
+    "t": "Out of stock for now",
+    "h": "5b693adaa590"
+  },
+  "options.engraving.name": {
+    "t": "Laser engraving",
+    "h": "9694d5607ae5"
+  },
+  "options.engraving.help": {
+    "t": "A name, a date or a short phrase, burned into the wood. Leave it empty if you would rather not.",
+    "h": "e202effc7193"
+  }
+}

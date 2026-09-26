@@ -7,7 +7,7 @@
   "zones": [
     {
       "id": "pt",
-      "name": "Mainland Portugal",
+      "name": "Portugal continental",
       "price": 5,
       "daysMin": 1,
       "daysMax": 5,
@@ -17,7 +17,7 @@
     },
     {
       "id": "ilhas",
-      "name": "Azores and Madeira",
+      "name": "Açores e Madeira",
       "price": 5,
       "daysMin": 3,
       "daysMax": 7,
@@ -28,7 +28,7 @@
     },
     {
       "id": "es",
-      "name": "Spain",
+      "name": "Espanha",
       "price": 10,
       "daysMin": 2,
       "daysMax": 7,
@@ -38,7 +38,7 @@
     },
     {
       "id": "fr-uk",
-      "name": "France and the United Kingdom",
+      "name": "França e Reino Unido",
       "price": 15,
       "daysMin": 2,
       "daysMax": 7,
@@ -49,7 +49,7 @@
     },
     {
       "id": "europa",
-      "name": "Rest of Europe",
+      "name": "Resto da Europa",
       "price": 20,
       "daysMin": 3,
       "daysMax": 10,

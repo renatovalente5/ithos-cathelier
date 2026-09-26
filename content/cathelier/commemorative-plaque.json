@@ -1,5 +1,5 @@
 {
-  "name": "Commemorative plaque",
+  "name": "Placa comemorativa",
   "price": 35,
   "published": true,
   "featured": false,
@@ -7,8 +7,8 @@
   "made": "to_order",
   "occasion": "custom",
   "alsoIn": [],
-  "summary": "For institutions, anniversaries and tributes.",
-  "text": "For institutions, anniversaries and tributes.",
+  "summary": "Para instituições, aniversários e homenagens.",
+  "text": "Para instituições, aniversários e homenagens.",
   "photoFolder": "pool",
   "photos": [
     "12",
@@ -18,17 +18,17 @@
   "options": [
     {
       "id": "title",
-      "name": "What it says",
+      "name": "O que diz",
       "type": "text",
       "required": true,
       "personalises": true,
       "max": 60,
       "extra": 0,
-      "example": "Under-12 champions"
+      "example": "Campeões sub-12"
     },
     {
       "id": "detail",
-      "name": "Club, school or year (optional)",
+      "name": "Clube, escola ou ano (opcional)",
       "type": "text",
       "required": false,
       "personalises": true,

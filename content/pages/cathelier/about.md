@@ -1,32 +1,32 @@
-# The workshop
+# A oficina
 
-cathelier is the laser side of a small workshop in Castelo Branco. Where the
-lamps are cut and painted by hand, these pieces are drawn, cut and engraved — and
-every one of them carries somebody's name.
+A cathelier é o lado do laser de uma pequena oficina em Castelo Branco. Onde os
+candeeiros são cortados e pintados à mão, estas peças são desenhadas, cortadas e
+gravadas — e cada uma leva o nome de alguém.
 
-## How it works
+## Como funciona
 
-You tell us the names, the dates, or the words. We draw it and send you a proof.
-Nothing goes on the laser until you look at that drawing and say yes.
+Diz-nos os nomes, as datas ou as palavras. Nós desenhamos e enviamos-lhe uma
+prova. Nada vai ao laser antes de olhar para esse desenho e dizer que sim.
 
-Then it is cut, the edges are cleaned by hand, and it comes to you ready to give.
+Depois é cortada, as arestas são limpas à mão, e chega-lhe pronta a oferecer.
 
-## What we make
+## O que fazemos
 
-Keepsakes for the day itself — place cards, favours, cake toppers, signs. Pieces
-to keep afterwards — birth discs, growth charts, family trees, names for a
-bedroom wall. And things for clubs, schools and companies, with your emblem on
-them.
+Lembranças para o próprio dia — marcadores de lugar, lembranças para os
+convidados, topos de bolo, placas. Peças para guardar depois — discos de
+nascimento, réguas de crescimento, árvores genealógicas, nomes para a parede do
+quarto. E coisas para clubes, escolas e empresas, com o vosso emblema.
 
-Look through it [by collection](/cathelier/) or [all at once](/cathelier/pieces/).
+Veja [por coleção](/cathelier/) ou [tudo de uma vez](/cathelier/pieces/).
 
-## Large orders
+## Encomendas grandes
 
-A hundred wedding favours is a different job from one birth disc, and it is
-priced differently. [Ask for a quote](/cathelier/quote/) and tell us roughly how
-many.
+Cem lembranças de casamento são um trabalho diferente de um disco de
+nascimento, e o preço também é diferente. [Peça um orçamento](/cathelier/quote/)
+e diga-nos mais ou menos quantas.
 
-## The other half of the workshop
+## A outra metade da oficina
 
-The same bench also makes [ithos](/) — handmade wooden night lights for
-children's rooms.
+A mesma bancada faz também a [ithos](/) — candeeiros de presença em madeira,
+feitos à mão, para quartos de criança.

@@ -1,0 +1,42 @@
+{
+  "name": {
+    "t": "Owl",
+    "h": "da1c92f969f2"
+  },
+  "summary": {
+    "t": "Eyes closed, feathers in layers, perfectly still.",
+    "h": "78288be294ba"
+  },
+  "text": {
+    "t": "Perched, eyes shut, feathers cut in layers of wood. It is round, with nothing sharp on it, and the light comes through the breast.\n\nA quiet piece — right for a baby's room, and still right at ten years old.",
+    "h": "3c191c0af8be"
+  },
+  "options.power.name": {
+    "t": "Power",
+    "h": "0853883db432"
+  },
+  "options.power.help": {
+    "t": "Batteries are not included. The mains version comes with a remote: on, off, dimmer, timer and a slow pulse.",
+    "h": "57676081542e"
+  },
+  "options.power.values.batteries.name": {
+    "t": "2 x AA batteries (3V)",
+    "h": "cbc7c37b342d"
+  },
+  "options.power.values.mains.name": {
+    "t": "Mains cable with remote",
+    "h": "f8e28d7f7f6c"
+  },
+  "options.power.values.mains.note": {
+    "t": "Out of stock for now",
+    "h": "5b693adaa590"
+  },
+  "options.engraving.name": {
+    "t": "Laser engraving",
+    "h": "9694d5607ae5"
+  },
+  "options.engraving.help": {
+    "t": "A name, a date or a short phrase, burned into the wood. Leave it empty if you would rather not.",
+    "h": "e202effc7193"
+  }
+}

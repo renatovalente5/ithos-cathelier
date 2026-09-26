@@ -1,0 +1,22 @@
+{
+  "name": {
+    "t": "Name in wood",
+    "h": "720a801445dd"
+  },
+  "summary": {
+    "t": "For the bedroom wall, painted whatever colour you choose.",
+    "h": "33ca5d131a83"
+  },
+  "text": {
+    "t": "For the bedroom wall, painted whatever colour you choose.",
+    "h": "33ca5d131a83"
+  },
+  "options.name.name": {
+    "t": "The name",
+    "h": "01bd1e2b89c0"
+  },
+  "options.name.example": {
+    "t": "Beatriz",
+    "h": "ac8a9e876b6c"
+  }
+}

@@ -1,5 +1,5 @@
 {
-  "name": "Advent calendar",
+  "name": "Calendário do Advento",
   "price": 54,
   "published": true,
   "featured": false,
@@ -7,8 +7,8 @@
   "made": "to_order",
   "occasion": "christmas",
   "alsoIn": [],
-  "summary": "Twenty-four numbered drawers, to fill again every year.",
-  "text": "Twenty-four numbered drawers, to fill again every year.",
+  "summary": "Vinte e quatro gavetas numeradas, para encher outra vez todos os anos.",
+  "text": "Vinte e quatro gavetas numeradas, para encher outra vez todos os anos.",
   "photoFolder": "pool",
   "photos": [
     "04",
@@ -18,7 +18,7 @@
   "options": [
     {
       "id": "name",
-      "name": "Name",
+      "name": "Nome",
       "type": "text",
       "required": true,
       "personalises": true,

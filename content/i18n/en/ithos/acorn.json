@@ -1,0 +1,58 @@
+{
+  "name": {
+    "t": "Acorn",
+    "h": "f91d6465d6e2"
+  },
+  "summary": {
+    "t": "Small, round, with a cross-hatched cap.",
+    "h": "b00ae7eb55e5"
+  },
+  "text": {
+    "t": "A pale wooden body under a dark cap, engraved in a cross-hatch. Small enough to sit in the palm of your hand, and it gives a low, soft light.\n\nIt comes in two sizes, and the pair costs less than two singles. Most people take both and stand them side by side.",
+    "h": "256785e42c94"
+  },
+  "options.variant.name": {
+    "t": "Model",
+    "h": "a5ab3212dad1"
+  },
+  "options.variant.values.1.name": {
+    "t": "Large (25×22 cm)",
+    "h": "b0793a4190b0"
+  },
+  "options.variant.values.2.name": {
+    "t": "Small (18×16 cm)",
+    "h": "addae6e7a68e"
+  },
+  "options.variant.values.3.name": {
+    "t": "Both together",
+    "h": "2f9406a0f16b"
+  },
+  "options.power.name": {
+    "t": "Power",
+    "h": "0853883db432"
+  },
+  "options.power.help": {
+    "t": "Batteries are not included. The mains version comes with a remote: on, off, dimmer, timer and a slow pulse.",
+    "h": "57676081542e"
+  },
+  "options.power.values.batteries.name": {
+    "t": "2 x AA batteries (3V)",
+    "h": "cbc7c37b342d"
+  },
+  "options.power.values.mains.name": {
+    "t": "Mains cable with remote",
+    "h": "f8e28d7f7f6c"
+  },
+  "options.power.values.mains.note": {
+    "t": "Out of stock for now",
+    "h": "5b693adaa590"
+  },
+  "options.engraving.name": {
+    "t": "Laser engraving",
+    "h": "9694d5607ae5"
+  },
+  "options.engraving.help": {
+    "t": "A name, a date or a short phrase, burned into the wood. Leave it empty if you would rather not.",
+    "h": "e202effc7193"
+  }
+}

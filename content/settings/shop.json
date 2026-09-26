@@ -21,16 +21,16 @@
   },
   "payment": {
     "provider": "ifthenpay",
-    "methods": "Multibanco reference, MB WAY, card, Google Pay or Apple Pay",
+    "methods": "referência Multibanco, MB WAY, cartão, Google Pay ou Apple Pay",
     "referenceDays": 2,
     "_note": "Esta frase é mostrada ao comprador nos termos, e o artigo 7.º do DL 24/2014 obriga a indicar os meios de pagamento aceites de forma clara, o mais tardar no início do processo de encomenda. Esteve a dizer «Multibanco reference or MB WAY» depois de o Payshop já estar no cesto: uma frase escrita à mão que ninguém voltou a ler. scripts/check-output.mjs compara-a agora com as opções que o cesto construído oferece mesmo, e recusa publicar se divergirem — não voltar a editar uma sem a outra."
   },
   "safetyIthos": [
-    "This is not a toy. It is a decorative night light.",
-    "Not suitable for children under 3 without adult supervision.",
-    "Keep the cable out of a cot or a bed.",
-    "Do not leave batteries within reach of a small child.",
-    "Wipe with a dry cloth. Never with water or solvents."
+    "Isto não é um brinquedo. É um candeeiro de presença decorativo.",
+    "Não é adequado a crianças com menos de 3 anos sem a supervisão de um adulto.",
+    "Mantenha o cabo fora do berço e da cama.",
+    "Não deixe pilhas ao alcance de uma criança pequena.",
+    "Limpe com um pano seco. Nunca com água nem com solventes."
   ],
   "safetyCathelier": [],
   "_noteSafetyCathelier": "Os avisos de segurança das peças da cathelier (peças pequenas, ímanes, velas…). O Reg. (UE) 2023/988, art. 19.º, pede-os na oferta online. Têm de vir da dona: enquanto a lista estiver vazia, a ficha das peças não mostra nada e as guardas avisam.",

@@ -1,0 +1,22 @@
+{
+  "name": {
+    "t": "Door wreath with the family name",
+    "h": "07b8026d7d41"
+  },
+  "summary": {
+    "t": "For the front door, with the family name in the middle.",
+    "h": "d10d8209ac74"
+  },
+  "text": {
+    "t": "For the front door, with the family name in the middle.",
+    "h": "d10d8209ac74"
+  },
+  "options.name.name": {
+    "t": "Name",
+    "h": "5086900635fe"
+  },
+  "options.name.example": {
+    "t": "Miguel",
+    "h": "977af1277234"
+  }
+}

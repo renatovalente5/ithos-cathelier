@@ -1,0 +1,26 @@
+{
+  "name": {
+    "t": "Wedding cake topper",
+    "h": "53e97a88e2e1"
+  },
+  "summary": {
+    "t": "Your names or whatever line you want, laser cut.",
+    "h": "ae409a987fcc"
+  },
+  "text": {
+    "t": "Your names or whatever line you want, laser cut.",
+    "h": "ae409a987fcc"
+  },
+  "options.names.name": {
+    "t": "Name or names",
+    "h": "294711d4c920"
+  },
+  "options.names.example": {
+    "t": "The Aparício family",
+    "h": "d8c105bc37e8"
+  },
+  "options.date.name": {
+    "t": "Date (optional)",
+    "h": "07cfa971211a"
+  }
+}

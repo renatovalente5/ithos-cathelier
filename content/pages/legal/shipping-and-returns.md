@@ -1,34 +1,36 @@
-# Delivery and returns
+# Entregas e devoluções
 
-## How long it takes
+## Quanto tempo demora
 
-A lamp in stock leaves the workshop {{IN_STOCK_DAYS}} after your payment.
-A lamp out of stock is made for you, and is with you in {{TO_ORDER_WEEKS}}.
-Cathelier pieces are always made to order — {{TO_ORDER_WEEKS}}, counted from
-when you approve the drawing. Each product page and the basket say which applies
-before you pay, and an order ships together when its last piece is ready.
+Um candeeiro em stock sai da oficina {{IN_STOCK_DAYS}} depois do seu pagamento.
+Um candeeiro sem stock é feito para si, e chega-lhe em {{TO_ORDER_WEEKS}}. As
+peças da cathelier são sempre feitas por encomenda — {{TO_ORDER_WEEKS}}, a
+contar da aprovação do desenho. A página de cada produto e o cesto dizem qual é
+o caso antes de pagar, e uma encomenda segue junta quando a última peça estiver
+pronta.
 
-Once it leaves us, delivery is by {{CARRIER}}.
+Depois de sair da oficina, a entrega é feita pela {{CARRIER}}.
 
-## Where we ship and what it costs
+## Para onde enviamos e quanto custa
 
 {{SHIPPING_TABLE}}
 
-Delivery times are estimates and begin when the parcel leaves the workshop.
+Os prazos de entrega são estimativas e começam quando a encomenda sai da
+oficina.
 
-## If it arrives damaged
+## Se chegar danificada
 
-Photograph it before you unpack any further and write to
-[{{EMAIL}}](mailto:{{EMAIL}}). We will repair it, replace it, or refund you — you
-choose, and it costs you nothing.
+Fotografe-a antes de a desembalar mais e escreva para
+[{{EMAIL}}](mailto:{{EMAIL}}). Reparamos, substituímos ou devolvemos o seu
+dinheiro — escolhe o que preferir, e não lhe custa nada.
 
-## Returns
+## Devoluções
 
-You have {{COOLING_OFF_DAYS}} days to change your mind on anything that is not
-personalised. See [your right to cancel](/legal/cancellation/) for how it works
-and what it does not cover.
+Tem {{COOLING_OFF_DAYS}} dias para mudar de ideias sobre tudo o que não seja
+personalizado. Veja o [seu direito de livre resolução](/legal/cancellation/)
+para saber como funciona e o que não abrange.
 
-## The legal guarantee
+## A garantia legal
 
-Everything carries a **{{WARRANTY_YEARS}}-year guarantee**. If a piece stops
-being what it should be, write to us.
+Tudo tem **{{WARRANTY_YEARS}} anos de garantia**. Se uma peça deixar de ser o
+que deve ser, escreva-nos.

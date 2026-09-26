@@ -1,5 +1,5 @@
 {
-  "name": "Pendant with the dates",
+  "name": "Pendente com as datas",
   "price": 14,
   "published": true,
   "featured": false,
@@ -9,8 +9,8 @@
   "alsoIn": [
     "special-days"
   ],
-  "summary": "A small disc with the dates that matter, to carry in a bag.",
-  "text": "A small disc with the dates that matter, to carry in a bag.",
+  "summary": "Um pequeno disco com as datas que importam, para levar na mala.",
+  "text": "Um pequeno disco com as datas que importam, para levar na mala.",
   "photoFolder": "pool",
   "photos": [
     "07",
@@ -20,17 +20,17 @@
   "options": [
     {
       "id": "names",
-      "name": "Name or names",
+      "name": "Nome ou nomes",
       "type": "text",
       "required": true,
       "personalises": true,
       "max": 60,
       "extra": 0,
-      "example": "Ana and Duarte"
+      "example": "Ana e Duarte"
     },
     {
       "id": "line",
-      "name": "A short line (optional)",
+      "name": "Uma frase curta (opcional)",
       "type": "text",
       "required": false,
       "personalises": true,

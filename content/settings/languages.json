@@ -1,0 +1,8 @@
+{
+  "_leia": "As línguas do site. «site» são as que estão publicadas, pela ordem do seletor; a primeira é o português, a língua em que a dona escreve, e vive na raiz do endereço. «aPreparar» são as que o Worker já vai traduzindo sem as publicar: quando estiverem prontas, passam para «site». As traduções fazem-se sozinhas (ver src/traducoes.js na API).",
+  "site": [
+    "pt",
+    "en"
+  ],
+  "aPreparar": []
+}

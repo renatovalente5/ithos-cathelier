@@ -1,83 +1,88 @@
-# Privacy
+# Privacidade
 
-## The short version
+## Em poucas palavras
 
-This site sets no analytics cookies and no advertising cookies. It does not
-track you. The typefaces are served from this domain, so your browser does not
-contact Google to read this page.
+Este site não usa cookies de estatística nem de publicidade. Não o segue. As
+tipografias são servidas a partir deste domínio, por isso o seu browser não
+contacta a Google para ler esta página.
 
-The only third-party content anywhere on the site is a Google map on the contact
-page, and it loads only if you ask it to.
+O único conteúdo de terceiros em todo o site é um mapa da Google na página de
+contactos, e só carrega se pedir.
 
-## Who is responsible
+## Quem é responsável
 
-{{LEGAL_NAME}}, {{ADDRESS}}, tax number {{TAX_NUMBER}}.
-Write to [{{EMAIL}}](mailto:{{EMAIL}}) about anything on this page.
+{{LEGAL_NAME}}, {{ADDRESS}}, contribuinte n.º {{TAX_NUMBER}}.
+Escreva para [{{EMAIL}}](mailto:{{EMAIL}}) sobre qualquer coisa desta página.
 
-## What we hold, and why
+## O que guardamos, e porquê
 
-**When you order.** Your name, address, email, telephone and what you bought. We
-need it to make the thing, send it, and issue an invoice. The legal basis is the
-contract between us, and tax law for the invoice.
+**Quando encomenda.** O seu nome, morada, email, telefone e o que comprou.
+Precisamos disso para fazer a peça, enviá-la e emitir a fatura. O fundamento é
+o contrato entre nós, e a lei fiscal no caso da fatura.
 
-**What you type into an engraving.** A name, a date, a phrase. We keep it as
-part of the order, because it is what we made.
+**O que escreve para gravar.** Um nome, uma data, uma frase. Guardamo-lo com a
+encomenda, porque é o que fizemos.
 
-**When you write to us.** Whatever is in your message, for as long as it takes
-to answer and a reasonable time afterwards.
+**Quando nos escreve.** O que estiver na sua mensagem, durante o tempo de
+responder e um tempo razoável depois.
 
-**Your IBAN, but only if we owe you money on a payment that has no way back.**
-A Multibanco reference cannot be reversed, so if you cancel an order paid
-that way we ask you for an IBAN to transfer the refund. We use it for that
-transfer and nothing else, and it is kept with the invoice for as long as tax
-law requires.
+**O seu IBAN, mas só se lhe devermos dinheiro de um pagamento sem volta.** Uma
+referência Multibanco não pode ser revertida, por isso, se cancelar uma
+encomenda paga dessa forma, pedimos-lhe um IBAN para transferir o reembolso.
+Usamo-lo para essa transferência e para mais nada, e fica guardado com a
+fatura durante o tempo que a lei fiscal exige.
 
-**Your basket.** While you are choosing, it lives in your own browser and we
-never see it. It reaches us the moment you press **Order and pay**: we save the
-order — your name, address, telephone, tax number and what you chose — before we
-ask for the payment, because a payment that arrives with nothing to attach it to
-is a payment nobody can fulfil. If you never pay, that order is deleted after
-ninety days.
+**O seu cesto.** Enquanto está a escolher, vive no seu próprio browser e nós
+nunca o vemos. Chega-nos no momento em que carrega em **Encomendar e pagar**:
+guardamos a encomenda — o seu nome, morada, telefone, contribuinte e o que
+escolheu — antes de pedir o pagamento, porque um pagamento que chega sem nada a
+que se ligar é um pagamento que ninguém consegue cumprir. Se nunca pagar, essa
+encomenda é apagada ao fim de noventa dias.
 
-**If you are a reseller.** Your company name, NIF, registered address and the
-email addresses you gave us, so that you can sign in to see your prices and so
-that your invoices carry the right details. The legal basis is the contract
-between us. When you sign in, your browser keeps a signed session for the tab
-you are in, and on the device only if you tick "keep me signed in"; nothing is
-kept if you never sign in. When you stop being a reseller we delete the record;
-invoices are kept for as long as tax law requires.
+**Se for revendedor.** A firma, o NIF, a sede e os endereços de email que nos
+deu, para poder entrar e ver os seus preços e para as suas faturas terem os
+dados certos. O fundamento é o contrato entre nós. Quando entra, o seu browser
+guarda uma sessão assinada para o separador onde está, e no aparelho só se
+marcar «manter a sessão iniciada»; nada é guardado se nunca entrar. Quando
+deixar de ser revendedor, apagamos o registo; as faturas ficam guardadas
+durante o tempo que a lei fiscal exige.
 
-## Who else sees it
+## Quem mais os vê
 
-- **{{PAYMENT_PROVIDER}}**, to take the payment: your name, your email and the
-  amount. We never see your bank or card details. If you pay by MB WAY, your telephone
-  number goes to them too, because that is how the request reaches your phone.
-- **{{CARRIER}}**, to deliver the parcel: your name, address and telephone.
-- **Resend**, to deliver our emails to you: the confirmation carries your name,
-  what you ordered and the address it is going to, so Resend handles all of it
-  on the way. Their servers for this domain are in Ireland.
-- **Cloudflare**, which runs the checkout and holds the order — everything in
-  the paragraph above — from the moment you press **Order and pay** until it is
-  deleted, and the records of our resellers. Cloudflare may process this data
-  outside the European Union, under the European Commission's standard
-  contractual clauses. They are also who our shop emails leave through.
-- **GitHub**, which serves these pages to your browser and therefore sees the
-  request, including your IP address.
-- Our accountant, and the tax authority, for invoices.
+- **{{PAYMENT_PROVIDER}}**, para receber o pagamento: o seu nome, o seu email e
+  o valor. Nunca vemos os seus dados bancários nem do cartão. Se pagar por MB
+  WAY, o seu número de telefone também lhes chega, porque é assim que o pedido
+  chega ao seu telemóvel.
+- **{{CARRIER}}**, para entregar a encomenda: o seu nome, morada e telefone.
+- **Resend**, para lhe fazer chegar os nossos emails: a confirmação leva o seu
+  nome, o que encomendou e a morada para onde vai, por isso a Resend trata de
+  tudo isso pelo caminho. Os servidores deles para este domínio estão na
+  Irlanda.
+- **Cloudflare**, que corre o pagamento e guarda a encomenda — tudo o que está
+  no parágrafo acima — desde o momento em que carrega em **Encomendar e pagar**
+  até ser apagada, e os registos dos nossos revendedores. A Cloudflare pode
+  tratar estes dados fora da União Europeia, ao abrigo das cláusulas
+  contratuais-tipo da Comissão Europeia. É também por ela que saem os emails da
+  loja.
+- **GitHub**, que serve estas páginas ao seu browser e por isso vê o pedido,
+  incluindo o seu endereço IP.
+- O nosso contabilista, e a Autoridade Tributária, para as faturas.
 
-Nobody else. Your details are not sold, and not used to advertise at you.
+Mais ninguém. Os seus dados não são vendidos nem usados para lhe fazer
+publicidade.
 
-## How long
+## Durante quanto tempo
 
-Invoices are kept ten years, because tax law requires it. Orders that were never
-paid are deleted after ninety days — long enough for a Multibanco reference to
-be paid late and for us to answer a question about it, and no longer. Emails are
-kept for as long as they are useful and then deleted.
+As faturas guardam-se dez anos, porque a lei fiscal o exige. As encomendas que
+nunca foram pagas são apagadas ao fim de noventa dias — o suficiente para uma
+referência Multibanco ser paga com atraso e para respondermos a uma pergunta
+sobre ela, e não mais. Os emails guardam-se enquanto forem úteis e depois são
+apagados.
 
-## What you can ask for
+## O que pode pedir
 
-Access, correction, erasure, restriction, portability, and to object. Write to
-[{{EMAIL}}](mailto:{{EMAIL}}) and we will answer within a month.
+Acesso, retificação, apagamento, limitação, portabilidade e oposição. Escreva
+para [{{EMAIL}}](mailto:{{EMAIL}}) e respondemos no prazo de um mês.
 
-If you think we have handled your data badly, you can complain to the Portuguese
-data protection authority, the CNPD — [cnpd.pt](https://www.cnpd.pt/).
+Se achar que tratámos mal os seus dados, pode apresentar queixa à autoridade
+portuguesa de proteção de dados, a CNPD — [cnpd.pt](https://www.cnpd.pt/).

@@ -1,5 +1,5 @@
 {
-  "name": "Door wreath with the family name",
+  "name": "Coroa de porta com o nome da família",
   "price": 38,
   "published": true,
   "featured": false,
@@ -7,8 +7,8 @@
   "made": "to_order",
   "occasion": "christmas",
   "alsoIn": [],
-  "summary": "For the front door, with the family name in the middle.",
-  "text": "For the front door, with the family name in the middle.",
+  "summary": "Para a porta de entrada, com o nome da família ao meio.",
+  "text": "Para a porta de entrada, com o nome da família ao meio.",
   "photoFolder": "pool",
   "photos": [
     "06",
@@ -18,7 +18,7 @@
   "options": [
     {
       "id": "name",
-      "name": "Name",
+      "name": "Nome",
       "type": "text",
       "required": true,
       "personalises": true,

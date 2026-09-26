@@ -1,5 +1,5 @@
 {
-  "name": "Photo magnets",
+  "name": "Ímanes com fotografia",
   "price": 2.5,
   "published": true,
   "featured": false,
@@ -9,8 +9,8 @@
   "alsoIn": [
     "keepsakes"
   ],
-  "summary": "A photograph engraved into wood, with a magnet on the back.",
-  "text": "A photograph engraved into wood, with a magnet on the back.",
+  "summary": "Uma fotografia gravada em madeira, com um íman atrás.",
+  "text": "Uma fotografia gravada em madeira, com um íman atrás.",
   "photoFolder": "pool",
   "photos": [
     "11",
@@ -20,7 +20,7 @@
   "options": [
     {
       "id": "names",
-      "name": "Name or names",
+      "name": "Nome ou nomes",
       "type": "text",
       "required": true,
       "personalises": true,
@@ -30,17 +30,17 @@
     },
     {
       "id": "date",
-      "name": "Date",
+      "name": "Data",
       "type": "text",
       "required": true,
       "personalises": true,
       "max": 30,
       "extra": 0,
-      "example": "28 June 2026"
+      "example": "28 de junho de 2026"
     },
     {
       "id": "line",
-      "name": "A short line (optional)",
+      "name": "Uma frase curta (opcional)",
       "type": "text",
       "required": false,
       "personalises": true,

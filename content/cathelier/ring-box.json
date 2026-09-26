@@ -1,5 +1,5 @@
 {
-  "name": "Ring box",
+  "name": "Caixa para alianças",
   "price": 34,
   "published": true,
   "featured": false,
@@ -7,8 +7,8 @@
   "made": "to_order",
   "occasion": "custom",
   "alsoIn": [],
-  "summary": "In wood, engraved with the names and the date.",
-  "text": "In wood, engraved with the names and the date.",
+  "summary": "Em madeira, gravada com os nomes e a data.",
+  "text": "Em madeira, gravada com os nomes e a data.",
   "photoFolder": "pool",
   "photos": [
     "02",
@@ -18,7 +18,7 @@
   "options": [
     {
       "id": "names",
-      "name": "Name or names",
+      "name": "Nome ou nomes",
       "type": "text",
       "required": true,
       "personalises": true,
@@ -28,17 +28,17 @@
     },
     {
       "id": "date",
-      "name": "Date",
+      "name": "Data",
       "type": "text",
       "required": true,
       "personalises": true,
       "max": 30,
       "extra": 0,
-      "example": "28 June 2026"
+      "example": "28 de junho de 2026"
     },
     {
       "id": "line",
-      "name": "A short line (optional)",
+      "name": "Uma frase curta (opcional)",
       "type": "text",
       "required": false,
       "personalises": true,

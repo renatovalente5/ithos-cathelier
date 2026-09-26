@@ -1,5 +1,5 @@
 {
-  "name": "Birth weight heart",
+  "name": "Coração do peso de nascimento",
   "price": 12,
   "published": true,
   "featured": false,
@@ -9,8 +9,8 @@
   "alsoIn": [
     "hanging"
   ],
-  "summary": "Small, to hang on a cot or a door.",
-  "text": "Small, to hang on a cot or a door.",
+  "summary": "Pequeno, para pendurar no berço ou numa porta.",
+  "text": "Pequeno, para pendurar no berço ou numa porta.",
   "photoFolder": "pool",
   "photos": [
     "05",
@@ -20,7 +20,7 @@
   "options": [
     {
       "id": "name",
-      "name": "Name",
+      "name": "Nome",
       "type": "text",
       "required": true,
       "personalises": true,
@@ -30,7 +30,7 @@
     },
     {
       "id": "surname",
-      "name": "Surname",
+      "name": "Apelido",
       "type": "text",
       "required": true,
       "personalises": true,
@@ -40,17 +40,17 @@
     },
     {
       "id": "born",
-      "name": "Date of birth",
+      "name": "Data de nascimento",
       "type": "text",
       "required": true,
       "personalises": true,
       "max": 30,
       "extra": 0,
-      "example": "16 June 2025"
+      "example": "16 de junho de 2025"
     },
     {
       "id": "time",
-      "name": "Time",
+      "name": "Hora",
       "type": "text",
       "required": true,
       "personalises": true,
@@ -60,7 +60,7 @@
     },
     {
       "id": "weight",
-      "name": "Weight",
+      "name": "Peso",
       "type": "text",
       "required": true,
       "personalises": true,
@@ -70,7 +70,7 @@
     },
     {
       "id": "length",
-      "name": "Length",
+      "name": "Comprimento",
       "type": "text",
       "required": true,
       "personalises": true,

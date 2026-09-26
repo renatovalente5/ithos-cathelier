@@ -1,5 +1,5 @@
 {
-  "name": "Unicorn",
+  "name": "Unicórnio",
   "price": 135,
   "published": true,
   "featured": true,
@@ -9,8 +9,8 @@
     "height": 30,
     "width": 30
   },
-  "summary": "A curled pastel mane and a striped horn.",
-  "text": "A large head, the mane cut in curls of several pastel colours, and a striped horn. The eyes are closed and the lashes are painted in black.\n\nEach curl of the mane is built up layer by layer — one of the slowest pieces we make.",
+  "summary": "Uma crina encaracolada em tons pastel e um chifre às riscas.",
+  "text": "Uma cabeça grande, a crina cortada em caracóis de vários tons pastel e um chifre às riscas. Os olhos estão fechados e as pestanas pintadas a preto.\n\nCada caracol da crina é montado camada a camada — uma das peças mais demoradas que fazemos.",
   "photoFolder": "unicornio",
   "photos": [
     "01",
@@ -22,35 +22,35 @@
   "options": [
     {
       "id": "power",
-      "name": "Power",
+      "name": "Alimentação",
       "type": "choice",
       "required": true,
       "personalises": false,
-      "help": "Batteries are not included. The mains version comes with a remote: on, off, dimmer, timer and a slow pulse.",
+      "help": "As pilhas não estão incluídas. A versão com cabo traz um comando: liga, desliga, regula a intensidade, desliga sozinha e faz a luz pulsar devagar.",
       "values": [
         {
           "id": "batteries",
-          "name": "2 x AA batteries (3V)",
+          "name": "2 pilhas AA (3 V)",
           "extra": 0
         },
         {
           "id": "mains",
-          "name": "Mains cable with remote",
+          "name": "Cabo de corrente com comando",
           "extra": 0,
           "available": false,
-          "note": "Out of stock for now"
+          "note": "Esgotado por agora"
         }
       ]
     },
     {
       "id": "engraving",
-      "name": "Laser engraving",
+      "name": "Gravação a laser",
       "type": "text",
       "required": false,
       "personalises": true,
       "max": 40,
       "extra": 0,
-      "help": "A name, a date or a short phrase, burned into the wood. Leave it empty if you would rather not."
+      "help": "Um nome, uma data ou uma frase curta, gravados na madeira. Deixe vazio se preferir sem gravação."
     }
   ],
   "gpsr": {

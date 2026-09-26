@@ -1004,6 +1004,25 @@ html[data-cover='yes'][data-scrolled='no'] :is(.head__mark, .head__sibling-mark)
 .head__sibling-mark img { inline-size: auto; block-size: 30px; }
 [data-brand='ithos'] .head__sibling-mark img { block-size: 20px; }
 
+/* A LÍNGUA. Duas letras por língua, a actual sublinhada e sem ligação (é onde
+   se está). Pequeno, porque quase ninguém muda -- mas cada letra é um alvo de
+   28px, acima do mínimo de 24, e as de fora têm o contraste do texto normal.
+   No menu repete-se em ponto grande, que é onde se procura num telemóvel. */
+.linguas { display: inline-flex; align-items: center; font-size: .75rem; font-weight: 600; letter-spacing: .08em; }
+.linguas :is(a, span) {
+  display: inline-grid; place-items: center; min-inline-size: 28px; min-block-size: 28px; padding-inline: 3px;
+  color: var(--ink-soft); text-decoration: none;
+}
+.linguas a:hover { color: var(--accent); }
+.linguas [aria-current] { color: var(--ink); text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: .35em; }
+html[data-cover='yes'][data-scrolled='no'] .head .linguas :is(a, span) { color: var(--cover-ink); }
+html[data-cover='yes'][data-scrolled='no'] .head .linguas a:hover { text-decoration: underline; text-underline-offset: .35em; }
+.linguas--gaveta {
+  display: flex; gap: .25rem; flex: none; padding: .75rem var(--gutter) 1.25rem;
+  border-block-start: 1px solid var(--line-soft, var(--line)); font-size: .9rem;
+}
+.linguas--gaveta :is(a, span) { min-inline-size: 44px; min-block-size: 44px; }
+
 /* The state changes instantly; only the FADE is motion, so only the fade sits
    behind the gate. A reader who asked for less motion still gets a bar that
    is transparent at the top and solid below it -- they just get it at once. */

@@ -1,5 +1,5 @@
 {
-  "name": "Family tree",
+  "name": "Árvore genealógica",
   "price": 68,
   "published": true,
   "featured": true,
@@ -10,8 +10,8 @@
     "names",
     "special-days"
   ],
-  "summary": "The whole family on one piece.",
-  "text": "The whole family on one piece.",
+  "summary": "A família toda numa só peça.",
+  "text": "A família toda numa só peça.",
   "photoFolder": "pool",
   "photos": [
     "07",
@@ -21,17 +21,17 @@
   "options": [
     {
       "id": "names",
-      "name": "Name or names",
+      "name": "Nome ou nomes",
       "type": "text",
       "required": true,
       "personalises": true,
       "max": 60,
       "extra": 0,
-      "example": "The Aparício family"
+      "example": "Família Aparício"
     },
     {
       "id": "date",
-      "name": "Date (optional)",
+      "name": "Data (opcional)",
       "type": "text",
       "required": false,
       "personalises": true,

@@ -1,0 +1,42 @@
+{
+  "name": {
+    "t": "Mouse",
+    "h": "1ed4c72d061e"
+  },
+  "summary": {
+    "t": "Big round ears, a long tail, and a belly full of light.",
+    "h": "4a557932e268"
+  },
+  "text": {
+    "t": "Round ears full of light and a tail that leaves the body in a long curve. It sits well on a shelf or a bedside table, and the tail gives it the look of something passing through.\n\nThe wood is left bare on the body — hand-sanded pine, with no paint over it.",
+    "h": "ccd3211ed579"
+  },
+  "options.power.name": {
+    "t": "Power",
+    "h": "0853883db432"
+  },
+  "options.power.help": {
+    "t": "Batteries are not included. The mains version comes with a remote: on, off, dimmer, timer and a slow pulse.",
+    "h": "57676081542e"
+  },
+  "options.power.values.batteries.name": {
+    "t": "2 x AA batteries (3V)",
+    "h": "cbc7c37b342d"
+  },
+  "options.power.values.mains.name": {
+    "t": "Mains cable with remote",
+    "h": "f8e28d7f7f6c"
+  },
+  "options.power.values.mains.note": {
+    "t": "Out of stock for now",
+    "h": "5b693adaa590"
+  },
+  "options.engraving.name": {
+    "t": "Laser engraving",
+    "h": "9694d5607ae5"
+  },
+  "options.engraving.help": {
+    "t": "A name, a date or a short phrase, burned into the wood. Leave it empty if you would rather not.",
+    "h": "e202effc7193"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "name": {
+    "t": "Wooden guest book",
+    "h": "57f6ae1cea12"
+  },
+  "summary": {
+    "t": "A tree, hearts or a map, for the guests to sign.",
+    "h": "b5ee4f65b2b4"
+  },
+  "text": {
+    "t": "A tree, hearts or a map, for the guests to sign.",
+    "h": "b5ee4f65b2b4"
+  },
+  "options.names.name": {
+    "t": "Name or names",
+    "h": "294711d4c920"
+  },
+  "options.names.example": {
+    "t": "The Aparício family",
+    "h": "d8c105bc37e8"
+  },
+  "options.date.name": {
+    "t": "Date (optional)",
+    "h": "07cfa971211a"
+  }
+}

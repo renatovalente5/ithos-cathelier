@@ -1,0 +1,42 @@
+{
+  "name": {
+    "t": "Red Racer",
+    "h": "0333dc15eec0"
+  },
+  "summary": {
+    "t": "A red racing car, with headlamps that come on.",
+    "h": "41fd4b50e421"
+  },
+  "text": {
+    "t": "A classic racing car, painted red, with the number 2 on the side and wheels in wood. The headlamps and the wheels light up — that is where the glow comes from.\n\nLong and low, it sits well on a shelf or a windowsill.",
+    "h": "a449793dc77a"
+  },
+  "options.power.name": {
+    "t": "Power",
+    "h": "0853883db432"
+  },
+  "options.power.help": {
+    "t": "Batteries are not included. The mains version comes with a remote: on, off, dimmer, timer and a slow pulse.",
+    "h": "57676081542e"
+  },
+  "options.power.values.batteries.name": {
+    "t": "2 x AA batteries (3V)",
+    "h": "cbc7c37b342d"
+  },
+  "options.power.values.mains.name": {
+    "t": "Mains cable with remote",
+    "h": "f8e28d7f7f6c"
+  },
+  "options.power.values.mains.note": {
+    "t": "Out of stock for now",
+    "h": "5b693adaa590"
+  },
+  "options.engraving.name": {
+    "t": "Laser engraving",
+    "h": "9694d5607ae5"
+  },
+  "options.engraving.help": {
+    "t": "A name, a date or a short phrase, burned into the wood. Leave it empty if you would rather not.",
+    "h": "e202effc7193"
+  }
+}

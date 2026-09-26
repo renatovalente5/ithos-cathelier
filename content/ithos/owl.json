@@ -1,5 +1,5 @@
 {
-  "name": "Owl",
+  "name": "Mocho",
   "price": 130,
   "published": true,
   "featured": false,
@@ -9,8 +9,8 @@
     "height": 37,
     "width": 25
   },
-  "summary": "Eyes closed, feathers in layers, perfectly still.",
-  "text": "Perched, eyes shut, feathers cut in layers of wood. It is round, with nothing sharp on it, and the light comes through the breast.\n\nA quiet piece — right for a baby's room, and still right at ten years old.",
+  "summary": "Olhos fechados, penas em camadas, perfeitamente quieto.",
+  "text": "Pousado, de olhos fechados, com as penas cortadas em camadas de madeira. É redondo, não tem nada de afiado, e a luz passa pelo peito.\n\nUma peça tranquila — certa para um quarto de bebé, e ainda certa aos dez anos.",
   "photoFolder": "coruja",
   "photos": [
     "01"
@@ -20,35 +20,35 @@
   "options": [
     {
       "id": "power",
-      "name": "Power",
+      "name": "Alimentação",
       "type": "choice",
       "required": true,
       "personalises": false,
-      "help": "Batteries are not included. The mains version comes with a remote: on, off, dimmer, timer and a slow pulse.",
+      "help": "As pilhas não estão incluídas. A versão com cabo traz um comando: liga, desliga, regula a intensidade, desliga sozinha e faz a luz pulsar devagar.",
       "values": [
         {
           "id": "batteries",
-          "name": "2 x AA batteries (3V)",
+          "name": "2 pilhas AA (3 V)",
           "extra": 0
         },
         {
           "id": "mains",
-          "name": "Mains cable with remote",
+          "name": "Cabo de corrente com comando",
           "extra": 0,
           "available": false,
-          "note": "Out of stock for now"
+          "note": "Esgotado por agora"
         }
       ]
     },
     {
       "id": "engraving",
-      "name": "Laser engraving",
+      "name": "Gravação a laser",
       "type": "text",
       "required": false,
       "personalises": true,
       "max": 40,
       "extra": 0,
-      "help": "A name, a date or a short phrase, burned into the wood. Leave it empty if you would rather not."
+      "help": "Um nome, uma data ou uma frase curta, gravados na madeira. Deixe vazio se preferir sem gravação."
     }
   ],
   "gpsr": {

@@ -1,5 +1,5 @@
 {
-  "name": "Panel with the children’s names",
+  "name": "Painel com os nomes dos filhos",
   "price": 34,
   "published": true,
   "featured": false,
@@ -10,8 +10,8 @@
     "names",
     "wall-decor"
   ],
-  "summary": "The names and the birth dates, on one piece.",
-  "text": "The names and the birth dates, on one piece.",
+  "summary": "Os nomes e as datas de nascimento, numa só peça.",
+  "text": "Os nomes e as datas de nascimento, numa só peça.",
   "photoFolder": "pool",
   "photos": [
     "06",
@@ -21,17 +21,17 @@
   "options": [
     {
       "id": "names",
-      "name": "Name or names",
+      "name": "Nome ou nomes",
       "type": "text",
       "required": true,
       "personalises": true,
       "max": 60,
       "extra": 0,
-      "example": "Ana and Duarte"
+      "example": "Ana e Duarte"
     },
     {
       "id": "line",
-      "name": "A short line (optional)",
+      "name": "Uma frase curta (opcional)",
       "type": "text",
       "required": false,
       "personalises": true,

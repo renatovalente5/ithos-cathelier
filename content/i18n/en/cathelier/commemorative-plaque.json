@@ -1,0 +1,30 @@
+{
+  "name": {
+    "t": "Commemorative plaque",
+    "h": "3b78bc8af2d4"
+  },
+  "summary": {
+    "t": "For institutions, anniversaries and tributes.",
+    "h": "42d630deeda3"
+  },
+  "text": {
+    "t": "For institutions, anniversaries and tributes.",
+    "h": "42d630deeda3"
+  },
+  "options.title.name": {
+    "t": "What it says",
+    "h": "a83becb52f91"
+  },
+  "options.title.example": {
+    "t": "Under-12 champions",
+    "h": "c3836c414ddc"
+  },
+  "options.detail.name": {
+    "t": "Club, school or year (optional)",
+    "h": "2ce0882182d6"
+  },
+  "options.detail.example": {
+    "t": "2026",
+    "h": "158a323a7ba4"
+  }
+}

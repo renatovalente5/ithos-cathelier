@@ -1,5 +1,5 @@
 {
-  "name": "Engraved bookmark",
+  "name": "Marcador de livro gravado",
   "price": 6.5,
   "published": true,
   "featured": false,
@@ -7,8 +7,8 @@
   "made": "to_order",
   "occasion": "keepsakes",
   "alsoIn": [],
-  "summary": "Thin, in wood, with the name and the date.",
-  "text": "Thin, in wood, with the name and the date.",
+  "summary": "Fino, em madeira, com o nome e a data.",
+  "text": "Fino, em madeira, com o nome e a data.",
   "photoFolder": "pool",
   "photos": [
     "07",
@@ -18,7 +18,7 @@
   "options": [
     {
       "id": "names",
-      "name": "Name or names",
+      "name": "Nome ou nomes",
       "type": "text",
       "required": true,
       "personalises": true,
@@ -28,17 +28,17 @@
     },
     {
       "id": "date",
-      "name": "Date",
+      "name": "Data",
       "type": "text",
       "required": true,
       "personalises": true,
       "max": 30,
       "extra": 0,
-      "example": "28 June 2026"
+      "example": "28 de junho de 2026"
     },
     {
       "id": "line",
-      "name": "A short line (optional)",
+      "name": "Uma frase curta (opcional)",
       "type": "text",
       "required": false,
       "personalises": true,

@@ -1,28 +1,28 @@
-# Who you are buying from
+# A quem está a comprar
 
 | | |
 |---|---|
-| Name | {{LEGAL_NAME}} |
-| Trading as | {{TRADING_NAME}} |
-| Legal form | {{LEGAL_FORM}} |
-| Tax number | {{TAX_NUMBER}} |
-| Address | {{ADDRESS}} |
+| Nome | {{LEGAL_NAME}} |
+| Nome comercial | {{TRADING_NAME}} |
+| Forma jurídica | {{LEGAL_FORM}} |
+| Contribuinte | {{TAX_NUMBER}} |
+| Morada | {{ADDRESS}} |
 | Email | [{{EMAIL}}](mailto:{{EMAIL}}) |
-| Telephone | [{{PHONE_TEXT}}](tel:{{PHONE}}) *{{CALL_COST}}* |
+| Telefone | [{{PHONE_TEXT}}](tel:{{PHONE}}) *{{CALL_COST}}* |
 
-## Complaints — Livro de Reclamações
+## Reclamações — Livro de Reclamações
 
-Electronic complaints book (*Livro de Reclamações Eletrónico*):
+Livro de Reclamações Eletrónico:
 [{{COMPLAINTS_BOOK}}]({{COMPLAINTS_BOOK}})
 
-## Out-of-court dispute resolution — RAL
+## Resolução extrajudicial de litígios — RAL
 
-*Resolução Alternativa de Litígios de Consumo.* The competent arbitration
-centre for this seller is:
+Resolução Alternativa de Litígios de Consumo. A entidade competente para este
+vendedor é:
 
 **{{ADR_NAME}}**
 {{ADR_ADDRESS}}
 [{{ADR_SITE}}]({{ADR_SITE}}) · [{{ADR_EMAIL}}](mailto:{{ADR_EMAIL}}) · {{ADR_PHONE}}
 
-This information is published under article 10 of Decree-Law 7/2004 and article
-4 of Decree-Law 24/2014.
+Esta informação é publicada ao abrigo do artigo 10.º do Decreto-Lei n.º 7/2004 e
+do artigo 4.º do Decreto-Lei n.º 24/2014.

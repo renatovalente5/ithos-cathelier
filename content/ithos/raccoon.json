@@ -1,5 +1,5 @@
 {
-  "name": "Raccoon",
+  "name": "Guaxinim",
   "price": 120,
   "published": true,
   "featured": false,
@@ -9,8 +9,8 @@
     "height": 35,
     "width": 36
   },
-  "summary": "The mask across the eyes, the striped tail.",
-  "text": "A dark mask around the eyes and a striped tail, both painted by hand. It sits with its paws together and its belly full of light.\n\nA piece with plenty of character, for children who have started choosing what goes on their own walls.",
+  "summary": "A máscara à volta dos olhos, a cauda às riscas.",
+  "text": "Uma máscara escura à volta dos olhos e uma cauda às riscas, ambas pintadas à mão. Está sentado, com as patas juntas e a barriga cheia de luz.\n\nUma peça com muita personalidade, para crianças que já começaram a escolher o que vai para as paredes do quarto.",
   "photoFolder": "guaxinim",
   "photos": [
     "01"
@@ -20,35 +20,35 @@
   "options": [
     {
       "id": "power",
-      "name": "Power",
+      "name": "Alimentação",
       "type": "choice",
       "required": true,
       "personalises": false,
-      "help": "Batteries are not included. The mains version comes with a remote: on, off, dimmer, timer and a slow pulse.",
+      "help": "As pilhas não estão incluídas. A versão com cabo traz um comando: liga, desliga, regula a intensidade, desliga sozinha e faz a luz pulsar devagar.",
       "values": [
         {
           "id": "batteries",
-          "name": "2 x AA batteries (3V)",
+          "name": "2 pilhas AA (3 V)",
           "extra": 0
         },
         {
           "id": "mains",
-          "name": "Mains cable with remote",
+          "name": "Cabo de corrente com comando",
           "extra": 0,
           "available": false,
-          "note": "Out of stock for now"
+          "note": "Esgotado por agora"
         }
       ]
     },
     {
       "id": "engraving",
-      "name": "Laser engraving",
+      "name": "Gravação a laser",
       "type": "text",
       "required": false,
       "personalises": true,
       "max": 40,
       "extra": 0,
-      "help": "A name, a date or a short phrase, burned into the wood. Leave it empty if you would rather not."
+      "help": "Um nome, uma data ou uma frase curta, gravados na madeira. Deixe vazio se preferir sem gravação."
     }
   ],
   "gpsr": {

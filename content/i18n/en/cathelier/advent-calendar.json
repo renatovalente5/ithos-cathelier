@@ -1,0 +1,22 @@
+{
+  "name": {
+    "t": "Advent calendar",
+    "h": "1e2a9a2047d3"
+  },
+  "summary": {
+    "t": "Twenty-four numbered drawers, to fill again every year.",
+    "h": "357bcd57cc52"
+  },
+  "text": {
+    "t": "Twenty-four numbered drawers, to fill again every year.",
+    "h": "357bcd57cc52"
+  },
+  "options.name.name": {
+    "t": "Name",
+    "h": "5086900635fe"
+  },
+  "options.name.example": {
+    "t": "Miguel",
+    "h": "977af1277234"
+  }
+}

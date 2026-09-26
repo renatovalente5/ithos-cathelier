@@ -1,5 +1,5 @@
 {
-  "name": "Photo keyring",
+  "name": "Porta-chaves com fotografia",
   "price": 9.5,
   "published": true,
   "featured": false,
@@ -9,8 +9,8 @@
   "alsoIn": [
     "special-days"
   ],
-  "summary": "The photograph inside a metal and glass keyring.",
-  "text": "The photograph inside a metal and glass keyring.",
+  "summary": "A fotografia dentro de um porta-chaves de metal e vidro.",
+  "text": "A fotografia dentro de um porta-chaves de metal e vidro.",
   "photoFolder": "pool",
   "photos": [
     "11",
@@ -20,7 +20,7 @@
   "options": [
     {
       "id": "names",
-      "name": "Name or names",
+      "name": "Nome ou nomes",
       "type": "text",
       "required": true,
       "personalises": true,
@@ -30,17 +30,17 @@
     },
     {
       "id": "date",
-      "name": "Date",
+      "name": "Data",
       "type": "text",
       "required": true,
       "personalises": true,
       "max": 30,
       "extra": 0,
-      "example": "28 June 2026"
+      "example": "28 de junho de 2026"
     },
     {
       "id": "line",
-      "name": "A short line (optional)",
+      "name": "Uma frase curta (opcional)",
       "type": "text",
       "required": false,
       "personalises": true,

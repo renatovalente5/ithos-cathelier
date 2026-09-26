@@ -1,0 +1,26 @@
+{
+  "name": {
+    "t": "Welcome sign",
+    "h": "0bfe7c6b5c2f"
+  },
+  "summary": {
+    "t": "At the entrance, with the names and the date.",
+    "h": "e0d64c571918"
+  },
+  "text": {
+    "t": "At the entrance, with the names and the date.",
+    "h": "e0d64c571918"
+  },
+  "options.names.name": {
+    "t": "Name or names",
+    "h": "294711d4c920"
+  },
+  "options.names.example": {
+    "t": "The Aparício family",
+    "h": "d8c105bc37e8"
+  },
+  "options.date.name": {
+    "t": "Date (optional)",
+    "h": "07cfa971211a"
+  }
+}

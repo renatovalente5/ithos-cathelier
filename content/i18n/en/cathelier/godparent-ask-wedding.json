@@ -1,0 +1,34 @@
+{
+  "name": {
+    "t": "Asking your best man or maid of honour",
+    "h": "200a7e89b129"
+  },
+  "summary": {
+    "t": "“Will you stand with us?” — engraved, with the name of whoever is asking.",
+    "h": "5c19735badae"
+  },
+  "text": {
+    "t": "“Will you stand with us?” — engraved, with the name of whoever is asking.",
+    "h": "5c19735badae"
+  },
+  "options.names.name": {
+    "t": "Name or names",
+    "h": "294711d4c920"
+  },
+  "options.names.example": {
+    "t": "Benedita",
+    "h": "80a84f1dd1b2"
+  },
+  "options.date.name": {
+    "t": "Date",
+    "h": "cec3a9b89b2e"
+  },
+  "options.date.example": {
+    "t": "28 June 2026",
+    "h": "c9a6ae6981b6"
+  },
+  "options.line.name": {
+    "t": "A short line (optional)",
+    "h": "6eb0262279e0"
+  }
+}

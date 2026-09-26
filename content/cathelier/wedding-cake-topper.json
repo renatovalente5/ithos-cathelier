@@ -1,5 +1,5 @@
 {
-  "name": "Wedding cake topper",
+  "name": "Topo de bolo de casamento",
   "price": 26,
   "published": true,
   "featured": true,
@@ -7,8 +7,8 @@
   "made": "to_order",
   "occasion": "custom",
   "alsoIn": [],
-  "summary": "Your names or whatever line you want, laser cut.",
-  "text": "Your names or whatever line you want, laser cut.",
+  "summary": "Os vossos nomes, ou a frase que quiserem, cortados a laser.",
+  "text": "Os vossos nomes, ou a frase que quiserem, cortados a laser.",
   "photoFolder": "pool",
   "photos": [
     "06",
@@ -18,17 +18,17 @@
   "options": [
     {
       "id": "names",
-      "name": "Name or names",
+      "name": "Nome ou nomes",
       "type": "text",
       "required": true,
       "personalises": true,
       "max": 60,
       "extra": 0,
-      "example": "The Aparício family"
+      "example": "Família Aparício"
     },
     {
       "id": "date",
-      "name": "Date (optional)",
+      "name": "Data (opcional)",
       "type": "text",
       "required": false,
       "personalises": true,

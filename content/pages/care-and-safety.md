@@ -1,41 +1,41 @@
-# Care and safety
+# Cuidados e segurança
 
-## These are lights, not toys
+## São luzes, não brinquedos
 
-An ithos piece is a decorative night light. It is not a toy, it is not tested as
-one, and it should not be handed to a small child to play with.
+Uma peça ithos é um candeeiro de presença decorativo. Não é um brinquedo, não é
+testado como tal, e não deve ser dado a uma criança pequena para brincar.
 
 {{SAFETY_LIST}}
 
-## Looking after it
+## Como cuidar dele
 
-Wipe it with a dry cloth. Never water, never solvents, never anything abrasive —
-the paint is water-based and the wood is sealed, and both mind.
+Limpe-o com um pano seco. Nunca água, nunca solventes, nunca nada abrasivo — a
+tinta é de água e a madeira está selada, e ambas se ressentem.
 
-Keep it out of direct sun. Pine lightens over months of bright light, and the
-painted colours go with it.
+Mantenha-o longe do sol direto. O pinho clareia ao fim de meses de muita luz,
+e as cores pintadas vão com ele.
 
-If a bulb stops working, write to us. Do not open the piece: it is glued and
-sanded shut, and it will not go back the way it was.
+Se uma luz deixar de funcionar, escreva-nos. Não abra a peça: está colada e
+lixada, e não volta a ficar como estava.
 
-## Batteries
+## Pilhas
 
-The battery versions take two AA cells, which we do not supply. Take them out if
-the piece is going to sit unused for months — a leaking cell will ruin the wood
-from the inside.
+As versões a pilhas levam duas pilhas AA, que não fornecemos. Tire-as se a peça
+for ficar meses sem uso — uma pilha que verte estraga a madeira por dentro.
 
-Keep loose batteries away from small children.
+Mantenha as pilhas soltas longe de crianças pequenas.
 
-## The mains version
+## A versão com cabo
 
-The mains version comes with a remote that dims, times and pulses it.
+A versão com cabo traz um comando que regula a intensidade, desliga sozinho e
+faz a luz pulsar devagar.
 
-Keep the cable out of a cot and out of a bed. Do not run it under a rug or
-behind a radiator, and do not leave it plugged in unattended overnight in a
-child's room.
+Mantenha o cabo fora do berço e fora da cama. Não o passe por baixo de um
+tapete nem atrás de um radiador, e não o deixe ligado à noite sem vigilância no
+quarto de uma criança.
 
-## Wood moves
+## A madeira mexe
 
-Solid pine responds to the room it lives in. In a very dry room a hairline may
-open along the grain over a winter, and close again in summer. It is the
-material behaving normally and it is not a fault.
+O pinho maciço reage ao quarto onde vive. Num quarto muito seco pode abrir-se
+uma fissura fina ao longo do veio durante o inverno, e fechar-se outra vez no
+verão. É o material a comportar-se normalmente, e não é um defeito.

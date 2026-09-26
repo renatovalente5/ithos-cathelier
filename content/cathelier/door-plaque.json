@@ -1,5 +1,5 @@
 {
-  "name": "Door plaque",
+  "name": "Placa de porta",
   "price": 16,
   "published": true,
   "featured": false,
@@ -7,8 +7,8 @@
   "made": "to_order",
   "occasion": "names",
   "alsoIn": [],
-  "summary": "The name on the bedroom door.",
-  "text": "The name on the bedroom door.",
+  "summary": "O nome na porta do quarto.",
+  "text": "O nome na porta do quarto.",
   "photoFolder": "pool",
   "photos": [
     "04",
@@ -18,7 +18,7 @@
   "options": [
     {
       "id": "name",
-      "name": "The name",
+      "name": "O nome",
       "type": "text",
       "required": true,
       "personalises": true,

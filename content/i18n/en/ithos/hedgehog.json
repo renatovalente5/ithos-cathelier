@@ -1,0 +1,42 @@
+{
+  "name": {
+    "t": "Hedgehog",
+    "h": "9152715218a2"
+  },
+  "summary": {
+    "t": "Dark spines, a pale belly, and a sleeping smile.",
+    "h": "7d07104634cf"
+  },
+  "text": {
+    "t": "Spines painted deep brown and speckled with light, over a body of pale wood. It is low and wide, so it sits happily on a broad shelf or on the floor beside a bed.\n\nOne of the most requested pieces for a baby's room: the shape is round, there is nothing sharp on it, and the light falls low.",
+    "h": "9c3c2120b2ce"
+  },
+  "options.power.name": {
+    "t": "Power",
+    "h": "0853883db432"
+  },
+  "options.power.help": {
+    "t": "Batteries are not included. The mains version comes with a remote: on, off, dimmer, timer and a slow pulse.",
+    "h": "57676081542e"
+  },
+  "options.power.values.batteries.name": {
+    "t": "2 x AA batteries (3V)",
+    "h": "cbc7c37b342d"
+  },
+  "options.power.values.mains.name": {
+    "t": "Mains cable with remote",
+    "h": "f8e28d7f7f6c"
+  },
+  "options.power.values.mains.note": {
+    "t": "Out of stock for now",
+    "h": "5b693adaa590"
+  },
+  "options.engraving.name": {
+    "t": "Laser engraving",
+    "h": "9694d5607ae5"
+  },
+  "options.engraving.help": {
+    "t": "A name, a date or a short phrase, burned into the wood. Leave it empty if you would rather not.",
+    "h": "e202effc7193"
+  }
+}

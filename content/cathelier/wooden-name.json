@@ -1,5 +1,5 @@
 {
-  "name": "Name in wood",
+  "name": "Nome em madeira",
   "price": 32,
   "published": true,
   "featured": true,
@@ -9,8 +9,8 @@
   "alsoIn": [
     "wall-decor"
   ],
-  "summary": "For the bedroom wall, painted whatever colour you choose.",
-  "text": "For the bedroom wall, painted whatever colour you choose.",
+  "summary": "Para a parede do quarto, pintado na cor que escolher.",
+  "text": "Para a parede do quarto, pintado na cor que escolher.",
   "photoFolder": "pool",
   "photos": [
     "04",
@@ -20,7 +20,7 @@
   "options": [
     {
       "id": "name",
-      "name": "The name",
+      "name": "O nome",
       "type": "text",
       "required": true,
       "personalises": true,

@@ -1,0 +1,34 @@
+{
+  "name": {
+    "t": "Engraved bookmark",
+    "h": "a6000d00a5a7"
+  },
+  "summary": {
+    "t": "Thin, in wood, with the name and the date.",
+    "h": "7685d2f63b49"
+  },
+  "text": {
+    "t": "Thin, in wood, with the name and the date.",
+    "h": "7685d2f63b49"
+  },
+  "options.names.name": {
+    "t": "Name or names",
+    "h": "294711d4c920"
+  },
+  "options.names.example": {
+    "t": "Benedita",
+    "h": "80a84f1dd1b2"
+  },
+  "options.date.name": {
+    "t": "Date",
+    "h": "cec3a9b89b2e"
+  },
+  "options.date.example": {
+    "t": "28 June 2026",
+    "h": "c9a6ae6981b6"
+  },
+  "options.line.name": {
+    "t": "A short line (optional)",
+    "h": "6eb0262279e0"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "name": {
+    "t": "Pendant with the dates",
+    "h": "dbde2469f745"
+  },
+  "summary": {
+    "t": "A small disc with the dates that matter, to carry in a bag.",
+    "h": "a8888cc9f86d"
+  },
+  "text": {
+    "t": "A small disc with the dates that matter, to carry in a bag.",
+    "h": "a8888cc9f86d"
+  },
+  "options.names.name": {
+    "t": "Name or names",
+    "h": "294711d4c920"
+  },
+  "options.names.example": {
+    "t": "Ana and Duarte",
+    "h": "867a5dd71255"
+  },
+  "options.line.name": {
+    "t": "A short line (optional)",
+    "h": "6eb0262279e0"
+  }
+}

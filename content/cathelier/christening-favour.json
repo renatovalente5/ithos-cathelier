@@ -1,5 +1,5 @@
 {
-  "name": "Christening favour",
+  "name": "Lembrança de batizado",
   "price": 2.2,
   "published": true,
   "featured": false,
@@ -9,8 +9,8 @@
   "alsoIn": [
     "hanging"
   ],
-  "summary": "With the name and the date, for everyone who came.",
-  "text": "With the name and the date, for everyone who came.",
+  "summary": "Com o nome e a data, para todos os que vieram.",
+  "text": "Com o nome e a data, para todos os que vieram.",
   "photoFolder": "pool",
   "photos": [
     "03",
@@ -20,7 +20,7 @@
   "options": [
     {
       "id": "names",
-      "name": "Name or names",
+      "name": "Nome ou nomes",
       "type": "text",
       "required": true,
       "personalises": true,
@@ -30,17 +30,17 @@
     },
     {
       "id": "date",
-      "name": "Date",
+      "name": "Data",
       "type": "text",
       "required": true,
       "personalises": true,
       "max": 30,
       "extra": 0,
-      "example": "28 June 2026"
+      "example": "28 de junho de 2026"
     },
     {
       "id": "line",
-      "name": "A short line (optional)",
+      "name": "Uma frase curta (opcional)",
       "type": "text",
       "required": false,
       "personalises": true,

@@ -1,0 +1,82 @@
+{
+  "christmas.name": {
+    "t": "Christmas",
+    "h": "ac6ce12fa954"
+  },
+  "christmas.summary": {
+    "t": "Ornaments with everyone’s name on them, to hang again every year.",
+    "h": "b8bd3e697e09"
+  },
+  "easter.name": {
+    "t": "Easter",
+    "h": "1b58d921c0ef"
+  },
+  "easter.summary": {
+    "t": "Small pieces for the Easter table and the baskets, with a name on each.",
+    "h": "6e17af391acf"
+  },
+  "special-days.name": {
+    "t": "Special days",
+    "h": "cea59d95a965"
+  },
+  "special-days.summary": {
+    "t": "Mother’s Day and Father’s Day: her children’s names, his superhero shield.",
+    "h": "61b72f842411"
+  },
+  "magnets-keyrings.name": {
+    "t": "Magnets & keyrings",
+    "h": "29f868c13144"
+  },
+  "magnets-keyrings.summary": {
+    "t": "A photograph for the fridge, or for the keys.",
+    "h": "0f42d54bf159"
+  },
+  "new-baby.name": {
+    "t": "New baby",
+    "h": "8ff4207121aa"
+  },
+  "new-baby.summary": {
+    "t": "The name, the date, the time, the weight and the length on a disc or a heart — and a piece to share the news.",
+    "h": "74fac049a88d"
+  },
+  "names.name": {
+    "t": "Names",
+    "h": "4fd7978c045f"
+  },
+  "names.summary": {
+    "t": "A name, or an initial with the name, for the wall, the door or above the bed.",
+    "h": "86fcc6f09523"
+  },
+  "hanging.name": {
+    "t": "Hanging pieces",
+    "h": "ce6a8c42a2a8"
+  },
+  "hanging.summary": {
+    "t": "Small pieces with a hole and a ribbon, to hang anywhere.",
+    "h": "8300422fbd57"
+  },
+  "wall-decor.name": {
+    "t": "Wall decor",
+    "h": "f55665e55ce8"
+  },
+  "wall-decor.summary": {
+    "t": "Growth charts, family trees and frames: the pieces that stay on the wall for years.",
+    "h": "a0a389479a51"
+  },
+  "custom.name": {
+    "t": "Custom orders",
+    "h": "9d4aee3d04e2"
+  },
+  "custom.summary": {
+    "t": "Cake toppers, signs, guest books, trophies — made to measure for your day. Or tell us your idea.",
+    "h": "99f2f045b47d"
+  },
+  "keepsakes.name": {
+    "t": "Favours & giveaways",
+    "h": "1fbb99e6d17e"
+  },
+  "keepsakes.summary": {
+    "t": "For everyone who came: christenings, communions, weddings and company gifts.",
+    "h": "e88aa2c28d91"
+  }
+}

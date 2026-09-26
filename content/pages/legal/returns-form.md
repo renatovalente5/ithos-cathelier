@@ -1,31 +1,32 @@
-# Cancellation form
+# Formulário de livre resolução
 
-You do not have to use this form — a clear email to
-[{{EMAIL}}](mailto:{{EMAIL}}) does the same job. It is here because the law says
-it must be.
+Não é obrigatório usar este formulário — um email claro para
+[{{EMAIL}}](mailto:{{EMAIL}}) tem o mesmo efeito. Está aqui porque a lei manda
+que esteja (modelo do anexo B do Decreto-Lei n.º 24/2014).
 
-Copy it, fill it in, and send it to [{{EMAIL}}](mailto:{{EMAIL}}) or to
+Copie-o, preencha-o e envie-o para [{{EMAIL}}](mailto:{{EMAIL}}) ou para
 {{LEGAL_NAME}}, {{ADDRESS}}.
 
 ---
 
-To {{LEGAL_NAME}}, {{ADDRESS}}, {{EMAIL}}:
+Para {{LEGAL_NAME}}, {{ADDRESS}}, {{EMAIL}}:
 
-I hereby give notice that I cancel my contract of sale of the following goods:
+Pela presente comunico que resolvo o meu contrato de compra e venda do seguinte
+bem:
 
 _______________________________________________
 
-Ordered on: ____________  Received on: ____________
+Encomendado em: ____________  Recebido em: ____________
 
-Name: _______________________________________________
+Nome: _______________________________________________
 
-Address: _______________________________________________
+Morada: _______________________________________________
 
-Signature (only if sent on paper): ____________
+Assinatura (só se for enviado em papel): ____________
 
-Date: ____________
+Data: ____________
 
 ---
 
-This does not apply to personalised pieces. See
-[your right to cancel](/legal/cancellation/).
+Não se aplica a peças personalizadas. Veja o
+[seu direito de livre resolução](/legal/cancellation/).

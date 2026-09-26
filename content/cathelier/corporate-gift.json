@@ -1,5 +1,5 @@
 {
-  "name": "Branded corporate gift",
+  "name": "Oferta de empresa com a marca",
   "price": 8.5,
   "published": true,
   "featured": false,
@@ -7,8 +7,8 @@
   "made": "to_order",
   "occasion": "keepsakes",
   "alsoIn": [],
-  "summary": "For fairs, conferences and end-of-year gifts.",
-  "text": "For fairs, conferences and end-of-year gifts.",
+  "summary": "Para feiras, conferências e prendas de fim de ano.",
+  "text": "Para feiras, conferências e prendas de fim de ano.",
   "photoFolder": "pool",
   "photos": [
     "12",
@@ -18,17 +18,17 @@
   "options": [
     {
       "id": "title",
-      "name": "What it says",
+      "name": "O que diz",
       "type": "text",
       "required": true,
       "personalises": true,
       "max": 60,
       "extra": 0,
-      "example": "Under-12 champions"
+      "example": "Campeões sub-12"
     },
     {
       "id": "detail",
-      "name": "Club, school or year (optional)",
+      "name": "Clube, escola ou ano (opcional)",
       "type": "text",
       "required": false,
       "personalises": true,

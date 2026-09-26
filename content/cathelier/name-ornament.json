@@ -1,5 +1,5 @@
 {
-  "name": "Christmas ornament with a name",
+  "name": "Enfeite de Natal com nome",
   "price": 4.5,
   "published": true,
   "featured": false,
@@ -9,8 +9,8 @@
   "alsoIn": [
     "hanging"
   ],
-  "summary": "One for everyone in the house, with the name engraved.",
-  "text": "One for everyone in the house, with the name engraved.",
+  "summary": "Um para cada pessoa da casa, com o nome gravado.",
+  "text": "Um para cada pessoa da casa, com o nome gravado.",
   "photoFolder": "pool",
   "photos": [
     "04",
@@ -20,7 +20,7 @@
   "options": [
     {
       "id": "name",
-      "name": "Name",
+      "name": "Nome",
       "type": "text",
       "required": true,
       "personalises": true,

@@ -1,5 +1,5 @@
 {
-  "name": "Place cards",
+  "name": "Marcadores de lugar",
   "price": 1.8,
   "published": true,
   "featured": false,
@@ -7,8 +7,8 @@
   "made": "to_order",
   "occasion": "keepsakes",
   "alsoIn": [],
-  "summary": "Every guest’s name, engraved, to sit on the plate.",
-  "text": "Every guest’s name, engraved, to sit on the plate.",
+  "summary": "O nome de cada convidado, gravado, para pousar no prato.",
+  "text": "O nome de cada convidado, gravado, para pousar no prato.",
   "photoFolder": "pool",
   "photos": [
     "02",
@@ -18,7 +18,7 @@
   "options": [
     {
       "id": "names",
-      "name": "Name or names",
+      "name": "Nome ou nomes",
       "type": "text",
       "required": true,
       "personalises": true,
@@ -28,17 +28,17 @@
     },
     {
       "id": "date",
-      "name": "Date",
+      "name": "Data",
       "type": "text",
       "required": true,
       "personalises": true,
       "max": 30,
       "extra": 0,
-      "example": "28 June 2026"
+      "example": "28 de junho de 2026"
     },
     {
       "id": "line",
-      "name": "A short line (optional)",
+      "name": "Uma frase curta (opcional)",
       "type": "text",
       "required": false,
       "personalises": true,

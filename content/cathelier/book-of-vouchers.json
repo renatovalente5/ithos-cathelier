@@ -1,5 +1,5 @@
 {
-  "name": "Book of vouchers",
+  "name": "Livro de vales",
   "price": 22,
   "published": true,
   "featured": false,
@@ -7,8 +7,8 @@
   "made": "to_order",
   "occasion": "special-days",
   "alsoIn": [],
-  "summary": "“Good for one breakfast in bed.” A little wooden notebook.",
-  "text": "“Good for one breakfast in bed.” A little wooden notebook.",
+  "summary": "«Vale um pequeno-almoço na cama.» Um pequeno caderno de madeira.",
+  "text": "«Vale um pequeno-almoço na cama.» Um pequeno caderno de madeira.",
   "photoFolder": "pool",
   "photos": [
     "06",
@@ -18,7 +18,7 @@
   "options": [
     {
       "id": "names",
-      "name": "Name or names",
+      "name": "Nome ou nomes",
       "type": "text",
       "required": true,
       "personalises": true,
@@ -28,17 +28,17 @@
     },
     {
       "id": "date",
-      "name": "Date",
+      "name": "Data",
       "type": "text",
       "required": true,
       "personalises": true,
       "max": 30,
       "extra": 0,
-      "example": "28 June 2026"
+      "example": "28 de junho de 2026"
     },
     {
       "id": "line",
-      "name": "A short line (optional)",
+      "name": "Uma frase curta (opcional)",
       "type": "text",
       "required": false,
       "personalises": true,

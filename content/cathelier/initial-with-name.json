@@ -1,5 +1,5 @@
 {
-  "name": "Initial with the name",
+  "name": "Inicial com o nome",
   "price": 28,
   "published": true,
   "featured": false,
@@ -9,8 +9,8 @@
   "alsoIn": [
     "wall-decor"
   ],
-  "summary": "The large initial, with the name written across it.",
-  "text": "The large initial, with the name written across it.",
+  "summary": "A inicial grande, com o nome escrito por cima.",
+  "text": "A inicial grande, com o nome escrito por cima.",
   "photoFolder": "pool",
   "photos": [
     "04",
@@ -20,7 +20,7 @@
   "options": [
     {
       "id": "name",
-      "name": "The name",
+      "name": "O nome",
       "type": "text",
       "required": true,
       "personalises": true,

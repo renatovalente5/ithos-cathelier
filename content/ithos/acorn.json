@@ -1,13 +1,13 @@
 {
-  "name": "Acorn",
+  "name": "Bolota",
   "price": 78,
   "published": true,
   "featured": false,
   "order": 210,
   "made": "to_order",
   "size": {},
-  "summary": "Small, round, with a cross-hatched cap.",
-  "text": "A pale wooden body under a dark cap, engraved in a cross-hatch. Small enough to sit in the palm of your hand, and it gives a low, soft light.\n\nIt comes in two sizes, and the pair costs less than two singles. Most people take both and stand them side by side.",
+  "summary": "Pequena, redonda, com um chapéu quadriculado.",
+  "text": "Um corpo de madeira clara debaixo de um chapéu escuro, gravado em quadrícula. Pequena o suficiente para caber na palma da mão, e dá uma luz baixa e suave.\n\nHá em dois tamanhos, e o par custa menos do que duas avulsas. A maioria das pessoas leva as duas e põe-nas lado a lado.",
   "photoFolder": "bolota",
   "photos": [
     "01",
@@ -19,7 +19,7 @@
   "options": [
     {
       "id": "variant",
-      "name": "Model",
+      "name": "Modelo",
       "type": "choice",
       "required": true,
       "personalises": false,
@@ -27,17 +27,17 @@
       "values": [
         {
           "id": "1",
-          "name": "Large (25×22 cm)",
+          "name": "Grande (25×22 cm)",
           "extra": 11
         },
         {
           "id": "2",
-          "name": "Small (18×16 cm)",
+          "name": "Pequena (18×16 cm)",
           "extra": 0
         },
         {
           "id": "3",
-          "name": "Both together",
+          "name": "As duas juntas",
           "extra": 72,
           "stockFrom": [
             "1",
@@ -48,35 +48,35 @@
     },
     {
       "id": "power",
-      "name": "Power",
+      "name": "Alimentação",
       "type": "choice",
       "required": true,
       "personalises": false,
-      "help": "Batteries are not included. The mains version comes with a remote: on, off, dimmer, timer and a slow pulse.",
+      "help": "As pilhas não estão incluídas. A versão com cabo traz um comando: liga, desliga, regula a intensidade, desliga sozinha e faz a luz pulsar devagar.",
       "values": [
         {
           "id": "batteries",
-          "name": "2 x AA batteries (3V)",
+          "name": "2 pilhas AA (3 V)",
           "extra": 0
         },
         {
           "id": "mains",
-          "name": "Mains cable with remote",
+          "name": "Cabo de corrente com comando",
           "extra": 0,
           "available": false,
-          "note": "Out of stock for now"
+          "note": "Esgotado por agora"
         }
       ]
     },
     {
       "id": "engraving",
-      "name": "Laser engraving",
+      "name": "Gravação a laser",
       "type": "text",
       "required": false,
       "personalises": true,
       "max": 40,
       "extra": 0,
-      "help": "A name, a date or a short phrase, burned into the wood. Leave it empty if you would rather not."
+      "help": "Um nome, uma data ou uma frase curta, gravados na madeira. Deixe vazio se preferir sem gravação."
     }
   ],
   "gpsr": {

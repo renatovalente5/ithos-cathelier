@@ -1,0 +1,42 @@
+{
+  "name": {
+    "t": "Whale",
+    "h": "f7586e0f41ea"
+  },
+  "summary": {
+    "t": "Lying long and low, with flowers across its back.",
+    "h": "a2bc48218f66"
+  },
+  "text": {
+    "t": "Long and low — 50 cm end to end — lying flat on the shelf. The back is white with hand-painted flowers, the belly is bare wood.\n\nThe tail lifts at the end, and the light comes out through the middle of the body. One of the most serene pieces in the range.",
+    "h": "bffdf79c6c92"
+  },
+  "options.power.name": {
+    "t": "Power",
+    "h": "0853883db432"
+  },
+  "options.power.help": {
+    "t": "Batteries are not included. The mains version comes with a remote: on, off, dimmer, timer and a slow pulse.",
+    "h": "57676081542e"
+  },
+  "options.power.values.batteries.name": {
+    "t": "2 x AA batteries (3V)",
+    "h": "cbc7c37b342d"
+  },
+  "options.power.values.mains.name": {
+    "t": "Mains cable with remote",
+    "h": "f8e28d7f7f6c"
+  },
+  "options.power.values.mains.note": {
+    "t": "Out of stock for now",
+    "h": "5b693adaa590"
+  },
+  "options.engraving.name": {
+    "t": "Laser engraving",
+    "h": "9694d5607ae5"
+  },
+  "options.engraving.help": {
+    "t": "A name, a date or a short phrase, burned into the wood. Leave it empty if you would rather not.",
+    "h": "e202effc7193"
+  }
+}

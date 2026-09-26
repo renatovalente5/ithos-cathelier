@@ -1,0 +1,58 @@
+{
+  "name": {
+    "t": "Mushroom",
+    "h": "bd3dbb554841"
+  },
+  "summary": {
+    "t": "A spotted cap on a wooden stem. Three colours.",
+    "h": "a1b76deadb1d"
+  },
+  "text": {
+    "t": "A pale wooden stem under a painted cap — red with white spots, soft beige, or deep brown. The light comes out through the spots.\n\nOne of the smallest pieces, and the best of them in a group: three mushrooms together on a shelf make a small wood.",
+    "h": "7baae7103988"
+  },
+  "options.variant.name": {
+    "t": "Model",
+    "h": "a5ab3212dad1"
+  },
+  "options.variant.values.1.name": {
+    "t": "Brown (25×20 cm)",
+    "h": "a57d76e8a41f"
+  },
+  "options.variant.values.2.name": {
+    "t": "Beige (25×24 cm)",
+    "h": "0c34f41ea58b"
+  },
+  "options.variant.values.3.name": {
+    "t": "Red (25×22 cm)",
+    "h": "7f8fcf6feb5d"
+  },
+  "options.power.name": {
+    "t": "Power",
+    "h": "0853883db432"
+  },
+  "options.power.help": {
+    "t": "Batteries are not included. The mains version comes with a remote: on, off, dimmer, timer and a slow pulse.",
+    "h": "57676081542e"
+  },
+  "options.power.values.batteries.name": {
+    "t": "2 x AA batteries (3V)",
+    "h": "cbc7c37b342d"
+  },
+  "options.power.values.mains.name": {
+    "t": "Mains cable with remote",
+    "h": "f8e28d7f7f6c"
+  },
+  "options.power.values.mains.note": {
+    "t": "Out of stock for now",
+    "h": "5b693adaa590"
+  },
+  "options.engraving.name": {
+    "t": "Laser engraving",
+    "h": "9694d5607ae5"
+  },
+  "options.engraving.help": {
+    "t": "A name, a date or a short phrase, burned into the wood. Leave it empty if you would rather not.",
+    "h": "e202effc7193"
+  }
+}

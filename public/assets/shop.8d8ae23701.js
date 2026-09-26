@@ -778,6 +778,9 @@ function checkout() {
         body: JSON.stringify({
           hash: cat.hash, country: cur.country || 'PT', lines: cur.lines, cliente: cliente(),
           metodo: metodo(),
+          /* A língua da página: o Worker devolve o comprador à página de
+             pagamento nesta língua, e a ifthenpay fala-lhe nela. */
+          lingua: LINGUA || undefined,
           prazo: prazoNoCesto,
           telemovel: metodo() === 'MBWAY' ? (campoTelemovel?.value ?? '').trim() : undefined,
           revenda: revenda.activa ? { sessao: revenda.sessao, versao: revenda.versao } : undefined,

@@ -1,5 +1,5 @@
 {
-  "name": "Lion",
+  "name": "Leão",
   "price": 150,
   "published": true,
   "featured": false,
@@ -9,8 +9,8 @@
     "height": 41,
     "width": 30
   },
-  "summary": "The mane all the way round, and full of light.",
-  "text": "The mane is cut in rays around the face, and that is where the light gathers: it comes on like a small sun. The body is pale, with the paws forward.\n\nOne of the pieces with the most presence in the range, and the one children recognise from furthest away.",
+  "summary": "A juba à volta toda, e cheia de luz.",
+  "text": "A juba é cortada em raios à volta da cara, e é aí que a luz se junta: acende-se como um pequeno sol. O corpo é claro, com as patas para a frente.\n\nUma das peças com mais presença da coleção, e a que as crianças reconhecem de mais longe.",
   "photoFolder": "leao",
   "photos": [
     "01",
@@ -21,35 +21,35 @@
   "options": [
     {
       "id": "power",
-      "name": "Power",
+      "name": "Alimentação",
       "type": "choice",
       "required": true,
       "personalises": false,
-      "help": "Batteries are not included. The mains version comes with a remote: on, off, dimmer, timer and a slow pulse.",
+      "help": "As pilhas não estão incluídas. A versão com cabo traz um comando: liga, desliga, regula a intensidade, desliga sozinha e faz a luz pulsar devagar.",
       "values": [
         {
           "id": "batteries",
-          "name": "2 x AA batteries (3V)",
+          "name": "2 pilhas AA (3 V)",
           "extra": 0
         },
         {
           "id": "mains",
-          "name": "Mains cable with remote",
+          "name": "Cabo de corrente com comando",
           "extra": 0,
           "available": false,
-          "note": "Out of stock for now"
+          "note": "Esgotado por agora"
         }
       ]
     },
     {
       "id": "engraving",
-      "name": "Laser engraving",
+      "name": "Gravação a laser",
       "type": "text",
       "required": false,
       "personalises": true,
       "max": 40,
       "extra": 0,
-      "help": "A name, a date or a short phrase, burned into the wood. Leave it empty if you would rather not."
+      "help": "Um nome, uma data ou uma frase curta, gravados na madeira. Deixe vazio se preferir sem gravação."
     }
   ],
   "gpsr": {

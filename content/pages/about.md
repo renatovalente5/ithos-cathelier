@@ -1,40 +1,40 @@
-# The workshop
+# A oficina
 
-ithos is a small workshop in Castelo Branco, in the middle of Portugal. Every
-lamp that leaves it has been cut, sanded, painted and wired by hand, one at a
-time.
+A ithos é uma pequena oficina em Castelo Branco, no centro de Portugal. Cada
+candeeiro que de lá sai foi cortado, lixado, pintado e ligado à mão, um de cada
+vez.
 
-## How one gets made
+## Como se faz um
 
-It starts as a drawing, then as a shape cut from solid pine. The cut edges are
-sanded by hand until there is nothing left to catch a finger on — this is the
-slow part, and it is the part you feel rather than see.
+Começa como um desenho, depois como uma forma cortada em pinho maciço. As
+arestas cortadas são lixadas à mão até não restar nada onde um dedo se possa
+prender — esta é a parte lenta, e é a parte que se sente mais do que se vê.
 
-Then the painting: water-based paints, thin coats, and the detail work last with
-a fine brush. The eyes, the muzzle, the spots on a mushroom cap — those are done
-one at a time, which is why no two are identical.
+Depois vem a pintura: tintas de água, camadas finas, e os pormenores no fim, com
+um pincel fino. Os olhos, o focinho, as pintas no chapéu de um cogumelo — são
+feitos um a um, e é por isso que não há dois iguais.
 
-The lights go in from behind, the back is closed, and the whole thing is tested
-lit before it is packed.
+As luzes entram por trás, as costas fecham-se, e cada candeeiro é testado aceso
+antes de ser embalado.
 
-## Why the wood shows
+## Porque se vê a madeira
 
-On most pieces a good part of the pine is left bare. That is deliberate. Pine
-has a grain that no two boards share, and covering it would make every lamp the
-same lamp in different colours.
+Na maioria das peças, boa parte do pinho fica à vista. É de propósito. O pinho
+tem um veio que não se repete de tábua para tábua, e tapá-lo faria de todos os
+candeeiros o mesmo candeeiro em cores diferentes.
 
-It also means the wood will change. It lightens a little in a bright room over a
-year or two, and it warms with it.
+Também quer dizer que a madeira vai mudar. Clareia um pouco num quarto com
+muita luz, ao longo de um ou dois anos, e aquece com isso.
 
-## The engraving
+## A gravação
 
-Any piece can carry a name, a date or a short phrase burned into the wood, and
-it costs nothing extra. It is the part we like best, and the reason most of
-these lamps end up staying in a family longer than the childhood they were
-bought for.
+Qualquer peça pode levar um nome, uma data ou uma frase curta gravados na
+madeira, e não custa mais nada. É a parte de que mais gostamos, e a razão por
+que a maioria destes candeeiros acaba por ficar numa família mais tempo do que
+a infância para que foram comprados.
 
-## The other half of the workshop
+## A outra metade da oficina
 
-The same hands make [cathelier](/cathelier/) — laser-cut and engraved pieces for
-christenings, weddings, births and Christmas. Different work, different shop,
-same bench.
+As mesmas mãos fazem a [cathelier](/cathelier/) — peças cortadas e gravadas a
+laser para batizados, casamentos, nascimentos e Natal. Outro trabalho, outra
+loja, a mesma bancada.

@@ -1,5 +1,5 @@
 {
-  "name": "Bear",
+  "name": "Urso",
   "price": 130,
   "published": true,
   "featured": false,
@@ -9,8 +9,8 @@
     "height": 40,
     "width": 21
   },
-  "summary": "Standing upright, with flowers painted across the chest.",
-  "text": "Standing straight, paws at its sides, a spray of flowers painted on its chest. Tall and narrow, in white, with very simple lines.\n\nThere is also a dark wood version with a pale chest — tell us which you would like.",
+  "summary": "De pé, com flores pintadas no peito.",
+  "text": "De pé, direito, com as patas junto ao corpo e um ramo de flores pintado no peito. Alto e estreito, em branco, com linhas muito simples.\n\nHá também uma versão em madeira escura com o peito claro — diga-nos qual prefere.",
   "photoFolder": "urso",
   "photos": [
     "01",
@@ -23,35 +23,35 @@
   "options": [
     {
       "id": "power",
-      "name": "Power",
+      "name": "Alimentação",
       "type": "choice",
       "required": true,
       "personalises": false,
-      "help": "Batteries are not included. The mains version comes with a remote: on, off, dimmer, timer and a slow pulse.",
+      "help": "As pilhas não estão incluídas. A versão com cabo traz um comando: liga, desliga, regula a intensidade, desliga sozinha e faz a luz pulsar devagar.",
       "values": [
         {
           "id": "batteries",
-          "name": "2 x AA batteries (3V)",
+          "name": "2 pilhas AA (3 V)",
           "extra": 0
         },
         {
           "id": "mains",
-          "name": "Mains cable with remote",
+          "name": "Cabo de corrente com comando",
           "extra": 0,
           "available": false,
-          "note": "Out of stock for now"
+          "note": "Esgotado por agora"
         }
       ]
     },
     {
       "id": "engraving",
-      "name": "Laser engraving",
+      "name": "Gravação a laser",
       "type": "text",
       "required": false,
       "personalises": true,
       "max": 40,
       "extra": 0,
-      "help": "A name, a date or a short phrase, burned into the wood. Leave it empty if you would rather not."
+      "help": "Um nome, uma data ou uma frase curta, gravados na madeira. Deixe vazio se preferir sem gravação."
     }
   ],
   "gpsr": {

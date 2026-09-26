@@ -1,0 +1,22 @@
+{
+  "name": {
+    "t": "Door plaque",
+    "h": "e5d4862f27b6"
+  },
+  "summary": {
+    "t": "The name on the bedroom door.",
+    "h": "800338c22e05"
+  },
+  "text": {
+    "t": "The name on the bedroom door.",
+    "h": "800338c22e05"
+  },
+  "options.name.name": {
+    "t": "The name",
+    "h": "01bd1e2b89c0"
+  },
+  "options.name.example": {
+    "t": "Beatriz",
+    "h": "ac8a9e876b6c"
+  }
+}

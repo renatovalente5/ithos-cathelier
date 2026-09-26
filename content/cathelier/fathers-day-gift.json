@@ -1,5 +1,5 @@
 {
-  "name": "Father’s Day gift",
+  "name": "Prenda do Dia do Pai",
   "price": 21,
   "published": true,
   "featured": false,
@@ -7,8 +7,8 @@
   "made": "to_order",
   "occasion": "special-days",
   "alsoIn": [],
-  "summary": "“Dad, you are my superhero.”",
-  "text": "“Dad, you are my superhero.”",
+  "summary": "«Pai, és o meu super-herói.»",
+  "text": "«Pai, és o meu super-herói.»",
   "photoFolder": "pool",
   "photos": [
     "12",
@@ -18,7 +18,7 @@
   "options": [
     {
       "id": "names",
-      "name": "Name or names",
+      "name": "Nome ou nomes",
       "type": "text",
       "required": true,
       "personalises": true,
@@ -28,13 +28,13 @@
     },
     {
       "id": "line",
-      "name": "A short line (optional)",
+      "name": "Uma frase curta (opcional)",
       "type": "text",
       "required": false,
       "personalises": true,
       "max": 60,
       "extra": 0,
-      "example": "You are my superhero"
+      "example": "És o meu super-herói"
     }
   ],
   "gpsr": {

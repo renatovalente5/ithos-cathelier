@@ -1,40 +1,45 @@
-# Your right to cancel
+# O seu direito de livre resolução
 
-## Fourteen days
+## Catorze dias
 
-If you are buying as a consumer, you may cancel within **{{COOLING_OFF_DAYS}} days**
-of receiving your order, without giving any reason — this is **article 10 of
-Decree-Law 24/2014**. The period runs from the day the last item reaches you.
+Se estiver a comprar como consumidor, pode desistir da compra no prazo de
+**{{COOLING_OFF_DAYS}} dias** a contar da receção da encomenda, sem dar
+qualquer motivo — é o **artigo 10.º do Decreto-Lei n.º 24/2014**. O prazo conta
+a partir do dia em que lhe chega o último artigo.
 
-To cancel, tell us clearly — an email to [{{EMAIL}}](mailto:{{EMAIL}}) is enough.
-There is a [form you can use]({{FORM_URL}}) if you prefer, but you do not have to.
+Para desistir, diga-nos de forma clara — um email para
+[{{EMAIL}}](mailto:{{EMAIL}}) chega. Há um [formulário que pode usar]({{FORM_URL}})
+se preferir, mas não é obrigatório.
 
-## What cannot be cancelled
+## O que não se pode devolver
 
-**Personalised pieces.** Anything made to your specification or clearly meant for
-you alone — a name, a date, your words engraved into it — cannot be cancelled
-once we have started making it. This is article 17(c) of Decree-Law 24/2014.
+**Peças personalizadas.** Tudo o que é feito segundo as suas indicações ou
+claramente destinado só a si — um nome, uma data, as suas palavras gravadas —
+não pode ser devolvido depois de começarmos a fazê-lo. É a alínea c) do artigo
+17.º do Decreto-Lei n.º 24/2014.
 
-Choosing between colours we already offer is **not** personalisation. A lamp in
-a colour from our list can be cancelled like anything else.
+Escolher entre cores que já oferecemos **não** é personalização. Um candeeiro
+numa cor da nossa lista pode ser devolvido como qualquer outra coisa.
 
-## Sending it back
+## Devolver a peça
 
-Send the piece back within 14 days of telling us. You pay the return postage.
-Pack it as it arrived, or better — you are responsible for loss in value caused
-by handling beyond what is needed to see what it is.
+Devolva a peça no prazo de 14 dias a contar do dia em que nos disse. Os portes
+da devolução são por sua conta. Embale-a como chegou, ou melhor — é responsável
+pela perda de valor causada por um manuseamento além do necessário para ver o
+que é.
 
-## Getting your money back
+## Receber o dinheiro de volta
 
-We refund within 14 days of the day you tell us you are cancelling. That
-includes the standard outbound shipping; if you chose a faster option, we refund
-the standard rate.
+Devolvemos o dinheiro no prazo de 14 dias a contar do dia em que nos diz que
+desiste. Isso inclui os portes de envio normais; se escolheu uma opção mais
+rápida, devolvemos o valor normal.
 
-We may hold the money until the piece is back with us, or until you show us you
-have sent it — whichever happens first. That is a right to wait, not a later
-start: the 14 days are counted from the day you told us.
+Podemos reter o dinheiro até a peça nos voltar a chegar, ou até nos mostrar que
+a enviou — o que acontecer primeiro. É um direito de esperar, não um começo
+mais tarde: os 14 dias contam-se a partir do dia em que nos disse.
 
-The money goes back the way it came. If you paid by MB WAY or by card, it
-returns to the same card or phone. A Multibanco reference has no way back, so
-for those we ask you for an IBAN and transfer it — we use the IBAN only
-to return your money, and keep it no longer than the accounting rules require.
+O dinheiro volta pelo caminho por onde veio. Se pagou por MB WAY ou por cartão,
+volta ao mesmo cartão ou telemóvel. Uma referência Multibanco não tem volta,
+por isso pedimos-lhe um IBAN e transferimos — usamos o IBAN só para lhe
+devolver o dinheiro, e não o guardamos mais tempo do que as regras
+contabilísticas exigem.

@@ -1,0 +1,34 @@
+{
+  "name": {
+    "t": "Photo keyring",
+    "h": "49478f921f27"
+  },
+  "summary": {
+    "t": "The photograph inside a metal and glass keyring.",
+    "h": "5403526cee9e"
+  },
+  "text": {
+    "t": "The photograph inside a metal and glass keyring.",
+    "h": "5403526cee9e"
+  },
+  "options.names.name": {
+    "t": "Name or names",
+    "h": "294711d4c920"
+  },
+  "options.names.example": {
+    "t": "Benedita",
+    "h": "80a84f1dd1b2"
+  },
+  "options.date.name": {
+    "t": "Date",
+    "h": "cec3a9b89b2e"
+  },
+  "options.date.example": {
+    "t": "28 June 2026",
+    "h": "c9a6ae6981b6"
+  },
+  "options.line.name": {
+    "t": "A short line (optional)",
+    "h": "6eb0262279e0"
+  }
+}

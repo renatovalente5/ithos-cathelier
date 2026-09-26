@@ -22,11 +22,18 @@ const RAIZ = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 /** A primeira é a de origem. As outras aparecem no site pela ordem daqui. */
 export const LINGUAS_TODAS = ['pt', 'en', 'fr', 'de', 'es', 'it'];
 export const ORIGEM = 'pt';
-/* As que estão no ar. `LINGUAS` no ambiente sobrepõe-se.
-   ENQUANTO O CONTEÚDO NÃO PASSAR PARA PORTUGUÊS, o site publica só em inglês:
-   cada passo desta obra pode ir para o ar sem mudar uma vírgula do que lá
-   está. No dia da troca, isto passa a 'pt,en'. */
-export const LINGUAS = (process.env.LINGUAS || 'en').split(',').map((s) => s.trim()).filter(Boolean);
+/* As que estão no ar: as de content/settings/languages.json («site»), que é
+   também de onde o Worker lê para quais traduz. `LINGUAS` no ambiente
+   sobrepõe-se (para ensaiar: `LINGUAS=pt node src/build.mjs`). */
+function linguasPublicadas() {
+  if (process.env.LINGUAS) return process.env.LINGUAS.split(',');
+  try {
+    const j = JSON.parse(readFileSync(join(RAIZ, 'content', 'settings', 'languages.json'), 'utf8'));
+    if (Array.isArray(j.site) && j.site.length) return j.site;
+  } catch { /* sem o ficheiro: só a origem */ }
+  return [ORIGEM];
+}
+export const LINGUAS = linguasPublicadas().map((s) => String(s).trim()).filter((l) => LINGUAS_TODAS.includes(l));
 
 export const NOMES = { pt: 'Português', en: 'English', fr: 'Français', de: 'Deutsch', es: 'Español', it: 'Italiano' };
 /* O atributo lang e o og:locale de cada uma. */

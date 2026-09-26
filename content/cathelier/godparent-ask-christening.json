@@ -1,5 +1,5 @@
 {
-  "name": "Asking the godparents",
+  "name": "Convite aos padrinhos",
   "price": 14,
   "published": true,
   "featured": false,
@@ -7,8 +7,8 @@
   "made": "to_order",
   "occasion": "custom",
   "alsoIn": [],
-  "summary": "“I have a very important question for you…”",
-  "text": "“I have a very important question for you…”",
+  "summary": "«Tenho uma pergunta muito importante para te fazer…»",
+  "text": "«Tenho uma pergunta muito importante para te fazer…»",
   "photoFolder": "pool",
   "photos": [
     "03",
@@ -18,7 +18,7 @@
   "options": [
     {
       "id": "names",
-      "name": "Name or names",
+      "name": "Nome ou nomes",
       "type": "text",
       "required": true,
       "personalises": true,
@@ -28,17 +28,17 @@
     },
     {
       "id": "date",
-      "name": "Date",
+      "name": "Data",
       "type": "text",
       "required": true,
       "personalises": true,
       "max": 30,
       "extra": 0,
-      "example": "28 June 2026"
+      "example": "28 de junho de 2026"
     },
     {
       "id": "line",
-      "name": "A short line (optional)",
+      "name": "Uma frase curta (opcional)",
       "type": "text",
       "required": false,
       "personalises": true,

@@ -1,0 +1,22 @@
+{
+  "zones.pt.name": {
+    "t": "Mainland Portugal",
+    "h": "4a9cbd241da5"
+  },
+  "zones.ilhas.name": {
+    "t": "Azores and Madeira",
+    "h": "ced95eb3c210"
+  },
+  "zones.es.name": {
+    "t": "Spain",
+    "h": "435716390e83"
+  },
+  "zones.fr-uk.name": {
+    "t": "France and the United Kingdom",
+    "h": "3a33e00b70db"
+  },
+  "zones.europa.name": {
+    "t": "Rest of Europe",
+    "h": "7aadffe1e93a"
+  }
+}

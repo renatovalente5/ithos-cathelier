@@ -1,71 +1,71 @@
 [
   {
     "slug": "christmas",
-    "name": "Christmas",
-    "summary": "Ornaments with everyone’s name on them, to hang again every year.",
+    "name": "Natal",
+    "summary": "Enfeites com o nome de toda a família, para pendurar outra vez todos os anos.",
     "order": 10,
     "published": true
   },
   {
     "slug": "easter",
-    "name": "Easter",
-    "summary": "Small pieces for the Easter table and the baskets, with a name on each.",
+    "name": "Páscoa",
+    "summary": "Peças pequenas para a mesa da Páscoa e para os cestos, com um nome em cada uma.",
     "order": 20,
     "published": true
   },
   {
     "slug": "special-days",
-    "name": "Special days",
-    "summary": "Mother’s Day and Father’s Day: her children’s names, his superhero shield.",
+    "name": "Dias especiais",
+    "summary": "Dia da Mãe e Dia do Pai: os nomes dos filhos para ela, o escudo de super-herói para ele.",
     "order": 30,
     "published": true
   },
   {
     "slug": "magnets-keyrings",
-    "name": "Magnets & keyrings",
-    "summary": "A photograph for the fridge, or for the keys.",
+    "name": "Ímanes e porta-chaves",
+    "summary": "Uma fotografia para o frigorífico, ou para as chaves.",
     "order": 40,
     "published": true
   },
   {
     "slug": "new-baby",
-    "name": "New baby",
-    "summary": "The name, the date, the time, the weight and the length on a disc or a heart — and a piece to share the news.",
+    "name": "Nascimento",
+    "summary": "O nome, a data, a hora, o peso e o comprimento num disco ou num coração — e uma peça para dar a notícia.",
     "order": 50,
     "published": true
   },
   {
     "slug": "names",
-    "name": "Names",
-    "summary": "A name, or an initial with the name, for the wall, the door or above the bed.",
+    "name": "Nomes",
+    "summary": "Um nome, ou uma inicial com o nome, para a parede, para a porta ou por cima da cama.",
     "order": 60,
     "published": true
   },
   {
     "slug": "hanging",
-    "name": "Hanging pieces",
-    "summary": "Small pieces with a hole and a ribbon, to hang anywhere.",
+    "name": "Peças para pendurar",
+    "summary": "Peças pequenas com um furo e uma fita, para pendurar em qualquer sítio.",
     "order": 70,
     "published": true
   },
   {
     "slug": "wall-decor",
-    "name": "Wall decor",
-    "summary": "Growth charts, family trees and frames: the pieces that stay on the wall for years.",
+    "name": "Decoração de parede",
+    "summary": "Réguas de crescimento, árvores genealógicas e molduras: as peças que ficam anos na parede.",
     "order": 80,
     "published": true
   },
   {
     "slug": "custom",
-    "name": "Custom orders",
-    "summary": "Cake toppers, signs, guest books, trophies — made to measure for your day. Or tell us your idea.",
+    "name": "Pedidos especiais",
+    "summary": "Topos de bolo, placas, livros de honra, troféus — feitos por medida para o vosso dia. Ou conte-nos a sua ideia.",
     "order": 90,
     "published": true
   },
   {
     "slug": "keepsakes",
-    "name": "Favours & giveaways",
-    "summary": "For everyone who came: christenings, communions, weddings and company gifts.",
+    "name": "Lembranças e ofertas",
+    "summary": "Para todos os que vieram: batizados, comunhões, casamentos e ofertas de empresa.",
     "order": 100,
     "published": true
   }

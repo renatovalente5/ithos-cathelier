@@ -1,0 +1,26 @@
+{
+  "name": {
+    "t": "Panel with the children’s names",
+    "h": "116c450b7672"
+  },
+  "summary": {
+    "t": "The names and the birth dates, on one piece.",
+    "h": "d83812f209a1"
+  },
+  "text": {
+    "t": "The names and the birth dates, on one piece.",
+    "h": "d83812f209a1"
+  },
+  "options.names.name": {
+    "t": "Name or names",
+    "h": "294711d4c920"
+  },
+  "options.names.example": {
+    "t": "Ana and Duarte",
+    "h": "867a5dd71255"
+  },
+  "options.line.name": {
+    "t": "A short line (optional)",
+    "h": "6eb0262279e0"
+  }
+}

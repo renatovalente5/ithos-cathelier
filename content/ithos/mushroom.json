@@ -1,13 +1,13 @@
 {
-  "name": "Mushroom",
+  "name": "Cogumelo",
   "price": 98,
   "published": true,
   "featured": false,
   "order": 220,
   "made": "to_order",
   "size": {},
-  "summary": "A spotted cap on a wooden stem. Three colours.",
-  "text": "A pale wooden stem under a painted cap — red with white spots, soft beige, or deep brown. The light comes out through the spots.\n\nOne of the smallest pieces, and the best of them in a group: three mushrooms together on a shelf make a small wood.",
+  "summary": "Um chapéu às pintas num pé de madeira. Três cores.",
+  "text": "Um pé de madeira clara debaixo de um chapéu pintado — vermelho com pintas brancas, bege-claro ou castanho-escuro. A luz sai pelas pintas.\n\nUma das peças mais pequenas, e a melhor de todas em grupo: três cogumelos juntos numa prateleira fazem um pequeno bosque.",
   "photoFolder": "cogumelo",
   "photos": [
     "01",
@@ -22,7 +22,7 @@
   "options": [
     {
       "id": "variant",
-      "name": "Model",
+      "name": "Modelo",
       "type": "choice",
       "required": true,
       "personalises": false,
@@ -30,19 +30,19 @@
       "values": [
         {
           "id": "1",
-          "name": "Brown (25×20 cm)",
+          "name": "Castanho (25×20 cm)",
           "extra": 0,
           "colour": "#482F23"
         },
         {
           "id": "2",
-          "name": "Beige (25×24 cm)",
+          "name": "Bege (25×24 cm)",
           "extra": 0,
           "colour": "#C07045"
         },
         {
           "id": "3",
-          "name": "Red (25×22 cm)",
+          "name": "Vermelho (25×22 cm)",
           "extra": 0,
           "colour": "#B32920"
         }
@@ -50,35 +50,35 @@
     },
     {
       "id": "power",
-      "name": "Power",
+      "name": "Alimentação",
       "type": "choice",
       "required": true,
       "personalises": false,
-      "help": "Batteries are not included. The mains version comes with a remote: on, off, dimmer, timer and a slow pulse.",
+      "help": "As pilhas não estão incluídas. A versão com cabo traz um comando: liga, desliga, regula a intensidade, desliga sozinha e faz a luz pulsar devagar.",
       "values": [
         {
           "id": "batteries",
-          "name": "2 x AA batteries (3V)",
+          "name": "2 pilhas AA (3 V)",
           "extra": 0
         },
         {
           "id": "mains",
-          "name": "Mains cable with remote",
+          "name": "Cabo de corrente com comando",
           "extra": 0,
           "available": false,
-          "note": "Out of stock for now"
+          "note": "Esgotado por agora"
         }
       ]
     },
     {
       "id": "engraving",
-      "name": "Laser engraving",
+      "name": "Gravação a laser",
       "type": "text",
       "required": false,
       "personalises": true,
       "max": 40,
       "extra": 0,
-      "help": "A name, a date or a short phrase, burned into the wood. Leave it empty if you would rather not."
+      "help": "Um nome, uma data ou uma frase curta, gravados na madeira. Deixe vazio se preferir sem gravação."
     }
   ],
   "gpsr": {

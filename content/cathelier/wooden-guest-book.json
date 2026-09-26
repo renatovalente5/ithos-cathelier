@@ -1,5 +1,5 @@
 {
-  "name": "Wooden guest book",
+  "name": "Livro de honra em madeira",
   "price": 45,
   "published": true,
   "featured": false,
@@ -7,8 +7,8 @@
   "made": "to_order",
   "occasion": "custom",
   "alsoIn": [],
-  "summary": "A tree, hearts or a map, for the guests to sign.",
-  "text": "A tree, hearts or a map, for the guests to sign.",
+  "summary": "Uma árvore, corações ou um mapa, para os convidados assinarem.",
+  "text": "Uma árvore, corações ou um mapa, para os convidados assinarem.",
   "photoFolder": "pool",
   "photos": [
     "08",
@@ -18,17 +18,17 @@
   "options": [
     {
       "id": "names",
-      "name": "Name or names",
+      "name": "Nome ou nomes",
       "type": "text",
       "required": true,
       "personalises": true,
       "max": 60,
       "extra": 0,
-      "example": "The Aparício family"
+      "example": "Família Aparício"
     },
     {
       "id": "date",
-      "name": "Date (optional)",
+      "name": "Data (opcional)",
       "type": "text",
       "required": false,
       "personalises": true,

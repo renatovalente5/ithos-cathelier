@@ -1,0 +1,22 @@
+{
+  "name": {
+    "t": "Engraved wooden bauble",
+    "h": "2523d87ac017"
+  },
+  "summary": {
+    "t": "Two halves of wood that click together, with the name in between.",
+    "h": "cb1f640e0d73"
+  },
+  "text": {
+    "t": "Two halves of wood that click together, with the name in between.",
+    "h": "cb1f640e0d73"
+  },
+  "options.name.name": {
+    "t": "Name",
+    "h": "5086900635fe"
+  },
+  "options.name.example": {
+    "t": "Miguel",
+    "h": "977af1277234"
+  }
+}

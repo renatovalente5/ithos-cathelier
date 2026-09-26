@@ -1,0 +1,26 @@
+{
+  "name": {
+    "t": "Birthday cake topper",
+    "h": "6bcfc5e25ef7"
+  },
+  "summary": {
+    "t": "The name and the age, cut out.",
+    "h": "9eac9b508133"
+  },
+  "text": {
+    "t": "The name and the age, cut out.",
+    "h": "9eac9b508133"
+  },
+  "options.names.name": {
+    "t": "Name or names",
+    "h": "294711d4c920"
+  },
+  "options.names.example": {
+    "t": "The Aparício family",
+    "h": "d8c105bc37e8"
+  },
+  "options.date.name": {
+    "t": "Date (optional)",
+    "h": "07cfa971211a"
+  }
+}

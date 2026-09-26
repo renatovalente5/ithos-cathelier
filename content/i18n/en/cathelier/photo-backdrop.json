@@ -1,0 +1,26 @@
+{
+  "name": {
+    "t": "Photo backdrop",
+    "h": "5a145040ff42"
+  },
+  "summary": {
+    "t": "The backdrop panel, with the name and the age.",
+    "h": "6d8a972fed50"
+  },
+  "text": {
+    "t": "The backdrop panel, with the name and the age.",
+    "h": "6d8a972fed50"
+  },
+  "options.names.name": {
+    "t": "Name or names",
+    "h": "294711d4c920"
+  },
+  "options.names.example": {
+    "t": "The Aparício family",
+    "h": "d8c105bc37e8"
+  },
+  "options.date.name": {
+    "t": "Date (optional)",
+    "h": "07cfa971211a"
+  }
+}

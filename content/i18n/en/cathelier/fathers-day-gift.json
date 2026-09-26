@@ -1,0 +1,30 @@
+{
+  "name": {
+    "t": "Father’s Day gift",
+    "h": "30b03d36e542"
+  },
+  "summary": {
+    "t": "“Dad, you are my superhero.”",
+    "h": "cac3bb73c532"
+  },
+  "text": {
+    "t": "“Dad, you are my superhero.”",
+    "h": "cac3bb73c532"
+  },
+  "options.names.name": {
+    "t": "Name or names",
+    "h": "294711d4c920"
+  },
+  "options.names.example": {
+    "t": "Tomás",
+    "h": "237627569626"
+  },
+  "options.line.name": {
+    "t": "A short line (optional)",
+    "h": "6eb0262279e0"
+  },
+  "options.line.example": {
+    "t": "You are my superhero",
+    "h": "aa63a5486705"
+  }
+}

@@ -1,137 +1,142 @@
-# Terms of sale
+# Condições de venda
 
-## Who is selling
+## Quem vende
 
-{{LEGAL_NAME}}, {{LEGAL_FORM}}, tax number {{TAX_NUMBER}}, at {{ADDRESS}}.
-Contact: [{{EMAIL}}](mailto:{{EMAIL}}) and [{{PHONE_TEXT}}](tel:{{PHONE}})
-*{{CALL_COST}}*.
+{{LEGAL_NAME}}, {{LEGAL_FORM}}, contribuinte n.º {{TAX_NUMBER}}, com morada em
+{{ADDRESS}}. Contacto: [{{EMAIL}}](mailto:{{EMAIL}}) e
+[{{PHONE_TEXT}}](tel:{{PHONE}}) *{{CALL_COST}}*.
 
-These terms apply to every purchase made on this site, under both the **ithos**
-and **cathelier** names. Ordering means accepting them.
+Estas condições aplicam-se a todas as compras feitas neste site, com as marcas
+**ithos** e **cathelier**. Encomendar é aceitá-las.
 
-## The pieces
+## As peças
 
-Everything is made by hand. That means small differences between a piece and its
-photograph: the grain of the wood, the exact tone of the paint, where a painted
-detail sits. These are not faults — they are what separates a handmade piece
-from a factory one, and they do not give a right to return for non-conformity.
+Tudo é feito à mão. Isso quer dizer pequenas diferenças entre uma peça e a sua
+fotografia: o veio da madeira, o tom exato da tinta, o sítio de um pormenor
+pintado. Não são defeitos — são o que distingue uma peça feita à mão de uma
+peça de fábrica, e não dão direito a devolução por falta de conformidade.
 
-Measurements are approximate, to about a centimetre.
+As medidas são aproximadas, a cerca de um centímetro.
 
-The photographs are of pieces we have actually made. The colour on your screen
-may not be the colour of the wood.
+As fotografias são de peças que fizemos de facto. A cor no seu ecrã pode não
+ser a cor da madeira.
 
-## Prices
+## Preços
 
-Prices are in euros. {{VAT_NOTE}}
+Os preços estão em euros. {{VAT_NOTE}}
 
-The price you see on a product page is the price for that piece with the choices
-shown. Shipping is added at checkout and shown before you pay.
+O preço que vê na página de um produto é o preço dessa peça com as escolhas
+indicadas. Os portes somam-se no pagamento e são mostrados antes de pagar.
 
-## Personalised pieces
+## Peças personalizadas
 
-Anything carrying a name, a date or words you chose is made for you alone, and
-**cannot be returned** once we have started it — this is the exception in
-article 17(c) of Decree-Law 24/2014.
+Tudo o que leva um nome, uma data ou palavras escolhidas por si é feito só para
+si e **não pode ser devolvido** depois de começado — é a exceção da alínea c)
+do artigo 17.º do Decreto-Lei n.º 24/2014.
 
-Choosing a colour we already offer is not personalisation, and does not remove
-your right to cancel.
+Escolher uma cor que já oferecemos não é personalização, e não lhe tira o
+direito de livre resolução.
 
-For cathelier pieces we send you a drawing to approve before anything is cut.
-Nothing goes on the laser until you say yes, and what you approve is what you
-get.
+Nas peças da cathelier enviamos-lhe um desenho para aprovar antes de cortar
+seja o que for. Nada vai ao laser antes de dizer que sim, e o que aprova é o
+que recebe.
 
-## Ordering and paying
+## Encomendar e pagar
 
-An order is a proposal until we confirm it by email. We may decline an order —
-if a piece is no longer possible, if the engraving asks for something we will
-not cut, or if the delivery address is outside the countries we ship to.
+Uma encomenda é uma proposta até a confirmarmos por email. Podemos recusar uma
+encomenda — se uma peça já não for possível, se a gravação pedir algo que não
+cortamos, ou se a morada de entrega for fora dos países para onde enviamos.
 
-Payment is taken by {{PAYMENT_PROVIDER}}, a payment institution supervised by
-the Banco de Portugal. You can pay by {{PAYMENT_METHODS}}. We never see or
-store your payment details.
+O pagamento é recebido pela {{PAYMENT_PROVIDER}}, instituição de pagamento
+supervisionada pelo Banco de Portugal. Pode pagar por {{PAYMENT_METHODS}}.
+Nunca vemos nem guardamos os seus dados de pagamento.
 
-**If you pay by Multibanco reference**, the reference is yours for
-{{PAYMENT_REFERENCE_DAYS}} days. Nothing is made until it is paid: the order is
-confirmed when the payment reaches us, and we write to you then. A lamp that was
-in stock when you ordered is kept for you while the reference is valid. If the
-reference expires unpaid, the order simply lapses, the lamp goes back on the
-shelf, and you owe nothing — put the basket together again whenever you like.
+**Se pagar por referência Multibanco**, a referência é sua durante
+{{PAYMENT_REFERENCE_DAYS}} dias. Nada é feito antes de ser paga: a encomenda
+fica confirmada quando o pagamento nos chega, e escrevemos-lhe nessa altura. Um
+candeeiro que estava em stock quando encomendou fica guardado para si enquanto
+a referência for válida. Se a referência expirar sem ser paga, a encomenda
+simplesmente caduca, o candeeiro volta à prateleira e não nos deve nada —
+volte a montar o cesto quando quiser.
 
-## Making and delivering
+## Fazer e entregar
 
-**A lamp in stock** leaves the workshop {{IN_STOCK_DAYS}} after your payment.
+**Um candeeiro em stock** sai da oficina {{IN_STOCK_DAYS}} depois do seu
+pagamento.
 
-**A lamp out of stock** can still be ordered: we make yours, and it is with you
-in {{TO_ORDER_WEEKS}}. Each product page and the basket say which it is before
-you pay. If the last one in stock goes to someone else while you are ordering,
-we tell you before taking any payment, and you choose whether to wait.
+**Um candeeiro sem stock** pode ser encomendado na mesma: fazemos o seu, e
+chega-lhe em {{TO_ORDER_WEEKS}}. A página de cada produto e o cesto dizem qual
+é o caso antes de pagar. Se o último em stock for para outra pessoa enquanto
+está a encomendar, dizemos-lhe antes de receber qualquer pagamento, e a decisão de
+esperar é sua.
 
-**Cathelier pieces** are always made to order: {{TO_ORDER_WEEKS}}, counted from
-when you approve the drawing.
+**As peças da cathelier** são sempre feitas por encomenda: {{TO_ORDER_WEEKS}},
+a contar da aprovação do desenho.
 
-If one thing in an order is made to order, the whole order ships together when
-it is ready.
+Se uma coisa numa encomenda for feita por encomenda, a encomenda inteira segue
+junta quando estiver pronta.
 
-Shipping is by {{CARRIER}}. Delivery times are estimates and start when the
-parcel leaves the workshop.
+O envio é feito pela {{CARRIER}}. Os prazos de entrega são estimativas e
+começam quando a encomenda sai da oficina.
 
-## If something is wrong
+## Se alguma coisa estiver mal
 
-You have a **{{WARRANTY_YEARS}}-year legal guarantee** on everything you buy
-here. If a piece arrives damaged or stops working as it should, write to
-[{{EMAIL}}](mailto:{{EMAIL}}) with a photograph and we will repair it, replace
-it, or refund you.
+Tem **{{WARRANTY_YEARS}} anos de garantia legal** em tudo o que compra aqui.
+Se uma peça chegar danificada ou deixar de funcionar como deve, escreva para
+[{{EMAIL}}](mailto:{{EMAIL}}) com uma fotografia e reparamos, substituímos ou
+devolvemos o seu dinheiro.
 
-## Complaints and disputes
+## Reclamações e litígios
 
-There is an electronic complaints book — *Livro de Reclamações Eletrónico* —
-at [{{COMPLAINTS_BOOK}}]({{COMPLAINTS_BOOK}}).
+Existe o Livro de Reclamações Eletrónico, em
+[{{COMPLAINTS_BOOK}}]({{COMPLAINTS_BOOK}}).
 
-For out-of-court dispute resolution — *Resolução Alternativa de Litígios de
-Consumo (RAL)* — the competent arbitration centre is **{{ADR_NAME}}** —
+Para a resolução extrajudicial de litígios — Resolução Alternativa de Litígios
+de Consumo (RAL) — a entidade competente é o **{{ADR_NAME}}** —
 [{{ADR_SITE}}]({{ADR_SITE}}), {{ADR_ADDRESS}}, [{{ADR_EMAIL}}](mailto:{{ADR_EMAIL}}),
 {{ADR_PHONE}}.
 
-## For resellers {#resellers}
+## Para revendedores {#resellers}
 
-These conditions apply when a business we have registered as a reseller buys
-at reseller prices. The rest of these terms apply too, except where this
-section says otherwise.
+Estas condições aplicam-se quando uma empresa que registámos como revendedora
+compra a preços de revenda. O resto destas condições aplica-se também, salvo
+onde esta secção disser outra coisa.
 
-**Who is a reseller.** A business we have registered under its NIF, company
-name and registered address. Registration is ours to grant and to end. You
-sign in with a link or a code sent to the email addresses on the registration.
+**Quem é revendedor.** Uma empresa que registámos com o seu NIF, a sua firma e
+a sua sede. O registo é concedido e terminado por nós. Entra com uma ligação ou
+um código enviados para os endereços de email do registo.
 
-**Prices.** The retail prices on this site are recommended retail prices: you
-set your own resale price. Your price is the retail price less a discount per
-piece, shown to you while you are signed in; paid options are at their normal
-price. Shipping and order limits are the same as for everyone. VAT is not
-charged: article 53 of the Portuguese VAT code applies. Our price list and
-these conditions are available on request.
+**Preços.** Os preços de venda neste site são preços de venda ao público
+recomendados: o preço de revenda é decidido por si. O seu preço é o preço de
+venda ao público menos um desconto por peça, que lhe é mostrado enquanto tiver
+a sessão iniciada; as opções pagas têm o preço normal. Os portes e os limites
+de encomenda são os mesmos para todos. Não é cobrado IVA: aplica-se o artigo
+53.º do Código do IVA. A nossa tabela de preços e estas condições estão
+disponíveis a pedido.
 
-**Buying for resale is not a consumer purchase.** The right to cancel within 14
-days (Decree-Law 24/2014) and the {{WARRANTY_YEARS}}-year legal guarantee for
-consumers (Decree-Law 84/2021) do not apply to what you buy for your business.
-Check the pieces when they arrive and tell us about any visible defect within
-8 days (Commercial Code, article 471); hidden defects follow the Civil Code
-(articles 913 to 922). If you are buying something for your own home and not
-for resale, do not use your reseller access: buy as a consumer, and every
-consumer right applies.
+**Comprar para revender não é uma compra de consumo.** O direito de livre
+resolução de 14 dias (Decreto-Lei n.º 24/2014) e a garantia legal de
+{{WARRANTY_YEARS}} anos dos consumidores (Decreto-Lei n.º 84/2021) não se
+aplicam ao que compra para a sua empresa. Verifique as peças quando chegarem e
+comunique-nos qualquer defeito visível no prazo de 8 dias (Código Comercial,
+artigo 471.º); os defeitos ocultos seguem o Código Civil (artigos 913.º a
+922.º). Se estiver a comprar alguma coisa para a sua casa e não para revender,
+não use o acesso de revendedor: compre como consumidor, e todos os direitos do
+consumidor se aplicam.
 
-**Invoices** are issued in your company's name, with your NIF and registered
-address.
+**As faturas** são emitidas em nome da sua empresa, com o seu NIF e a sua
+sede.
 
-**When you resell,** you are the distributor of what you sell on, and the EU
-General Product Safety Regulation (2023/988) applies to you: keep the
-identification, instructions and warnings that come with each piece with it,
-in Portuguese, and show them when you sell online. If one of your customers
-has a problem with a piece that came from us, tell us.
+**Quando revende,** é o distribuidor do que vende, e aplica-se-lhe o
+Regulamento Geral de Segurança dos Produtos da UE (2023/988): mantenha com cada
+peça a identificação, as instruções e os avisos que a acompanham, em português,
+e mostre-os quando vender online. Se um cliente seu tiver um problema com uma
+peça que veio de nós, diga-nos.
 
-## Law
+## Lei aplicável
 
-Portuguese law applies. Nothing here takes away rights the law gives you as a
-consumer.
+Aplica-se a lei portuguesa. Nada nestas condições retira direitos que a lei lhe
+dá enquanto consumidor.
 
-These terms are published in English. A Portuguese version is available on
-request at [{{EMAIL}}](mailto:{{EMAIL}}), and Portuguese consumers may rely on it.
+Estas condições são escritas em português. As versões noutras línguas são
+traduções; em caso de divergência, prevalece a versão portuguesa.

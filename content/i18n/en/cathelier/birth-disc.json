@@ -1,0 +1,62 @@
+{
+  "name": {
+    "t": "Birth disc",
+    "h": "3ec15093b614"
+  },
+  "summary": {
+    "t": "A round disc carrying everything about the day they arrived.",
+    "h": "8871cf8352a3"
+  },
+  "text": {
+    "t": "A round disc with the name, the date, the time, the weight and the length engraved into it.\n\nIt is the piece people hang over a cot and then never take down.",
+    "h": "35e970b6f652"
+  },
+  "options.name.name": {
+    "t": "Name",
+    "h": "5086900635fe"
+  },
+  "options.name.example": {
+    "t": "Manuel",
+    "h": "33ed3c57cf40"
+  },
+  "options.surname.name": {
+    "t": "Surname",
+    "h": "83046340fcc9"
+  },
+  "options.surname.example": {
+    "t": "Marques Gomes Aparício",
+    "h": "b374211a9cd0"
+  },
+  "options.born.name": {
+    "t": "Date of birth",
+    "h": "1d08b0f8025d"
+  },
+  "options.born.example": {
+    "t": "16 June 2025",
+    "h": "42a89222e257"
+  },
+  "options.time.name": {
+    "t": "Time",
+    "h": "503f312cde03"
+  },
+  "options.time.example": {
+    "t": "3:40",
+    "h": "4495c7927f96"
+  },
+  "options.weight.name": {
+    "t": "Weight",
+    "h": "c27dd5dd9f3c"
+  },
+  "options.weight.example": {
+    "t": "3,110 kg",
+    "h": "1fe8670c28ce"
+  },
+  "options.length.name": {
+    "t": "Length",
+    "h": "49ed0eef5143"
+  },
+  "options.length.example": {
+    "t": "49 cm",
+    "h": "c8d0f4fefc4d"
+  }
+}

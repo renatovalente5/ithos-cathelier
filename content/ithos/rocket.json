@@ -1,5 +1,5 @@
 {
-  "name": "Rocket",
+  "name": "Foguetão",
   "price": 130,
   "published": true,
   "featured": true,
@@ -9,8 +9,8 @@
     "height": 39,
     "width": 20
   },
-  "summary": "Ready to leave, with a window onto space.",
-  "text": "Three round windows: the largest shows space painted by hand — stars, planets — and the other two fill with light. The fins are dark and rest on the floor.\n\nOne of the tallest pieces, and one of the most asked for by children who have started looking up.",
+  "summary": "Pronto a partir, com uma janela para o espaço.",
+  "text": "Três janelas redondas: a maior mostra o espaço pintado à mão — estrelas, planetas — e as outras duas enchem-se de luz. As barbatanas são escuras e assentam no chão.\n\nUma das peças mais altas, e das mais pedidas por crianças que começaram a olhar para cima.",
   "photoFolder": "foguetao",
   "photos": [
     "01",
@@ -23,35 +23,35 @@
   "options": [
     {
       "id": "power",
-      "name": "Power",
+      "name": "Alimentação",
       "type": "choice",
       "required": true,
       "personalises": false,
-      "help": "Batteries are not included. The mains version comes with a remote: on, off, dimmer, timer and a slow pulse.",
+      "help": "As pilhas não estão incluídas. A versão com cabo traz um comando: liga, desliga, regula a intensidade, desliga sozinha e faz a luz pulsar devagar.",
       "values": [
         {
           "id": "batteries",
-          "name": "2 x AA batteries (3V)",
+          "name": "2 pilhas AA (3 V)",
           "extra": 0
         },
         {
           "id": "mains",
-          "name": "Mains cable with remote",
+          "name": "Cabo de corrente com comando",
           "extra": 0,
           "available": false,
-          "note": "Out of stock for now"
+          "note": "Esgotado por agora"
         }
       ]
     },
     {
       "id": "engraving",
-      "name": "Laser engraving",
+      "name": "Gravação a laser",
       "type": "text",
       "required": false,
       "personalises": true,
       "max": 40,
       "extra": 0,
-      "help": "A name, a date or a short phrase, burned into the wood. Leave it empty if you would rather not."
+      "help": "Um nome, uma data ou uma frase curta, gravados na madeira. Deixe vazio se preferir sem gravação."
     }
   ],
   "gpsr": {

@@ -1,0 +1,22 @@
+{
+  "name": {
+    "t": "Christmas ornament with a name",
+    "h": "9449732c8487"
+  },
+  "summary": {
+    "t": "One for everyone in the house, with the name engraved.",
+    "h": "4dc761ed6e12"
+  },
+  "text": {
+    "t": "One for everyone in the house, with the name engraved.",
+    "h": "4dc761ed6e12"
+  },
+  "options.name.name": {
+    "t": "Name",
+    "h": "5086900635fe"
+  },
+  "options.name.example": {
+    "t": "Miguel",
+    "h": "977af1277234"
+  }
+}

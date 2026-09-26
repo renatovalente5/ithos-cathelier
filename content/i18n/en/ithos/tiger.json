@@ -1,0 +1,42 @@
+{
+  "name": {
+    "t": "Tiger",
+    "h": "197ac7e7254e"
+  },
+  "summary": {
+    "t": "A tiger in a feathered headdress, every stripe painted one at a time.",
+    "h": "1d1f4706d8b2"
+  },
+  "text": {
+    "t": "One of the larger pieces, and one of the slowest to make: the stripes go on one by one, and the headdress is built from coloured wooden feathers.\n\nIt sits with its tail curled round to the front. A piece with real presence — it works lit or unlit, and holds its own in daylight as an ornament.",
+    "h": "6375bb8079b8"
+  },
+  "options.power.name": {
+    "t": "Power",
+    "h": "0853883db432"
+  },
+  "options.power.help": {
+    "t": "Batteries are not included. The mains version comes with a remote: on, off, dimmer, timer and a slow pulse.",
+    "h": "57676081542e"
+  },
+  "options.power.values.batteries.name": {
+    "t": "2 x AA batteries (3V)",
+    "h": "cbc7c37b342d"
+  },
+  "options.power.values.mains.name": {
+    "t": "Mains cable with remote",
+    "h": "f8e28d7f7f6c"
+  },
+  "options.power.values.mains.note": {
+    "t": "Out of stock for now",
+    "h": "5b693adaa590"
+  },
+  "options.engraving.name": {
+    "t": "Laser engraving",
+    "h": "9694d5607ae5"
+  },
+  "options.engraving.help": {
+    "t": "A name, a date or a short phrase, burned into the wood. Leave it empty if you would rather not.",
+    "h": "e202effc7193"
+  }
+}

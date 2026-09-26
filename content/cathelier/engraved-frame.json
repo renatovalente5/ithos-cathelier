@@ -1,5 +1,5 @@
 {
-  "name": "Frame with an engraved photograph",
+  "name": "Moldura com fotografia gravada",
   "price": 28,
   "published": true,
   "featured": false,
@@ -10,8 +10,8 @@
     "new-baby",
     "special-days"
   ],
-  "summary": "The first photograph, engraved into the wood.",
-  "text": "The first photograph, engraved into the wood.",
+  "summary": "A primeira fotografia, gravada na madeira.",
+  "text": "A primeira fotografia, gravada na madeira.",
   "photoFolder": "pool",
   "photos": [
     "08",
@@ -21,7 +21,7 @@
   "options": [
     {
       "id": "name",
-      "name": "Name",
+      "name": "Nome",
       "type": "text",
       "required": true,
       "personalises": true,
@@ -31,7 +31,7 @@
     },
     {
       "id": "surname",
-      "name": "Surname",
+      "name": "Apelido",
       "type": "text",
       "required": true,
       "personalises": true,
@@ -41,17 +41,17 @@
     },
     {
       "id": "born",
-      "name": "Date of birth",
+      "name": "Data de nascimento",
       "type": "text",
       "required": true,
       "personalises": true,
       "max": 30,
       "extra": 0,
-      "example": "16 June 2025"
+      "example": "16 de junho de 2025"
     },
     {
       "id": "time",
-      "name": "Time",
+      "name": "Hora",
       "type": "text",
       "required": true,
       "personalises": true,
@@ -61,7 +61,7 @@
     },
     {
       "id": "weight",
-      "name": "Weight",
+      "name": "Peso",
       "type": "text",
       "required": true,
       "personalises": true,
@@ -71,7 +71,7 @@
     },
     {
       "id": "length",
-      "name": "Length",
+      "name": "Comprimento",
       "type": "text",
       "required": true,
       "personalises": true,

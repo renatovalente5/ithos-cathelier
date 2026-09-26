@@ -9,8 +9,8 @@
     "height": 44,
     "width": 24
   },
-  "summary": "Tall, pink, standing on a single leg.",
-  "text": "Tall and slim, standing on one dark wooden foot. The body is pale pink, the feathers drawn in with a brush, and the light comes out through the middle.\n\nOne of the tallest pieces at 44 cm. It looks right on the floor against a wall, or on a chest of drawers.",
+  "summary": "Alto, cor-de-rosa, apoiado numa só perna.",
+  "text": "Alto e esguio, apoiado num único pé de madeira escura. O corpo é cor-de-rosa claro, as penas desenhadas a pincel, e a luz sai pelo meio.\n\nUma das peças mais altas, com 44 cm. Fica bem no chão, encostado a uma parede, ou em cima de uma cómoda.",
   "photoFolder": "flamingo",
   "photos": [
     "01",
@@ -22,35 +22,35 @@
   "options": [
     {
       "id": "power",
-      "name": "Power",
+      "name": "Alimentação",
       "type": "choice",
       "required": true,
       "personalises": false,
-      "help": "Batteries are not included. The mains version comes with a remote: on, off, dimmer, timer and a slow pulse.",
+      "help": "As pilhas não estão incluídas. A versão com cabo traz um comando: liga, desliga, regula a intensidade, desliga sozinha e faz a luz pulsar devagar.",
       "values": [
         {
           "id": "batteries",
-          "name": "2 x AA batteries (3V)",
+          "name": "2 pilhas AA (3 V)",
           "extra": 0
         },
         {
           "id": "mains",
-          "name": "Mains cable with remote",
+          "name": "Cabo de corrente com comando",
           "extra": 0,
           "available": false,
-          "note": "Out of stock for now"
+          "note": "Esgotado por agora"
         }
       ]
     },
     {
       "id": "engraving",
-      "name": "Laser engraving",
+      "name": "Gravação a laser",
       "type": "text",
       "required": false,
       "personalises": true,
       "max": 40,
       "extra": 0,
-      "help": "A name, a date or a short phrase, burned into the wood. Leave it empty if you would rather not."
+      "help": "Um nome, uma data ou uma frase curta, gravados na madeira. Deixe vazio se preferir sem gravação."
     }
   ],
   "gpsr": {

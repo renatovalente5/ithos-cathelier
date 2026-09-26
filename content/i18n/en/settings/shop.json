@@ -1,0 +1,26 @@
+{
+  "payment.methods": {
+    "t": "Multibanco reference, MB WAY, card, Google Pay or Apple Pay",
+    "h": "d69e0a5d20af"
+  },
+  "safetyIthos.0": {
+    "t": "This is not a toy. It is a decorative night light.",
+    "h": "0e16a82628de"
+  },
+  "safetyIthos.1": {
+    "t": "Not suitable for children under 3 without adult supervision.",
+    "h": "f8c172564c0a"
+  },
+  "safetyIthos.2": {
+    "t": "Keep the cable out of a cot or a bed.",
+    "h": "fb307402fc38"
+  },
+  "safetyIthos.3": {
+    "t": "Do not leave batteries within reach of a small child.",
+    "h": "bcd901d3dd95"
+  },
+  "safetyIthos.4": {
+    "t": "Wipe with a dry cloth. Never with water or solvents.",
+    "h": "5c2d780f69d4"
+  }
+}

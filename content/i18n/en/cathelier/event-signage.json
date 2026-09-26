@@ -1,0 +1,26 @@
+{
+  "name": {
+    "t": "Event signage",
+    "h": "24c4864394a7"
+  },
+  "summary": {
+    "t": "Arrows, table plans, “this way”.",
+    "h": "d5ea036463c6"
+  },
+  "text": {
+    "t": "Arrows, table plans, “this way”.",
+    "h": "d5ea036463c6"
+  },
+  "options.names.name": {
+    "t": "Name or names",
+    "h": "294711d4c920"
+  },
+  "options.names.example": {
+    "t": "The Aparício family",
+    "h": "d8c105bc37e8"
+  },
+  "options.date.name": {
+    "t": "Date (optional)",
+    "h": "07cfa971211a"
+  }
+}

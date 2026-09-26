@@ -1,5 +1,5 @@
 {
-  "name": "Photo backdrop",
+  "name": "Painel para fotografias",
   "price": 65,
   "published": true,
   "featured": false,
@@ -7,8 +7,8 @@
   "made": "to_order",
   "occasion": "custom",
   "alsoIn": [],
-  "summary": "The backdrop panel, with the name and the age.",
-  "text": "The backdrop panel, with the name and the age.",
+  "summary": "O painel de fundo, com o nome e a idade.",
+  "text": "O painel de fundo, com o nome e a idade.",
   "photoFolder": "pool",
   "photos": [
     "08",
@@ -18,17 +18,17 @@
   "options": [
     {
       "id": "names",
-      "name": "Name or names",
+      "name": "Nome ou nomes",
       "type": "text",
       "required": true,
       "personalises": true,
       "max": 60,
       "extra": 0,
-      "example": "The Aparício family"
+      "example": "Família Aparício"
     },
     {
       "id": "date",
-      "name": "Date (optional)",
+      "name": "Data (opcional)",
       "type": "text",
       "required": false,
       "personalises": true,
