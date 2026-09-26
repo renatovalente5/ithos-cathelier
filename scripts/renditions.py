@@ -114,6 +114,12 @@ def _originais():
     if pool.is_dir():
         for f in sorted(pool.glob('*.jpg')):
             yield f'cathelier/pool/{f.stem}', f
+    # As pastas próprias de uma peça (as fotografias que a dona junta no
+    # painel): photos/cathelier/<pasta>/, ao lado da `_raw` partilhada.
+    for pasta in sorted((fotos / 'cathelier').iterdir()) if (fotos / 'cathelier').is_dir() else []:
+        if pasta.is_dir() and not pasta.name.startswith('_'):
+            for f in sorted(pasta.glob('*.jpg')):
+                yield f'cathelier/{pasta.name}/{f.stem}', f
 
 
 def inteiras(written, skipped):

@@ -24,6 +24,23 @@ jobs:
         with:
           node-version: '22'
 
+      # AS FOTOGRAFIAS QUE A DONA JUNTA NO PAINEL chegam aqui só como o
+      # original (photos/<marca>/<pasta>/<nome>.jpg): as versões web geram-se
+      # agora, e não vão para o git. As que já estavam estão em public/media e
+      # ficam como estão -- os dois scripts saltam o que já existe, por isso
+      # isto custa uns segundos por fotografia nova e não refaz nada.
+      # Pillow fixo em 11.3: é a versão com AVIF de origem e a que gerou as
+      # que estão no repositório.
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Photographs added in the back office
+        run: |
+          python3 -m pip install --quiet Pillow==11.3.0
+          python3 scripts/cards.py
+          python3 scripts/renditions.py
+
       # The guards run BEFORE the build and are allowed to kill it. A shop
       # published without the seller's legal identification on it is worse than
       # a shop that does not publish.

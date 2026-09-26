@@ -946,11 +946,10 @@ for (const brand of ['ithos', 'cathelier']) {
       const p = JSON.parse(readFileSync(join(CONTENT, marca, f), 'utf8'));
       if (!p.published || !p.photoFolder) continue;
       for (const n of p.photos || []) {
-        const master = marca === 'ithos'
-          ? join(ROOT, 'photos', 'ithos', p.photoFolder, `${n}.jpg`)
-          : join(ROOT, 'photos', 'cathelier', '_raw', `${n}.jpg`);
+        const pastaReal = marca === 'cathelier' && p.photoFolder === 'pool' ? '_raw' : p.photoFolder;
+        const master = join(ROOT, 'photos', marca, pastaReal, `${n}.jpg`);
         if (!existsSync(master)) { falta.push(`${marca}/${f}: master ${n}.jpg`); faltam++; continue; }
-        const key = marca === 'ithos' ? `ithos/${p.photoFolder}/${n}` : `cathelier/pool/${n}`;
+        const key = `${marca}/${p.photoFolder}/${n}`;
         for (const w of rungs(shapeOf(master).w)) for (const ext of ['avif', 'webp']) {
           if (!existsSync(join(PUB, 'whole', `${key}-${w}.${ext}`))) { falta.push(`whole/${key}-${w}.${ext}`); faltam++; }
         }

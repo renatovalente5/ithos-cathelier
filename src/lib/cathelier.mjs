@@ -281,10 +281,12 @@ export function piece({ p, all: everything, shop, occasions }) {
   /* The same as ithos: the frame takes the shape of this piece's tallest
      photograph instead of a square, because a square crop of a 361x640
      Instagram still throws away 44% of it. */
-  /* The masters live in photos/cathelier/_raw; `pool` is the name the SQUARE
-     family and the site addresses use. The two have never been the same word
-     and this is the one place that has to know it. */
-  const shapes = (p.photos || []).map((n) => shapeOf(join(PHOTOS, 'cathelier', '_raw', `${n}.jpg`)));
+  /* The shared masters live in photos/cathelier/_raw; `pool` is the name the
+     SQUARE family and the site addresses use. A piece with its own photographs
+     (added in the back office) has a folder of its own, same name on both
+     sides. */
+  const pastaDosMasters = p.photoFolder === 'pool' ? '_raw' : p.photoFolder;
+  const shapes = (p.photos || []).map((n) => shapeOf(join(PHOTOS, 'cathelier', pastaDosMasters, `${n}.jpg`)));
   /* «MORE IN» PROCURA IRMÃS EM TODOS OS SEPARADORES DA PEÇA, e não só no
      principal. Com os separadores de 25 set 2026 a Páscoa ficou com uma peça
      só, e a ficha dela deixou de ter o bloco -- e a do pendente com as datas
