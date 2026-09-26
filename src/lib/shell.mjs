@@ -73,6 +73,12 @@ export const MIRRORED = [
   '/legal/returns-form/',
   '/legal/shipping-and-returns/',
   '/legal/identification/',
+  /* As duas de 26 set 2026: o aviso harmonizado da garantia legal (Diretiva
+     (UE) 2024/825 e Reg. de Execução (UE) 2025/1960) e a função de retratação
+     (art. 11.º-A da Diretiva 2011/83, pela Diretiva (UE) 2023/2673). São as
+     mesmas palavras nas duas lojas, como as outras páginas legais. */
+  '/legal/guarantee/',
+  '/legal/withdraw/',
 ];
 
 /** The address of a shared page in the dress of the shop you are standing in.
@@ -436,6 +442,11 @@ function footer({ brand, identity }) {
       ['/legal/terms/', t('shell.rodape.condicoesVenda')],
       ['/legal/privacy/', t('shell.rodape.privacidade')],
       ['/legal/cancellation/', t('shell.rodape.resolucao')],
+      /* A ligação para o aviso harmonizado da garantia legal, em todas as
+         páginas: as orientações da Comissão (2026, secção 2.3) dão como
+         exemplo uma frase destas no cabeçalho ou no rodapé, que abre o aviso
+         inteiro ao primeiro clique. */
+      ['/legal/guarantee/', t('paginas.garantia.ligacao')],
       ['/legal/identification/', t('shell.rodape.identificacao')],
       ['/resellers/', t('shell.rodape.revendedores')],
     ]],
@@ -460,6 +471,13 @@ function footer({ brand, identity }) {
           note ? `<span class="foot__note">${esc(note)}</span>` : ''}</li>`).join('')}</ul>
       </details>`).join('\n      ')}
     </div>
+
+    ${/* A FUNÇÃO DE RETRATAÇÃO FICA FORA DO ACORDEÃO, de propósito. O artigo
+        11.º-A da Diretiva 2011/83 (pela Diretiva (UE) 2023/2673) quer a
+        ligação «retrate-se do contrato aqui» permanentemente disponível e bem
+        visível; numa linha de uma lista que se fecha no telemóvel não é
+        nenhuma das duas coisas. scripts/check-output.mjs recusa uma página
+        sem ela. */ ''}<p class="foot__withdraw"><a href="${esc(brandPath('/legal/withdraw/', brand))}">${esc(t('paginas.retratacao.ligacao'))}</a></p>
 
     <div class="foot__social">
       ${social.filter(([href]) => href).map(([href, label, ic]) =>

@@ -1063,6 +1063,16 @@ html[data-cover='yes'][data-scrolled='no'] .head .linguas a:hover { text-decorat
 .reassure { margin-block-start: 1.75rem; padding: 1.25rem; background: var(--bg-soft, var(--bg)); display: grid; gap: .8rem; }
 .reassure p { display: flex; align-items: center; gap: .75rem; font-size: 13px; color: var(--ink-soft, var(--ink)); margin: 0; }
 .reassure svg { flex: none; color: var(--accent); }
+/* A ligação para o aviso da garantia legal, e o fabricante (Reg. (UE)
+   2023/988, art. 19.º al. a)): à vista, sem caixa que se abra. */
+.product__rights { margin-block-start: .75rem; font-size: 13px; }
+.product__rights a { color: var(--ink); text-underline-offset: 3px; display: inline-flex; align-items: center; min-height: 28px; }
+.product__maker { margin-block-start: 1.25rem; font-size: 12px; line-height: 1.7; color: var(--muted); overflow-wrap: anywhere; }
+.product__maker strong { color: var(--ink); font-weight: 600; }
+.product__maker a { color: inherit; text-underline-offset: 3px; }
+/* Junto do campo da gravação: não é ajuda, é uma condição do contrato
+   (DL 24/2014, art. 4.º n.º 1 al. p)), por isso na cor do texto. */
+.field__aviso { margin-block-start: .5rem; font-size: 12px; line-height: 1.6; color: var(--ink); }
 
 /* --- drawer ----------------------------------------------------------------
 
@@ -1326,6 +1336,16 @@ html.menu-open { overflow: hidden; }
 .foot__social a { width: 44px; height: 44px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); }
 .foot__social a:hover { color: var(--accent); border-color: var(--accent); }
 .foot__end { margin-block-start: 1.75rem; padding-block-start: 1.25rem; border-block-start: 1px solid var(--line); font-size: 12px; color: var(--muted); }
+/* A FUNÇÃO DE RETRATAÇÃO, bem visível e fora do acordeão (art. 11.º-A da
+   Diretiva 2011/83, pela Diretiva (UE) 2023/2673). Tem forma de botão e não
+   de linha de lista: é a única ligação do rodapé que a lei manda destacar. */
+.foot__withdraw { margin-block-start: 1.5rem; }
+.foot__withdraw a {
+  display: inline-flex; align-items: center; min-height: 44px; padding: .5rem 1rem;
+  border: 1px solid currentColor; border-radius: var(--radius, 0);
+  font-size: 14px; font-weight: 600; color: var(--ink); text-decoration: none;
+}
+.foot__withdraw a:hover { color: var(--accent); }
 
 /* --- back to top ----------------------------------------------------------- */
 .to-top {
@@ -1364,6 +1384,38 @@ html.menu-open { overflow: hidden; }
 .page-prose hr { border: 0; border-block-start: 1px solid var(--line); margin-block: 2rem; }
 .blank { display: inline-block; min-width: 6rem; max-width: 100%; flex: 1;
   border-block-end: 1px solid var(--line); vertical-align: baseline; }
+/* --- o aviso harmonizado da garantia legal ---------------------------------
+   O ficheiro oficial, sem mexer nele. Numa coluna larga ocupa a coluna; num
+   telemóvel NÃO encolhe abaixo do tamanho a que se lê (a folha A4 a 1 pt = 1
+   px), e a caixa desloca-se para o lado -- a página não. */
+.aviso-garantia { margin-block: 1.5rem 2rem; }
+.aviso-garantia__caixa {
+  overflow-x: auto; overscroll-behavior-x: contain;
+  border: 1px solid var(--line); background: #FFFFFF; border-radius: var(--radius, 0);
+}
+.aviso-garantia__caixa:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+.aviso-garantia__caixa img { display: block; inline-size: 100%; min-inline-size: 595px; block-size: auto; }
+.aviso-garantia figcaption { margin-block-start: .75rem; font-size: 14px; }
+.aviso-garantia figcaption p + p { margin-block-start: .35rem; }
+.aviso-garantia__deslizar { color: var(--muted); font-size: 13px; }
+/* A ligação para o PDF está sozinha numa linha, e não no meio de uma frase:
+   precisa de um alvo de toque de gente (a bateria mediu 18 px de altura). */
+.aviso-garantia__pdf { display: inline-flex; align-items: center; min-height: 28px; }
+/* A frase de deslizar só faz sentido onde a caixa desliza: a coluna de texto
+   tem 46rem, e a partir de 40rem de ecrã o aviso já cabe inteiro. */
+@media (width >= 40rem) { .aviso-garantia__deslizar { display: none; } }
+
+/* --- a função de retratação -------------------------------------------------- */
+.retratar-ja { margin-block: 0 1.5rem; }
+.retratar { display: grid; gap: 1.1rem; margin-block: 1.5rem 0; padding: 1.25rem; border: 1px solid var(--line); background: var(--bg-soft, var(--bg)); border-radius: var(--radius, 0); }
+.page-prose .retratar h2 { margin-block: 0; }
+.retratar textarea { min-height: 6rem; resize: vertical; }
+.retratar .btn { justify-self: start; }
+.retratar__msg { margin-block: 1rem 0; padding: .8rem 1rem; border-inline-start: 3px solid var(--accent); background: var(--frame-bg); color: var(--ink); }
+.retratar__ok { margin-block: 1.5rem 0; padding: 1.25rem; border: 1px solid var(--accent); border-radius: var(--radius, 0); }
+.page-prose .retratar__ok h2 { margin-block: 0 .75rem; }
+.retratar__ok h2:focus { outline: none; }
+
 .page-prose table { width: 100%; border-collapse: collapse; font-size: 14px; }
 .page-prose th, .page-prose td { text-align: start; padding: .7rem .75rem; border-block-end: 1px solid var(--line); }
 .page-prose th { font-weight: 600; color: var(--ink); }
@@ -1421,6 +1473,11 @@ html.menu-open { overflow: hidden; }
 .basket-line__opts { font-size: 12px; color: var(--muted); margin-block-start: .25rem; line-height: 1.6; }
 .basket-line__stock { font-size: 12px; color: var(--ink); margin-block-start: .15rem; line-height: 1.6; }
 .basket__lead { margin-block: 0 1rem; font-size: 13px; line-height: 1.6; color: var(--ink); }
+/* O aviso das peças personalizadas, antes do botão de encomendar: é uma
+   condição do contrato e lê-se como tal, na cor do texto e não em cinzento. */
+.basket__aviso { margin-block-start: 1.5rem; padding: .8rem 1rem; border-inline-start: 3px solid var(--accent); background: var(--bg-soft, var(--bg)); font-size: 13px; line-height: 1.6; color: var(--ink); }
+.basket__direitos { margin-block-start: .5rem; }
+.basket__direitos a { color: var(--ink); text-underline-offset: 3px; display: inline-flex; align-items: center; min-height: 28px; }
 .basket-line__price { font-size: 14px; font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; text-align: end; }
 .basket-line__drop {
   font-size: 12px; color: var(--muted); margin-block-start: .35rem; text-decoration: underline;

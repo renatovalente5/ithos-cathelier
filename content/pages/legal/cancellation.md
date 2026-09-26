@@ -7,16 +7,26 @@ Se estiver a comprar como consumidor, pode desistir da compra no prazo de
 qualquer motivo — é o **artigo 10.º do Decreto-Lei n.º 24/2014**. O prazo conta
 a partir do dia em que lhe chega o último artigo.
 
-Para desistir, diga-nos de forma clara — um email para
-[{{EMAIL}}](mailto:{{EMAIL}}) chega. Há um [formulário que pode usar]({{FORM_URL}})
-se preferir, mas não é obrigatório.
+Para desistir, diga-nos de forma clara. Pode fazê-lo aqui no site: carregue em
+[Retrate-se do contrato aqui](/legal/withdraw/) — a ligação também está no fundo
+de todas as páginas — e recebe por email um aviso de receção. Ou escreva para
+[{{EMAIL}}](mailto:{{EMAIL}}): um email chega. Há um [formulário que pode
+usar]({{FORM_URL}}) se preferir, mas não é obrigatório.
+
+Conta a data em que nos envia a sua decisão: se a enviar antes de o prazo
+acabar, desistiu a tempo (artigo 11.º do Decreto-Lei n.º 24/2014).
 
 ## O que não se pode devolver
 
-**Peças personalizadas.** Tudo o que é feito segundo as suas indicações ou
-claramente destinado só a si — um nome, uma data, as suas palavras gravadas —
-não pode ser devolvido depois de começarmos a fazê-lo. É a alínea c) do artigo
-17.º do Decreto-Lei n.º 24/2014.
+**Peças personalizadas.** Pode desistir de tudo o que é feito segundo as suas
+indicações ou claramente destinado só a si — um nome, uma data, as suas
+palavras gravadas — até começarmos a fazê-lo. A partir daí, deixa de ter o
+direito de livre resolução e a peça não pode ser devolvida: é a alínea c) do
+n.º 1 do artigo 17.º do Decreto-Lei n.º 24/2014. A garantia legal mantém-se.
+
+Começamos a fazer uma peça quando a cortamos ou a gravamos para a sua
+encomenda; preparar o desenho ainda não conta. Num candeeiro em stock, é quando
+o gravamos.
 
 Escolher entre cores que já oferecemos **não** é personalização. Um candeeiro
 numa cor da nossa lista pode ser devolvido como qualquer outra coisa.
@@ -24,9 +34,10 @@ numa cor da nossa lista pode ser devolvido como qualquer outra coisa.
 ## Devolver a peça
 
 Devolva a peça no prazo de 14 dias a contar do dia em que nos disse. Os portes
-da devolução são por sua conta. Embale-a como chegou, ou melhor — é responsável
-pela perda de valor causada por um manuseamento além do necessário para ver o
-que é.
+da devolução são por sua conta. Embale-a como chegou, ou melhor. Só é
+responsável pela perda de valor que resulte de um manuseamento além do
+necessário para verificar a natureza, as características e o funcionamento da
+peça.
 
 ## Receber o dinheiro de volta
 

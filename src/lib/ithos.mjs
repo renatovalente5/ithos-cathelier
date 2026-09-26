@@ -9,6 +9,7 @@ import { icon } from './icons.mjs';
 import { cover } from './cover.mjs';
 import { prazos } from './prazos.mjs';
 import { t, tn } from './i18n.mjs';
+import { fabricante } from './pages.mjs';
 
 /* ===========================================================================
    ithos — the pages, in the order the model shop puts things.
@@ -240,7 +241,7 @@ export function catalogue({ products }) {
 `;
 }
 
-export function product({ p, all, shop }) {
+export function product({ p, all, shop, identity }) {
   const { low, high } = fromPrice(p);
   const photos = p.photos;
   const dir = `ithos/${p.photoFolder}`;
@@ -315,7 +316,7 @@ export function product({ p, all, shop }) {
        data-lead-days="${esc(prazos(shop.lead).dias)}">${icon('truck', 15)}<span data-lead-text>${esc(prazos(shop.lead).semStock)}</span></p>
 
     <form class="product__form" data-product-form data-product-id="${esc(p.slug)}">
-      ${(p.options || []).map(optionField).join('\n      ')}
+      ${(p.options || []).map((o) => optionField(o, shop.returns.coolingOffDays)).join('\n      ')}
 
       <div class="product__buy">
         <div class="qty" data-qty>
@@ -329,12 +330,18 @@ export function product({ p, all, shop }) {
     </form>
 
     <div class="reassure">
-      ${[['truck', t('ithos.garantias.envio')],
-         ['leaf', t('ithos.garantias.materiais')],
+      ${/* Aqui havia uma FOLHA ao lado de «Pinho maciço e tintas de base
+          aquosa». O texto é concreto e pode ficar, desde que seja verdade; a
+          folha não: uma folha, uma árvore ou uma gota junto de um produto
+          lêem-se como selo ambiental (FAQ da Comissão sobre a Diretiva
+          2024/825, P2 e P5), e um selo sem certificação é prática proibida
+          (anexo I da Diretiva 2005/29, ponto 2-A). Ficou um desenho neutro. */ ''}${[['truck', t('ithos.garantias.envio')],
+         ['layers', t('ithos.garantias.materiais')],
          ['shield', `${tn('ithos.garantias.anos', shop.returns.warrantyYears)} · ${tn('ithos.garantias.mudarDeIdeias', shop.returns.coolingOffDays)}`],
          ['hand', t('ithos.garantias.feitoAMao')]]
         .map(([i, texto]) => `<p>${icon(i, 18)}<span>${esc(texto)}</span></p>`).join('\n      ')}
     </div>
+    <p class="product__rights"><a href="/legal/guarantee/">${esc(t('paginas.garantia.ligacao'))}</a></p>
 
     <div class="product__text stack" style="--stack:1rem">
       ${prose(p.text)}
@@ -345,6 +352,8 @@ export function product({ p, all, shop }) {
       <summary>${esc(t('ithos.ficha.cuidados'))}</summary>
       <ul>${(shop.safetyIthos || []).map((s) => `<li>${esc(s)}</li>`).join('')}</ul>
     </details>
+
+    ${fabricante(identity)}
   </div>
 </section>
 
@@ -362,13 +371,21 @@ ${related.length ? `<section class="section section--soft">
 /* One field per option. The cheapest choice is pre-ticked, never the first:
    a first option carrying a surcharge made the card advertise a price the page
    then refused to honour. */
-function optionField(o) {
+function optionField(o, diasDeResolucao) {
   if (o.type === 'text') {
+    /* UMA GRAVAÇÃO TIRA OS CATORZE DIAS, e isso diz-se AQUI, junto da caixa
+       onde se escreve o nome, e não só nas condições: é informação que a lei
+       manda dar antes de o consumidor ficar vinculado (DL 24/2014, art. 4.º
+       n.º 1 al. p)). Sai da marca «personalises» da opção, a mesma que o
+       Worker lê para pôr a exceção na fatura. */
+    const aviso = o.personalises
+      ? `<p class="field__aviso" id="opt-${esc(o.id)}-aviso">${esc(t('paginas.aviso.personalizada', { n: diasDeResolucao }))}</p>` : '';
     return `<div class="field">
         <label for="opt-${esc(o.id)}">${esc(o.name)} <span class="field__optional">${esc(t('ithos.opcao.opcional'))}</span></label>
         ${o.help ? `<p class="field__help">${esc(o.help)} <span class="field__limit">${esc(t('ithos.opcao.limite', { n: o.max || 40 }))}</span></p>` : ''}
         <input id="opt-${esc(o.id)}" type="text" maxlength="${Number.isInteger(o.max) && o.max > 0 ? o.max : 40}"
-               data-option="${esc(o.id)}" placeholder="${esc(t('ithos.opcao.exemplo'))}">
+               data-option="${esc(o.id)}" placeholder="${esc(t('ithos.opcao.exemplo'))}"${o.personalises ? ` aria-describedby="opt-${esc(o.id)}-aviso"` : ''}>
+        ${aviso}
       </div>`;
   }
   /* THE TICKED ONE HAS TO BE ONE YOU CAN ACTUALLY BUY.

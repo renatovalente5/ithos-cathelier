@@ -666,6 +666,7 @@ document.addEventListener('DOMContentLoaded', () => {
   avisoRevenda();
   revendaNaPagina();
   paginaRevenda();
+  retratacao();
 });
 
 /* --- checkout -------------------------------------------------------------
@@ -1040,6 +1041,159 @@ async function paginaRevenda() {
   $('[data-rv-sair]', raiz).addEventListener('click', () => { esquecerRevenda(); location.reload(); });
 
   await mostrar();
+}
+
+/* --- a função de retratação ------------------------------------------------
+ *
+ * Artigo 11.º-A da Diretiva 2011/83, pela Diretiva (UE) 2023/2673. O formulário
+ * vem escondido no HTML e só aparece aqui, quando há um Worker para onde o
+ * enviar: sem isso, o texto da página explica como fazer o mesmo por email.
+ *
+ * O CONTRATO COM O WORKER: POST /retratacao com {nome, encomenda, email,
+ * artigos, lingua}; responde 4xx {error} ou
+ *   200 {ok: true, recebidoEm: <ISO>, aviso: <bool>, repetido: <bool>,
+ *        emailDiferente: <bool>, revenda: <bool>}
+ * (um Worker anterior manda a data em `recebido`, e lê-se na mesma).
+ *   · A data e a hora que se mostram são as do servidor -- são elas que ficam
+ *     no aviso de receção, e o relógio de um telemóvel pode estar horas ao
+ *     lado. Dizem-se como a hora em que a pessoa ENVIOU, em hora de Lisboa.
+ *   · `repetido: true` só quando ESTA declaração, igual (nome, email e
+ *     artigos), já tinha chegado: `recebidoEm` é então a da primeira, não sai
+ *     email novo, e a página não o promete. Uma declaração DIFERENTE para a
+ *     mesma encomenda (outros artigos) é nova, e tem o sucesso de sempre.
+ *   · `emailDiferente: true` quando o email escrito não é o da encomenda: o
+ *     Worker grava na mesma e manda o aviso para o email DA ENCOMENDA -- a
+ *     página diz isso, e não que o aviso vai para o que se escreveu.
+ *   · `aviso: false` quando gravou mas o email ao comprador não saiu.
+ *   · `revenda: true` quando a encomenda foi feita como revendedor: a
+ *     declaração fica registada, mas a livre resolução não se aplica a
+ *     compras para revenda -- a página di-lo, e não fala de aviso de receção
+ *     nem dos catorze dias para devolver, que são do consumidor.
+ *   · 429 {error: 'too_many_statements'} quando a encomenda já tem as
+ *     declarações todas que o Worker aceita: esperar não resolve, e a página
+ *     manda retratar-se por email. O 429 do limite por IP é outro
+ *     ('too_many_requests'), e esse passa com uns minutos.
+ *
+ * `aria-disabled` e não `disabled` enquanto envia: desactivar o botão em que
+ * se acabou de carregar tira-lhe o foco, e quem usa teclado ou leitor de ecrã
+ * fica sem saber onde está. O formulário lê-se ANTES do primeiro await --
+ * depois dele, `ev.currentTarget` já é null. */
+function retratacao() {
+  const form = $('[data-retratacao]');
+  if (!form) return;
+  const msg = $('[data-retratacao-msg]');
+  const ok = $('[data-retratacao-ok]');
+  const dizer = (texto) => { if (!msg) return; msg.textContent = texto; msg.hidden = !texto; };
+
+  if (!API) { dizer(tj('retratacao.indisponivel')); return; }
+  form.hidden = false;
+
+  const botao = $('[data-retratacao-confirmar]', form);
+  const campo = form.elements.encomenda;
+  /* O número tal como vem no email é «IC-» e doze caracteres. Aceita-se como
+     a pessoa o escrever -- em minúsculas, com espaços, sem o hífen, ou sem o
+     «IC-» -- e arruma-se antes de validar. */
+  const arrumar = () => {
+    let v = campo.value.toUpperCase().replace(/[\s.]+/g, '');
+    if (/^IC[A-Z0-9]{12}$/.test(v)) v = `IC-${v.slice(2)}`;
+    else if (/^[A-Z0-9]{12}$/.test(v)) v = `IC-${v}`;
+    campo.value = v;
+    campo.setCustomValidity(v && !/^IC-[A-Z0-9]{12}$/.test(v) ? tj('retratacao.formatoEncomenda') : '');
+  };
+  campo.addEventListener('change', arrumar);
+  campo.addEventListener('input', () => campo.setCustomValidity(''));
+
+  let aEnviar = false;
+  form.addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    if (aEnviar) return;
+    for (const el of [form.elements.nome, form.elements.email, form.elements.artigos]) el.value = el.value.trim();
+    arrumar();
+    if (!form.reportValidity()) return;
+
+    const corpo = {
+      nome: form.elements.nome.value,
+      encomenda: campo.value,
+      email: form.elements.email.value,
+      artigos: form.elements.artigos.value,
+      lingua: LINGUA || 'pt',
+    };
+    aEnviar = true;
+    botao.setAttribute('aria-disabled', 'true');
+    dizer(tj('retratacao.aEnviar'));
+    try {
+      const r = await fetch(`${API}/retratacao`, {
+        method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify(corpo),
+      });
+      const j = await r.json().catch(() => ({}));
+      if (r.ok && j.ok) {
+        const quando = new Date(j.recebidoEm ?? j.recebido);
+        const valida = !Number.isNaN(quando.getTime());
+        /* A encomenda, a data e a hora estão nas duas frases (a nova e a
+           repetida): escreve-se em todas. */
+        const escrever = (sel, texto) => { for (const el of $$(sel, ok)) el.textContent = texto; };
+        escrever('[data-retratacao-encomenda]', corpo.encomenda);
+        escrever('[data-retratacao-data]', valida
+          ? quando.toLocaleDateString(LOCALE_DATAS, { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Lisbon' }) : '—');
+        escrever('[data-retratacao-hora]', valida
+          ? quando.toLocaleTimeString(LOCALE_DATAS, { hour: '2-digit', minute: '2-digit', timeZone: 'Europe/Lisbon' }) : '—');
+        /* Só `true` conta: um Worker antigo, sem os campos, fica com a
+           resposta de sempre (nova, com aviso, para o email escrito). */
+        const repetido = j.repetido === true;
+        const semAviso = j.aviso === false;
+        const emailDiferente = j.emailDiferente === true;
+        const revendaEnc = j.revenda === true;
+        const consumidor = !revendaEnc;
+        const mostrar = (sel, sim) => { for (const el of $$(sel, ok)) el.hidden = !sim; };
+        mostrar('[data-retratacao-nova]', !repetido);
+        mostrar('[data-retratacao-repetida]', repetido);
+        /* Um parágrafo sobre o aviso, e um só:
+           · nova, não saiu -- ficou registada, e a dona escreve-o em 24 horas;
+           · repetida, não saiu -- o mesmo, sem voltar a dizer «ficou
+             registada» logo a seguir a «não a registámos outra vez»;
+           · repetida -- o aviso desta declaração já seguiu; nenhum novo;
+           · nova, com o email da encomenda -- «vai receber»;
+           · nova, com outro email -- foi para o da encomenda.
+           Numa encomenda de revendedor, nenhum destes: o bloco da revenda diz
+           que a livre resolução não se aplica e que respondemos por email --
+           e some o parágrafo dos catorze dias para devolver. */
+        mostrar('[data-retratacao-sem-aviso]', consumidor && semAviso && !repetido);
+        mostrar('[data-retratacao-repetida-sem-aviso]', consumidor && semAviso && repetido);
+        mostrar('[data-retratacao-aviso-antigo]', consumidor && !semAviso && repetido);
+        mostrar('[data-retratacao-com-aviso]', consumidor && !semAviso && !repetido && !emailDiferente);
+        mostrar('[data-retratacao-email-diferente]', consumidor && !semAviso && !repetido && emailDiferente);
+        mostrar('[data-retratacao-revenda]', revendaEnc);
+        mostrar('[data-retratacao-devolver]', consumidor);
+        dizer('');
+        form.hidden = true;
+        ok.hidden = false;
+        $('[data-retratacao-ok-titulo]:not([hidden])', ok)?.focus();
+        return;
+      }
+      /* Os códigos do Worker (POST /retratacao): bad_email, bad_reference,
+         bad_items, missing_name, name_too_long, bad_body, order_not_found
+         (só quando a encomenda não existe: um email que não bate é gravado
+         na mesma, com `emailDiferente`), too_many_statements (a encomenda já
+         tem declarações a mais: esperar não resolve, e vem ANTES do 429
+         genérico) e too_many_requests -- que tranca minutos, não segundos.
+         Tudo o resto -- a origem recusada, o armazém em falta, uma rota que
+         ainda não existe -- é «envie por email», que vale sempre. */
+      const e = String(j.error || '');
+      dizer(e === 'too_many_statements' ? tj('retratacao.erroMuitas')
+        : r.status === 429 || e === 'too_many_requests' ? tj('retratacao.erroEspere')
+        : e === 'bad_email' ? tj('retratacao.erroEmail')
+          : e === 'bad_reference' ? tj('retratacao.formatoEncomenda')
+            : e === 'bad_items' ? tj('retratacao.erroArtigos')
+              : e === 'order_not_found' ? tj('retratacao.erroEncomenda')
+                : ['missing_name', 'name_too_long', 'bad_body'].includes(e) ? tj('retratacao.erroCampos')
+                  : tj('retratacao.erroGenerico'));
+    } catch {
+      dizer(tj('retratacao.semLigacao'));
+    } finally {
+      aEnviar = false;
+      botao.removeAttribute('aria-disabled');
+    }
+  });
 }
 
 /* --- a página onde se paga, que até aqui era da ifthenpay -----------------
@@ -1448,6 +1602,26 @@ async function basketPage() {
     const any = priced.length > 0;
     wrap.hidden = !any;
     if (empty) empty.hidden = any;
+    /* O AVISO DAS PEÇAS PERSONALIZADAS, antes do botão de encomendar: uma
+       linha com um nome, uma data ou uma frase só se desiste até começarmos
+       a fazê-la, e a lei quer isso dito antes da compra, com a circunstância
+       em que o direito se perde (DL 24/2014, art. 4.º n.º 1 al. p)). A marca
+       é a mesma que o Worker lê -- `personalises` na opção do catálogo -- e
+       só conta com alguma coisa escrita: um candeeiro sem gravação não é
+       personalizado.
+       NUMA SESSÃO DE REVENDEDOR, NEM O AVISO NEM A LIGAÇÃO DA GARANTIA LEGAL:
+       a caixa «compro para a minha empresa, para revenda» (obrigatória nessa
+       sessão) diz que os direitos do consumidor não se aplicam; logo abaixo,
+       «pode desistir delas até começarmos a fazê-las» e «os seus direitos de
+       garantia legal» diziam o contrário no mesmo ecrã. Quem compra para casa
+       sai da sessão e compra como consumidor -- e aí volta tudo. */
+    const aviso = $('[data-basket-personal]');
+    if (aviso) {
+      aviso.hidden = revenda.activa || !priced.some(({ line }) => (cat.products[line.id]?.options || [])
+        .some((o) => o.personalises && String((line.options || {})[o.id] ?? '').trim() !== ''));
+    }
+    const direitos = $('.basket__direitos');
+    if (direitos) direitos.hidden = revenda.activa;
     if (!any) { vez++; prazoNoCesto = 'encomenda'; return; }
 
     linesBox.innerHTML = priced.map(({ line, p }, i) => `<div class="basket-line">

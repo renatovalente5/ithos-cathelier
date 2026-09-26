@@ -1,4 +1,4 @@
-<!-- origem: 3fca1dd01809 partes: 7347d71766d4 a6a26fe7713f 24d7c250a6e5 ebc85b0e7292 335a5efe5d5f -->
+<!-- origem: 29835d4bb100 partes: 7347d71766d4 a6a26fe7713f 24d7c250a6e5 70995a960245 335a5efe5d5f -->
 # The workshop
 
 ithos is a small workshop in Castelo Branco, in the middle of Portugal. Every
@@ -30,9 +30,8 @@ year or two, and it warms with it.
 ## The engraving
 
 Any piece can carry a name, a date or a short phrase burned into the wood, and
-it costs nothing extra. It is the part we like best, and the reason most of
-these lamps end up staying in a family longer than the childhood they were
-bought for.
+it costs nothing extra. It is the part we like best, and it is what makes a
+lamp that child's own.
 
 ## The other half of the workshop
 

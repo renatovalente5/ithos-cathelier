@@ -74,6 +74,18 @@
 
   "mapa.titulo": "Onde fica a oficina",
 
+  "retratacao.indisponivel": "O formulário ainda não está disponível aqui. Retrate-se por email, como explicamos mais abaixo nesta página.",
+  "retratacao.aEnviar": "A enviar…",
+  "retratacao.formatoEncomenda": "O número da encomenda é IC- seguido de 12 letras e algarismos, como vem no email de confirmação.",
+  "retratacao.erroCampos": "Confira os campos: o seu nome, o número da encomenda (começa por IC-) e o email que usou na compra.",
+  "retratacao.erroEmail": "Esse endereço de email não parece certo. Confira-o, por favor.",
+  "retratacao.erroEncomenda": "Não encontrámos nenhuma encomenda com esse número. Confira-o no email de confirmação, ou retrate-se por email, como explicamos mais abaixo.",
+  "retratacao.erroArtigos": "A lista de artigos é longa demais. Escreva um artigo por linha, até 20 linhas, ou deixe em branco se desiste da encomenda inteira.",
+  "retratacao.erroEspere": "Espere uns minutos e tente outra vez, ou retrate-se por email: conta a data em que o enviar.",
+  "retratacao.erroMuitas": "Esta encomenda já recebeu muitas declarações pelo site: retrate-se por email, como explicamos mais abaixo.",
+  "retratacao.erroGenerico": "Não conseguimos registar a retratação agora. Envie-a por email, como explicamos mais abaixo: conta a data em que a enviar.",
+  "retratacao.semLigacao": "Não conseguimos chegar à loja. Verifique a sua ligação e tente outra vez, ou retrate-se por email, como explicamos mais abaixo.",
+
   "cesto.erroCarregar": "Não foi possível carregar o cesto. Recarregue a página, por favor.",
   "cesto.porEncomenda": "Feito por encomenda",
   "cesto.emStock": "Em stock",

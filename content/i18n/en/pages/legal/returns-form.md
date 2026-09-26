@@ -1,4 +1,4 @@
-<!-- origem: 72804e83d405 partes: 38c3d5c50720 -->
+<!-- origem: 1bc473923f4e partes: e981aa878bd6 -->
 # Cancellation form
 
 You do not have to use this form — a clear email to
@@ -28,5 +28,6 @@ Date: ____________
 
 ---
 
-This does not apply to personalised pieces. See
+For a personalised piece, you can cancel until we start making it; from then
+on, this right no longer applies. See
 [your right to cancel](/legal/cancellation/).

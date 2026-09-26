@@ -117,8 +117,8 @@
     "h": "f889a06b8926"
   },
   "legal.cancellation.descricao": {
-    "t": "Fourteen days to change your mind on anything that is not personalised, and what that exception means.",
-    "h": "56ec0667099a"
+    "t": "{dias} days to change your mind, and until when you can cancel a personalised piece.",
+    "h": "9094d0362ea3"
   },
   "legal.returns-form": {
     "t": "Cancellation form",
@@ -143,6 +143,22 @@
   "legal.identification.descricao": {
     "t": "The seller’s legal identification, published under article 10 of Decree-Law 7/2004.",
     "h": "bf7aa265a233"
+  },
+  "legal.guarantee": {
+    "t": "Your legal guarantee rights",
+    "h": "8bd95ffcf4c5"
+  },
+  "legal.guarantee.descricao": {
+    "t": "The European Union’s harmonised notice on the legal guarantee, and what applies in Portugal: 3 years from delivery.",
+    "h": "246f05577400"
+  },
+  "legal.withdraw": {
+    "t": "Withdraw from the contract",
+    "h": "926be8fcd4d2"
+  },
+  "legal.withdraw.descricao": {
+    "t": "Cancel a purchase here, on the site, within the cancellation period, and get an acknowledgement of receipt by email.",
+    "h": "c6ef0c6c402f"
   },
   "contactos.titulo": {
     "t": "Contact — ithos · cathelier",

@@ -149,20 +149,20 @@
     "h": "1c4d8872849d"
   },
   "garantias.anos.um": {
-    "t": "{n}-year guarantee",
-    "h": "55d41eab34c9"
+    "t": "{n}-year legal guarantee",
+    "h": "52db4eb2dc42"
   },
   "garantias.anos.varios": {
-    "t": "{n}-year guarantee",
-    "h": "141c0dbfc49e"
+    "t": "{n}-year legal guarantee",
+    "h": "7e87ee7e1d40"
   },
   "garantias.mudarDeIdeias.um": {
-    "t": "{n} day to change your mind",
-    "h": "4f6c7f630251"
+    "t": "{n}-day legal right to cancel; if engraved, only until we start making it",
+    "h": "1583de33c17b"
   },
   "garantias.mudarDeIdeias.varios": {
-    "t": "{n} days to change your mind",
-    "h": "16c98e91270a"
+    "t": "{n}-day legal right to cancel; if engraved, only until we start making it",
+    "h": "9cb5f12b26c0"
   },
   "garantias.feitoAMao": {
     "t": "Made by hand in Castelo Branco, Portugal",
