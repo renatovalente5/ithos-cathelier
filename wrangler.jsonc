@@ -7,8 +7,11 @@
 // e-commerce site» — GitHub Terms for Additional Products and Features, Pages).
 // Ver o plano em README / notas de 26 set 2026.
 //
-// Publica-se com `wrangler deploy` a partir DESTA pasta (nunca da pasta-mãe:
-// a autoconfiguração inventa um Worker com o conteúdo de outro projecto).
+// PUBLICA-SE SÓ PELO CI (.github/workflows/publish.yml). Um `wrangler deploy`
+// à mão publicava o public/ local, que não é o do CI: sem PREVIEW (indexável),
+// sem API_URL (sem stock, revenda nem retratação) e sem as versões web das
+// fotografias do painel. (E nunca a partir da pasta-mãe: a autoconfiguração
+// inventa um Worker com o conteúdo de outro projecto.)
 {
   "name": "ithos-cathelier-site",
   "compatibility_date": "2026-09-01",

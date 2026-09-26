@@ -145,6 +145,9 @@ export function page(o) {
        the ithos one -- which is what stops two addresses with the same words
        competing with each other. */
     canonicalPath = path,
+    /* Uma página de erro não é uma morada: sem canonical, og:url nem hreflang
+       (apontavam para /404.html, que a Cloudflare reencaminha). */
+    semMorada = false,
   } = o;
 
   const abs = (p) => `${site}${p}`;
@@ -161,7 +164,7 @@ export function page(o) {
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
-<link rel="canonical" href="${esc(canonical)}">
+${semMorada ? '' : `<link rel="canonical" href="${esc(canonical)}">`}
 ${noindex || preview ? '<meta name="robots" content="noindex, nofollow">' : ''}
 <meta name="theme-color" content="${themeColour}">
 
@@ -169,10 +172,10 @@ ${noindex || preview ? '<meta name="robots" content="noindex, nofollow">' : ''}
 <meta property="og:site_name" content="${esc(identity.tradingName)}">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(description)}">
-<meta property="og:url" content="${esc(canonical)}">
+${semMorada ? '' : `<meta property="og:url" content="${esc(canonical)}">`}
 <meta property="og:image" content="${esc(og)}">
 <meta property="og:locale" content="${OG_LOCALE[lingua()]}">
-${LINGUAS.length > 1 ? [...LINGUAS.map((l) => `<link rel="alternate" hreflang="${LOCALE[l]}" href="${esc(abs(morada(canonicalPath, l)))}">`),
+${LINGUAS.length > 1 && !semMorada ? [...LINGUAS.map((l) => `<link rel="alternate" hreflang="${LOCALE[l]}" href="${esc(abs(morada(canonicalPath, l)))}">`),
   `<link rel="alternate" hreflang="x-default" href="${esc(abs(morada(canonicalPath, linguaDaRaiz())))}">`].join('\n') : ''}
 <meta name="twitter:card" content="summary_large_image">
 

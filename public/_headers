@@ -1,0 +1,14 @@
+/assets/styles.*.css
+  Cache-Control: public, max-age=31536000, immutable
+/assets/shop.*.js
+  Cache-Control: public, max-age=31536000, immutable
+/assets/textos.*.js
+  Cache-Control: public, max-age=31536000, immutable
+/data/catalogue.*.json
+  Cache-Control: public, max-age=31536000, immutable
+/assets/fonts/*
+  Cache-Control: public, max-age=86400
+/*
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Content-Security-Policy: frame-ancestors 'self'

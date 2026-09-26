@@ -34,9 +34,12 @@ O CI (`.github/workflows/publish.yml`) constrói o site e publica `public/` num
 Worker da Cloudflare só de ficheiros (`wrangler.jsonc`), servido em
 ithos-cathelier.pt por uma route; o www vai para o apex por uma Redirect Rule
 da zona. O GitHub Pages foi desligado a 26 set 2026: os termos dele proíbem
-lojas. **Não correr `wrangler deploy` à mão:** o `public/` local não tem as
-versões web das fotografias juntas no painel (só o CI as gera), e publicava um
-site sem elas.
+lojas. **Não correr `wrangler deploy` à mão:** o `public/` local não é o do CI —
+não tem as versões web das fotografias juntas no painel (só o CI as gera) e,
+construído sem `PREVIEW=yes` e sem `API_URL`, publicava um site indexável e sem
+API (stock, revenda e retratação desligados). Os cabeçalhos (cache de um ano nos
+ficheiros com resumo no nome, e os de segurança) saem de `public/_headers`,
+escrito pelo build.
 
 ## Running it
 

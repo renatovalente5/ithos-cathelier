@@ -347,13 +347,36 @@ function assets() {
     }
     writeFileSync(join(OUT, 'assets', ASSET.js), js);
   }
-  // The CNAME file is what tells GitHub to serve at the custom domain. While
-  // the site is on a project path it must NOT be written, or Pages redirects
-  // to a domain that does not resolve yet and the whole site disappears.
-  if (cname && !BASE) writeFileSync(join(OUT, 'CNAME'), cname + '\n');
-  /* O que a Cloudflare NÃO publica quando serve esta pasta (wrangler.jsonc):
-     a bateria de browser, que se copia para aqui só para correr. */
+  /* O SITE VIVE NA CLOUDFLARE desde 26 set 2026 (wrangler.jsonc). O public/CNAME
+     era o que dizia ao GitHub Pages em que domínio servir; já não se escreve
+     (ficava publicado como lixo). O endereço continua a ler-se de ROOT/CNAME. */
+  /* O que a Cloudflare NÃO publica quando serve esta pasta: a bateria de
+     browser, que se copia para aqui só para correr. */
   writeFileSync(join(OUT, '.assetsignore'), '_battery.js\n_drive.html\n.DS_Store\n');
+  /* OS CABEÇALHOS QUE A CLOUDFLARE JUNTA (public/_headers, que ela lê e não
+     serve — developers.cloudflare.com/workers/static-assets/headers/).
+     · Os ficheiros com o resumo do conteúdo no nome não mudam nunca: um ano,
+       immutable. Sem isto saíam com max-age=0 e cada página voltava a
+       perguntar pela folha de estilo (que bloqueia a pintura) — 19 pedidos
+       condicionais por navegação, medidos a 26 set 2026. O
+       catalogue-current.txt e o HTML NÃO entram (têm de revalidar sempre:
+       são eles que dizem qual é o resumo actual).
+     · As tipografias não têm resumo no nome: um dia.
+     · Em tudo: sem adivinhar tipos, e nenhum site de fora mete estas páginas
+       num iframe (o 'self' deixa a bateria, que as abre na mesma origem).
+     Duas regras que apanhem o mesmo ficheiro JUNTAM os valores: por isso a
+     de /* não leva Cache-Control. */
+  const imutavel = 'Cache-Control: public, max-age=31536000, immutable';
+  writeFileSync(join(OUT, '_headers'), [
+    '/assets/styles.*.css', `  ${imutavel}`,
+    '/assets/shop.*.js', `  ${imutavel}`,
+    '/assets/textos.*.js', `  ${imutavel}`,
+    '/data/catalogue.*.json', `  ${imutavel}`,
+    '/assets/fonts/*', '  Cache-Control: public, max-age=86400',
+    '/*', '  X-Content-Type-Options: nosniff', '  X-Frame-Options: SAMEORIGIN',
+    "  Content-Security-Policy: frame-ancestors 'self'",
+    '',
+  ].join('\n'));
 }
 
 /* --- the catalogue the Worker prices against -----------------------------
@@ -527,10 +550,9 @@ function buildCathelier() {
 
   /* E NO LUGAR DELAS, DEZ SINAIS DE TRÂNSITO.
      As moradas estiveram no ar, e quem as tenha guardado merece chegar ao
-     sítio para onde o conteúdo foi em vez de bater num 404 -- que neste site
-     é ainda pior do que parece, porque o GitHub Pages serve UM 404 só, o da
-     raiz, e esse veste ithos: um leitor da cathelier aterrava com a tipografia
-     e as cores da outra marca a oferecer-lhe candeeiros.
+     sítio para onde o conteúdo foi em vez de bater num 404 (no GitHub Pages
+     era pior: havia UM 404 só, o da raiz, vestido de ithos; na Cloudflare já
+     há o /cathelier/404.html, mas um 404 continua a não ser o conteúdo).
      A lista está em src/lib/redirects.mjs e é história, não conteúdo. */
   /* Só na raiz: são moradas que existiram, e existiram antes de haver línguas. */
   for (const r of lingua() === linguaDaRaiz() ? REDIRECTS : []) {
@@ -727,14 +749,19 @@ function buildShared() {
     }), { sitemap: false });
   }
 
-  /* O GitHub Pages serve UM 404, o da raiz: um /en/404.html seria uma página a
-     que nenhuma morada chega. */
-  if (lingua() === linguaDaRaiz()) write('/404.html', page({
-    ...shellArgs, brand: 'ithos', path: '/404.html', noindex: true,
-    title: t('build.naoEncontrada.titulo'),
-    description: t('build.naoEncontrada.descricao'),
-    body: pages.notFound(),
-  }), { sitemap: false });
+  /* A CLOUDFLARE SERVE O 404.html MAIS PRÓXIMO (not_found_handling: 404-page):
+     uma morada perdida em /en/ recebe o /en/404.html, uma em /cathelier/ o
+     /cathelier/404.html, com a roupa da cathelier. No GitHub Pages havia UM
+     404, o da raiz, e quem se perdia em inglês ou na cathelier via a página
+     portuguesa da ithos (e o botão EN dela dava outra vez 404). */
+  for (const [marca, onde] of [['ithos', '/404.html'], ['cathelier', '/cathelier/404.html']]) {
+    write(onde, page({
+      ...shellArgs, brand: marca, path: onde, noindex: true, semMorada: true,
+      title: t('build.naoEncontrada.titulo'),
+      description: t('build.naoEncontrada.descricao'),
+      body: pages.notFound(),
+    }), { sitemap: false });
+  }
 }
 
 /* --- run ------------------------------------------------------------------ */
