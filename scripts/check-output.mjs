@@ -284,6 +284,55 @@ for (const file of pages) {
     if (!existsSync(asDir) && !existsSync(asFile)) deaths.push(`${where}: link to ${target} goes nowhere`);
   }
 
+  /* A IMAGEM QUE A PÁGINA DÁ ÀS REDES E AO GOOGLE TEM DE EXISTIR.
+     O og:image e o `image` dos dados estruturados são moradas absolutas, e a
+     verificação de cima só lê as que começam por «/». O candeeiro da coruja
+     apontou meses para um -1000 que nunca existiu (o master tem 540 px): a
+     pré-visualização numa rede social e o resultado rico do Google saíam sem
+     imagem, com tudo verde. Confere-se a parte a partir de /media/. */
+  const imagensDaPagina = [...html.matchAll(/<meta property="og:image" content="([^"]*)"/g)].map((m) => m[1]);
+  const juntarImagens = (v) => {
+    if (typeof v === 'string') imagensDaPagina.push(v);
+    else if (Array.isArray(v)) v.forEach(juntarImagens);
+    else if (v && typeof v === 'object') { juntarImagens(v.image); if (v['@graph']) juntarImagens(v['@graph']); }
+  };
+  for (const m of html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)) {
+    try { const j = JSON.parse(m[1]); (Array.isArray(j) ? j : [j]).forEach((x) => juntarImagens(x?.image)); } catch { /* já contado lá em cima */ }
+  }
+  for (const url of imagensDaPagina) {
+    const i = url.indexOf('/media/');
+    if (i === -1) continue;
+    const alvo = url.slice(i + 1).split(/[?#]/)[0];
+    if (!existsSync(join(OUT, alvo))) deaths.push(`${where}: the share image ${alvo} does not exist — social previews and search results would show none`);
+  }
+
+  /* O CARTÃO TROCA DE FOTOGRAFIA COM A ESCADA DA CAPA.
+     O script do cartão clona o <picture> da capa e só lhe muda o NOME (ver
+     cards() em src/js/shop.js): o srcset fica com as larguras da capa. Uma
+     fotografia do mesmo produto sem uma dessas larguras -- uma pequena, como as
+     do Instagram, ao lado de uma capa grande -- dava a moldura em branco no
+     clique, em ecrãs retina. A tira de miniaturas pede -120 e -200 de cada. */
+  for (const m of html.matchAll(/<article class="card"[^>]*>[\s\S]*?<\/article>/g)) {
+    const abre = m[0].slice(0, m[0].indexOf('>') + 1);
+    const shots = (abre.match(/data-shots="([^"]*)"/)?.[1] ?? '').split(',').filter(Boolean);
+    const dir = abre.match(/data-dir="([^"]*)"/)?.[1];
+    if (!dir || !shots.length) continue;
+    const srcset = m[0].match(/srcset="([^"]+)"/)?.[1] ?? '';
+    const larguras = [...new Set([...srcset.matchAll(/-(\d+)\.(?:avif|webp) \d+w/g)].map((x) => x[1]))];
+    const faltam = [];
+    for (const n of shots) {
+      for (const w of larguras) for (const ext of ['avif', 'webp']) {
+        if (!existsSync(join(OUT, 'media', dir, `${n}-${w}.${ext}`))) faltam.push(`${n}-${w}.${ext}`);
+      }
+      if (shots.length > 1) for (const w of [120, 200]) {
+        if (!existsSync(join(OUT, 'media', dir, `${n}-${w}.webp`))) faltam.push(`${n}-${w}.webp`);
+      }
+    }
+    if (faltam.length) {
+      deaths.push(`${where}: the card for ${dir} would ask for ${faltam.length} photograph(s) that do not exist when a reader picks another shot (${faltam.slice(0, 3).join(', ')})`);
+    }
+  }
+
   // A product page has to describe itself. For a long while the 26 lamps did
   // and the 41 pieces did not — same shop, same basket, and to a search engine
   // only half of it was a shop.
@@ -649,6 +698,35 @@ for (const [canonical, group] of byCanonical) {
       deaths.push(`os termos (${lang}) dizem «${frase}» mas o cesto também oferece `
         + `${emFalta.map((m) => NOME[m]).join(', ')} — acertar content/settings/shop.json`);
     }
+  }
+}
+
+/* NADA DO QUE A DONA TIROU FICA NO AR.
+   As versões web das fotografias juntas no painel não vão para o git: o CI
+   gera-as e guarda-as numa cache entre publicações. Uma cache é memória, e
+   memória devolve o que já não devia existir -- as versões de uma fotografia
+   que a dona tirou continuavam em public/media e iam para o site, na mesma
+   morada. scripts/renditions.py deita-as fora; isto confere que deitou. Uma
+   versão sem original (photos/…) é uma fotografia que saiu. */
+{
+  const origem = (marca, pasta, nome) => join(ROOT, 'photos', marca, marca === 'cathelier' && pasta === 'pool' ? '_raw' : pasta, `${nome}.jpg`);
+  const orfas = [];
+  for (const base of [join(OUT, 'media'), join(OUT, 'media', 'whole')]) {
+    for (const marca of ['ithos', 'cathelier']) {
+      const raiz = join(base, marca);
+      if (!existsSync(raiz)) continue;
+      for (const pasta of readdirSync(raiz)) {
+        if (!statSync(join(raiz, pasta)).isDirectory()) continue;
+        for (const f of readdirSync(join(raiz, pasta))) {
+          const nome = f.match(/^(.+)-\d+\.(?:avif|webp)$/)?.[1];
+          if (nome && !existsSync(origem(marca, pasta, nome))) orfas.push(`${join(base, marca, pasta, f).slice(OUT.length + 1)}`);
+        }
+      }
+    }
+  }
+  if (orfas.length) {
+    deaths.push(`${orfas.length} rendition(s) of photographs that no longer exist would go live (${orfas.slice(0, 3).join(', ')}) — `
+      + 'run python3 scripts/renditions.py, which removes them');
   }
 }
 
