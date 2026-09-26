@@ -21,10 +21,10 @@ oficina.
 ## Se chegar danificada
 
 Fotografe-a antes de a desembalar mais e escreva para
-[{{EMAIL}}](mailto:{{EMAIL}}). Como a falta aparece nos primeiros 30 dias depois
-da entrega, pode escolher: a reparação ou a substituição, sem custos, ou logo o
-reembolso (artigos 15.º e 16.º do Decreto-Lei n.º 84/2021). O resto está nas
-[condições de venda](/legal/terms/).
+[{{EMAIL}}](mailto:{{EMAIL}}). Numa compra como consumidor, uma falta que
+aparece nos primeiros 30 dias depois da entrega deixa-o escolher: a reparação ou
+a substituição, sem custos, ou logo o reembolso (artigos 15.º e 16.º do
+Decreto-Lei n.º 84/2021). O resto está nas [condições de venda](/legal/terms/).
 
 ## Devoluções
 
@@ -35,6 +35,7 @@ funciona e o que não abrange.
 
 ## A garantia legal
 
-Tudo tem **{{WARRANTY_YEARS}} anos de garantia legal**, a contar da entrega. Se
-uma peça deixar de ser o que deve ser, escreva-nos. Veja [os seus direitos de
+Tudo o que compra como consumidor tem **{{WARRANTY_YEARS}} anos de garantia
+legal**, a contar da entrega. Se uma peça deixar de ser o que deve ser,
+escreva-nos. Veja [os seus direitos de
 garantia legal](/legal/guarantee/).

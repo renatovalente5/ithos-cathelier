@@ -769,8 +769,16 @@
     "t": "Your withdrawal has been recorded, but the acknowledgement of receipt could not be emailed just now. We will send it to you ourselves, in writing, to the email address you used for the order, within the next 24 hours. Until then, keep this page: it has the date and time you sent it.",
     "h": "d6860ae2dc17"
   },
+  "retratacao.repetida.semAviso": {
+    "t": "The acknowledgement of receipt for this statement has not been emailed yet. We will send it to you ourselves, in writing, to the email address you used for the order, within the next 24 hours. Until then, keep this page.",
+    "h": "ea7b508269d9"
+  },
   "retratacao.recebida.devolver": {
-    "t": "If you have already received the order, send the items back within {n} days of the day you sent your withdrawal: <a href=\"/legal/cancellation/\">how to return them and how you get your money back</a>.",
-    "h": "45985ba47098"
+    "t": "If you have already received the order, send the items back within {n} days of the day you sent your withdrawal (personalised pieces we had already started making are not returned): <a href=\"/legal/cancellation/\">how to return them and how you get your money back</a>.",
+    "h": "6934af16ecc5"
+  },
+  "retratacao.revenda": {
+    "t": "This order was placed as a reseller: the right to cancel does not apply to purchases for resale. We will reply to you by email.",
+    "h": "565fd46d3543"
   }
 }

@@ -1,4 +1,4 @@
-<!-- origem: 886c0e7bced2 partes: 385996f20f05 95a292592920 74b642e8c44a e12484043fef d957d45cebc6 48e0e2a7afa3 55b8cca956e1 7303925a6a5e 5df13b1d4273 8d1bbcc50936 37247a30ba8d a42c1b8e95aa -->
+<!-- origem: 334a5efb5269 partes: 385996f20f05 95a292592920 74b642e8c44a e12484043fef b837d242faac 48e0e2a7afa3 55b8cca956e1 7303925a6a5e 5df13b1d4273 8d1bbcc50936 37247a30ba8d a42c1b8e95aa -->
 # Terms of sale
 
 ## Who is selling
@@ -37,6 +37,9 @@ Anything carrying a name, a date or words you chose is made for you alone. You
 can cancel a personalised piece until we start making it; from then on, **the
 right to cancel no longer applies** — this is the exception in article 17(1)(c)
 of Decree-Law 24/2014. The legal guarantee still applies.
+
+We start making a piece when we cut or engrave it for your order; preparing the
+drawing does not count yet. For a lamp in stock, that is when we engrave it.
 
 Choosing a colour we already offer is not personalisation, and does not remove
 your right to cancel.

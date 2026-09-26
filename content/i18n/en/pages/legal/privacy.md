@@ -1,4 +1,4 @@
-<!-- origem: 348a11725e3f partes: f64f1fa9ac8a 28df60905360 9b5ed8bfe814 892c93a5afb1 bd61e0dc0cfa 78b654f33484 c02bf8b6ba04 -->
+<!-- origem: 1b81761f9a2e partes: f64f1fa9ac8a 28df60905360 9b5ed8bfe814 c1355728b81d 2aac7d4a27e6 5766c2ac7490 c02bf8b6ba04 -->
 # Privacy
 
 ## The short version
@@ -28,7 +28,8 @@ part of the order, because it is what we made.
 to answer and a reasonable time afterwards.
 
 **If you withdraw using the form on the site.** Your name, the order number,
-the email you ordered with and, if you give them, the items. We use them to
+the email address you enter (it may not be the one you ordered with) and, if
+you give them, the items. We use them to
 deal with your withdrawal and to send you the acknowledgement of receipt, and
 we keep them for 3 years, as proof of when you sent us the withdrawal. The legal
 basis is the contract between us and the legal obligation to acknowledge
@@ -50,7 +51,8 @@ days; after that, what remains is the invoice, if you paid, and what the next
 paragraph describes.
 
 **After you pay.** For a consumer purchase, we keep the order number, your name,
-your email and the names of the items for 18 months, so that the withdrawal
+your email, the names of the items, the date and time of payment and the
+language of the order for 18 months, so that the withdrawal
 function on the site works for the whole period in which you can withdraw, even
 if the piece takes a while to be made and to reach you. The legal basis is the
 legal obligation to keep that function available and the contract between us.
@@ -75,11 +77,10 @@ invoices are kept for as long as tax law requires.
 - **Cloudflare**, which runs the checkout and holds the order from the moment
   you press **Order and pay** until it is deleted, what remains of it for
   withdrawals, the withdrawals made on the site and the records of our
-  resellers. Cloudflare may process this data
-  outside the European Union, under the European Commission's standard
-  contractual clauses. They are also who our shop emails leave through.
-- **GitHub**, which serves these pages to your browser and therefore sees the
-  request, including your IP address.
+  resellers. They are also who our shop emails leave through, and they serve
+  these pages to your browser, so they see the request, including your IP
+  address. Cloudflare may process this data outside the European Union, under
+  the European Commission's standard contractual clauses.
 - Our accountant, and the tax authority, for invoices.
 
 Nobody else. Your details are not sold, and not used to advertise at you.
@@ -89,8 +90,9 @@ Nobody else. Your details are not sold, and not used to advertise at you.
 Invoices are kept ten years, because tax law requires it. Orders, paid or not,
 are deleted from the shop's system after ninety days — long enough for a
 Multibanco reference to be paid late and for us to answer a question about it.
-Of an order paid by a consumer, the number, the name, the email and the names of
-the items remain for 18 months, for the withdrawal function; a withdrawal made
+Of an order paid by a consumer, the number, the name, the email, the names of
+the items, the date and time of payment and the language remain for 18 months,
+for the withdrawal function; a withdrawal made
 on the site is kept for 3 years. Emails are kept for as long as they are useful
 and then deleted.
 

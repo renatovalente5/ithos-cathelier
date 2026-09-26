@@ -1,4 +1,4 @@
-<!-- origem: b3515110f686 partes: d9b93824be36 8d0f21e51521 b94d873c388d 9ad95c906ee6 9a5ebd727f78 -->
+<!-- origem: 3d66dcfcabf7 partes: d9b93824be36 8d0f21e51521 a92a4bc3f838 9ad95c906ee6 9a5ebd727f78 -->
 # Your right to cancel
 
 ## Fourteen days
@@ -23,6 +23,9 @@ clearly meant for you alone — a name, a date, your words engraved into it —
 until we start making it. From then on, the right to cancel no longer applies
 and the piece cannot be returned: this is article 17(1)(c) of Decree-Law
 24/2014. The legal guarantee still applies.
+
+We start making a piece when we cut or engrave it for your order; preparing the
+drawing does not count yet. For a lamp in stock, that is when we engrave it.
 
 Choosing between colours we already offer is **not** personalisation. A lamp in
 a colour from our list can be cancelled like anything else.

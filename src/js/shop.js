@@ -1052,7 +1052,7 @@ async function paginaRevenda() {
  * O CONTRATO COM O WORKER: POST /retratacao com {nome, encomenda, email,
  * artigos, lingua}; responde 4xx {error} ou
  *   200 {ok: true, recebidoEm: <ISO>, aviso: <bool>, repetido: <bool>,
- *        emailDiferente: <bool>}
+ *        emailDiferente: <bool>, revenda: <bool>}
  * (um Worker anterior manda a data em `recebido`, e lê-se na mesma).
  *   · A data e a hora que se mostram são as do servidor -- são elas que ficam
  *     no aviso de receção, e o relógio de um telemóvel pode estar horas ao
@@ -1065,6 +1065,14 @@ async function paginaRevenda() {
  *     Worker grava na mesma e manda o aviso para o email DA ENCOMENDA -- a
  *     página diz isso, e não que o aviso vai para o que se escreveu.
  *   · `aviso: false` quando gravou mas o email ao comprador não saiu.
+ *   · `revenda: true` quando a encomenda foi feita como revendedor: a
+ *     declaração fica registada, mas a livre resolução não se aplica a
+ *     compras para revenda -- a página di-lo, e não fala de aviso de receção
+ *     nem dos catorze dias para devolver, que são do consumidor.
+ *   · 429 {error: 'too_many_statements'} quando a encomenda já tem as
+ *     declarações todas que o Worker aceita: esperar não resolve, e a página
+ *     manda retratar-se por email. O 429 do limite por IP é outro
+ *     ('too_many_requests'), e esse passa com uns minutos.
  *
  * `aria-disabled` e não `disabled` enquanto envia: desactivar o botão em que
  * se acabou de carregar tira-lhe o foco, e quem usa teclado ou leitor de ecrã
@@ -1134,18 +1142,28 @@ function retratacao() {
         const repetido = j.repetido === true;
         const semAviso = j.aviso === false;
         const emailDiferente = j.emailDiferente === true;
+        const revendaEnc = j.revenda === true;
+        const consumidor = !revendaEnc;
         const mostrar = (sel, sim) => { for (const el of $$(sel, ok)) el.hidden = !sim; };
         mostrar('[data-retratacao-nova]', !repetido);
         mostrar('[data-retratacao-repetida]', repetido);
         /* Um parágrafo sobre o aviso, e um só:
-           · não saiu -- a dona escreve-o em 24 horas (vale para as duas);
+           · nova, não saiu -- ficou registada, e a dona escreve-o em 24 horas;
+           · repetida, não saiu -- o mesmo, sem voltar a dizer «ficou
+             registada» logo a seguir a «não a registámos outra vez»;
            · repetida -- o aviso desta declaração já seguiu; nenhum novo;
            · nova, com o email da encomenda -- «vai receber»;
-           · nova, com outro email -- foi para o da encomenda. */
-        mostrar('[data-retratacao-sem-aviso]', semAviso);
-        mostrar('[data-retratacao-aviso-antigo]', !semAviso && repetido);
-        mostrar('[data-retratacao-com-aviso]', !semAviso && !repetido && !emailDiferente);
-        mostrar('[data-retratacao-email-diferente]', !semAviso && !repetido && emailDiferente);
+           · nova, com outro email -- foi para o da encomenda.
+           Numa encomenda de revendedor, nenhum destes: o bloco da revenda diz
+           que a livre resolução não se aplica e que respondemos por email --
+           e some o parágrafo dos catorze dias para devolver. */
+        mostrar('[data-retratacao-sem-aviso]', consumidor && semAviso && !repetido);
+        mostrar('[data-retratacao-repetida-sem-aviso]', consumidor && semAviso && repetido);
+        mostrar('[data-retratacao-aviso-antigo]', consumidor && !semAviso && repetido);
+        mostrar('[data-retratacao-com-aviso]', consumidor && !semAviso && !repetido && !emailDiferente);
+        mostrar('[data-retratacao-email-diferente]', consumidor && !semAviso && !repetido && emailDiferente);
+        mostrar('[data-retratacao-revenda]', revendaEnc);
+        mostrar('[data-retratacao-devolver]', consumidor);
         dizer('');
         form.hidden = true;
         ok.hidden = false;
@@ -1155,12 +1173,14 @@ function retratacao() {
       /* Os códigos do Worker (POST /retratacao): bad_email, bad_reference,
          bad_items, missing_name, name_too_long, bad_body, order_not_found
          (só quando a encomenda não existe: um email que não bate é gravado
-         na mesma, com `emailDiferente`) e too_many_requests -- que tranca
-         minutos, não segundos. Tudo o resto -- a origem recusada, o armazém
-         em falta, uma rota que ainda não existe -- é «envie por email», que
-         vale sempre. */
+         na mesma, com `emailDiferente`), too_many_statements (a encomenda já
+         tem declarações a mais: esperar não resolve, e vem ANTES do 429
+         genérico) e too_many_requests -- que tranca minutos, não segundos.
+         Tudo o resto -- a origem recusada, o armazém em falta, uma rota que
+         ainda não existe -- é «envie por email», que vale sempre. */
       const e = String(j.error || '');
-      dizer(r.status === 429 || e === 'too_many_requests' ? tj('retratacao.erroEspere')
+      dizer(e === 'too_many_statements' ? tj('retratacao.erroMuitas')
+        : r.status === 429 || e === 'too_many_requests' ? tj('retratacao.erroEspere')
         : e === 'bad_email' ? tj('retratacao.erroEmail')
           : e === 'bad_reference' ? tj('retratacao.formatoEncomenda')
             : e === 'bad_items' ? tj('retratacao.erroArtigos')
@@ -1583,16 +1603,25 @@ async function basketPage() {
     wrap.hidden = !any;
     if (empty) empty.hidden = any;
     /* O AVISO DAS PEÇAS PERSONALIZADAS, antes do botão de encomendar: uma
-       linha com um nome, uma data ou uma frase perde os catorze dias, e a lei
-       quer isso dito antes da compra (DL 24/2014, art. 4.º n.º 1 al. p)). A
-       marca é a mesma que o Worker lê -- `personalises` na opção do catálogo
-       -- e só conta com alguma coisa escrita: um candeeiro sem gravação não é
-       personalizado. */
+       linha com um nome, uma data ou uma frase só se desiste até começarmos
+       a fazê-la, e a lei quer isso dito antes da compra, com a circunstância
+       em que o direito se perde (DL 24/2014, art. 4.º n.º 1 al. p)). A marca
+       é a mesma que o Worker lê -- `personalises` na opção do catálogo -- e
+       só conta com alguma coisa escrita: um candeeiro sem gravação não é
+       personalizado.
+       NUMA SESSÃO DE REVENDEDOR, NEM O AVISO NEM A LIGAÇÃO DA GARANTIA LEGAL:
+       a caixa «compro para a minha empresa, para revenda» (obrigatória nessa
+       sessão) diz que os direitos do consumidor não se aplicam; logo abaixo,
+       «pode desistir delas até começarmos a fazê-las» e «os seus direitos de
+       garantia legal» diziam o contrário no mesmo ecrã. Quem compra para casa
+       sai da sessão e compra como consumidor -- e aí volta tudo. */
     const aviso = $('[data-basket-personal]');
     if (aviso) {
-      aviso.hidden = !priced.some(({ line }) => (cat.products[line.id]?.options || [])
+      aviso.hidden = revenda.activa || !priced.some(({ line }) => (cat.products[line.id]?.options || [])
         .some((o) => o.personalises && String((line.options || {})[o.id] ?? '').trim() !== ''));
     }
+    const direitos = $('.basket__direitos');
+    if (direitos) direitos.hidden = revenda.activa;
     if (!any) { vez++; prazoNoCesto = 'encomenda'; return; }
 
     linesBox.innerHTML = priced.map(({ line, p }, i) => `<div class="basket-line">

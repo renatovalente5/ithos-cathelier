@@ -46,4 +46,5 @@ quarto de uma criança.
 O pinho maciço reage ao quarto onde vive. Num quarto muito seco pode abrir-se
 uma fissura fina ao longo do veio durante o inverno, e fechar-se outra vez no
 verão. É o comportamento normal da madeira maciça. Se tiver dúvidas,
-escreva-nos: a garantia legal aplica-se sempre.
+escreva-nos: se nos comprou como consumidor, a garantia legal aplica-se
+sempre.

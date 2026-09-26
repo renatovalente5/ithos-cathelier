@@ -231,7 +231,7 @@ export function avisoGarantia() {
  * que se mostra e escreve a data e a hora que o Worker devolveu -- a hora do
  * servidor, e não a do telemóvel de quem se retrata.
  *
- * TRÊS RESPOSTAS DE SUCESSO, e cada uma diz só o que é verdade para ela
+ * AS RESPOSTAS DE SUCESSO, e cada uma diz só o que é verdade para ela
  * (o contrato está no shop.js, em retratacao()):
  *   · uma declaração nova -- também quando a encomenda já tinha outra, com
  *     outros artigos: «Recebemos», a hora dela, e o aviso de receção;
@@ -239,7 +239,15 @@ export function avisoGarantia() {
  *     da primeira, e não se promete aviso novo (não sai nenhum);
  *   · `emailDiferente: true` -- o email escrito não é o da encomenda: o aviso
  *     foi para o da encomenda, e a página di-lo em vez de apontar para o
- *     email escrito.
+ *     email escrito;
+ *   · `revenda: true` -- a encomenda foi feita como revendedor: a declaração
+ *     fica registada, mas a livre resolução não se aplica, e a página não
+ *     fala de aviso nem de prazo para devolver.
+ * Quando o aviso de receção não saiu (`aviso: false`), a frase diz que a dona
+ * o escreve em 24 horas -- com uma frase própria na repetida, que acabou de
+ * dizer «não a registámos outra vez» e não pode continuar com «ficou
+ * registada». E o parágrafo de devolver as peças diz que as personalizadas
+ * já começadas não se devolvem: a declaração pode ser sobre elas.
  * A hora diz-se sempre da mesma maneira, como no aviso de receção do Worker:
  * a hora em que a pessoa a ENVIOU, em hora de Lisboa (art. 11.º-A n.º 4 da
  * Diretiva 2011/83: «a data e a hora do envio»). */
@@ -287,7 +295,13 @@ export function formularioRetratacao() {
       <p data-retratacao-email-diferente hidden>${esc(t('paginas.retratacao.recebida.emailDiferente'))}</p>
       <p data-retratacao-aviso-antigo hidden>${esc(t('paginas.retratacao.repetida.aviso'))}</p>
       <p data-retratacao-sem-aviso hidden>${esc(t('paginas.retratacao.recebida.semAviso'))}</p>
-      <p>${t('paginas.retratacao.recebida.devolver', { n: DIAS_PARA_DEVOLVER })}</p>
+      <p data-retratacao-repetida-sem-aviso hidden>${esc(t('paginas.retratacao.repetida.semAviso'))}</p>
+      ${/* UMA ENCOMENDA DE REVENDEDOR NÃO TEM LIVRE RESOLUÇÃO (as condições para
+          revendedores dizem-no), e o Worker aceita a declaração na mesma e
+          responde «revenda: true». A página diz isso, e não promete o que é
+          do consumidor: nem o aviso de receção das 24 horas, nem os catorze
+          dias para devolver. */ ''}<p data-retratacao-revenda hidden>${esc(t('paginas.retratacao.revenda'))}</p>
+      <p data-retratacao-devolver>${t('paginas.retratacao.recebida.devolver', { n: DIAS_PARA_DEVOLVER })}</p>
     </div>`;
 }
 
@@ -612,10 +626,15 @@ export function basket({ shipping, shop }) {
            O artigo 5.º n.º 4 do DL 24/2014 obriga a que o botão diga, sem
            ambiguidade, que a encomenda implica pagar. «Checkout» ou «Continuar»
            não cumprem: a sanção é o contrato não vincular o consumidor. -->
-      <!-- AS PEÇAS PERSONALIZADAS NÃO TÊM OS CATORZE DIAS, e isso tem de ser
-           dito ANTES de encomendar (DL 24/2014, art. 4.º n.º 1 al. p)). Aparece
-           só quando o cesto leva uma linha com um nome, uma data ou uma frase:
-           o script decide, pela mesma marca «personalises» que o Worker usa. -->
+      ${/* AS PEÇAS PERSONALIZADAS SÓ SE DESISTEM ATÉ COMEÇARMOS A FAZÊ-LAS, e
+           isso tem de ser dito ANTES de encomendar, com a circunstância em que
+           o direito se perde (DL 24/2014, art. 4.º n.º 1 al. p)). Aparece só
+           quando o cesto leva uma linha com um nome, uma data ou uma frase: o
+           script decide, pela mesma marca «personalises» que o Worker usa. E
+           numa sessão de revendedor o script esconde-o, com a ligação da
+           garantia legal: a caixa «compro para a minha empresa» já diz que os
+           direitos do consumidor não se aplicam. Um comentário dentro de
+           ${…} e não em HTML: não vai para a página servida. */ ''}
       <p class="basket__aviso" data-basket-personal hidden>${esc(t('paginas.aviso.personalizada', { n: shop.returns.coolingOffDays }))}</p>
       <button class="btn btn--wide" type="submit" data-to-checkout style="margin-block-start:1.25rem">
         ${esc(t('paginas.botao.encomendarEPagar'))}</button>

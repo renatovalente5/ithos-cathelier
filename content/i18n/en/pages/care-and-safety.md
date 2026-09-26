@@ -1,4 +1,4 @@
-<!-- origem: 0ed1ace3f629 partes: ece0c79184c6 431615403d7d 0852c3991e85 5df13b1d4273 eab60861185f 5a507cf9eef1 a8bc5fe09332 -->
+<!-- origem: 5e124480498b partes: ece0c79184c6 431615403d7d 0852c3991e85 5df13b1d4273 eab60861185f 5a507cf9eef1 dcbdb8e1f670 -->
 # Care and safety
 
 ## These are lights, not toys
@@ -45,5 +45,5 @@ child's room.
 
 Solid pine responds to the room it lives in. In a very dry room a hairline may
 open along the grain over a winter, and close again in summer. This is how
-solid wood normally behaves. If in doubt, write to us: the legal guarantee
-always applies.
+solid wood normally behaves. If in doubt, write to us: if you bought from us
+as a consumer, the legal guarantee always applies.

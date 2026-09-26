@@ -209,5 +209,7 @@
   "retratacao.repetida.aviso": "O aviso de receção desta declaração já seguiu para o email com que fez a encomenda.",
   "retratacao.recebida.aviso": "Vai receber no seu email um aviso de receção, com o que nos enviou e a data e a hora em que o enviou.",
   "retratacao.recebida.semAviso": "A sua retratação ficou registada, mas o aviso de receção não seguiu agora por email. Vamos enviar-lho nós, por escrito, para o email com que fez a encomenda, nas próximas 24 horas. Até lá, guarde esta página: tem a data e a hora em que a enviou.",
-  "retratacao.recebida.devolver": "Se já recebeu a encomenda, devolva as peças no prazo de {n} dias a contar do dia em que enviou a retratação: <a href=\"/legal/cancellation/\">como devolver e como recebe o dinheiro</a>."
+  "retratacao.repetida.semAviso": "O aviso de receção desta declaração ainda não seguiu por email. Vamos enviar-lho nós, por escrito, para o email com que fez a encomenda, nas próximas 24 horas. Até lá, guarde esta página.",
+  "retratacao.recebida.devolver": "Se já recebeu a encomenda, devolva as peças no prazo de {n} dias a contar do dia em que enviou a retratação (as personalizadas que já tivéssemos começado a fazer não se devolvem): <a href=\"/legal/cancellation/\">como devolver e como recebe o dinheiro</a>.",
+  "retratacao.revenda": "Esta encomenda foi feita como revendedor: o direito de livre resolução não se aplica a compras para revenda. Respondemos-lhe por email."
 }

@@ -1,4 +1,4 @@
-<!-- origem: 06761b9670db partes: 549f878a8e13 0cd53194c6ae 294e55981e40 f35ca71f5e81 d27e0ad96c95 38c758d3e11b -->
+<!-- origem: aafb0ad940ff partes: 549f878a8e13 0cd53194c6ae 294e55981e40 3387ff0151d4 d27e0ad96c95 096904943b83 -->
 # Delivery and returns
 
 ## How long it takes
@@ -20,10 +20,10 @@ Delivery times are estimates and begin when the parcel leaves the workshop.
 ## If it arrives damaged
 
 Photograph it before you unpack any further and write to
-[{{EMAIL}}](mailto:{{EMAIL}}). Because the fault appears within 30 days of
-delivery, you can choose: repair or replacement, free of charge, or a refund
-straight away (Articles 15 and 16 of Decree-Law No 84/2021). The rest is in the
-[terms of sale](/legal/terms/).
+[{{EMAIL}}](mailto:{{EMAIL}}). On a consumer purchase, a fault that appears
+within 30 days of delivery lets you choose: repair or replacement, free of
+charge, or a refund straight away (Articles 15 and 16 of Decree-Law No
+84/2021). The rest is in the [terms of sale](/legal/terms/).
 
 ## Returns
 
@@ -34,6 +34,7 @@ and what it does not cover.
 
 ## The legal guarantee
 
-Everything carries a **{{WARRANTY_YEARS}}-year legal guarantee**, from delivery.
-If a piece stops being what it should be, write to us. See [your legal
+Everything you buy as a consumer carries a **{{WARRANTY_YEARS}}-year legal
+guarantee**, from delivery. If a piece stops being what it should be, write to
+us. See [your legal
 guarantee rights](/legal/guarantee/).

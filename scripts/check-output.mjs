@@ -862,9 +862,11 @@ for (const [canonical, group] of byCanonical) {
          shop.js escolhe entre eles sem se queixar de um que falte: sem o da
          repetida, uma declaração repetida mostrava a hora da primeira como se
          fosse nova; sem o do email diferente, não dizia para onde foi o
-         aviso. */
+         aviso; sem o da revenda, um revendedor lia os catorze dias do
+         consumidor; e sem o de devolver com a marca, o shop.js não o
+         conseguia esconder a um revendedor. */
       const ok = html.match(/<div class="retratar__ok" data-retratacao-ok[\s\S]*?<\/div>/)?.[0] ?? '';
-      for (const bloco of ['nova', 'repetida', 'com-aviso', 'email-diferente', 'aviso-antigo', 'sem-aviso']) {
+      for (const bloco of ['nova', 'repetida', 'com-aviso', 'email-diferente', 'aviso-antigo', 'sem-aviso', 'repetida-sem-aviso', 'revenda', 'devolver']) {
         if (!new RegExp(`<p data-retratacao-${bloco}[ >]`).test(ok)) deaths.push(`${onde}: o painel da retratação não tem o bloco «${bloco}» que o shop.js mostra`);
       }
     }

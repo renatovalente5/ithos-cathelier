@@ -38,6 +38,10 @@ daí, **deixa de ter o direito de livre resolução** — é a exceção da alí
 do n.º 1 do artigo 17.º do Decreto-Lei n.º 24/2014. A garantia legal
 mantém-se.
 
+Começamos a fazer uma peça quando a cortamos ou a gravamos para a sua
+encomenda; preparar o desenho ainda não conta. Num candeeiro em stock, é quando
+o gravamos.
+
 Escolher uma cor que já oferecemos não é personalização, e não lhe tira o
 direito de livre resolução.
 

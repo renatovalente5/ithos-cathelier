@@ -300,6 +300,10 @@
     "t": "Wait a few minutes and try again, or withdraw by email: what counts is the date you send it.",
     "h": "2c86b5d7344e"
   },
+  "retratacao.erroMuitas": {
+    "t": "This order has already received many statements through the site: withdraw by email, as explained further down.",
+    "h": "4e2232f9711c"
+  },
   "retratacao.erroGenerico": {
     "t": "We could not record your withdrawal just now. Send it by email instead, as explained further down: the date you send it is what counts.",
     "h": "d9ac9ad8999c"
