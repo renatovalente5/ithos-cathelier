@@ -1,0 +1,13 @@
+{
+  "_leia": "Os prazos de entrega ditos de uma maneira só (src/lib/prazos.mjs): a ficha do produto, o cesto, as perguntas e as condições. Os números vêm de content/settings/shop.json. A origem é pt/; esta é a tradução inglesa.",
+  "semanas.um": "{n} week",
+  "semanas.varios": "{n} weeks",
+  "semanas.intervalo": "{a} to {b} weeks",
+  "dias.um": "{n} working day",
+  "dias.varios": "{n} working days",
+  "dias.intervalo": "{a} to {b} working days",
+  "stock": "In stock — leaves the workshop in {dias}.",
+  "semStock": "Out of stock — we make yours, with you in {semanas}.",
+  "encomenda": "Made to order — with you in {semanas}.",
+  "junto": "Everything ships together, when the last piece is ready."
+}

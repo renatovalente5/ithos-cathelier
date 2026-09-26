@@ -1,4 +1,6 @@
 import { icon } from './icons.mjs';
+import { esc } from './html.mjs';
+import { t } from './i18n.mjs';
 
 /* The full-size viewer, written as a SIBLING of the product section and never
  * inside the gallery.
@@ -16,9 +18,9 @@ import { icon } from './icons.mjs';
  * visitor who opens the page source.)
  */
 export function viewer() {
-  return `<dialog class="lightbox" id="photo" aria-label="Photograph, full size">
+  return `<dialog class="lightbox" id="photo" aria-label="${esc(t('visor.rotulo'))}">
   <div class="lightbox__bar">
-    <button class="icon-btn lightbox__close" type="button" data-box-close aria-label="Close">${icon('close', 24)}</button>
+    <button class="icon-btn lightbox__close" type="button" data-box-close aria-label="${esc(t('visor.fechar'))}">${icon('close', 24)}</button>
   </div>
   <div class="lightbox__stage" data-box-stage></div>
 </dialog>`;

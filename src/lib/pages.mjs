@@ -1,6 +1,7 @@
-import { esc, money, safeHref } from './html.mjs';
+import { esc, safeHref } from './html.mjs';
 import { icon } from './icons.mjs';
 import { prazos } from './prazos.mjs';
+import { t, tn } from './i18n.mjs';
 
 /* ===========================================================================
    The pages that are prose, plus the three that are not.
@@ -11,7 +12,17 @@ import { prazos } from './prazos.mjs';
    project the address on a terms page and the address in the settings drifted
    apart in silence, and the one people read was the wrong one. The markers are
    filled from the settings at build time, and an unknown marker kills the
-   build rather than reaching a page. */
+   build rather than reaching a page.
+
+   AS FRASES SÃO DA LÍNGUA DA PÁGINA, OS DADOS NÃO. O nome, o NIF e as moradas
+   ficam como estão; o que é frase -- o custo da chamada, a nota do IVA, a
+   tabela dos portes -- sai de src/i18n/<língua>/paginas.json. Isto é chamado
+   depois de o gerador escolher a língua, por isso t() já sabe qual é. */
+
+/* O preço na tabela dos portes. O número escreve-se como em money()
+   (html.mjs), mas o lugar do símbolo é da língua: «€8,50» em inglês,
+   «8,50 €» em português -- e money() põe-no sempre à frente. */
+const preco = (n) => t('paginas.preco', { valor: Number(n).toFixed(2).replace('.', ',') });
 
 export function markers({ identity, shop, shipping }) {
   const i = identity;
@@ -20,16 +31,18 @@ export function markers({ identity, shop, shipping }) {
 
   const rows = shipping.zones
     .filter((z) => z.countries.some((c) => shipping.active.includes(c.slice(0, 2))))
-    .map((z) => `| ${z.name} | ${money(z.price)} | ${z.daysMin}–${z.daysMax} working days |`);
+    .map((z) => `| ${z.name} | ${preco(z.price)} | ${t('paginas.envios.dias', { min: z.daysMin, max: z.daysMax })} |`);
   const table = rows.length
-    ? ['| Where | Shipping | Time |', '|---|---|---|', ...rows].join('\n')
-    : '_We are not shipping anywhere yet._';
+    ? [`| ${t('paginas.envios.onde')} | ${t('paginas.envios.portes')} | ${t('paginas.envios.prazo')} |`, '|---|---|---|', ...rows].join('\n')
+    : `_${t('paginas.envios.nenhum')}_`;
 
   return {
     LEGAL_NAME: i.legalName, TRADING_NAME: i.tradingName, LEGAL_FORM: i.legalForm,
     TAX_NUMBER: i.taxNumber, ADDRESS: address || i.town,
     EMAIL: i.email, PHONE: i.phone, PHONE_TEXT: i.phoneText,
-    CALL_COST: '(Call to the national mobile network)',
+    /* A mesma frase da moldura (shell.json): é a que a lei manda pôr ao lado
+       do número, e uma frase que a lei exige não se escreve em dois sítios. */
+    CALL_COST: t('shell.custoChamada'),
     COMPLAINTS_BOOK: i.complaintsBook,
     ADR_NAME: i.adr.name, ADR_SITE: i.adr.site, ADR_EMAIL: i.adr.email,
     ADR_PHONE: i.adr.phone, ADR_ADDRESS: i.adr.address,
@@ -38,8 +51,8 @@ export function markers({ identity, shop, shipping }) {
        Estava escrito à mão nos termos e na privacidade, e no dia em que a loja
        trocou de processador as duas páginas passaram a mentir -- publicadas,
        em quatro moradas. Um marcador obriga a que mudem juntas. */
-    PAYMENT_PROVIDER: shop.payment?.provider ?? 'the payment provider',
-    PAYMENT_METHODS: shop.payment?.methods ?? 'the methods shown at checkout',
+    PAYMENT_PROVIDER: shop.payment?.provider ?? t('paginas.pagamento.prestador'),
+    PAYMENT_METHODS: shop.payment?.methods ?? t('paginas.pagamento.metodos'),
     PAYMENT_REFERENCE_DAYS: String(shop.payment?.referenceDays ?? 2),
     /* Os prazos saem dos mesmos dois números que a ficha do produto e os
        emails usam. */
@@ -52,7 +65,7 @@ export function markers({ identity, shop, shipping }) {
     SAFETY_LIST: (shop.safetyIthos || []).map((s) => `- ${s}`).join('\n'),
     // Under the Portuguese small-business exemption there is no VAT to state,
     // and saying so is required rather than optional.
-    VAT_NOTE: 'VAT is not charged: article 53 of the Portuguese VAT code applies.',
+    VAT_NOTE: t('paginas.iva'),
   };
 }
 
@@ -142,24 +155,23 @@ export function contact({ identity, shop, faq }) {
   return `
 <section class="section">
   <div class="shell shell--narrow page-prose">
-    <h1>Contact</h1>
-    <p class="lede">Ask us anything. We answer in a day, usually less.</p>
+    <h1>${esc(t('paginas.contacto.titulo'))}</h1>
+    <p class="lede">${esc(t('paginas.contacto.entrada'))}</p>
 
     <div class="contact-cards">
       <a class="contact-card" href="https://wa.me/${esc(i.whatsapp)}" rel="noopener">
-        ${icon('whatsapp', 22)}<span><strong>WhatsApp</strong><br>The fastest way to reach us</span>
+        ${icon('whatsapp', 22)}<span><strong>WhatsApp</strong><br>${esc(t('paginas.contacto.whatsapp'))}</span>
       </a>
       <a class="contact-card" href="mailto:${esc(i.email)}">
-        ${icon('mail', 22)}<span><strong>${esc(i.email)}</strong><br>For orders and quotes</span>
+        ${icon('mail', 22)}<span><strong>${esc(i.email)}</strong><br>${esc(t('paginas.contacto.email'))}</span>
       </a>
       <a class="contact-card" href="tel:${esc(i.phone)}">
-        ${icon('phone', 22)}<span><strong>${esc(i.phoneText)}</strong><br>(Call to the national mobile network)</span>
+        ${icon('phone', 22)}<span><strong>${esc(i.phoneText)}</strong><br>${esc(t('shell.custoChamada'))}</span>
       </a>
     </div>
 
-    <h2>Where we are</h2>
-    <p>The workshop is in ${esc(i.town)}, ${esc(i.country)}. It is a workshop rather
-       than a shop, so come by arrangement — send a message first.</p>
+    <h2>${esc(t('paginas.contacto.ondeEstamos'))}</h2>
+    <p>${esc(t('paginas.contacto.oficina', { cidade: i.town, pais: i.country }))}</p>
 
     <!-- The map is the only third-party content on this site, and it is the
          whole reason a consent question exists at all. It is asked HERE, in
@@ -168,13 +180,12 @@ export function contact({ identity, shop, faq }) {
     <div class="map" data-map>
       <button class="map__ask" type="button" data-map-load>
         ${icon('pin', 22)}
-        <span><strong>Show the map</strong><br>
-        This loads Google Maps, which means your browser contacts Google and
-        Google may set cookies. Nothing else on this site does that.</span>
+        <span><strong>${esc(t('paginas.contacto.mapa'))}</strong><br>
+        ${esc(t('paginas.contacto.mapaAviso'))}</span>
       </button>
     </div>
 
-    <h2 id="faq">Questions</h2>
+    <h2 id="faq">${esc(t('paginas.contacto.perguntas'))}</h2>
     <div class="faq">
       ${faq.map(([q, a]) => `<details class="faq__item">
         <summary>${esc(q)}</summary>
@@ -185,39 +196,16 @@ export function contact({ identity, shop, faq }) {
 </section>`;
 }
 
+/* As respostas levam marcação (<p>, <a>), e por isso vão para o dicionário
+   com ela: as duas línguas têm as mesmas etiquetas, e só o texto muda. */
 export const FAQ = (shop) => [
-  ['How long does it take?',
-   `<p>A lamp that is in stock leaves the workshop in ${prazos(shop.lead).dias}.
-    If it is out of stock you can still order it: we make yours, and it is with you
-    in ${prazos(shop.lead).semanas}. Each product page says which it is.</p>
-    <p>Cathelier pieces are always made to order — ${prazos(shop.lead).semanas}, counted
-    from when you approve the drawing. If one thing in an order is made to order, the
-    whole order ships together.</p>`],
-  ['Can I have a name on it?',
-   `<p>Yes, on anything, and it costs nothing extra. Put it in the engraving box on
-    the product page — a name, a date, or a short phrase.</p>
-    <p>One thing to know: a piece with a name on it is made for you alone, so it
-    cannot be returned under the 14-day rule. Choosing a colour we already offer
-    is not personalisation and does not affect your right to cancel.</p>`],
-  ['Is it safe in a baby’s room?',
-   `<p>These are decorative night lights, not toys. They are made of solid pine with
-    water-based paints and every edge is sanded by hand, but they are not tested
-    as toys and should not be handed to a small child to play with.</p>
-    <p>If it is going in a cot room, keep the cable out of the cot.
-    <a href="/care-and-safety/">Everything about care and safety</a>.</p>`],
-  ['Batteries or mains?',
-   `<p>Both, at the same price. The battery version takes two AA cells, which are
-    not included. The mains version comes with a remote that dims it, times it
-    and makes it pulse.</p>`],
-  ['What does delivery cost?',
-   `<p>It depends where you are.
-    <a href="/legal/shipping-and-returns/">The full table is here</a>.</p>`],
-  ['Can I change my mind?',
-   `<p>You have ${shop.returns.coolingOffDays} days on anything that is not
-    personalised. <a href="/legal/cancellation/">How it works</a>.</p>`],
-  ['Do you take large orders?',
-   `<p>Yes — favours, place cards, corporate gifts, club trophies.
-    <a href="/cathelier/quote/">Ask for a quote</a> and say roughly how many.</p>`],
+  [t('paginas.faq.prazo'), t('paginas.faq.prazo.resposta', { dias: prazos(shop.lead).dias, semanas: prazos(shop.lead).semanas })],
+  [t('paginas.faq.nome'), t('paginas.faq.nome.resposta')],
+  [t('paginas.faq.seguranca'), t('paginas.faq.seguranca.resposta')],
+  [t('paginas.faq.pilhas'), t('paginas.faq.pilhas.resposta')],
+  [t('paginas.faq.portes'), t('paginas.faq.portes.resposta')],
+  [t('paginas.faq.desistir'), t('paginas.faq.desistir.resposta', { dias: shop.returns.coolingOffDays })],
+  [t('paginas.faq.quantidade'), t('paginas.faq.quantidade.resposta')],
 ];
 
 /* --- quote ---------------------------------------------------------------- */
@@ -226,36 +214,32 @@ export function quote({ identity }) {
   return `
 <section class="section">
   <div class="shell shell--narrow page-prose">
-    <h1>Ask for a quote</h1>
-    <p class="lede">For anything made to measure, or in quantity — a cake topper with
-       two names, the signs for a wedding, favours for a christening, trophies for
-       a season.</p>
-    <p>Tell us what you have in mind and, if it is more than one, roughly how many.
-       We will come back with a price and a date. There is no form to fight with:
-       a message is enough.</p>
+    <h1>${esc(t('paginas.orcamento.titulo'))}</h1>
+    <p class="lede">${esc(t('paginas.orcamento.entrada'))}</p>
+    <p>${esc(t('paginas.orcamento.texto'))}</p>
 
     <div class="contact-cards">
       <a class="contact-card" href="https://wa.me/${esc(identity.whatsapp)}" rel="noopener">
-        ${icon('whatsapp', 22)}<span><strong>WhatsApp</strong><br>Send a photo of what you have in mind</span>
+        ${icon('whatsapp', 22)}<span><strong>WhatsApp</strong><br>${esc(t('paginas.orcamento.whatsapp'))}</span>
       </a>
-      <a class="contact-card" href="mailto:${esc(identity.email)}?subject=Quote">
-        ${icon('mail', 22)}<span><strong>${esc(identity.email)}</strong><br>For drawings and longer lists</span>
+      <a class="contact-card" href="mailto:${esc(identity.email)}?subject=${esc(encodeURIComponent(t('paginas.orcamento.assunto')))}">
+        ${icon('mail', 22)}<span><strong>${esc(identity.email)}</strong><br>${esc(t('paginas.orcamento.email'))}</span>
       </a>
     </div>
 
-    <h2>What helps us answer quickly</h2>
+    <h2>${esc(t('paginas.orcamento.ajuda'))}</h2>
     <ul>
-      <li>Roughly how many.</li>
-      <li>What it is for, and the date it is needed by.</li>
-      <li>The names, dates or words that go on it — or just say "50 different names".</li>
-      <li>Any picture of something close to what you want.</li>
+      <li>${esc(t('paginas.orcamento.ajuda.quantas'))}</li>
+      <li>${esc(t('paginas.orcamento.ajuda.para'))}</li>
+      <li>${t('paginas.orcamento.ajuda.palavras')}</li>
+      <li>${esc(t('paginas.orcamento.ajuda.imagem'))}</li>
     </ul>
 
-    <h2>How it goes from there</h2>
+    <h2>${esc(t('paginas.orcamento.passos'))}</h2>
     <ol>
-      <li>We answer with a price and a date.</li>
-      <li>You approve a drawing. Nothing is cut before that.</li>
-      <li>We make it, and it comes to you ready to give.</li>
+      <li>${esc(t('paginas.orcamento.passos.preco'))}</li>
+      <li>${esc(t('paginas.orcamento.passos.desenho'))}</li>
+      <li>${esc(t('paginas.orcamento.passos.fazemos'))}</li>
     </ol>
   </div>
 </section>`;
@@ -315,13 +299,13 @@ export function basket({ shipping, shop }) {
   return `
 <section class="section">
   <div class="shell">
-    <h1>Your basket</h1>
+    <h1>${esc(t('paginas.cesto.titulo'))}</h1>
 
     <div data-basket-empty hidden>
-      <p class="lede" style="margin-block-start:1rem">There is nothing in it yet.</p>
+      <p class="lede" style="margin-block-start:1rem">${esc(t('paginas.cesto.vazio'))}</p>
       <p style="margin-block-start:1.5rem">
-        <a class="btn" href="/lamps/">See the lamps</a>
-        <a class="btn btn--ghost" href="/cathelier/pieces/" style="margin-inline-start:.5rem">See the pieces</a>
+        <a class="btn" href="/lamps/">${esc(t('paginas.botao.verCandeeiros'))}</a>
+        <a class="btn btn--ghost" href="/cathelier/pieces/" style="margin-inline-start:.5rem">${esc(t('paginas.botao.verPecas'))}</a>
       </p>
     </div>
 
@@ -329,19 +313,19 @@ export function basket({ shipping, shop }) {
       <div class="basket__lines" data-basket-lines></div>
 
       <aside class="basket__total">
-        <h2>Total</h2>
+        <h2>${esc(t('paginas.cesto.total'))}</h2>
         <label class="field" for="country" style="margin-block-start:1rem">
-          <span style="display:block;margin-block-end:.5rem">Shipping to</span>
+          <span style="display:block;margin-block-end:.5rem">${esc(t('paginas.cesto.enviarPara'))}</span>
           <span class="select"><select id="country" data-country>
             ${shipping.zones.flatMap((z) => z.countries
               .filter((c) => shipping.active.includes(c.slice(0, 2)))
-              .map((c) => `<option value="${esc(c)}">${esc(COUNTRY[c] || c)}</option>`)).join('\n            ')}
+              .map((c) => `<option value="${esc(c)}">${esc(nomeDoPais(c))}</option>`)).join('\n            ')}
           </select></span>
         </label>
         <dl class="basket__sums">
-          <dt>Pieces</dt><dd data-sum-goods>—</dd>
-          <dt>Shipping</dt><dd data-sum-shipping>—</dd>
-          <dt class="basket__grand">To pay</dt><dd class="basket__grand" data-sum-total>—</dd>
+          <dt>${esc(t('paginas.cesto.pecas'))}</dt><dd data-sum-goods>—</dd>
+          <dt>${esc(t('paginas.cesto.portes'))}</dt><dd data-sum-shipping>—</dd>
+          <dt class="basket__grand">${esc(t('paginas.cesto.aPagar'))}</dt><dd class="basket__grand" data-sum-total>—</dd>
         </dl>
         <!-- O prazo da encomenda inteira, escrito pelo script depois de
              perguntar ao Worker pelo stock. As frases vêm daqui, dos mesmos
@@ -349,10 +333,10 @@ export function basket({ shipping, shop }) {
         <p class="basket__lead" data-basket-lead hidden
            data-lead-stock="${esc(prazos(shop.lead).stock)}"
            data-lead-order="${esc(prazos(shop.lead).encomenda)}"
-           data-lead-few="There are not enough in stock for these quantities."
+           data-lead-few="${esc(t('paginas.cesto.stockInsuficiente'))}"
            data-lead-together="${esc(prazos(shop.lead).junto)}"
            data-lead-weeks="${esc(prazos(shop.lead).semanas)}"></p>
-        <p class="small muted">VAT is not charged: article 53 of the Portuguese VAT code applies.</p>
+        <p class="small muted">${esc(t('paginas.iva'))}</p>
       </aside>
     </div>
 
@@ -366,21 +350,21 @@ export function basket({ shipping, shop }) {
          browser valida sozinho, e quem usa leitor de ecrã ouve os erros sem
          que ninguém os tenha de escrever à mão. -->
     <form class="checkout" data-checkout-form novalidate>
-      <h2>Where it goes</h2>
+      <h2>${esc(t('paginas.entrega.titulo'))}</h2>
       <div class="checkout__grid">
-        <label class="field field--wide"><span>Your name</span>
+        <label class="field field--wide"><span>${esc(t('paginas.entrega.nome'))}</span>
           <input type="text" name="nome" autocomplete="name" required maxlength="120"></label>
-        <label class="field field--wide"><span>Email</span>
+        <label class="field field--wide"><span>${esc(t('paginas.entrega.email'))}</span>
           <input type="email" name="email" autocomplete="email" required maxlength="160"></label>
-        <label class="field field--wide"><span>Address</span>
+        <label class="field field--wide"><span>${esc(t('paginas.entrega.morada'))}</span>
           <input type="text" name="linha1" autocomplete="address-line1" required maxlength="160"></label>
-        <label class="field"><span>Post code</span>
+        <label class="field"><span>${esc(t('paginas.entrega.postal'))}</span>
           <input type="text" name="postal" autocomplete="postal-code" required maxlength="20"></label>
-        <label class="field"><span>Town</span>
+        <label class="field"><span>${esc(t('paginas.entrega.localidade'))}</span>
           <input type="text" name="cidade" autocomplete="address-level2" required maxlength="80"></label>
-        <label class="field"><span>Phone <span class="field__optional">optional</span></span>
+        <label class="field"><span>${esc(t('paginas.entrega.telefone'))} <span class="field__optional">${esc(t('paginas.entrega.opcional'))}</span></span>
           <input type="tel" name="telefone" autocomplete="tel" maxlength="40"></label>
-        <label class="field"><span>Tax number <span class="field__optional">optional, for the invoice</span></span>
+        <label class="field"><span>${esc(t('paginas.entrega.nif'))} <span class="field__optional">${esc(t('paginas.entrega.nifNota'))}</span></span>
           <input type="text" name="nif" inputmode="numeric" maxlength="20"></label>
       </div>
       <!-- A ESCOLHA DO MÉTODO PASSOU A SER AQUI.
@@ -389,14 +373,14 @@ export function basket({ shipping, shop }) {
            antes de o botão ser carregado -- o que também é o que a lei quer:
            o consumidor tem de saber o que vai acontecer ANTES de assumir a
            obrigação de pagar (artigo 4.º n.º 1 do DL 24/2014). -->
-      <h2 style="margin-block-start:2rem">How you pay</h2>
+      <h2 style="margin-block-start:2rem">${esc(t('paginas.metodo.titulo'))}</h2>
       <div class="pay-choice" data-pay-methods>
         <label class="pay-choice__opt">
           <input type="radio" name="metodo" value="MBWAY" required>
           ${marca('mbway')}
           <span class="pay-choice__body">
             <span class="pay-choice__name">MB WAY</span>
-            <span class="pay-choice__note">You get the request on your phone and accept it there. Takes a minute.</span>
+            <span class="pay-choice__note">${esc(t('paginas.metodo.mbway.nota'))}</span>
           </span>
         </label>
         <!-- SÓ APARECE COM O MB WAY ESCOLHIDO: pedir um telemóvel a quem vai
@@ -408,7 +392,7 @@ export function basket({ shipping, shop }) {
              dentro do rótulo de um rádio faz cada clique no campo mexer no
              rádio. -->
         <label class="field pay-choice__extra" data-mbway-phone>
-          <span>Your MB WAY phone number</span>
+          <span>${esc(t('paginas.metodo.mbway.telemovel'))}</span>
           <!-- A linha que dizia «Portuguese mobile. We send it to ifthenpay…»
                saiu a pedido da dona. O que ela dizia não se perdeu: o formato
                está no atributo placeholder, um número que não sirva devolve uma
@@ -426,8 +410,8 @@ export function basket({ shipping, shop }) {
           <input type="radio" name="metodo" value="MB" required>
           ${marca('multibanco')}
           <span class="pay-choice__body">
-            <span class="pay-choice__name">Multibanco reference</span>
-            <span class="pay-choice__note">We give you an entity and a reference to pay at an ATM or in home banking.</span>
+            <span class="pay-choice__name">${esc(t('paginas.metodo.mb.nome'))}</span>
+            <span class="pay-choice__note">${esc(t('paginas.metodo.mb.nota'))}</span>
           </span>
         </label>
         <!-- OS TRÊS ÚLTIMOS LEVAM O COMPRADOR DAQUI PARA FORA, e as notas
@@ -439,8 +423,8 @@ export function basket({ shipping, shop }) {
           <input type="radio" name="metodo" value="CCARD" required>
           ${marca('cartao')}
           <span class="pay-choice__body">
-            <span class="pay-choice__name">Card</span>
-            <span class="pay-choice__note">Visa or Mastercard. You type the number on a secure page — we never see it.</span>
+            <span class="pay-choice__name">${esc(t('paginas.metodo.cartao.nome'))}</span>
+            <span class="pay-choice__note">${esc(t('paginas.metodo.cartao.nota'))}</span>
           </span>
         </label>
         <label class="pay-choice__opt">
@@ -448,7 +432,7 @@ export function basket({ shipping, shop }) {
           ${marca('googlepay')}
           <span class="pay-choice__body">
             <span class="pay-choice__name">Google Pay</span>
-            <span class="pay-choice__note">Pay with the card in your Google account.</span>
+            <span class="pay-choice__note">${esc(t('paginas.metodo.google.nota'))}</span>
           </span>
         </label>
         <label class="pay-choice__opt">
@@ -456,7 +440,7 @@ export function basket({ shipping, shop }) {
           ${marca('applepay')}
           <span class="pay-choice__body">
             <span class="pay-choice__name">Apple Pay</span>
-            <span class="pay-choice__note">Pay with Touch ID or Face ID on your Apple device.</span>
+            <span class="pay-choice__note">${esc(t('paginas.metodo.apple.nota'))}</span>
           </span>
         </label>
       </div>
@@ -467,35 +451,40 @@ export function basket({ shipping, shop }) {
            ambiguidade, que a encomenda implica pagar. «Checkout» ou «Continuar»
            não cumprem: a sanção é o contrato não vincular o consumidor. -->
       <button class="btn btn--wide" type="submit" data-to-checkout style="margin-block-start:1.25rem">
-        Order and pay</button>
+        ${esc(t('paginas.botao.encomendarEPagar'))}</button>
       <p class="small muted" style="margin-block-start:.6rem">
-        Payments are handled by ifthenpay. We never see your card, your bank or your MB WAY PIN.</p>
+        ${esc(t('paginas.cesto.ifthenpay'))}</p>
     </form>
   </div>
 </section>`;
 }
 
-const COUNTRY = {
-  PT: 'Portugal (mainland)', 'PT-20': 'Azores', 'PT-30': 'Madeira',
-  ES: 'Spain', FR: 'France', GB: 'United Kingdom', DE: 'Germany', CH: 'Switzerland',
-  AT: 'Austria', BE: 'Belgium', NL: 'Netherlands', LU: 'Luxembourg', IT: 'Italy',
-  IE: 'Ireland', DK: 'Denmark', SE: 'Sweden', FI: 'Finland', PL: 'Poland',
-  CZ: 'Czechia', SK: 'Slovakia', HU: 'Hungary', SI: 'Slovenia', HR: 'Croatia',
-  RO: 'Romania', BG: 'Bulgaria', GR: 'Greece', EE: 'Estonia', LV: 'Latvia',
-  LT: 'Lithuania', MT: 'Malta', CY: 'Cyprus', NO: 'Norway',
-};
+/* Os países que a loja sabe nomear. O nome é da língua da página
+   (paginas.json, «pais.<código>»); um código que não esteja aqui aparece como
+   está, como antes. É uma lista de CÓDIGOS e não de nomes porque é avaliada
+   ao importar, antes de o gerador escolher a língua. */
+const PAISES = [
+  'PT', 'PT-20', 'PT-30',
+  'ES', 'FR', 'GB', 'DE', 'CH',
+  'AT', 'BE', 'NL', 'LU', 'IT',
+  'IE', 'DK', 'SE', 'FI', 'PL',
+  'CZ', 'SK', 'HU', 'SI', 'HR',
+  'RO', 'BG', 'GR', 'EE', 'LV',
+  'LT', 'MT', 'CY', 'NO',
+];
+const nomeDoPais = (c) => (PAISES.includes(c) ? t(`paginas.pais.${c}`) : c);
 
 export function notFound() {
   return `
 <section class="section">
   <div class="shell shell--narrow" style="text-align:center">
-    <h1>There is nothing here</h1>
+    <h1>${esc(t('paginas.naoEncontrada.titulo'))}</h1>
     <p class="lede" style="margin-block-start:1rem">
-      The page you were looking for has moved or never existed.
+      ${esc(t('paginas.naoEncontrada.texto'))}
     </p>
     <p style="margin-block-start:2rem">
-      <a class="btn" href="/lamps/">See the lamps</a>
-      <a class="btn btn--ghost" href="/cathelier/" style="margin-inline-start:.5rem">See the pieces</a>
+      <a class="btn" href="/lamps/">${esc(t('paginas.botao.verCandeeiros'))}</a>
+      <a class="btn btn--ghost" href="/cathelier/" style="margin-inline-start:.5rem">${esc(t('paginas.botao.verPecas'))}</a>
     </p>
   </div>
 </section>`;
@@ -510,20 +499,22 @@ export function notFound() {
    template de JavaScript. O marcador saía literal para o ecrã -- e foi a
    contagem de marcadores por preencher do check-output que o apanhou, na
    mesma construção em que nasceu. */
+/* «A sua encomenda é a X»: a referência é um elemento que o script preenche,
+   e entra na frase por variável, para a marcação não ir para o dicionário. */
+const aReferencia = (atributo) => t('paginas.encomenda.referencia', { ref: `<strong ${atributo}>—</strong>` });
+
 export function thankYou(shop = {}) {
   return `
 <section class="section">
   <div class="shell shell--narrow page-prose" style="text-align:center">
-    <h1>Thank you</h1>
-    <p class="lede" data-order-state>Checking your payment…</p>
+    <h1>${esc(t('paginas.obrigado.titulo'))}</h1>
+    <p class="lede" data-order-state>${esc(t('paginas.obrigado.aVerificar'))}</p>
 
     <div data-order-ok hidden>
-      <p>Your order is <strong data-order-ref>—</strong>. Keep that reference: it is
-         what we both use if you write to us.</p>
-      <p>A confirmation is on its way to your inbox, with when to expect it.
-         The workshop starts now, and we will tell you when it ships.</p>
+      <p>${aReferencia('data-order-ref')}</p>
+      <p>${esc(t('paginas.encomenda.confirmacao'))}</p>
       <p style="margin-block-start:2rem">
-        <a class="btn" href="/lamps/">Back to the lamps</a>
+        <a class="btn" href="/lamps/">${esc(t('paginas.botao.voltarCandeeiros'))}</a>
       </p>
     </div>
 
@@ -533,22 +524,17 @@ export function thankYou(shop = {}) {
          e «espere um minuto e recarregue», e a segunda dizia a quase toda a
          gente que algo tinha corrido mal quando não tinha corrido mal nada. -->
     <div data-order-waiting hidden>
-      <p>Your order is <strong data-order-ref-waiting>—</strong>. Keep that
-         reference: it is what we both use if you write to us.</p>
-      <p>We have not received the payment yet, and that is normal if you chose a
-         Multibanco reference — it is yours for ${shop.payment?.referenceDays ?? 2} days.
-         Nothing is made and nothing is charged until you pay it.</p>
-      <p>The moment it reaches us we write to you, and the workshop starts. If
-         you have just paid, give it a minute and reload this page.</p>
+      <p>${aReferencia('data-order-ref-waiting')}</p>
+      <p>${esc(t('paginas.obrigado.porPagar', { dias: tn('paginas.dias', shop.payment?.referenceDays ?? 2) }))}</p>
+      <p>${esc(t('paginas.obrigado.quandoChegar'))}</p>
       <p style="margin-block-start:2rem">
-        <a class="btn btn--ghost" href="/lamps/">Back to the lamps</a>
+        <a class="btn btn--ghost" href="/lamps/">${esc(t('paginas.botao.voltarCandeeiros'))}</a>
       </p>
     </div>
 
     <div data-order-pending hidden>
-      <p>We could not find that order. If you have just paid, give it a minute
-         and reload this page.</p>
-      <p>If it stays like this, write to us — nothing will be charged twice.</p>
+      <p>${esc(t('paginas.encomenda.naoEncontrada'))}</p>
+      <p>${esc(t('paginas.encomenda.escreva'))}</p>
     </div>
   </div>
 </section>`;
@@ -570,85 +556,70 @@ export function payPage(shop = {}) {
   return `
 <section class="section">
   <div class="shell shell--narrow page-prose">
-    <h1>Pay for your order</h1>
-    <p class="lede" data-pay-state>Getting your payment ready…</p>
+    <h1>${esc(t('paginas.pagar.titulo'))}</h1>
+    <p class="lede" data-pay-state>${esc(t('paginas.pagar.aPreparar'))}</p>
 
     <!-- MB WAY: o comprador tem quatro minutos para aceitar na app. -->
     <div data-pay-mbway hidden>
-      <h2>Open your MB WAY app</h2>
-      <p>We sent a payment request to your phone. Open MB WAY, check the amount,
-         and accept it.</p>
+      <h2>${esc(t('paginas.pagar.mbway.titulo'))}</h2>
+      <p>${esc(t('paginas.pagar.mbway.texto'))}</p>
       <p class="pay-amount"><span data-pay-amount>—</span></p>
       <p class="pay-clock" role="status">
-        Time left: <strong data-pay-countdown>4:00</strong></p>
-      <p class="small muted">Leave this page open — it changes by itself the moment
-         you accept. If the request expires, you can order again and choose a
-         Multibanco reference instead.</p>
+        ${t('paginas.pagar.mbway.tempo', { tempo: '<strong data-pay-countdown>4:00</strong>' })}</p>
+      <p class="small muted">${esc(t('paginas.pagar.mbway.aviso'))}</p>
     </div>
 
     <!-- Multibanco: a referência é o produto. Grande, copiável, e com o valor
          exacto ao lado, porque pagar um cêntimo a menos não confirma nada. -->
     <div data-pay-mb hidden>
-      <h2>Pay this Multibanco reference</h2>
-      <p>At an ATM choose <em>Pagamentos e outros serviços</em> → <em>Pagamentos de serviços</em>,
-         or use your bank&rsquo;s app or home banking.</p>
+      <h2>${esc(t('paginas.pagar.mb.titulo'))}</h2>
+      <p>${t('paginas.pagar.mb.como')}</p>
       <dl class="pay-ref">
         <div class="pay-ref__row">
-          <dt>Entity</dt>
+          <dt>${esc(t('paginas.pagar.mb.entidade'))}</dt>
           <dd><span data-pay-entity>—</span>
-            <button type="button" class="pay-copy" data-copy="entity">Copy</button></dd>
+            <button type="button" class="pay-copy" data-copy="entity">${esc(t('paginas.botao.copiar'))}</button></dd>
         </div>
         <div class="pay-ref__row">
-          <dt>Reference</dt>
+          <dt>${esc(t('paginas.pagar.mb.referencia'))}</dt>
           <dd><span data-pay-reference>—</span>
-            <button type="button" class="pay-copy" data-copy="reference">Copy</button></dd>
+            <button type="button" class="pay-copy" data-copy="reference">${esc(t('paginas.botao.copiar'))}</button></dd>
         </div>
         <div class="pay-ref__row">
-          <dt>Amount</dt>
+          <dt>${esc(t('paginas.pagar.mb.valor'))}</dt>
           <dd><span data-pay-amount-mb>—</span>
-            <button type="button" class="pay-copy" data-copy="amount">Copy</button></dd>
+            <button type="button" class="pay-copy" data-copy="amount">${esc(t('paginas.botao.copiar'))}</button></dd>
         </div>
       </dl>
-      <p>The reference is yours for ${dias} days<span data-pay-expiry hidden>, until
-         <strong data-pay-expiry-date>—</strong></span>. Nothing is made and nothing is
-         charged until you pay it.</p>
-      <p class="small muted">The moment the payment reaches us we write to you and the
-         workshop starts. You can close this page — we have the reference in your
-         email too.</p>
+      <p>${t('paginas.pagar.mb.validade', { dias: tn('paginas.dias', dias), data: '<strong data-pay-expiry-date>—</strong>' })}</p>
+      <p class="small muted">${esc(t('paginas.pagar.mb.depois'))}</p>
     </div>
 
     <!-- Pago. Não se manda ninguém para outro lado: o comprador acabou de
          fazer uma coisa e quer ver que resultou, não um redireccionamento. -->
     <div data-pay-done hidden>
-      <h2>Paid — thank you</h2>
-      <p>Your order is <strong data-pay-ref>—</strong>. Keep that reference: it is
-         what we both use if you write to us.</p>
-      <p>A confirmation is on its way to your inbox, with when to expect it.
-         The workshop starts now, and we will tell you when it ships.</p>
-      <p style="margin-block-start:2rem"><a class="btn" href="/lamps/">Back to the lamps</a></p>
+      <h2>${esc(t('paginas.pagar.pago'))}</h2>
+      <p>${aReferencia('data-pay-ref')}</p>
+      <p>${esc(t('paginas.encomenda.confirmacao'))}</p>
+      <p style="margin-block-start:2rem"><a class="btn" href="/lamps/">${esc(t('paginas.botao.voltarCandeeiros'))}</a></p>
     </div>
 
     <!-- Recusado ou expirado no MB WAY. Não é uma avaria e o texto não trata
          disto como se fosse: é alguém que carregou em «não» ou deixou passar. -->
     <div data-pay-failed hidden>
-      <h2 data-pay-failed-title>The request expired</h2>
-      <p data-pay-failed-text>Nothing was charged. Your basket is still here, so you
-         can order again — and if MB WAY is being awkward, a Multibanco reference
-         always works.</p>
+      <h2 data-pay-failed-title>${esc(t('paginas.pagar.expirou.titulo'))}</h2>
+      <p data-pay-failed-text>${esc(t('paginas.pagar.expirou.texto'))}</p>
       <p style="margin-block-start:2rem">
-        <a class="btn" href="/cart/">Back to the basket</a></p>
+        <a class="btn" href="/cart/">${esc(t('paginas.botao.voltarCesto'))}</a></p>
     </div>
 
     <div data-pay-unknown hidden>
-      <p>We could not find that order. If you have just paid, give it a minute and
-         reload this page.</p>
-      <p>If it stays like this, write to us — nothing will be charged twice.</p>
+      <p>${esc(t('paginas.encomenda.naoEncontrada'))}</p>
+      <p>${esc(t('paginas.encomenda.escreva'))}</p>
     </div>
 
     <p class="small muted" style="margin-block-start:2.5rem">
-      Payments are handled by <a href="https://ifthenpay.com/" rel="noopener">ifthenpay</a>,
-      a Portuguese payment institution. We never see your card, your bank or your
-      MB WAY PIN.</p>
+      ${t('paginas.pagar.ifthenpay', { ifthenpay: '<a href="https://ifthenpay.com/" rel="noopener">ifthenpay</a>' })}</p>
   </div>
 </section>`;
 }
@@ -661,15 +632,12 @@ export function orderCancelled() {
          Quem chegou aqui pode ter uma referência Multibanco emitida e ainda por
          pagar: nesse caso nada foi cobrado AINDA, que é outra coisa. O texto
          diz o que se sabe -- não avançámos -- sem jurar o que não se sabe. -->
-    <h1>The order was not placed</h1>
-    <p class="lede">You left the payment page, so we have not taken anything and
-       the order has not gone through.</p>
-    <p>If you were given a Multibanco reference before you left, it may still be
-       valid — paying it will confirm the order. Otherwise your basket is still
-       here if you want to pick it up again.</p>
+    <h1>${esc(t('paginas.cancelada.titulo'))}</h1>
+    <p class="lede">${esc(t('paginas.cancelada.entrada'))}</p>
+    <p>${esc(t('paginas.cancelada.texto'))}</p>
     <p style="margin-block-start:2rem">
-      <a class="btn" href="/cart/">Back to the basket</a>
-      <a class="btn btn--ghost" href="/lamps/" style="margin-inline-start:.5rem">Keep looking</a>
+      <a class="btn" href="/cart/">${esc(t('paginas.botao.voltarCesto'))}</a>
+      <a class="btn btn--ghost" href="/lamps/" style="margin-inline-start:.5rem">${esc(t('paginas.botao.continuarAVer'))}</a>
     </p>
   </div>
 </section>`;
@@ -683,48 +651,44 @@ export function resellers() {
   return `
 <section class="section">
   <div class="shell shell--narrow page-prose resellers" data-resellers>
-    <h1>Resellers</h1>
+    <h1>${esc(t('paginas.revenda.titulo'))}</h1>
 
     <div data-rv-fora>
-      <p class="lede">If we have registered you as a reseller, sign in here to see your price
-        next to the retail price on every piece, and to buy at it.</p>
+      <p class="lede">${esc(t('paginas.revenda.entrada'))}</p>
 
       <form class="rv-form" data-rv-pedir novalidate>
-        <label class="field"><span>Your NIF</span>
+        <label class="field"><span>${esc(t('paginas.revenda.nif'))}</span>
           <input type="text" name="nif" inputmode="numeric" autocomplete="off" maxlength="11" required></label>
-        <button class="btn" type="submit">Email me a sign-in link</button>
+        <button class="btn" type="submit">${esc(t('paginas.revenda.pedirLigacao'))}</button>
       </form>
       <p class="rv-msg" data-rv-pedir-msg role="status" hidden></p>
 
-      <h2>Got the code on another device?</h2>
+      <h2>${esc(t('paginas.revenda.outroDispositivo'))}</h2>
       <form class="rv-form" data-rv-codigo novalidate>
-        <label class="field"><span>Your NIF</span>
+        <label class="field"><span>${esc(t('paginas.revenda.nif'))}</span>
           <input type="text" name="nif" inputmode="numeric" autocomplete="off" maxlength="11" required></label>
-        <label class="field"><span>The code from the email</span>
+        <label class="field"><span>${esc(t('paginas.revenda.codigo'))}</span>
           <input type="text" name="codigo" autocomplete="one-time-code" autocapitalize="characters" spellcheck="false" maxlength="12" required></label>
-        <label class="check"><input type="checkbox" name="manter"><span>Keep me signed in on this device</span></label>
-        <button class="btn" type="submit">Sign in</button>
+        <label class="check"><input type="checkbox" name="manter"><span>${esc(t('paginas.revenda.manter'))}</span></label>
+        <button class="btn" type="submit">${esc(t('paginas.revenda.entrar'))}</button>
       </form>
       <p class="rv-msg" data-rv-codigo-msg role="status" hidden></p>
 
-      <p class="small muted">Not a reseller yet? <a href="/contact/">Talk to us</a>.
-        Reseller purchases follow the <a href="/legal/terms/#resellers">reseller conditions</a>.</p>
+      <p class="small muted">${t('paginas.revenda.aindaNao')}</p>
     </div>
 
     <div data-rv-dentro hidden>
-      <p class="lede">Reseller prices are on for <strong data-rv-firma></strong>
-        (NIF <span data-rv-nif></span>).</p>
-      <label class="check"><input type="checkbox" data-rv-manter><span>Keep me signed in on this device</span></label>
-      <p><button class="btn btn--ghost" type="button" data-rv-sair>Sign out</button></p>
+      <p class="lede">${t('paginas.revenda.ativos', { firma: '<strong data-rv-firma></strong>', nif: '<span data-rv-nif></span>' })}</p>
+      <label class="check"><input type="checkbox" data-rv-manter><span>${esc(t('paginas.revenda.manter'))}</span></label>
+      <p><button class="btn btn--ghost" type="button" data-rv-sair>${esc(t('paginas.revenda.sair'))}</button></p>
 
-      <h2>Your price list</h2>
-      <p class="small muted">Retail prices are recommended retail prices — you set your own.
-        The discount comes off each piece; paid options are at their normal price.
-        VAT is not charged: article 53 of the Portuguese VAT code applies.
-        <a href="/legal/terms/#resellers">Reseller conditions</a>.</p>
+      <h2>${esc(t('paginas.revenda.tabela'))}</h2>
+      <p class="small muted">${esc(t('paginas.revenda.precos'))}
+        ${esc(t('paginas.iva'))}
+        <a href="/legal/terms/#resellers">${esc(t('paginas.revenda.condicoes'))}</a>.</p>
       <div class="rv-table-wrap">
         <table class="rv-table" data-rv-tabela>
-          <thead><tr><th scope="col">Piece</th><th scope="col">RRP</th><th scope="col">Your price</th><th scope="col">In stock</th></tr></thead>
+          <thead><tr><th scope="col">${esc(t('paginas.revenda.peca'))}</th><th scope="col">${esc(t('paginas.revenda.pvp'))}</th><th scope="col">${esc(t('paginas.revenda.seuPreco'))}</th><th scope="col">${esc(t('paginas.revenda.emStock'))}</th></tr></thead>
           <tbody></tbody>
         </table>
       </div>

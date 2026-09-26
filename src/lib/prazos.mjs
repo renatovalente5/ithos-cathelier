@@ -8,11 +8,16 @@
  * trás quando o número mudar. O Worker usa os mesmos números nos emails.
  *
  * O público vê «In stock» ou «Out of stock», nunca quantos: só os revendedores
- * vêem os números, e isso é o script da página que o acrescenta. */
+ * vêem os números, e isso é o script da página que o acrescenta.
+ *
+ * As frases são da língua da página (src/i18n/<língua>/prazos.json); os
+ * números são os mesmos em todas. Tudo isto é chamado ao desenhar, depois de
+ * o gerador escolher a língua. */
+import { t, tn } from './i18n.mjs';
 
 export function semanas(lead) {
   const [a, b] = lead.toOrderWeeks;
-  return a === b ? `${a} weeks` : `${a} to ${b} weeks`;
+  return a === b ? tn('prazos.semanas', a) : t('prazos.semanas.intervalo', { a, b });
 }
 
 /* «3 to 5 working days». Aceita ainda um número só (`inStockDays: 3`), que
@@ -20,17 +25,17 @@ export function semanas(lead) {
 export function dias(lead) {
   const d = lead.inStockDays;
   const [a, b] = Array.isArray(d) ? d : [d, d];
-  return a === b ? `${a} working days` : `${a} to ${b} working days`;
+  return a === b ? tn('prazos.dias', a) : t('prazos.dias.intervalo', { a, b });
 }
 
 export function prazos(lead) {
   const w = semanas(lead);
   return {
-    stock: `In stock — leaves the workshop in ${dias(lead)}.`,
-    semStock: `Out of stock — we make yours, with you in ${w}.`,
-    encomenda: `Made to order — with you in ${w}.`,
+    stock: t('prazos.stock', { dias: dias(lead) }),
+    semStock: t('prazos.semStock', { semanas: w }),
+    encomenda: t('prazos.encomenda', { semanas: w }),
     /* Para o cesto, quando a encomenda inteira espera pela peça mais lenta. */
-    junto: `Everything ships together, when the last piece is ready.`,
+    junto: t('prazos.junto'),
     semanas: w,
     dias: dias(lead),
   };
