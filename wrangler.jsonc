@@ -1,0 +1,26 @@
+// O SITE NA CLOUDFLARE: um Worker só com ficheiros estáticos (a pasta public/
+// que o gerador escreve). Sem código: cada pedido é servido directamente, sem
+// contar para a quota de pedidos do Worker.
+//
+// PORQUÊ: os termos do GitHub Pages proíbem usá-lo para uma loja online
+// («not intended for or allowed to be used … to run your online business,
+// e-commerce site» — GitHub Terms for Additional Products and Features, Pages).
+// Ver o plano em README / notas de 26 set 2026.
+//
+// Publica-se com `wrangler deploy` a partir DESTA pasta (nunca da pasta-mãe:
+// a autoconfiguração inventa um Worker com o conteúdo de outro projecto).
+{
+  "name": "ithos-cathelier-site",
+  "compatibility_date": "2026-09-01",
+  "assets": {
+    "directory": "./public",
+    // Uma morada que não existe mostra a 404.html (o valor por omissão, «none»,
+    // devolvia um 404 vazio).
+    "not_found_handling": "404-page",
+    "html_handling": "auto-trailing-slash"
+  },
+  // O endereço de ensaio em workers.dev fica ligado enquanto o domínio não
+  // passa para a Cloudflare; depois desliga-se (e as pré-visualizações também).
+  "workers_dev": true,
+  "preview_urls": false
+}

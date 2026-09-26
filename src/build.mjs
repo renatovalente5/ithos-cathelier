@@ -346,6 +346,9 @@ function assets() {
   // the site is on a project path it must NOT be written, or Pages redirects
   // to a domain that does not resolve yet and the whole site disappears.
   if (cname && !BASE) writeFileSync(join(OUT, 'CNAME'), cname + '\n');
+  /* O que a Cloudflare NÃO publica quando serve esta pasta (wrangler.jsonc):
+     a bateria de browser, que se copia para aqui só para correr. */
+  writeFileSync(join(OUT, '.assetsignore'), '_battery.js\n_drive.html\n.DS_Store\n');
 }
 
 /* --- the catalogue the Worker prices against -----------------------------
