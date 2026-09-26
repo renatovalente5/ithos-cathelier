@@ -1,4 +1,4 @@
-<!-- origem: 1b81761f9a2e partes: f64f1fa9ac8a 28df60905360 9b5ed8bfe814 c1355728b81d 2aac7d4a27e6 5766c2ac7490 c02bf8b6ba04 -->
+<!-- origem: 74bee2f2aa87 partes: f64f1fa9ac8a 28df60905360 9b5ed8bfe814 9dafa14fa943 2aac7d4a27e6 926bd6403145 c02bf8b6ba04 -->
 # Privacy
 
 ## The short version
@@ -31,10 +31,10 @@ to answer and a reasonable time afterwards.
 the email address you enter (it may not be the one you ordered with) and, if
 you give them, the items. We use them to
 deal with your withdrawal and to send you the acknowledgement of receipt, and
-we keep them for 3 years, as proof of when you sent us the withdrawal. The legal
-basis is the contract between us and the legal obligation to acknowledge
-receipt; keeping them afterwards is the legitimate interest, yours and ours,
-in being able to prove that date.
+we keep them for 3 years from the last withdrawal made for that order, as proof
+of when you sent us the withdrawal. The legal basis is the contract between us
+and the legal obligation to acknowledge receipt; keeping them afterwards is the
+legitimate interest, yours and ours, in being able to prove that date.
 
 **Your IBAN, but only if we owe you money on a payment that has no way back.**
 A Multibanco reference cannot be reversed, so if you cancel an order paid
@@ -92,9 +92,9 @@ are deleted from the shop's system after ninety days — long enough for a
 Multibanco reference to be paid late and for us to answer a question about it.
 Of an order paid by a consumer, the number, the name, the email, the names of
 the items, the date and time of payment and the language remain for 18 months,
-for the withdrawal function; a withdrawal made
-on the site is kept for 3 years. Emails are kept for as long as they are useful
-and then deleted.
+for the withdrawal function. A withdrawal made on the site is kept for 3 years
+from the last withdrawal made for that order. Emails are kept for as long as
+they are useful and then deleted.
 
 ## What you can ask for
 

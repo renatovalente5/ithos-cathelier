@@ -32,7 +32,7 @@
   "faq.prazo": "Quanto tempo demora?",
   "faq.prazo.resposta": "<p>Um candeeiro em stock sai da oficina em {dias}. Se estiver sem stock, pode encomendá-lo na mesma: fazemos o seu, e chega até si em {semanas}. A página de cada produto diz qual é o caso.</p> <p>As peças da cathelier são sempre feitas por encomenda — {semanas}, a contar do dia em que aprova o desenho. Se alguma peça da encomenda for feita por encomenda, segue tudo junto.</p>",
   "faq.nome": "Pode levar um nome?",
-  "faq.nome.resposta": "<p>Sim, em qualquer peça, e sem custo extra. Escreva-o na caixa da gravação, na página do produto — um nome, uma data ou uma frase curta.</p> <p>Uma coisa a saber: uma peça com um nome é feita só para si, por isso só pode desistir dela até começarmos a fazê-la; a partir daí, deixa de ter os 14 dias de livre resolução. Escolher uma cor que já oferecemos não é personalização e não afeta o seu direito de livre resolução.</p>",
+  "faq.nome.resposta": "<p>Sim, em qualquer peça, e sem custo extra. Escreva-o na caixa da gravação, na página do produto — um nome, uma data ou uma frase curta.</p> <p>Uma coisa a saber: uma peça com um nome é feita só para si, por isso só pode desistir dela até começarmos a fazê-la; a partir daí, deixa de ter os {dias} dias de livre resolução. Escolher uma cor que já oferecemos não é personalização e não afeta o seu direito de livre resolução.</p>",
   "faq.seguranca": "É seguro no quarto de um bebé?",
   "faq.seguranca.resposta": "<p>São candeeiros de presença decorativos, não são brinquedos. São feitos em pinho maciço com tintas de base aquosa e todas as arestas são lixadas à mão, mas não são testados como brinquedos e não devem ser dados a uma criança pequena para brincar.</p> <p>Se for para o quarto de um bebé, mantenha o cabo longe do berço. <a href=\"/care-and-safety/\">Tudo sobre cuidados e segurança</a>.</p>",
   "faq.pilhas": "Pilhas ou corrente?",
@@ -210,6 +210,6 @@
   "retratacao.recebida.aviso": "Vai receber no seu email um aviso de receção, com o que nos enviou e a data e a hora em que o enviou.",
   "retratacao.recebida.semAviso": "A sua retratação ficou registada, mas o aviso de receção não seguiu agora por email. Vamos enviar-lho nós, por escrito, para o email com que fez a encomenda, nas próximas 24 horas. Até lá, guarde esta página: tem a data e a hora em que a enviou.",
   "retratacao.repetida.semAviso": "O aviso de receção desta declaração ainda não seguiu por email. Vamos enviar-lho nós, por escrito, para o email com que fez a encomenda, nas próximas 24 horas. Até lá, guarde esta página.",
-  "retratacao.recebida.devolver": "Se já recebeu a encomenda, devolva as peças no prazo de {n} dias a contar do dia em que enviou a retratação (as personalizadas que já tivéssemos começado a fazer não se devolvem): <a href=\"/legal/cancellation/\">como devolver e como recebe o dinheiro</a>.",
+  "retratacao.recebida.devolver": "Se se retratou dentro do prazo e já recebeu a encomenda, devolva as peças no prazo de {n} dias a contar do dia em que enviou a retratação (as personalizadas que já tenhamos começado a fazer não se devolvem): <a href=\"/legal/cancellation/\">como devolver e como recebe o dinheiro</a>.",
   "retratacao.revenda": "Esta encomenda foi feita como revendedor: o direito de livre resolução não se aplica a compras para revenda. Respondemos-lhe por email."
 }

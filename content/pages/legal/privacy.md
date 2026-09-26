@@ -30,7 +30,8 @@ responder e um tempo razoável depois.
 encomenda, o email que escrever (pode não ser o da compra) e, se os indicar,
 os artigos. Usamo-los para
 tratar a retratação e para lhe enviar o aviso de receção, e guardamo-los
-durante 3 anos, como prova de quando nos enviou a retratação. O fundamento é o
+durante 3 anos a contar da última declaração de livre resolução dessa
+encomenda, como prova de quando nos enviou a retratação. O fundamento é o
 contrato entre nós e a obrigação legal de acusar a receção; guardá-los depois
 é o interesse legítimo, seu e nosso, de se poder provar essa data.
 
@@ -92,8 +93,10 @@ pagas ou não, são apagadas do sistema da loja ao fim de noventa dias — o
 suficiente para uma referência Multibanco ser paga com atraso e para
 respondermos a uma pergunta sobre ela. De uma encomenda paga por um consumidor
 ficam, durante 18 meses, o número, o nome, o email, o nome dos artigos, a data
-e a hora do pagamento e a língua, para a função de retratação; uma retratação feita no site guarda-se 3 anos. Os emails
-guardam-se enquanto forem úteis e depois são apagados.
+e a hora do pagamento e a língua, para a função de retratação. Uma retratação
+feita no site guarda-se durante 3 anos a contar da última declaração de livre
+resolução dessa encomenda. Os emails guardam-se enquanto forem úteis e depois
+são apagados.
 
 ## O que pode pedir
 

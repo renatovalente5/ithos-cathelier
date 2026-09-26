@@ -823,9 +823,11 @@ for (const [canonical, group] of byCanonical) {
         const porque = semCircunstancia(texto, lang);
         if (porque) { deaths.push(`${onde}: o aviso das personalizadas ${porque}`); break; }
       }
-      /* A linha dos candeeiros junto ao botão («14 dias para mudar de
-         ideias…»): é a mesma informação, e diz-se da mesma maneira. */
-      const linha = html.match(/<span>[^<]*·\s*(\d+ [^<]*)<\/span>/)?.[1];
+      /* A linha dos candeeiros junto ao botão («14 dias de livre resolução,
+         por lei…», «14-day legal right to cancel…»): é a mesma informação, e
+         diz-se da mesma maneira. O número pode vir colado ao nome por um
+         hífen, como no inglês. */
+      const linha = html.match(/<span>[^<]*·\s*(\d+[ -][^<]*)<\/span>/)?.[1];
       if (/\/lamps\//.test(onde) && linha) {
         const porque = semCircunstancia(linha, lang);
         if (porque) deaths.push(`${onde}: a linha da garantia ${porque}`);

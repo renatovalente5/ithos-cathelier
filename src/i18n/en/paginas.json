@@ -117,8 +117,8 @@
     "h": "d700b97d557d"
   },
   "faq.nome.resposta": {
-    "t": "<p>Yes, on anything, and it costs nothing extra. Put it in the engraving box on the product page — a name, a date, or a short phrase.</p> <p>One thing to know: a piece with a name on it is made for you alone, so you can only cancel it until we start making it; from then on, the 14-day right to cancel no longer applies. Choosing a colour we already offer is not personalisation and does not affect your right to cancel.</p>",
-    "h": "efb1291c26af"
+    "t": "<p>Yes, on anything, and it costs nothing extra. Put it in the engraving box on the product page — a name, a date, or a short phrase.</p> <p>One thing to know: a piece with a name on it is made for you alone, so you can only cancel it until we start making it; from then on, the {dias}-day right to cancel no longer applies. Choosing a colour we already offer is not personalisation and does not affect your right to cancel.</p>",
+    "h": "0aa0850d8ffa"
   },
   "faq.seguranca": {
     "t": "Is it safe in a baby’s room?",
@@ -774,8 +774,8 @@
     "h": "ea7b508269d9"
   },
   "retratacao.recebida.devolver": {
-    "t": "If you have already received the order, send the items back within {n} days of the day you sent your withdrawal (personalised pieces we had already started making are not returned): <a href=\"/legal/cancellation/\">how to return them and how you get your money back</a>.",
-    "h": "6934af16ecc5"
+    "t": "If you withdrew in time and have already received the order, send the items back within {n} days of the day you sent your withdrawal (personalised pieces we have already started making are not returned): <a href=\"/legal/cancellation/\">how to return them and how you get your money back</a>.",
+    "h": "383130db83bc"
   },
   "retratacao.revenda": {
     "t": "This order was placed as a reseller: the right to cancel does not apply to purchases for resale. We will reply to you by email.",

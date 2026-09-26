@@ -376,7 +376,7 @@ export function contact({ identity, shop, faq }) {
    com ela: as duas línguas têm as mesmas etiquetas, e só o texto muda. */
 export const FAQ = (shop) => [
   [t('paginas.faq.prazo'), t('paginas.faq.prazo.resposta', { dias: prazos(shop.lead).dias, semanas: prazos(shop.lead).semanas })],
-  [t('paginas.faq.nome'), t('paginas.faq.nome.resposta')],
+  [t('paginas.faq.nome'), t('paginas.faq.nome.resposta', { dias: shop.returns.coolingOffDays })],
   [t('paginas.faq.seguranca'), t('paginas.faq.seguranca.resposta')],
   [t('paginas.faq.pilhas'), t('paginas.faq.pilhas.resposta')],
   [t('paginas.faq.portes'), t('paginas.faq.portes.resposta')],
