@@ -56,6 +56,8 @@
   "cancelada.descricao": "Fechou a página de pagamento, por isso a encomenda não foi feita.",
   "naoEncontrada.titulo": "Página não encontrada — ithos · cathelier",
   "naoEncontrada.descricao": "A página que procurava mudou de sítio ou nunca existiu.",
+  "naoEncontrada.tituloCathelier": "Página não encontrada — cathelier",
+  "naoEncontrada.descricaoCathelier": "A peça ou a página que procurava mudou de sítio ou nunca existiu.",
   "stub.titulo": "{nome} — passou para a lista completa | cathelier",
   "stub.texto": "Esta página mudou de sítio. «{nome}» é agora um filtro na lista completa das peças.",
   "stub.ir": "Ir para «{nome}»",

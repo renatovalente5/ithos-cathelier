@@ -224,6 +224,14 @@
     "t": "The page you were looking for has moved or never existed.",
     "h": "34bc7ec08e5e"
   },
+  "naoEncontrada.tituloCathelier": {
+    "t": "Not found — cathelier",
+    "h": "f73da91818f2"
+  },
+  "naoEncontrada.descricaoCathelier": {
+    "t": "The piece or page you were looking for has moved or never existed.",
+    "h": "cc43222a0d60"
+  },
   "stub.titulo": {
     "t": "{nome} — moved to the full list | cathelier",
     "h": "c95a5d439fde"

@@ -757,8 +757,8 @@ function buildShared() {
   for (const [marca, onde] of [['ithos', '/404.html'], ['cathelier', '/cathelier/404.html']]) {
     write(onde, page({
       ...shellArgs, brand: marca, path: onde, noindex: true, semMorada: true,
-      title: t('build.naoEncontrada.titulo'),
-      description: t('build.naoEncontrada.descricao'),
+      title: t(marca === 'cathelier' ? 'build.naoEncontrada.tituloCathelier' : 'build.naoEncontrada.titulo'),
+      description: t(marca === 'cathelier' ? 'build.naoEncontrada.descricaoCathelier' : 'build.naoEncontrada.descricao'),
       body: pages.notFound(),
     }), { sitemap: false });
   }
