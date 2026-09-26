@@ -1,5 +1,5 @@
 import { esc, money, picture, prose, wholePicture } from './html.mjs';
-import { shapeOf, rungs, cardFocus } from './photo.mjs';
+import { shapeOf, rungs, cardFocus, cardWidths } from './photo.mjs';
 import { viewer } from './viewer.mjs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -100,6 +100,17 @@ export function card(p, { eager = false } = {}) {
   const shots = [p.cover, ...(p.photos || []).filter((n) => n !== p.cover)];
   const dir = `ithos/${p.photoFolder}`;
   const href = `/lamps/${esc(p.slug)}/`;
+  /* AS LARGURAS QUE TODAS AS FOTOGRAFIAS TÊM, e não só a capa. O script da
+     troca clona o <picture> da capa e muda-lhe só o nome: o srcset fica com a
+     escada da capa. Uma fotografia pequena ao lado de uma capa grande (as do
+     Instagram têm 414 px, e renditions.py não escreve um -1000 maior do que o
+     master) pedia um ficheiro que não existe, e a moldura ficava em branco no
+     clique, em ecrã retina. Com a intersecção, a capa perde o degrau de cima
+     nesse candeeiro -- menos nítida num ecrã grande, mas nunca em branco.
+     Todas têm o 200 (as guardas exigem-no); se um dia a intersecção ficasse
+     vazia, picture() voltava à escada da capa. */
+  const widths = shots.map((n) => cardWidths(dir, n))
+    .reduce((comum, ws) => comum.filter((w) => ws.includes(w)));
 
   /* The buttons ship EMPTY, and the script puts the pictures in them.
    *
@@ -128,7 +139,7 @@ export function card(p, { eager = false } = {}) {
   <a class="card__media" href="${href}" tabindex="-1" aria-hidden="true">
     <div class="frame card__frame">
       ${picture({
-        dir, name: p.cover,
+        dir, name: p.cover, widths,
         alt: t('ithos.cartao.alt', { nome: p.name }),
         sizes: '(min-width: 90rem) 340px, (min-width: 64rem) 30vw, (min-width: 48rem) 30vw, 46vw',
         loading: eager ? 'eager' : 'lazy',

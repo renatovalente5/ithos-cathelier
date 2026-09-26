@@ -19,6 +19,7 @@ import * as ithos from './lib/ithos.mjs';
 import * as cath from './lib/cathelier.mjs';
 import * as pages from './lib/pages.mjs';
 import { esc } from './lib/html.mjs';
+import { cardWidths } from './lib/photo.mjs';
 import { REDIRECTS } from './lib/redirects.mjs';
 import { stockDe, prateleiras } from './lib/prazos.mjs';
 import { t, lingua, LOCALE, LINGUAS, ORIGEM, definirLingua, linguaDaRaiz, prefixoDe, morada } from './lib/i18n.mjs';
@@ -483,17 +484,21 @@ function buildIthos() {
 
   for (const p of lamps) {
     const { low } = ithos.fromPrice(p);
+    /* A imagem para as redes e para o Google é a MAIOR versão da capa que
+       existe -- não um -1000 fixo: a coruja (540 px) nunca o teve, e a página
+       apontava para um ficheiro que dava 404. */
+    const partilha = `/media/ithos/${p.photoFolder}/${p.cover}-${Math.max(...cardWidths(`ithos/${p.photoFolder}`, p.cover))}.webp`;
     write(`/lamps/${p.slug}/`, page({
       ...shellArgs, brand: 'ithos', path: `/lamps/${p.slug}/`,
       title: t('build.candeeiro.titulo', { nome: p.name }),
       description: p.summary,
-      image: `/media/ithos/${p.photoFolder}/${p.cover}-1000.webp`,
+      image: partilha,
       crumbs: [{ name: t('build.migalha.inicio'), href: '/' }, { name: t('build.migalha.candeeiros'), href: '/lamps/' }, { name: p.name }],
       body: ithos.product({ p, all: lamps, shop }),
       schema: [{
         '@context': 'https://schema.org', '@type': 'Product',
         name: t('build.candeeiro.nomeProduto', { nome: p.name }), description: p.summary,
-        image: `${SITE}/media/ithos/${p.photoFolder}/${p.cover}-1000.webp`,
+        image: `${SITE}${partilha}`,
         brand: { '@type': 'Brand', name: 'ithos' },
         offers: {
           '@type': 'Offer', price: low.toFixed(2), priceCurrency: 'EUR',
