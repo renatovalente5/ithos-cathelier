@@ -371,7 +371,7 @@ function drawer({ brand, identity, counts, site, canonicalPath }) {
   <div class="drawer__contact">
     <a href="tel:${esc(identity.phone)}">${icon('phone', 18)}<span>${esc(identity.phoneText)}</span></a>
     <p class="drawer__cost">${esc(CALL_COST())}</p>
-    <a href="https://wa.me/${esc(identity.whatsapp)}" rel="noopener">${icon('whatsapp', 18)}<span>WhatsApp</span></a>
+    ${identity.whatsapp ? `<a href="https://wa.me/${esc(identity.whatsapp)}" rel="noopener">${icon('whatsapp', 18)}<span>WhatsApp</span></a>` : ''}
   </div>
   ${seletorDeLingua({ site, canonicalPath, classe: 'linguas linguas--gaveta' })}
 </dialog>`;
@@ -462,7 +462,9 @@ function footer({ brand, identity }) {
        que a distinga -- vinte ícones diferentes numa lista seriam ruído. */
     [t('shell.rodape.falar'), [
       [`tel:${i.phone}`, i.phoneText, CALL_COST(), 'phone'],
-      [`https://wa.me/${i.whatsapp}`, 'WhatsApp', '', 'whatsapp'],
+      /* Sem número de WhatsApp não há ligação: um «wa.me/» vazio abria a
+         aplicação sem destinatário. */
+      ...(i.whatsapp ? [[`https://wa.me/${i.whatsapp}`, 'WhatsApp', '', 'whatsapp']] : []),
       [`mailto:${i.email}`, i.email, '', 'mail'],
     ]],
   ];

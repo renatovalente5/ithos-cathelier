@@ -1,8 +1,8 @@
 # Cuidados e segurança
 
 As peças da cathelier são desenhadas, cortadas e gravadas a laser numa pequena
-oficina em Castelo Branco, e acabadas à mão. A maior parte é de madeira, e pede
-pouco para continuar como chegou: um pano seco e um sítio sem água nem calor.
+oficina em Castelo Branco, e acabadas à mão. Pedem pouco para continuar como
+chegaram: um pano seco e um sítio sem água nem calor.
 
 ## São peças decorativas
 
@@ -10,7 +10,7 @@ Uma peça da cathelier é para oferecer, para pendurar, para pousar ou para
 guardar. Não é um brinquedo, e não deve ser dada a uma criança pequena para
 brincar.
 
-Estes avisos valem para todas as peças:
+Estes avisos aparecem na página de todas as peças:
 
 {{SAFETY_LIST_CATHELIER}}
 

@@ -682,7 +682,7 @@ for (const [canonical, group] of byCanonical) {
      sobre o que já foi publicado no repositório. */
   const este = { where: first.where, canonical, lang: home.lang, alternates: home.alternates };
   const traducaoPorFazer = (o) => o.lang !== este.lang
-    && (o.alternates.has(este.canonical) || este.alternates.has(o.canonical));
+    && o.alternates.has(este.canonical) && este.alternates.has(o.canonical);
   const mesmoTitulo = titles.get(first.title);
   if (!mesmoTitulo) titles.set(first.title, este);
   else if (traducaoPorFazer(mesmoTitulo)) titulosPorTraduzir.push(`${first.where} (= ${mesmoTitulo.where})`);

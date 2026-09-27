@@ -115,10 +115,14 @@ export function markers({ identity, shop, shipping, pieces = [] }) {
   };
 }
 
+/* OS MARCADORES QUE VIRAM LISTA OU TABELA levam linhas em branco à volta: colado
+   a um parágrafo, um «- aviso» era lido como texto corrido e a lista de
+   segurança saía numa linha só. O painel já o exige; isto é a rede por baixo. */
+const MARCADORES_DE_BLOCO = new Set(['SHIPPING_TABLE', 'SAFETY_LIST', 'SAFETY_LIST_CATHELIER', 'SAFETY_BY_PIECE']);
 export function fill(text, table) {
   return text.replace(/\{\{([A-Z_]+)\}\}/g, (whole, key) => {
     if (!(key in table)) throw new Error(`Unknown marker ${whole} — a legal page would ship with a hole in it`);
-    return table[key];
+    return MARCADORES_DE_BLOCO.has(key) ? `\n\n${table[key]}\n\n` : table[key];
   });
 }
 
@@ -363,9 +367,9 @@ export function contact({ identity, shop, faq }) {
     <p class="lede">${esc(t('paginas.contacto.entrada'))}</p>
 
     <div class="contact-cards">
-      <a class="contact-card" href="https://wa.me/${esc(i.whatsapp)}" rel="noopener">
+      ${i.whatsapp ? `<a class="contact-card" href="https://wa.me/${esc(i.whatsapp)}" rel="noopener">
         ${icon('whatsapp', 22)}<span><strong>WhatsApp</strong><br>${esc(t('paginas.contacto.whatsapp'))}</span>
-      </a>
+      </a>` : ''}
       <a class="contact-card" href="mailto:${esc(i.email)}">
         ${icon('mail', 22)}<span><strong>${esc(i.email)}</strong><br>${esc(t('paginas.contacto.email'))}</span>
       </a>
@@ -423,9 +427,9 @@ export function quote({ identity }) {
     <p>${esc(t('paginas.orcamento.texto'))}</p>
 
     <div class="contact-cards">
-      <a class="contact-card" href="https://wa.me/${esc(identity.whatsapp)}" rel="noopener">
+      ${identity.whatsapp ? `<a class="contact-card" href="https://wa.me/${esc(identity.whatsapp)}" rel="noopener">
         ${icon('whatsapp', 22)}<span><strong>WhatsApp</strong><br>${esc(t('paginas.orcamento.whatsapp'))}</span>
-      </a>
+      </a>` : ''}
       <a class="contact-card" href="mailto:${esc(identity.email)}?subject=${esc(encodeURIComponent(t('paginas.orcamento.assunto')))}">
         ${icon('mail', 22)}<span><strong>${esc(identity.email)}</strong><br>${esc(t('paginas.orcamento.email'))}</span>
       </a>

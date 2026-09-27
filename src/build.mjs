@@ -659,6 +659,10 @@ function dressBody(html) {
   for (const m of MIRRORED) {
     out = out.replace(new RegExp(`href="${m}(#[^"]*)?"`, 'g'), (_, hash) => `href="/cathelier${m}${hash || ''}"`);
   }
+  /* Os cuidados não são uma página espelhada: cada marca tem a sua. Numa cópia
+     da cathelier (as perguntas frequentes dos contactos, por exemplo), a
+     ligação vai para a da cathelier e não para o manual dos candeeiros. */
+  out = out.replace(/href="\/care-and-safety\/(#[^"]*)?"/g, (_, hash) => `href="/cathelier/care-and-safety/${hash || ''}"`);
   return out;
 }
 
