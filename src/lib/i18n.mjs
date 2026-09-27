@@ -84,20 +84,32 @@ const maquina = {};
 
 /**
  * Uma frase do código, na língua actual. `{nome}` é trocado por vars.nome.
- * Sem tradução nessa língua, usa a de origem (e as guardas avisam); sem
+ * Sem tradução nessa língua, usa a de origem (e o gerador conta-a nos
+ * «textos por traduzir»); sem
  * nenhuma, REBENTA: uma chave que não existe é um erro do programador, e
  * publicar «ithos.adicionar» num botão não é uma opção.
  */
 export function t(chave, vars) {
   const d = carregar(actual);
   let s = d[chave];
-  if (s === undefined) s = carregar(ORIGEM)[chave];
+  if (s === undefined) {
+    s = carregar(ORIGEM)[chave];
+    /* A frase sai na língua de origem: fica contada, e o gerador di-lo no fim
+       («textos por traduzir»). O Worker traduz o dicionário sozinho. */
+    if (s !== undefined && actual !== ORIGEM) (porTraduzir[actual] ??= new Set()).add(chave);
+  }
   if (s === undefined) {
     for (const l of LINGUAS) { s = carregar(l)[chave]; if (s !== undefined) break; }
   }
   if (s === undefined) throw new Error(`i18n: não há a frase «${chave}» em nenhuma língua`);
   return vars ? s.replace(/\{(\w+)\}/g, (m, k) => (k in vars ? String(vars[k]) : m)) : s;
 }
+
+/* As frases que o t() foi buscar à língua de origem por não haver tradução
+   (ou por a da máquina não ter passado a validação), por língua. */
+const porTraduzir = {};
+/** { língua: [chaves] } das frases usadas sem tradução nessa língua. */
+export const frasesPorTraduzir = () => Object.fromEntries(Object.entries(porTraduzir).map(([l, s]) => [l, [...s].sort()]));
 
 /** Singular e plural: `tn('ithos.lampadas', n)` lê `ithos.lampadas.um` ou `.varios`. */
 export const tn = (chave, n, vars = {}) => t(`${chave}.${n === 1 ? 'um' : 'varios'}`, { n, ...vars });

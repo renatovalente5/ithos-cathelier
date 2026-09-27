@@ -43,7 +43,31 @@ export function fabricante(identity) {
     + `<a href="mailto:${esc(i.email)}">${esc(i.email)}</a></p>`;
 }
 
-export function markers({ identity, shop, shipping }) {
+/* UM TEXTO DA DONA NUMA LINHA DE MARKDOWN. O aviso de uma peça escreve-se no
+   painel numa caixa de duas linhas, e uma quebra no meio de um item de lista
+   partia-o em dois: o resto saía como um parágrafo solto, fora da lista. */
+const numaLinha = (s) => String(s ?? '').replace(/\s+/g, ' ').trim();
+
+/* OS AVISOS PRÓPRIOS DE CADA PEÇA, para a página de cuidados da cathelier
+   ({{SAFETY_BY_PIECE}}). Saem dos ficheiros das peças (gpsr.warnings), os
+   mesmos que a ficha de cada uma mostra -- nunca escritos na página à mão: no
+   dia em que a dona muda o aviso da vela no painel, muda nos dois sítios.
+   Só as peças publicadas (as outras não têm ficha para onde ligar), pela ordem
+   do catálogo, e na língua do passo: `pieces` já vem traduzido, com os nomes e
+   os avisos de content/i18n/<língua>/. O nome liga à ficha; o prefixo da
+   língua junta-o o gerador, como a todas as ligações internas. */
+function avisosPorPeca(pieces) {
+  const com = pieces
+    .map((p) => ({ p, avisos: (p.gpsr?.warnings ?? []).map(numaLinha).filter(Boolean) }))
+    .filter((x) => x.avisos.length);
+  if (!com.length) return `_${t('paginas.avisosPorPeca.nenhum')}_`;
+  /* Um parêntese recto no nome fechava a ligação do Markdown a meio. */
+  const nome = (p) => numaLinha(p.name).replace(/\[/g, '(').replace(/\]/g, ')');
+  return com.map(({ p, avisos }) => `### [${nome(p)}](/cathelier/pieces/${p.slug}/)\n\n`
+    + avisos.map((a) => `- ${a}`).join('\n')).join('\n\n');
+}
+
+export function markers({ identity, shop, shipping, pieces = [] }) {
   const i = identity;
   const address = enderecoDe(i);
 
@@ -81,16 +105,24 @@ export function markers({ identity, shop, shipping }) {
     FORM_URL: '/legal/returns-form/',
     SHIPPING_TABLE: table,
     SAFETY_LIST: (shop.safetyIthos || []).map((s) => `- ${s}`).join('\n'),
+    /* Os da cathelier, na página de cuidados dela: os de todas as peças
+       (shop.json) e os de cada peça (os ficheiros delas). */
+    SAFETY_LIST_CATHELIER: (shop.safetyCathelier || []).map(numaLinha).filter(Boolean).map((s) => `- ${s}`).join('\n'),
+    SAFETY_BY_PIECE: avisosPorPeca(pieces),
     // Under the Portuguese small-business exemption there is no VAT to state,
     // and saying so is required rather than optional.
     VAT_NOTE: t('paginas.iva'),
   };
 }
 
+/* OS MARCADORES QUE VIRAM LISTA OU TABELA levam linhas em branco à volta: colado
+   a um parágrafo, um «- aviso» era lido como texto corrido e a lista de
+   segurança saía numa linha só. O painel já o exige; isto é a rede por baixo. */
+const MARCADORES_DE_BLOCO = new Set(['SHIPPING_TABLE', 'SAFETY_LIST', 'SAFETY_LIST_CATHELIER', 'SAFETY_BY_PIECE']);
 export function fill(text, table) {
   return text.replace(/\{\{([A-Z_]+)\}\}/g, (whole, key) => {
     if (!(key in table)) throw new Error(`Unknown marker ${whole} — a legal page would ship with a hole in it`);
-    return table[key];
+    return MARCADORES_DE_BLOCO.has(key) ? `\n\n${table[key]}\n\n` : table[key];
   });
 }
 
@@ -335,9 +367,9 @@ export function contact({ identity, shop, faq }) {
     <p class="lede">${esc(t('paginas.contacto.entrada'))}</p>
 
     <div class="contact-cards">
-      <a class="contact-card" href="https://wa.me/${esc(i.whatsapp)}" rel="noopener">
+      ${i.whatsapp ? `<a class="contact-card" href="https://wa.me/${esc(i.whatsapp)}" rel="noopener">
         ${icon('whatsapp', 22)}<span><strong>WhatsApp</strong><br>${esc(t('paginas.contacto.whatsapp'))}</span>
-      </a>
+      </a>` : ''}
       <a class="contact-card" href="mailto:${esc(i.email)}">
         ${icon('mail', 22)}<span><strong>${esc(i.email)}</strong><br>${esc(t('paginas.contacto.email'))}</span>
       </a>
@@ -395,9 +427,9 @@ export function quote({ identity }) {
     <p>${esc(t('paginas.orcamento.texto'))}</p>
 
     <div class="contact-cards">
-      <a class="contact-card" href="https://wa.me/${esc(identity.whatsapp)}" rel="noopener">
+      ${identity.whatsapp ? `<a class="contact-card" href="https://wa.me/${esc(identity.whatsapp)}" rel="noopener">
         ${icon('whatsapp', 22)}<span><strong>WhatsApp</strong><br>${esc(t('paginas.orcamento.whatsapp'))}</span>
-      </a>
+      </a>` : ''}
       <a class="contact-card" href="mailto:${esc(identity.email)}?subject=${esc(encodeURIComponent(t('paginas.orcamento.assunto')))}">
         ${icon('mail', 22)}<span><strong>${esc(identity.email)}</strong><br>${esc(t('paginas.orcamento.email'))}</span>
       </a>

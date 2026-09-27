@@ -53,8 +53,10 @@ const NAV_EXTRA = [['/contact/#faq', 'nav.questions']];
  * · /care-and-safety/ is the lamp manual: AA cells, the mains remote, keeping
  *   the cable out of a cot, solid pine. Dressed as cathelier it would be the
  *   only safety page a reader of the other shop ever sees, and it would
- *   describe a product with no electricity in it. That one needs its own
- *   words, not a copy, and the words have to come from the owner.
+ *   describe a product with no electricity in it. cathelier has its OWN page
+ *   instead, /cathelier/care-and-safety/ (content/pages/cathelier/
+ *   care-and-safety.md), with its own words and its warnings read from the
+ *   data -- a different document, not a second dress of this one.
  * · /404.html -- GitHub Pages serves exactly one, from the site root. A second
  *   copy is a page no address can reach.
  * · /thank-you/ and /order-cancelled/ -- the address the gateway returns to is
@@ -369,7 +371,7 @@ function drawer({ brand, identity, counts, site, canonicalPath }) {
   <div class="drawer__contact">
     <a href="tel:${esc(identity.phone)}">${icon('phone', 18)}<span>${esc(identity.phoneText)}</span></a>
     <p class="drawer__cost">${esc(CALL_COST())}</p>
-    <a href="https://wa.me/${esc(identity.whatsapp)}" rel="noopener">${icon('whatsapp', 18)}<span>WhatsApp</span></a>
+    ${identity.whatsapp ? `<a href="https://wa.me/${esc(identity.whatsapp)}" rel="noopener">${icon('whatsapp', 18)}<span>WhatsApp</span></a>` : ''}
   </div>
   ${seletorDeLingua({ site, canonicalPath, classe: 'linguas linguas--gaveta' })}
 </dialog>`;
@@ -402,13 +404,13 @@ function footer({ brand, identity }) {
     [t('shell.rodape.apoio'), [
       ['/contact/#faq', t('shell.nav.questions')],
       ['/legal/shipping-and-returns/', t('shell.rodape.entregas')],
-      /* Care and safety is the LAMP manual -- AA cells, the mains remote,
-         keeping the cable out of a cot. It is offered where it is true and
-         nowhere else: from a cathelier page it would be the only safety page
-         that reader ever sees, and it would describe a product with no
-         electricity in it. cathelier needs its own, written for keepsakes with
-         small parts, magnets and a candle, and those words have to come from
-         the owner. */
+      /* Care and safety is not in this group: each shop has its own page, and
+         it sits in the shop's group below. /care-and-safety/ is the LAMP
+         manual -- AA cells, the mains remote, keeping the cable out of a cot --
+         and from a cathelier page it would describe a product with no
+         electricity in it. cathelier links /cathelier/care-and-safety/, written
+         for laser-cut keepsakes, with the warnings of every piece read from
+         the data. */
       ['/legal/returns-form/', t('shell.rodape.formulario')],
       [i.complaintsBook, t('shell.rodape.reclamacoes')],
     ]],
@@ -432,6 +434,7 @@ function footer({ brand, identity }) {
         ['/cathelier/pieces/', t('shell.rodape.todasPecas')],
         ['/cathelier/quote/', t('shell.rodape.pedirOrcamento')],
         ['/cathelier/about/', t('shell.rodape.comoSeFaz')],
+        ['/cathelier/care-and-safety/', t('shell.rodape.cuidados')],
         ['/contact/', t('shell.rodape.contactos')],
       ]
       : [
@@ -459,7 +462,9 @@ function footer({ brand, identity }) {
        que a distinga -- vinte ícones diferentes numa lista seriam ruído. */
     [t('shell.rodape.falar'), [
       [`tel:${i.phone}`, i.phoneText, CALL_COST(), 'phone'],
-      [`https://wa.me/${i.whatsapp}`, 'WhatsApp', '', 'whatsapp'],
+      /* Sem número de WhatsApp não há ligação: um «wa.me/» vazio abria a
+         aplicação sem destinatário. */
+      ...(i.whatsapp ? [[`https://wa.me/${i.whatsapp}`, 'WhatsApp', '', 'whatsapp']] : []),
       [`mailto:${i.email}`, i.email, '', 'mail'],
     ]],
   ];

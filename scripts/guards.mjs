@@ -36,6 +36,15 @@ for (const field of ['legalName', 'taxNumber', 'email', 'phone', 'town', 'countr
 for (const field of ['street', 'postcode']) {
   if (!identity[field]) pending(`identity.json: "${field}" is empty — required by DL 7/2004 art. 10`);
 }
+/* O NOME LEGAL É UM NOME. Apagado letra a letra no painel, sobrava «C» -- não
+   vazio, e passava a guarda de cima: o site saía com a vendedora identificada
+   por uma letra. Nome e apelido, pelo menos. */
+{
+  const nome = String(identity.legalName || '').trim();
+  if (nome && (nome.split(/\s+/).length < 2 || nome.length < 5)) {
+    die(`identity.json: "legalName" is «${nome}» — the seller's full legal name (first name and surname) is required by DL 7/2004 art. 10`);
+  }
+}
 
 /* --- shipping ------------------------------------------------------------- */
 const shipping = read('settings/shipping.json');

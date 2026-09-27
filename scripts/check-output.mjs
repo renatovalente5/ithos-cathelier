@@ -52,6 +52,7 @@ const { MIRRORED } = await import('../src/lib/shell.mjs');
 const { REDIRECTS } = await import('../src/lib/redirects.mjs');
 const PREVIEW_BUILD = process.env.PREVIEW === 'yes';
 const byCanonical = new Map();
+const titulosPorTraduzir = [];
 
 for (const file of pages) {
   const html = readFileSync(file, 'utf8');
@@ -142,6 +143,10 @@ for (const file of pages) {
   byCanonical.get(canonical).push({
     where, title, desc, indexable,
     selfCanonical: canonical.endsWith(where) || canonical.endsWith(where.replace(/index\.html$/, '')),
+    /* A língua e as moradas da mesma página nas outras línguas (hreflang):
+       é por elas que se reconhece uma tradução que ainda não chegou. */
+    lang: html.match(/<html lang="([^"]+)"/)?.[1] ?? '',
+    alternates: new Set([...html.matchAll(/<link rel="alternate" hreflang="[^"]+" href="([^"]*)">/g)].map((m) => m[1])),
   });
   }
 
@@ -665,12 +670,32 @@ for (const [canonical, group] of byCanonical) {
      that were a result. */
   const home = group.find((g) => g.selfCanonical) || first;
   if (!(PREVIEW_BUILD || home.indexable) || !first.title) continue;
-  if (titles.has(first.title)) deaths.push(`${first.where}: same title as ${titles.get(first.title)}`);
-  else titles.set(first.title, first.where);
+  /* A MESMA PÁGINA NOUTRA LÍNGUA, À ESPERA DA TRADUÇÃO. Uma página nova é
+     escrita em português, e o Worker traduz o título e a descrição dela uns
+     minutos depois de o commit chegar ao GitHub; até lá, /en/… sai com as
+     palavras de origem -- as mesmas da página portuguesa. Não são dois
+     documentos a disputar um título: é um só, em duas línguas, e os dois
+     dizem-no um do outro pelo hreflang. A isenção é só essa -- línguas
+     diferentes E cada um nomeado nas alternativas do outro --, e o que ela
+     deixa passar fica escrito no fim, como aviso. Sem ela, acrescentar uma
+     página parava a publicação até haver tradução, e a tradução só se faz
+     sobre o que já foi publicado no repositório. */
+  const este = { where: first.where, canonical, lang: home.lang, alternates: home.alternates };
+  const traducaoPorFazer = (o) => o.lang !== este.lang
+    && o.alternates.has(este.canonical) && este.alternates.has(o.canonical);
+  const mesmoTitulo = titles.get(first.title);
+  if (!mesmoTitulo) titles.set(first.title, este);
+  else if (traducaoPorFazer(mesmoTitulo)) titulosPorTraduzir.push(`${first.where} (= ${mesmoTitulo.where})`);
+  else deaths.push(`${first.where}: same title as ${mesmoTitulo.where}`);
   if (first.desc) {
-    if (descriptions.has(first.desc)) warnings.push(`${first.where}: same description as ${descriptions.get(first.desc)}`);
-    else descriptions.set(first.desc, first.where);
+    const mesma = descriptions.get(first.desc);
+    if (!mesma) descriptions.set(first.desc, este);
+    else if (!traducaoPorFazer(mesma)) warnings.push(`${first.where}: same description as ${mesma.where}`);
   }
+}
+if (titulosPorTraduzir.length) {
+  warnings.push(`${titulosPorTraduzir.length} página${titulosPorTraduzir.length > 1 ? 's' : ''} noutra língua ainda com o título `
+    + `da página original, à espera da tradução do Worker: ${titulosPorTraduzir.slice(0, 5).join(', ')}`);
 }
 
 /* OS AVISOS IMPRIMEM-SE NO FIM, E NÃO A MEIO.

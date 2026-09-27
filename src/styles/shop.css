@@ -992,6 +992,10 @@ html[data-cover='yes'][data-scrolled='no'] .head .linguas a:hover { text-decorat
 .product__safety { margin-block-start: 1.5rem; border-block-start: 1px solid var(--line); padding-block-start: 1rem; }
 .product__safety summary { cursor: pointer; font-size: 13px; font-weight: 600; letter-spacing: .06em; }
 .product__safety ul { margin-block-start: .75rem; padding-inline-start: 1.1rem; font-size: 13px; color: var(--muted); line-height: 1.8; }
+/* A ligação para a página de cuidados da cathelier, no fim dos avisos. A altura
+   mínima é a do alvo de toque: numa linha de 13 px a ligação ficava com 23. */
+.product__safety-mais { margin-block-start: .5rem; font-size: 13px; }
+.product__safety-mais a { display: inline-flex; align-items: center; min-height: 24px; color: var(--accent); text-underline-offset: 3px; }
 
 /* --- fields ---------------------------------------------------------------- */
 /* `min-width: 0` on a fieldset is not cosmetic. Browsers give <fieldset> a
@@ -1422,6 +1426,10 @@ html.menu-open { overflow: hidden; }
 /* A link alone in a table cell is a target too. The email address on the
    identification page was 17px tall. */
 .page-prose td a { display: inline-flex; align-items: center; min-height: 26px; }
+/* Um título que é todo ele uma ligação -- o nome de cada peça, na página de
+   cuidados da cathelier, que leva à ficha dela. Não está no meio de uma frase,
+   e a linha de 16 px ficava abaixo do alvo de toque de 24. */
+.page-prose h3 > a { display: inline-flex; align-items: center; min-height: 26px; }
 .page-prose .table-wrap { margin-block-start: 1rem; }
 
 /* --- contact ---------------------------------------------------------------- */
