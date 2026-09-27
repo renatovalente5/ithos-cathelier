@@ -20,6 +20,10 @@
     "t": "We are not shipping anywhere yet.",
     "h": "97a1840f2e1d"
   },
+  "avisosPorPeca.nenhum": {
+    "t": "At the moment, no piece has any warnings of its own.",
+    "h": "f111694ffa36"
+  },
   "pagamento.prestador": {
     "t": "the payment provider",
     "h": "e86a8e107835"
