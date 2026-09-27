@@ -21,6 +21,7 @@ import * as pages from './lib/pages.mjs';
 import { esc } from './lib/html.mjs';
 import { cardWidths } from './lib/photo.mjs';
 import { REDIRECTS } from './lib/redirects.mjs';
+import { visiveis, destinoDe, fragmentosAntigos, lerSeparadores } from './lib/ocasioes.mjs';
 import { stockDe, prateleiras } from './lib/prazos.mjs';
 import { t, lingua, LOCALE, LINGUAS, ORIGEM, definirLingua, linguaDaRaiz, prefixoDe, morada, frasesPorTraduzir } from './lib/i18n.mjs';
 import { aplicar, lerPaginaTraduzida, validar, RESUMO_TAMANHO } from './lib/traduziveis.mjs';
@@ -160,7 +161,9 @@ const coverArt = (brand) => {
 function loadProducts(brand) {
   const dir = join(CONTENT, brand);
   if (!existsSync(dir)) return [];
-  return readdirSync(dir).filter((f) => f.endsWith('.json')).map((f) => {
+  /* Os ficheiros começados por «_» não são produtos (os separadores, e as
+     mudanças dos separadores apagados). */
+  return readdirSync(dir).filter((f) => f.endsWith('.json') && !f.startsWith('_')).map((f) => {
     const p = lerNaLingua(`${brand}/${f}`);
     p.slug = f.replace(/\.json$/, '');
     return p;
@@ -177,9 +180,12 @@ function prepararLingua(l) {
   shop = read('settings/shop.json');
   covers = read('settings/covers.json');
   lamps = loadProducts('ithos');
-  pieces = loadProducts('cathelier').filter((p) => p.slug !== '_occasions');
+  pieces = loadProducts('cathelier');
+  /* SÓ OS QUE SE VÊEM: publicados E com pelo menos uma peça à venda
+     (src/lib/ocasioes.mjs). Um separador acabado de criar no painel não tem
+     peças, e o círculo dele esvaziava a lista a quem clicasse. */
   occasions = existsSync(join(CONTENT, 'cathelier/_occasions.json'))
-    ? read('cathelier/_occasions.json').filter((o) => o.published).sort((a, b) => a.order - b.order)
+    ? visiveis(read('cathelier/_occasions.json'), pieces)
     : [];
   counts = { lamps: lamps.length, pieces: pieces.length, occasions: occasions.length };
   shellArgs = { site: SITE, identity, counts, preview: PREVIEW, shipping, shop, asset: ASSET };
@@ -246,6 +252,9 @@ function write(pathNaOrigem, html, { sitemap = true, stub = false } = {}) {
    para a frente. O atraso é 0 pela mesma razão, e não por pressa: um refresh
    com atraso zero é uma substituição e não uma entrada nova. */
 function redirectStub({ to, name }) {
+  /* SEM NOME, O DESTINO É A LISTA COMPLETA: o separador desta morada está
+     escondido (src/lib/ocasioes.mjs), e dizer «é agora um filtro» mentia. */
+  const txt = (k) => (name ? t(`build.stub.${k}`, { nome: name }) : t(`build.stub.lista.${k}`));
   /* O nome vai sempre entre aspas e nunca é sujeito de uma frase. "Awards and
      gifts is now" e "A new baby is now" concordam mal, e um `toLowerCase()`
      dava "See the a new baby pieces". Entre aspas é um rótulo, e um rótulo
@@ -261,11 +270,11 @@ function redirectStub({ to, name }) {
 <meta http-equiv="refresh" content="0; url=${esc(to)}">
 <link rel="canonical" href="${SITE}${morada(to.split('#')[0])}">${PREVIEW ? `
 <meta name="robots" content="noindex, nofollow">` : ''}
-<title>${esc(t('build.stub.titulo', { nome: name }))}</title>
+<title>${esc(txt('titulo'))}</title>
 </head>
 <body>
-<p>${esc(t('build.stub.texto', { nome: name }))}
-<a id="go" href="${esc(to)}">${esc(t('build.stub.ir', { nome: name }))}</a>.</p>
+<p>${esc(txt('texto'))}
+<a id="go" href="${esc(to)}">${esc(txt('ir'))}</a>.</p>
 <script>var a=document.getElementById('go');if(a)location.replace(a.href)</script>
 </body>
 </html>
@@ -330,9 +339,8 @@ function assets() {
 
   if (existsSync(join(HERE, 'js', 'shop.js'))) {
     const API = (process.env.API_URL || '').replace(/\/$/, '');
-    const MAPA_ANTIGOS = JSON.stringify(Object.fromEntries(REDIRECTS
-      .map((r) => [r.from.split('/').filter(Boolean).pop(), r.to.split('#')[1]])
-      .filter(([de, para]) => de && para && de !== para)));
+    const { vivas, mudadas } = lerSeparadores(CONTENT);
+    const MAPA_ANTIGOS = JSON.stringify(fragmentosAntigos(REDIRECTS, vivas, mudadas));
     const js = readFileSync(join(HERE, 'js', 'shop.js'), 'utf8')
       .replace("const BASE = '';", `const BASE = '${BASE}';`)
       .replace("const API = '';", `const API = '${API}';`)
@@ -340,7 +348,11 @@ function assets() {
          Um /cathelier/pieces/#home partilhado no WhatsApp antes de 25 set 2026
          abria a lista inteira sem aviso, porque o filtro «home» deixou de
          existir. O mapa é derivado de REDIRECTS -- de cada `from` cujo slug
-         não é o do `to` -- e não escrito à mão segunda vez: uma lista só. */
+         não é o do `to` -- e não escrito à mão segunda vez: uma lista só.
+         Juntam-se-lhe os separadores que a dona apagou no painel (o #natal
+         de um separador apagado leva ao que ficou com as peças dele), e cada
+         destino segue as mudanças até um separador que se veja
+         (src/lib/ocasioes.mjs). */
       .replace('const FRAGMENTOS_ANTIGOS = {};', `const FRAGMENTOS_ANTIGOS = ${MAPA_ANTIGOS};`);
     /* Um replace que não encontra a linha não dá erro nenhum: devolve o texto
        como estava, e os links antigos voltam a abrir a lista inteira sem
@@ -562,9 +574,15 @@ function buildCathelier() {
      há o /cathelier/404.html, mas um 404 continua a não ser o conteúdo).
      A lista está em src/lib/redirects.mjs e é história, não conteúdo. */
   /* Só na raiz: são moradas que existiram, e existiram antes de haver línguas. */
+  /* O DESTINO DE HOJE, e não o de quando a lista foi escrita: o separador
+     para onde um stub apontava pode ter sido apagado (vai-se para o que ficou
+     com as peças dele) ou escondido (vai-se para a lista completa). Ver
+     src/lib/ocasioes.mjs; o check-output faz a mesma conta. */
+  const { vivas, mudadas } = lerSeparadores(CONTENT);
   for (const r of lingua() === linguaDaRaiz() ? REDIRECTS : []) {
-    const o = occasions.find((x) => x.slug === r.to.split('#')[1]);
-    write(r.from, redirectStub({ ...r, name: o ? o.name : r.to.split('#')[1] }),
+    const to = destinoDe(r.to, vivas, mudadas);
+    const o = occasions.find((x) => x.slug === to.split('#')[1]);
+    write(r.from, redirectStub({ to, name: o ? o.name : null }),
       { sitemap: false, stub: true });
   }
 

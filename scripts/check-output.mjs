@@ -50,6 +50,7 @@ const frasesPaga = {};
    nothing is indexable, the whole set is checked instead. */
 const { MIRRORED } = await import('../src/lib/shell.mjs');
 const { REDIRECTS } = await import('../src/lib/redirects.mjs');
+const SEP = await import('../src/lib/ocasioes.mjs');
 const PREVIEW_BUILD = process.env.PREVIEW === 'yes';
 const byCanonical = new Map();
 const titulosPorTraduzir = [];
@@ -406,10 +407,14 @@ for (const file of pages) {
   }
 
   const ondeEsta = new Map(stubs.map((x) => [x.where, x.html]));
+  /* O destino de HOJE: o separador de um stub pode ter sido apagado no painel
+     (vai-se para o que ficou com as peças dele) ou escondido (vai-se para a
+     lista completa). A mesma conta do gerador, em src/lib/ocasioes.mjs. */
+  const { vivas, mudadas } = SEP.lerSeparadores(join(ROOT, 'content'));
   for (const [onde, r] of esperados) {
     const html = ondeEsta.get(onde);
     if (!html) continue;
-    const querido = BASE + r.to;                       // a forma já prefixada
+    const querido = BASE + SEP.destinoDe(r.to, vivas, mudadas);   // a forma já prefixada
 
     // 1. o meta refresh, e o atraso
     const refresh = html.match(/<meta http-equiv="refresh" content="(\d+);\s*url=([^"]+)">/);
@@ -436,7 +441,7 @@ for (const file of pages) {
         + '— two answers to one question');
     }
     if (link[1] !== querido) {
-      deaths.push(`${onde}: goes to ${link[1]}, but src/lib/redirects.mjs says ${querido}`);
+      deaths.push(`${onde}: goes to ${link[1]}, but src/lib/redirects.mjs (followed through the occasions) says ${querido}`);
     }
 
     // 4. o prefixo do endereço, que é o defeito que este projecto já pagou

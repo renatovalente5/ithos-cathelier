@@ -512,15 +512,18 @@ for (const de of STUBS) {
     // E, chegado lá, o filtro certo está posto. É o fim da promessa toda:
     // a morada antiga dá a lista filtrada pela ocasião que lá estava.
     const d = f.contentDocument;
-    const querido = (promete || '').split('#')[1] || '';
+    /* Um stub cujo separador a dona escondeu leva à lista completa, sem
+       fragmento (src/lib/ocasioes.mjs): aí o que se promete é o «Todas»
+       premido e a lista inteira, e não um filtro. */
+    const querido = (promete || '').split('#')[1] || 'all';
     const chips = [...d.querySelectorAll('[data-filter]')];
     const premido = chips.filter(c => c.getAttribute('aria-pressed') === 'true').map(c => c.dataset.filter);
     nota(premido.length === 1 && premido[0] === querido,
-      'e com o filtro da ocasião já escolhido', `premidos: ${premido.join(', ') || 'nenhum'}`);
+      querido === 'all' ? 'e com «Todas» escolhido' : 'e com o filtro da ocasião já escolhido', `premidos: ${premido.join(', ') || 'nenhum'}`);
     const cartoes = [...d.querySelectorAll('[data-family]')];
     const vistos = cartoes.filter(c => c.style.display !== 'none');
-    nota(cartoes.length > 0 && vistos.length > 0 && vistos.length < cartoes.length,
-      'e a lista encolhida sem ficar vazia', `${vistos.length} de ${cartoes.length}`);
+    nota(cartoes.length > 0 && vistos.length > 0 && (querido === 'all' ? vistos.length === cartoes.length : vistos.length < cartoes.length),
+      querido === 'all' ? 'e a lista inteira' : 'e a lista encolhida sem ficar vazia', `${vistos.length} de ${cartoes.length}`);
     f.remove();
   } catch (e) { nota(false, 'o reencaminhamento correu sem rebentar', String(e)); }
   window.__resultados[de] = { total: R.length, falhas: R.filter(x => !x.ok), tudo: R };

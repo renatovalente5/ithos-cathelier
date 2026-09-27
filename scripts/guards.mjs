@@ -182,10 +182,19 @@ for (const brand of ['ithos', 'cathelier']) {
 }
 
 /* --- occasions ------------------------------------------------------------ */
+const SEP = await import('../src/lib/ocasioes.mjs');
 if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
   const occ = read('cathelier/_occasions.json');
   const slugs = new Set();
-  for (const o of occ) {
+  if (!Array.isArray(occ) || !occ.length) die('_occasions.json: there are no occasions at all');
+  for (const o of Array.isArray(occ) ? occ : []) {
+    /* O endereço vai para um href="#…" e para um data-filter: com outra forma
+       (um espaço, uma maiúscula, «all», que é o filtro «Todas»), o chip e o
+       fragmento deixavam de casar. O painel gera-o do nome, e nunca assim. */
+    if (!SEP.FORMA_DO_SLUG.test(String(o.slug ?? '')) || SEP.RESERVADOS.has(o.slug)) {
+      die(`_occasions.json: "${o.slug}" is not a usable address (lower-case letters, digits and hyphens; not "all")`);
+    }
+    if (typeof o.name !== 'string' || !o.name.trim()) die(`_occasions.json: the occasion "${o.slug}" has no name`);
     if (slugs.has(o.slug)) die(`_occasions.json: two occasions share the address "${o.slug}"`);
     slugs.add(o.slug);
     if (!o.summary) pending(`_occasions.json: "${o.name}" has no summary`);
@@ -200,17 +209,47 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
       if (p.published !== false) conta.set(s, conta.get(s) + 1);
     }
   }
-  /* UMA OCASIÃO VAZIA PIOROU DE CONSEQUÊNCIA.
+  /* UMA OCASIÃO VAZIA PIOROU DE CONSEQUÊNCIA, E DEPOIS DEIXOU DE SE VER.
      Enquanto teve página própria, uma ocasião sem peças abria um cabeçalho com
-     uma grelha vazia por baixo -- pouco simpático, mas legível. Agora é um
-     círculo na home que leva a /cathelier/pieces/ e ESVAZIA a lista: quem
-     clica vê os quarenta e um artigos desaparecerem e a mensagem de "nada
-     encontrado". Parece uma avaria da loja, não uma colecção por encher.
-     O aviso vivia no build.mjs, que já não escreve essas páginas. */
+     uma grelha vazia por baixo. Depois passou a ser um círculo na home que
+     leva a /cathelier/pieces/ e ESVAZIA a lista -- parece uma avaria da loja,
+     não uma colecção por encher --, e isto parava a publicação.
+     Desde 27 set 2026 a dona cria separadores no painel, e um separador
+     acabado de criar está vazio por natureza: parar a loja por isso era parar
+     a loja por ela ter feito o que o painel lhe deixou fazer. O gerador deixou
+     de mostrar os vazios (src/lib/ocasioes.mjs, visiveis()); aqui fica só um
+     aviso, para quem lê o registo saber porque é que um não aparece. */
   for (const o of occ.filter((x) => x.published)) {
     if (!conta.get(o.slug)) {
-      pending(`_occasions.json: "${o.name}" is published with no pieces in it — its `
-        + 'circle on the home page would empty the list');
+      warnings.push(`_occasions.json: "${o.name}" is published with no pieces in it — the site `
+        + 'leaves it out until it has one');
+    }
+  }
+  /* E TEM DE HAVER PELO MENOS UM QUE SE VEJA. Sem nenhum, a home da cathelier
+     fica sem a fila dos círculos e a lista das peças sem um filtro: a loja
+     abre, mas partida. O painel não deixa lá chegar (nem apagar o último, nem
+     esconder o último à vista); isto é para o que lá chegar por outro lado. */
+  if (Array.isArray(occ) && occ.length) {
+    const pecas = readdirSync(join(CONTENT, 'cathelier')).filter((x) => x.endsWith('.json') && !x.startsWith('_'))
+      .map((x) => JSON.parse(readFileSync(join(CONTENT, 'cathelier', x), 'utf8')));
+    if (!SEP.visiveis(occ, pecas).length) {
+      die('_occasions.json: no occasion is published with a piece on sale in it — the cathelier '
+        + 'home would have no circles and the list no filters');
+    }
+  }
+
+  /* AS MUDANÇAS DOS SEPARADORES APAGADOS (content/cathelier/_occasions-moved.json),
+     escritas pelo painel. O gerador segue-as e nunca as deixa partir nada (um
+     destino que já não existe leva à lista completa), por isso aqui não se
+     morre: diz-se o que está estranho, para alguém o arrumar. */
+  if (existsSync(join(CONTENT, SEP.MUDADAS))) {
+    const bruto = read(SEP.MUDADAS);
+    const m = SEP.lerMudadas(bruto);
+    const escritas = Object.keys(bruto?.moved ?? {}).length;
+    if (escritas !== Object.keys(m).length) warnings.push(`${SEP.MUDADAS}: ${escritas - Object.keys(m).length} entr(ies) without the shape of an address were ignored`);
+    for (const [de, para] of Object.entries(m)) {
+      if (slugs.has(de)) warnings.push(`${SEP.MUDADAS}: "${de}" exists again as an occasion, so its old move to "${para}" no longer applies`);
+      else if (!slugs.has(para) && !Object.hasOwn(m, para)) warnings.push(`${SEP.MUDADAS}: "${de}" moved to "${para}", which no longer exists — its old links land on the full list`);
     }
   }
 }
@@ -240,18 +279,23 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
     }
   }
 
-  /* O DESTINO É UM FILTRO, E UM FILTRO SÓ EXISTE ENQUANTO A OCASIÃO EXISTIR.
-     Despublicar uma ocasião tira-lhe o chip da página das peças. O stub
-     continuava a mandar lá o visitante com um fragmento que já não nomeia
-     nada: ele chegava à lista inteira sem perceber porquê -- o pior tipo de
-     avaria, a que parece que está bem. */
-  if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
-    const vivas = new Set(read('cathelier/_occasions.json').filter((o) => o.published).map((o) => o.slug));
+  /* O DESTINO É UM FILTRO, E UM FILTRO SÓ EXISTE ENQUANTO A OCASIÃO SE VIR.
+     Isto morria quando o separador de um stub deixava de estar publicado: o
+     stub mandava o visitante para um fragmento que já não nomeava nada. Mas
+     desde 27 set 2026 é a dona quem esconde e apaga separadores, e esconder o
+     Natal em janeiro parava a publicação da loja inteira -- por uma lista que
+     ela não vê nem pode mudar.
+     Agora o gerador segue o destino (src/lib/ocasioes.mjs): um separador
+     apagado leva ao que ficou com as peças dele, um escondido à lista
+     completa, com um texto que o diz (e não «é agora um filtro»). Aqui
+     avisa-se do segundo caso; a promessa de o destino existir é do
+     check-output, que faz a mesma conta. */
+  {
+    const { vivas, mudadas } = SEP.lerSeparadores(CONTENT);
     for (const r of REDIRECTS) {
       const frag = r.to.split('#')[1];
-      if (frag && !vivas.has(frag)) {
-        die(`redirects.mjs: ${r.from} redirects to the "${frag}" filter, and no published occasion `
-          + 'has that slug — the visitor would land on the unfiltered list with no explanation');
+      if (frag && !SEP.resolver(frag, vivas, mudadas)) {
+        warnings.push(`redirects.mjs: ${r.from} was for "${frag}", which is hidden or empty now — it lands on the full list`);
       }
     }
   }
@@ -626,13 +670,20 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
         fila da home como um círculo castanho liso, sem erro nenhum em lado
         nenhum. Agora a construção morre e diz qual. */
   {
-    const { drawnOccasions } = await import('../src/lib/occasions-art.mjs');
+    /* Desde 27 set 2026 os separadores nascem no painel, e um separador sem
+       desenho próprio leva o genérico (occasions-art.mjs). Morrer por falta
+       de desenho era morrer por a dona ter criado um separador; o que se
+       vigia agora é que o círculo nunca saia vazio -- e avisa-se de quais
+       levam o genérico, para alguém lhes desenhar um à medida. */
+    const { drawnOccasions, occasionArt } = await import('../src/lib/occasions-art.mjs');
     const ocasioes = read('cathelier/_occasions.json');
     for (const o of ocasioes) {
       if (!o.published) continue;
-      if (!drawnOccasions.includes(o.slug)) {
-        die(`_occasions.json: "${o.slug}" is published and src/lib/occasions-art.mjs has no `
-          + 'drawing for it — the badge would be an empty circle, and nothing else would say so');
+      if (!/<path|<circle/.test(occasionArt(o.slug))) {
+        die(`_occasions.json: "${o.slug}" is published and its badge would be an empty circle `
+          + '— src/lib/occasions-art.mjs lost its generic drawing');
+      } else if (!drawnOccasions.includes(o.slug)) {
+        warnings.push(`_occasions.json: "${o.slug}" uses the generic drawing — src/lib/occasions-art.mjs has none of its own`);
       }
     }
   }
