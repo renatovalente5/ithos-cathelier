@@ -29,7 +29,12 @@ const PAGINAS = ['/','/lamps/','/lamps/fox/','/lamps/mushroom/',
     pode rolar de lado com ele) e a função de retratação (um formulário, com os
     alvos e o contraste de qualquer outro). */
  '/legal/guarantee/','/legal/withdraw/','/cathelier/legal/guarantee/','/cathelier/legal/withdraw/',
- '/en/legal/guarantee/','/en/legal/withdraw/'];
+ '/en/legal/guarantee/','/en/legal/withdraw/',
+ /* A página de cuidados da cathelier (27 set 2026): os avisos saem dos dados,
+    com um título e uma ligação por peça -- alvos de toque como os outros. E a
+    versão inglesa, que no primeiro dia sai com o texto em português à espera
+    do Worker e com os avisos já em inglês. */
+ '/cathelier/care-and-safety/','/en/cathelier/care-and-safety/'];
 window.__resultados = {};
 const saida = document.getElementById('saida');
 const L = Number(new URLSearchParams(location.search).get('w') || 1280);

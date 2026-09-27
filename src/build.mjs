@@ -22,7 +22,7 @@ import { esc } from './lib/html.mjs';
 import { cardWidths } from './lib/photo.mjs';
 import { REDIRECTS } from './lib/redirects.mjs';
 import { stockDe, prateleiras } from './lib/prazos.mjs';
-import { t, lingua, LOCALE, LINGUAS, ORIGEM, definirLingua, linguaDaRaiz, prefixoDe, morada } from './lib/i18n.mjs';
+import { t, lingua, LOCALE, LINGUAS, ORIGEM, definirLingua, linguaDaRaiz, prefixoDe, morada, frasesPorTraduzir } from './lib/i18n.mjs';
 import { aplicar, lerPaginaTraduzida, validar, RESUMO_TAMANHO } from './lib/traduziveis.mjs';
 
 const HERE = dirname(fileURLToPath(import.meta.url));
@@ -110,12 +110,17 @@ function prefixCss(css) {
    refazer. As contagens ficam para o fim, para se saber o que falta. */
 const resumir = (texto) => createHash('sha256').update(texto).digest('hex').slice(0, RESUMO_TAMANHO);
 const faltasDeTraducao = {};
+/* O catálogo volta a ler o conteúdo de cada língua (para os nomes no cesto);
+   essa segunda leitura não conta, senão cada campo por traduzir contava duas
+   vezes. */
+let contarFaltas = true;
 function lerNaLingua(p) {
   const origem = JSON.parse(readFileSync(join(CONTENT, p), 'utf8'));
   if (lingua() === ORIGEM) return origem;
   const ficheiro = join(CONTENT, 'i18n', lingua(), p);
   const traducao = existsSync(ficheiro) ? JSON.parse(readFileSync(ficheiro, 'utf8')) : null;
   const r = aplicar(`content/${p}`, origem, traducao, resumir);
+  if (!contarFaltas) return r.obj;
   const c = (faltasDeTraducao[lingua()] ??= { desactualizados: 0, emFalta: 0, invalidos: [] });
   c.desactualizados += r.desactualizados; c.emFalta += r.emFalta;
   c.invalidos.push(...r.invalidos.map((x) => `${p}: ${x}`));
@@ -178,7 +183,9 @@ function prepararLingua(l) {
     : [];
   counts = { lamps: lamps.length, pieces: pieces.length, occasions: occasions.length };
   shellArgs = { site: SITE, identity, counts, preview: PREVIEW, shipping, shop, asset: ASSET };
-  MARKERS = pages.markers({ identity, shop, shipping });
+  /* As peças vão para os marcadores por causa da página de cuidados da
+     cathelier, que lista os avisos de cada uma (na língua do passo). */
+  MARKERS = pages.markers({ identity, shop, shipping, pieces });
 }
 
 /* --- writing -------------------------------------------------------------- */
@@ -626,7 +633,12 @@ const readPage = (f) => {
 
 function prose(path, file, { brand = 'ithos', title, description, crumbs, both = false, bloco = '' }) {
   const html = pages.comBloco(pages.markdown(pages.fill(readPage(file), MARKERS)), bloco);
-  const body = pages.prosePage(html);
+  /* UMA PÁGINA DA CATHELIER FICA NA CATHELIER, também nas ligações que a dona
+     escreve no texto. Quem escreve «[garantia legal](/legal/guarantee/)» na
+     página de cuidados da cathelier escreve a morada que conhece -- e sem isto
+     o leitor saltava para a cópia vestida de ithos a meio de uma frase. É o
+     mesmo que o mirror() faz à cópia de uma página partilhada. */
+  const body = pages.prosePage(brand === 'cathelier' ? dressBody(html) : html);
   if (both) { mirror(path, { title, description, crumbs, body }); return; }
   write(path, page({
     ...shellArgs, brand, path, title, description, crumbs,
@@ -680,6 +692,18 @@ function buildShared() {
   prose('/care-and-safety/', 'care-and-safety.md', { title: t('build.cuidados.titulo'),
     crumbs: [{ name: t('build.migalha.inicio'), href: '/' }, { name: t('build.migalha.cuidados') }],
     description: t('build.cuidados.descricao') });
+
+  /* A PÁGINA DE CUIDADOS DA CATHELIER É OUTRA PÁGINA, e não uma cópia da de
+     cima vestida de cathelier: aquela é o manual dos candeeiros (pilhas AA, o
+     cabo fora do berço, o pinho maciço), e vestida da outra marca passava a ser
+     a única página de segurança que o leitor das peças via -- sobre um produto
+     sem electricidade nenhuma. Os avisos vêm dos dados (shop.json e o ficheiro
+     de cada peça), pelos marcadores {{SAFETY_LIST_CATHELIER}} e
+     {{SAFETY_BY_PIECE}}. */
+  prose('/cathelier/care-and-safety/', 'cathelier/care-and-safety.md', { brand: 'cathelier',
+    title: t('build.cuidadosCath.titulo'),
+    crumbs: [{ name: 'cathelier', href: '/cathelier/' }, { name: t('build.migalha.cuidados') }],
+    description: t('build.cuidadosCath.descricao') });
 
   /* Os blocos que não podem ser texto da dona: o botão da função de
      retratação na página do direito de livre resolução, o aviso oficial da
@@ -785,6 +809,7 @@ for (const l of LINGUAS) {
    nomes para os emails. Leva os nomes nas outras línguas para o cesto os
    mostrar na língua de quem compra. */
 const nomesNasLinguas = {};
+contarFaltas = false;
 for (const l of LINGUAS.filter((x) => x !== ORIGEM)) {
   prepararLingua(l);
   nomesNasLinguas[l] = Object.fromEntries([...lamps, ...pieces].map((p) => [p.slug, {
@@ -817,7 +842,21 @@ const stubs = written.filter((w) => w.stub).length;
 console.log(`  ${written.length - stubs} pages · ${lamps.length} lamps · ${pieces.length} pieces`
   + (stubs ? ` · ${stubs} redirect stubs (they are not pages)` : ''));
 console.log(`  catalogue.${cat.hash}.json (${cat.count} products)`);
+/* AS FRASES DO CÓDIGO CONTAM TAMBÉM. Uma frase nova em src/i18n/pt/ sem a
+   tradução dela sai em português nas outras línguas -- é o t() que o faz, em
+   silêncio --, e o Worker traduz o dicionário como traduz o conteúdo. Contá-las
+   aqui é o que diz que estão por traduzir; antes, só o conteúdo contava. */
+for (const [l, chaves] of Object.entries(frasesPorTraduzir())) {
+  const c = (faltasDeTraducao[l] ??= { desactualizados: 0, emFalta: 0, invalidos: [] });
+  c.frases = chaves;
+}
 for (const [l, c] of Object.entries(faltasDeTraducao)) {
-  if (c.emFalta || c.desactualizados) console.log(`  ${l}: ${c.emFalta} textos por traduzir, ${c.desactualizados} desactualizados (o Worker trata deles)`);
+  const frases = c.frases?.length ?? 0;
+  if (c.emFalta || frases || c.desactualizados) {
+    console.log(`  ${l}: ${c.emFalta + frases} textos por traduzir`
+      + (frases ? ` (${c.emFalta} do conteúdo, ${frases} frase${frases > 1 ? 's' : ''} do código)` : '')
+      + `, ${c.desactualizados} desactualizados (o Worker trata deles)`);
+  }
+  if (frases) console.log(`  ${l}: frases do código ainda em ${ORIGEM}: ${c.frases.slice(0, 8).join(', ')}${frases > 8 ? ', …' : ''}`);
   if (c.invalidos?.length) console.log(`  ${l}: ${c.invalidos.length} traduç${c.invalidos.length > 1 ? 'ões recusadas' : 'ão recusada'} (fica o português): ${c.invalidos.slice(0, 5).join('; ')}`);
 }

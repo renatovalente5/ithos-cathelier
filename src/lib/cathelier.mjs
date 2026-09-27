@@ -378,13 +378,16 @@ export function piece({ p, all: everything, shop, occasions, identity }) {
         online, bem visíveis). Primeiro os da peça (ímanes, vela, topo de
         bolo, fio para pendurar…), depois os de todas as peças. Uma peça com
         um risco próprio mostra-os abertos: um aviso de ímanes fechado numa
-        caixa que ninguém abre não está «bem visível». */ ''}${(() => {
+        caixa que ninguém abre não está «bem visível».
+        E NO FIM, A PÁGINA DE CUIDADOS DA CATHELIER: como limpar e guardar a
+        peça, e os avisos de todas as outras -- os mesmos dados, noutro sítio. */ ''}${(() => {
       const proprios = (p.gpsr?.warnings ?? []).filter((w) => String(w).trim());
       const todos = [...proprios, ...(shop.safetyCathelier ?? []).filter((w) => String(w).trim())];
-      return todos.length ? `<details class="product__safety"${proprios.length ? ' open' : ''}>
+      return `<details class="product__safety"${proprios.length ? ' open' : ''}>
       <summary>${esc(t('cathelier.ficha.cuidados'))}</summary>
-      <ul>${todos.map((w) => `<li>${esc(w)}</li>`).join('')}</ul>
-    </details>` : '';
+      ${todos.length ? `<ul>${todos.map((w) => `<li>${esc(w)}</li>`).join('')}</ul>` : ''}
+      <p class="product__safety-mais"><a href="/cathelier/care-and-safety/">${esc(t('cathelier.ficha.cuidadosPagina'))}</a></p>
+    </details>`;
     })()}
 
     <p class="small muted" style="margin-block-start:1.25rem">

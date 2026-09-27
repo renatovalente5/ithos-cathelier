@@ -5,6 +5,7 @@
   "envios.prazo": "Prazo",
   "envios.dias": "{min}–{max} dias úteis",
   "envios.nenhum": "Ainda não fazemos envios para nenhum destino.",
+  "avisosPorPeca.nenhum": "Neste momento, nenhuma peça tem avisos só dela.",
   "pagamento.prestador": "o prestador de pagamentos",
   "pagamento.metodos": "os métodos indicados no pagamento",
   "iva": "Não é cobrado IVA: aplica-se o artigo 53.º do Código do IVA.",
