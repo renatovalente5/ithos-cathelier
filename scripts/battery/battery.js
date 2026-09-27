@@ -817,8 +817,12 @@ window.__bateria = function () {
         `aria-pressed=${chip.getAttribute('aria-pressed')} hidden=${chip.hidden}`);
       const cartoes = [...document.querySelectorAll('[data-product-list] [data-family]')];
       const vistos = cartoes.filter((c) => c.style.display !== 'none');
-      nota(vistos.length > 0 && vistos.length < cartoes.length,
-        'e a lista encolheu sem ficar vazia',
+      /* Um separador com TODAS as peças (quando só resta um) mostra a lista
+         inteira, e está certo: o que se exige é que nada de fora entre, e
+         isso vê-se logo a seguir. */
+      const todasDele = cartoes.every((c) => c.dataset.family.split(' ').includes(querido));
+      nota(vistos.length > 0 && (todasDele ? vistos.length === cartoes.length : vistos.length < cartoes.length),
+        todasDele ? 'e a lista mostra-as todas (estão todas neste separador)' : 'e a lista encolheu sem ficar vazia',
         `${vistos.length} de ${cartoes.length}`);
       const intruso = vistos.map((c) => c.dataset.family)
         .find((f) => !f.split(' ').includes(querido));

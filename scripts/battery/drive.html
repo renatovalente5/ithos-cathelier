@@ -3,11 +3,10 @@
 <div id=saida>a correr…</div>
 <script type=module>
 const PAGINAS = ['/','/lamps/','/lamps/fox/','/lamps/mushroom/',
- /* As duas moradas com `#` são a mesma página que a terceira, e é esse o
-    ponto: as páginas de ocasião morreram e os círculos da home levam agora à
-    lista com o filtro no fragmento. O HTML é idêntico nos três casos, por isso
-    ninguém mais consegue verificar isto -- só quem corre o browser. */
- '/cathelier/','/cathelier/pieces/#christmas','/cathelier/pieces/#keepsakes','/cathelier/pieces/#custom','/cathelier/pieces/',
+ /* A lista das peças com um filtro no fragmento (/cathelier/pieces/#natal)
+    entra aqui antes de '/cathelier/pieces/', com os separadores que a própria
+    lista mostra: ver SEPARADORES, mais abaixo. */
+ '/cathelier/','/cathelier/pieces/',
  '/cathelier/pieces/growth-chart/','/cathelier/pieces/engraved-bauble/',
  '/cart/','/contact/','/about/','/cathelier/about/','/cathelier/quote/',
  '/thank-you/','/order-cancelled/','/care-and-safety/','/legal/terms/','/legal/privacy/','/legal/cancellation/',
@@ -99,6 +98,31 @@ addEventListener('beforeunload', () => {
  *   /_drive.html?w=390&base=/ithos-cathelier    o mesmo HTML publicado
  */
 const BASE = (new URLSearchParams(location.search).get('base') || '').replace(/\/$/, '');
+
+/* OS SEPARADORES QUE SE VÊEM, lidos da própria lista das peças.
+ *
+ * As moradas com `#` são a mesma página que /cathelier/pieces/, e é esse o
+ * ponto: as páginas de ocasião morreram e os círculos da home levam agora à
+ * lista com o filtro no fragmento. O HTML é idêntico com e sem ele, por isso
+ * ninguém mais consegue verificar isto -- só quem corre o browser.
+ *
+ * Eram três escritas à mão (#christmas, #keepsakes, #custom). Desde 27 set
+ * 2026 a dona esconde e apaga separadores no painel, e com o Natal escondido
+ * a bateria acusava «o fragmento #christmas nomeia um filtro que existe» a
+ * todas as larguras: um falso alarme por cada mudança dela. Agora saem dos
+ * botões de filtro da página servida -- os três de sempre quando se vêem (o
+ * dos pedidos especiais tem uma verificação só dele, a faixa do orçamento),
+ * e os outros, pela ordem, até serem três. */
+const PREFERIDOS = ['christmas', 'keepsakes', 'custom'];
+let SEPARADORES = [];
+try {
+  const html = await (await fetch(BASE + '/cathelier/pieces/')).text();
+  const lista = new DOMParser().parseFromString(html, 'text/html');
+  const aVista = [...lista.querySelectorAll('[data-filters] [data-filter]')].map((c) => c.dataset.filter).filter((x) => x && x !== 'all');
+  SEPARADORES = [...PREFERIDOS.filter((x) => aVista.includes(x)), ...aVista.filter((x) => !PREFERIDOS.includes(x))].slice(0, 3);
+} catch (e) { /* fica vazio, e diz-se nos resultados */ }
+if (SEPARADORES.length) PAGINAS.splice(PAGINAS.indexOf('/cathelier/pieces/'), 0, ...SEPARADORES.map((x) => `/cathelier/pieces/#${x}`));
+else window.__resultados['/cathelier/pieces/#…'] = { total: 1, falhas: [{ ok: false, o: 'a lista das peças tem separadores à vista para conduzir', d: 'nenhum botão de filtro além de «Todas»' }] };
 
 /* --- o cabeçalho a encolher, medido quadro a quadro -------------------------
  *
@@ -522,8 +546,13 @@ for (const de of STUBS) {
       querido === 'all' ? 'e com «Todas» escolhido' : 'e com o filtro da ocasião já escolhido', `premidos: ${premido.join(', ') || 'nenhum'}`);
     const cartoes = [...d.querySelectorAll('[data-family]')];
     const vistos = cartoes.filter(c => c.style.display !== 'none');
-    nota(cartoes.length > 0 && vistos.length > 0 && (querido === 'all' ? vistos.length === cartoes.length : vistos.length < cartoes.length),
-      querido === 'all' ? 'e a lista inteira' : 'e a lista encolhida sem ficar vazia', `${vistos.length} de ${cartoes.length}`);
+    /* Um separador que tem TODAS as peças (só resta um, por exemplo) mostra a
+       lista inteira, e está certo: o que se exige é que nada de fora entre. */
+    const dele = (c) => (c.dataset.family || '').split(' ').includes(querido);
+    const inteira = querido === 'all' || cartoes.every(dele);
+    nota(cartoes.length > 0 && vistos.length > 0 && (inteira ? vistos.length === cartoes.length : vistos.length < cartoes.length),
+      querido === 'all' ? 'e a lista inteira' : inteira ? 'e a lista inteira (todas as peças estão neste separador)' : 'e a lista encolhida sem ficar vazia', `${vistos.length} de ${cartoes.length}`);
+    if (querido !== 'all') nota(vistos.every(dele), 'e o que ficou pertence todo a essa ocasião', vistos.find(c => !dele(c))?.dataset.product || 'sim');
     f.remove();
   } catch (e) { nota(false, 'o reencaminhamento correu sem rebentar', String(e)); }
   window.__resultados[de] = { total: R.length, falhas: R.filter(x => !x.ok), tudo: R };

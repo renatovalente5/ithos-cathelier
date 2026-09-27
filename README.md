@@ -114,6 +114,12 @@ cp scripts/battery/drive.html public/_drive.html
 The build wipes `public/`, so both files have to be copied again after every
 build. Neither goes to the live site.
 
+The filtered lists it drives (`/cathelier/pieces/#…`) are read from the filter
+buttons the built list actually has — christmas, keepsakes and custom when they
+show, then the others — so a tab the owner hides or deletes in the back office
+is not a false alarm. A tab that holds every piece (the last one left) may show
+the whole list; what is checked is that nothing from outside it shows.
+
 ### The cover photograph
 
 Every product names its own `cover`, and it is **not** taken to be photograph
