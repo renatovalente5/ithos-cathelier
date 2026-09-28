@@ -18,7 +18,10 @@
  *      "names" } }. Quem tiver guardado /cathelier/christmas/ (um dos stubs de
  *      src/lib/redirects.mjs) ou partilhado /cathelier/pieces/#christmas vai
  *      parar a «Nomes», que é onde as peças estão. A cadeia segue-se: apagar
- *      depois «Nomes» para «Páscoa» leva as duas moradas à Páscoa.
+ *      depois «Nomes» para «Páscoa» leva as duas moradas à Páscoa. O mesmo
+ *      ficheiro traz, em «removed», o que cada separador apagado era e de
+ *      onde para onde foi cada peça: é do painel (para o repor com o mesmo
+ *      endereço, e aí a mudança sai de «moved»), e o site não o lê.
  *
  *   3. UM SEPARADOR PODE ESTAR ESCONDIDO (o Natal fora de época). Não tem
  *      sucessor -- volta quando a dona o mostrar -- e quem procurar a morada
