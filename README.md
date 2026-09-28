@@ -77,6 +77,28 @@ in the sitemap, and both the build and `check-output` report them apart from the
 page count — a file count has never been able to tell a signpost from a
 destination.
 
+### Os separadores da cathelier mudam no painel
+
+Desde 27 set 2026 a dona cria, esconde e apaga separadores no painel (as
+«ocasiões» de `content/cathelier/_occasions.json`). As regras estão num sítio
+só, `src/lib/ocasioes.mjs`, que o gerador, as guardas e o check-output usam:
+
+* **Um separador vê-se quando está publicado E tem pelo menos uma peça à
+  venda.** Um acabado de criar não aparece (o círculo dele esvaziava a lista)
+  até ter a primeira peça; não é erro, é um aviso nas guardas.
+* **Apagado**, as peças dele foram arrumadas pelo painel no mesmo commit, e o
+  painel escreve `content/cathelier/_occasions-moved.json`
+  (`{ "moved": { "christmas": "easter" } }`): o stub `/cathelier/christmas/` e
+  um `#christmas` partilhado levam à Páscoa. A cadeia segue-se.
+* **Escondido** (o Natal fora de época), quem chega pela morada antiga vai para
+  a lista completa, com um texto que o diz. As peças continuam à venda.
+* Um separador sem desenho próprio leva o genérico (`src/lib/occasions-art.mjs`);
+  as guardas dizem quais, para lhes desenhar um.
+
+As guardas continuam a parar com uma peça num separador que não existe, e
+param também se nenhum separador se vir. `src/lib/redirects.mjs` não muda: é
+história, e o destino de cada stub segue os separadores.
+
 ### The browser battery
 
 Measures what only a browser knows: real contrast, tap targets, sideways
@@ -91,6 +113,12 @@ cp scripts/battery/drive.html public/_drive.html
 
 The build wipes `public/`, so both files have to be copied again after every
 build. Neither goes to the live site.
+
+The filtered lists it drives (`/cathelier/pieces/#…`) are read from the filter
+buttons the built list actually has — christmas, keepsakes and custom when they
+show, then the others — so a tab the owner hides or deletes in the back office
+is not a false alarm. A tab that holds every piece (the last one left) may show
+the whole list; what is checked is that nothing from outside it shows.
 
 ### The cover photograph
 

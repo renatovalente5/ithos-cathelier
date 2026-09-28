@@ -252,6 +252,18 @@
     "t": "Go to “{nome}”",
     "h": "e066dba82631"
   },
+  "stub.lista.titulo": {
+    "t": "This page has moved | cathelier",
+    "h": "42a9aaa3b387"
+  },
+  "stub.lista.texto": {
+    "t": "This page has moved. All the pieces are on the full list.",
+    "h": "657e1352885d"
+  },
+  "stub.lista.ir": {
+    "t": "See all the pieces",
+    "h": "309350f366d5"
+  },
   "euros": {
     "t": "€{n}",
     "h": "256c1e67ecff"

@@ -15,6 +15,11 @@
    grammar on purpose: a 48-unit square, a 1.4 stroke, round joins, and one
    filled accent each. That is what makes ten different subjects read as one
    set rather than ten clip-art icons.
+
+   Since 27 September 2026 the owner creates collections in the back office.
+   One without a drawing of its own gets GENERICO (further down): two
+   four-pointed stars in the same grammar, which say "pieces here" and promise
+   no subject. To give it its own, add an entry under its slug below.
    ------------------------------------------------------------------------- */
 
 const ART = {
@@ -114,17 +119,38 @@ const ART = {
     <path d="M22 39.6h14"/>`,
 };
 
+/* O DESENHO DOS SEPARADORES SEM DESENHO PRÓPRIO.
+   Desde 27 set 2026 a dona cria separadores no painel, e um separador novo
+   não traz desenho: o occasionArt() devolvia string vazia e o círculo ficava
+   castanho e liso, sem erro em lado nenhum (a guarda que o apanhava parava a
+   publicação -- parava-a por a dona ter criado um separador). Este é o de
+   todos os que não têm um feito à medida, até alguém lho desenhar.
+
+   Duas estrelas de quatro pontas, uma grande a traço e uma pequena cheia (o
+   acento de cada desenho). Não diz nenhum assunto, e é de propósito: não pode
+   prometer «Natal» num separador de ímanes. Diz «há aqui peças», no mesmo
+   traço, no mesmo quadrado de 48 e com um acento cheio como os outros dez --
+   e não se confunde com nenhum deles (não é redondo, não tem argola, não tem
+   linhas de texto). As pontas são côncavas para não ler como um losango a
+   30px. O pontinho em baixo equilibra a estrela pequena, que está em cima. */
+const GENERICO = `
+    <path d="M21.5 12.6Q23.4 24.6 35.4 26.5 23.4 28.4 21.5 40.4 19.6 28.4 7.6 26.5 19.6 24.6 21.5 12.6Z"/>
+    <path d="M35.6 6.8Q36.2 11.2 40.6 11.8 36.2 12.4 35.6 16.8 35 12.4 30.6 11.8 35 11.2 35.6 6.8Z" fill="currentColor" stroke="none"/>
+    <circle cx="37.4" cy="36.4" r="1.7"/>`;
+
 /* 1.9 e nao 1.4. Os desenhos passaram a ocupar 62% do circulo em vez de 40%, e
  * a esse tamanho o traco fino desaparecia -- a dona disse que nao dava para
  * perceber o que eram. Renderizei os dez a 150px com 1.4, 1.9 e 2.4 lado a
  * lado: a 1.4 ficam esquelicos e a 2.4 os detalhes fecham-se (o escudo do Pai,
  * a taca dos premios). 1.9 e o que le em ambos os tamanhos. */
 export function occasionArt(slug, size = 30) {
-  const body = ART[slug];
-  if (!body) return '';
+  /* `hasOwn` e não `ART[slug]`: um separador chamado «constructor» traria
+     uma função do Object.prototype para dentro do SVG. */
+  const body = Object.hasOwn(ART, slug) ? ART[slug] : GENERICO;
   return `<svg viewBox="0 0 48 48" width="${size}" height="${size}" fill="none" stroke="currentColor"
     stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"
     aria-hidden="true" focusable="false">${body}</svg>`;
 }
 
+/** Os separadores com desenho feito à medida; os outros levam o genérico. */
 export const drawnOccasions = Object.keys(ART);

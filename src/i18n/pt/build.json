@@ -63,5 +63,8 @@
   "stub.titulo": "{nome} — passou para a lista completa | cathelier",
   "stub.texto": "Esta página mudou de sítio. «{nome}» é agora um filtro na lista completa das peças.",
   "stub.ir": "Ir para «{nome}»",
+  "stub.lista.titulo": "Esta página mudou de sítio | cathelier",
+  "stub.lista.texto": "Esta página mudou de sítio. As peças estão todas na lista completa.",
+  "stub.lista.ir": "Ver todas as peças",
   "euros": "{n} €"
 }
