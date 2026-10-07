@@ -61,6 +61,11 @@ jobs:
       # original), e o check-output confere que saíram.
       # cards.py e renditions.py passam à frente de um original que não abre
       # e avisam: quem decide se alguma página precisa dele são as guardas.
+      # O share.py faz o cartão de partilha (og:image, com o logótipo) das capas
+      # que o git não tem -- as das fotografias juntas no painel -- a partir da
+      # versão web que o renditions.py acabou de escrever, e tira os cartões
+      # de capas que mudaram. Os das fotografias do estúdio estão no git e
+      # ficam. Não vão para a cache: são uns 40 ms cada.
       - name: Photographs added in the back office
         env:
           VERSOES: ${{ runner.temp }}/versoes
@@ -69,6 +74,7 @@ jobs:
           python3 -m pip install --quiet Pillow==11.3.0
           python3 scripts/cards.py
           python3 scripts/renditions.py
+          python3 scripts/share.py
           rm -rf "$VERSOES" && mkdir -p "$VERSOES"
           git -c core.quotePath=false ls-files --others --exclude-standard -- public/media/ithos public/media/cathelier public/media/whole \
             | rsync -a --files-from=- ./ "$VERSOES/"

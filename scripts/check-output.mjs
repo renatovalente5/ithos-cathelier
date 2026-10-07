@@ -9,11 +9,16 @@
 import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 import { join, dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createHash } from 'node:crypto';
+import { shapeOf } from '../src/lib/photo.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const OUT = join(ROOT, 'public');
 
 const deaths = [];
+/* As imagens de partilha que alguma página aponta (para a conta dos cartões
+   órfãos, lá em baixo). */
+const cartoesUsados = new Set();
 const fragmentos = [];
 const stubs = [];
 const warnings = [];
@@ -312,6 +317,97 @@ for (const file of pages) {
     if (i === -1) continue;
     const alvo = url.slice(i + 1).split(/[?#]/)[0];
     if (!existsSync(join(OUT, alvo))) deaths.push(`${where}: the share image ${alvo} does not exist — social previews and search results would show none`);
+  }
+
+  /* O CARTÃO DE PARTILHA, CONTRA O FICHEIRO QUE O SERVE.
+     A queixa que trouxe isto foi «quando partilho o link não aparece o logo no
+     WhatsApp». Existir não chega: o WhatsApp exige morada absoluta, menos de
+     600 KB, 300 px de largura ou mais e até 4:1, e o <head> nos primeiros
+     300 KB, com og:title, og:description e og:url não vazios
+     (developers.facebook.com/documentation/business-messaging/whatsapp/link-previews/).
+     A Meta quer 600x315 para a imagem grande, um dos tipos jpeg/gif/png, e a
+     largura e a altura declaradas -- e declaradas CERTAS: são elas que deixam o
+     robô mostrar a imagem na primeira partilha sem a ir medir
+     (…/sharing/webmasters/images). Por isso cada etiqueta é comparada com os
+     bytes publicados, e não com o que o gerador julga ter escrito.
+     Os stubs também: quem partilha uma morada antiga leva a pré-visualização
+     do stub, porque o WhatsApp não segue um meta refresh. */
+  {
+    const fim = html.indexOf('</head>');
+    const cabeca = fim === -1 ? '' : html.slice(0, fim);
+    if (fim === -1 || Buffer.byteLength(cabeca) > 300 * 1024) {
+      deaths.push(`${where}: the <head> does not end within the first 300 KB — WhatsApp reads no further for its preview`);
+    }
+    const metas = (nome) => [...cabeca.matchAll(/<meta (?:property|name)="([^"]+)" content="([^"]*)">/g)]
+      .filter((m) => m[1] === nome).map((m) => m[2]);
+    const um = (nome) => {
+      const v = metas(nome);
+      if (v.length !== 1) deaths.push(`${where}: ${v.length ? `${v.length} × ` : 'no '}<meta ${nome}> in the <head> — the share preview needs exactly one`);
+      return v[0] ?? '';
+    };
+    for (const nome of ['og:title', 'og:description']) if (!um(nome).trim()) deaths.push(`${where}: ${nome} is empty — WhatsApp shows no preview without it`);
+    /* Uma página de erro não tem morada (semMorada, sem canonical): sem og:url
+       de propósito. Todas as outras têm. */
+    if (/<link rel="canonical"/.test(cabeca) && !um('og:url').trim()) deaths.push(`${where}: og:url is empty — WhatsApp requires it`);
+
+    const url = um('og:image');
+    const tipo = um('og:image:type');
+    const largura = um('og:image:width');
+    const altura = um('og:image:height');
+    if (um('og:image:alt').trim().length < 10) deaths.push(`${where}: og:image:alt is missing or says nothing — ogp.me asks for one with every og:image`);
+    if (um('twitter:image') !== url) deaths.push(`${where}: twitter:image is not the og:image`);
+    if (um('twitter:card') !== 'summary_large_image') deaths.push(`${where}: twitter:card is not summary_large_image`);
+    const seguras = metas('og:image:secure_url');
+    if (/^https:\/\//.test(url)) {
+      if (seguras.length !== 1 || seguras[0] !== url) deaths.push(`${where}: og:image:secure_url is not exactly the og:image`);
+    } else if (/^http:\/\/(localhost|127\.0\.0\.1)[:/]/.test(url)) {
+      if (seguras.length) deaths.push(`${where}: an og:image:secure_url on an http address — it would be a lie`);
+    } else if (url) {
+      deaths.push(`${where}: the og:image ${url} is not an absolute https address — WhatsApp needs an absolute one, and only a local build is http`);
+    }
+
+    if (url && /^https?:\/\//.test(url)) {
+      const u = new URL(url);
+      const BASE_CO = (process.env.BASE_PATH || '').replace(/\/$/, '');
+      const caminho = BASE_CO && u.pathname.startsWith(BASE_CO + '/') ? u.pathname.slice(BASE_CO.length) : u.pathname;
+      const ficheiro = join(OUT, caminho);
+      if (!/^\/(assets|media)\//.test(caminho)) {
+        deaths.push(`${where}: the og:image ${caminho} is not one of this site's files`);
+      } else if (!existsSync(ficheiro)) {
+        deaths.push(`${where}: the og:image ${caminho} does not exist in public/`);
+      } else {
+        cartoesUsados.add(caminho);
+        const bytes = readFileSync(ficheiro);
+        const real = bytes[0] === 0xFF && bytes[1] === 0xD8 ? 'image/jpeg'
+          : bytes.slice(0, 8).equals(Buffer.from([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A])) ? 'image/png'
+          : bytes.slice(0, 4).toString('latin1') === 'GIF8' ? 'image/gif' : 'other';
+        if (real === 'other') deaths.push(`${where}: the og:image ${caminho} is not a JPEG, PNG or GIF — the only types Meta lists, and WhatsApp documents none`);
+        else if (tipo !== real) deaths.push(`${where}: og:image:type says ${tipo || 'nothing'} and ${caminho} is ${real}`);
+        if (real !== 'other') {
+          const forma = real === 'image/jpeg' ? shapeOf(ficheiro)
+            : real === 'image/png' ? { w: bytes.readUInt32BE(16), h: bytes.readUInt32BE(20) }
+            : { w: bytes.readUInt16LE(6), h: bytes.readUInt16LE(8) };
+          if (String(forma.w) !== largura || String(forma.h) !== altura) {
+            deaths.push(`${where}: og:image:width/height say ${largura}x${altura} and ${caminho} is ${forma.w}x${forma.h}`);
+          }
+          if (forma.w < 600 || forma.h < 315) deaths.push(`${where}: ${caminho} is ${forma.w}x${forma.h} — under 600x315 Meta shows it as a small square, and WhatsApp may too`);
+          if (forma.w / forma.h > 4) deaths.push(`${where}: ${caminho} is wider than 4:1 — WhatsApp refuses that shape`);
+        }
+        if (bytes.length >= 600 * 1024) deaths.push(`${where}: ${caminho} is ${Math.round(bytes.length / 1024)} KB — WhatsApp wants an image under 600 KB`);
+        else if (bytes.length > 300 * 1024) warnings.push(`${where}: ${caminho} is ${Math.round(bytes.length / 1024)} KB — legal for WhatsApp (600 KB) but heavy`);
+        /* O ?v= é o resumo do ficheiro (src/build.mjs, medirCartao()): é o que
+           muda a morada quando o desenho muda, e a Meta guarda as imagens pela
+           morada. Um ?v= que não bate é um desenho novo com o endereço velho. */
+        const v = u.searchParams.get('v');
+        const resumo = createHash('sha256').update(bytes).digest('hex').slice(0, 10);
+        if (v !== resumo) deaths.push(`${where}: the og:image carries ?v=${v} and the file's digest is ${resumo} — a changed picture would keep the old address`);
+      }
+      /* Uma ficha leva o cartão do produto, com a fotografia dele. O da marca
+         é a rede de segurança (sem fotografia, ou sem o share.py), e diz-se. */
+      if (/^\/(?:[a-z]{2}\/)?(?:lamps|cathelier\/pieces)\/[^/]+\/index\.html$/.test(where) && /^\/assets\//.test(caminho)) {
+        warnings.push(`${where}: a product page sharing the brand card — no card for its cover in public/media/partilha (python3 scripts/share.py)`);
+      }
+    }
   }
 
   /* O CARTÃO TROCA DE FOTOGRAFIA COM A ESCADA DA CAPA.
@@ -932,6 +1028,62 @@ if (titulosPorTraduzir.length) {
   if (orfas.length) {
     deaths.push(`${orfas.length} rendition(s) of photographs that no longer exist would go live (${orfas.slice(0, 3).join(', ')}) — `
       + 'run python3 scripts/renditions.py, which removes them');
+  }
+}
+
+/* OS CARTÕES QUE NINGUÉM MOSTRA. scripts/share.py deita fora o cartão de uma
+   capa que mudou ou de um produto que saiu; isto confere que deitou -- e
+   apanha o dia em que o share.py e o gerador discordarem sobre quais são as
+   capas, que é o desacordo silencioso que um cartão de partilha já custou
+   noutro projecto (o Ford Puma partilhado com a fotografia de outro carro). */
+{
+  const raiz = join(OUT, 'media', 'partilha');
+  const orfaos = [];
+  const andar = (d) => {
+    for (const f of readdirSync(d)) {
+      const p = join(d, f);
+      if (statSync(p).isDirectory()) andar(p);
+      else if (!cartoesUsados.has(p.slice(OUT.length).split('\\').join('/'))) orfaos.push(p.slice(OUT.length));
+    }
+  };
+  if (existsSync(raiz)) andar(raiz);
+  if (orfaos.length) {
+    deaths.push(`${orfaos.length} share card(s) that no page uses would go live (${orfaos.slice(0, 3).join(', ')}) — `
+      + 'run python3 scripts/share.py, which removes them');
+  }
+}
+
+/* O robots.txt. Em PREVIEW os motores de pesquisa ficam de fora, mas os dois
+   robôs que fazem as pré-visualizações entram pelo nome (src/build.mjs, onde
+   está o porquê e as fontes); fora do PREVIEW entra toda a gente. O
+   meta-externalagent é o robô de treino de IA da Meta e não pode entrar por
+   engano no lugar de um deles. Lê-se em grupos, como um robô o lê (RFC 9309):
+   o grupo com o nome do robô ganha ao «*». */
+{
+  const f = join(OUT, 'robots.txt');
+  const texto = existsSync(f) ? readFileSync(f, 'utf8') : '';
+  const grupos = [];
+  let atual = null;
+  for (const linha of texto.split(/\r?\n/).map((l) => l.replace(/#.*/, '').trim()).filter(Boolean)) {
+    const [campo, ...resto] = linha.split(':');
+    const chave = campo.trim().toLowerCase(); const valor = resto.join(':').trim();
+    if (chave === 'user-agent') {
+      if (!atual || atual.regras.length) { atual = { agentes: [], regras: [] }; grupos.push(atual); }
+      atual.agentes.push(valor.toLowerCase());
+    } else if (atual && (chave === 'allow' || chave === 'disallow')) atual.regras.push(`${chave}:${valor}`);
+  }
+  const regrasDe = (robo) => (grupos.find((g) => g.agentes.includes(robo)) || grupos.find((g) => g.agentes.includes('*')) || { regras: [] }).regras;
+  const entra = (robo) => regrasDe(robo).includes('allow:/') && !regrasDe(robo).includes('disallow:/');
+  if (!texto) deaths.push('public/robots.txt does not exist');
+  else if (PREVIEW_BUILD) {
+    for (const robo of ['facebookexternalhit', 'whatsapp']) {
+      if (!entra(robo)) deaths.push(`robots.txt: ${robo} is shut out in PREVIEW — no link preview on WhatsApp, Facebook or Messenger`);
+    }
+    for (const robo of ['googlebot', 'bingbot', 'meta-externalagent']) {
+      if (!regrasDe(robo).includes('disallow:/')) deaths.push(`robots.txt: ${robo} is let in while the site is in PREVIEW`);
+    }
+  } else if (!entra('*')) {
+    deaths.push('robots.txt: the site is out of PREVIEW and robots.txt still shuts everyone out');
   }
 }
 

@@ -133,10 +133,51 @@ const CALL_COST = () => t('shell.custoChamada');
    com o caso mais lento, que é verdade para qualquer candeeiro. */
 const MARCA_DE_POSICAO = "document.documentElement.dataset.scrolled=scrollY>40?'yes':'no';document.documentElement.dataset.js='yes'";
 
+/* --- o cartão de partilha ----------------------------------------------------
+ *
+ * O WhatsApp exige um og:image com morada absoluta, abaixo de 600 KB, com 300 px
+ * ou mais de largura e até 4:1 (developers.facebook.com/documentation/
+ * business-messaging/whatsapp/link-previews/). A Meta pede ainda a largura e a
+ * altura declaradas -- sem elas, quem partilha um endereço pela primeira vez
+ * não vê imagem nenhuma, porque o robô a processa depois -- e só aceita jpeg,
+ * gif ou png no og:image:type (…/sharing/webmasters/images). O og:image:alt é
+ * o que o ogp.me pede a quem tem og:image. O secure_url repete a morada e só
+ * se escreve quando ela é https: numa construção local ela é http, e um
+ * «secure_url» http é uma mentira.
+ *
+ * As propriedades vão LOGO a seguir ao og:image: no Open Graph uma propriedade
+ * estruturada descreve o og:image que a precede. scripts/check-output.mjs
+ * confere cada uma contra o ficheiro publicado. */
+export function partilhaDe({ partilha, cartoes, brand }) {
+  if (partilha && typeof partilha === 'object') return partilha;
+  const tipo = partilha || brand;
+  const c = cartoes[tipo];
+  if (!c) throw new Error(`page(): não há cartão de partilha «${tipo}» -- falta assets/brand/share-${tipo}.jpg (python3 scripts/share.py)`);
+  return { ...c, alt: t(`shell.partilha.${tipo}`) };
+}
+
+export function etiquetasDaImagem(c) {
+  return [
+    `<meta property="og:image" content="${esc(c.url)}">`,
+    ...(c.url.startsWith('https://') ? [`<meta property="og:image:secure_url" content="${esc(c.url)}">`] : []),
+    `<meta property="og:image:type" content="${esc(c.type)}">`,
+    `<meta property="og:image:width" content="${c.width}">`,
+    `<meta property="og:image:height" content="${c.height}">`,
+    `<meta property="og:image:alt" content="${esc(c.alt)}">`,
+  ].join('\n');
+}
+
 export function page(o) {
   const {
     brand = 'ithos', title, description, path, body,
-    site, identity, image, schema = [], counts = {}, shipping = null, shop = null, asset = {},
+    site, identity, schema = [], counts = {}, shipping = null, shop = null, asset = {},
+    /* O CARTÃO DE PARTILHA (og:image), que é o que o WhatsApp mostra.
+       `cartoes` são os três cartões das marcas, medidos pelo gerador
+       (src/build.mjs, cartoes()); `partilha` escolhe um deles pelo nome --
+       'ithos', 'cathelier' ou 'ithos-cathelier' -- ou É o cartão, já medido, de
+       uma ficha de produto ({ url, width, height, type, alt }). Sem nada, a
+       página leva o da marca que veste. */
+    cartoes = {}, partilha = null,
     bodyClass = '', noindex = false, crumbs = null, extraHead = '', preview = false,
     /* True on the two pages that open with a cover. It rides on <html> so the
        stylesheet can lighten the header's ink there and nowhere else -- on the
@@ -157,7 +198,7 @@ export function page(o) {
      Google onde está a mesma página nas outras (e qual é a da raiz). */
   const canonical = abs(morada(canonicalPath));
   const themeColour = brand === 'ithos' ? '#FFFFFF' : '#FFF8F2';
-  const og = image ? (image.startsWith('http') ? image : abs(image)) : abs('/assets/share.jpg');
+  const cartao = partilhaDe({ partilha, cartoes, brand });
 
   return `<!doctype html>
 <html lang="${LOCALE[lingua()]}"${prefixoDe() ? ` data-prefixo="${prefixoDe()}"` : ''} data-brand="${brand}"${cover ? ' data-cover="yes"' : ''}>
@@ -175,11 +216,13 @@ ${noindex || preview ? '<meta name="robots" content="noindex, nofollow">' : ''}
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(description)}">
 ${semMorada ? '' : `<meta property="og:url" content="${esc(canonical)}">`}
-<meta property="og:image" content="${esc(og)}">
+${etiquetasDaImagem(cartao)}
 <meta property="og:locale" content="${OG_LOCALE[lingua()]}">
 ${LINGUAS.length > 1 && !semMorada ? [...LINGUAS.map((l) => `<link rel="alternate" hreflang="${LOCALE[l]}" href="${esc(abs(morada(canonicalPath, l)))}">`),
   `<link rel="alternate" hreflang="x-default" href="${esc(abs(morada(canonicalPath, linguaDaRaiz())))}">`].join('\n') : ''}
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="${esc(cartao.url)}">
+<meta name="twitter:image:alt" content="${esc(cartao.alt)}">
 
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" as="font" type="font/woff2" crossorigin

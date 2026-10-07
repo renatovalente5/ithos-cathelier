@@ -53,7 +53,8 @@ python3 scripts/cards.py --contact    # review sheets for the card crops
 python3 scripts/cards.py              # write the card masters
 python3 scripts/renditions.py         # web sizes from the masters
 python3 scripts/fonts.py              # re-download the self-hosted typefaces
-python3 scripts/share.py              # the link-preview picture, when a cover changes
+python3 scripts/share.py              # the link-preview cards (og:image); CI runs it too
+node scripts/logos.mjs                # the logos as PNG for those cards, only when a logo changes
 ```
 
 Fotografias juntas no painel: o Worker grava só o original; as versões web
@@ -63,7 +64,65 @@ cada fotografia custa uns segundos uma vez. `cards.py` e `renditions.py` passam
 versões de uma fotografia cujo original saiu; quem decide se alguma página
 precisa de uma fotografia em falta são as guardas.
 
-### Pages and redirect stubs are different numbers
+### O cartão de partilha (o que o WhatsApp mostra)
+
+Desde 7 out 2026 cada página dá às redes um cartão **com o logótipo**
+(`og:image`), porque a queixa foi essa: «quando partilho o link não aparece o
+logo». São imagens JPEG de 1200×630 com a arte verdadeira da cliente —
+`assets/brand/ithos-wordmark.svg` e `cathelier.svg`, passados a PNG por um
+browser, nunca redesenhados nem recoloridos — sobre o fundo de cada loja.
+
+| Cartão | Onde |
+|---|---|
+| `share-ithos-cathelier.jpg` (as duas marcas) | a entrada (`/`, `/en/`), as cópias ithos das páginas partilhadas (contactos, cesto, legais, revendedores — são as canónicas das duas lojas), pagar, obrigado, encomenda cancelada, o 404 da raiz |
+| `share-ithos.jpg` | as páginas da ithos (candeeiros, oficina, cuidados) |
+| `share-cathelier.jpg` | as páginas da cathelier, as cópias cathelier das partilhadas, os stubs |
+| `public/media/partilha/<marca>/<pasta>/<foto>.jpg` | cada ficha: o logótipo e a fotografia da capa do produto (a mesma `cover` que a página mostra) |
+
+**Duas formas, uma imagem.** O WhatsApp mostra o link em grande (a imagem
+inteira, 1.91:1) ou em pequeno (um quadrado cortado ao meio). Tudo o que tem
+de se ver fica dentro do quadrado central, x 285–915: nas marcas, o
+logótipo; nas fichas, o logótipo e o produto lado a lado. O `share.py` pára se
+alguma coisa sair do quadrado.
+
+**Voltar a gerar.** `python3 scripts/share.py` refaz só o que mudou: cada
+cartão traz dentro (comentário do JPEG) a receita de que saiu — a versão do
+desenho (`DESENHO`), o resumo do SVG de cada logótipo e o de cada fotografia.
+O CI corre-o depois do `renditions.py`, e é assim que as fichas das
+fotografias juntas no painel ganham cartão. Trocar um logótipo em
+`assets/brand/` obriga a `node scripts/logos.mjs` (precisa do Playwright com o
+Chromium: `PLAYWRIGHT=/caminho/node_modules/playwright`) e depois ao
+`share.py`; sem isso, `scripts/guards.mjs` pára a publicação. Mudar o desenho
+é mudar `DESENHO` no `share.py`.
+
+**A morada muda com o desenho.** O gerador acrescenta `?v=<resumo do ficheiro>`
+ao `og:image`: a Meta guarda as imagens pela morada, e um cartão redesenhado
+com o endereço antigo ficava velho no Facebook. O nome do ficheiro não muda, e
+uma pré-visualização antiga recebe o desenho novo em vez de um 404. O
+`assets/brand/share.jpg` antigo (as duas capas, sem logótipo) fica publicado
+pela mesma razão: há pré-visualizações feitas com ele.
+
+**As etiquetas.** `og:image` absoluto, `og:image:secure_url`, `:type`,
+`:width`, `:height` (lidos do ficheiro) e `:alt` na língua da página, e
+`twitter:image`. O `check-output` confere cada uma contra os bytes publicados,
+mais os limites do WhatsApp (menos de 600 KB, 300 px ou mais, até 4:1, o
+`<head>` nos primeiros 300 KB) e os 600×315 da Meta.
+
+**O robots.txt em PREVIEW** deixa entrar só os dois robôs das
+pré-visualizações — `facebookexternalhit` (Facebook, Messenger, Instagram) e
+`WhatsApp` — e mantém o `Disallow: /` para os outros; o `noindex` continua nas
+páginas. Um «Disallow: /» para todos fechava a porta ao robô da Meta. O
+`meta-externalagent` (treino de IA da Meta) não entra. Fora do PREVIEW entra
+toda a gente, como antes.
+
+**Para ver se funciona** (depois de publicar): no telemóvel, escrever a
+mensagem com um endereço que esse telemóvel nunca partilhou
+(`https://ithos-cathelier.pt/?v=2`, `?v=3`…) e **não enviar**: em 10 s a
+pré-visualização tem de aparecer, em grande e com o logótipo. A Meta guarda o
+robots.txt até 24 h. No Facebook, o Sharing Debugger
+(developers.facebook.com/tools/debug, «Scrape Again») relê a página.
+
+
 
 `public/` holds 104 HTML files: **94 pages** and **10 redirect stubs**. The stubs
 sit at the ten old cathelier occasion addresses (`/cathelier/christmas/` and the

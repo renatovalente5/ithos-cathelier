@@ -1175,6 +1175,62 @@ for (const [o, n] of esgotados) {
   }
 }
 
+/* --- os cartões de partilha levam o logótipo de HOJE ------------------------
+ * O og:image de cada página é um cartão com o logótipo da cliente, desenhado
+ * pelo scripts/share.py a partir de um PNG que o scripts/logos.mjs tirou do SVG
+ * de assets/brand/. São três passos e só o último corre no CI -- por isso um
+ * logótipo trocado em assets/brand/ ia para o site, no cabeçalho, e o WhatsApp
+ * continuava a mostrar o antigo, sem nada a dizê-lo.
+ *
+ * O resumo do SVG viaja: logos.mjs escreve-o dentro do PNG (tEXt
+ * «svg-sha256»), e o share.py dentro de cada cartão (o comentário do JPEG, a
+ * «receita»: «<nome>=<resumo>» por logótipo). Aqui compara-se com o SVG que
+ * está no disco. */
+{
+  const { createHash } = await import('node:crypto');
+  const resumo = (nome) => createHash('sha256')
+    .update(readFileSync(join(ROOT, 'assets', 'brand', `${nome}.svg`))).digest('hex').slice(0, 16);
+  const hoje = { 'ithos-wordmark': resumo('ithos-wordmark'), cathelier: resumo('cathelier') };
+  const refazer = 'node scripts/logos.mjs && python3 scripts/share.py --force';
+
+  for (const [nome, sha] of Object.entries(hoje)) {
+    const png = join(ROOT, 'scripts', 'share', `${nome}.png`);
+    if (!existsSync(png)) { die(`scripts/share/${nome}.png não existe — ${refazer}`); continue; }
+    const b = readFileSync(png);
+    const m = b.toString('latin1', 0, Math.min(b.length, 4096)).match(/tEXtsvg-sha256\0([0-9a-f]{16})/);
+    if (!m) die(`scripts/share/${nome}.png não diz de que SVG saiu — ${refazer}`);
+    else if (m[1] !== sha) die(`scripts/share/${nome}.png saiu de outro ${nome}.svg — o logótipo mudou e os cartões de partilha ainda mostram o antigo: ${refazer}`);
+  }
+
+  /* O comentário de um JPEG (marcador FFFE), lido sem descodificar a imagem. */
+  const comentario = (ficheiro) => {
+    const b = readFileSync(ficheiro);
+    for (let i = 2; i + 4 <= b.length && b[i] === 0xFF;) {
+      const marca = b[i + 1];
+      if (marca === 0xDA) break;                    // começo dos dados: não há mais cabeçalhos
+      const tam = b.readUInt16BE(i + 2);
+      if (marca === 0xFE) return b.toString('latin1', i + 4, i + 2 + tam);
+      i += 2 + tam;
+    }
+    return '';
+  };
+  const cartoes = ['ithos', 'cathelier', 'ithos-cathelier'].map((t) => join(ROOT, 'assets', 'brand', `share-${t}.jpg`));
+  const pasta = join(ROOT, 'public', 'media', 'partilha');
+  const andar = (d) => readdirSync(d, { withFileTypes: true }).forEach((e) => (e.isDirectory()
+    ? andar(join(d, e.name)) : e.name.endsWith('.jpg') && cartoes.push(join(d, e.name))));
+  if (existsSync(pasta)) andar(pasta);
+  const velhos = [];
+  for (const c of cartoes) {
+    const onde = c.slice(ROOT.length + 1);
+    if (!existsSync(c)) { die(`${onde} não existe — python3 scripts/share.py`); continue; }
+    const pares = [...comentario(c).matchAll(/([a-z-]+)=([0-9a-f]{16})/g)].filter(([, nome]) => nome in hoje);
+    if (!pares.length || pares.some(([, nome, sha]) => hoje[nome] !== sha)) velhos.push(onde);
+  }
+  if (velhos.length) {
+    die(`${velhos.length} cartão(ões) de partilha com um logótipo que já não é o de assets/brand/ (${velhos.slice(0, 3).join(', ')}) — ${refazer}`);
+  }
+}
+
 /* --- os preços de revenda nunca são públicos ------------------------------
    Vivem no KV do Worker e em mais lado nenhum. Este repositório é PÚBLICO, e o
    catálogo gerado é servido a toda a gente: um campo de revenda num produto
