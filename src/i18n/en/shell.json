@@ -175,5 +175,25 @@
   "lingua": {
     "t": "Language",
     "h": "dca49b9ef917"
+  },
+  "partilha.ithos": {
+    "t": "The ithos logo on white, between two wooden night lights.",
+    "h": "1a90ed8127fc"
+  },
+  "partilha.cathelier": {
+    "t": "The cathelier logo on cream, between two laser-cut wooden pieces.",
+    "h": "242904bb55e7"
+  },
+  "partilha.ithos-cathelier": {
+    "t": "The ithos and cathelier logos, between a wooden night light and a laser-cut piece.",
+    "h": "9b70b8c2d04d"
+  },
+  "partilha.candeeiro": {
+    "t": "The ithos logo beside a photograph of the {nome} night light.",
+    "h": "c36a41f0a69a"
+  },
+  "partilha.peca": {
+    "t": "The cathelier logo beside a photograph of the {nome} piece.",
+    "h": "52aaab881129"
   }
 }

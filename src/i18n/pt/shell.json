@@ -43,5 +43,10 @@
   "rodape.identificacao": "A quem está a comprar",
   "rodape.revendedores": "Para revendedores",
   "rodape.falar": "Fale connosco",
-  "lingua": "Língua"
+  "lingua": "Língua",
+  "partilha.ithos": "O logótipo da ithos sobre fundo branco, entre dois candeeiros de presença em madeira.",
+  "partilha.cathelier": "O logótipo da cathelier sobre fundo creme, entre duas peças de madeira cortadas a laser.",
+  "partilha.ithos-cathelier": "Os logótipos da ithos e da cathelier, entre um candeeiro de presença em madeira e uma peça cortada a laser.",
+  "partilha.candeeiro": "O logótipo da ithos ao lado de uma fotografia do candeeiro {nome}.",
+  "partilha.peca": "O logótipo da cathelier ao lado de uma fotografia da peça {nome}."
 }

@@ -14,12 +14,12 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 
-import { page, MIRRORED } from './lib/shell.mjs';
+import { page, MIRRORED, partilhaDe, etiquetasDaImagem } from './lib/shell.mjs';
 import * as ithos from './lib/ithos.mjs';
 import * as cath from './lib/cathelier.mjs';
 import * as pages from './lib/pages.mjs';
 import { esc } from './lib/html.mjs';
-import { cardWidths } from './lib/photo.mjs';
+import { cardWidths, shapeOf } from './lib/photo.mjs';
 import { REDIRECTS } from './lib/redirects.mjs';
 import { visiveis, destinoDe, fragmentosAntigos, lerSeparadores } from './lib/ocasioes.mjs';
 import { stockDe, prateleiras } from './lib/prazos.mjs';
@@ -188,7 +188,7 @@ function prepararLingua(l) {
     ? visiveis(read('cathelier/_occasions.json'), pieces)
     : [];
   counts = { lamps: lamps.length, pieces: pieces.length, occasions: occasions.length };
-  shellArgs = { site: SITE, identity, counts, preview: PREVIEW, shipping, shop, asset: ASSET };
+  shellArgs = { site: SITE, identity, counts, preview: PREVIEW, shipping, shop, asset: ASSET, cartoes: CARTOES };
   /* As peças vão para os marcadores por causa da página de cuidados da
      cathelier, que lista os avisos de cada uma (na língua do passo). */
   MARKERS = pages.markers({ identity, shop, shipping, pieces });
@@ -260,7 +260,10 @@ function redirectStub({ to, name }) {
      dava "See the a new baby pieces". Entre aspas é um rótulo, e um rótulo
      serve os dez nomes sem excepção.
      Não há comentários nesta saída: um stub é lido por quem estiver de
-     passagem durante uns milissegundos, e o que aqui vai é servido. */
+     passagem durante uns milissegundos, e o que aqui vai é servido.
+     O og: está cá pela mesma razão que o refresh: quem partilha a morada
+     antiga no WhatsApp leva uma pré-visualização (o WhatsApp não segue um
+     meta refresh). Todos estes stubs são moradas da cathelier. */
   return `<!doctype html>
 <html lang="${LOCALE[lingua()]}">
 <head>
@@ -271,6 +274,18 @@ function redirectStub({ to, name }) {
 <link rel="canonical" href="${SITE}${morada(to.split('#')[0])}">${PREVIEW ? `
 <meta name="robots" content="noindex, nofollow">` : ''}
 <title>${esc(txt('titulo'))}</title>
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="${esc(identity.tradingName)}">
+<meta property="og:title" content="${esc(txt('titulo'))}">
+<meta property="og:description" content="${esc(txt('texto'))}">
+<meta property="og:url" content="${SITE}${morada(to.split('#')[0])}">
+${(() => {
+  const c = partilhaDe({ partilha: 'cathelier', cartoes: CARTOES });
+  return `${etiquetasDaImagem(c)}
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="${esc(c.url)}">
+<meta name="twitter:image:alt" content="${esc(c.alt)}">`;
+})()}
 </head>
 <body>
 <p>${esc(txt('texto'))}
@@ -296,6 +311,43 @@ function redirectStub({ to, name }) {
  * cached for a year instead of ten minutes. */
 const digest = (s) => createHash('sha256').update(s).digest('hex').slice(0, 10);
 const ASSET = { css: '', js: '', textos: {} };
+
+/* --- os cartões de partilha (og:image) ---------------------------------------
+   Desenhados por scripts/share.py: os três das marcas em assets/brand/ (que
+   assets() copia para /assets/), e um por capa de produto em
+   public/media/partilha/. Aqui só se MEDEM -- a largura e a altura saem do
+   próprio ficheiro, nunca de uma constante, e o tipo é o do ficheiro.
+
+   A MORADA MUDA QUANDO O DESENHO MUDA. A Meta guarda as imagens pela morada
+   (developers.facebook.com/documentation/sharing/webmasters/images, «Updating
+   images»): trocar o ficheiro com o mesmo endereço deixava o Facebook com o
+   desenho velho. Por isso a morada leva `?v=` com o resumo do conteúdo. O
+   nome do ficheiro fica o mesmo, e assim uma pré-visualização antiga nunca
+   aponta para um 404 -- recebe o desenho novo. */
+const CARTOES = {};
+function medirCartao(ficheiro, caminho) {
+  const { w, h } = shapeOf(ficheiro);
+  return { url: `${SITE}${caminho}?v=${digest(readFileSync(ficheiro))}`, width: w, height: h, type: 'image/jpeg' };
+}
+function cartoes() {
+  for (const tipo of ['ithos', 'cathelier', 'ithos-cathelier']) {
+    const ficheiro = join(OUT, 'assets', `share-${tipo}.jpg`);
+    if (!existsSync(ficheiro)) throw new Error(`assets/brand/share-${tipo}.jpg is missing — run python3 scripts/share.py`);
+    CARTOES[tipo] = medirCartao(ficheiro, `/assets/share-${tipo}.jpg`);
+  }
+}
+/* O cartão de uma ficha: o logótipo e a fotografia da capa que a página
+   mostra (a mesma `cover`, lida do mesmo campo por scripts/share.py). Sem ele
+   -- uma peça sem fotografia, ou uma construção local sem o share.py --, a
+   ficha leva o cartão da marca, que também tem o logótipo. */
+function cartaoDoProduto(brand, p) {
+  if (!p.photoFolder || !p.cover) return null;
+  const caminho = `/media/partilha/${brand}/${p.photoFolder}/${p.cover}.jpg`;
+  const ficheiro = join(OUT, caminho);
+  if (!existsSync(ficheiro)) return null;
+  return { ...medirCartao(ficheiro, caminho),
+    alt: t(brand === 'ithos' ? 'shell.partilha.candeeiro' : 'shell.partilha.peca', { nome: p.name }) };
+}
 
 function assets() {
   const css = ['styles/base.css', 'styles/brands/ithos.css', 'styles/brands/cathelier.css', 'styles/shop.css']
@@ -515,6 +567,9 @@ function buildIthos() {
     ...shellArgs, brand: 'ithos', path: '/',
     title: t('build.inicio.titulo'),
     description: t('build.inicio.descricao', { n: lamps.length }),
+    /* A ENTRADA LEVA AS DUAS MARCAS. É a morada que se partilha quando se
+       partilha «o site» (ithos-cathelier.pt), e o domínio é das duas. */
+    partilha: 'ithos-cathelier',
     cover: true,
     body: ithos.home({ products: lamps, identity, cover: covers.ithos, coverArt: coverArt('ithos') }),
     schema: [{
@@ -533,21 +588,22 @@ function buildIthos() {
 
   for (const p of lamps) {
     const { low } = ithos.fromPrice(p);
-    /* A imagem para as redes e para o Google é a MAIOR versão da capa que
-       existe -- não um -1000 fixo: a coruja (540 px) nunca o teve, e a página
-       apontava para um ficheiro que dava 404. */
-    const partilha = `/media/ithos/${p.photoFolder}/${p.cover}-${Math.max(...cardWidths(`ithos/${p.photoFolder}`, p.cover))}.webp`;
+    /* A imagem para o Google (os dados estruturados) é a MAIOR versão da capa
+       que existe -- não um -1000 fixo: a coruja (540 px) nunca o teve, e a
+       página apontava para um ficheiro que dava 404. A das redes (og:image) é
+       o cartão da ficha, com o logótipo: ver cartaoDoProduto(). */
+    const fotoGrande = `/media/ithos/${p.photoFolder}/${p.cover}-${Math.max(...cardWidths(`ithos/${p.photoFolder}`, p.cover))}.webp`;
     write(`/lamps/${p.slug}/`, page({
       ...shellArgs, brand: 'ithos', path: `/lamps/${p.slug}/`,
       title: t('build.candeeiro.titulo', { nome: p.name }),
       description: p.summary,
-      image: partilha,
+      partilha: cartaoDoProduto('ithos', p),
       crumbs: [{ name: t('build.migalha.inicio'), href: '/' }, { name: t('build.migalha.candeeiros'), href: '/lamps/' }, { name: p.name }],
       body: ithos.product({ p, all: lamps, shop, identity }),
       schema: [{
         '@context': 'https://schema.org', '@type': 'Product',
         name: t('build.candeeiro.nomeProduto', { nome: p.name }), description: p.summary,
-        image: `${SITE}${partilha}`,
+        image: `${SITE}${fotoGrande}`,
         brand: { '@type': 'Brand', name: 'ithos' },
         offers: {
           '@type': 'Offer', price: low.toFixed(2), priceCurrency: 'EUR',
@@ -611,7 +667,7 @@ function buildCathelier() {
       crumbs: [{ name: 'cathelier', href: '/cathelier/' },
                { name: t('build.migalha.todasPecas'), href: '/cathelier/pieces/' }, { name: p.name }],
       body: cath.piece({ p, all: pieces, shop, occasions, identity }),
-      image: p.photoFolder && p.cover ? `/media/cathelier/${p.photoFolder}/${p.cover}-400.webp` : undefined,
+      partilha: cartaoDoProduto('cathelier', p),
       /* The 41 cathelier pieces emitted no structured data at all while the 26
          lamps did. Same shop, same basket, same law — and to a search engine
          only half of it was a shop. `MadeToOrder` is the honest availability:
@@ -686,7 +742,11 @@ function dressBody(html) {
 
 function mirror(path, { title, description, crumbs, body, schema = [], noindex = false }) {
   const common = { ...shellArgs, path, title, description, body, noindex };
-  write(path, page({ ...common, brand: 'ithos', crumbs, schema }),
+  /* A cópia ithos é a canónica das DUAS lojas (o og:url da cópia cathelier
+     aponta para ela, e o Facebook e o Messenger vão buscar a imagem à morada
+     do og:url): leva o cartão das duas marcas. A cópia cathelier leva o seu,
+     que é o que o WhatsApp mostra -- ele lê a página que recebe. */
+  write(path, page({ ...common, brand: 'ithos', crumbs, schema, partilha: 'ithos-cathelier' }),
     { sitemap: !noindex });
   write(`/cathelier${path}`, page({
     ...common, brand: 'cathelier', path: `/cathelier${path}`, canonicalPath: path,
@@ -790,7 +850,7 @@ function buildShared() {
     const title = t(`build.${chave}.titulo`);
     const description = t(`build.${chave}.descricao`);
     write(path, page({
-      ...shellArgs, brand: 'ithos', path, noindex: true,
+      ...shellArgs, brand: 'ithos', path, noindex: true, partilha: 'ithos-cathelier',
       title: `${title} — ithos · cathelier`, description, body,
     }), { sitemap: false });
   }
@@ -803,6 +863,7 @@ function buildShared() {
   for (const [marca, onde] of [['ithos', '/404.html'], ['cathelier', '/cathelier/404.html']]) {
     write(onde, page({
       ...shellArgs, brand: marca, path: onde, noindex: true, semMorada: true,
+      partilha: marca === 'cathelier' ? 'cathelier' : 'ithos-cathelier',
       title: t(marca === 'cathelier' ? 'build.naoEncontrada.tituloCathelier' : 'build.naoEncontrada.titulo'),
       description: t(marca === 'cathelier' ? 'build.naoEncontrada.descricaoCathelier' : 'build.naoEncontrada.descricao'),
       body: pages.notFound(),
@@ -820,6 +881,7 @@ mkdirSync(OUT, { recursive: true });
 if (keepMedia) { cpSync(join(ROOT, '.media-cache'), media, { recursive: true }); rmSync(join(ROOT, '.media-cache'), { recursive: true, force: true }); }
 
 assets();
+cartoes();
 /* UM PASSO POR LÍNGUA. A primeira vai para a raiz; as outras para /<língua>/. */
 for (const l of LINGUAS) {
   prepararLingua(l);
@@ -844,8 +906,27 @@ for (const l of LINGUAS.filter((x) => x !== ORIGEM)) {
 prepararLingua(ORIGEM);
 const cat = catalogueFile(nomesNasLinguas);
 
+/* EM PREVIEW o site fica fora dos motores de pesquisa (o noindex continua nas
+   páginas) -- mas o «Disallow: /» para toda a gente fechava também a porta ao
+   robô que faz as pré-visualizações da Meta: a página dos robôs dela trata o
+   robots.txt como a forma de os bloquear, e o facebookexternalhit, sem grupo
+   próprio, cai no «*». Sem ele não há pré-visualização no Facebook, no
+   Messenger nem no Instagram.
+   (developers.facebook.com/documentation/sharing/webmasters/web-crawlers)
+   O WhatsApp lê a página a partir do telemóvel de quem envia, com o
+   User-Agent «WhatsApp/2.x» (…/business-messaging/whatsapp/link-previews/);
+   se respeita o robots.txt não está escrito em lado nenhum, por isso entra
+   também pelo nome. Um robô com grupo próprio obedece só ao seu e deixa de ler
+   o «*» (RFC 9309, 2.2.1): estes dois entram, os motores de pesquisa não.
+   O meta-externalagent NÃO entra: é o robô com que a Meta treina modelos de
+   IA, não o das pré-visualizações. */
+const ROBOTS_PREVIEW = [
+  'User-agent: facebookexternalhit', 'Allow: /', '',
+  'User-agent: WhatsApp', 'Allow: /', '',
+  'User-agent: *', 'Disallow: /', '',
+].join('\n');
 writeFileSync(join(OUT, 'robots.txt'),
-  PREVIEW ? 'User-agent: *\nDisallow: /\n' : `User-agent: *\nAllow: /\nSitemap: ${SITE}/sitemap.xml\n`);
+  PREVIEW ? ROBOTS_PREVIEW : `User-agent: *\nAllow: /\nSitemap: ${SITE}/sitemap.xml\n`);
 writeFileSync(join(OUT, 'sitemap.xml'),
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n`
   /* The copies are not in here, and neither is anything noindex. A sitemap
