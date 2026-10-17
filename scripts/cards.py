@@ -236,16 +236,21 @@ def main():
         for n in range(0, len(nomes), 6):
             lote = nomes[n:n + 6]
             colunas = max(len(por_produto[p]) for p in lote)
-            larg, alt = colunas * 310 + 150, len(lote) * 330 + 20
+            # A altura da linha sai da proporção do cartão: com 330 fixos (do
+            # tempo do quadrado) cada linha tapava o fundo das fotografias da
+            # de cima, e um recorte que cortava os pés parecia certo.
+            mini_alt = round(300 / PROPORCAO)
+            passo = mini_alt + 30
+            larg, alt = colunas * 310 + 150, len(lote) * passo + 20
             folha = Image.new('RGB', (larg, alt), '#F4F1EC')
             d = ImageDraw.Draw(folha)
             for i, p in enumerate(lote):
-                y = 20 + i * 330
-                d.text((10, y + 140), p, fill='#231F20')
+                y = 20 + i * passo
+                d.text((10, y + mini_alt // 2), p, fill='#231F20')
                 for j, (nome, mini, manual) in enumerate(por_produto[p]):
                     x = 150 + j * 310
                     folha.paste(mini, (x, y))
-                    d.rectangle([x, y, x + 299, y + 299],
+                    d.rectangle([x, y, x + 299, y + mini_alt - 1],
                                 outline='#C46A3F' if manual else '#B9B0A4', width=3 if manual else 1)
                     d.text((x + 6, y + 6), nome, fill='#fff')
             folha.save(FOLHAS / f'sheet-{n // 6 + 1:02d}.jpg', 'JPEG', quality=88)
