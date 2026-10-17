@@ -1,0 +1,34 @@
+{
+  "name": {
+    "t": "Family ball",
+    "h": "f0c24aebdcc6"
+  },
+  "summary": {
+    "t": "A ball with a small ball hanging for each person in the house.",
+    "h": "27657d60abfd"
+  },
+  "text": {
+    "t": "A ball with a small ball hanging for each person in the house.",
+    "h": "27657d60abfd"
+  },
+  "options.family.name": {
+    "t": "Family",
+    "h": "2210ffa66807"
+  },
+  "options.family.example": {
+    "t": "Rodrigues Family",
+    "h": "bdb3194f758f"
+  },
+  "options.names.name": {
+    "t": "Names, one per small ball",
+    "h": "0b3683ea5e1c"
+  },
+  "options.names.example": {
+    "t": "Ana, Rui, Tiago",
+    "h": "9cecb4ad9ca6"
+  },
+  "gpsr.warnings.0": {
+    "t": "This is a decoration and not a toy: hang it out of reach of small children, who may put it in their mouths.",
+    "h": "ded79a9ab86f"
+  }
+}

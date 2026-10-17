@@ -1,0 +1,50 @@
+{
+  "name": {
+    "t": "Hollow bauble with tag",
+    "h": "0e20598420f6"
+  },
+  "summary": {
+    "t": "A cutout bauble with a Christmas design and a word on the tag.",
+    "h": "03c58f17ca17"
+  },
+  "text": {
+    "t": "A cutout bauble with a Christmas design and a word on the tag.",
+    "h": "03c58f17ca17"
+  },
+  "options.design.name": {
+    "t": "Design",
+    "h": "244c968a7a0b"
+  },
+  "options.design.values.angel.name": {
+    "t": "Angel",
+    "h": "862ceef88828"
+  },
+  "options.design.values.snowflake.name": {
+    "t": "Snowflake",
+    "h": "68b81553d28d"
+  },
+  "options.design.values.candy-cane.name": {
+    "t": "Candy cane",
+    "h": "4d55f6506176"
+  },
+  "options.design.values.holly.name": {
+    "t": "Holly",
+    "h": "1e0044d303a7"
+  },
+  "options.design.values.feliz-natal.name": {
+    "t": "Merry Christmas",
+    "h": "427681111a37"
+  },
+  "options.word.name": {
+    "t": "Word on the tag",
+    "h": "af12061779d8"
+  },
+  "options.word.example": {
+    "t": "Harmony",
+    "h": "2b03a7caece8"
+  },
+  "gpsr.warnings.0": {
+    "t": "This is an ornament and not a toy: hang it out of reach of young children, who may put it in their mouths.",
+    "h": "ded79a9ab86f"
+  }
+}

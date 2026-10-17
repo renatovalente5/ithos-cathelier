@@ -1,0 +1,26 @@
+{
+  "name": {
+    "t": "Easter Carrot",
+    "h": "88100d6755f8"
+  },
+  "summary": {
+    "t": "An engraved carrot with raffia leaves, for the table or for the basket.",
+    "h": "3ae56ecd3b56"
+  },
+  "text": {
+    "t": "An engraved carrot with raffia leaves, for the table or for the basket.",
+    "h": "3ae56ecd3b56"
+  },
+  "options.name.name": {
+    "t": "Name (optional)",
+    "h": "9f2ea33b5a14"
+  },
+  "options.name.example": {
+    "t": "Leonor",
+    "h": "954d7814e9ba"
+  },
+  "gpsr.warnings.0": {
+    "t": "It is a decoration and not a toy: hang it out of reach of small children, who may put it in their mouths.",
+    "h": "ded79a9ab86f"
+  }
+}
