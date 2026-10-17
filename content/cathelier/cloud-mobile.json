@@ -1,0 +1,84 @@
+{
+  "name": "Móbile de nuvem com nome",
+  "price": 32,
+  "published": true,
+  "featured": false,
+  "order": 250,
+  "made": "to_order",
+  "occasion": "new-baby",
+  "alsoIn": [
+    "hanging"
+  ],
+  "summary": "Uma nuvem com o nome e a data, e nuvens pequenas penduradas por baixo.",
+  "text": "Uma nuvem com o nome e a data, e nuvens pequenas penduradas por baixo.",
+  "photoFolder": "cloud-mobile",
+  "photos": [
+    "01",
+    "02",
+    "03"
+  ],
+  "cover": "01",
+  "options": [
+    {
+      "id": "name",
+      "name": "Nome",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 40,
+      "extra": 0,
+      "example": "Beatriz"
+    },
+    {
+      "id": "born",
+      "name": "Data de nascimento",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 30,
+      "extra": 0,
+      "example": "24 de fevereiro de 2025"
+    },
+    {
+      "id": "time",
+      "name": "Hora",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 12,
+      "extra": 0,
+      "example": "11:52"
+    },
+    {
+      "id": "weight",
+      "name": "Peso",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 14,
+      "extra": 0,
+      "example": "3,300 kg"
+    },
+    {
+      "id": "length",
+      "name": "Comprimento",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 12,
+      "extra": 0,
+      "example": "47 cm"
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": [
+      "Pendure sempre fora do alcance do bebé — por cima ou por fora do berço, nunca dentro dele: o fio pode enrolar-se. Confirme de vez em quando que continua bem preso."
+    ]
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

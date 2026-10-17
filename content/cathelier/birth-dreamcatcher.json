@@ -1,0 +1,94 @@
+{
+  "name": "Caça-sonhos de nascimento",
+  "price": 35,
+  "published": true,
+  "featured": false,
+  "order": 260,
+  "made": "to_order",
+  "occasion": "new-baby",
+  "alsoIn": [
+    "hanging"
+  ],
+  "summary": "Uma placa com os dados do nascimento e fitas de renda por baixo.",
+  "text": "Uma placa com os dados do nascimento e fitas de renda por baixo.",
+  "photoFolder": "birth-dreamcatcher",
+  "photos": [
+    "01",
+    "02",
+    "03"
+  ],
+  "cover": "01",
+  "options": [
+    {
+      "id": "name",
+      "name": "Nome",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 40,
+      "extra": 0,
+      "example": "Beatriz"
+    },
+    {
+      "id": "surname",
+      "name": "Apelido",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 60,
+      "extra": 0,
+      "example": "Marques Gomes"
+    },
+    {
+      "id": "born",
+      "name": "Data de nascimento",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 30,
+      "extra": 0,
+      "example": "24 de fevereiro de 2025"
+    },
+    {
+      "id": "time",
+      "name": "Hora",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 12,
+      "extra": 0,
+      "example": "11:52"
+    },
+    {
+      "id": "weight",
+      "name": "Peso",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 14,
+      "extra": 0,
+      "example": "3,300 kg"
+    },
+    {
+      "id": "length",
+      "name": "Comprimento",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 12,
+      "extra": 0,
+      "example": "47 cm"
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": [
+      "Pendure sempre fora do alcance do bebé — por cima ou por fora do berço, nunca dentro dele: o fio pode enrolar-se. Confirme de vez em quando que continua bem preso."
+    ]
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "name": "Enfeites nórdicos",
+  "price": 4,
+  "published": true,
+  "featured": false,
+  "order": 130,
+  "made": "to_order",
+  "occasion": "christmas",
+  "alsoIn": [
+    "hanging"
+  ],
+  "summary": "Floco de neve, luva, casinha, sino ou bola, gravados com padrões nórdicos.",
+  "text": "Floco de neve, luva, casinha, sino ou bola, gravados com padrões nórdicos.",
+  "photoFolder": "nordic-ornaments",
+  "photos": [
+    "01",
+    "02",
+    "03",
+    "04",
+    "05"
+  ],
+  "cover": "01",
+  "options": [
+    {
+      "id": "shape",
+      "name": "Forma",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "values": [
+        {
+          "id": "snowflake",
+          "name": "Floco de neve",
+          "extra": 0
+        },
+        {
+          "id": "mitten",
+          "name": "Luva",
+          "extra": 0
+        },
+        {
+          "id": "house",
+          "name": "Casinha",
+          "extra": 0
+        },
+        {
+          "id": "bell",
+          "name": "Sino",
+          "extra": 0
+        },
+        {
+          "id": "bauble",
+          "name": "Bola",
+          "extra": 0
+        }
+      ]
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": [
+      "É um enfeite e não um brinquedo: pendure-o fora do alcance de crianças pequenas, que o podem pôr na boca."
+    ]
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

@@ -1,0 +1,82 @@
+{
+  "name": "Carro de corrida verde-sálvia",
+  "price": 130,
+  "published": true,
+  "featured": false,
+  "order": 185,
+  "made": "to_order",
+  "summary": "O carro de corrida em verde-sálvia, com o número 2 ou 3.",
+  "text": "O mesmo carro de corrida, pintado em verde-sálvia, com o número na porta e as rodas cheias de luz.",
+  "photoFolder": "carro-salvia",
+  "photos": [
+    "01",
+    "02",
+    "03",
+    "04",
+    "05"
+  ],
+  "cover": "01",
+  "colours": [],
+  "options": [
+    {
+      "id": "power",
+      "name": "Alimentação",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "help": "As pilhas não estão incluídas. A versão com cabo traz um comando: liga, desliga, regula a intensidade, desliga sozinha e faz a luz pulsar devagar.",
+      "values": [
+        {
+          "id": "batteries",
+          "name": "2 pilhas AA (3 V)",
+          "extra": 0
+        },
+        {
+          "id": "mains",
+          "name": "Cabo de corrente com comando",
+          "extra": 0,
+          "available": false,
+          "note": "Esgotado por agora"
+        }
+      ]
+    },
+    {
+      "id": "engraving",
+      "name": "Gravação a laser",
+      "type": "text",
+      "required": false,
+      "personalises": true,
+      "max": 40,
+      "extra": 0,
+      "help": "Um nome, uma data ou uma frase curta, gravados na madeira. Deixe vazio se preferir sem gravação."
+    },
+    {
+      "id": "number",
+      "name": "Número",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "values": [
+        {
+          "id": "2",
+          "name": "2",
+          "extra": 0
+        },
+        {
+          "id": "3",
+          "name": "3",
+          "extra": 0
+        }
+      ]
+    }
+  ],
+  "gpsr": {
+    "type": "ITH-CVE",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

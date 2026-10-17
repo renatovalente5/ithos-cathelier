@@ -279,6 +279,46 @@ export function all({ pieces, occasions }) {
 `;
 }
 
+/* UM CAMPO POR OPÇÃO, e o campo tem a forma da opção.
+   Até outubro de 2026 todas as peças da cathelier pediam só texto, e este
+   modelo escrevia uma caixa de texto para QUALQUER opção: uma escolha (a forma
+   de um enfeite, a pinha natural ou branca) saía como caixa vazia, e o Worker
+   recusava o que lá se escrevesse, porque espera o id de um dos valores. A
+   escolha é igual à da ithos -- rádios com data-option, que o shop.js lê nas
+   duas lojas --, com o valor mais barato que se pode comprar marcado.
+   A ajuda (`help`) também nunca aparecia: é aí que uma peça com fotografia diz
+   como a fotografia chega. */
+function campoDaPeca(o) {
+  if (o.type === 'choice' && Array.isArray(o.values) && o.values.length) {
+    const ha = o.values.filter((v) => v.available !== false);
+    const pool = ha.length ? ha : o.values;
+    const barato = Math.min(...pool.map((v) => v.extra || 0));
+    const marcado = pool.find((v) => (v.extra || 0) === barato) ?? pool[0];
+    return `<fieldset class="field">
+        <legend>${esc(o.name)}</legend>
+        ${o.help ? `<p class="field__help">${esc(o.help)}</p>` : ''}
+        <div class="choices">
+          ${o.values.map((v) => {
+    const off = v.available === false;
+    return `<label class="choice${off ? ' choice--off' : ''}">
+            <input type="radio" name="opt-${esc(o.id)}" value="${esc(v.id)}" data-option="${esc(o.id)}"${v.id === marcado.id ? ' checked' : ''}${off ? ' disabled' : ''}>
+            <span>${esc(v.name)}${v.extra ? ` <em>+${esc(valor(v.extra))} €</em>` : ''}</span>
+          </label>`;
+  }).join('\n          ')}
+        </div>
+      </fieldset>`;
+  }
+  const descreve = [o.help ? `opt-${o.id}-ajuda` : '', o.personalises ? 'opt-aviso-personalizada' : ''].filter(Boolean).join(' ');
+  return `<div class="field">
+        <label for="opt-${esc(o.id)}">${esc(o.name)}${o.required ? ` <span class="field__req">${esc(t('cathelier.ficha.obrigatorio'))}</span>` : ''}</label>
+        ${o.help ? `<p class="field__help" id="opt-${esc(o.id)}-ajuda">${esc(o.help)}</p>` : ''}
+        <input id="opt-${esc(o.id)}" type="text" maxlength="${Number.isInteger(o.max) && o.max > 0 ? o.max : 60}"
+               data-option="${esc(o.id)}"${o.required ? ' required' : ''}${descreve ? ` aria-describedby="${esc(descreve)}"` : ''}
+               placeholder="${esc(o.example || '')}">
+        <p class="field__limit">${esc(t('cathelier.ficha.limite', { n: o.max || 60 }))}</p>
+      </div>`;
+}
+
 export function piece({ p, all: everything, shop, occasions, identity }) {
   /* The same as ithos: the frame takes the shape of this piece's tallest
      photograph instead of a square, because a square crop of a 361x640
@@ -336,16 +376,10 @@ export function piece({ p, all: everything, shop, occasions, identity }) {
     <p class="product__lead">${esc(prazos(shop.lead).encomenda)}</p>
 
     <form class="product__form" data-product-form data-product-id="${esc(p.slug)}">
-      <p class="field__help" style="margin-block-end:.25rem">
+      ${(p.options || []).some((o) => o.personalises) ? `<p class="field__help" style="margin-block-end:.25rem">
         ${esc(t('cathelier.ficha.ajuda'))}
-      </p>
-      ${(p.options || []).map((o) => `<div class="field">
-        <label for="opt-${esc(o.id)}">${esc(o.name)}${o.required ? ` <span class="field__req">${esc(t('cathelier.ficha.obrigatorio'))}</span>` : ''}</label>
-        <input id="opt-${esc(o.id)}" type="text" maxlength="${Number.isInteger(o.max) && o.max > 0 ? o.max : 60}"
-               data-option="${esc(o.id)}"${o.required ? ' required' : ''}${o.personalises ? ' aria-describedby="opt-aviso-personalizada"' : ''}
-               placeholder="${esc(o.example || '')}">
-        <p class="field__limit">${esc(t('cathelier.ficha.limite', { n: o.max || 60 }))}</p>
-      </div>`).join('\n      ')}
+      </p>` : ''}
+      ${(p.options || []).map(campoDaPeca).join('\n      ')}
       ${/* UMA PEÇA COM UM NOME NÃO TEM OS CATORZE DIAS, e diz-se aqui, junto
           dos campos, antes de a pôr no cesto (DL 24/2014, art. 4.º n.º 1 al.
           p)). Só nas peças que têm um campo que personaliza -- que hoje são

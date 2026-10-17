@@ -1,0 +1,45 @@
+{
+  "name": "Móbile de flocos de neve com nome",
+  "price": 9,
+  "published": true,
+  "featured": false,
+  "order": 80,
+  "made": "to_order",
+  "occasion": "christmas",
+  "alsoIn": [
+    "hanging"
+  ],
+  "summary": "Um floco grande com o nome e outros pequenos pendurados por baixo.",
+  "text": "Um floco grande com o nome e outros pequenos pendurados por baixo.",
+  "photoFolder": "snowflake-mobile",
+  "photos": [
+    "01",
+    "02",
+    "03",
+    "04"
+  ],
+  "cover": "01",
+  "options": [
+    {
+      "id": "name",
+      "name": "Nome",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 40,
+      "extra": 0,
+      "example": "Carolina"
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": [
+      "É um enfeite e não um brinquedo: pendure-o fora do alcance de crianças pequenas, que o podem pôr na boca."
+    ]
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

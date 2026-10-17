@@ -1,0 +1,49 @@
+{
+  "name": "Lembrança de casamento",
+  "price": 3.5,
+  "published": true,
+  "featured": false,
+  "order": 340,
+  "made": "to_order",
+  "occasion": "keepsakes",
+  "alsoIn": [],
+  "summary": "Um coração com um agradecimento aos convidados e uma fita.",
+  "text": "Um coração com um agradecimento aos convidados e uma fita.",
+  "photoFolder": "wedding-favour",
+  "photos": [
+    "01",
+    "02"
+  ],
+  "cover": "01",
+  "options": [
+    {
+      "id": "names",
+      "name": "Nomes dos noivos",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 60,
+      "extra": 0,
+      "example": "Rita e João"
+    },
+    {
+      "id": "date",
+      "name": "Data",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 30,
+      "extra": 0,
+      "example": "14 de junho de 2026"
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

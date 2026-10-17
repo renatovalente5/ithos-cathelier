@@ -3,7 +3,7 @@
   "price": 28,
   "published": true,
   "featured": false,
-  "order": 240,
+  "order": 530,
   "made": "to_order",
   "occasion": "wall-decor",
   "alsoIn": [
@@ -27,7 +27,8 @@
       "personalises": true,
       "max": 40,
       "extra": 0,
-      "example": "Manuel"
+      "example": "Manuel",
+      "help": "A fotografia envia-se depois da encomenda: basta responder ao email de confirmação com ela."
     },
     {
       "id": "surname",

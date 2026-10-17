@@ -1,0 +1,65 @@
+{
+  "name": "Caneca ou boneco de gengibre com nome",
+  "price": 5,
+  "published": true,
+  "featured": false,
+  "order": 70,
+  "made": "to_order",
+  "occasion": "christmas",
+  "alsoIn": [
+    "hanging"
+  ],
+  "summary": "A caneca de chocolate quente ou o boneco de gengibre, com o nome gravado.",
+  "text": "A caneca de chocolate quente ou o boneco de gengibre, com o nome gravado.",
+  "photoFolder": "cocoa-ornament",
+  "photos": [
+    "01",
+    "02",
+    "03",
+    "04",
+    "05"
+  ],
+  "cover": "01",
+  "options": [
+    {
+      "id": "shape",
+      "name": "Forma",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "values": [
+        {
+          "id": "mug",
+          "name": "Caneca",
+          "extra": 0
+        },
+        {
+          "id": "gingerbread",
+          "name": "Boneco de gengibre",
+          "extra": 0
+        }
+      ]
+    },
+    {
+      "id": "name",
+      "name": "Nome",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 40,
+      "extra": 0,
+      "example": "Tomás"
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": [
+      "É um enfeite e não um brinquedo: pendure-o fora do alcance de crianças pequenas, que o podem pôr na boca."
+    ]
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

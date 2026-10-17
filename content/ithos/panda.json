@@ -1,0 +1,62 @@
+{
+  "name": "Panda",
+  "price": 130,
+  "published": true,
+  "featured": false,
+  "order": 75,
+  "made": "to_order",
+  "summary": "Sentado, com um ramo de bambu na mão.",
+  "text": "O panda está sentado, com as manchas pretas à volta dos olhos e das orelhas e um ramo de bambu na mão. A barriga fica cheia de luz.",
+  "photoFolder": "panda",
+  "photos": [
+    "02",
+    "03",
+    "04",
+    "01"
+  ],
+  "cover": "02",
+  "colours": [],
+  "options": [
+    {
+      "id": "power",
+      "name": "Alimentação",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "help": "As pilhas não estão incluídas. A versão com cabo traz um comando: liga, desliga, regula a intensidade, desliga sozinha e faz a luz pulsar devagar.",
+      "values": [
+        {
+          "id": "batteries",
+          "name": "2 pilhas AA (3 V)",
+          "extra": 0
+        },
+        {
+          "id": "mains",
+          "name": "Cabo de corrente com comando",
+          "extra": 0,
+          "available": false,
+          "note": "Esgotado por agora"
+        }
+      ]
+    },
+    {
+      "id": "engraving",
+      "name": "Gravação a laser",
+      "type": "text",
+      "required": false,
+      "personalises": true,
+      "max": 40,
+      "extra": 0,
+      "help": "Um nome, uma data ou uma frase curta, gravados na madeira. Deixe vazio se preferir sem gravação."
+    }
+  ],
+  "gpsr": {
+    "type": "ITH-PAN",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "name": "Bola da família",
+  "price": 9,
+  "published": true,
+  "featured": false,
+  "order": 50,
+  "made": "to_order",
+  "occasion": "christmas",
+  "alsoIn": [
+    "hanging"
+  ],
+  "summary": "Uma bola com uma bolinha pendurada por cada pessoa da casa.",
+  "text": "Uma bola com uma bolinha pendurada por cada pessoa da casa.",
+  "photoFolder": "family-bauble",
+  "photos": [
+    "01",
+    "02",
+    "03",
+    "04"
+  ],
+  "cover": "01",
+  "options": [
+    {
+      "id": "family",
+      "name": "Família",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 40,
+      "extra": 0,
+      "example": "Família Rodrigues"
+    },
+    {
+      "id": "names",
+      "name": "Nomes, um por bolinha",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 90,
+      "extra": 0,
+      "example": "Ana, Rui, Tiago"
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": [
+      "É um enfeite e não um brinquedo: pendure-o fora do alcance de crianças pequenas, que o podem pôr na boca."
+    ]
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

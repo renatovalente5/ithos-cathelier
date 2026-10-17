@@ -1,0 +1,59 @@
+{
+  "name": "Rodela de tronco gravada",
+  "price": 5,
+  "published": true,
+  "featured": false,
+  "order": 170,
+  "made": "to_order",
+  "occasion": "christmas",
+  "alsoIn": [
+    "hanging"
+  ],
+  "summary": "Uma rodela de tronco com casca, gravada com um desenho de Natal.",
+  "text": "Uma rodela de tronco com casca, gravada com um desenho de Natal.",
+  "photoFolder": "log-slice",
+  "photos": [
+    "01",
+    "02",
+    "03",
+    "04"
+  ],
+  "cover": "01",
+  "options": [
+    {
+      "id": "design",
+      "name": "Desenho",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "values": [
+        {
+          "id": "santa",
+          "name": "Pai Natal",
+          "extra": 0
+        },
+        {
+          "id": "sleigh",
+          "name": "Trenó",
+          "extra": 0
+        },
+        {
+          "id": "tree",
+          "name": "Árvore",
+          "extra": 0
+        }
+      ]
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": [
+      "É um enfeite e não um brinquedo: pendure-o fora do alcance de crianças pequenas, que o podem pôr na boca."
+    ]
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "name": "Contagem para o Natal",
+  "price": 22,
+  "published": true,
+  "featured": false,
+  "order": 100,
+  "made": "to_order",
+  "occasion": "christmas",
+  "alsoIn": [],
+  "summary": "Uma casinha com um disco que roda: faltam tantos dias para o Natal.",
+  "text": "Uma casinha com um disco que roda: faltam tantos dias para o Natal.",
+  "photoFolder": "christmas-countdown",
+  "photos": [
+    "01",
+    "02"
+  ],
+  "cover": "01",
+  "options": [
+    {
+      "id": "name",
+      "name": "Nome ou família (opcional)",
+      "type": "text",
+      "required": false,
+      "personalises": true,
+      "max": 40,
+      "extra": 0,
+      "example": "Família Lopes"
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "name": "Móbile de lua e estrelas",
+  "price": 26,
+  "published": true,
+  "featured": false,
+  "order": 270,
+  "made": "to_order",
+  "occasion": "new-baby",
+  "alsoIn": [
+    "hanging"
+  ],
+  "summary": "Uma lua com o nome e três estrelas penduradas.",
+  "text": "Uma lua com o nome e três estrelas penduradas.",
+  "photoFolder": "moon-mobile",
+  "photos": [
+    "01",
+    "02"
+  ],
+  "cover": "01",
+  "options": [
+    {
+      "id": "name",
+      "name": "Nome",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 40,
+      "extra": 0,
+      "example": "Dinis"
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": [
+      "Pendure sempre fora do alcance do bebé — por cima ou por fora do berço, nunca dentro dele: o fio pode enrolar-se. Confirme de vez em quando que continua bem preso."
+    ]
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

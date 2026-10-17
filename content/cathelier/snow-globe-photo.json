@@ -1,0 +1,46 @@
+{
+  "name": "Globo de neve com fotografia",
+  "price": 9.5,
+  "published": true,
+  "featured": false,
+  "order": 40,
+  "made": "to_order",
+  "occasion": "christmas",
+  "alsoIn": [
+    "hanging"
+  ],
+  "summary": "Um globo de neve em madeira com a vossa fotografia e um nome na base.",
+  "text": "Um globo de neve em madeira com a vossa fotografia e um nome na base.",
+  "photoFolder": "snow-globe-photo",
+  "photos": [
+    "01",
+    "02",
+    "03",
+    "04"
+  ],
+  "cover": "01",
+  "options": [
+    {
+      "id": "base",
+      "name": "Texto da base",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 30,
+      "extra": 0,
+      "example": "Família Pereira",
+      "help": "A fotografia envia-se depois da encomenda: basta responder ao email de confirmação com ela."
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": [
+      "É um enfeite e não um brinquedo: pendure-o fora do alcance de crianças pequenas, que o podem pôr na boca."
+    ]
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

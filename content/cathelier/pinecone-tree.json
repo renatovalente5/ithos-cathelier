@@ -1,0 +1,53 @@
+{
+  "name": "Árvore com pinha",
+  "price": 4.5,
+  "published": true,
+  "featured": false,
+  "order": 150,
+  "made": "to_order",
+  "occasion": "christmas",
+  "alsoIn": [
+    "hanging"
+  ],
+  "summary": "Uma árvore branca com «Feliz Natal» e uma pinha a fazer de lua.",
+  "text": "Uma árvore branca com «Feliz Natal» e uma pinha a fazer de lua.",
+  "photoFolder": "pinecone-tree",
+  "photos": [
+    "01",
+    "02",
+    "03"
+  ],
+  "cover": "01",
+  "options": [
+    {
+      "id": "pinecone",
+      "name": "Pinha",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "values": [
+        {
+          "id": "natural",
+          "name": "Natural",
+          "extra": 0
+        },
+        {
+          "id": "white",
+          "name": "Branca",
+          "extra": 0
+        }
+      ]
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": [
+      "É um enfeite e não um brinquedo: pendure-o fora do alcance de crianças pequenas, que o podem pôr na boca."
+    ]
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

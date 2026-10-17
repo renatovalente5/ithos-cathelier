@@ -191,10 +191,13 @@ ${cover(coverText, 'ithos', coverArt)}
         <p>${esc(t('ithos.inicio.convite'))}</p>
         <p class="maker__sign">Cathia</p>
       </div>
-      <div class="frame maker__photo">
+      <div class="frame maker__photo maker__photo--retrato">
         ${picture({
-          dir: `ithos/${(products.find((x) => x.slug === 'sheep') ?? products[0]).photoFolder}`,
-          name: (products.find((x) => x.slug === 'sheep') ?? products[0]).cover,
+          /* O bloco é assinado «Cathia», e a fotografia é ela (com autorização,
+             outubro de 2026). Vive em photos/ithos/oficina, fora de qualquer
+             peça, e passa pelos mesmos cards.py e renditions.py. */
+          dir: 'ithos/oficina',
+          name: '01',
           alt: t('ithos.inicio.fotoOficina'),
           sizes: '(min-width: 56rem) 45vw, 100vw',
         })}

@@ -1,0 +1,45 @@
+{
+  "name": "Árvore de Natal pintada",
+  "price": 4,
+  "published": true,
+  "featured": false,
+  "order": 140,
+  "made": "to_order",
+  "occasion": "christmas",
+  "alsoIn": [
+    "hanging"
+  ],
+  "summary": "Uma árvore pequena de madeira, pintada à mão, para pendurar.",
+  "text": "Uma árvore pequena de madeira, pintada à mão, para pendurar.",
+  "photoFolder": "painted-tree",
+  "photos": [
+    "01",
+    "02",
+    "03",
+    "04"
+  ],
+  "cover": "01",
+  "options": [
+    {
+      "id": "name",
+      "name": "Nome (opcional)",
+      "type": "text",
+      "required": false,
+      "personalises": true,
+      "max": 40,
+      "extra": 0,
+      "example": "Matilde"
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": [
+      "É um enfeite e não um brinquedo: pendure-o fora do alcance de crianças pequenas, que o podem pôr na boca."
+    ]
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

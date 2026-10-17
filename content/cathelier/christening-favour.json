@@ -3,7 +3,7 @@
   "price": 2.2,
   "published": true,
   "featured": false,
-  "order": 170,
+  "order": 310,
   "made": "to_order",
   "occasion": "keepsakes",
   "alsoIn": [
@@ -11,12 +11,11 @@
   ],
   "summary": "Com o nome e a data, para todos os que vieram.",
   "text": "Com o nome e a data, para todos os que vieram.",
-  "photoFolder": "pool",
+  "photoFolder": "christening-favour",
   "photos": [
-    "03",
-    "02"
+    "01"
   ],
-  "cover": "03",
+  "cover": "01",
   "options": [
     {
       "id": "names",

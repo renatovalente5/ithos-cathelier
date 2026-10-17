@@ -6,9 +6,13 @@
   <url><loc>https://ithos-cathelier.pt/lamps/mouse/</loc></url>
   <url><loc>https://ithos-cathelier.pt/lamps/hedgehog/</loc></url>
   <url><loc>https://ithos-cathelier.pt/lamps/snail/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/lamps/fairy/</loc></url>
   <url><loc>https://ithos-cathelier.pt/lamps/rabbit/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/lamps/rainbow/</loc></url>
   <url><loc>https://ithos-cathelier.pt/lamps/tiger/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/lamps/cat/</loc></url>
   <url><loc>https://ithos-cathelier.pt/lamps/raccoon/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/lamps/panda/</loc></url>
   <url><loc>https://ithos-cathelier.pt/lamps/flamingo/</loc></url>
   <url><loc>https://ithos-cathelier.pt/lamps/deer/</loc></url>
   <url><loc>https://ithos-cathelier.pt/lamps/koala/</loc></url>
@@ -20,6 +24,7 @@
   <url><loc>https://ithos-cathelier.pt/lamps/whale/</loc></url>
   <url><loc>https://ithos-cathelier.pt/lamps/giraffe/</loc></url>
   <url><loc>https://ithos-cathelier.pt/lamps/red-racer/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/lamps/sage-racer/</loc></url>
   <url><loc>https://ithos-cathelier.pt/lamps/wood-racer/</loc></url>
   <url><loc>https://ithos-cathelier.pt/lamps/goose/</loc></url>
   <url><loc>https://ithos-cathelier.pt/lamps/acorn/</loc></url>
@@ -30,31 +35,59 @@
   <url><loc>https://ithos-cathelier.pt/lamps/train/</loc></url>
   <url><loc>https://ithos-cathelier.pt/cathelier/</loc></url>
   <url><loc>https://ithos-cathelier.pt/cathelier/pieces/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/name-ornament/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/engraved-bauble/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/sleigh-bauble/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/snow-globe-photo/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/family-bauble/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/christmas-initial/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/cocoa-ornament/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/snowflake-mobile/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/advent-calendar/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/christmas-countdown/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/cutout-bauble/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/gingerbread-house/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/nordic-ornaments/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/painted-tree/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/pinecone-tree/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/pinecone-tag/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/log-slice/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/wish-tags/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/christmas-postcard/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/acrylic-photo-bauble/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/wooden-name/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/initial-with-name/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/birth-disc/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/birth-cloud/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/cloud-mobile/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/birth-dreamcatcher/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/moon-mobile/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/name-bunting/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/photo-magnets/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/godparent-ask-christening/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/christening-favour/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/guardian-angel-plaque/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/golden-anniversary-heart/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/wedding-favour/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/corporate-gift/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/flying-geese/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/wall-flower/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/autumn-pieces/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/easter-carrot/</loc></url>
   <url><loc>https://ithos-cathelier.pt/cathelier/pieces/pregnancy-announcement/</loc></url>
   <url><loc>https://ithos-cathelier.pt/cathelier/pieces/family-tree/</loc></url>
-  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/golden-anniversary-heart/</loc></url>
-  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/engraved-bauble/</loc></url>
-  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/corporate-gift/</loc></url>
   <url><loc>https://ithos-cathelier.pt/cathelier/pieces/ring-box/</loc></url>
   <url><loc>https://ithos-cathelier.pt/cathelier/pieces/keepsake-box/</loc></url>
-  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/advent-calendar/</loc></url>
   <url><loc>https://ithos-cathelier.pt/cathelier/pieces/photo-backdrop/</loc></url>
-  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/godparent-ask-christening/</loc></url>
   <url><loc>https://ithos-cathelier.pt/cathelier/pieces/godparent-ask-wedding/</loc></url>
   <url><loc>https://ithos-cathelier.pt/cathelier/pieces/birth-weight-heart/</loc></url>
   <url><loc>https://ithos-cathelier.pt/cathelier/pieces/door-wreath/</loc></url>
-  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/birth-disc/</loc></url>
-  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/name-ornament/</loc></url>
-  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/photo-magnets/</loc></url>
-  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/christening-favour/</loc></url>
   <url><loc>https://ithos-cathelier.pt/cathelier/pieces/communion-favour/</loc></url>
   <url><loc>https://ithos-cathelier.pt/cathelier/pieces/easter-favour/</loc></url>
-  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/initial-with-name/</loc></url>
   <url><loc>https://ithos-cathelier.pt/cathelier/pieces/wooden-guest-book/</loc></url>
   <url><loc>https://ithos-cathelier.pt/cathelier/pieces/engraved-bookmark/</loc></url>
   <url><loc>https://ithos-cathelier.pt/cathelier/pieces/place-cards/</loc></url>
   <url><loc>https://ithos-cathelier.pt/cathelier/pieces/engraved-frame/</loc></url>
-  <url><loc>https://ithos-cathelier.pt/cathelier/pieces/wooden-name/</loc></url>
   <url><loc>https://ithos-cathelier.pt/cathelier/pieces/dates-pendant/</loc></url>
   <url><loc>https://ithos-cathelier.pt/cathelier/pieces/welcome-sign/</loc></url>
   <url><loc>https://ithos-cathelier.pt/cathelier/pieces/commemorative-plaque/</loc></url>
@@ -91,9 +124,13 @@
   <url><loc>https://ithos-cathelier.pt/en/lamps/mouse/</loc></url>
   <url><loc>https://ithos-cathelier.pt/en/lamps/hedgehog/</loc></url>
   <url><loc>https://ithos-cathelier.pt/en/lamps/snail/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/lamps/fairy/</loc></url>
   <url><loc>https://ithos-cathelier.pt/en/lamps/rabbit/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/lamps/rainbow/</loc></url>
   <url><loc>https://ithos-cathelier.pt/en/lamps/tiger/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/lamps/cat/</loc></url>
   <url><loc>https://ithos-cathelier.pt/en/lamps/raccoon/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/lamps/panda/</loc></url>
   <url><loc>https://ithos-cathelier.pt/en/lamps/flamingo/</loc></url>
   <url><loc>https://ithos-cathelier.pt/en/lamps/deer/</loc></url>
   <url><loc>https://ithos-cathelier.pt/en/lamps/koala/</loc></url>
@@ -105,6 +142,7 @@
   <url><loc>https://ithos-cathelier.pt/en/lamps/whale/</loc></url>
   <url><loc>https://ithos-cathelier.pt/en/lamps/giraffe/</loc></url>
   <url><loc>https://ithos-cathelier.pt/en/lamps/red-racer/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/lamps/sage-racer/</loc></url>
   <url><loc>https://ithos-cathelier.pt/en/lamps/wood-racer/</loc></url>
   <url><loc>https://ithos-cathelier.pt/en/lamps/goose/</loc></url>
   <url><loc>https://ithos-cathelier.pt/en/lamps/acorn/</loc></url>
@@ -115,31 +153,59 @@
   <url><loc>https://ithos-cathelier.pt/en/lamps/train/</loc></url>
   <url><loc>https://ithos-cathelier.pt/en/cathelier/</loc></url>
   <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/name-ornament/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/engraved-bauble/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/sleigh-bauble/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/snow-globe-photo/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/family-bauble/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/christmas-initial/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/cocoa-ornament/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/snowflake-mobile/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/advent-calendar/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/christmas-countdown/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/cutout-bauble/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/gingerbread-house/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/nordic-ornaments/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/painted-tree/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/pinecone-tree/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/pinecone-tag/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/log-slice/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/wish-tags/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/christmas-postcard/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/acrylic-photo-bauble/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/wooden-name/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/initial-with-name/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/birth-disc/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/birth-cloud/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/cloud-mobile/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/birth-dreamcatcher/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/moon-mobile/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/name-bunting/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/photo-magnets/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/godparent-ask-christening/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/christening-favour/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/guardian-angel-plaque/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/golden-anniversary-heart/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/wedding-favour/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/corporate-gift/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/flying-geese/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/wall-flower/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/autumn-pieces/</loc></url>
+  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/easter-carrot/</loc></url>
   <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/pregnancy-announcement/</loc></url>
   <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/family-tree/</loc></url>
-  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/golden-anniversary-heart/</loc></url>
-  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/engraved-bauble/</loc></url>
-  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/corporate-gift/</loc></url>
   <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/ring-box/</loc></url>
   <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/keepsake-box/</loc></url>
-  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/advent-calendar/</loc></url>
   <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/photo-backdrop/</loc></url>
-  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/godparent-ask-christening/</loc></url>
   <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/godparent-ask-wedding/</loc></url>
   <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/birth-weight-heart/</loc></url>
   <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/door-wreath/</loc></url>
-  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/birth-disc/</loc></url>
-  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/name-ornament/</loc></url>
-  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/photo-magnets/</loc></url>
-  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/christening-favour/</loc></url>
   <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/communion-favour/</loc></url>
   <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/easter-favour/</loc></url>
-  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/initial-with-name/</loc></url>
   <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/wooden-guest-book/</loc></url>
   <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/engraved-bookmark/</loc></url>
   <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/place-cards/</loc></url>
   <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/engraved-frame/</loc></url>
-  <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/wooden-name/</loc></url>
   <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/dates-pendant/</loc></url>
   <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/welcome-sign/</loc></url>
   <url><loc>https://ithos-cathelier.pt/en/cathelier/pieces/commemorative-plaque/</loc></url>

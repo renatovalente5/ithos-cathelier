@@ -1,0 +1,43 @@
+{
+  "name": "Bola transparente com fotografia",
+  "price": 7,
+  "published": true,
+  "featured": false,
+  "order": 200,
+  "made": "to_order",
+  "occasion": "christmas",
+  "alsoIn": [
+    "hanging"
+  ],
+  "summary": "Uma bola transparente com a vossa fotografia lá dentro e um laço.",
+  "text": "Uma bola transparente com a vossa fotografia lá dentro e um laço.",
+  "photoFolder": "acrylic-photo-bauble",
+  "photos": [
+    "01"
+  ],
+  "cover": "01",
+  "options": [
+    {
+      "id": "name",
+      "name": "Nome ou data (opcional)",
+      "type": "text",
+      "required": false,
+      "personalises": true,
+      "max": 30,
+      "extra": 0,
+      "example": "Natal 2026",
+      "help": "A fotografia envia-se depois da encomenda: basta responder ao email de confirmação com ela."
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": [
+      "É um enfeite e não um brinquedo: pendure-o fora do alcance de crianças pequenas, que o podem pôr na boca."
+    ]
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "name": "Postal de Natal em madeira",
+  "price": 6,
+  "published": true,
+  "featured": false,
+  "order": 190,
+  "made": "to_order",
+  "occasion": "christmas",
+  "alsoIn": [],
+  "summary": "Um postal gravado, com selo e linhas para escrever à mão.",
+  "text": "Um postal gravado, com selo e linhas para escrever à mão.",
+  "photoFolder": "christmas-postcard",
+  "photos": [
+    "01",
+    "02",
+    "03"
+  ],
+  "cover": "01",
+  "options": [
+    {
+      "id": "design",
+      "name": "Desenho",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "values": [
+        {
+          "id": "tree",
+          "name": "Árvore de Natal",
+          "extra": 0
+        },
+        {
+          "id": "house",
+          "name": "Casinha",
+          "extra": 0
+        }
+      ]
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

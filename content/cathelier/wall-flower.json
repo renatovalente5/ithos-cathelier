@@ -1,0 +1,30 @@
+{
+  "name": "Flor de parede",
+  "price": 8,
+  "published": true,
+  "featured": false,
+  "order": 370,
+  "made": "to_order",
+  "occasion": "wall-decor",
+  "alsoIn": [],
+  "summary": "Uma flor recortada em madeira para a parede. Ficam bem em grupos.",
+  "text": "Uma flor recortada em madeira para a parede. Ficam bem em grupos.",
+  "photoFolder": "wall-flower",
+  "photos": [
+    "01",
+    "02",
+    "03",
+    "04"
+  ],
+  "cover": "01",
+  "options": [],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

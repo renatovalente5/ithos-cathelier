@@ -1,0 +1,30 @@
+{
+  "name": "Ganso a voar",
+  "price": 9,
+  "published": true,
+  "featured": false,
+  "order": 360,
+  "made": "to_order",
+  "occasion": "wall-decor",
+  "alsoIn": [],
+  "summary": "Um ganso de asas abertas para a parede. Junte quantos quiser para um bando.",
+  "text": "Um ganso de asas abertas para a parede. Junte quantos quiser para um bando.",
+  "photoFolder": "flying-geese",
+  "photos": [
+    "01",
+    "02",
+    "03",
+    "04"
+  ],
+  "cover": "01",
+  "options": [],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

@@ -1,0 +1,65 @@
+{
+  "name": "Peças de outono",
+  "price": 6,
+  "published": true,
+  "featured": false,
+  "order": 380,
+  "made": "to_order",
+  "occasion": "hanging",
+  "alsoIn": [
+    "wall-decor"
+  ],
+  "summary": "Abóbora, bolota, cogumelo ou pato, gravados com todos os pormenores.",
+  "text": "Abóbora, bolota, cogumelo ou pato, gravados com todos os pormenores.",
+  "photoFolder": "autumn-pieces",
+  "photos": [
+    "01",
+    "02",
+    "03",
+    "04",
+    "05"
+  ],
+  "cover": "01",
+  "options": [
+    {
+      "id": "shape",
+      "name": "Forma",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "values": [
+        {
+          "id": "pumpkin",
+          "name": "Abóbora",
+          "extra": 0
+        },
+        {
+          "id": "acorn",
+          "name": "Bolota",
+          "extra": 0
+        },
+        {
+          "id": "mushroom",
+          "name": "Cogumelo",
+          "extra": 0
+        },
+        {
+          "id": "duck",
+          "name": "Pato",
+          "extra": 0
+        }
+      ]
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": [
+      "É um enfeite e não um brinquedo: pendure-o fora do alcance de crianças pequenas, que o podem pôr na boca."
+    ]
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

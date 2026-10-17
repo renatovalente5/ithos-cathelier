@@ -1,0 +1,42 @@
+{
+  "name": "Placa do Anjo da Guarda",
+  "price": 15,
+  "published": true,
+  "featured": false,
+  "order": 320,
+  "made": "to_order",
+  "occasion": "new-baby",
+  "alsoIn": [
+    "keepsakes"
+  ],
+  "summary": "A oração do Anjo da Guarda numa bandeira de madeira, para o quarto.",
+  "text": "A oração do Anjo da Guarda numa bandeira de madeira, para o quarto.",
+  "photoFolder": "guardian-angel-plaque",
+  "photos": [
+    "01"
+  ],
+  "cover": "01",
+  "options": [
+    {
+      "id": "name",
+      "name": "Nome (opcional)",
+      "type": "text",
+      "required": false,
+      "personalises": true,
+      "max": 40,
+      "extra": 0,
+      "example": "Maria"
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": [
+      "Pendure sempre fora do alcance do bebé — por cima ou por fora do berço, nunca dentro dele: o fio pode enrolar-se. Confirme de vez em quando que continua bem preso."
+    ]
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

@@ -3,7 +3,7 @@
   "price": 2.5,
   "published": true,
   "featured": false,
-  "order": 160,
+  "order": 290,
   "made": "to_order",
   "occasion": "magnets-keyrings",
   "alsoIn": [
@@ -21,19 +21,20 @@
   "options": [
     {
       "id": "names",
-      "name": "Nome ou nomes",
+      "name": "Nome ou nomes (opcional)",
       "type": "text",
-      "required": true,
+      "required": false,
       "personalises": true,
       "max": 60,
       "extra": 0,
-      "example": "Benedita"
+      "example": "Benedita",
+      "help": "A fotografia envia-se depois da encomenda: basta responder ao email de confirmação com ela."
     },
     {
       "id": "date",
-      "name": "Data",
+      "name": "Data (opcional)",
       "type": "text",
-      "required": true,
+      "required": false,
       "personalises": true,
       "max": 30,
       "extra": 0,

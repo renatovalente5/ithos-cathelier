@@ -1,0 +1,63 @@
+{
+  "name": "Pinha com etiqueta",
+  "price": 3.5,
+  "published": true,
+  "featured": false,
+  "order": 160,
+  "made": "to_order",
+  "occasion": "christmas",
+  "alsoIn": [
+    "hanging"
+  ],
+  "summary": "Uma pinha, natural ou branca, com uma etiqueta gravada.",
+  "text": "Uma pinha, natural ou branca, com uma etiqueta gravada.",
+  "photoFolder": "pinecone-tag",
+  "photos": [
+    "01",
+    "02",
+    "03"
+  ],
+  "cover": "01",
+  "options": [
+    {
+      "id": "pinecone",
+      "name": "Pinha",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "values": [
+        {
+          "id": "natural",
+          "name": "Natural",
+          "extra": 0
+        },
+        {
+          "id": "white",
+          "name": "Branca",
+          "extra": 0
+        }
+      ]
+    },
+    {
+      "id": "tag",
+      "name": "Texto da etiqueta",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 20,
+      "extra": 0,
+      "example": "Feliz Natal"
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": [
+      "É um enfeite e não um brinquedo: pendure-o fora do alcance de crianças pequenas, que o podem pôr na boca."
+    ]
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

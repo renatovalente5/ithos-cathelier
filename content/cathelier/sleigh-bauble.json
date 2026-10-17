@@ -1,0 +1,56 @@
+{
+  "name": "Bola do trenó com nome",
+  "price": 5.5,
+  "published": true,
+  "featured": false,
+  "order": 30,
+  "made": "to_order",
+  "occasion": "christmas",
+  "alsoIn": [
+    "hanging"
+  ],
+  "summary": "O trenó a voar dentro de uma bola, com um nome e uma palavra na etiqueta.",
+  "text": "O trenó a voar dentro de uma bola, com um nome e uma palavra na etiqueta.",
+  "photoFolder": "sleigh-bauble",
+  "photos": [
+    "01",
+    "02",
+    "03",
+    "04",
+    "05"
+  ],
+  "cover": "01",
+  "options": [
+    {
+      "id": "name",
+      "name": "Nome ou família",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 40,
+      "extra": 0,
+      "example": "Família Simão"
+    },
+    {
+      "id": "word",
+      "name": "Palavra da etiqueta (opcional)",
+      "type": "text",
+      "required": false,
+      "personalises": true,
+      "max": 14,
+      "extra": 0,
+      "example": "Paz"
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": [
+      "É um enfeite e não um brinquedo: pendure-o fora do alcance de crianças pequenas, que o podem pôr na boca."
+    ]
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}

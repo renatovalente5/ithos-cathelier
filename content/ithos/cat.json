@@ -1,0 +1,64 @@
+{
+  "name": "Gato",
+  "price": 130,
+  "published": true,
+  "featured": false,
+  "order": 65,
+  "made": "to_order",
+  "summary": "Sentado, de cauda enrolada, com riscas pintadas.",
+  "text": "O gato está sentado, com a cauda enrolada à frente das patas e as riscas pintadas à mão. Os olhos estão fechados e as orelhas levantadas.",
+  "photoFolder": "gato",
+  "photos": [
+    "03",
+    "04",
+    "05",
+    "06",
+    "01",
+    "02"
+  ],
+  "cover": "03",
+  "colours": [],
+  "options": [
+    {
+      "id": "power",
+      "name": "Alimentação",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "help": "As pilhas não estão incluídas. A versão com cabo traz um comando: liga, desliga, regula a intensidade, desliga sozinha e faz a luz pulsar devagar.",
+      "values": [
+        {
+          "id": "batteries",
+          "name": "2 pilhas AA (3 V)",
+          "extra": 0
+        },
+        {
+          "id": "mains",
+          "name": "Cabo de corrente com comando",
+          "extra": 0,
+          "available": false,
+          "note": "Esgotado por agora"
+        }
+      ]
+    },
+    {
+      "id": "engraving",
+      "name": "Gravação a laser",
+      "type": "text",
+      "required": false,
+      "personalises": true,
+      "max": 40,
+      "extra": 0,
+      "help": "Um nome, uma data ou uma frase curta, gravados na madeira. Deixe vazio se preferir sem gravação."
+    }
+  ],
+  "gpsr": {
+    "type": "ITH-GAT",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}
