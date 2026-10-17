@@ -1,0 +1,26 @@
+{
+  "name": {
+    "t": "Wooden Christmas Card",
+    "h": "8e0cf02e5bef"
+  },
+  "summary": {
+    "t": "An engraved card, with a stamp and lines for handwriting.",
+    "h": "5f52d9513222"
+  },
+  "text": {
+    "t": "An engraved card, with a stamp and lines for handwriting.",
+    "h": "5f52d9513222"
+  },
+  "options.design.name": {
+    "t": "Design",
+    "h": "244c968a7a0b"
+  },
+  "options.design.values.tree.name": {
+    "t": "Christmas Tree",
+    "h": "41a1ac585c10"
+  },
+  "options.design.values.house.name": {
+    "t": "Little House",
+    "h": "276afa083600"
+  }
+}

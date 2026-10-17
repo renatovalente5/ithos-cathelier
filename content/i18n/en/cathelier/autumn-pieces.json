@@ -1,0 +1,38 @@
+{
+  "name": {
+    "t": "Autumn pieces",
+    "h": "6605b39484aa"
+  },
+  "summary": {
+    "t": "Pumpkin, acorn, mushroom or duck, engraved with every detail.",
+    "h": "d57a719281a1"
+  },
+  "text": {
+    "t": "Pumpkin, acorn, mushroom or duck, engraved with every detail.",
+    "h": "d57a719281a1"
+  },
+  "options.shape.name": {
+    "t": "Shape",
+    "h": "735c9686fc93"
+  },
+  "options.shape.values.pumpkin.name": {
+    "t": "Pumpkin",
+    "h": "fd688f2437bc"
+  },
+  "options.shape.values.acorn.name": {
+    "t": "Acorn",
+    "h": "f91d6465d6e2"
+  },
+  "options.shape.values.mushroom.name": {
+    "t": "Mushroom",
+    "h": "bd3dbb554841"
+  },
+  "options.shape.values.duck.name": {
+    "t": "Duck",
+    "h": "4dfbab1071be"
+  },
+  "gpsr.warnings.0": {
+    "t": "It is a decoration and not a toy: hang it out of reach of young children, who may put it in their mouths.",
+    "h": "ded79a9ab86f"
+  }
+}

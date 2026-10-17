@@ -1,0 +1,22 @@
+{
+  "name": {
+    "t": "Christmas Countdown",
+    "h": "183324f66bca"
+  },
+  "summary": {
+    "t": "A little house with a rotating disc: showing how many days are left until Christmas.",
+    "h": "2ac998bc70a7"
+  },
+  "text": {
+    "t": "A little house with a rotating disc: showing how many days are left until Christmas.",
+    "h": "2ac998bc70a7"
+  },
+  "options.name.name": {
+    "t": "Name or family (optional)",
+    "h": "1675d271be40"
+  },
+  "options.name.example": {
+    "t": "Lopes Family",
+    "h": "a01ac6999173"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "name": {
+    "t": "Mug or gingerbread figure with name",
+    "h": "26d8b446c0d9"
+  },
+  "summary": {
+    "t": "The hot chocolate mug or the gingerbread figure, with the name engraved.",
+    "h": "c18ab9ebf5a5"
+  },
+  "text": {
+    "t": "The hot chocolate mug or the gingerbread figure, with the name engraved.",
+    "h": "c18ab9ebf5a5"
+  },
+  "options.shape.name": {
+    "t": "Shape",
+    "h": "735c9686fc93"
+  },
+  "options.shape.values.mug.name": {
+    "t": "Mug",
+    "h": "a829de21dc5e"
+  },
+  "options.shape.values.gingerbread.name": {
+    "t": "Gingerbread figure",
+    "h": "c798bdf95854"
+  },
+  "options.name.name": {
+    "t": "Name",
+    "h": "5086900635fe"
+  },
+  "options.name.example": {
+    "t": "Tomás",
+    "h": "237627569626"
+  },
+  "gpsr.warnings.0": {
+    "t": "It is an ornament and not a toy: hang it out of reach of small children, who may put it in their mouths.",
+    "h": "ded79a9ab86f"
+  }
+}

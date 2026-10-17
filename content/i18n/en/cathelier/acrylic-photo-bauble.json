@@ -1,0 +1,30 @@
+{
+  "name": {
+    "t": "Transparent ball with photograph",
+    "h": "5b36fe1f2ac0"
+  },
+  "summary": {
+    "t": "A transparent ball with your photograph inside and a bow.",
+    "h": "6a9caa290c5f"
+  },
+  "text": {
+    "t": "A transparent ball with your photograph inside and a bow.",
+    "h": "6a9caa290c5f"
+  },
+  "options.name.name": {
+    "t": "Name or date (optional)",
+    "h": "168f0b7cf003"
+  },
+  "options.name.help": {
+    "t": "The photograph is sent after the order: simply reply to the confirmation email with it.",
+    "h": "7239844b534d"
+  },
+  "options.name.example": {
+    "t": "Christmas 2026",
+    "h": "b29b6ef1fcbd"
+  },
+  "gpsr.warnings.0": {
+    "t": "It is an ornament and not a toy: hang it out of reach of small children, who may put it in their mouths.",
+    "h": "ded79a9ab86f"
+  }
+}
