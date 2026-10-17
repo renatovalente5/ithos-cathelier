@@ -1,0 +1,30 @@
+{
+  "name": {
+    "t": "Name bunting",
+    "h": "863fa208ab36"
+  },
+  "summary": {
+    "t": "One bunting flag per letter, on a ribbon, to hang above the bed.",
+    "h": "d5f9c4c21b4e"
+  },
+  "text": {
+    "t": "One bunting flag per letter, on a ribbon, to hang above the bed.",
+    "h": "d5f9c4c21b4e"
+  },
+  "options.name.name": {
+    "t": "Name",
+    "h": "5086900635fe"
+  },
+  "options.name.help": {
+    "t": "Up to ten letters.",
+    "h": "0eb2e24f7fec"
+  },
+  "options.name.example": {
+    "t": "Lourenço",
+    "h": "d42adcfdf231"
+  },
+  "gpsr.warnings.0": {
+    "t": "Always hang out of reach of the baby — above or outside the cot, never inside it: the string could entangle. Check occasionally that it remains securely fastened.",
+    "h": "feb3bf468f91"
+  }
+}

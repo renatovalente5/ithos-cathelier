@@ -1,0 +1,34 @@
+{
+  "name": {
+    "t": "Engraved wood slice",
+    "h": "f9095f3bb69a"
+  },
+  "summary": {
+    "t": "A wood slice with bark, engraved with a Christmas design.",
+    "h": "b4da90c2fdd0"
+  },
+  "text": {
+    "t": "A wood slice with bark, engraved with a Christmas design.",
+    "h": "b4da90c2fdd0"
+  },
+  "options.design.name": {
+    "t": "Design",
+    "h": "244c968a7a0b"
+  },
+  "options.design.values.santa.name": {
+    "t": "Father Christmas",
+    "h": "19b85c406b56"
+  },
+  "options.design.values.sleigh.name": {
+    "t": "Sleigh",
+    "h": "a41844ab07bf"
+  },
+  "options.design.values.tree.name": {
+    "t": "Tree",
+    "h": "3f87f7d207cb"
+  },
+  "gpsr.warnings.0": {
+    "t": "This is an ornament and not a toy: hang it out of reach of young children, who may put it in their mouths.",
+    "h": "ded79a9ab86f"
+  }
+}

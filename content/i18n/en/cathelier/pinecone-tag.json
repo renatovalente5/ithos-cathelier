@@ -1,0 +1,38 @@
+{
+  "name": {
+    "t": "Pinecone with tag",
+    "h": "af5b0ba92e45"
+  },
+  "summary": {
+    "t": "A pinecone, natural or white, with an engraved tag.",
+    "h": "28581c49b03e"
+  },
+  "text": {
+    "t": "A pinecone, natural or white, with an engraved tag.",
+    "h": "28581c49b03e"
+  },
+  "options.pinecone.name": {
+    "t": "Pinecone",
+    "h": "8cafeb06c68f"
+  },
+  "options.pinecone.values.natural.name": {
+    "t": "Natural",
+    "h": "d6acb6d51cfc"
+  },
+  "options.pinecone.values.white.name": {
+    "t": "White",
+    "h": "6b792056f369"
+  },
+  "options.tag.name": {
+    "t": "Tag text",
+    "h": "4136cc2229c9"
+  },
+  "options.tag.example": {
+    "t": "Merry Christmas",
+    "h": "427681111a37"
+  },
+  "gpsr.warnings.0": {
+    "t": "This is an ornament and not a toy: hang it out of reach of small children, who may put it in their mouths.",
+    "h": "ded79a9ab86f"
+  }
+}

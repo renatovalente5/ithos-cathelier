@@ -1,0 +1,30 @@
+{
+  "name": {
+    "t": "Snow globe with photograph",
+    "h": "d6faeb1f9998"
+  },
+  "summary": {
+    "t": "A wooden snow globe with your photograph and a name on the base.",
+    "h": "68d32cc22d7c"
+  },
+  "text": {
+    "t": "A wooden snow globe with your photograph and a name on the base.",
+    "h": "68d32cc22d7c"
+  },
+  "options.base.name": {
+    "t": "Base text",
+    "h": "ed71a685433a"
+  },
+  "options.base.help": {
+    "t": "Send the photograph after ordering: simply reply to the confirmation email with it.",
+    "h": "7239844b534d"
+  },
+  "options.base.example": {
+    "t": "Pereira Family",
+    "h": "9ebd9d731b87"
+  },
+  "gpsr.warnings.0": {
+    "t": "This is an ornament and not a toy: hang it out of reach of small children, who may put it in their mouths.",
+    "h": "ded79a9ab86f"
+  }
+}

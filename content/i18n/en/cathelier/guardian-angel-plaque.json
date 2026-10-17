@@ -1,0 +1,26 @@
+{
+  "name": {
+    "t": "Guardian Angel Plaque",
+    "h": "1e9dacdb930a"
+  },
+  "summary": {
+    "t": "The Guardian Angel prayer on a wooden banner, for the bedroom.",
+    "h": "519fe27977bd"
+  },
+  "text": {
+    "t": "The Guardian Angel prayer on a wooden banner, for the bedroom.",
+    "h": "519fe27977bd"
+  },
+  "options.name.name": {
+    "t": "Name (optional)",
+    "h": "9f2ea33b5a14"
+  },
+  "options.name.example": {
+    "t": "Maria",
+    "h": "9ff18ebe7449"
+  },
+  "gpsr.warnings.0": {
+    "t": "Always hang out of reach of the baby — above or outside the cot, never inside it: the cord could entangle. Check from time to time that it remains securely fastened.",
+    "h": "feb3bf468f91"
+  }
+}

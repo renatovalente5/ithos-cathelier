@@ -1,0 +1,26 @@
+{
+  "name": {
+    "t": "Moon and stars mobile",
+    "h": "f9cf642029ed"
+  },
+  "summary": {
+    "t": "A moon with the name and three hanging stars.",
+    "h": "4810c5dbe516"
+  },
+  "text": {
+    "t": "A moon with the name and three hanging stars.",
+    "h": "4810c5dbe516"
+  },
+  "options.name.name": {
+    "t": "Name",
+    "h": "5086900635fe"
+  },
+  "options.name.example": {
+    "t": "Dinis",
+    "h": "a343d9744bef"
+  },
+  "gpsr.warnings.0": {
+    "t": "Always hang out of reach of the baby — above or outside the cot, never inside it: the string could tangle. Check occasionally that it remains securely fastened.",
+    "h": "feb3bf468f91"
+  }
+}

@@ -12,16 +12,20 @@
     "h": "907764c1ed3b"
   },
   "options.names.name": {
-    "t": "Name or names",
-    "h": "294711d4c920"
+    "t": "Name or names (optional)",
+    "h": "4dcac520586a"
+  },
+  "options.names.help": {
+    "t": "The photograph is sent after the order: simply reply to the confirmation email with it.",
+    "h": "7239844b534d"
   },
   "options.names.example": {
     "t": "Benedita",
     "h": "80a84f1dd1b2"
   },
   "options.date.name": {
-    "t": "Date",
-    "h": "cec3a9b89b2e"
+    "t": "Date (optional)",
+    "h": "07cfa971211a"
   },
   "options.date.example": {
     "t": "28 June 2026",

@@ -1,0 +1,42 @@
+{
+  "name": {
+    "t": "Nordic ornaments",
+    "h": "4e0e85b7d69c"
+  },
+  "summary": {
+    "t": "Snowflake, mitten, little house, bell or bauble, engraved with Nordic patterns.",
+    "h": "5d08e8b95eb8"
+  },
+  "text": {
+    "t": "Snowflake, mitten, little house, bell or bauble, engraved with Nordic patterns.",
+    "h": "5d08e8b95eb8"
+  },
+  "options.shape.name": {
+    "t": "Shape",
+    "h": "735c9686fc93"
+  },
+  "options.shape.values.snowflake.name": {
+    "t": "Snowflake",
+    "h": "68b81553d28d"
+  },
+  "options.shape.values.mitten.name": {
+    "t": "Mitten",
+    "h": "9e312b248402"
+  },
+  "options.shape.values.house.name": {
+    "t": "Little house",
+    "h": "276afa083600"
+  },
+  "options.shape.values.bell.name": {
+    "t": "Bell",
+    "h": "2d368b4a5889"
+  },
+  "options.shape.values.bauble.name": {
+    "t": "Bauble",
+    "h": "da6175eb0f17"
+  },
+  "gpsr.warnings.0": {
+    "t": "This is an ornament and not a toy: hang it out of reach of young children, who may put it in their mouths.",
+    "h": "ded79a9ab86f"
+  }
+}

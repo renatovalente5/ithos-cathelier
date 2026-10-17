@@ -1,0 +1,34 @@
+{
+  "name": {
+    "t": "Sleigh snow globe with name",
+    "h": "6b7252355746"
+  },
+  "summary": {
+    "t": "A flying sleigh inside a globe, with a name and a word on the tag.",
+    "h": "70cf183cc0ad"
+  },
+  "text": {
+    "t": "A flying sleigh inside a globe, with a name and a word on the tag.",
+    "h": "70cf183cc0ad"
+  },
+  "options.name.name": {
+    "t": "Name or family",
+    "h": "a9551556456a"
+  },
+  "options.name.example": {
+    "t": "Simão Family",
+    "h": "c28882c81579"
+  },
+  "options.word.name": {
+    "t": "Tag word (optional)",
+    "h": "b183c6c2ce2a"
+  },
+  "options.word.example": {
+    "t": "Peace",
+    "h": "3b4ca471d9af"
+  },
+  "gpsr.warnings.0": {
+    "t": "This is an ornament and not a toy: hang it out of reach of small children, who may put it in their mouths.",
+    "h": "ded79a9ab86f"
+  }
+}

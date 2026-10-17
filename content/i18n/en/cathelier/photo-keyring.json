@@ -15,6 +15,10 @@
     "t": "Name or names",
     "h": "294711d4c920"
   },
+  "options.names.help": {
+    "t": "The photo is sent after the order: simply reply to the confirmation email with it.",
+    "h": "7239844b534d"
+  },
   "options.names.example": {
     "t": "Benedita",
     "h": "80a84f1dd1b2"
