@@ -9,12 +9,13 @@
   "alsoIn": [],
   "summary": "Um disco redondo com tudo sobre o dia em que chegou.",
   "text": "Um disco redondo com o nome, a data, a hora, o peso e o comprimento gravados.\n\nÉ a peça que se pendura por cima do berço e que depois nunca mais se tira.",
-  "photoFolder": "pool",
+  "photoFolder": "birth-disc",
   "photos": [
-    "05",
-    "08"
+    "01",
+    "02",
+    "03"
   ],
-  "cover": "05",
+  "cover": "01",
   "options": [
     {
       "id": "name",

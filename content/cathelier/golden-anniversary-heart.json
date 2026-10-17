@@ -11,12 +11,14 @@
   ],
   "summary": "Cinquenta anos, os dois nomes e as duas datas.",
   "text": "Cinquenta anos, os dois nomes e as duas datas.",
-  "photoFolder": "pool",
+  "photoFolder": "golden-anniversary-heart",
   "photos": [
-    "07",
-    "02"
+    "01",
+    "02",
+    "03",
+    "04"
   ],
-  "cover": "07",
+  "cover": "01",
   "options": [
     {
       "id": "names",

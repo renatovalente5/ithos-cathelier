@@ -9,14 +9,17 @@
   "alsoIn": [
     "hanging"
   ],
-  "summary": "Duas metades de madeira que encaixam, com o nome no meio.",
-  "text": "Duas metades de madeira que encaixam, com o nome no meio.",
-  "photoFolder": "pool",
+  "summary": "Uma bola de madeira gravada, com uma casinha de Natal e o nome da família.",
+  "text": "Uma bola de madeira gravada, com uma casinha de Natal e o nome da família.",
+  "photoFolder": "engraved-bauble",
   "photos": [
+    "01",
+    "02",
+    "03",
     "04",
-    "03"
+    "05"
   ],
-  "cover": "04",
+  "cover": "01",
   "options": [
     {
       "id": "name",

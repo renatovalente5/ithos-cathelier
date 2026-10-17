@@ -7,14 +7,14 @@
   "made": "to_order",
   "occasion": "christmas",
   "alsoIn": [],
-  "summary": "Vinte e quatro gavetas numeradas, para encher outra vez todos os anos.",
-  "text": "Vinte e quatro gavetas numeradas, para encher outra vez todos os anos.",
-  "photoFolder": "pool",
+  "summary": "Uma aldeia de Natal gravada, com saquinhos de pano para encher todos os anos.",
+  "text": "Uma aldeia de Natal gravada, com saquinhos de pano para encher todos os anos.",
+  "photoFolder": "advent-calendar",
   "photos": [
-    "04",
+    "01",
     "02"
   ],
-  "cover": "04",
+  "cover": "01",
   "options": [
     {
       "id": "name",

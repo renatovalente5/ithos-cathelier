@@ -11,12 +11,14 @@
   ],
   "summary": "Para a parede do quarto, pintado na cor que escolher.",
   "text": "Para a parede do quarto, pintado na cor que escolher.",
-  "photoFolder": "pool",
+  "photoFolder": "wooden-name",
   "photos": [
-    "04",
-    "06"
+    "01",
+    "02",
+    "03",
+    "04"
   ],
-  "cover": "04",
+  "cover": "01",
   "options": [
     {
       "id": "name",

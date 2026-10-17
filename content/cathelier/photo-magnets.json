@@ -9,14 +9,15 @@
   "alsoIn": [
     "keepsakes"
   ],
-  "summary": "Uma fotografia gravada em madeira, com um íman atrás.",
-  "text": "Uma fotografia gravada em madeira, com um íman atrás.",
-  "photoFolder": "pool",
+  "summary": "A sua fotografia num íman redondo, para o frigorífico.",
+  "text": "A sua fotografia num íman redondo, para o frigorífico.",
+  "photoFolder": "photo-magnets",
   "photos": [
-    "11",
-    "08"
+    "01",
+    "02",
+    "03"
   ],
-  "cover": "11",
+  "cover": "01",
   "options": [
     {
       "id": "names",

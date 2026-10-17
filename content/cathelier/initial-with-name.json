@@ -11,12 +11,15 @@
   ],
   "summary": "A inicial grande, com o nome escrito por cima.",
   "text": "A inicial grande, com o nome escrito por cima.",
-  "photoFolder": "pool",
+  "photoFolder": "initial-with-name",
   "photos": [
+    "01",
+    "02",
+    "03",
     "04",
-    "06"
+    "05"
   ],
-  "cover": "04",
+  "cover": "01",
   "options": [
     {
       "id": "name",

@@ -11,12 +11,15 @@
   ],
   "summary": "Um para cada pessoa da casa, com o nome gravado.",
   "text": "Um para cada pessoa da casa, com o nome gravado.",
-  "photoFolder": "pool",
+  "photoFolder": "name-ornament",
   "photos": [
+    "01",
+    "02",
+    "03",
     "04",
-    "07"
+    "05"
   ],
-  "cover": "04",
+  "cover": "01",
   "options": [
     {
       "id": "name",

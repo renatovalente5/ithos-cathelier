@@ -1,3 +1,8 @@
-User-agent: *
+User-agent: facebookexternalhit
 Allow: /
-Sitemap: https://ithos-cathelier.pt/sitemap.xml
+
+User-agent: WhatsApp
+Allow: /
+
+User-agent: *
+Disallow: /
