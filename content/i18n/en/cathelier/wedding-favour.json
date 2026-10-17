@@ -1,0 +1,30 @@
+{
+  "name": {
+    "t": "Wedding keepsake",
+    "h": "f35fac866591"
+  },
+  "summary": {
+    "t": "A heart with a thank you to the guests and a ribbon.",
+    "h": "e369ce2d0362"
+  },
+  "text": {
+    "t": "A heart with a thank you to the guests and a ribbon.",
+    "h": "e369ce2d0362"
+  },
+  "options.names.name": {
+    "t": "Names of the newlyweds",
+    "h": "ddb24fde5c97"
+  },
+  "options.names.example": {
+    "t": "Rita and João",
+    "h": "609154b1eaf5"
+  },
+  "options.date.name": {
+    "t": "Date",
+    "h": "cec3a9b89b2e"
+  },
+  "options.date.example": {
+    "t": "14 June 2026",
+    "h": "8fa9ecf7feea"
+  }
+}

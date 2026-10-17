@@ -1,0 +1,26 @@
+{
+  "name": {
+    "t": "Wish tags",
+    "h": "eca20b54593a"
+  },
+  "summary": {
+    "t": "Five tags for the tree, each with one word.",
+    "h": "6ad47e1bb1b9"
+  },
+  "text": {
+    "t": "Five tags for the tree, each with one word.",
+    "h": "6ad47e1bb1b9"
+  },
+  "options.words.name": {
+    "t": "The five words",
+    "h": "bcd643a58dcb"
+  },
+  "options.words.example": {
+    "t": "Health, Hope, Faith, Love, Family",
+    "h": "c1ed93964543"
+  },
+  "gpsr.warnings.0": {
+    "t": "This is an ornament and not a toy: hang it out of reach of small children, who may put it in their mouths.",
+    "h": "ded79a9ab86f"
+  }
+}

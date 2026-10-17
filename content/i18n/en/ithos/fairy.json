@@ -1,0 +1,42 @@
+{
+  "name": {
+    "t": "Fairy",
+    "h": "93755963b3c8"
+  },
+  "summary": {
+    "t": "With lilac wings and a tulle skirt, with a flower in her hair.",
+    "h": "9a709af278a4"
+  },
+  "text": {
+    "t": "A fairy with closed eyes, lilac wings, a layered pink skirt and a yellow flower in her hair. The wings and the skirt fill with points of light.",
+    "h": "361d0125e6a2"
+  },
+  "options.power.name": {
+    "t": "Power supply",
+    "h": "0853883db432"
+  },
+  "options.power.help": {
+    "t": "Batteries are not included. The cable version comes with a remote control: on, off, brightness control, auto-off and a slow pulsing light effect.",
+    "h": "57676081542e"
+  },
+  "options.power.values.batteries.name": {
+    "t": "2 AA batteries (3 V)",
+    "h": "cbc7c37b342d"
+  },
+  "options.power.values.mains.name": {
+    "t": "Power cable with remote control",
+    "h": "f8e28d7f7f6c"
+  },
+  "options.power.values.mains.note": {
+    "t": "Out of stock for now",
+    "h": "5b693adaa590"
+  },
+  "options.engraving.name": {
+    "t": "Laser engraving",
+    "h": "9694d5607ae5"
+  },
+  "options.engraving.help": {
+    "t": "A name, a date or a short phrase, engraved on the wood. Leave blank if you prefer no engraving.",
+    "h": "e202effc7193"
+  }
+}

@@ -13,5 +13,45 @@
     "t": "The same racing car, painted sage green, with the number on the door and its wheels full of light.",
     "h": "cec3c1d88193",
     "fixo": true
+  },
+  "options.power.name": {
+    "t": "Power supply",
+    "h": "0853883db432"
+  },
+  "options.power.help": {
+    "t": "Batteries are not included. The cable version comes with a remote control: on, off, dimming, auto-off, and a slow pulsing light effect.",
+    "h": "57676081542e"
+  },
+  "options.power.values.batteries.name": {
+    "t": "2 AA batteries (3 V)",
+    "h": "cbc7c37b342d"
+  },
+  "options.power.values.mains.name": {
+    "t": "Power cable with remote control",
+    "h": "f8e28d7f7f6c"
+  },
+  "options.power.values.mains.note": {
+    "t": "Out of stock for now",
+    "h": "5b693adaa590"
+  },
+  "options.engraving.name": {
+    "t": "Laser engraving",
+    "h": "9694d5607ae5"
+  },
+  "options.engraving.help": {
+    "t": "A name, a date or a short phrase, engraved on the wood. Leave blank if you prefer no engraving.",
+    "h": "e202effc7193"
+  },
+  "options.number.name": {
+    "t": "Number",
+    "h": "67e494d69c2d"
+  },
+  "options.number.values.2.name": {
+    "t": "2",
+    "h": "d4735e3a265e"
+  },
+  "options.number.values.3.name": {
+    "t": "3",
+    "h": "4e07408562be"
   }
 }

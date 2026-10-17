@@ -1,0 +1,42 @@
+{
+  "name": {
+    "t": "Rainbow",
+    "h": "cc487c632e16"
+  },
+  "summary": {
+    "t": "Three arches in pink and lilac, with light points.",
+    "h": "f391347794e9"
+  },
+  "text": {
+    "t": "A three-arch rainbow, in pink, lilac and wood, with light points along each one.",
+    "h": "9efa898def86"
+  },
+  "options.power.name": {
+    "t": "Power supply",
+    "h": "0853883db432"
+  },
+  "options.power.help": {
+    "t": "Batteries are not included. The cable version comes with a remote control: on, off, dimmable, auto-off and a slow pulsing light effect.",
+    "h": "57676081542e"
+  },
+  "options.power.values.batteries.name": {
+    "t": "2 AA batteries (3 V)",
+    "h": "cbc7c37b342d"
+  },
+  "options.power.values.mains.name": {
+    "t": "Power cable with remote control",
+    "h": "f8e28d7f7f6c"
+  },
+  "options.power.values.mains.note": {
+    "t": "Out of stock for now",
+    "h": "5b693adaa590"
+  },
+  "options.engraving.name": {
+    "t": "Laser engraving",
+    "h": "9694d5607ae5"
+  },
+  "options.engraving.help": {
+    "t": "A name, a date or a short phrase, engraved on the wood. Leave blank if you prefer no engraving.",
+    "h": "e202effc7193"
+  }
+}

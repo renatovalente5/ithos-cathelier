@@ -1,0 +1,26 @@
+{
+  "name": {
+    "t": "Snowflake name mobile",
+    "h": "9178959b740c"
+  },
+  "summary": {
+    "t": "One large snowflake with the name and other small ones hanging below.",
+    "h": "a511717fa832"
+  },
+  "text": {
+    "t": "One large snowflake with the name and other small ones hanging below.",
+    "h": "a511717fa832"
+  },
+  "options.name.name": {
+    "t": "Name",
+    "h": "5086900635fe"
+  },
+  "options.name.example": {
+    "t": "Carolina",
+    "h": "e1f40f581396"
+  },
+  "gpsr.warnings.0": {
+    "t": "This is a decoration and not a toy: hang it out of reach of small children, who may put it in their mouths.",
+    "h": "ded79a9ab86f"
+  }
+}

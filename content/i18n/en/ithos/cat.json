@@ -1,0 +1,42 @@
+{
+  "name": {
+    "t": "Cat",
+    "h": "a9baf529fb36"
+  },
+  "summary": {
+    "t": "Sitting, with a curled tail and painted stripes.",
+    "h": "597348c64e8b"
+  },
+  "text": {
+    "t": "The cat is sitting, with its tail curled in front of its paws and hand-painted stripes. Its eyes are closed and its ears are upright.",
+    "h": "52d8bcad249c"
+  },
+  "options.power.name": {
+    "t": "Power supply",
+    "h": "0853883db432"
+  },
+  "options.power.help": {
+    "t": "Batteries are not included. The cable version comes with a remote control: on, off, dimming, auto-off, and a slow pulsing light effect.",
+    "h": "57676081542e"
+  },
+  "options.power.values.batteries.name": {
+    "t": "2 AA batteries (3 V)",
+    "h": "cbc7c37b342d"
+  },
+  "options.power.values.mains.name": {
+    "t": "Power cable with remote control",
+    "h": "f8e28d7f7f6c"
+  },
+  "options.power.values.mains.note": {
+    "t": "Out of stock for now",
+    "h": "5b693adaa590"
+  },
+  "options.engraving.name": {
+    "t": "Laser engraving",
+    "h": "9694d5607ae5"
+  },
+  "options.engraving.help": {
+    "t": "A name, a date, or a short phrase, engraved on the wood. Leave blank if you prefer no engraving.",
+    "h": "e202effc7193"
+  }
+}
