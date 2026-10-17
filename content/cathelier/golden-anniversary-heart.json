@@ -1,6 +1,6 @@
 {
   "name": "Coração das bodas de ouro",
-  "price": 19,
+  "price": 8,
   "published": true,
   "featured": false,
   "order": 330,
@@ -20,6 +20,25 @@
   ],
   "cover": "01",
   "options": [
+    {
+      "id": "material",
+      "name": "Material",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "values": [
+        {
+          "id": "wood",
+          "name": "Madeira",
+          "extra": 0
+        },
+        {
+          "id": "gold-acrylic",
+          "name": "Acrílico dourado",
+          "extra": 0
+        }
+      ]
+    },
     {
       "id": "names",
       "name": "Nome ou nomes",
