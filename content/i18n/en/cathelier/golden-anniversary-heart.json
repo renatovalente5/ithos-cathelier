@@ -11,6 +11,18 @@
     "t": "Fifty years, both names and both dates.",
     "h": "72a2da948219"
   },
+  "options.material.name": {
+    "t": "Material",
+    "h": "616cb218a65b"
+  },
+  "options.material.values.wood.name": {
+    "t": "Wood",
+    "h": "2c5d0fa1ca38"
+  },
+  "options.material.values.gold-acrylic.name": {
+    "t": "Gold acrylic",
+    "h": "6e761d6bd990"
+  },
   "options.names.name": {
     "t": "Name or names",
     "h": "294711d4c920"
