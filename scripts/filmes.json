@@ -1,0 +1,131 @@
+{
+  "_note": "As receitas dos filmes de capa. Cada plano é um vídeo da fotógrafa (pasta _materiais-ithos-cathelier, fora do repositório), o segundo onde começa e, nos planos altos, se foi filmado com a câmara deitada (rodar à esquerda) ou se é um recorte 2:3 de um plano largo (focus = onde, de 0 a 1 na largura). node scripts/montage.mjs <nome> faz os dois masters em _materiais-ithos-cathelier/filmes/, e bash scripts/film.sh <nome> faz os ficheiros do site.",
+  "ithos-capa": {
+    "segundos": 4.2,
+    "fundido": 1,
+    "cor": "eq=contrast=1.15:saturation=1.2:gamma=0.95",
+    "largo": [
+      {
+        "clip": "videos-2026-10/lote-2/4U7A3407.MP4",
+        "de": 5,
+        "o_que": "leão e panda acesos"
+      },
+      {
+        "clip": "videos-2026-10/lote-1/4U7A3293.MP4",
+        "de": 3,
+        "o_que": "carro de corrida verde"
+      },
+      {
+        "clip": "videos-2026-10/lote-1/4U7A3319.MP4",
+        "de": 6,
+        "o_que": "arco-íris na esteira"
+      },
+      {
+        "clip": "videos-2026-10/lote-1/4U7A3365.MP4",
+        "de": 8,
+        "o_que": "dois mochos"
+      },
+      {
+        "clip": "videos-2026-10/lote-2/4U7A6114.MP4",
+        "de": 4,
+        "o_que": "fada"
+      }
+    ],
+    "alto": [
+      {
+        "clip": "videos-2026-10/lote-2/4U7A3390.MP4",
+        "de": 8,
+        "rodar": "esquerda",
+        "o_que": "leão na esteira"
+      },
+      {
+        "clip": "videos-2026-10/lote-1/4U7A3337.MP4",
+        "de": 8,
+        "rodar": "esquerda",
+        "o_que": "gato"
+      },
+      {
+        "clip": "videos-2026-10/lote-1/4U7A3348.MP4",
+        "de": 6,
+        "rodar": "esquerda",
+        "o_que": "mocho"
+      },
+      {
+        "clip": "videos-2026-10/lote-1/4U7A3317.MP4",
+        "de": 10,
+        "rodar": "esquerda",
+        "o_que": "arco-íris"
+      },
+      {
+        "clip": "videos-2026-10/lote-2/4U7A6115.MP4",
+        "de": 4,
+        "rodar": "esquerda",
+        "o_que": "fada"
+      }
+    ]
+  },
+  "cathelier-capa": {
+    "segundos": 4.2,
+    "fundido": 1,
+    "cor": "eq=contrast=1.25:saturation=1.35:gamma=0.85",
+    "largo": [
+      {
+        "clip": "videos-2026-10/lote-2/4U7A9948.MP4",
+        "de": 6,
+        "o_que": "iniciais M e R com os nomes"
+      },
+      {
+        "clip": "videos-2026-10/lote-2/4U7A3432.MP4",
+        "de": 8,
+        "o_que": "bolas do trenó com nomes"
+      },
+      {
+        "clip": "videos-2026-10/lote-2/4U7A9945.MP4",
+        "de": 10,
+        "o_que": "iniciais L, B e C em rosa"
+      },
+      {
+        "clip": "videos-2026-10/lote-1/4U7A0225.MP4",
+        "de": 12,
+        "o_que": "letras de Natal com nomes"
+      },
+      {
+        "clip": "videos-2026-10/lote-2/4U7A3496.MP4",
+        "de": 14,
+        "o_que": "corações das bodas de ouro"
+      }
+    ],
+    "alto": [
+      {
+        "clip": "videos-2026-10/lote-2/4U7A9969.MP4",
+        "de": 22,
+        "rodar": "esquerda",
+        "o_que": "nomes em madeira"
+      },
+      {
+        "clip": "videos-2026-10/lote-2/4U7A3432.MP4",
+        "de": 8,
+        "focus": 0.5,
+        "o_que": "bolas do trenó com nomes"
+      },
+      {
+        "clip": "videos-2026-10/lote-1/4U7A0264.MP4",
+        "de": 8,
+        "rodar": "esquerda",
+        "o_que": "calendário do Advento"
+      },
+      {
+        "clip": "videos-2026-10/lote-2/4U7A3488.MP4",
+        "de": 36,
+        "rodar": "esquerda",
+        "o_que": "placa de nascimento"
+      },
+      {
+        "clip": "videos-2026-10/lote-2/4U7A9948.MP4",
+        "de": 8,
+        "focus": 0.37,
+        "o_que": "inicial M com o nome"
+      }
+    ]
+  }
+}

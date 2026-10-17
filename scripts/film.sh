@@ -46,11 +46,20 @@ NAME="${1:?usage: bash scripts/film.sh <name> [focus 0-1]}"
 FOCUS="${2:-0.36}"
 HERE="$(cd "$(dirname "$0")/.." && pwd)"
 SRC="$HERE/../_materiais-ithos-cathelier/filmes/$NAME.mp4"
+# UM MASTER ALTO PRÓPRIO, quando existe: <nome>-tall.mp4, já em 2:3. É o que o
+# scripts/montage.mjs escreve, com os planos filmados ao alto inteiros -- e
+# então o corte alto sai dele, e não de um recorte do largo.
+SRC_TALL="$HERE/../_materiais-ithos-cathelier/filmes/$NAME-tall.mp4"
 OUT="$HERE/public/media/film"
 
 [ -f "$SRC" ] || { echo "no master at $SRC" >&2; exit 1; }
 command -v ffmpeg >/dev/null || { echo "ffmpeg is missing:  brew install ffmpeg" >&2; exit 1; }
 command -v ffprobe >/dev/null || { echo "ffprobe is missing:  brew install ffmpeg" >&2; exit 1; }
+
+# UM MASTER QUE JÁ DÁ A VOLTA não se toca para a frente e para trás: uma
+# montagem com dissolvências, ao contrário, vê-se. O montage.mjs marca os seus
+# com comment=seamless-loop.
+LOOP=$(ffprobe -v error -show_entries format_tags=comment -of csv=p=0 "$SRC" || true)
 
 MW=$(ffprobe -v error -select_streams v:0 -show_entries stream=width -of csv=p=0 "$SRC")
 MH=$(ffprobe -v error -select_streams v:0 -show_entries stream=height -of csv=p=0 "$SRC")
@@ -80,20 +89,27 @@ mkdir -p "$OUT"
 # E a mesma correcção vai nos QUATRO derivados -- os dois filmes e os dois
 # quadros parados -- porque foi uma discordância entre eles que já pôs a capa a
 # dar um salto de luz no instante em que o filme arrancava.
-COR="eq=gamma=1.5"
+# As montagens da fotógrafa são de estúdio e já vêm claras (brilho médio 110 a
+# 154, contra 76 do telemóvel), e a 1.5 ficavam lavadas: não levam correcção.
+# GAMMA=… na linha de comandos manda sempre.
+if [ -z "${GAMMA:-}" ]; then
+  if [ "$LOOP" = "seamless-loop" ]; then GAMMA=1; else GAMMA=1.5; fi
+fi
+if [ "$GAMMA" = "1" ]; then COR="null"; else COR="eq=gamma=$GAMMA"; fi
 
 pingpong () {   # $1 = the filter that shapes one pass
+  if [ "$LOOP" = "seamless-loop" ]; then echo "[0:v]$1,format=yuv420p[v]"; return; fi
   echo "[0:v]$1,split[a][b];[b]reverse[r];[a][r]concat=n=2:v=1,format=yuv420p[v]"
 }
-encode () {     # $1 = filter, $2 = output name
-  ffmpeg -v error -i "$SRC" -filter_complex "$(pingpong "$1")" -map "[v]" -an \
+encode () {     # $1 = filter, $2 = output name, $3 = master (o largo, por omissão)
+  ffmpeg -v error -i "${3:-$SRC}" -filter_complex "$(pingpong "$1")" -map "[v]" -an \
     -c:v libx264 -preset veryslow -crf 30 -movflags +faststart "$OUT/$2" -y
   printf '  %-28s %s  (%s)\n' "$2" "$(du -h "$OUT/$2" | cut -f1)" \
     "$(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p=0:s=x "$OUT/$2")"
 }
 
-still () {   # $1 = filter, $2 = master name in photos/_covers
-  ffmpeg -v error -ss 0 -i "$SRC" -frames:v 1 -filter_complex "[0:v]$1[v]" -map "[v]" \
+still () {   # $1 = filter, $2 = master name in photos/_covers, $3 = master
+  ffmpeg -v error -ss 0 -i "${3:-$SRC}" -frames:v 1 -filter_complex "[0:v]$1[v]" -map "[v]" \
     -q:v 2 "$HERE/photos/_covers/$2.jpg" -y
   printf '  %-28s %s\n' "$2.jpg" \
     "$(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p=0:s=x "$HERE/photos/_covers/$2.jpg")"
@@ -101,7 +117,12 @@ still () {   # $1 = filter, $2 = master name in photos/_covers
 
 echo "master ${MW}x${MH}, tall cut ${CW} wide at x=${CX} (focus ${FOCUS})"
 encode "$COR,scale=1600:-2"               "$NAME.mp4"
-encode "$COR,crop=$CW:$MH:$CX:0,scale=720:-2" "$NAME-tall.mp4"
+if [ -f "$SRC_TALL" ]; then
+  echo "tall master $(ffprobe -v error -select_streams v:0 -show_entries stream=width,height -of csv=p=0:s=x "$SRC_TALL") (its own, not a crop)"
+  encode "$COR,scale=720:-2" "$NAME-tall.mp4" "$SRC_TALL"
+else
+  encode "$COR,crop=$CW:$MH:$CX:0,scale=720:-2" "$NAME-tall.mp4"
+fi
 
 # THE STILL IS THE FILM'S FIRST FRAME, ONE PER CUT.
 #
@@ -121,6 +142,10 @@ encode "$COR,crop=$CW:$MH:$CX:0,scale=720:-2" "$NAME-tall.mp4"
 # overwrite those: covers.py writes <brand>.jpg and nothing else, so deleting
 # "film" from covers.json puts the photograph back with nothing to undo.
 still "$COR,scale=1920:-2"                "$NAME-still-wide"
-still "$COR,crop=$CW:$MH:$CX:0"           "$NAME-still"
+if [ -f "$SRC_TALL" ]; then
+  still "$COR"                            "$NAME-still" "$SRC_TALL"
+else
+  still "$COR,crop=$CW:$MH:$CX:0"           "$NAME-still"
+fi
 echo
 echo "now:  python3 scripts/renditions.py"

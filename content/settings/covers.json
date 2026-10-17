@@ -6,17 +6,18 @@
     "title": "Uma luz pequena, a noite toda",
     "buttonLabel": "Ver todos os candeeiros",
     "buttonHref": "/lamps/",
-    "alt": "Dois candeeiros de presença em madeira acesos num quarto escuro, um veado e um coala, sobre uma esteira",
-    "film": "ithos-cover",
-    "focus": "50% 52%",
-    "focusWide": "50% 44%"
+    "alt": "Candeeiros de presença em madeira acesos, entre eles um leão e um panda",
+    "film": "ithos-capa",
+    "focus": "50% 50%",
+    "focusWide": "50% 50%"
   },
   "cathelier": {
     "title": "Os vossos nomes, cortados na madeira",
     "buttonLabel": "Ver todas as peças",
     "buttonHref": "/cathelier/pieces/",
-    "alt": "Uma margarida grande cortada em madeira branca, pousada em papel kraft",
-    "focus": "50% 34%",
-    "focusWide": "50% 41%"
+    "alt": "Nomes e iniciais cortados em madeira, como Mateus, Rodrigo, Benedita e Camila",
+    "film": "cathelier-capa",
+    "focus": "50% 50%",
+    "focusWide": "50% 50%"
   }
 }
