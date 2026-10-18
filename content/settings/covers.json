@@ -3,19 +3,19 @@
   "_note_picture": "Where the picture comes from depends on whether \"film\" is set below. With a film, the still under it is the film's own first frame, so nothing changes when it starts playing. Without one, it is photos/_covers/<brand>.jpg — replace that file with a landscape photograph and run scripts/covers.py, then scripts/renditions.py.",
   "_note_film": "\"film\" plays a short silent film over the cover. Delete the line and the brand's photograph comes back, with nothing else to undo — and a still is what shows anyway for anyone whose device is set to reduce motion, whose connection says it is metered, or whose browser refuses to autoplay. Changing the film itself is not a back-office job: the new recording goes in _materiais-ithos-cathelier/filmes/ and somebody runs scripts/film.sh and then scripts/renditions.py.",
   "ithos": {
-    "title": "Uma luz pequena, a noite toda",
+    "title": "Uma luz para sonhos mais doces e noites tranquilas.  ",
     "buttonLabel": "Ver todos os candeeiros",
     "buttonHref": "/lamps/",
-    "alt": "Candeeiros de presença em madeira acesos, entre eles um leão e um panda",
+    "alt": "Candeeiros  ithos®️ em madeira de pinho, onde animais, figuras místicas e meios de transporte ganham vida através de uma luz suave que ilumina sonhos e aquece corações.",
     "film": "ithos-capa",
     "focus": "50% 50%",
     "focusWide": "50% 50%"
   },
   "cathelier": {
-    "title": "Os vossos nomes, cortados na madeira",
+    "title": "Lembranças únicas, pequenos detalhes, momentos inesquecíveis",
     "buttonLabel": "Ver todas as peças",
     "buttonHref": "/cathelier/pieces/",
-    "alt": "Nomes e iniciais cortados em madeira, como Mateus, Rodrigo, Benedita e Camila",
+    "alt": "Na CATHELIER, cada lembrança ganha vida nos pequenos detalhes em madeira, com amor e carinho para celebrar momentos especiais e transformar momentos bonitos em memórias para sempre  ",
     "film": "cathelier-capa",
     "focus": "50% 50%",
     "focusWide": "50% 50%"
