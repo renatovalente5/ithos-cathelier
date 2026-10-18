@@ -1,4 +1,4 @@
-<!-- origem: 24a618d9a78e partes: ece0c79184c6 431615403d7d 0852c3991e85 5df13b1d4273 574e3c73640d 5a507cf9eef1 dcbdb8e1f670 -->
+<!-- origem: 8eac297be2a8 partes: ece0c79184c6 431615403d7d 1c5c11abb93c 5df13b1d4273 67f001b79894 f438ee476f61 dcbdb8e1f670 -->
 # Care and safety
 
 ## These are lights, not toys
@@ -8,16 +8,13 @@ one, and it should not be handed to a small child to play with.
 
 {{SAFETY_LIST}}
 
-## Looking after it
+## How to care for it
 
-Wipe it with a dry cloth. Never water, never solvents, never anything abrasive —
-the paint is water-based and the wood is sealed, and both mind.
+Clean it with a dry cloth. Never use water, never solvents, never anything abrasive — the paint is water-based and the wood is sealed, and both will suffer.
 
-Keep it out of direct sun. Pine lightens over months of bright light, and the
-painted colours go with it.
+Keep it away from direct sunlight. Pine lightens after months of intense light, and the painted colours will also be affected by sun exposure.
 
-If a bulb stops working, write to us. Do not open the piece: it is glued and
-sanded shut, and it will not go back the way it was.
+If a light stops working, write to us. Do not open the piece, as it will not return to its original state.
 
 ## Repair parts
 
@@ -27,17 +24,15 @@ Decree-Law No 84/2021). If it needs repairing, write to us.
 
 ## Batteries
 
-The battery-operated versions require two AA batteries, which are already included. Please remove them if the piece will be left unused for months — a leaking battery can damage the wood from the inside.
+The battery-operated versions require two AA batteries, which are not included. Remove them if the piece will not be used for months — a leaking battery will damage the wood and the power system.
 
 Keep loose batteries away from small children.
 
-## The mains version
+## The corded version
 
-The mains version comes with a remote that dims, times and pulses it.
+The corded version comes with a controller that regulates light intensity, turns the light on and off, includes a timer so it turns off by itself, and makes the light pulse slowly.
 
-Keep the cable out of a cot and out of a bed. Do not run it under a rug or
-behind a radiator, and do not leave it plugged in unattended overnight in a
-child's room.
+Keep the cord out of the cot and away from the bed. Do not pass it under a rug or behind a radiator, and do not leave it switched on overnight unattended in a child's room.
 
 ## Wood moves
 
