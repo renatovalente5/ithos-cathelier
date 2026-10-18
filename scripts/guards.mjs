@@ -56,6 +56,18 @@ for (const c of shipping.active) {
   }
 }
 
+/* A CAMPANHA DE PORTES GRÁTIS, que a dona gere no painel. As datas comparam-se
+   como texto AAAA-MM-DD no carrinho e no Worker: noutro formato, «hoje» deixava
+   de as poder comparar e a campanha valia ou não valia ao acaso. */
+{
+  const c = shipping.campaign;
+  for (const k of ['from', 'to']) {
+    if (c?.[k] && !/^\d{4}-\d{2}-\d{2}$/.test(c[k])) die(`shipping.json: campaign.${k} is "${c[k]}" — it has to be AAAA-MM-DD, or the basket and the Worker cannot compare it with today`);
+  }
+  if (c?.active && !(c.freeOver > 0)) warnings.push('shipping.json: the free-shipping campaign is on with no amount — nothing is free, and the site shows no popup and no line');
+  if (c?.from && c?.to && c.to < c.from) warnings.push(`shipping.json: the campaign ends (${c.to}) before it starts (${c.from}) — it is never in force`);
+}
+
 /* --- the lead times -------------------------------------------------------- */
 /* Two numbers, and every sentence about delivery is made from them
    (src/lib/prazos.mjs, and the Worker's emails). A number that is not one
