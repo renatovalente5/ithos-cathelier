@@ -1,0 +1,42 @@
+{
+  "name": {
+    "t": "Hot air balloon",
+    "h": "227d42a9b338"
+  },
+  "summary": {
+    "t": "Hot air balloon night light",
+    "h": "9f9d5d1a5164"
+  },
+  "text": {
+    "t": "The ithos®️ wooden children's lamp, with the delicate shape of a hot air balloon, combines timeless design, cosy light and the charm of small details. Its warm white LED lighting creates a soft and comforting atmosphere, ideal for accompanying moments of reading, tranquillity and snugness before sleep, as well as being the perfect companion for a protected night for little ones.\n\nDuring the day, it serves as a decorative piece that adds personality and tenderness to a child's room. With careful finishes and hand-painted details, it integrates harmoniously into any setting, with soft woods and neutral tones.\nCreated to make rest moments even sweeter and more special.",
+    "h": "2f6167fd8dba"
+  },
+  "options.power.name": {
+    "t": "Power supply",
+    "h": "0853883db432"
+  },
+  "options.power.help": {
+    "t": "Batteries are included. The cable version comes with a remote control: on, off, dimming, auto-off and a slow pulsing light effect.",
+    "h": "cebedb001d9f"
+  },
+  "options.power.values.batteries.name": {
+    "t": "2 AA batteries (3 V)",
+    "h": "cbc7c37b342d"
+  },
+  "options.power.values.mains.name": {
+    "t": "Power cable with remote control",
+    "h": "f8e28d7f7f6c"
+  },
+  "options.power.values.mains.note": {
+    "t": "Out of stock for now",
+    "h": "5b693adaa590"
+  },
+  "options.engraving.name": {
+    "t": "Personalisation / Laser engraving",
+    "h": "75b52425e8e9"
+  },
+  "options.engraving.help": {
+    "t": "A name, a date or a short phrase, engraved on the wood. Leave blank if you prefer no engraving.",
+    "h": "e202effc7193"
+  }
+}
