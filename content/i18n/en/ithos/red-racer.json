@@ -11,6 +11,23 @@
     "t": "The ithos®️ wooden children's lamp, with its delicate car silhouette, combines timeless design, cosy light and the charm of small details. Its warm white LED lighting creates a soft and comforting atmosphere, ideal for accompanying moments of reading, tranquillity and cosiness before sleep.\n\nDuring the day, it serves as a decorative piece that adds personality and tenderness to the children's bedroom. With careful finishes and hand-painted details, it integrates harmoniously into environments inspired by nature, soft woods and neutral tones.\nCreated to make rest moments even sweeter and more special.",
     "h": "9372e9b461fe"
   },
+  "options.variant.name": {
+    "t": "Colour",
+    "h": "2237b88f398f"
+  },
+  "options.variant.values.1.name": {
+    "t": "Red",
+    "h": "6741b8b5e1c2"
+  },
+  "options.variant.values.2.name": {
+    "t": "Sage green",
+    "h": "49f81d31ba83",
+    "fixo": true
+  },
+  "options.variant.values.3.name": {
+    "t": "Natural wood",
+    "h": "97378d5a5474"
+  },
   "options.power.name": {
     "t": "Power",
     "h": "0853883db432"
@@ -32,16 +49,11 @@
     "h": "5b693adaa590"
   },
   "options.engraving.name": {
-    "t": "Laser engraving",
-    "h": "9694d5607ae5"
+    "t": "Personalisation / Laser engraving",
+    "h": "75b52425e8e9"
   },
   "options.engraving.help": {
     "t": "A name, a date or a short phrase, burned into the wood. Leave it empty if you would rather not.",
     "h": "e202effc7193"
-  },
-  "options.variant.values.2.name": {
-    "t": "Sage green",
-    "h": "49f81d31ba83",
-    "fixo": true
   }
 }
