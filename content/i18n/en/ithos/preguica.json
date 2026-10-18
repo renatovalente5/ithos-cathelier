@@ -1,0 +1,38 @@
+{
+  "name": {
+    "t": "Sloth",
+    "h": "00535d46af85"
+  },
+  "summary": {
+    "t": "Sloth night light",
+    "h": "b6d0d990554a"
+  },
+  "options.power.name": {
+    "t": "Power",
+    "h": "0853883db432"
+  },
+  "options.power.help": {
+    "t": "Batteries are included. The cable version comes with a remote control: on, off, dimming, auto-off, and a slow pulsing light effect.",
+    "h": "cebedb001d9f"
+  },
+  "options.power.values.batteries.name": {
+    "t": "2 AA batteries (3 V)",
+    "h": "cbc7c37b342d"
+  },
+  "options.power.values.mains.name": {
+    "t": "Power cable with remote control",
+    "h": "f8e28d7f7f6c"
+  },
+  "options.power.values.mains.note": {
+    "t": "Out of stock for now",
+    "h": "5b693adaa590"
+  },
+  "options.engraving.name": {
+    "t": "Personalisation / Laser engraving",
+    "h": "75b52425e8e9"
+  },
+  "options.engraving.help": {
+    "t": "A name, a date or a short phrase, engraved on the wood. Leave blank if you prefer no engraving.",
+    "h": "e202effc7193"
+  }
+}
