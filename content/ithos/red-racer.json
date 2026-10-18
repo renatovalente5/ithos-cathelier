@@ -14,12 +14,46 @@
   "photoFolder": "carro-2",
   "photos": [
     "01",
+    "04",
+    "09",
     "02",
-    "03"
+    "03",
+    "05",
+    "06",
+    "07",
+    "08"
   ],
   "cover": "01",
   "colours": [],
   "options": [
+    {
+      "id": "variant",
+      "name": "Cor",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "help": "",
+      "values": [
+        {
+          "id": "1",
+          "name": "Vermelho",
+          "extra": 0,
+          "colour": "#B32920"
+        },
+        {
+          "id": "2",
+          "name": "Verde-sálvia",
+          "extra": 0,
+          "colour": "#7D8C80"
+        },
+        {
+          "id": "3",
+          "name": "Madeira natural",
+          "extra": 0,
+          "colour": "#D8B88A"
+        }
+      ]
+    },
     {
       "id": "power",
       "name": "Alimentação",
@@ -44,7 +78,7 @@
     },
     {
       "id": "engraving",
-      "name": "Gravação a laser",
+      "name": "Personalização / Gravação a laser",
       "type": "text",
       "required": false,
       "personalises": true,

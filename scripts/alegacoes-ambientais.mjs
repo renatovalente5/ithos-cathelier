@@ -63,7 +63,7 @@ export const EXCECOES = [
   /* Um país, se um dia a loja enviar para lá. */
   ['Cabo Verde', /(?<![\p{L}\p{N}_])Cabo Verde(?![\p{L}\p{N}_])/gu],
   /* Nomes de cor compostos. «verde-sálvia» é a cor do carro de corrida
-     (content/ithos/sage-racer.json), «sage green» na tradução. */
+     (content/ithos/red-racer.json, a cor «Verde-sálvia»), «sage green» na tradução. */
   ['verde-X (cor)', /(?<![\p{L}\p{N}_])verde-(?:escuro|claro|água|agua|menta|seco|oliva|tropa|sálvia|salvia)(?![\p{L}\p{N}_])/giu],
   ['X green (cor)', /(?<![\p{L}\p{N}_])(?:dark|light|mint|sage|olive|bottle) green(?![\p{L}\p{N}_])/giu],
 ];

@@ -40,7 +40,7 @@
     },
     {
       "id": "engraving",
-      "name": "Gravação a laser",
+      "name": "Personalização / Gravação a laser",
       "type": "text",
       "required": false,
       "personalises": true,

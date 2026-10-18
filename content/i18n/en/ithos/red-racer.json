@@ -38,5 +38,10 @@
   "options.engraving.help": {
     "t": "A name, a date or a short phrase, burned into the wood. Leave it empty if you would rather not.",
     "h": "e202effc7193"
+  },
+  "options.variant.values.2.name": {
+    "t": "Sage green",
+    "h": "49f81d31ba83",
+    "fixo": true
   }
 }
