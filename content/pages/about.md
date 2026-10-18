@@ -1,39 +1,13 @@
-# A oficina
+# Os ithos
 
-A ithos é uma pequena oficina em Castelo Branco, no centro de Portugal. Cada
-candeeiro que de lá sai foi cortado, lixado, pintado e ligado à mão, um de cada
-vez.
+Os ithos são um sonho que se tornou real para concretizar os desejos dos mais pequenos e porque tudo o que é feito à mão vem do coração, nós dedicamos o nosso melhor para conseguirmos enviar amor! São peças únicas, especiais, cada uma com as características que lhes dão charme e quando são enviadas vão cheias de magia e emoção!
+Os nossos ithos para além de serem luzes de presença, são também peças decorativas que transformam o quarto num ambiente caloroso e acolhedor do qual os nossos pequenos se lembrarão para toda a vida! Vai ajudar os pais na muda da fralda à noite e os mais pequenos a sentirem uma companhia especial ao adormecer.  As luminárias ithos, são feitos em Portugal , num pequeno atelier onde todo o processo de criação é manual, desde o corte da madeira de pinho, lixar , colar, pintar, colocação de leds(...) As luzes LED funcionam com duas pilhas de 3V e um interruptor on/off para que os candeeiros possam ser colocados em qualquer lugar ou a opção com cabo elétrico e interruptor, controlo remoto que permite o ajuste da intensidade da luz, temporizador e iluminação rítmica.
 
-## Como se faz um
 
-Começa como um desenho, depois como uma forma cortada em pinho maciço. As
-arestas cortadas são lixadas à mão até não restar nada onde um dedo se possa
-prender — esta é a parte lenta, e é a parte que se sente mais do que se vê.
+## Personalização
 
-Depois vem a pintura: tintas de água, camadas finas, e os pormenores no fim, com
-um pincel fino. Os olhos, o focinho, as pintas no chapéu de um cogumelo — são
-feitos um a um, e é por isso que não há dois iguais.
-
-As luzes entram por trás, as costas fecham-se, e cada candeeiro é testado aceso
-antes de ser embalado.
-
-## Porque se vê a madeira
-
-Na maioria das peças, boa parte do pinho fica à vista. É de propósito. O pinho
-tem um veio que não se repete de tábua para tábua, e tapá-lo faria de todos os
-candeeiros o mesmo candeeiro em cores diferentes.
-
-Também quer dizer que a madeira vai mudar. Clareia um pouco num quarto com
-muita luz, ao longo de um ou dois anos, e aquece com isso.
-
-## A gravação
-
-Qualquer peça pode levar um nome, uma data ou uma frase curta gravados na
-madeira, e não custa mais nada. É a parte de que mais gostamos, e é o que faz
-de um candeeiro o candeeiro daquela criança.
+Qualquer itho pode ser personalizado ao gosto de cada pessoa, na escolha das cores, dos detalhes pintados à mão e para tornar cada peça ainda mais especial  e carregada de significado, poderá também incluir uma gravação a laser de uma pequena frase, um nome ou uma data especial,  criando assim uma peça única, feita à sua medida e que guarda consigo memórias e sentimentos inesquecíveis.
 
 ## A outra metade da oficina
 
-As mesmas mãos fazem a [cathelier](/cathelier/) — peças cortadas e gravadas a
-laser para batizados, casamentos, nascimentos e Natal. Outro trabalho, outra
-loja, a mesma bancada.
+As mesmas mãos fazem a CATHELIER uma marca associada de lembranças e produtos  de decoração, que, tal como nós, primam pela qualidade, detalhe e exclusividade.
