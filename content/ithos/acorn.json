@@ -1,6 +1,6 @@
 {
   "name": "Bolota",
-  "price": 78,
+  "price": 80,
   "published": true,
   "featured": false,
   "order": 210,
@@ -28,7 +28,7 @@
         {
           "id": "1",
           "name": "Grande (22×21 cm)",
-          "extra": 11
+          "extra": 10
         },
         {
           "id": "2",
@@ -38,7 +38,7 @@
         {
           "id": "3",
           "name": "As duas juntas",
-          "extra": 72,
+          "extra": 70,
           "stockFrom": [
             "1",
             "2"
