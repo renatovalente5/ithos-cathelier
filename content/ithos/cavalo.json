@@ -1,7 +1,7 @@
 {
   "name": "Cavalo",
   "price": 130,
-  "published": false,
+  "published": true,
   "featured": false,
   "order": 280,
   "made": "to_order",
