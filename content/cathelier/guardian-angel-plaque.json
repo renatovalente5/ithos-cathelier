@@ -1,7 +1,7 @@
 {
   "name": "Placa do Anjo da Guarda",
   "price": 15,
-  "published": false,
+  "published": true,
   "featured": false,
   "order": 320,
   "made": "to_order",
