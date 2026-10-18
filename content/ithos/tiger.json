@@ -1,16 +1,16 @@
 {
-  "name": "Tigre",
+  "name": "Tigre índio",
   "price": 150,
   "published": true,
-  "featured": false,
+  "featured": true,
   "order": 60,
   "made": "to_order",
   "size": {
     "height": 44,
     "width": 36
   },
-  "summary": "Um tigre com um cocar de penas, cada risca pintada uma a uma.",
-  "text": "Uma das peças maiores, e das mais demoradas de fazer: as riscas pintam-se uma a uma, e o cocar é feito de penas de madeira coloridas.\n\nEstá sentado, com a cauda enrolada para a frente. Uma peça com verdadeira presença — funciona acesa ou apagada, e de dia aguenta-se sozinha como enfeite.",
+  "summary": "Candeeiro tigre índio",
+  "text": "O candeeiro infantil em madeira da ithos®️, com a delicada silhueta de um tigre, combina design intemporal, luz acolhedora e o encanto dos pequenos detalhes. A sua iluminação LED branca quente cria uma atmosfera suave e reconfortante, ideal para acompanhar os momentos de leitura, tranquilidade e aconchego antes de dormir, bem como a companhia perfeita para uma noite protegida aos olhos dos mais pequenos.\n\nDurante o dia, assume o papel de uma peça decorativa que acrescenta personalidade e ternura ao quarto infantil. Com acabamentos cuidados e detalhes pintados à mão, integra-se harmoniosamente em qualquer ambiente, madeiras suaves e tons neutros.\nCriado para tornar os momentos de descanso ainda mais doces e especiais.",
   "photoFolder": "tigre",
   "photos": [
     "01",
