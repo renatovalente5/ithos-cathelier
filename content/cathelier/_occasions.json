@@ -18,7 +18,7 @@
     "name": "Dias especiais",
     "summary": "Dia da Mãe e Dia do Pai: os nomes dos filhos para ela, o escudo de super-herói para ele.",
     "order": 30,
-    "published": true
+    "published": false
   },
   {
     "slug": "magnets-keyrings",

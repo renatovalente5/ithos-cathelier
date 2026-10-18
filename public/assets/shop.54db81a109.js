@@ -15,7 +15,7 @@ const BASE = '';
 const API = 'https://ithos-cathelier-api.renato-lima-valente-dcb.workers.dev';
 /* Filled in by the build from src/lib/redirects.mjs: an old filter word, shared
    before the collections changed, and the one it became. */
-const FRAGMENTOS_ANTIGOS = {"mothers-day":"special-days","fathers-day":"special-days","childrens-day":"names","home":"wall-decor","awards":"custom"};
+const FRAGMENTOS_ANTIGOS = {"childrens-day":"names","home":"wall-decor","awards":"custom"};
 
 /* AS FRASES VÊM DE FORA, NA LÍNGUA DA PÁGINA.
    Este ficheiro é um só para o site todo; o que ele escreve no ecrã está em

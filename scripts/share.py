@@ -102,8 +102,11 @@ LOGO = {'ithos': 'ithos-wordmark', 'cathelier': 'cathelier'}
 BAND_W = 270
 BANDS = {
     'ithos': [('ithos/veado/01.jpg', .5, .52, 1.15), ('ithos/girafa/01.jpg', .5, .52, 1.15)],
-    'cathelier': [('_covers/cathelier.jpg', .5, .45, 1.0), ('cathelier/_raw/07.jpg', .62, .42, 1.0)],
-    'ithos-cathelier': [('ithos/foguetao/01.jpg', .5, .52, 1.15), ('_covers/cathelier.jpg', .5, .45, 1.0)],
+    # As da cathelier são da Jéssica: a dona não quer as fotografias antigas
+    # (18 out 2026), e as de exemplo do Instagram e a margarida da capa antiga
+    # saíram daqui.
+    'cathelier': [('cathelier/name-ornament/01.jpg', .5, .55, 1.0), ('cathelier/birth-disc/01.jpg', .5, .5, 1.0)],
+    'ithos-cathelier': [('ithos/foguetao/01.jpg', .5, .52, 1.15), ('cathelier/initial-with-name/01.jpg', .5, .45, 1.0)],
 }
 
 # A product card: the logo, a gap, the photograph -- one group, centred, inside
