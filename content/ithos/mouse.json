@@ -2,7 +2,7 @@
   "name": "Rato",
   "price": 130,
   "published": true,
-  "featured": false,
+  "featured": true,
   "order": 20,
   "made": "to_order",
   "size": {

@@ -1,18 +1,17 @@
 {
   "name": "Fada",
-  "price": 130,
+  "price": 140,
   "published": true,
-  "featured": false,
+  "featured": true,
   "order": 45,
   "made": "to_order",
-  "summary": "De asas lilás e saia de tule, com uma flor no cabelo.",
-  "text": "Uma fada de olhos fechados, com as asas lilás, a saia cor-de-rosa em camadas e uma flor amarela no cabelo. As asas e a saia enchem-se de pontos de luz.",
+  "summary": "hasdhadkh",
+  "text": "O candeeiro infantil em madeira da ithos®️, com a delicada silhueta de fada, combina design intemporal, luz acolhedora e o encanto dos pequenos detalhes. A sua iluminação LED branca quente cria uma atmosfera suave e reconfortante, ideal para acompanhar os momentos de leitura, tranquilidade e aconchego antes de dormir, bem como a companhia perfeita para uma noite protegida aos olhos dos mais pequenos.\n\nDurante o dia, assume o papel de uma peça decorativa que acrescenta personalidade e ternura ao quarto infantil. Com acabamentos cuidados e detalhes pintados à mão, integra-se harmoniosamente em qualquer ambiente, madeiras suaves e tons neutros.\nCriado para tornar os momentos de descanso ainda mais doces e especiais.",
   "photoFolder": "fada",
   "photos": [
     "01",
     "02",
-    "03",
-    "04"
+    "03"
   ],
   "cover": "01",
   "colours": [],
@@ -58,5 +57,6 @@
   "seo": {
     "title": "",
     "description": ""
-  }
+  },
+  "size": {}
 }
