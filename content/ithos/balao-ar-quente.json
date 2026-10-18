@@ -1,7 +1,7 @@
 {
   "name": "Balão ar quente",
   "price": 130,
-  "published": false,
+  "published": true,
   "featured": false,
   "order": 290,
   "made": "to_order",
