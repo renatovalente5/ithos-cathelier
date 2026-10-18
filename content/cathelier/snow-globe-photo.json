@@ -13,10 +13,9 @@
   "text": "Um globo de neve em madeira com a vossa fotografia e um nome na base.",
   "photoFolder": "snow-globe-photo",
   "photos": [
-    "01",
-    "02",
     "03",
-    "04"
+    "01",
+    "02"
   ],
   "cover": "01",
   "options": [
