@@ -1,7 +1,7 @@
 {
   "name": "Flor de parede",
   "price": 8,
-  "published": true,
+  "published": false,
   "featured": false,
   "order": 370,
   "made": "to_order",
