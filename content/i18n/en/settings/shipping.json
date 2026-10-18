@@ -18,5 +18,9 @@
   "zones.europa.name": {
     "t": "Rest of Europe",
     "h": "7aadffe1e93a"
+  },
+  "campaign.title": {
+    "t": "Free shipping",
+    "h": "ec44803dfff4"
   }
 }
