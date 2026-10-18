@@ -2,19 +2,18 @@
   "name": "Gato",
   "price": 130,
   "published": true,
-  "featured": false,
+  "featured": true,
   "order": 65,
   "made": "to_order",
-  "summary": "Sentado, de cauda enrolada, com riscas pintadas.",
-  "text": "O gato está sentado, com a cauda enrolada à frente das patas e as riscas pintadas à mão. Os olhos estão fechados e as orelhas levantadas.",
+  "summary": "Candeeiro gato",
+  "text": "O candeeiro infantil em madeira da ithos®️, com a delicada silhueta de um pequeno gato, combina design intemporal, luz acolhedora e o encanto dos pequenos detalhes. A sua iluminação LED branca quente cria uma atmosfera suave e reconfortante, ideal para acompanhar os momentos de leitura, tranquilidade e aconchego antes de dormir, bem como a companhia perfeita para uma noite protegida aos olhos dos mais pequenos.\n\nDurante o dia, assume o papel de uma peça decorativa que acrescenta personalidade e ternura ao quarto infantil. Com acabamentos cuidados e detalhes pintados à mão, integra-se harmoniosamente em qualquer ambiente, madeiras suaves e tons neutros.\nCriado para tornar os momentos de descanso ainda mais doces e especiais.",
   "photoFolder": "gato",
   "photos": [
     "03",
-    "04",
     "05",
     "06",
-    "01",
-    "02"
+    "02",
+    "01"
   ],
   "cover": "03",
   "colours": [],
@@ -60,5 +59,10 @@
   "seo": {
     "title": "",
     "description": ""
+  },
+  "size": {
+    "height": 31,
+    "width": 21,
+    "depth": 5.6
   }
 }
