@@ -4,12 +4,12 @@
     "h": "7d230dd02c8d"
   },
   "summary": {
-    "t": "An engine and a carriage, 69 cm end to end.",
-    "h": "0e06cdfdf6ac"
+    "t": "Train lamp",
+    "h": "7cd134be0007"
   },
   "text": {
-    "t": "The longest piece in the range: an engine and a carriage, painted red, with the windows and the wheels lit.\n\nIt suits a long shelf or a windowsill. The carriage can carry an engraved name.",
-    "h": "8b09d9d17f3b"
+    "t": "The ithos®️ wooden lamp, with its delicate train shape, combines timeless design, cosy light, and the charm of small details. Its warm white LED lighting creates a soft and comforting atmosphere, ideal for accompanying moments of reading, tranquillity, and snugness before sleep.\n\nDuring the day, it serves as a decorative piece that adds personality and tenderness to a child's bedroom. With careful finishes and hand-painted details, it integrates harmoniously into environments inspired by nature, soft woods, and neutral tones.\nCreated to make rest times even sweeter and more special.",
+    "h": "3f90da92ff1a"
   },
   "options.power.name": {
     "t": "Power",
@@ -32,8 +32,8 @@
     "h": "5b693adaa590"
   },
   "options.engraving.name": {
-    "t": "Laser engraving",
-    "h": "9694d5607ae5"
+    "t": "Personalisation / Laser engraving",
+    "h": "75b52425e8e9"
   },
   "options.engraving.help": {
     "t": "A name, a date or a short phrase, burned into the wood. Leave it empty if you would rather not.",
