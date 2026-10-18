@@ -67,6 +67,6 @@
     "name": "Lembranças e ofertas",
     "summary": "Para todos os que vieram: batizados, comunhões, casamentos e ofertas de empresa.",
     "order": 100,
-    "published": true
+    "published": false
   }
 ]
