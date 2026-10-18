@@ -1,7 +1,7 @@
 {
   "name": "Caracol",
   "price": 120,
-  "published": true,
+  "published": false,
   "featured": false,
   "order": 40,
   "made": "to_order",

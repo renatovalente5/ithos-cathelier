@@ -1,7 +1,7 @@
 {
   "name": "Pinguim",
   "price": 130,
-  "published": true,
+  "published": false,
   "featured": false,
   "order": 130,
   "made": "to_order",

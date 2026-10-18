@@ -1,7 +1,7 @@
 {
   "name": "Dinossauro",
   "price": 135,
-  "published": true,
+  "published": false,
   "featured": false,
   "order": 240,
   "made": "to_order",
