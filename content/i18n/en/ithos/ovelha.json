@@ -1,0 +1,42 @@
+{
+  "name": {
+    "t": "Sheep",
+    "h": "75b8c1985839"
+  },
+  "summary": {
+    "t": "Sheep lamp",
+    "h": "784362f8f7df"
+  },
+  "text": {
+    "t": "The ithos®️ wooden children's lamp, featuring the delicate silhouette of a little sheep, combines timeless design, cosy light, and the charm of small details. Its warm white LED lighting creates a soft and comforting atmosphere, ideal for accompanying moments of reading, tranquillity, and snuggliness before sleep, as well as providing the perfect companion for a protected night for the little ones.\n\nDuring the day, it serves as a decorative piece that adds personality and tenderness to a child's room. With careful finishes and hand-painted details, it integrates harmoniously into any setting, with soft woods and neutral tones.\nCreated to make rest times even sweeter and more special.",
+    "h": "532254305914"
+  },
+  "options.power.name": {
+    "t": "Power supply",
+    "h": "0853883db432"
+  },
+  "options.power.help": {
+    "t": "Batteries are included. The cable version comes with a remote control: on, off, dimming, auto-off, and a slow pulsing light effect.",
+    "h": "cebedb001d9f"
+  },
+  "options.power.values.batteries.name": {
+    "t": "2 AA batteries (3 V)",
+    "h": "cbc7c37b342d"
+  },
+  "options.power.values.mains.name": {
+    "t": "Power cable with remote control",
+    "h": "f8e28d7f7f6c"
+  },
+  "options.power.values.mains.note": {
+    "t": "Out of stock for now",
+    "h": "5b693adaa590"
+  },
+  "options.engraving.name": {
+    "t": "Personalisation / Laser engraving",
+    "h": "75b52425e8e9"
+  },
+  "options.engraving.help": {
+    "t": "A name, a date, or a short phrase, engraved into the wood. Leave blank if you prefer no engraving.",
+    "h": "e202effc7193"
+  }
+}
