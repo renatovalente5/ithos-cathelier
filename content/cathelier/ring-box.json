@@ -1,7 +1,7 @@
 {
   "name": "Caixa para alianças",
   "price": 34,
-  "published": true,
+  "published": false,
   "featured": false,
   "order": 420,
   "made": "to_order",
