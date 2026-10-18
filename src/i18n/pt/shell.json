@@ -11,7 +11,7 @@
   "custoChamada": "(Chamada para a rede móvel nacional)",
   "saltar": "Saltar para o conteúdo",
   "topo": "Voltar ao topo da página",
-  "portesGratis": "Portes grátis em encomendas acima de {n} €",
+  "portesGratis": "Portes grátis em encomendas a partir de {n} €",
   "abrirMenu": "Abrir o menu",
   "menu": "Menu",
   "inicioDe": "{marca} — início",
@@ -48,5 +48,8 @@
   "partilha.cathelier": "O logótipo da cathelier sobre fundo creme, entre duas peças de madeira cortadas a laser.",
   "partilha.ithos-cathelier": "Os logótipos da ithos e da cathelier, entre um candeeiro de presença em madeira e uma peça cortada a laser.",
   "partilha.candeeiro": "O logótipo da ithos ao lado de uma fotografia do candeeiro {nome}.",
-  "partilha.peca": "O logótipo da cathelier ao lado de uma fotografia da peça {nome}."
+  "partilha.peca": "O logótipo da cathelier ao lado de uma fotografia da peça {nome}.",
+  "avisoCampanha.titulo": "Envio gratuito",
+  "avisoCampanha.continuar": "Continuar a ver a loja",
+  "avisoCampanha.fechar": "Fechar"
 }

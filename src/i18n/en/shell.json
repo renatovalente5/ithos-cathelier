@@ -44,10 +44,7 @@
     "t": "Back to the top of the page",
     "h": "350be986fb20"
   },
-  "portesGratis": {
-    "t": "Free shipping on orders over €{n}",
-    "h": "0d9c737ed2f9"
-  },
+  "portesGratis": "Free shipping on orders from €{n}",
   "abrirMenu": {
     "t": "Open the menu",
     "h": "3723e68815c2"
@@ -195,5 +192,8 @@
   "partilha.peca": {
     "t": "The cathelier logo beside a photograph of the {nome} piece.",
     "h": "52aaab881129"
-  }
+  },
+  "avisoCampanha.titulo": "Free shipping",
+  "avisoCampanha.continuar": "Keep browsing",
+  "avisoCampanha.fechar": "Close"
 }

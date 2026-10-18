@@ -170,7 +170,7 @@ export function etiquetasDaImagem(c) {
 export function page(o) {
   const {
     brand = 'ithos', title, description, path, body,
-    site, identity, schema = [], counts = {}, shipping = null, shop = null, asset = {},
+    site, identity, schema = [], counts = {}, shipping = null, shop = null, asset = {}, campanhaFotos = {},
     /* O CARTÃO DE PARTILHA (og:image), que é o que o WhatsApp mostra.
        `cartoes` são os três cartões das marcas, medidos pelo gerador
        (src/build.mjs, cartoes()); `partilha` escolhe um deles pelo nome --
@@ -259,8 +259,7 @@ ${(() => {
 <body class="${esc(bodyClass)}" id="top">
 <a class="skip" href="#main">${esc(t('shell.saltar'))}</a>
 
-${announcement({ brand, shipping })}
-${header({ brand, path, site, canonicalPath })}
+${header({ brand, path, site, canonicalPath, anuncio: announcement({ brand, shipping }) })}
 ${crumbs ? breadcrumbs(crumbs, brand) : ''}
 
 <main id="main">
@@ -271,6 +270,7 @@ ${drawer({ brand, identity, counts, site, canonicalPath })}
 ${footer({ brand, identity })}
 
 <a class="to-top" href="#top" hidden aria-label="${esc(t('shell.topo'))}">${icon('arrowUp', 22)}</a>
+${avisoCampanha({ brand, shipping, foto: campanhaFotos[brand] })}
 
 <!-- There is no site-wide cookie notice, and that is a decision, not an
      omission. This site sets no analytics and no advertising cookies, the
@@ -303,7 +303,30 @@ function announcement({ brand, shipping }) {
   if (brand !== 'cathelier') return '';
   const c = shipping?.campaign;
   if (!c?.active || !(c.freeOver > 0)) return '';
-  return `<p class="announce">${esc(t('shell.portesGratis', { n: Number(c.freeOver).toFixed(0) }))}</p>`;
+  return `<p class="announce" data-de="${esc(c.from || '')}" data-ate="${esc(c.to || '')}">${esc(t('shell.portesGratis', { n: Number(c.freeOver).toFixed(0) }))}</p>`;
+}
+
+/* A JANELA DA CAMPANHA (a dona, 18 out 2026: a da roomgaga, mas com os portes
+   grátis). Aparece aos 10 segundos de visita, uma vez por visita -- o shop.js
+   conta o tempo e as datas. O que ela promete sai dos MESMOS números que o
+   carrinho e o Worker cobram (shipping.json, campaign): o título é da dona
+   («Envio gratuito», editável no painel), a condição não -- «a partir de 30 €»
+   escreve-se a partir do freeOver, para a janela nunca prometer mais do que a
+   caixa cobra. Sem campanha ligada, ou com a janela desligada, não há janela. */
+function avisoCampanha({ brand, shipping, foto }) {
+  const c = shipping?.campaign;
+  if (!c?.active || !(c.freeOver > 0) || c.popup === false) return '';
+  const chave = [c.freeOver, c.from || '', c.to || '', c.title || ''].join('|');
+  return `<dialog class="aviso-campanha" id="aviso-campanha" aria-labelledby="aviso-campanha-titulo"
+  data-de="${esc(c.from || '')}" data-ate="${esc(c.to || '')}" data-chave="${esc(chave)}">
+  <form method="dialog"><button class="aviso-campanha__fechar" value="fechar" aria-label="${esc(t('shell.avisoCampanha.fechar'))}">${icon('close', 20)}</button></form>
+  ${foto ? `<div class="aviso-campanha__foto"><img src="${esc(foto)}" alt="" width="960" height="540" loading="lazy" decoding="async"></div>` : ''}
+  <div class="aviso-campanha__texto">
+    <h2 id="aviso-campanha-titulo">${esc(c.title || t('shell.avisoCampanha.titulo'))}</h2>
+    <p>${esc(t('shell.portesGratis', { n: Number(c.freeOver).toFixed(0) }))}</p>
+    <form method="dialog"><button class="aviso-campanha__ok" value="ok">${esc(t('shell.avisoCampanha.continuar'))}</button></form>
+  </div>
+</dialog>`;
 }
 
 /* O SELETOR DE LÍNGUA: a MESMA página nas outras línguas. As moradas vão
@@ -317,7 +340,7 @@ function seletorDeLingua({ site, canonicalPath, classe }) {
     : `<a href="${esc(`${site}${morada(canonicalPath, l)}`)}" hreflang="${LOCALE[l]}" lang="${LOCALE[l]}" title="${esc(NOMES[l])}">${l.toUpperCase()}</a>`)).join('')}</nav>`;
 }
 
-function header({ brand, site, canonicalPath }) {
+function header({ brand, site, canonicalPath, anuncio = '' }) {
   const mark = MARK[brand];
   const home = brand === 'cathelier' ? '/cathelier/' : '/';
   const sibling = SIBLING[brand];
@@ -345,8 +368,12 @@ function header({ brand, site, canonicalPath }) {
    * point the two drew on top of each other — the owner photographed "THE
    * WORKSHOP" printed across the cathelier wordmark. A grid column cannot do
    * that: the logo has a track of its own and nothing else can enter it. */
+  /* A LINHA DA CAMPANHA VAI DENTRO DA BARRA, como uma faixa por cima dela. Antes
+     da barra, no fluxo, ficava tapada: a barra é fixa no topo, e nas páginas
+     com capa o corpo não lhe guarda espaço (a capa passa por baixo dela). Viu-se
+     a 18 out 2026, na primeira vez que houve uma campanha ligada. */
   return `<header class="head" data-shrunk="no">
-  <div class="shell head__row">
+  ${anuncio}<div class="shell head__row">
     <div class="head__left">
       <button class="icon-btn open-menu" type="button" aria-expanded="false" aria-controls="menu"
               aria-label="${esc(t('shell.abrirMenu'))}">${icon('menu', 24)}<span class="open-menu__word">${esc(t('shell.menu'))}</span></button>

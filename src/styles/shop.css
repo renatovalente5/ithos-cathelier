@@ -125,7 +125,7 @@
   /* The bar is standing on the top of this box, so the words are centred in
      what is left BELOW it rather than in the box -- otherwise the headline
      sits visibly high on every screen. */
-  padding-block-start: calc(var(--head-h) + clamp(1rem, 4vw, 3rem));
+  padding-block-start: calc(var(--head-h) + var(--anuncio-h, 0px) + clamp(1rem, 4vw, 3rem));
 }
 .cover__block {
   display: grid;
@@ -254,6 +254,21 @@
    is right: shrinking is a state of the bar, and the cover never sees it
    because by the time the bar has shrunk the cover is off the screen. */
 html { --head-h: 84px; }
+/* A faixa da campanha dentro da barra (shell.mjs, header): uma linha de altura
+   fixa, para o espaço que se guarda por baixo da barra ser uma conta e não uma
+   medição. Recolhe-se quando a barra encolhe ao descer. */
+html:has(.head .announce) { --anuncio-h: 34px; }
+.head .announce {
+  box-sizing: border-box; height: var(--anuncio-h); margin: 0; padding: 0 1rem; overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+  white-space: nowrap; text-overflow: ellipsis; font-size: 13px; line-height: 1;
+}
+/* Recolher é encolher a barra: só para quem não pediu menos movimento (a
+   guarda das barras mede isto); para os outros a faixa fica sempre. */
+@media (prefers-reduced-motion: no-preference) {
+  .head[data-anim='yes'] .announce { transition: height var(--head-move) var(--head-ease); }
+  .head[data-shrunk='yes'] .announce { height: 0; }
+}
 
 /* A barra já não ocupa espaço, por isso o espaço dela é devolvido aqui -- e a
    partir de --head-h, que é a altura EM REPOUSO. Ligá-lo à altura encolhida
@@ -261,7 +276,7 @@ html { --head-h: 84px; }
    defeito que sair do fluxo veio evitar.
    Nas duas páginas com capa não se devolve nada: aí é a capa que passa por
    baixo da barra, de propósito. */
-body { padding-block-start: var(--head-h); }
+body { padding-block-start: calc(var(--head-h) + var(--anuncio-h, 0px)); }
 html[data-cover='yes'] body { padding-block-start: 0; }
 
 /* A BARRA DEPOIS DE DESCER: VIDRO FOSCO, NÃO UM BLOCO BRANCO.
@@ -1711,3 +1726,39 @@ html[data-js='yes'] .product__lead[data-lead]:not([data-lead-ready]) { visibilit
     text-transform: uppercase; color: var(--muted); margin-block-end: .15rem; }
 }
 .rv-aviso { margin: 0; padding: .7rem var(--gutter); background: var(--frame-bg); border-block-end: 1px solid var(--line); text-align: center; font-size: .9rem; color: var(--ink); }
+
+/* --- a janela da campanha (src/lib/shell.mjs, avisoCampanha) ---------------
+   A da roomgaga, que a dona mostrou: a fotografia em cima, a frase num painel
+   da cor da marca por baixo, e o X por cima da fotografia. As cores saem das
+   variáveis de cada marca (o terracota da ithos com branco; o castanho da
+   cathelier com creme), e o padding é zero para um clique fora -- no fundo
+   escuro -- ser um clique no próprio <dialog>, que o shop.js fecha. */
+.aviso-campanha {
+  /* margin: auto -- o reset do site põe margin: 0 em tudo, e era isso que
+     centra um <dialog> modal: sem ele, a janela ficava no canto de cima. */
+  margin: auto; padding: 0; border: 0; width: min(25rem, calc(100vw - 2rem)); max-height: calc(100dvh - 2rem);
+  overflow: auto; border-radius: calc(var(--radius) + 6px); background: var(--accent); color: var(--accent-ink);
+  box-shadow: 0 24px 60px rgb(0 0 0 / .35);
+}
+.aviso-campanha::backdrop { background: rgb(16 10 7 / .55); }
+.aviso-campanha form { margin: 0; }
+.aviso-campanha__fechar {
+  position: absolute; top: .6rem; right: .6rem; z-index: 1; width: 44px; height: 44px; display: grid; place-items: center;
+  border: 0; border-radius: 999px; background: rgb(255 255 255 / .92); color: #212121; cursor: pointer;
+}
+.aviso-campanha__foto { aspect-ratio: 16 / 10; overflow: hidden; background: var(--frame-bg); }
+.aviso-campanha__foto img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.aviso-campanha__texto { display: grid; gap: .75rem; padding: 1.6rem 1.5rem 1.5rem; text-align: center; }
+.aviso-campanha__texto h2 { margin: 0; font-family: var(--font-display); font-weight: 500; font-size: clamp(1.6rem, 6vw, 2rem); line-height: 1.15; color: inherit; text-wrap: balance; }
+.aviso-campanha__texto p { margin: 0; font-size: 1.05rem; line-height: 1.45; text-wrap: balance; }
+.aviso-campanha__ok {
+  margin-top: .35rem; min-height: 44px; padding: .65rem 1.4rem; border: 0; border-radius: var(--pill, 999px);
+  background: var(--accent-ink); color: var(--accent); font: 600 .95rem/1.2 var(--font-body); cursor: pointer;
+}
+.aviso-campanha__fechar:focus-visible, .aviso-campanha__ok:focus-visible { outline: 3px solid var(--accent-ink); outline-offset: 3px; }
+@media (prefers-reduced-motion: no-preference) {
+  .aviso-campanha[open] { animation: aviso-campanha-entra .28s ease-out; }
+  .aviso-campanha[open]::backdrop { animation: aviso-campanha-fundo .28s ease-out; }
+}
+@keyframes aviso-campanha-entra { from { opacity: 0; transform: translateY(12px) scale(.98); } }
+@keyframes aviso-campanha-fundo { from { opacity: 0; } }

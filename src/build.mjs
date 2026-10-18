@@ -188,7 +188,15 @@ function prepararLingua(l) {
     ? visiveis(read('cathelier/_occasions.json'), pieces)
     : [];
   counts = { lamps: lamps.length, pieces: pieces.length, occasions: occasions.length };
-  shellArgs = { site: SITE, identity, counts, preview: PREVIEW, shipping, shop, asset: ASSET, cartoes: CARTOES };
+  /* A FOTOGRAFIA DA JANELA DA CAMPANHA: a imagem parada larga da capa de cada
+     marca (o primeiro fotograma do filme), a 960 -- ou a maior que houver. */
+  const campanhaFotos = Object.fromEntries(['ithos', 'cathelier'].map((m) => {
+    const stem = covers?.[m]?.film ? `${covers[m].film}-still-wide` : m;
+    const ws = haveWidths(stem);
+    const w = ws.includes(960) ? 960 : ws.at(-1);
+    return [m, w ? `/media/covers/${stem}-${w}.webp` : null];
+  }));
+  shellArgs = { site: SITE, identity, counts, preview: PREVIEW, shipping, shop, asset: ASSET, cartoes: CARTOES, campanhaFotos };
   /* As peças vão para os marcadores por causa da página de cuidados da
      cathelier, que lista os avisos de cada uma (na língua do passo). */
   MARKERS = pages.markers({ identity, shop, shipping, pieces });

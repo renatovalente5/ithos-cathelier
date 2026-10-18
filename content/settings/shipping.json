@@ -84,11 +84,12 @@
     }
   ],
   "campaign": {
-    "active": false,
-    "title": "",
-    "freeOver": 0,
+    "active": true,
+    "title": "Envio gratuito",
+    "freeOver": 30,
     "countries": [],
     "from": "",
-    "to": ""
+    "to": "",
+    "popup": true
   }
 }

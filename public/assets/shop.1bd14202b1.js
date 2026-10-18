@@ -1588,7 +1588,7 @@ async function basketPage() {
     const c = s.campaign;
     // `freeOver > 0`, as the Worker does: a campaign switched on with no
     // threshold said "free" here and charged shipping there.
-    if (c?.active && c.freeOver > 0 && goods >= c.freeOver && (!c.countries.length || c.countries.includes(country))) return 0;
+    if (c?.active && c.freeOver > 0 && dentroDasDatas(c.from, c.to) && goods >= c.freeOver && (!c.countries.length || c.countries.includes(country))) return 0;
     return zone.price;
   }
 
@@ -2473,3 +2473,63 @@ async function previewLock() {
     b.after(note);
   }
 }
+
+/* --- a campanha: as datas e a janela ----------------------------------------
+ * AS DATAS DA CAMPANHA contam no dia de Lisboa, aqui (o carrinho, a linha de
+ * cima, a janela) e no Worker (o que se cobra) -- com a mesma conta, para o
+ * carrinho nunca mostrar portes grátis que a caixa depois cobra.
+ *
+ * A JANELA (a dona, 18 out 2026): aparece quando a pessoa já passou 10
+ * segundos no site -- somados de página em página, e só com o separador à
+ * vista --, uma vez por visita (sessionStorage), e nunca no pagamento nem por
+ * cima do menu aberto. Fecha no X, no botão, com Esc ou clicando fora. Uma
+ * campanha diferente (outro valor, outras datas, outro título) volta a
+ * aparecer, porque a chave é ela. Sem sessionStorage (navegação privada em
+ * alguns browsers), aparece uma vez por página -- nunca rebenta. */
+function hojeEmLisboa() {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Lisbon', year: 'numeric', month: '2-digit', day: '2-digit' }).format(new Date());
+}
+function dentroDasDatas(de, ate) {
+  const h = hojeEmLisboa();
+  return (!de || h >= de) && (!ate || h <= ate);
+}
+document.addEventListener('DOMContentLoaded', () => {
+  for (const linha of document.querySelectorAll('.announce[data-de], .announce[data-ate]')) {
+    if (!dentroDasDatas(linha.dataset.de, linha.dataset.ate)) linha.remove();
+  }
+  const d = document.getElementById('aviso-campanha');
+  if (!d || typeof d.showModal !== 'function') return;
+  /* O Chrome devolve o `open` de um <dialog> num recarregar (ver o menu, mais
+     acima): aberta assim, a janela não era modal e o showModal() rebentava. */
+  if (d.open) d.close();
+  if (/\/(pay|thank-you|order-cancelled)\//.test(location.pathname)) return;
+  if (!dentroDasDatas(d.dataset.de, d.dataset.ate)) return;
+  const chave = `aviso-campanha:${d.dataset.chave}`;
+  const ler = () => { try { return sessionStorage.getItem(chave); } catch { return null; } };
+  const escrever = (v) => { try { sessionStorage.setItem(chave, v); } catch { /* sem memória da visita */ } };
+  if (ler() === 'visto') return;
+  const ALVO = 10000;
+  let gasto = Number(ler()) || 0;
+  let desde = null; let relogio = null;
+  const contar = () => { if (desde !== null) { gasto += performance.now() - desde; desde = null; } escrever(String(Math.round(gasto))); };
+  const mostrar = () => {
+    /* Com o menu (ou outra janela) aberto, espera mais um pouco. */
+    if (document.querySelector('dialog[open]')) { gasto = ALVO - 2000; desde = null; escrever(String(gasto)); agendar(); return; }
+    contar();
+    escrever('visto');
+    d.showModal();
+  };
+  function agendar() {
+    clearTimeout(relogio);
+    if (document.visibilityState !== 'visible') return;
+    desde = performance.now();
+    relogio = setTimeout(mostrar, Math.max(0, ALVO - gasto));
+  }
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState === 'hidden') { clearTimeout(relogio); if (ler() !== 'visto') contar(); } else if (ler() !== 'visto') agendar();
+  });
+  window.addEventListener('pagehide', () => { if (ler() !== 'visto') contar(); });
+  /* Clicar fora (no fundo escuro) fecha: o alvo é o próprio <dialog>. */
+  d.addEventListener('click', (e) => { if (e.target === d) d.close(); });
+  agendar();
+});
