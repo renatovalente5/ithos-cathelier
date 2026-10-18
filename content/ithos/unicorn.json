@@ -1,6 +1,6 @@
 {
   "name": "Unicórnio",
-  "price": 130,
+  "price": 140,
   "published": true,
   "featured": true,
   "order": 230,
@@ -9,12 +9,12 @@
     "height": 30,
     "width": 30
   },
-  "summary": "Uma crina encaracolada em tons pastel e um chifre às riscas.",
-  "text": "Uma cabeça grande, a crina cortada em caracóis de vários tons pastel e um chifre às riscas. Os olhos estão fechados e as pestanas pintadas a preto.\n\nCada caracol da crina é montado camada a camada — uma das peças mais demoradas que fazemos.",
+  "summary": "Candeeiro unicórnio",
+  "text": "O candeeiro infantil em madeira da ithos®️, com a delicada silhueta de unicórnio, combina design intemporal, luz acolhedora e o encanto dos pequenos detalhes. A sua iluminação LED branca quente cria uma atmosfera suave e reconfortante, ideal para acompanhar os momentos de leitura, tranquilidade e aconchego antes de dormir.\n\nDurante o dia, assume o papel de uma peça decorativa que acrescenta personalidade e ternura ao quarto infantil. Com acabamentos cuidados e detalhes pintados à mão, integra-se harmoniosamente em ambientes de inspiração natural, madeiras suaves e tons neutros.\nCriado para tornar os momentos de descanso ainda mais doces e especiais.",
   "photoFolder": "unicornio",
   "photos": [
-    "01",
     "02",
+    "01",
     "03"
   ],
   "cover": "02",
