@@ -226,7 +226,7 @@ ${LINGUAS.length > 1 && !semMorada ? [...LINGUAS.map((l) => `<link rel="alternat
 
 <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml">
 <link rel="preload" as="font" type="font/woff2" crossorigin
-      href="/assets/fonts/${brand === 'ithos' ? 'montserrat-latin' : 'kleeone-400-latin'}.woff2">
+      href="/assets/fonts/montserrat-latin.woff2">
 <link rel="stylesheet" href="/assets/${asset.css || 'styles.css'}">
 ${extraHead}
 ${(() => {

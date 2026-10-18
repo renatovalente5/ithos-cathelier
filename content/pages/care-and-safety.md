@@ -27,7 +27,7 @@ escreva-nos.
 
 ## Pilhas
 
-As versões a pilhas levam duas pilhas AA, que não fornecemos. Tire-as se a peça
+As versões a pilhas levam duas pilhas AA, que já vêm incluídas. Tire-as se a peça
 for ficar meses sem uso — uma pilha que verte estraga a madeira por dentro.
 
 Mantenha as pilhas soltas longe de crianças pequenas.

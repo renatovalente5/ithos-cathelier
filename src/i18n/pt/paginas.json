@@ -11,7 +11,6 @@
   "iva": "Não é cobrado IVA: aplica-se o artigo 53.º do Código do IVA.",
   "dias.um": "{n} dia",
   "dias.varios": "{n} dias",
-
   "botao.verCandeeiros": "Ver os candeeiros",
   "botao.verPecas": "Ver as peças",
   "botao.voltarCandeeiros": "Voltar aos candeeiros",
@@ -19,7 +18,6 @@
   "botao.continuarAVer": "Continuar a ver",
   "botao.copiar": "Copiar",
   "botao.encomendarEPagar": "Encomendar e pagar",
-
   "contacto.titulo": "Contactos",
   "contacto.entrada": "Pergunte-nos o que quiser. Respondemos num dia, normalmente menos.",
   "contacto.whatsapp": "A forma mais rápida de falar connosco",
@@ -29,7 +27,6 @@
   "contacto.mapa": "Mostrar o mapa",
   "contacto.mapaAviso": "Isto carrega o Google Maps, o que quer dizer que o seu browser contacta a Google e que a Google pode guardar cookies. Mais nada neste site faz isso.",
   "contacto.perguntas": "Perguntas",
-
   "faq.prazo": "Quanto tempo demora?",
   "faq.prazo.resposta": "<p>Um candeeiro em stock sai da oficina em {dias}. Se estiver sem stock, pode encomendá-lo na mesma: fazemos o seu, e chega até si em {semanas}. A página de cada produto diz qual é o caso.</p> <p>As peças da cathelier são sempre feitas por encomenda — {semanas}, a contar do dia em que aprova o desenho. Se alguma peça da encomenda for feita por encomenda, segue tudo junto.</p>",
   "faq.nome": "Pode levar um nome?",
@@ -37,14 +34,13 @@
   "faq.seguranca": "É seguro no quarto de um bebé?",
   "faq.seguranca.resposta": "<p>São candeeiros de presença decorativos, não são brinquedos. São feitos em pinho maciço com tintas de base aquosa e todas as arestas são lixadas à mão, mas não são testados como brinquedos e não devem ser dados a uma criança pequena para brincar.</p> <p>Se for para o quarto de um bebé, mantenha o cabo longe do berço. <a href=\"/care-and-safety/\">Tudo sobre cuidados e segurança</a>.</p>",
   "faq.pilhas": "Pilhas ou corrente?",
-  "faq.pilhas.resposta": "<p>As duas, ao mesmo preço. A versão a pilhas leva duas pilhas AA, que não estão incluídas. A versão de ligar à corrente vem com um comando para baixar a luz, programar o temporizador e pô-la a pulsar.</p>",
+  "faq.pilhas.resposta": "<p>As duas, ao mesmo preço. A versão a pilhas leva duas pilhas AA, que já vêm incluídas. A versão de ligar à corrente vem com um comando para baixar a luz, programar o temporizador e pô-la a pulsar.</p>",
   "faq.portes": "Quanto custam os portes?",
   "faq.portes.resposta": "<p>Depende de onde estiver. <a href=\"/legal/shipping-and-returns/\">A tabela completa está aqui</a>.</p>",
   "faq.desistir": "Posso mudar de ideias?",
   "faq.desistir.resposta": "<p>Tem {dias} dias para mudar de ideias. Numa peça personalizada, pode desistir até começarmos a fazê-la; a partir daí, deixa de ter esses dias. <a href=\"/legal/cancellation/\">Como funciona</a>.</p>",
   "faq.quantidade": "Aceitam encomendas grandes?",
   "faq.quantidade.resposta": "<p>Sim — lembranças, marcadores de lugar, ofertas de empresa, troféus de clubes. <a href=\"/cathelier/quote/\">Peça um orçamento</a> e diga-nos mais ou menos quantas.</p>",
-
   "orcamento.titulo": "Pedir orçamento",
   "orcamento.entrada": "Para tudo o que é feito por medida, ou em quantidade — um topo de bolo com dois nomes, as placas de um casamento, as lembranças de um batizado, os troféus de uma época.",
   "orcamento.texto": "Diga-nos o que tem em mente e, se for mais do que uma peça, mais ou menos quantas. Respondemos com um preço e uma data. Não há formulários para preencher: basta uma mensagem.",
@@ -60,7 +56,6 @@
   "orcamento.passos.preco": "Respondemos com um preço e uma data.",
   "orcamento.passos.desenho": "Aprova um desenho. Nada é cortado antes disso.",
   "orcamento.passos.fazemos": "Fazemos a peça, e ela chega até si pronta a oferecer.",
-
   "cesto.titulo": "O seu cesto",
   "cesto.vazio": "Ainda não tem nada.",
   "cesto.total": "Total",
@@ -70,7 +65,6 @@
   "cesto.aPagar": "A pagar",
   "cesto.stockInsuficiente": "Não há stock suficiente para estas quantidades.",
   "cesto.ifthenpay": "Os pagamentos são tratados pela ifthenpay. Nunca vemos o seu cartão, o seu banco nem o PIN do seu MB WAY.",
-
   "entrega.titulo": "Para onde vai",
   "entrega.nome": "O seu nome",
   "entrega.email": "Email",
@@ -81,7 +75,6 @@
   "entrega.opcional": "opcional",
   "entrega.nif": "NIF",
   "entrega.nifNota": "opcional, para a fatura",
-
   "metodo.titulo": "Como paga",
   "metodo.mbway.nota": "Recebe o pedido no telemóvel e aceita-o lá. Demora um minuto.",
   "metodo.mbway.telemovel": "O seu número de telemóvel do MB WAY",
@@ -91,7 +84,6 @@
   "metodo.cartao.nota": "Visa ou Mastercard. Escreve o número numa página segura — nós nunca o vemos.",
   "metodo.google.nota": "Pague com o cartão da sua conta Google.",
   "metodo.apple.nota": "Pague com Touch ID ou Face ID no seu dispositivo Apple.",
-
   "pais.PT": "Portugal (continente)",
   "pais.PT-20": "Açores",
   "pais.PT-30": "Madeira",
@@ -124,20 +116,16 @@
   "pais.MT": "Malta",
   "pais.CY": "Chipre",
   "pais.NO": "Noruega",
-
   "naoEncontrada.titulo": "Não há nada aqui",
   "naoEncontrada.texto": "A página que procurava mudou de sítio ou nunca existiu.",
-
   "encomenda.referencia": "A sua encomenda tem a referência {ref}. Guarde-a: é por ela que nos entendemos se nos escrever.",
   "encomenda.confirmacao": "Vai receber uma confirmação por email, com a data em que pode contar com a encomenda. A oficina começa agora, e avisamos quando for enviada.",
   "encomenda.naoEncontrada": "Não encontrámos essa encomenda. Se acabou de pagar, espere um minuto e recarregue esta página.",
   "encomenda.escreva": "Se continuar assim, escreva-nos — nada será cobrado duas vezes.",
-
   "obrigado.titulo": "Obrigada",
   "obrigado.aVerificar": "A verificar o seu pagamento…",
   "obrigado.porPagar": "Ainda não recebemos o pagamento, e isso é normal se escolheu uma referência Multibanco — é válida durante {dias}. Nada é feito e nada é cobrado enquanto não a pagar.",
   "obrigado.quandoChegar": "Assim que o pagamento nos chegar, escrevemos-lhe e a oficina começa. Se acabou de pagar, espere um minuto e recarregue esta página.",
-
   "pagar.titulo": "Pagar a encomenda",
   "pagar.aPreparar": "A preparar o seu pagamento…",
   "pagar.mbway.titulo": "Abra a app MB WAY",
@@ -155,11 +143,9 @@
   "pagar.expirou.titulo": "O pedido expirou",
   "pagar.expirou.texto": "Nada foi cobrado. O seu cesto continua aqui, por isso pode encomendar outra vez — e se o MB WAY estiver a dar problemas, uma referência Multibanco funciona sempre.",
   "pagar.ifthenpay": "Os pagamentos são tratados pela {ifthenpay}, uma instituição de pagamento portuguesa. Nunca vemos o seu cartão, o seu banco nem o PIN do seu MB WAY.",
-
   "cancelada.titulo": "A encomenda não foi feita",
   "cancelada.entrada": "Saiu da página de pagamento, por isso não cobrámos nada e a encomenda não avançou.",
   "cancelada.texto": "Se recebeu uma referência Multibanco antes de sair, ela pode ainda ser válida — pagá-la confirma a encomenda. Caso contrário, o seu cesto continua aqui, se quiser retomá-lo.",
-
   "revenda.titulo": "Revendedores",
   "revenda.entrada": "Se o registámos como revendedor, entre aqui para ver o seu preço ao lado do preço de venda ao público em cada peça, e para comprar a esse preço.",
   "revenda.nif": "O seu NIF",
@@ -178,7 +164,6 @@
   "revenda.pvp": "PVP",
   "revenda.seuPreco": "O seu preço",
   "revenda.emStock": "Em stock",
-
   "garantia.ligacao": "Os seus direitos de garantia legal",
   "garantia.avisoAlt": "GARANTIA LEGAL. Proteção da garantia legal mínima de dois anos para os bens vendidos na União Europeia. Os consumidores podem invocar os seus direitos ao abrigo da garantia legal de conformidade, por exemplo, se os bens: não corresponderem à descrição; não funcionarem como previsto. Os vendedores são responsáveis por qualquer falta de conformidade que exista no momento em que os bens forem entregues e se manifeste no período de garantia legal. Os vendedores nessa situação estão obrigados a oferecer: reparação gratuita ou substituição gratuita; em alguns casos, redução do preço ou reembolso integral. Alguns países têm um período de garantia legal mais longo. Para os bens em segunda mão, pode aplicar-se um período mais curto, mas não inferior a um ano. Para mais informações sobre os seus direitos num determinado país, digitalize o código QR abaixo ou consulte o vendedor. europa.eu/youreurope/garantias. O que fazer se receber bens não conformes: 1. Contactar o vendedor o mais rapidamente possível para expor o problema; 2. Apresentar uma prova de compra, como um recibo, uma fatura ou um extrato bancário. Os vendedores e os produtores também podem oferecer garantias comerciais, que se aplicam independentemente da garantia legal. Por exemplo, pode ver este rótulo GARAN, que representa uma garantia comercial de durabilidade oferecida pelo produtor sem custos adicionais e cobrindo a totalidade do bem.",
   "garantia.avisoRegiao": "O aviso harmonizado da garantia legal, da União Europeia",
@@ -187,11 +172,8 @@
   "garantia.portal": "Os seus direitos em cada país da União Europeia, no portal A sua Europa: {ligacao}",
   "garantia.pdf": "Abrir o aviso em PDF (A4)",
   "garantia.deslizar": "No telemóvel, deslize o aviso para o lado para o ler inteiro, ou abra-o em PDF.",
-
   "aviso.personalizada": "Peças com nome, data ou frase são feitas só para si: pode desistir delas até começarmos a fazê-las; a partir daí, deixa de ter os {n} dias de livre resolução. A garantia legal mantém-se.",
-
   "fabricante.rotulo": "Fabricante",
-
   "retratacao.ligacao": "Retrate-se do contrato aqui",
   "retratacao.titulo": "A sua declaração de retratação",
   "retratacao.nome": "O seu nome",

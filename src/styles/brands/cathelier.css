@@ -52,9 +52,13 @@
   --frame-bg: #F7EFE6;
   --sibling-bg: #FFFFFF;
 
-  --font-body: 'Klee One', Georgia, serif;
-  --font-display: 'Grandstander', system-ui, sans-serif;
-  --size-body: 16px;
+  /* A LETRA É A DA ITHOS desde 18 out 2026 (a dona: «o tipo de letra do
+     cathelier preferia que fosse igual ao do ithos»). Era Klee One no texto e
+     Grandstander nos títulos, as da loja que ela tinha escolhido como modelo;
+     as notas sobre elas, por cima, ficam como história. */
+  --font-body: 'Montserrat', system-ui, sans-serif;
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --size-body: 14px;
 
   --radius: 14px;             /* that shop is round-cornered throughout */
   --pill: 999px;
@@ -67,20 +71,22 @@
 
 [data-brand='cathelier'] h1,
 [data-brand='cathelier'] h2,
-[data-brand='cathelier'] h3,
-[data-brand='cathelier'] .display {
-  font-family: var(--font-display);
-  font-weight: 100;
-  letter-spacing: .022em;
+[data-brand='cathelier'] h3 {
+  /* Os títulos como os da ithos: Montserrat a 600 (o serifado fica para os
+     momentos, .display). */
+  font-family: var(--font-body);
+  font-weight: 600;
+  letter-spacing: normal;
   /* No colour here, and that is the point. A brand rule with an attribute
      selector outranks `.hero__title`, so setting it painted the hero headline
      brown on brown: 1.08:1, which is invisible. Headings INHERIT, the body
      sets the colour, and a dark panel can therefore still turn its own text
      white. Measured, not looked at — it looked like a shadow. */
 }
-[data-brand='cathelier'] h1 { font-size: clamp(1.6rem, 1.1rem + 2.2vw, 2.5rem); }
-[data-brand='cathelier'] h2 { font-size: clamp(1.35rem, 1rem + 1.4vw, 1.9rem); }
-[data-brand='cathelier'] h3 { font-size: 1rem; font-weight: 300; }
+[data-brand='cathelier'] h1 { font-size: clamp(1.55rem, 1.1rem + 1.6vw, 2.15rem); }
+[data-brand='cathelier'] h2 { font-size: clamp(1.25rem, 1.05rem + .7vw, 1.375rem); }
+[data-brand='cathelier'] h3 { font-size: 1rem; font-weight: 500; }
+[data-brand='cathelier'] .display { font-family: var(--font-display); font-weight: 300; }
 
 [data-brand='cathelier'] .eyebrow {
   font-family: var(--font-body);
@@ -283,8 +289,8 @@
    a paragraph heading; the point of a hairline face is that it can be large
    without shouting. */
 [data-brand='cathelier'] .product__detail h1 {
-  font-size: clamp(1.9rem, 1.2rem + 2.6vw, 3.1rem);
-  font-weight: 100; line-height: 1.15;
+  font-size: clamp(1.5rem, 1.1rem + 1.7vw, 2.125rem);
+  font-weight: 500; line-height: 1.2;
 }
 [data-brand='cathelier'] .product__price { font-family: var(--font-body); font-size: 21px; font-weight: 400; }
 [data-brand='cathelier'] .field > label { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; font-weight: 400; }

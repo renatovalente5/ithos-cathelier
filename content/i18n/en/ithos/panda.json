@@ -16,8 +16,8 @@
     "h": "0853883db432"
   },
   "options.power.help": {
-    "t": "Batteries are not included. The cable version comes with a remote control: on, off, dimmable, auto-off, and a slow pulsing light effect.",
-    "h": "57676081542e"
+    "t": "Batteries are included. The corded version comes with a remote: on, off, dimming, an auto-off timer and a slow pulsing light.",
+    "h": "cebedb001d9f"
   },
   "options.power.values.batteries.name": {
     "t": "2 AA batteries (3 V)",

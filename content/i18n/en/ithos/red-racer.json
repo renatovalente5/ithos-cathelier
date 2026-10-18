@@ -33,8 +33,8 @@
     "h": "0853883db432"
   },
   "options.power.help": {
-    "t": "Batteries are not included. The mains version comes with a remote: on, off, dimmer, timer and a slow pulse.",
-    "h": "57676081542e"
+    "t": "Batteries are included. The corded version comes with a remote: on, off, dimming, an auto-off timer and a slow pulsing light.",
+    "h": "cebedb001d9f"
   },
   "options.power.values.batteries.name": {
     "t": "2 x AA batteries (3V)",

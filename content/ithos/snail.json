@@ -24,7 +24,7 @@
       "type": "choice",
       "required": true,
       "personalises": false,
-      "help": "As pilhas não estão incluídas. A versão com cabo traz um comando: liga, desliga, regula a intensidade, desliga sozinha e faz a luz pulsar devagar.",
+      "help": "As pilhas estão incluídas. A versão com cabo traz um comando: liga, desliga, regula a intensidade, desliga sozinha e faz a luz pulsar devagar.",
       "values": [
         {
           "id": "batteries",
