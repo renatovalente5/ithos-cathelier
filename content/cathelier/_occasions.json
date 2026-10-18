@@ -11,7 +11,7 @@
     "name": "Páscoa",
     "summary": "Peças pequenas para a mesa da Páscoa e para os cestos, com um nome em cada uma.",
     "order": 20,
-    "published": true
+    "published": false
   },
   {
     "slug": "special-days",
@@ -25,7 +25,7 @@
     "name": "Ímanes e porta-chaves",
     "summary": "Uma fotografia para o frigorífico, ou para as chaves.",
     "order": 40,
-    "published": true
+    "published": false
   },
   {
     "slug": "new-baby",
@@ -37,21 +37,21 @@
   {
     "slug": "names",
     "name": "Nomes",
-    "summary": "Um nome, ou uma inicial com o nome, para a parede, para a porta ou por cima da cama.",
+    "summary": "Peças personalizadas em madeira de pinho para pousar ou pendurar, com acabamento cuidado e atenção ao detalhe. Produzidas por medida com pormenores únicos. ",
     "order": 60,
     "published": true
   },
   {
     "slug": "hanging",
-    "name": "Peças para pendurar",
-    "summary": "Peças pequenas com um furo e uma fita, para pendurar em qualquer sítio.",
+    "name": "Pendentes",
+    "summary": "Peças personalizadas em contraplacado pendurar, com acabamento cuidado e atenção ao detalhe. Produzidas por medida com pormenores únicos e delicados. ",
     "order": 70,
     "published": true
   },
   {
     "slug": "wall-decor",
     "name": "Decoração de parede",
-    "summary": "Réguas de crescimento, árvores genealógicas e molduras: as peças que ficam anos na parede.",
+    "summary": "Peças personalizadas em contraplacado pendurar, com acabamento cuidado e atenção ao detalhe. Produzidas por medida com pormenores únicos e delicados. ",
     "order": 80,
     "published": true
   },
@@ -60,7 +60,7 @@
     "name": "Pedidos especiais",
     "summary": "Topos de bolo, placas, livros de honra, troféus — feitos por medida para o vosso dia. Ou conte-nos a sua ideia.",
     "order": 90,
-    "published": true
+    "published": false
   },
   {
     "slug": "keepsakes",
