@@ -1,7 +1,7 @@
 {
   "name": "Ovelha",
   "price": 130,
-  "published": false,
+  "published": true,
   "featured": false,
   "order": 300,
   "made": "to_order",
