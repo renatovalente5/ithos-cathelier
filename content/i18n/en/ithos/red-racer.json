@@ -1,15 +1,15 @@
 {
   "name": {
-    "t": "Red Racer",
-    "h": "0333dc15eec0"
+    "t": "Car",
+    "h": "05e5a38fbb0a"
   },
   "summary": {
-    "t": "A red racing car, with headlamps that come on.",
-    "h": "41fd4b50e421"
+    "t": "Car lamp",
+    "h": "a8412b4d5028"
   },
   "text": {
-    "t": "A classic racing car, painted red, with the number 2 on the side and wheels in wood. The headlamps and the wheels light up — that is where the glow comes from.\n\nLong and low, it sits well on a shelf or a windowsill.",
-    "h": "a449793dc77a"
+    "t": "The ithos®️ wooden children's lamp, with its delicate car silhouette, combines timeless design, cosy light and the charm of small details. Its warm white LED lighting creates a soft and comforting atmosphere, ideal for accompanying moments of reading, tranquillity and cosiness before sleep.\n\nDuring the day, it serves as a decorative piece that adds personality and tenderness to the children's bedroom. With careful finishes and hand-painted details, it integrates harmoniously into environments inspired by nature, soft woods and neutral tones.\nCreated to make rest moments even sweeter and more special.",
+    "h": "9372e9b461fe"
   },
   "options.power.name": {
     "t": "Power",
