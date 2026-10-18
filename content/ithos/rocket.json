@@ -21,6 +21,34 @@
   "colours": [],
   "options": [
     {
+      "id": "variant",
+      "name": "Cor",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "help": "",
+      "values": [
+        {
+          "id": "1",
+          "name": "laranja",
+          "extra": 0,
+          "colour": "#FD9608"
+        },
+        {
+          "id": "2",
+          "name": "verde",
+          "extra": 0,
+          "colour": "#17C4A7"
+        },
+        {
+          "id": "3",
+          "name": "amarelo",
+          "extra": 0,
+          "colour": "#DDE84A"
+        }
+      ]
+    },
+    {
       "id": "power",
       "name": "Alimentação",
       "type": "choice",
