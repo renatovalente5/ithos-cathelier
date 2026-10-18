@@ -1,0 +1,61 @@
+{
+  "name": "Preguiça",
+  "price": 130,
+  "published": false,
+  "featured": false,
+  "order": 310,
+  "made": "to_order",
+  "size": {},
+  "summary": "Candeeiro preguiça",
+  "text": "",
+  "photoFolder": "preguica",
+  "photos": [
+    "fmvebrqqo2k",
+    "fmvebsca2tu"
+  ],
+  "cover": "fmvebrqqo2k",
+  "colours": [],
+  "options": [
+    {
+      "id": "power",
+      "name": "Alimentação",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "help": "As pilhas estão incluídas. A versão com cabo traz um comando: liga, desliga, regula a intensidade, desliga sozinha e faz a luz pulsar devagar.",
+      "values": [
+        {
+          "id": "batteries",
+          "name": "2 pilhas AA (3 V)",
+          "extra": 0
+        },
+        {
+          "id": "mains",
+          "name": "Cabo de corrente com comando",
+          "extra": 0,
+          "available": false,
+          "note": "Esgotado por agora"
+        }
+      ]
+    },
+    {
+      "id": "engraving",
+      "name": "Personalização / Gravação a laser",
+      "type": "text",
+      "required": false,
+      "personalises": true,
+      "max": 40,
+      "extra": 0,
+      "help": "Um nome, uma data ou uma frase curta, gravados na madeira. Deixe vazio se preferir sem gravação."
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}
