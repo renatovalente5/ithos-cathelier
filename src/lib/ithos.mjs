@@ -10,6 +10,7 @@ import { cover } from './cover.mjs';
 import { prazos } from './prazos.mjs';
 import { t, tn } from './i18n.mjs';
 import { fabricante } from './pages.mjs';
+import { fotosDaDona } from './oficina.mjs';
 
 /* ===========================================================================
    ithos — the pages, in the order the model shop puts things.
@@ -55,6 +56,11 @@ export function fromPrice(p) {
   return { low: p.price + cheapest, high: p.price + dearest };
 }
 
+/* A COR DE UM QUADRADINHO, só se for mesmo uma cor (#rrggbb). Vem do
+   conteúdo, e o conteúdo escreve-o o painel: o esc() impedia que saísse do
+   atributo, mas não que o style levasse outra coisa além de uma cor. */
+const corDoQuadrado = (c) => (typeof c === 'string' && /^#[0-9a-f]{6}$/i.test(c) ? c : '');
+
 export function card(p, { eager = false } = {}) {
   const { low, high } = fromPrice(p);
   const range = high > low;
@@ -71,10 +77,10 @@ export function card(p, { eager = false } = {}) {
      the square is drawn only when it is filled in, and a variant that is a
      size simply has no row. */
   const swatches = (p.options || []).find((o) => o.id === 'variant');
-  const coloured = (swatches?.values || []).filter((v) => v.colour);
+  const coloured = (swatches?.values || []).filter((v) => corDoQuadrado(v.colour));
   const dots = coloured.length
     ? `<div class="card__swatches" aria-hidden="true">${coloured.slice(0, 6)
-        .map((v) => `<span class="swatch" style="background:${esc(v.colour)}" title="${esc(v.name)}"></span>`).join('')}</div>`
+        .map((v) => `<span class="swatch" style="background:${corDoQuadrado(v.colour)}" title="${esc(v.name)}"></span>`).join('')}</div>`
     : '';
 
   /* The card carries EVERY photograph of the piece, not just the cover.
@@ -194,10 +200,9 @@ ${cover(coverText, 'ithos', coverArt)}
       <div class="frame maker__photo maker__photo--retrato">
         ${picture({
           /* O bloco é assinado «Cathia», e a fotografia é ela (com autorização,
-             outubro de 2026). Vive em photos/ithos/oficina, fora de qualquer
-             peça, e passa pelos mesmos cards.py e renditions.py. */
+             outubro de 2026). Qual é diz-o o painel: ver oficina.mjs. */
           dir: 'ithos/oficina',
-          name: '01',
+          name: fotosDaDona.inicio,
           alt: t('ithos.inicio.fotoOficina'),
           sizes: '(min-width: 56rem) 45vw, 100vw',
         })}
@@ -410,7 +415,7 @@ function optionField(o, diasDeResolucao) {
     return `<label class="choice${off ? ' choice--off' : ''}">
             <input type="radio" name="opt-${esc(o.id)}" value="${esc(v.id)}"
                    data-option="${esc(o.id)}"${v.id === chosen.id ? ' checked' : ''}${off ? ' disabled' : ''}>
-            <span>${esc(v.name)}${v.extra ? ` <em>+${money(v.extra)}</em>` : ''}${
+            ${corDoQuadrado(v.colour) ? `<span class="choice__cor" style="background:${corDoQuadrado(v.colour)}" aria-hidden="true"></span>` : ''}<span>${esc(v.name)}${v.extra ? ` <em>+${money(v.extra)}</em>` : ''}${
       off ? ` <em class="choice__off">${esc(v.note || t('ithos.opcao.indisponivel'))}</em>` : ''}</span>
           </label>`;
   }).join('\n          ')}

@@ -1029,6 +1029,13 @@ html[data-cover='yes'][data-scrolled='no'] .head .linguas a:hover { text-decorat
 .choice:has(input:focus-visible) { outline: 2px solid var(--accent); outline-offset: 2px; }
 .choice input { margin-block-start: .25rem; accent-color: var(--accent); }
 .choice em { font-style: normal; color: var(--accent); }
+/* O quadradinho de cor de um modelo (o Carro, o Foguetão): o mesmo do cartão
+   do catálogo, mais pequeno, ao lado do nome. O nome continua lá -- uma cor
+   sozinha não diz qual é a quem não a distingue. */
+.choice__cor {
+  display: inline-block; flex: none; width: 16px; height: 16px; margin-block-start: .15rem;
+  border: 1px solid var(--line); border-radius: var(--radius, 0);
+}
 
 .qty { display: flex; align-items: center; border: 1px solid var(--line); flex: none; }
 .qty__btn { width: 44px; height: 48px; display: grid; place-items: center; color: var(--muted); }

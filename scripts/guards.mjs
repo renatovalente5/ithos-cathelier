@@ -1308,6 +1308,46 @@ for (const [o, n] of esgotados) {
   }
 }
 
+/* --- as fotografias da dona ------------------------------------------------
+   content/settings/oficina.json diz quais são a do bloco «Olá» e a da página
+   Sobre (src/lib/oficina.mjs). O painel troca-as; esta guarda confere que o
+   ficheiro tem a forma que o Worker lê (photoFolder «oficina» e duas
+   fotografias) e que os dois originais existem -- sem eles, o CI não faz as
+   versões web e a página aponta para ficheiros que não há. Uma cor de
+   quadradinho (o `colour` de um modelo) tem de ser #rrggbb: o site deixa cair
+   outra coisa, e o quadradinho desaparecia sem ninguém saber porquê. */
+{
+  const f = join(CONTENT, 'settings', 'oficina.json');
+  let s = null;
+  try { s = JSON.parse(readFileSync(f, 'utf8')); } catch { die('content/settings/oficina.json falta ou não é JSON — diz quais são as fotografias da dona (src/lib/oficina.mjs)'); }
+  if (s) {
+    if (s.photoFolder !== 'oficina') die('content/settings/oficina.json: photoFolder tem de ser «oficina»');
+    if (!Array.isArray(s.photos) || s.photos.length !== 2) die('content/settings/oficina.json: photos tem de ter duas fotografias (a da página inicial e a da página Sobre)');
+    else {
+      for (const n of s.photos) {
+        if (!/^[A-Za-z0-9._-]{1,80}$/.test(String(n)) || !existsSync(join(ROOT, 'photos', 'ithos', 'oficina', `${n}.jpg`))) {
+          die(`content/settings/oficina.json: a fotografia «${n}» não está em photos/ithos/oficina/`);
+        }
+      }
+    }
+  }
+  for (const marca of ['ithos', 'cathelier']) {
+    const pasta = join(CONTENT, marca);
+    if (!existsSync(pasta)) continue;
+    for (const x of readdirSync(pasta).filter((y) => y.endsWith('.json') && !y.startsWith('_'))) {
+      let p;
+      try { p = JSON.parse(readFileSync(join(pasta, x), 'utf8')); } catch { continue; }
+      for (const o of p.options || []) {
+        for (const v of o.values || []) {
+          if (v.colour != null && v.colour !== '' && !/^#[0-9a-f]{6}$/i.test(String(v.colour))) {
+            die(`content/${marca}/${x}: a cor «${v.colour}» de «${v.name}» não é #rrggbb`);
+          }
+        }
+      }
+    }
+  }
+}
+
 /* --- report --------------------------------------------------------------- */
 for (const w of warnings) console.warn(`  warning: ${w}`);
 if (deaths.length) {
