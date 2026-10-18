@@ -4,12 +4,24 @@
     "h": "6ea7ee461a67"
   },
   "summary": {
-    "t": "A cloud with the name and everything about the day they arrived.",
-    "h": "291c1451b9ee"
+    "t": "A cloud with the name and everything about the day they arrived — alone or with pieces hanging below.",
+    "h": "52064c279b40"
   },
   "text": {
-    "t": "A cloud with the name and everything about the day they arrived.",
-    "h": "291c1451b9ee"
+    "t": "A cloud with the name and everything about the day they arrived — alone or with pieces hanging below.",
+    "h": "52064c279b40"
+  },
+  "options.model.name": {
+    "t": "Model",
+    "h": "a5ab3212dad1"
+  },
+  "options.model.values.cloud.name": {
+    "t": "Just the cloud",
+    "h": "24f4b5e6bd3c"
+  },
+  "options.model.values.mobile.name": {
+    "t": "With pieces hanging below",
+    "h": "47827ac8f7ba"
   },
   "options.name.name": {
     "t": "Name",
