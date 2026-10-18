@@ -2,7 +2,7 @@
   "name": "Ouriço",
   "price": 130,
   "published": true,
-  "featured": true,
+  "featured": false,
   "order": 30,
   "made": "to_order",
   "size": {
