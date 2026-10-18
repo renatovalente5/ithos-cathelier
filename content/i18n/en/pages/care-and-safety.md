@@ -1,4 +1,4 @@
-<!-- origem: 5e124480498b partes: ece0c79184c6 431615403d7d 0852c3991e85 5df13b1d4273 eab60861185f 5a507cf9eef1 dcbdb8e1f670 -->
+<!-- origem: 24a618d9a78e partes: ece0c79184c6 431615403d7d 0852c3991e85 5df13b1d4273 574e3c73640d 5a507cf9eef1 dcbdb8e1f670 -->
 # Care and safety
 
 ## These are lights, not toys
@@ -27,9 +27,7 @@ Decree-Law No 84/2021). If it needs repairing, write to us.
 
 ## Batteries
 
-The battery versions take two AA cells, which we do not supply. Take them out if
-the piece is going to sit unused for months — a leaking cell will ruin the wood
-from the inside.
+The battery-operated versions require two AA batteries, which are already included. Please remove them if the piece will be left unused for months — a leaking battery can damage the wood from the inside.
 
 Keep loose batteries away from small children.
 
