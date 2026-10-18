@@ -11,11 +11,12 @@
   ],
   "summary": "Com o nome e a data, para todos os que vieram.",
   "text": "Com o nome e a data, para todos os que vieram.",
-  "photoFolder": "christening-favour",
+  "photoFolder": "pool",
   "photos": [
-    "01"
+    "03",
+    "02"
   ],
-  "cover": "01",
+  "cover": "03",
   "options": [
     {
       "id": "names",

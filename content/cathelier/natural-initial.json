@@ -1,0 +1,43 @@
+{
+  "name": "Inicial em madeira natural com nome em acrílico",
+  "price": 35,
+  "published": true,
+  "featured": false,
+  "order": 225,
+  "made": "to_order",
+  "occasion": "names",
+  "alsoIn": [
+    "wall-decor"
+  ],
+  "summary": "A inicial em pinho natural, com o nome em acrílico dourado por cima.",
+  "text": "A inicial em pinho natural, com o nome em acrílico dourado por cima.",
+  "photoFolder": "natural-initial",
+  "photos": [
+    "01",
+    "02",
+    "03",
+    "04"
+  ],
+  "cover": "01",
+  "options": [
+    {
+      "id": "name",
+      "name": "Nome",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 20,
+      "extra": 0,
+      "example": "Lia"
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}
