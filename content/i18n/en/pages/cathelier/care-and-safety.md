@@ -1,11 +1,11 @@
-<!-- origem: 6c96d30989fe partes: 76a05b7a7080 d83a61160239 48079599509c 11c9bba4dcfb 77e72bd76ea0 5df13b1d4273 1efb82bd9714 -->
+<!-- origem: 3e442350b837 partes: 26a1af2313c0 788eb985e8d2 98fde65e2c59 11c9bba4dcfb 77e72bd76ea0 5df13b1d4273 1efb82bd9714 -->
 # Care and safety
 
-The pieces from cathelier are designed, laser-cut and engraved in a small workshop in Castelo Branco, and finished by hand. They require little to stay as they arrived: a dry cloth and a place away from water and heat.
+The pieces from cathelier are designed, laser-cut and engraved in a small workshop in Castelo Branco, and finished by hand. They do not require maintenance; however, they do need some care, such as cleaning them with a dry cloth, and they should be kept in a place without high humidity or excessive heat.
 
-## These are decorative pieces
+## They are decorative pieces
 
-A piece from cathelier is meant to be gifted, hung, placed, or kept. It is not a toy, and should not be given to a small child to play with.
+A piece from cathelier is meant to be given as a gift, hung, placed, or kept. It is not a toy, and should not be given to a small child to play with.
 
 These warnings appear on the page of all pieces:
 
@@ -13,7 +13,7 @@ These warnings appear on the page of all pieces:
 
 ## Safety warnings for each piece
 
-Some pieces have a specific risk unique to them — a magnet, a candle, glass, a hanging string — and come with their own warning. They are all listed here, and each one can also be found on its respective piece page.
+Some pieces have a specific risk unique to them — a magnet, acrylic, glass, a hanging string — and come with their own warning. They are all listed here, and each one can also be found on its respective piece's page.
 
 {{SAFETY_BY_PIECE}}
 
