@@ -59,5 +59,9 @@
     "title": "",
     "description": ""
   },
-  "size": {}
+  "size": {
+    "height": 17,
+    "width": 32,
+    "depth": 5.6
+  }
 }
