@@ -1,33 +1,22 @@
-<!-- origem: 0a59b8cba908 partes: 50720a417e75 86956b1f290c d6c99d2ec903 06553580b7ec 1d6e29e0a5f3 -->
-# The workshop
+<!-- origem: 82039da4c8e3 partes: 33180e9ff72c 360a766902d5 -->
+# The atelier
 
-cathelier is the laser side of a small workshop in Castelo Branco. Where the
-lamps are cut and painted by hand, these pieces are drawn, cut and engraved — and
-every one of them carries somebody's name.
+At cathelier, we believe it is the little details that make moments more beautiful and memories truly eternal. We create personalised pieces, keepsakes and gifts with soul, designed to celebrate life's most special moments: the emotion of a birth, the tenderness of a christening, the joy of a communion, the love of a family or the happiness of giving something unique to someone special.
 
-## How it works
+Each creation is born from affection, comes to life through the delicacy of detail and is carefully thought out to tell a story. From the colours to the hand-painted motifs, from names to initials and personalised engravings, every detail is an opportunity to transform a simple piece into a meaningful keepsake.
 
-You tell us the names, the dates, or the words. We draw it and send you a proof.
-Nothing goes on the laser until you look at that drawing and say yes.
+At cathelier, we put love into every creation, sensitivity into every detail and emotion into every piece, so that what we offer today becomes a precious memory for tomorrow.
 
-Then it is cut, the edges are cleaned by hand, and it comes to you ready to give.
+## What we do
 
-## What we make
+At cathelier, every detail is carefully considered to transform special moments into timeless memories.
 
-Keepsakes for the day itself — place cards, favours, cake toppers, signs. Pieces
-to keep afterwards — birth discs, growth charts, family trees, names for a
-bedroom wall. And things for clubs, schools and companies, with your emblem on
-them.
+* Personalised keepsakes and gifts
+* Special dates: Father's Day, Mother's Day, Christmas and Easter
+* Unique moments: births, baptisms and communions
+* Personalised decor: decorative pieces, pendants and magnets
+* Exclusive personalisation: names, dates and special messages
+* Trophies for clubs and companies
+* Laser cutting and engraving
 
-Look through it [by collection](/cathelier/) or [all at once](/cathelier/pieces/).
-
-## Large orders
-
-A hundred wedding favours is a different job from one birth disc, and it is
-priced differently. [Ask for a quote](/cathelier/quote/) and tell us roughly how
-many.
-
-## The other half of the workshop
-
-The same bench also makes [ithos](/) — handmade wooden night lights for
-children's rooms.
+We create unique pieces, where delicate design meets attention to detail, to celebrate affection with elegance and meaning.
