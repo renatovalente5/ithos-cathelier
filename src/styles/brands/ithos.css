@@ -39,7 +39,11 @@
      photograph this cream lands at #B8B1AA, and #4A3226 on that is 5.58:1.
      Over the actual terracotta it is far better -- 5.58 is the floor, not the
      measurement. scripts/battery samples the real pixels and checks. */
-  --cover-veil: rgb(16 10 7 / .58);
+  /* O véu da capa: a cor aqui, a opacidade de origem aqui, e a que a dona
+     escolhe no painel (covers.json "veil") por cima, no style da capa. O
+     guards.mjs confere as duas contra a regra dos 4,5:1 sobre branco. */
+  --cover-veil-rgb: 16 10 7;
+  --cover-veil-a: .58;
   --cover-ink: #FFFFFF;
 
   --font-body: 'Montserrat', system-ui, sans-serif;

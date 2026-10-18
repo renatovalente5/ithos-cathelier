@@ -432,28 +432,50 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
     const n = h.replace('#', '');
     return [0, 2, 4].map((i) => parseInt(n.slice(i, i + 2), 16));
   };
+  /* A cor do véu está na folha da marca (--cover-veil-rgb) e a opacidade
+     também (--cover-veil-a, a de origem), mas a dona escolhe a sua no painel
+     (covers.json "veil"), que cover.mjs põe no style da capa. Conferem-se as
+     duas, e que a regra do .cover__veil é mesmo a cor com essa opacidade --
+     um gradiente, ou uma cor escrita à mão, deixava esta conta a medir nada. */
+  const shopCss = readFileSync(join(ROOT, 'src/styles/shop.css'), 'utf8');
+  if (!/\.cover__veil\s*\{\s*background:\s*rgb\(var\(--cover-veil-rgb\)\s*\/\s*var\(--cover-veil-a\)\);\s*\}/.test(shopCss)) {
+    die('shop.css: .cover__veil has to be `background: rgb(var(--cover-veil-rgb) / var(--cover-veil-a))` — '
+      + 'one flat colour at one opacity, the one this check computes');
+  }
+  if (!/--cover-veil-a:\$\{c\.veil\}/.test(tmpl)) {
+    die('cover.mjs: the cover no longer writes --cover-veil-a from covers.json — the darkness the owner '
+      + 'chooses in the back office would be saved and ignored');
+  }
+  const contraste = (rgb, a, inkHex) => {
+    const over = rgb.map((v) => a * v + (1 - a) * 255);   // the veil over WHITE
+    const [hi, lo] = [lum(...over), lum(...doHex(inkHex))].sort((x, y) => y - x);
+    return (hi + 0.05) / (lo + 0.05);
+  };
   for (const brand of ['ithos', 'cathelier']) {
     const sheet = readFileSync(join(ROOT, 'src/styles/brands', `${brand}.css`), 'utf8');
-    const veil = sheet.match(/--cover-veil:\s*([^;]+);/);
+    const rgbM = sheet.match(/--cover-veil-rgb:\s*(\d+)\s+(\d+)\s+(\d+)\s*;/);
+    const aM = sheet.match(/--cover-veil-a:\s*([\d.]+)\s*;/);
     const ink = sheet.match(/--cover-ink:\s*(#[0-9a-fA-F]{6})/);
-    if (!veil || !ink) { die(`${brand}.css: cannot read --cover-veil / --cover-ink`); continue; }
-    if (/gradient/i.test(veil[1])) {
-      die(`${brand}.css: --cover-veil is a gradient. It has to be one flat colour at one `
-        + 'opacity, or its worst case cannot be computed and this check is theatre');
-      continue;
+    if (!rgbM || !aM || !ink) { die(`${brand}.css: cannot read --cover-veil-rgb / --cover-veil-a / --cover-ink`); continue; }
+    const rgb = [1, 2, 3].map((i) => Number(rgbM[i]));
+    const escolhida = covers[brand]?.veil;
+    const casos = [[Number(aM[1]), `${brand}.css (--cover-veil-a)`]];
+    if (escolhida !== undefined) {
+      if (typeof escolhida !== 'number' || !(escolhida > 0 && escolhida <= 0.9)) {
+        die(`covers.json: ${brand}.veil tem de ser um número até 0.9 — é "${escolhida}" (mais escuro do que isso, o filme não se vê)`);
+        continue;
+      }
+      casos.push([escolhida, `covers.json (${brand}.veil)`]);
     }
-    const m = veil[1].match(/rgb\(\s*(\d+)\s+(\d+)\s+(\d+)\s*\/\s*([\d.]+)\s*\)/);
-    if (!m) { die(`${brand}.css: --cover-veil must be rgb(R G B / A) — got "${veil[1].trim()}"`); continue; }
-    const a = Number(m[4]);
-    const over = [1, 2, 3].map((i) => a * Number(m[i]) + (1 - a) * 255);   // the veil over WHITE
-    const [hi, lo] = [lum(...over), lum(...doHex(ink[1]))].sort((x, y) => y - x);
-    const ratio = (hi + 0.05) / (lo + 0.05);
-    /* 4.5 and not 3: the header floats on this veil too, and the bar's own
-       words -- "Menu", and the arrow beside the other shop's mark -- are small
-       text. Were the bar icons alone, 3:1 would do. */
-    if (ratio < 4.5) {
-      die(`${brand}: the cover veil over a white frame reads ${ratio.toFixed(2)}:1 against `
-        + `${ink[1]} — below the 4.5:1 that the header's own small words need`);
+    for (const [a, onde] of casos) {
+      const ratio = contraste(rgb, a, ink[1]);
+      /* 4.5 and not 3: the header floats on this veil too, and the bar's own
+         words -- "Menu", and the arrow beside the other shop's mark -- are small
+         text. Were the bar icons alone, 3:1 would do. */
+      if (ratio < 4.5) {
+        die(`${brand}: the cover veil at ${Math.round(a * 100)}% (${onde}) over a white frame reads ${ratio.toFixed(2)}:1 against `
+          + `${ink[1]} — below the 4.5:1 that the header's own small words need`);
+      }
     }
   }
 

@@ -113,7 +113,10 @@
    It must never become a gradient. A gradient's declared colour is its strong
    end, so a guard reads the strong end and passes while the weak end is
    unreadable -- the failure this veil exists to make impossible. */
-.cover__veil { background: var(--cover-veil); }
+/* A cor e a opacidade em separado: a opacidade pode vir do style da capa (a
+   que a dona escolhe no painel), e uma variável só se resolve onde é usada --
+   um --cover-veil já composto na raiz levava a opacidade da raiz. */
+.cover__veil { background: rgb(var(--cover-veil-rgb) / var(--cover-veil-a)); }
 
 .cover__words {
   position: relative;

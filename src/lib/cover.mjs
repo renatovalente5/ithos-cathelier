@@ -23,16 +23,21 @@
  * would be worse than useless -- a guard reads the declared colour, which is
  * the strong end, and passes while the weak end is unreadable.
  *
- * WHERE 56% COMES FROM, AND WHY IT IS NOT A TASTE DECISION
+ * HOW DARK IT IS, AND HOW LIGHT IT MAY GET
+ *
+ * The owner sets the veil in the back office (covers.json "veil", 0.56 to
+ * 0.9), with a live preview of the film under it; without the line it is the
+ * brand stylesheet's .58. What is NOT a taste decision is the floor:
  *
  * The worst ground is the brightest pixel the picture can hold, and this
  * picture holds the brightest one there is: every single one of the film's 922
  * frames contains a clipped white pixel, because the subject is lit LEDs, and
  * 909 of them have one inside the box the headline sits in. So the bound is
  * the same one a sheet of white paper would give, and it is honest for every
- * film and photograph the owner will ever put here. Black over white at 53.5%
- * is where small white text reaches 4.5:1. The veil is set above that, and
- * scripts/guards.mjs computes it rather than trusting this paragraph.
+ * film and photograph the owner will ever put here. This veil's warm
+ * near-black over white reaches 4.5:1 for small white text at 56% (55% gives
+ * 4.36:1), so 56% is the lightest the panel offers -- and scripts/guards.mjs
+ * computes it for the value actually saved rather than trusting this paragraph.
  *
  * The header's own words are what force the small-text threshold. Were the bar
  * icons alone, 42% would do -- non-text controls are allowed 3:1 -- but the
@@ -104,7 +109,10 @@ function film(c) {
  */
 export function cover(c, brand, art) {
   const focus = `--cover-focus:${esc(c.focus || '50% 50%')};`
-    + `--cover-focus-wide:${esc(c.focusWide || c.focus || '50% 50%')}`;
+    + `--cover-focus-wide:${esc(c.focusWide || c.focus || '50% 50%')}`
+    /* Só um número entre 0 e 1 chega ao style; o guards.mjs já recusou
+       qualquer outro e o que fique abaixo do contraste. */
+    + (typeof c.veil === 'number' && c.veil >= 0 && c.veil <= 1 ? `;--cover-veil-a:${c.veil}` : '');
   const temFilme = !!c.film;
 
   return `

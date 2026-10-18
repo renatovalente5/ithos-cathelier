@@ -45,7 +45,11 @@
      --ink (#6B4E3C) over the worst-case panel is 3.58:1, which fails. #4A3527
      is 5.44:1 on the same worst case. A brand colour that works on the page
      does not automatically work over a photograph. */
-  --cover-veil: rgb(16 10 7 / .58);
+  /* O véu da capa: a cor aqui, a opacidade de origem aqui, e a que a dona
+     escolhe no painel (covers.json "veil") por cima, no style da capa. O
+     guards.mjs confere as duas contra a regra dos 4,5:1 sobre branco. */
+  --cover-veil-rgb: 16 10 7;
+  --cover-veil-a: .58;
   --cover-ink: #FFFFFF;
   --accent-deep: #4B372A;
   --accent-ink: #FFF8F2;
