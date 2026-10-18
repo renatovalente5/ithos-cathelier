@@ -60,6 +60,10 @@ export function fromPrice(p) {
    conteúdo, e o conteúdo escreve-o o painel: o esc() impedia que saísse do
    atributo, mas não que o style levasse outra coisa além de uma cor. */
 const corDoQuadrado = (c) => (typeof c === 'string' && /^#[0-9a-f]{6}$/i.test(c) ? c : '');
+/* O NOME DE UM MODELO COM COR É UMA COR. `data-cor` marca-o (no quadradinho do
+   cartão e na escolha da ficha), e a guarda das alegações ambientais do
+   check-output.mjs passa-lhe à frente: «verde» como cor do Foguetão não é
+   «verde» como alegação. Fora destas marcas, «verde» continua proibido. */
 
 export function card(p, { eager = false } = {}) {
   const { low, high } = fromPrice(p);
@@ -80,7 +84,7 @@ export function card(p, { eager = false } = {}) {
   const coloured = (swatches?.values || []).filter((v) => corDoQuadrado(v.colour));
   const dots = coloured.length
     ? `<div class="card__swatches" aria-hidden="true">${coloured.slice(0, 6)
-        .map((v) => `<span class="swatch" style="background:${corDoQuadrado(v.colour)}" title="${esc(v.name)}"></span>`).join('')}</div>`
+        .map((v) => `<span class="swatch" data-cor style="background:${corDoQuadrado(v.colour)}" title="${esc(v.name)}"></span>`).join('')}</div>`
     : '';
 
   /* The card carries EVERY photograph of the piece, not just the cover.
@@ -415,7 +419,8 @@ function optionField(o, diasDeResolucao) {
     return `<label class="choice${off ? ' choice--off' : ''}">
             <input type="radio" name="opt-${esc(o.id)}" value="${esc(v.id)}"
                    data-option="${esc(o.id)}"${v.id === chosen.id ? ' checked' : ''}${off ? ' disabled' : ''}>
-            ${corDoQuadrado(v.colour) ? `<span class="choice__cor" style="background:${corDoQuadrado(v.colour)}" aria-hidden="true"></span>` : ''}<span>${esc(v.name)}${v.extra ? ` <em>+${money(v.extra)}</em>` : ''}${
+            ${corDoQuadrado(v.colour) ? `<span class="choice__cor" style="background:${corDoQuadrado(v.colour)}" aria-hidden="true"></span>` : ''}<span>${
+      corDoQuadrado(v.colour) ? `<span data-cor>${esc(v.name)}</span>` : esc(v.name)}${v.extra ? ` <em>+${money(v.extra)}</em>` : ''}${
       off ? ` <em class="choice__off">${esc(v.note || t('ithos.opcao.indisponivel'))}</em>` : ''}</span>
           </label>`;
   }).join('\n          ')}

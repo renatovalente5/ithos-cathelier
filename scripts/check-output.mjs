@@ -851,12 +851,21 @@ if (titulosPorTraduzir.length) {
     const ent = (x) => x.replace(/&nbsp;/g, ' ').replace(/&lt;/g, '<').replace(/&gt;/g, '>')
       .replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&#(\d+);/g, (m, n) => String.fromCodePoint(Number(n)))
       .replace(/&amp;/g, '&');
+    /* O nome de um modelo com quadradinho de cor (data-cor, src/lib/ithos.mjs)
+       é uma cor, e sai antes de se procurar: o elemento inteiro, com o title
+       e o texto dele. Só uma folha (sem etiquetas dentro), para nunca levar
+       mais do que o nome. */
+    const semCores = (html) => html.replace(/<(\w+)\b[^>]*\sdata-cor(?:="")?[\s>][^<]*<\/\1>/g, ' ');
     const visivel = (html) => {
-      const semLixo = html.replace(/<!--[\s\S]*?-->/g, ' ').replace(/<style[\s\S]*?<\/style>/gi, ' ')
+      const semLixo = semCores(html).replace(/<!--[\s\S]*?-->/g, ' ').replace(/<style[\s\S]*?<\/style>/gi, ' ')
         .replace(/<script(?![^>]*application\/ld\+json)[\s\S]*?<\/script>/gi, ' ');
       const atributos = [...semLixo.matchAll(/\s(?:alt|title|aria-label|placeholder|content|data-lead-[a-z-]+)="([^"]*)"/g)].map((m) => m[1]);
       return ent([semLixo.replace(/<[^>]+>/g, ' '), ...atributos].join(' \n '));
     };
+    /* E a passagem prova-se: um nome de cor sai, o mesmo «verde» solto fica. */
+    const prova = procurarAlegacoes(visivel('<span class="swatch" data-cor style="background:#17C4A7" title="verde"></span>'
+      + '<label><span><span data-cor>verde</span> <em>+5 €</em></span></label><p>Um candeeiro verde.</p>'));
+    if (prova.length !== 1) deaths.push(`a passagem dos nomes de cor (data-cor) está partida: ${prova.length} achados em vez de 1`);
     const achados = [];
     for (const f of pages) {
       for (const a of procurarAlegacoes(visivel(readFileSync(f, 'utf8')))) {
