@@ -13,10 +13,9 @@ Limpe-o com um pano seco. Nunca água, nunca solventes, nunca nada abrasivo — 
 tinta é de água e a madeira está selada, e ambas se ressentem.
 
 Mantenha-o longe do sol direto. O pinho clareia ao fim de meses de muita luz,
-e as cores pintadas vão com ele.
+e as cores pintadas também vão sofrer com a exposição do sol.
 
-Se uma luz deixar de funcionar, escreva-nos. Não abra a peça: está colada e
-lixada, e não volta a ficar como estava.
+Se uma luz deixar de funcionar, escreva-nos. Não abra a peça pois não volta a ficar como estava.
 
 ## Peças para reparação
 
@@ -27,14 +26,13 @@ escreva-nos.
 
 ## Pilhas
 
-As versões a pilhas levam duas pilhas AA, que já vêm incluídas. Tire-as se a peça
-for ficar meses sem uso — uma pilha que verte estraga a madeira por dentro.
+As versões a pilhas levam duas pilhas AA, que não estão incluídas. Tire-as se a peça ficar meses sem ser usada — uma pilha que verte estraga a madeira e o sistema de alimentação.
 
 Mantenha as pilhas soltas longe de crianças pequenas.
 
 ## A versão com cabo
 
-A versão com cabo traz um comando que regula a intensidade, desliga sozinho e
+A versão com cabo traz um comando que regula a intensidade da luz, liga e desliga, temporizador para que desligue sozinho e
 faz a luz pulsar devagar.
 
 Mantenha o cabo fora do berço e fora da cama. Não o passe por baixo de um
