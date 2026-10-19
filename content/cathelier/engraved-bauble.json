@@ -1,23 +1,20 @@
 {
-  "name": "Bola de Natal gravada",
-  "price": 5.5,
+  "name": "Bola de Natal (casinha, Feliz Natal, fita veludo e guizo)",
+  "price": 3.5,
   "published": true,
   "featured": false,
   "order": 20,
   "made": "to_order",
   "occasion": "christmas",
-  "alsoIn": [
-    "hanging"
-  ],
-  "summary": "Uma bola de madeira gravada, com uma casinha de Natal e o nome da família.",
-  "text": "Uma bola de madeira gravada, com uma casinha de Natal e o nome da família.",
+  "alsoIn": [],
+  "summary": "Bola de Natal em contraplacado, decorada com fita de veludo, guiso e frase personalizada.",
+  "text": "Elegante bola de Natal em contraplacado, com fita de veludo, guizo e frase personalizada, criada para envolver a decoração natalícia e guardar memórias com um encanto subtil e intemporal.",
   "photoFolder": "engraved-bauble",
   "photos": [
+    "05",
     "01",
     "02",
-    "03",
-    "04",
-    "05"
+    "03"
   ],
   "cover": "01",
   "options": [
@@ -27,7 +24,7 @@
       "type": "text",
       "required": true,
       "personalises": true,
-      "max": 40,
+      "max": 20,
       "extra": 0,
       "example": "Miguel"
     }
@@ -40,5 +37,8 @@
   "seo": {
     "title": "",
     "description": ""
-  }
+  },
+  "videos": [
+    "vmvft59pouv.mp4"
+  ]
 }
