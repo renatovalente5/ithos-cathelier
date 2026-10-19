@@ -1,15 +1,13 @@
 {
-  "name": "Árvore de Natal pintada",
-  "price": 4,
+  "name": "Conjunto de deis pinheiros de natal com sininho",
+  "price": 10,
   "published": true,
   "featured": false,
   "order": 140,
   "made": "to_order",
   "occasion": "christmas",
-  "alsoIn": [
-    "hanging"
-  ],
-  "summary": "Uma árvore pequena de madeira, pintada à mão, para pendurar.",
+  "alsoIn": [],
+  "summary": "Conjunto de deis pinheiros de natal com sininho dourado",
   "text": "Uma árvore pequena de madeira, pintada à mão, para pendurar.",
   "photoFolder": "painted-tree",
   "photos": [
