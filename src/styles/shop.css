@@ -434,6 +434,15 @@ html[data-scrolled='no'] .head {
   display: block; padding-block: 3px;
 }
 .card__frame { position: relative; }
+/* O vídeo do cartão: por cima da fotografia, só enquanto o rato está parado
+   no cartão (shop.js, videosDosCartoes). Começa invisível e sem fonte; um
+   cartão que ninguém visitou não pede vídeo nenhum. */
+.card__video {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  object-fit: cover; opacity: 0; pointer-events: none;
+  transition: opacity .45s ease;
+}
+.card[data-a-tocar='yes'] .card__video { opacity: 1; }
 
 /* --- the slow drift from one photograph to the next -------------------------
    TWO LAYERS, AND ONLY ONE OF THEM IS EVER THE CARD.
@@ -822,6 +831,14 @@ html[data-scrolled='no'] .head {
   object-position: var(--focus, 50% 50%);
 }
 .gallery__track { align-items: flex-start; }
+/* UM VÍDEO NA GALERIA ocupa a mesma moldura que as fotografias, cortado da
+   mesma maneira; os controlos são os do browser. Num vídeo não há nada para a
+   lupa ampliar, e ela esconde-se (shop.js, gallery). */
+.gallery__video { display: block; width: 100%; height: 100%; object-fit: cover; background: var(--frame-bg); }
+.gallery[data-video] .gallery__open { display: none; }
+.gallery__thumb--video { position: relative; display: block; }
+.gallery__thumb--video img { display: block; width: 100%; height: auto; aspect-ratio: 3 / 4; object-fit: cover; }
+.gallery__thumb--video svg { position: absolute; inset: 0; margin: auto; color: #fff; filter: drop-shadow(0 1px 3px rgb(0 0 0 / .45)); }
 /* --- the photograph, full size ----------------------------------------------
    Declared `position: fixed`, like the menu panel, and for the same measured
    reason: a dialog is fixed only while it is MODAL, and opened with show() --

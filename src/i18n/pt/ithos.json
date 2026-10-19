@@ -45,5 +45,7 @@
   "opcao.opcional": "opcional",
   "opcao.limite": "Até {n} caracteres.",
   "opcao.exemplo": "Um nome, uma data, uma frase curta",
-  "opcao.indisponivel": "Indisponível"
+  "opcao.indisponivel": "Indisponível",
+  "ficha.video": "Vídeo {n} do candeeiro {nome}",
+  "ficha.videoMiniatura": "Vídeo {n}"
 }

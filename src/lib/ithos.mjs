@@ -56,6 +56,12 @@ export function fromPrice(p) {
 /* A COR DE UM QUADRADINHO, só se for mesmo uma cor (#rrggbb). Vem do
    conteúdo, e o conteúdo escreve-o o painel: o esc() impedia que saísse do
    atributo, mas não que o style levasse outra coisa além de uma cor. */
+/* OS VÍDEOS DE UM CANDEEIRO (o painel junta-os: public/media/video/ithos/
+   <pasta>/<nome>.mp4, e a capa <nome>.jpg ao lado). Só nomes do painel. */
+export const videosDe = (p) => (Array.isArray(p.videos) ? p.videos.filter((n) => /^v[a-z0-9]{4,40}\.(mp4|webm)$/.test(String(n))) : []);
+const enderecoDoVideo = (p, n) => `/media/video/ithos/${p.photoFolder}/${n}`;
+const capaDoVideo = (p, n) => enderecoDoVideo(p, n).replace(/\.(mp4|webm)$/, '.jpg');
+
 const corDoQuadrado = (c) => (typeof c === 'string' && /^#[0-9a-f]{6}$/i.test(c) ? c : '');
 /* O NOME DE UM MODELO COM COR É UMA COR. `data-cor` marca-o (no quadradinho do
    cartão e na escolha da ficha), e a guarda das alegações ambientais do
@@ -143,7 +149,7 @@ export function card(p, { eager = false } = {}) {
      grid by a number the reader cannot see. */
   return `<article class="card" data-product="${esc(p.slug)}" data-family="${esc(fams)}"
   data-price="${low}"${p.added ? ` data-added="${esc(p.added)}"` : ''}
-  data-shots="${esc(shots.join(','))}" data-dir="${esc(dir)}">
+  data-shots="${esc(shots.join(','))}" data-dir="${esc(dir)}"${videosDe(p).length ? ` data-video="${esc(enderecoDoVideo(p, videosDe(p)[0]))}"` : ''}>
   <a class="card__media" href="${href}" tabindex="-1" aria-hidden="true">
     <div class="frame card__frame">
       ${picture({
@@ -257,6 +263,9 @@ export function catalogue({ products }) {
 export function product({ p, all, shop, identity }) {
   const { low, high } = fromPrice(p);
   const photos = p.photos;
+  /* Os vídeos vêm depois das fotografias (a dona: «quando tivermos os vídeos
+     aqui no final»). */
+  const videos = videosDe(p);
   const dir = `ithos/${p.photoFolder}`;
 
   /* THE FRAME TAKES THE SHAPE OF THIS LAMP'S TALLEST PHOTOGRAPH.
@@ -299,16 +308,24 @@ export function product({ p, all, shop, identity }) {
             sizes: '(min-width: 64rem) 560px, 100vw',
             loading: i === 0 ? 'eager' : 'lazy', fetchpriority: i === 0 ? 'high' : undefined })}
         </div>`).join('\n        ')}
+        ${videos.map((n, k) => `<div class="gallery__slide gallery__slide--video" data-index="${photos.length + k}">
+          <video class="gallery__video" src="${esc(enderecoDoVideo(p, n))}" poster="${esc(capaDoVideo(p, n))}" muted loop playsinline preload="none" controls
+            aria-label="${esc(t('ithos.ficha.video', { nome: p.name, n: k + 1 }))}"></video>
+        </div>`).join('\n        ')}
       </div>
       <button class="gallery__open" type="button" data-box-open aria-label="${esc(t('ithos.ficha.ampliar'))}">${icon('search', 18)}</button>
-      ${photos.length > 1 ? `
+      ${photos.length + videos.length > 1 ? `
       <button class="gallery__arrow gallery__arrow--prev" type="button" data-gallery-prev aria-label="${esc(t('ithos.ficha.anterior'))}">${icon('arrowLeft', 20)}</button>
       <button class="gallery__arrow gallery__arrow--next" type="button" data-gallery-next aria-label="${esc(t('ithos.ficha.seguinte'))}">${icon('arrowRight', 20)}</button>` : ''}
     </div>
-    ${photos.length > 1 ? `<div class="gallery__thumbs" role="tablist" aria-label="${esc(t('ithos.ficha.fotografias'))}">
+    ${photos.length + videos.length > 1 ? `<div class="gallery__thumbs" role="tablist" aria-label="${esc(t('ithos.ficha.fotografias'))}">
       ${photos.map((n, i) => `<button class="frame gallery__thumb" type="button" role="tab"
         data-gallery-go="${i}" aria-selected="${i === 0}" aria-label="${esc(t('ithos.ficha.foto', { n: i + 1 }))}">
         ${picture({ dir, name: n, alt: '', sizes: '84px', widths: [200, 400] })}
+      </button>`).join('\n      ')}
+      ${videos.map((n, k) => `<button class="frame gallery__thumb gallery__thumb--video" type="button" role="tab"
+        data-gallery-go="${photos.length + k}" aria-selected="false" aria-label="${esc(t('ithos.ficha.videoMiniatura', { n: k + 1 }))}">
+        <img src="${esc(capaDoVideo(p, n))}" alt="" width="84" height="112" loading="lazy" decoding="async">${icon('play', 18)}
       </button>`).join('\n      ')}
     </div>` : ''}
   </div>

@@ -654,6 +654,7 @@ document.addEventListener('DOMContentLoaded', () => {
   sorting();
   cardShots();
   gallery();
+  videosDosCartoes();
   lightbox();
   productForm();
   stockNaFicha();
@@ -2088,7 +2089,9 @@ function cardShots() {
     };
 
     const start = () => {
-      if (!DRIFTS || driving) return;
+      /* Com vídeo, o rato parado toca o vídeo em vez de passar pelas
+         fotografias (videosDosCartoes, mais abaixo). */
+      if (!DRIFTS || driving || card.dataset.video) return;
       drive();
     };
 
@@ -2219,15 +2222,15 @@ function lightbox() {
       const r = sl.getBoundingClientRect(); const gr = g.getBoundingClientRect();
       return Math.abs(r.left - gr.left) < 2;          // the one on screen
     }) || $('.gallery__slide', g);
-    show($('picture', slide));
+    if ($('picture', slide)) show($('picture', slide));
   });
 
   /* Clicking the photograph itself opens it too -- it is what everyone tries
      before they look for a button. */
   g.addEventListener('click', (ev) => {
-    if (ev.target.closest('button, a')) return;
+    if (ev.target.closest('button, a, video')) return;
     const slide = ev.target.closest('.gallery__slide');
-    if (!slide) return;
+    if (!slide || !$('picture', slide)) return;
     last = opener;
     show($('picture', slide));
   });
@@ -2245,6 +2248,37 @@ function lightbox() {
   });
 }
 
+/* O VÍDEO DO CARTÃO (a dona, 18 out 2026: «quando pomos o rato, dá para ir
+   logo para esses vídeos em vez de passar por todas as fotos?»). Um candeeiro
+   com vídeo (data-video) toca-o por cima da fotografia quando o rato pára no
+   cartão, e pára quando sai. O vídeo só é pedido nesse momento, nunca ao
+   abrir a página; só com um rato (num telemóvel não há «passar por cima») e
+   nunca para quem pediu menos movimento. */
+function videosDosCartoes() {
+  if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
+  if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  for (const card of $$('[data-video]')) {
+    const frame = $('.card__frame', card);
+    if (!frame) continue;
+    let v = null;
+    let espera = null;
+    const tocar = () => {
+      if (!v) {
+        v = document.createElement('video');
+        v.className = 'card__video';
+        v.muted = true; v.loop = true; v.playsInline = true; v.preload = 'auto';
+        v.setAttribute('aria-hidden', 'true');
+        v.src = `${BASE}${card.dataset.video}`;
+        frame.append(v);
+      }
+      v.play().then(() => { card.dataset.aTocar = 'yes'; }).catch(() => {});
+    };
+    const parar = () => { clearTimeout(espera); delete card.dataset.aTocar; v?.pause(); };
+    card.addEventListener('pointerenter', () => { clearTimeout(espera); espera = setTimeout(tocar, 250); });
+    card.addEventListener('pointerleave', parar);
+  }
+}
+
 function gallery() {
   const g = $('[data-gallery]');
   if (!g) return;
@@ -2252,11 +2286,22 @@ function gallery() {
   const slides = $$('.gallery__slide', track);
   const thumbs = $$('[data-gallery-go]');
   let at = 0;
+  /* Os vídeos da galeria tocam quando ficam à vista (sem som, em ciclo) e
+     param quando saem; para quem pediu menos movimento ficam parados, com os
+     controlos à mão. A lupa esconde-se num vídeo: não há fotografia para
+     ampliar. */
+  const calmo = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   const go = (i) => {
     at = (i + slides.length) % slides.length;
     track.style.translate = `${-at * 100}% 0`;
     for (const t of thumbs) t.setAttribute('aria-selected', String(Number(t.dataset.galleryGo) === at));
+    slides.forEach((sl, k) => {
+      const v = $('video', sl);
+      if (!v) return;
+      if (k === at && !calmo) v.play().catch(() => {}); else v.pause();
+    });
+    if ($('video', slides[at])) g.dataset.video = 'yes'; else delete g.dataset.video;
   };
   $('[data-gallery-prev]', g)?.addEventListener('click', () => go(at - 1));
   $('[data-gallery-next]', g)?.addEventListener('click', () => go(at + 1));

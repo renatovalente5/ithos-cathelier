@@ -180,5 +180,13 @@
   "opcao.indisponivel": {
     "t": "Unavailable",
     "h": "60cf6b61c55f"
+  },
+  "ficha.video": {
+    "t": "Video {n} of the {nome} lamp",
+    "h": "48fef5200dc8"
+  },
+  "ficha.videoMiniatura": {
+    "t": "Video {n}",
+    "h": "733e495e2184"
   }
 }

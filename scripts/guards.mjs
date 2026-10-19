@@ -10,7 +10,7 @@
  * With PREVIEW=yes, and only then, the checks that are waiting on the owner
  * become warnings instead of deaths. Everything else still kills.
  */
-import { readFileSync, readdirSync, existsSync } from 'node:fs';
+import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { execFileSync } from 'node:child_process';
@@ -109,6 +109,21 @@ function checkProduct(brand, slug, p) {
   if (seenNames.has(name)) die(`${where}: same name as ${seenNames.get(name)}`);
   seenNames.set(name, where);
 
+  /* OS VÍDEOS (o painel junta-os): nomes do painel, no máximo seis, e cada um
+     com o ficheiro e a capa em public/media/video/<marca>/<pasta>/, abaixo dos
+     25 MiB que o site serve por ficheiro. */
+  if (p.videos !== undefined) {
+    if (!Array.isArray(p.videos) || p.videos.length > 6) die(`${where}: videos tem de ser uma lista de até 6 vídeos`);
+    else {
+      for (const n of p.videos) {
+        if (!/^v[a-z0-9]{4,40}\.(mp4|webm)$/.test(String(n))) { die(`${where}: o vídeo «${n}» não tem um nome do painel`); continue; }
+        const base = join(ROOT, 'public', 'media', 'video', brand, String(p.photoFolder), String(n));
+        if (!existsSync(base)) { die(`${where}: o vídeo ${n} não está em public/media/video/${brand}/${p.photoFolder}/`); continue; }
+        if (statSync(base).size > 24 * 1024 * 1024) die(`${where}: o vídeo ${n} tem mais de 24 MB — o site não o serve`);
+        if (!existsSync(base.replace(/\.(mp4|webm)$/, '.jpg'))) die(`${where}: o vídeo ${n} não tem a capa (${String(n).replace(/\.(mp4|webm)$/, '.jpg')})`);
+      }
+    }
+  }
   for (const o of p.options || []) {
     if (!o.id || !o.name) die(`${where}: an option has no id or no name`);
     if (o.type === 'choice') {
