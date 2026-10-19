@@ -1,4 +1,4 @@
-<!-- origem: 4ea92e0b3e05 partes: fae3941b8794 1bd98a266339 cc47e9c8b751 -->
+<!-- origem: fe76ee08ea74 partes: fae3941b8794 1bd98a266339 8c40226eccb6 -->
 # Withdraw from the contract
 
 If you bought as a consumer, you can cancel the purchase here, on the site,
@@ -18,11 +18,6 @@ has the same effect. If you like, copy the
 
 ## What counts
 
-What counts is the date you send us your decision: if you send it before the
-period ends, you have withdrawn in time (article 11 of Decree-Law 24/2014).
-For a personalised piece, you can withdraw until we start making it; from then
-on, this right no longer applies — see [what cannot be
-cancelled](/legal/cancellation/).
+The date you send us your decision is what counts: if you send it before the deadline expires, you have withdrawn in time (Article 11 of Decree-Law no. 24/2014). Personalised pieces do not have this right — see [what cannot be returned](/legal/cancellation/).
 
-We use what you write only to deal with your withdrawal and to send you the
-acknowledgement of receipt. See [privacy](/legal/privacy/).
+We only use what you write to process your withdrawal and to send you the acknowledgement of receipt. See our [privacy policy](/legal/privacy/).

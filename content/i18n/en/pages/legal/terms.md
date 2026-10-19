@@ -1,4 +1,4 @@
-<!-- origem: d7dd8032268a partes: 385996f20f05 95a292592920 74b642e8c44a e12484043fef b837d242faac 48e0e2a7afa3 6b4767cac8c8 7303925a6a5e 5df13b1d4273 8d1bbcc50936 37247a30ba8d a42c1b8e95aa -->
+<!-- origem: c25739af24e4 partes: 385996f20f05 95a292592920 74b642e8c44a e12484043fef 53283dbe7dbb 48e0e2a7afa3 f4ba7adf1f3c 7303925a6a5e 5df13b1d4273 8d1bbcc50936 37247a30ba8d a42c1b8e95aa -->
 # Terms of sale
 
 ## Who is selling
@@ -33,20 +33,11 @@ shown. Shipping is added at checkout and shown before you pay.
 
 ## Personalised pieces
 
-Anything carrying a name, a date or words you chose is made for you alone. You
-can cancel a personalised piece until we start making it; from then on, **the
-right to cancel no longer applies** — this is the exception in article 17(1)(c)
-of Decree-Law 24/2014. The legal guarantee still applies.
+Everything that features a name, a date or words chosen by you is made just for you, therefore **you do not have the right to cancel** from the moment the order is paid — this is the exception under point c) of no. 1 of article 17 of Decree-Law no. 24/2014. The legal guarantee remains.
 
-We start making a piece when we cut or engrave it for your order; preparing the
-drawing does not count yet. For a lamp in stock, that is when we engrave it.
+Choosing a colour that we already offer is not personalisation, and it does not take away your right to cancel.
 
-Choosing a colour we already offer is not personalisation, and does not remove
-your right to cancel.
-
-For cathelier pieces we send you a drawing to approve before anything is cut.
-Nothing goes on the laser until you say yes, and what you approve is what you
-get.
+With cathelier pieces, we send you a design to approve before cutting anything. Nothing goes to the laser before you say yes, and what you approve is what you receive.
 
 ## Ordering and paying
 
@@ -67,20 +58,19 @@ shelf, and you owe nothing — put the basket together again whenever you like.
 
 ## Making and delivering
 
-**An in-stock lamp** leaves the workshop {{IN_STOCK_DAYS}} after your
+**An in stock lamp** leaves the workshop {{IN_STOCK_DAYS}} after your
 payment.
 
-**An out-of-stock lamp** can still be ordered: we will make yours, and
-it will reach you in {{TO_ORDER_WEEKS}}. Each product page and the basket will
-indicate which is the case before you pay. If the last one in stock is taken by
-someone else while you are ordering, we will let you know before receiving any
-payment, and the decision to
+**An out of stock lamp** can still be ordered: we will make yours, and
+it will reach you in {{TO_ORDER_WEEKS}}. Each product page and the basket will state
+which is the case before you pay. If the last one in stock is taken by someone else while
+you are ordering, we will let you know before receiving any payment, and the decision to
 wait is yours.
 
-**cathelier pieces** are always made to order: {{TO_ORDER_WEEKS}},
-starting from the approval of the design.
+**cathelier pieces** are always made to order and arrive within
+{{TO_ORDER_MAX}}, starting from the approval of the design — almost always sooner.
 
-If an item in an order is made to order, the entire order will be sent
+If one item in an order is made to order, the entire order will be sent
 together once it is ready.
 
 Shipping is handled by {{CARRIER}}. Delivery times are estimates and
