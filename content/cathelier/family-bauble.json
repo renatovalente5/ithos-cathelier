@@ -1,22 +1,22 @@
 {
-  "name": "Bola da família",
-  "price": 9,
+  "name": "Bola de Natal - memórias famíliares",
+  "price": 5,
   "published": true,
-  "featured": false,
+  "featured": true,
   "order": 50,
   "made": "to_order",
   "occasion": "christmas",
   "alsoIn": [
     "hanging"
   ],
-  "summary": "Uma bola com uma bolinha pendurada por cada pessoa da casa.",
-  "text": "Uma bola com uma bolinha pendurada por cada pessoa da casa.",
+  "summary": "Bola de Natal em contraplacado, com mini bolas pendentes em acrílico dourado com o nome de cada membro da família e nome de família gravado a laser. ",
+  "text": "Uma delicada peça natalícia em contraplacado, decorada com mini bolas em acrílico dourado personalizadas com o nome de cada membro da família e nome de família gravado a laser, onde cada detalhe celebra a beleza dos laços que nos unem.",
   "photoFolder": "family-bauble",
   "photos": [
+    "04",
     "01",
     "02",
-    "03",
-    "04"
+    "03"
   ],
   "cover": "01",
   "options": [
@@ -36,7 +36,7 @@
       "type": "text",
       "required": true,
       "personalises": true,
-      "max": 90,
+      "max": 40,
       "extra": 0,
       "example": "Ana, Rui, Tiago"
     }
@@ -51,5 +51,8 @@
   "seo": {
     "title": "",
     "description": ""
-  }
+  },
+  "videos": [
+    "vmvfta2tjrg.mp4"
+  ]
 }
