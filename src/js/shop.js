@@ -1606,16 +1606,16 @@ async function basketPage() {
     wrap.hidden = !any;
     if (empty) empty.hidden = any;
     /* O AVISO DAS PEÇAS PERSONALIZADAS, antes do botão de encomendar: uma
-       linha com um nome, uma data ou uma frase só se desiste até começarmos
-       a fazê-la, e a lei quer isso dito antes da compra, com a circunstância
-       em que o direito se perde (DL 24/2014, art. 4.º n.º 1 al. p)). A marca
+       linha com um nome, uma data ou uma frase não tem livre resolução desde
+       que a encomenda é paga, e a lei quer isso dito antes da compra (DL
+       24/2014, art. 4.º n.º 1 al. p)). A marca
        é a mesma que o Worker lê -- `personalises` na opção do catálogo -- e
        só conta com alguma coisa escrita: um candeeiro sem gravação não é
        personalizado.
        NUMA SESSÃO DE REVENDEDOR, NEM O AVISO NEM A LIGAÇÃO DA GARANTIA LEGAL:
        a caixa «compro para a minha empresa, para revenda» (obrigatória nessa
        sessão) diz que os direitos do consumidor não se aplicam; logo abaixo,
-       «pode desistir delas até começarmos a fazê-las» e «os seus direitos de
+       «não têm os 14 dias de livre resolução» e «os seus direitos de
        garantia legal» diziam o contrário no mesmo ecrã. Quem compra para casa
        sai da sessão e compra como consumidor -- e aí volta tudo. */
     const aviso = $('[data-basket-personal]');
@@ -2308,6 +2308,9 @@ function gallery() {
   $('[data-gallery-prev]', g)?.addEventListener('click', () => go(at - 1));
   $('[data-gallery-next]', g)?.addEventListener('click', () => go(at + 1));
   for (const t of thumbs) t.addEventListener('click', () => go(Number(t.dataset.galleryGo)));
+  /* Com «Mostrar o vídeo primeiro», a galeria abre num vídeo: toca já (como
+     tocaria ao chegar lá) e a lupa esconde-se. */
+  if ($('video', slides[0])) go(0);
 
   // Swipe, because this is a phone-first shop.
   let x0 = null;

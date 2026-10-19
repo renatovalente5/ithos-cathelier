@@ -1,6 +1,6 @@
 import { esc, money, safeHref } from './html.mjs';
 import { icon } from './icons.mjs';
-import { prazos } from './prazos.mjs';
+import { prazos, ateSemanas } from './prazos.mjs';
 import { t, tn, lingua } from './i18n.mjs';
 
 /* ===========================================================================
@@ -100,6 +100,9 @@ export function markers({ identity, shop, shipping, pieces = [] }) {
        emails usam. */
     IN_STOCK_DAYS: prazos(shop.lead).dias,
     TO_ORDER_WEEKS: prazos(shop.lead).semanas,
+    /* O máximo, «4 semanas»: o que a ficha da cathelier promete (até 19 out
+       2026 as peças diziam «3 a 4 semanas», que parecia um mínimo de 3). */
+    TO_ORDER_MAX: ateSemanas(shop.lead),
     COOLING_OFF_DAYS: String(shop.returns.coolingOffDays),
     WARRANTY_YEARS: String(shop.returns.warrantyYears),
     FORM_URL: '/legal/returns-form/',
@@ -279,7 +282,7 @@ export function avisoGarantia() {
  * o escreve em 24 horas -- com uma frase própria na repetida, que acabou de
  * dizer «não a registámos outra vez» e não pode continuar com «ficou
  * registada». E o parágrafo de devolver as peças diz que as personalizadas
- * já começadas não se devolvem: a declaração pode ser sobre elas.
+ * não se devolvem: a declaração pode ser sobre elas.
  * A hora diz-se sempre da mesma maneira, como no aviso de receção do Worker:
  * a hora em que a pessoa a ENVIOU, em hora de Lisboa (art. 11.º-A n.º 4 da
  * Diretiva 2011/83: «a data e a hora do envio»). */

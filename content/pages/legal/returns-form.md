@@ -28,6 +28,5 @@ Data: ____________
 
 ---
 
-Numa peça personalizada, pode desistir até começarmos a fazê-la; a partir daí,
-deixa de ter este direito. Veja o
+As peças personalizadas não têm este direito. Veja o
 [seu direito de livre resolução](/legal/cancellation/).

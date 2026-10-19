@@ -121,8 +121,8 @@
     "h": "d700b97d557d"
   },
   "faq.nome.resposta": {
-    "t": "<p>Yes, on anything, and it costs nothing extra. Put it in the engraving box on the product page — a name, a date, or a short phrase.</p> <p>One thing to know: a piece with a name on it is made for you alone, so you can only cancel it until we start making it; from then on, the {dias}-day right to cancel no longer applies. Choosing a colour we already offer is not personalisation and does not affect your right to cancel.</p>",
-    "h": "0aa0850d8ffa"
+    "t": "<p>Yes, on anything, and it costs nothing extra. Put it in the engraving box on the product page — a name, a date, or a short phrase.</p> <p>One thing to know: a piece with a name on it is made for you alone, so it does not have the {dias}-day right to cancel. Choosing a colour we already offer is not personalisation and does not affect your right to cancel.</p>",
+    "h": "8641520a1c20"
   },
   "faq.seguranca": {
     "t": "Is it safe in a baby’s room?",
@@ -153,8 +153,8 @@
     "h": "11d8cc3744e8"
   },
   "faq.desistir.resposta": {
-    "t": "<p>You have {dias} days to change your mind. For a personalised piece, you can cancel until we start making it; from then on, those days no longer apply. <a href=\"/legal/cancellation/\">How it works</a>.</p>",
-    "h": "a70a978b825c"
+    "t": "<p>You have {dias} days to change your mind. A personalised piece is made just for you, so it does not have those days. <a href=\"/legal/cancellation/\">How it works</a>.</p>",
+    "h": "719598bf0d6e"
   },
   "faq.quantidade": {
     "t": "Do you take large orders?",
@@ -692,8 +692,8 @@
     "h": "8d81ec9d3150"
   },
   "aviso.personalizada": {
-    "t": "Pieces with a name, date or phrase are made just for you: you can cancel them until we start making them; from then on, the {n}-day right to cancel no longer applies. The legal guarantee still applies.",
-    "h": "9f9fbacfbc05"
+    "t": "Pieces with a name, date or phrase are made just for you, so they do not have the {n}-day right to cancel. The legal guarantee still applies.",
+    "h": "a05f6d51b40a"
   },
   "fabricante.rotulo": {
     "t": "Manufacturer",
@@ -778,8 +778,8 @@
     "h": "ea7b508269d9"
   },
   "retratacao.recebida.devolver": {
-    "t": "If you withdrew in time and have already received the order, send the items back within {n} days of the day you sent your withdrawal (personalised pieces we have already started making are not returned): <a href=\"/legal/cancellation/\">how to return them and how you get your money back</a>.",
-    "h": "383130db83bc"
+    "t": "If you withdrew in time and have already received the order, send the items back within {n} days of the day you sent your withdrawal (personalised pieces are not returned): <a href=\"/legal/cancellation/\">how to return them and how you get your money back</a>.",
+    "h": "eb63d130fe64"
   },
   "retratacao.revenda": {
     "t": "This order was placed as a reseller: the right to cancel does not apply to purchases for resale. We will reply to you by email.",

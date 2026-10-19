@@ -899,10 +899,12 @@ if (titulosPorTraduzir.length) {
      (Reg. (UE) 2023/988, art. 19.º al. a)) e, se a peça se personaliza, o
      aviso de que perde os catorze dias (DL 24/2014, art. 4.º n.º 1 al. p));
    · no cesto: o aviso das personalizadas e a ligação para a garantia;
-   · e esse aviso -- na ficha, no cesto e na linha dos candeeiros -- diz A
-     CIRCUNSTÂNCIA em que o direito se perde (a al. p) pede-a): pode desistir
-     «até começarmos a fazê-la». Um aviso que diga só «não têm os 14 dias»
-     contradiz as condições e o email, que deixam desistir até lá;
+   · e esse aviso -- na ficha, no cesto e na linha dos candeeiros -- diz que
+     as personalizadas NÃO TÊM o direito (a al. p) pede-o). Até 19 out 2026 a
+     loja deixava desistir «até começarmos a fazê-la», e a guarda pedia essa
+     frase; a dona apertou a regra para a da lei (art. 17.º n.º 1 al. c): sem
+     livre resolução desde que a encomenda é paga), e um aviso que ainda
+     prometesse desistir até ao fabrico contradizia as condições e o email;
    · a página do aviso com o ficheiro oficial na língua dela, o texto oficial no
      alt e as duas ligações; a da retratação com o formulário inteiro. */
 {
@@ -916,13 +918,16 @@ if (titulosPorTraduzir.length) {
   const ROTULOS_RETRATAR = ['Retrate-se do contrato aqui', 'Withdraw from contract here'];
   const esc = (x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const ligacao = (caminho) => new RegExp(`href="${esc(BASE)}(?:/[a-z]{2})?(?:/cathelier)?${esc(caminho)}"`);
-  /* A circunstância, por língua. Uma língua nova sem ela pára aqui: é preciso
-     dizer como se escreve «até começarmos a fazê-la» nessa língua. */
-  const CIRCUNSTANCIA = { pt: /até começarmos a fazê-l[ao]s?\b/, en: /until we start making (?:it|them)\b/ };
+  /* O aviso, por língua. Uma língua nova sem ele pára aqui: é preciso dizer
+     como se escreve «não têm os 14 dias» nessa língua. E a regra antiga não
+     pode sobrar em lado nenhum (ANTIGA). */
+  const CIRCUNSTANCIA = { pt: /não t[eê]m? (?:os \d+ dias de livre resolução|direito de livre resolução)|com gravação, não tem\b/, en: /do(?:es)? not have (?:the \d+-day right to cancel|a right to cancel)|none if engraved\b/ };
+  const ANTIGA = /até começarmos a fazê-l|until we start making (?:it|them)\b/;
   const semCircunstancia = (texto, lang) => {
     const re = CIRCUNSTANCIA[lang];
     if (!re) return `não sei conferir a circunstância em «${lang}» -- junte-a a CIRCUNSTANCIA em scripts/check-output.mjs`;
-    return re.test(texto) ? '' : `«${texto.trim().slice(0, 90)}…» não diz até quando se pode desistir (DL 24/2014, art. 4.º n.º 1 al. p))`;
+    if (ANTIGA.test(texto)) return `«${texto.trim().slice(0, 90)}…» ainda promete desistir até ao fabrico (a regra mudou a 19 out 2026)`;
+    return re.test(texto) ? '' : `«${texto.trim().slice(0, 90)}…» não diz que as personalizadas não têm livre resolução (DL 24/2014, art. 4.º n.º 1 al. p))`;
   };
   let fichas = 0;
   for (const f of pages) {

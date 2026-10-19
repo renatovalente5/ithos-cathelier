@@ -135,6 +135,7 @@ function checkProduct(brand, slug, p) {
       }
     }
   }
+  if (p.videoFirst !== undefined && typeof p.videoFirst !== 'boolean') die(`${where}: videoFirst é sim ou não (true/false)`);
   for (const o of p.options || []) {
     if (!o.id || !o.name) die(`${where}: an option has no id or no name`);
     if (o.type === 'choice') {

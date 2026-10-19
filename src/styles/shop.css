@@ -1496,6 +1496,10 @@ html.menu-open { overflow: hidden; }
 .product__blurb { margin-block-start: 1rem; font-size: 15px; line-height: 1.8; color: var(--muted); }
 .product__lead { display: flex; align-items: center; gap: .5rem; }
 .product__lead svg { flex: none; color: var(--accent); }
+/* Na cathelier a linha é uma frase com uma ligação («Precisa para uma data
+   certa? Fale connosco.»): corrida, e não duas colunas de um flex. */
+.product__lead--texto { display: block; }
+.product__lead--texto a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
 /* THE STOCK LINE WAITS FOR THE ANSWER, INVISIBLE AND IN PLACE.
    It is drawn with the slow case ("Out of stock — we make yours"), which is
    true of every lamp and is what a reader without the script keeps. With the

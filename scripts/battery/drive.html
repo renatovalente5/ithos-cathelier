@@ -253,9 +253,6 @@ async function medirDeriva(w, res) {
   if (!res || !res.tudo) return;
   if (!await haQuadros()) return;
   const d = w.document;
-  const card = [...d.querySelectorAll('[data-shots]')]
-    .find((c) => (c.dataset.shots || '').split(',').filter(Boolean).length > 1);
-  if (!card) return;
   if (!w.matchMedia('(hover: hover) and (pointer: fine)').matches) return;
 
   const nota = (ok, o, detalhe = '') => {
@@ -263,6 +260,28 @@ async function medirDeriva(w, res) {
     res.tudo.push(r); res.total = res.tudo.length;
     if (!ok) res.falhas.push(r);
   };
+
+  /* UM CARTÃO COM VÍDEO NÃO RODA AS FOTOGRAFIAS: toca o vídeo (a dona, 18 out
+     2026). A deriva conduz-se num cartão sem vídeo -- com o primeiro da lista,
+     a bateria caiu dez vezes no dia em que a dona juntou um vídeo ao Enfeite
+     de Natal com nome --, e o cartão com vídeo tem a sua pergunta. */
+  const comVideo = d.querySelector('[data-video] .card__frame')?.closest('[data-video]');
+  if (comVideo) {
+    comVideo.dispatchEvent(new w.PointerEvent('pointerenter', { bubbles: true }));
+    await new Promise((r) => setTimeout(r, 2500));
+    const v = comVideo.querySelector('.card__video');
+    nota(v && comVideo.dataset.aTocar === 'yes', 'um cartão com vídeo toca o vídeo ao parar o rato',
+      v ? `readyState ${v.readyState}, ${v.paused ? 'parado' : 'a tocar'}` : 'sem <video>');
+    nota(comVideo.querySelectorAll('.card__frame picture').length === 1, 'e não roda as fotografias por baixo',
+      `${comVideo.querySelectorAll('.card__frame picture').length} camadas`);
+    comVideo.dispatchEvent(new w.PointerEvent('pointerleave', { bubbles: true }));
+    await new Promise((r) => setTimeout(r, 300));
+    nota(!comVideo.dataset.aTocar && (!v || v.paused), 'e pára quando o rato sai');
+  }
+
+  const card = [...d.querySelectorAll('[data-shots]')]
+    .find((c) => !c.dataset.video && (c.dataset.shots || '').split(',').filter(Boolean).length > 1);
+  if (!card) return;
 
   const shots = card.dataset.shots.split(',').filter(Boolean);
   const dir = card.dataset.dir;

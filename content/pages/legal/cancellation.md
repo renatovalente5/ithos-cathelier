@@ -18,15 +18,11 @@ acabar, desistiu a tempo (artigo 11.º do Decreto-Lei n.º 24/2014).
 
 ## O que não se pode devolver
 
-**Peças personalizadas.** Pode desistir de tudo o que é feito segundo as suas
-indicações ou claramente destinado só a si — um nome, uma data, as suas
-palavras gravadas — até começarmos a fazê-lo. A partir daí, deixa de ter o
-direito de livre resolução e a peça não pode ser devolvida: é a alínea c) do
-n.º 1 do artigo 17.º do Decreto-Lei n.º 24/2014. A garantia legal mantém-se.
-
-Começamos a fazer uma peça quando a cortamos ou a gravamos para a sua
-encomenda; preparar o desenho ainda não conta. Num candeeiro em stock, é quando
-o gravamos.
+**Peças personalizadas.** O que é feito segundo as suas indicações ou
+claramente destinado só a si — um nome, uma data, as suas palavras gravadas —
+não tem direito de livre resolução e não pode ser devolvido, a partir do
+momento em que a encomenda é paga: é a alínea c) do n.º 1 do artigo 17.º do
+Decreto-Lei n.º 24/2014. A garantia legal mantém-se.
 
 Escolher entre cores que já oferecemos **não** é personalização. Um candeeiro
 numa cor da nossa lista pode ser devolvido como qualquer outra coisa.

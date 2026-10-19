@@ -33,8 +33,16 @@
     "h": "57f5b5d8da89"
   },
   "encomenda": {
-    "t": "Made to order — with you in {semanas}.",
-    "h": "4bdce3c31fba"
+    "t": "Made to order — with you within {max}.",
+    "h": "4c7cc54ad1e6"
+  },
+  "encomendaPeca": {
+    "t": "Made to order — with you within {max}, usually sooner.",
+    "h": "028b2eb01584"
+  },
+  "dataCerta": {
+    "t": "Need it by a certain date? Talk to us.",
+    "h": "d33567f5ca68"
   },
   "junto": {
     "t": "Everything ships together, when the last piece is ready.",

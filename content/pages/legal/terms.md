@@ -33,14 +33,9 @@ indicadas. Os portes somam-se no pagamento e são mostrados antes de pagar.
 ## Peças personalizadas
 
 Tudo o que leva um nome, uma data ou palavras escolhidas por si é feito só para
-si. Pode desistir de uma peça personalizada até começarmos a fazê-la; a partir
-daí, **deixa de ter o direito de livre resolução** — é a exceção da alínea c)
-do n.º 1 do artigo 17.º do Decreto-Lei n.º 24/2014. A garantia legal
-mantém-se.
-
-Começamos a fazer uma peça quando a cortamos ou a gravamos para a sua
-encomenda; preparar o desenho ainda não conta. Num candeeiro em stock, é quando
-o gravamos.
+si, por isso **não tem direito de livre resolução**, a partir do momento em
+que a encomenda é paga — é a exceção da alínea c) do n.º 1 do artigo 17.º do
+Decreto-Lei n.º 24/2014. A garantia legal mantém-se.
 
 Escolher uma cor que já oferecemos não é personalização, e não lhe tira o
 direito de livre resolução.
@@ -78,8 +73,8 @@ chega-lhe em {{TO_ORDER_WEEKS}}. A página de cada produto e o cesto dizem qual
 está a encomendar, dizemos-lhe antes de receber qualquer pagamento, e a decisão de
 esperar é sua.
 
-**As peças da cathelier** são sempre feitas por encomenda: {{TO_ORDER_WEEKS}},
-a contar da aprovação do desenho.
+**As peças da cathelier** são sempre feitas por encomenda e chegam em até
+{{TO_ORDER_MAX}}, a contar da aprovação do desenho — quase sempre antes.
 
 Se uma coisa numa encomenda for feita por encomenda, a encomenda inteira segue
 junta quando estiver pronta.

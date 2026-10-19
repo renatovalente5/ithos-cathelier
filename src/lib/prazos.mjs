@@ -28,12 +28,26 @@ export function dias(lead) {
   return a === b ? tn('prazos.dias', a) : t('prazos.dias.intervalo', { a, b });
 }
 
+/* «até 4 semanas»: o máximo, que é o que se promete (DL 24/2014, art. 4.º
+   n.º 1 al. g)). A dona, 19 out 2026: as peças pequenas faz-as em dias, mas não
+   pode garantir quantos (férias, por exemplo), e «3 a 4 semanas» dava a
+   entender que demoravam pelo menos 3. A ficha da cathelier junta «quase
+   sempre antes» e um convite a falar com ela para uma data certa; o cesto e os
+   emails dizem só o máximo, porque servem também os candeeiros sem stock. */
+export function ateSemanas(lead) {
+  const b = lead.toOrderWeeks[1];
+  return tn('prazos.semanas', b);
+}
+
 export function prazos(lead) {
   const w = semanas(lead);
+  const max = ateSemanas(lead);
   return {
     stock: t('prazos.stock', { dias: dias(lead) }),
     semStock: t('prazos.semStock', { semanas: w }),
-    encomenda: t('prazos.encomenda', { semanas: w }),
+    encomenda: t('prazos.encomenda', { max }),
+    encomendaPeca: t('prazos.encomendaPeca', { max }),
+    dataCerta: t('prazos.dataCerta'),
     /* Para o cesto, quando a encomenda inteira espera pela peça mais lenta. */
     junto: t('prazos.junto'),
     semanas: w,

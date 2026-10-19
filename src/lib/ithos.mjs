@@ -263,8 +263,12 @@ export function product({ p, all, shop, identity }) {
   const { low, high } = fromPrice(p);
   const photos = p.photos;
   /* Os vídeos vêm depois das fotografias (a dona: «quando tivermos os vídeos
-     aqui no final»). */
+     aqui no final») -- ou antes, com «Mostrar o vídeo primeiro» no painel
+     (`videoFirst`, 19 out 2026: «como se fosse a capa»). */
   const videos = videosDe(p);
+  const primeiro = Boolean(p.videoFirst) && videos.length > 0;
+  const posFoto = (i) => (primeiro ? videos.length + i : i);
+  const posVideo = (k) => (primeiro ? k : p.photos.length + k);
   const dir = `ithos/${p.photoFolder}`;
 
   /* THE FRAME TAKES THE SHAPE OF THIS LAMP'S TALLEST PHOTOGRAPH.
@@ -300,17 +304,19 @@ export function product({ p, all, shop, identity }) {
   <div class="product__gallery">
     <div class="gallery" data-gallery>
       <div class="gallery__track" data-gallery-track>
-        ${photos.map((n, i) => `<div class="gallery__slide" data-index="${i}" style="--focus:${cardFocus(`${dir}/${n}`, shapes[i])}">
+        ${[
+          photos.map((n, i) => `<div class="gallery__slide" data-index="${posFoto(i)}" style="--focus:${cardFocus(`${dir}/${n}`, shapes[i])}">
           ${wholePicture({ key: `${dir}/${n}`, shape: shapes[i],
             alt: t('ithos.ficha.fotoAlt', { nome: p.name, n: i + 1 }),
             widths: rungs(shapes[i].w),
             sizes: '(min-width: 64rem) 560px, 100vw',
-            loading: i === 0 ? 'eager' : 'lazy', fetchpriority: i === 0 ? 'high' : undefined })}
-        </div>`).join('\n        ')}
-        ${videos.map((n, k) => `<div class="gallery__slide gallery__slide--video" data-index="${photos.length + k}">
-          <video class="gallery__video" src="${esc(enderecoDoVideo(p, n))}" poster="${esc(capaDoVideo(p, n))}" muted loop playsinline preload="none" controls
+            loading: posFoto(i) === 0 ? 'eager' : 'lazy', fetchpriority: posFoto(i) === 0 ? 'high' : undefined })}
+        </div>`).join('\n        '),
+          videos.map((n, k) => `<div class="gallery__slide gallery__slide--video" data-index="${posVideo(k)}">
+          <video class="gallery__video" src="${esc(enderecoDoVideo(p, n))}" poster="${esc(capaDoVideo(p, n))}" muted loop playsinline preload="${posVideo(k) === 0 ? 'metadata' : 'none'}" controls
             aria-label="${esc(t('ithos.ficha.video', { nome: p.name, n: k + 1 }))}"></video>
-        </div>`).join('\n        ')}
+        </div>`).join('\n        '),
+        ][primeiro ? 'reverse' : 'slice']().join('\n        ')}
       </div>
       <button class="gallery__open" type="button" data-box-open aria-label="${esc(t('ithos.ficha.ampliar'))}">${icon('search', 18)}</button>
       ${photos.length + videos.length > 1 ? `
@@ -318,14 +324,16 @@ export function product({ p, all, shop, identity }) {
       <button class="gallery__arrow gallery__arrow--next" type="button" data-gallery-next aria-label="${esc(t('ithos.ficha.seguinte'))}">${icon('arrowRight', 20)}</button>` : ''}
     </div>
     ${photos.length + videos.length > 1 ? `<div class="gallery__thumbs" role="tablist" aria-label="${esc(t('ithos.ficha.fotografias'))}">
-      ${photos.map((n, i) => `<button class="frame gallery__thumb" type="button" role="tab"
-        data-gallery-go="${i}" aria-selected="${i === 0}" aria-label="${esc(t('ithos.ficha.foto', { n: i + 1 }))}">
+      ${[
+        photos.map((n, i) => `<button class="frame gallery__thumb" type="button" role="tab"
+        data-gallery-go="${posFoto(i)}" aria-selected="${posFoto(i) === 0}" aria-label="${esc(t('ithos.ficha.foto', { n: i + 1 }))}">
         ${picture({ dir, name: n, alt: '', sizes: '84px', widths: [200, 400] })}
-      </button>`).join('\n      ')}
-      ${videos.map((n, k) => `<button class="frame gallery__thumb gallery__thumb--video" type="button" role="tab"
-        data-gallery-go="${photos.length + k}" aria-selected="false" aria-label="${esc(t('ithos.ficha.videoMiniatura', { n: k + 1 }))}">
+      </button>`).join('\n      '),
+        videos.map((n, k) => `<button class="frame gallery__thumb gallery__thumb--video" type="button" role="tab"
+        data-gallery-go="${posVideo(k)}" aria-selected="${posVideo(k) === 0}" aria-label="${esc(t('ithos.ficha.videoMiniatura', { n: k + 1 }))}">
         <img src="${esc(capaDoVideo(p, n))}" alt="" width="84" height="112" loading="lazy" decoding="async">${icon('play', 18)}
-      </button>`).join('\n      ')}
+      </button>`).join('\n      '),
+      ][primeiro ? 'reverse' : 'slice']().join('\n      ')}
     </div>` : ''}
   </div>
 
