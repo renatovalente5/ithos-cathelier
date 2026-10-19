@@ -1,5 +1,5 @@
 {
-  "name": "Caneca ou boneco de gengibre com nome",
+  "name": "Taças de gengibre e marshmallow ",
   "price": 5,
   "published": true,
   "featured": false,
@@ -13,13 +13,13 @@
   "text": "A caneca de chocolate quente ou o boneco de gengibre, com o nome gravado.",
   "photoFolder": "cocoa-ornament",
   "photos": [
+    "05",
     "01",
     "02",
     "03",
-    "04",
-    "05"
+    "04"
   ],
-  "cover": "01",
+  "cover": "05",
   "options": [
     {
       "id": "shape",
