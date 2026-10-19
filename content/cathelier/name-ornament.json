@@ -1,6 +1,6 @@
 {
-  "name": "Enfeite de Natal com nome",
-  "price": 4.5,
+  "name": "Bola de Natal personalizada",
+  "price": 4,
   "published": true,
   "featured": false,
   "order": 10,
@@ -9,8 +9,8 @@
   "alsoIn": [
     "hanging"
   ],
-  "summary": "Um para cada pessoa da casa, com o nome gravado.",
-  "text": "Um para cada pessoa da casa, com o nome gravado.",
+  "summary": "Bola de Natal personalizada - inicial acrílico e nome gravado a laser",
+  "text": "Bola de Natal em contraplacado, personalizada com inicial em acrílico e gravação de nome, ideal para encher a arvore de Natal com memórias únicas e especiais.  ",
   "photoFolder": "name-ornament",
   "photos": [
     "01",
