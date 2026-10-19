@@ -11,6 +11,34 @@
     "t": "A delicate plywood Christmas piece, decorated with personalised mini golden acrylic baubles featuring each family member's name and the family name laser-engraved, where every detail celebrates the beauty of the bonds that unite us.",
     "h": "e440035e5245"
   },
+  "options.people.name": {
+    "t": "How many people",
+    "h": "dae7a0fb83d0"
+  },
+  "options.people.help": {
+    "t": "More than 8? Contact us: we can make a larger ball so everyone fits.",
+    "h": "6384abfd1f0e"
+  },
+  "options.people.values.ate-4.name": {
+    "t": "Up to 4 people",
+    "h": "9f96e81303f6"
+  },
+  "options.people.values.cinco.name": {
+    "t": "5 people",
+    "h": "4187e614ef67"
+  },
+  "options.people.values.seis.name": {
+    "t": "6 people",
+    "h": "d31c4583259a"
+  },
+  "options.people.values.sete.name": {
+    "t": "7 people",
+    "h": "9988d0001a48"
+  },
+  "options.people.values.oito.name": {
+    "t": "8 people",
+    "h": "37c17c104c6d"
+  },
   "options.family.name": {
     "t": "Family",
     "h": "2210ffa66807"

@@ -8,40 +8,48 @@
     "h": "65a7a3dc4b48"
   },
   "text": {
-    "t": "More than just simple ornaments, these are 12 wishes filled with love, hope, and magic to brighten your Christmas.\nEach bauble, made of white lacquered MDF and delicately laser-cut, holds a special message to remind us of what truly matters: love, family, friendship, peace, joy, harmony, faith, and the passion of being together.\nA set created with care to decorate your Christmas tree and fill every home with tenderness, togetherness, and unforgettable moments.",
-    "h": "6e6a83199435"
+    "t": "More than just simple ornaments, these are 12 wishes filled with love, hope and magic to light up Christmas.\nEach ball, made of white lacquered MDF and delicately cut, holds a special message to remind us of what truly matters: love, family, friendship, peace, joy, harmony, faith, love, and the passion of being together.\nA set created with care to decorate the Christmas tree and fill every home with tenderness, togetherness and unforgettable moments.\nThe set of 12 is sold with a sleigh ball featuring the family name included, or each ball can be purchased individually.",
+    "h": "2c77eb2eb9c4"
   },
-  "options.design.name": {
-    "t": "Design",
-    "h": "244c968a7a0b"
+  "options.escolha.name": {
+    "t": "What's included",
+    "h": "f00a957b6f2d"
   },
-  "options.design.values.angel.name": {
+  "options.escolha.values.conjunto.name": {
+    "t": "Set of 12, with the sleigh ball included",
+    "h": "baf4af2678b2"
+  },
+  "options.escolha.values.angel.name": {
     "t": "Angel",
     "h": "862ceef88828"
   },
-  "options.design.values.snowflake.name": {
+  "options.escolha.values.snowflake.name": {
     "t": "Snowflake",
     "h": "68b81553d28d"
   },
-  "options.design.values.candy-cane.name": {
+  "options.escolha.values.candy-cane.name": {
     "t": "Candy cane",
     "h": "4d55f6506176"
   },
-  "options.design.values.holly.name": {
+  "options.escolha.values.holly.name": {
     "t": "Holly",
     "h": "1e0044d303a7"
   },
-  "options.design.values.feliz-natal.name": {
+  "options.escolha.values.feliz-natal.name": {
     "t": "Merry Christmas",
     "h": "427681111a37"
   },
-  "options.word.name": {
-    "t": "Word on the tag",
-    "h": "af12061779d8"
+  "options.family.name": {
+    "t": "Family name (set only)",
+    "h": "719c014f9afc"
   },
-  "options.word.example": {
-    "t": "Harmony",
-    "h": "2b03a7caece8"
+  "options.family.help": {
+    "t": "Will be engraved on the sleigh ball, included with the set of 12.",
+    "h": "53118cafc527"
+  },
+  "options.family.example": {
+    "t": "Simão Family",
+    "h": "c28882c81579"
   },
   "gpsr.warnings.0": {
     "t": "This is an ornament and not a toy: hang it out of reach of young children, who may put it in their mouths.",
