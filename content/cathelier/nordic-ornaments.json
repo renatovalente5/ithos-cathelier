@@ -1,6 +1,6 @@
 {
   "name": "Conjunto de 6 símbolos de Natal",
-  "price": 10,
+  "price": 2,
   "published": true,
   "featured": false,
   "order": 130,
@@ -8,7 +8,7 @@
   "occasion": "christmas",
   "alsoIn": [],
   "summary": "Floco de neve, luva, casinha, sino ou bola, gravados com padrões nórdicos.",
-  "text": "Um conjunto encantador de seis símbolos de Natal em contraplacado, gravados a laser com delicadeza: um coração, uma casinha de gengibre, um sino, uma luva, uma bola e um floco de neve.\nCada peça é acompanhada por um fio decorativo em branco e vermelho, finalizado com um delicado laço, que acrescenta um toque clássico e elegante.\nPerfeitos para decorar a árvore de Natal com charme, simplicidade e a magia dos pequenos detalhes que tornam esta época tão especial.",
+  "text": "Um conjunto encantador de seis símbolos de Natal em contraplacado, gravados a laser com delicadeza: um coração, uma casinha de gengibre, um sino, uma luva, uma bola e um floco de neve.\nCada peça é acompanhada por um fio decorativo em branco e vermelho, finalizado com um delicado laço, que acrescenta um toque clássico e elegante.\nPerfeitos para decorar a árvore de Natal com charme, simplicidade e a magia dos pequenos detalhes que tornam esta época tão especial.\nVende-se o conjunto dos seis, ou cada símbolo à unidade.",
   "photoFolder": "nordic-ornaments",
   "photos": [
     "01",
@@ -21,11 +21,21 @@
   "options": [
     {
       "id": "shape",
-      "name": "Forma",
+      "name": "O que leva",
       "type": "choice",
       "required": true,
       "personalises": false,
       "values": [
+        {
+          "id": "conjunto",
+          "name": "O conjunto dos 6 símbolos",
+          "extra": 8
+        },
+        {
+          "id": "heart",
+          "name": "Coração",
+          "extra": 0
+        },
         {
           "id": "snowflake",
           "name": "Floco de neve",

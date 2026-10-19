@@ -9,38 +9,16 @@
   "alsoIn": [
     "wall-decor"
   ],
-  "summary": "Uma nuvem com o nome e tudo sobre o dia em que chegou — sozinha ou com peças penduradas por baixo.",
-  "text": "Uma nuvem com o nome e tudo sobre o dia em que chegou — sozinha ou com peças penduradas por baixo.",
+  "summary": "Uma nuvem com o nome e tudo sobre o dia em que chegou.",
+  "text": "Uma nuvem com o nome e tudo sobre o dia em que chegou.",
   "photoFolder": "birth-cloud",
   "photos": [
     "01",
-    "04",
     "02",
-    "03",
-    "05",
-    "06"
+    "03"
   ],
   "cover": "01",
   "options": [
-    {
-      "id": "model",
-      "name": "Modelo",
-      "type": "choice",
-      "required": true,
-      "personalises": false,
-      "values": [
-        {
-          "id": "cloud",
-          "name": "Só a nuvem",
-          "extra": 0
-        },
-        {
-          "id": "mobile",
-          "name": "Com peças penduradas por baixo",
-          "extra": 4
-        }
-      ]
-    },
     {
       "id": "name",
       "name": "Nome",

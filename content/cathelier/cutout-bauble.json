@@ -1,6 +1,6 @@
 {
   "name": "Conjunto 12 desejos de Natal",
-  "price": 18,
+  "price": 1.8,
   "published": true,
   "featured": true,
   "order": 110,
@@ -8,24 +8,33 @@
   "occasion": "christmas",
   "alsoIn": [],
   "summary": "Conjunto de 12 bolas decorativas com mensagens personalizadas que correspondem aos 12 desejos de Natal.",
-  "text": "Mais do que simples enfeites, são 12 desejos cheios de amor, esperança e magia para iluminar o Natal.\nCada bola, em MDF lacado a branco e delicadamente recortada, guarda uma mensagem especial para nos lembrar do que realmente importa: o amor, a família, a amizade, a paz, a alegria, a harmonia, a fé, o amor, a paixão  de estarmos juntos.\nUm conjunto criado com carinho para decorar a árvore de Natal e encher cada lar de ternura, união e momentos inesquecíveis. ",
+  "text": "Mais do que simples enfeites, são 12 desejos cheios de amor, esperança e magia para iluminar o Natal.\nCada bola, em MDF lacado a branco e delicadamente recortada, guarda uma mensagem especial para nos lembrar do que realmente importa: o amor, a família, a amizade, a paz, a alegria, a harmonia, a fé, o amor, a paixão  de estarmos juntos.\nUm conjunto criado com carinho para decorar a árvore de Natal e encher cada lar de ternura, união e momentos inesquecíveis.\nVende-se o conjunto dos 12, com uma bola do trenó com o nome da família oferecida, ou cada bola à unidade.",
   "photoFolder": "cutout-bauble",
   "photos": [
     "01",
     "05",
     "04",
     "02",
-    "03"
+    "03",
+    "06",
+    "07",
+    "08",
+    "09"
   ],
   "cover": "01",
   "options": [
     {
-      "id": "design",
-      "name": "Desenho",
+      "id": "escolha",
+      "name": "O que leva",
       "type": "choice",
       "required": true,
       "personalises": false,
       "values": [
+        {
+          "id": "conjunto",
+          "name": "Conjunto dos 12, com a bola do trenó oferecida",
+          "extra": 16.2
+        },
         {
           "id": "angel",
           "name": "Anjo",
@@ -54,14 +63,15 @@
       ]
     },
     {
-      "id": "word",
-      "name": "Palavra da etiqueta",
+      "id": "family",
+      "name": "Nome da família (só no conjunto)",
       "type": "text",
-      "required": true,
+      "required": false,
       "personalises": true,
-      "max": 14,
+      "max": 40,
       "extra": 0,
-      "example": "Harmonia"
+      "example": "Família Simão",
+      "help": "Vai gravado na bola do trenó, oferecida com o conjunto dos 12."
     }
   ],
   "gpsr": {
@@ -77,5 +87,6 @@
   },
   "videos": [
     "vmvfuta6eg5.mp4"
-  ]
+  ],
+  "videoFirst": true
 }

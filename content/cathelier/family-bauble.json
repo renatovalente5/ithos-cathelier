@@ -21,6 +21,41 @@
   "cover": "04",
   "options": [
     {
+      "id": "people",
+      "name": "Quantas pessoas",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "values": [
+        {
+          "id": "ate-4",
+          "name": "Até 4 pessoas",
+          "extra": 0
+        },
+        {
+          "id": "cinco",
+          "name": "5 pessoas",
+          "extra": 0.5
+        },
+        {
+          "id": "seis",
+          "name": "6 pessoas",
+          "extra": 1
+        },
+        {
+          "id": "sete",
+          "name": "7 pessoas",
+          "extra": 1.5
+        },
+        {
+          "id": "oito",
+          "name": "8 pessoas",
+          "extra": 2
+        }
+      ],
+      "help": "Mais de 8? Fale connosco: fazemos a bola maior, para caberem todos."
+    },
+    {
       "id": "family",
       "name": "Família",
       "type": "text",

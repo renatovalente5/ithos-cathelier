@@ -561,9 +561,12 @@ html[data-scrolled='no'] .head {
 
 @media (width >= 48rem) {
   .card__thumbs { --shot-size: 48px; }
-  .card__thumbs.ready { gap: 6px; margin-block-start: 10px; }
-  /* Aqui encolhem, mas nunca abaixo do alvo de toque. */
-  .card__thumb { flex: 0 1 var(--shot-size); min-width: 26px; }
+  /* Encolhem, mas nunca abaixo do alvo de toque; e quando nem assim cabem
+     (o Conjunto 12 desejos, 19 out 2026, com nove fotografias), a tira rola,
+     como no telemóvel, em vez de as miniaturas saírem do cartão. */
+  .card__thumbs.ready { gap: 6px; margin-block-start: 10px; overflow-x: auto; overflow-y: hidden; scrollbar-width: none; }
+  .card__thumbs.ready::-webkit-scrollbar { display: none; }
+  .card__thumb { flex: 0 1 var(--shot-size); min-width: 26px; outline-offset: -2px; }
 }
 
 .card__swatches { display: flex; flex-wrap: wrap; gap: 6px; margin-block-start: 12px; }
