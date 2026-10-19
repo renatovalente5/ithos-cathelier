@@ -468,6 +468,11 @@ function assets() {
     '/assets/fonts/*', '  Cache-Control: public, max-age=86400',
     '/*', '  X-Content-Type-Options: nosniff', '  X-Frame-Options: SAMEORIGIN',
     "  Content-Security-Policy: frame-ancestors 'self'",
+    /* COM A LOJA ABERTA, HSTS: o browser passa a ir sempre por HTTPS, mesmo
+       quando alguém escreve o endereço sem ele. Curto no início (um dia), como
+       se recomenda: se alguma coisa do domínio precisar de HTTP, não fica
+       presa durante meses. Sobe-se depois de umas semanas sem problemas. */
+    ...(PREVIEW ? [] : ['  Strict-Transport-Security: max-age=86400']),
     '',
   ].join('\n'));
 }

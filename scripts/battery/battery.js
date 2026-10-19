@@ -325,9 +325,16 @@ window.__bateria = function () {
           O chão mais claro possível é branco, e nada é mais claro do que
           branco -- por isso este número não depende desta fotografia nem
           deste filme, e continua verdadeiro quando a dona os trocar. */
+    /* TEXTO GRANDE PEDE 3:1 (WCAG 1.4.3): 24px, ou 18,66px a negrito. É a
+       mesma fasquia do guards.mjs desde que a barra saiu de cima da capa (19
+       out 2026) e no véu ficou só o título -- e é o tamanho que o browser
+       desenha agora que decide, não um número copiado do CSS. */
+    const est = getComputedStyle(titulo);
+    const grande = parseFloat(est.fontSize) >= 24 || (parseFloat(est.fontSize) >= 18.66 && Number(est.fontWeight) >= 700);
+    const minimo = grande ? 3 : 4.5;
     const limite = razao(tinta, `rgb(${rgbDe(corDoVeu, 'rgb(255,255,255)').join(',')})`);
-    nota(limite >= 4.5, 'contraste da capa sobre o quadro mais claro que pode existir',
-      `${limite.toFixed(2)}:1 com o véu sobre branco (min 4.5)`);
+    nota(limite >= minimo, 'contraste da capa sobre o quadro mais claro que pode existir',
+      `${limite.toFixed(2)}:1 com o véu sobre branco (min ${minimo}${grande ? ', título grande' : ''})`);
 
     /* 2. E a fotografia que lá está agora, medida a sério, que é sempre
           melhor do que o limite mas diz quanta folga há. */
@@ -367,8 +374,8 @@ window.__bateria = function () {
       } catch (e) {
         pior = NaN; onde = String(e.message || e);
       }
-      nota(pior >= 4.5, 'contraste da capa sobre a fotografia',
-        Number.isFinite(pior) ? `pior pixel ${pior.toFixed(2)}:1 sobre ${onde} (min 4.5)` : onde);
+      nota(pior >= minimo, 'contraste da capa sobre a fotografia',
+        Number.isFinite(pior) ? `pior pixel ${pior.toFixed(2)}:1 sobre ${onde} (min ${minimo})` : onde);
     }
 
     /* 3. A BARRA, QUE NO TOPO ESTÁ EM CIMA DA CAPA E NÃO TEM CHÃO PRÓPRIO.
@@ -377,7 +384,16 @@ window.__bateria = function () {
           são lidas contra o véu, exactamente como o título. Medir o fundo
           declarado da barra daria um ✓ sobre um fundo que ali não existe. */
     const barra = document.querySelector('.head');
-    if (barra) {
+    /* DESDE 19 OUT 2026 A BARRA NÃO FICA EM CIMA DA CAPA: a capa começa por
+       baixo dela, e no topo o que está por trás da barra transparente é o
+       fundo da página. Mede-se então se ela está mesmo fora da capa; se um
+       dia voltar a ficar por cima, a medição de baixo volta a contar. */
+    const capaBox = capa.getBoundingClientRect();
+    const barraBox = barra ? barra.getBoundingClientRect() : null;
+    const barraEmCima = barraBox && barraBox.bottom > capaBox.top + 1;
+    if (barra && !barraEmCima) {
+      nota(true, 'contraste da barra enquanto flutua sobre a capa', 'a barra não está por cima da capa (a capa começa por baixo dela)');
+    } else if (barra) {
       const antes = document.documentElement.dataset.scrolled;
       document.documentElement.dataset.scrolled = 'no';
       const fundoBarra = getComputedStyle(barra).backgroundColor;
@@ -592,7 +608,11 @@ window.__bateria = function () {
       const largo = matchMedia('(width >= 48rem)').matches;
       // Limite dos DOIS lados: um painel de 80px passaria num teste que só
       // perguntasse «menos de metade», e não seria um menu.
-      nota(largo ? (r.width < vw * 0.5 && r.width > 300) : (r.width >= vw - 1),
+      /* No telemóvel, até 16px a menos: um browser de computador sem rato
+         táctil (o da bateria automática) tem a barra de rolamento clássica de
+         15px, e o painel, a 100% da área, fica com 375 de 390. Num telemóvel
+         a barra sobrepõe-se e o painel mede a janela inteira. */
+      nota(largo ? (r.width < vw * 0.5 && r.width > 300) : (r.width >= vw - 16),
         largo ? 'num ecrã grande o menu ocupa só um bocado' : 'num telemóvel o menu ocupa o ecrã',
         `${Math.round(r.width)}px de ${vw}px (${(r.width / vw * 100).toFixed(1)}%)`);
 
