@@ -1,16 +1,14 @@
 {
-  "name": "Globo de neve com fotografia",
-  "price": 9.5,
+  "name": "Globo de neve com fotografia e mensagem",
+  "price": 8,
   "published": true,
-  "featured": false,
+  "featured": true,
   "order": 40,
   "made": "to_order",
   "occasion": "christmas",
-  "alsoIn": [
-    "hanging"
-  ],
-  "summary": "Um globo de neve em madeira com a vossa fotografia e um nome na base.",
-  "text": "Um globo de neve em madeira com a vossa fotografia e um nome na base.",
+  "alsoIn": [],
+  "summary": "Globo de neve em contraplacado com fotografia e mensagem personalizada em acrílico dourado. ",
+  "text": "Globo de Neve Personalizado com Fotografia, uma peça decorativa em contraplacado, personalizada com uma fotografia especial e uma mensagem em placa de acrílico dourado. Com fita decorativa em veludo ou tecido aos xadrez e um delicado guizo, é uma lembrança única e cheia de encanto, perfeita para celebrar o Natal e guardar os momentos mais especiais em família.",
   "photoFolder": "snow-globe-photo",
   "photos": [
     "03",
@@ -41,5 +39,8 @@
   "seo": {
     "title": "",
     "description": ""
-  }
+  },
+  "videos": [
+    "vmvftwv34az.mp4"
+  ]
 }
