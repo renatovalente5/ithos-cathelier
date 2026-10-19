@@ -2,22 +2,20 @@
   "name": "Bola vazada com etiqueta",
   "price": 5,
   "published": true,
-  "featured": false,
+  "featured": true,
   "order": 110,
   "made": "to_order",
   "occasion": "christmas",
-  "alsoIn": [
-    "hanging"
-  ],
+  "alsoIn": [],
   "summary": "Uma bola recortada com um desenho de Natal e uma palavra na etiqueta.",
   "text": "Uma bola recortada com um desenho de Natal e uma palavra na etiqueta.",
   "photoFolder": "cutout-bauble",
   "photos": [
     "01",
-    "02",
-    "03",
+    "05",
     "04",
-    "05"
+    "02",
+    "03"
   ],
   "cover": "01",
   "options": [
