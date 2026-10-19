@@ -129,7 +129,7 @@ function lerNaLingua(p) {
   return r.obj;
 }
 const read = (p) => lerNaLingua(p);
-let identity; let shipping; let shop; let covers;
+let identity; let shipping; let shop; let covers; let dona;
 
 /* Which cover renditions actually exist, counted off disk rather than assumed.
    The cathelier master is an enlarged Instagram still and stops short of the
@@ -180,6 +180,7 @@ function prepararLingua(l) {
   shipping = read('settings/shipping.json');
   shop = read('settings/shop.json');
   covers = read('settings/covers.json');
+  dona = read('settings/oficina.json');
   lamps = loadProducts('ithos');
   pieces = loadProducts('cathelier');
   /* SÓ OS QUE SE VÊEM: publicados E com pelo menos uma peça à venda
@@ -580,7 +581,7 @@ function buildIthos() {
        partilha «o site» (ithos-cathelier.pt), e o domínio é das duas. */
     partilha: 'ithos-cathelier',
     cover: true,
-    body: ithos.home({ products: lamps, identity, cover: covers.ithos, coverArt: coverArt('ithos') }),
+    body: ithos.home({ products: lamps, identity, cover: covers.ithos, coverArt: coverArt('ithos'), dona }),
     schema: [{
       '@context': 'https://schema.org', '@type': 'Organization',
       name: 'ithos', url: prefixoDe() ? `${SITE}${prefixoDe()}/` : SITE, email: identity.email, telephone: identity.phone,
@@ -775,7 +776,7 @@ function mirror(path, { title, description, crumbs, body, schema = [], noindex =
 function buildShared() {
   prose('/about/', 'about.md', { title: t('build.oficina.titulo'), crumbs: [{ name: t('build.migalha.inicio'), href: '/' }, { name: t('build.migalha.oficina') }],
     description: t('build.oficina.descricao'),
-    bloco: `<div class="frame oficina__foto">${picture({ dir: 'ithos/oficina', name: fotosDaDona.sobre, alt: t('build.oficina.foto'), sizes: '(min-width: 40rem) 22rem, 100vw' })}</div>` });
+    bloco: `<div class="frame oficina__foto">${picture({ dir: 'ithos/oficina', name: fotosDaDona.sobre, alt: dona?.textos?.fotoSobre || t('build.oficina.foto'), sizes: '(min-width: 40rem) 22rem, 100vw' })}</div>` });
 
   prose('/cathelier/about/', 'cathelier/about.md', { brand: 'cathelier',
     title: t('build.oficinaCath.titulo'), crumbs: [{ name: 'cathelier', href: '/cathelier/' }, { name: t('build.migalha.oficina') }],

@@ -166,7 +166,12 @@ export function card(p, { eager = false } = {}) {
 </article>`;
 }
 
-export function home({ products, identity, cover: coverText, coverArt }) {
+export function home({ products, identity, cover: coverText, coverArt, dona }) {
+  /* O bloco «Olá» escreve-o a dona no painel (content/settings/oficina.json,
+     «textos»); sem o ficheiro, as frases de origem. */
+  const ola = dona?.textos ?? {};
+  const paragrafos = String(ola.texto || `${t('ithos.inicio.apresentacao')}\n\n${t('ithos.inicio.convite')}`)
+    .split(/\n\s*\n/).map((x) => x.trim()).filter(Boolean);
   /* "Bestsellers" and not "Favourites", at the owner's request. Worth knowing
      what changed with the word: a favourite is the shop's own opinion and owes
      nobody evidence, while a bestseller is a claim about what actually sells.
@@ -193,10 +198,9 @@ ${cover(coverText, 'ithos', coverArt)}
   <div class="shell">
     <div class="maker">
       <div class="maker__text">
-        <h2>${esc(t('ithos.inicio.ola'))}</h2>
-        <p>${esc(t('ithos.inicio.apresentacao'))}</p>
-        <p>${esc(t('ithos.inicio.convite'))}</p>
-        <p class="maker__sign">Cathia</p>
+        <h2>${esc(ola.titulo || t('ithos.inicio.ola'))}</h2>
+        ${paragrafos.map((x) => `<p>${esc(x)}</p>`).join('\n        ')}
+        ${ola.assinatura === '' ? '' : `<p class="maker__sign">${esc(ola.assinatura || 'Cathia')}</p>`}
       </div>
       <div class="frame maker__photo maker__photo--retrato">
         ${picture({
@@ -204,7 +208,7 @@ ${cover(coverText, 'ithos', coverArt)}
              outubro de 2026). Qual é diz-o o painel: ver oficina.mjs. */
           dir: 'ithos/oficina',
           name: fotosDaDona.inicio,
-          alt: t('ithos.inicio.fotoOficina'),
+          alt: ola.fotoInicio || t('ithos.inicio.fotoOficina'),
           sizes: '(min-width: 56rem) 45vw, 100vw',
         })}
       </div>

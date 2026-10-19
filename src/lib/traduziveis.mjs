@@ -64,6 +64,10 @@ export function campos(caminhoDoFicheiro, obj) {
   } else if (c === 'settings/shipping.json') {
     for (const z of obj.zones ?? []) juntar(`zones.${z.id}.name`, z.name);
     juntar('campaign.title', obj.campaign?.title);
+  } else if (c === 'settings/oficina.json') {
+    /* O bloco «Olá» e as descrições das fotografias da dona. A assinatura é um
+       nome e não se traduz. */
+    for (const k of ['titulo', 'texto', 'fotoInicio', 'fotoSobre']) juntar(`textos.${k}`, obj.textos?.[k]);
   } else if (c === 'settings/identity.json') {
     juntar('legalForm', obj.legalForm);
     juntar('country', obj.country);

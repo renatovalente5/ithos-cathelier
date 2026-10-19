@@ -1344,6 +1344,10 @@ for (const [o, n] of esgotados) {
   try { s = JSON.parse(readFileSync(f, 'utf8')); } catch { die('content/settings/oficina.json falta ou não é JSON — diz quais são as fotografias da dona (src/lib/oficina.mjs)'); }
   if (s) {
     if (s.photoFolder !== 'oficina') die('content/settings/oficina.json: photoFolder tem de ser «oficina»');
+    for (const [k, max] of [['titulo', 60], ['texto', 1200], ['assinatura', 40], ['fotoInicio', 200], ['fotoSobre', 200]]) {
+      const v = s.textos?.[k];
+      if (v !== undefined && (typeof v !== 'string' || v.length > max)) die(`content/settings/oficina.json: textos.${k} tem de ser um texto até ${max} caracteres`);
+    }
     if (!Array.isArray(s.photos) || s.photos.length !== 2) die('content/settings/oficina.json: photos tem de ter duas fotografias (a da página inicial e a da página Sobre)');
     else {
       for (const n of s.photos) {

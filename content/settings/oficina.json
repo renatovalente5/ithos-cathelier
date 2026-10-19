@@ -1,8 +1,15 @@
 {
-  "_note": "As fotografias da dona, em photos/ithos/oficina: a primeira é a do bloco «Olá» da página inicial da ithos, a segunda a da página Sobre. Troca-as no painel, em Loja → As tuas fotografias.",
+  "_note": "As fotografias e os textos da dona: a primeira fotografia é a do bloco «Olá» da página inicial da ithos, a segunda a da página Sobre; «textos» são as palavras desse bloco (o texto, com uma linha em branco entre parágrafos) e as descrições das duas fotografias. Troca-se tudo no painel, em Páginas iniciais → As suas fotografias.",
   "photoFolder": "oficina",
   "photos": [
     "fmve3nyra6n",
     "fmve3pkzyvf"
-  ]
+  ],
+  "textos": {
+    "titulo": "Olá",
+    "texto": "Que bom que está aqui. Somos um pequeno ateliê familiar em Castelo Branco, onde fazemos à mão, um a um, candeeiros de presença em madeira para quartos de criança.\n\nEspreite à vontade. Esperamos que encontre por cá alguma coisa que lhe roube o coração.",
+    "assinatura": "Cathia",
+    "fotoInicio": "A Cathia no ateliê, com um mocho de madeira nas mãos",
+    "fotoSobre": "A Cathia a rir, com uma fada de madeira nas mãos"
+  }
 }
