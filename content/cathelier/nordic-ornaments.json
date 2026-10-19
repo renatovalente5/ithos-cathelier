@@ -1,16 +1,14 @@
 {
-  "name": "Enfeites nórdicos",
-  "price": 4,
+  "name": "Conjunto de 6 símbolos de Natal",
+  "price": 10,
   "published": true,
   "featured": false,
   "order": 130,
   "made": "to_order",
   "occasion": "christmas",
-  "alsoIn": [
-    "hanging"
-  ],
+  "alsoIn": [],
   "summary": "Floco de neve, luva, casinha, sino ou bola, gravados com padrões nórdicos.",
-  "text": "Floco de neve, luva, casinha, sino ou bola, gravados com padrões nórdicos.",
+  "text": "Um conjunto encantador de seis símbolos de Natal em contraplacado, gravados a laser com delicadeza: um coração, uma casinha de gengibre, um sino, uma luva, uma bola e um floco de neve.\nCada peça é acompanhada por um fio decorativo em branco e vermelho, finalizado com um delicado laço, que acrescenta um toque clássico e elegante.\nPerfeitos para decorar a árvore de Natal com charme, simplicidade e a magia dos pequenos detalhes que tornam esta época tão especial.",
   "photoFolder": "nordic-ornaments",
   "photos": [
     "01",
