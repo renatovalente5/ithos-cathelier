@@ -8,12 +8,20 @@
     "h": "5d08e8b95eb8"
   },
   "text": {
-    "t": "An enchanting set of six Christmas symbols in plywood, delicately laser-engraved: a heart, a gingerbread house, a bell, a mitten, a bauble, and a snowflake.\nEach piece comes with a red and white decorative string, finished with a delicate bow, adding a classic and elegant touch.\nPerfect for decorating your Christmas tree with charm, simplicity, and the magic of the small details that make this season so special.",
-    "h": "cdde22e5ac0d"
+    "t": "An enchanting set of six plywood Christmas symbols, delicately laser-engraved: a heart, a gingerbread house, a bell, a mitten, a bauble, and a snowflake.\nEach piece comes with a red and white decorative string, finished with a delicate bow, adding a classic and elegant touch.\nPerfect for decorating your Christmas tree with charm, simplicity, and the magic of the small details that make this season so special.\nThe set of six is sold together, or you can purchase each symbol individually.",
+    "h": "04ffc63d8694"
   },
   "options.shape.name": {
-    "t": "Shape",
-    "h": "735c9686fc93"
+    "t": "What's included",
+    "h": "f00a957b6f2d"
+  },
+  "options.shape.values.conjunto.name": {
+    "t": "The set of 6 symbols",
+    "h": "684c55dd0689"
+  },
+  "options.shape.values.heart.name": {
+    "t": "Heart",
+    "h": "ad80e2c3135e"
   },
   "options.shape.values.snowflake.name": {
     "t": "Snowflake",
