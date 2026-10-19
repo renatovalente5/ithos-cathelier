@@ -6,18 +6,16 @@
   "order": 30,
   "made": "to_order",
   "occasion": "christmas",
-  "alsoIn": [
-    "hanging"
-  ],
+  "alsoIn": [],
   "summary": "O trenó a voar dentro de uma bola, com um nome e uma palavra na etiqueta.",
   "text": "O trenó a voar dentro de uma bola, com um nome e uma palavra na etiqueta.",
   "photoFolder": "sleigh-bauble",
   "photos": [
-    "01",
     "02",
+    "05",
+    "01",
     "03",
-    "04",
-    "05"
+    "04"
   ],
   "cover": "01",
   "options": [
