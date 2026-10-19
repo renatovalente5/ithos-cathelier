@@ -2,7 +2,7 @@
   "name": "Bola de Natal (inicial acrílico)",
   "price": 4,
   "published": true,
-  "featured": false,
+  "featured": true,
   "order": 10,
   "made": "to_order",
   "occasion": "christmas",
