@@ -10,7 +10,9 @@
     "film": "ithos-capa",
     "focus": "50% 50%",
     "focusWide": "50% 50%",
-    "veil": 0.56
+    "veil": 0.44,
+    "foto": "ithos-foto",
+    "mostrar": "foto"
   },
   "cathelier": {
     "title": "Lembranças únicas, pequenos detalhes, momentos inesquecíveis",
@@ -20,6 +22,9 @@
     "film": "cathelier-capa",
     "focus": "50% 50%",
     "focusWide": "50% 50%",
-    "veil": 0.56
-  }
+    "veil": 0.44,
+    "foto": "cathelier-foto",
+    "mostrar": "foto"
+  },
+  "_note_foto": "\"foto\" é um par de imagens paradas em photos/_covers (<foto>-still.jpg, alta 2:3, e <foto>-still-wide.jpg, larga 16:9), e \"mostrar\": \"foto\" põe-nas na capa no lugar do filme; \"filme\" volta ao filme. Escolhe-se no painel, em Páginas iniciais."
 }

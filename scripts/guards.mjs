@@ -377,6 +377,13 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
        that is a wasted request on the busiest page of the site. Both cuts are
        required, because the page asks for one or the other at every width and
        neither is a fallback for the other. */
+    /* A FOTOGRAFIA NO LUGAR DO FILME (o painel escolhe): "mostrar" é "filme"
+       ou "foto", e "foto" só se pode escolher com o par de imagens nomeado. */
+    if (c.mostrar !== undefined && !['filme', 'foto'].includes(c.mostrar)) {
+      die(`covers.json: ${brand}.mostrar tem de ser "filme" ou "foto" — é "${c.mostrar}"`);
+    }
+    if (c.foto !== undefined && !/^[a-z0-9-]+$/.test(String(c.foto))) die(`covers.json: ${brand}.foto must be a plain file name — got "${c.foto}"`);
+    if (c.mostrar === 'foto' && !c.foto) die(`covers.json: ${brand}.mostrar é "foto" mas não há "foto" — a capa não teria imagem`);
     if (c.film) {
       if (!/^[a-z0-9-]+$/.test(c.film)) {
         die(`covers.json: ${brand}.film must be a plain file name — got "${c.film}"`);
@@ -517,9 +524,9 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
        starts and instead of it when they asked for less motion. Their shapes
        are written down in cover.mjs for the <img>'s intrinsic ratio; here the
        real files are measured, so those numbers cannot quietly stop being true. */
-    for (const brand of ['ithos', 'cathelier']) {
+    for (const brand of ['ithos', 'cathelier']) for (const raiz of [covers[brand]?.film, covers[brand]?.foto]) {
       const c = covers[brand];
-      if (!c || !c.film) continue;
+      if (!c || !raiz) continue;
       /* As formas saem do PRÓPRIO cover.mjs e não de uma cópia aqui. Uma
          guarda que compara os ficheiros com a sua própria ideia das formas
          responde a outra pergunta: valida-se a si mesma e deixa passar o
@@ -532,11 +539,11 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
       if (!tall || !wide) { die('cover.mjs: cannot read the TALL / WIDE still shapes'); continue; }
       const esperado = { '-still': tall, '-still-wide': wide };
       for (const [sufixo, [aw, ah]] of Object.entries(esperado)) {
-        const master = join(ROOT, 'photos/_covers', `${c.film}${sufixo}.jpg`);
+        const master = join(ROOT, 'photos/_covers', `${raiz}${sufixo}.jpg`);
         if (!existsSync(master)) {
-          die(`covers.json: the ${brand} cover names the film "${c.film}" but `
-            + `photos/_covers/${c.film}${sufixo}.jpg is not there — the cover would fall back `
-            + `to a photograph of something else. Run scripts/film.sh ${c.film}`);
+          die(`covers.json: the ${brand} cover names "${raiz}" but `
+            + `photos/_covers/${raiz}${sufixo}.jpg is not there — the cover would fall back `
+            + `to a photograph of something else. Run scripts/film.sh (filme) ou corte as imagens paradas (fotografia)`);
           continue;
         }
         const { w, h } = shapeOf(master);
@@ -547,14 +554,14 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
            comparação com NaN é falsa. A guarda existia, corria, e não podia
            disparar. Um número que não é número é a própria falha. */
         if (!Number.isFinite(real)) {
-          die(`photos/_covers/${c.film}${sufixo}.jpg: could not read a shape from it `
+          die(`photos/_covers/${raiz}${sufixo}.jpg: could not read a shape from it `
             + `(got ${JSON.stringify(shapeOf(master))}) — the check cannot run`);
         } else if (Math.abs(real - aw / ah) > 0.02) {
-          die(`photos/_covers/${c.film}${sufixo}.jpg is ${w}x${h} (${real.toFixed(3)}:1) `
+          die(`photos/_covers/${raiz}${sufixo}.jpg is ${w}x${h} (${real.toFixed(3)}:1) `
             + `but cover.mjs tells the browser it is ${aw}/${ah} (${(aw / ah).toFixed(3)}:1)`);
         }
-        if (!existsSync(join(ROOT, 'public/media/covers', `${c.film}${sufixo}-640.webp`))) {
-          die(`photos/_covers/${c.film}${sufixo}.jpg has no renditions — run scripts/renditions.py`);
+        if (!existsSync(join(ROOT, 'public/media/covers', `${raiz}${sufixo}-640.webp`))) {
+          die(`photos/_covers/${raiz}${sufixo}.jpg has no renditions — run scripts/renditions.py`);
         }
       }
     }

@@ -93,7 +93,7 @@ const WIDE = [16, 9];
  *    which also keeps it out of the tab order.
  */
 function film(c) {
-  if (!c.film) return '';
+  if (!c.film || c.mostrar === 'foto') return '';
   return `<video class="cover__film"
     data-film="/media/film/${esc(c.film)}.mp4"
     data-film-tall="/media/film/${esc(c.film)}-tall.mp4"
@@ -114,7 +114,10 @@ export function cover(c, brand, art) {
     /* Só um número entre 0 e 1 chega ao style; o guards.mjs já recusou
        qualquer outro e o que fique abaixo do contraste. */
     + (typeof c.veil === 'number' && c.veil >= 0 && c.veil <= 1 ? `;--cover-veil-a:${c.veil}` : '');
-  const temFilme = !!c.film;
+  /* As duas formas (alta e larga) servem o filme e a fotografia que o pode
+     substituir (covers.json "mostrar": "foto"); só a fotografia antiga, sem
+     nenhum dos dois, fica na forma única de 4:5. */
+  const temFilme = Boolean(c.film) || (c.mostrar === 'foto' && Boolean(c.foto));
 
   return `
 <section class="cover" style="${focus}">

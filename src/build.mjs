@@ -145,13 +145,25 @@ const haveWidths = (stem) =>
    renditions.py the web sizes. The photographic master stays on disk and stays
    unused: deleting "film" from covers.json puts it straight back, with nothing
    else to undo. That is why the name is chosen here and not baked in. */
+/* A CAPA PODE MOSTRAR UMA FOTOGRAFIA EM VEZ DO FILME (a dona, 18 out 2026:
+   «os vídeos ficam muito escuros», e mandou fotografias para experimentar).
+   covers.json "foto" nomeia o par de imagens paradas (photos/_covers/<foto>-
+   still.jpg, alta 2:3, e -still-wide.jpg, larga 16:9 -- as mesmas formas das
+   do filme) e "mostrar": "foto" escolhe-as no lugar do filme; o painel troca
+   uma pela outra. */
+const pedeFoto = (c) => Boolean(c && c.mostrar === 'foto' && c.foto);
+const raizDaCapa = (brand) => {
+  const c = covers[brand];
+  return pedeFoto(c) ? c.foto : c && c.film ? c.film : null;
+};
 const coverArt = (brand) => {
   const c = covers[brand];
-  const stem = c && c.film ? `${c.film}-still` : brand;
+  const raiz = raizDaCapa(brand);
+  const stem = raiz ? `${raiz}-still` : brand;
   const widths = haveWidths(stem);
   if (!widths.length) {
     throw new Error(`No cover renditions for ${stem}. Run `
-      + (c && c.film ? `scripts/film.sh ${c.film}` : 'scripts/covers.py')
+      + (pedeFoto(c) ? `(the photo masters in photos/_covers/${c.foto}-still*.jpg) and` : c && c.film ? `scripts/film.sh ${c.film}` : 'scripts/covers.py')
       + ' then scripts/renditions.py.');
   }
   return { name: stem, widths, wideName: `${stem}-wide`, wideWidths: haveWidths(`${stem}-wide`) };
@@ -193,7 +205,7 @@ function prepararLingua(l) {
   /* A FOTOGRAFIA DA JANELA DA CAMPANHA: a imagem parada larga da capa de cada
      marca (o primeiro fotograma do filme), a 960 -- ou a maior que houver. */
   const campanhaFotos = Object.fromEntries(['ithos', 'cathelier'].map((m) => {
-    const stem = covers?.[m]?.film ? `${covers[m].film}-still-wide` : m;
+    const stem = raizDaCapa(m) ? `${raizDaCapa(m)}-still-wide` : m;
     const ws = haveWidths(stem);
     const w = ws.includes(960) ? 960 : ws.at(-1);
     return [m, w ? `/media/covers/${stem}-${w}.webp` : null];
