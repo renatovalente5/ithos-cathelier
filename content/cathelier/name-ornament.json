@@ -1,14 +1,12 @@
 {
-  "name": "Bola de Natal personalizada",
+  "name": "Bola de Natal",
   "price": 4,
   "published": true,
   "featured": false,
   "order": 10,
   "made": "to_order",
   "occasion": "christmas",
-  "alsoIn": [
-    "hanging"
-  ],
+  "alsoIn": [],
   "summary": "Bola de Natal personalizada - inicial acrílico e nome gravado a laser",
   "text": "Bola de Natal em contraplacado, personalizada com inicial em acrílico e gravação de nome, ideal para encher a arvore de Natal com memórias únicas e especiais.  ",
   "photoFolder": "name-ornament",
