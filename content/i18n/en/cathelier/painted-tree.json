@@ -1,15 +1,27 @@
 {
   "name": {
-    "t": "Set of six Christmas trees with a little bell",
-    "h": "680ad49e86e2"
+    "t": "Set of six Christmas trees with a bell",
+    "h": "7f1cf4cfe525"
   },
   "summary": {
-    "t": "Set of six Christmas trees with a golden little bell",
-    "h": "6cd2dd92f8cb"
+    "t": "Set of six Christmas trees with a golden bell",
+    "h": "e9356006ce74"
   },
   "text": {
-    "t": "A small, hand-painted wooden tree for hanging.",
-    "h": "1894a21361a9"
+    "t": "A small, hand-painted wooden tree for hanging.\nThe set of six is available, or each tree can be purchased individually.",
+    "h": "977ae20789ca"
+  },
+  "options.escolha.name": {
+    "t": "What's included",
+    "h": "f00a957b6f2d"
+  },
+  "options.escolha.values.conjunto.name": {
+    "t": "The set of 6 trees",
+    "h": "9695da603640"
+  },
+  "options.escolha.values.um.name": {
+    "t": "One tree",
+    "h": "493c3941f148"
   },
   "options.name.name": {
     "t": "Name (optional)",
