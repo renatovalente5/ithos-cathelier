@@ -1549,16 +1549,29 @@ async function basketPage() {
     return !esgotouAgora && p.skus.every(temUm) ? tj('cesto.emStock') : tj('cesto.semStock');
   }
 
-  function priceOf(line) {
+  /* OS PREÇOS POR QUANTIDADE (src/lib/quantidades.mjs; a mesma conta no
+     Worker, catalogue.js): o escalão conta TODAS as linhas da mesma peça, e
+     vale para todas as unidades. */
+  function precoParaQuantidade(p, qtd) {
+    let preco = p.price;
+    for (const t of (p.quantityPrices || []).slice().sort((a, b) => a.from - b.from)) if (qtd >= t.from) preco = t.price;
+    return preco;
+  }
+
+  function priceOf(line, qtdDaPeca = line.qty) {
     const p = cat.products[line.id];
     if (!p) return null;
     /* The reseller's discount comes off the piece, per unit; paid options are
        added at their normal price -- the same sum the Worker does, which is
-       the one that is charged. */
+       the one that is charged. Com preço por quantidade, a base é a do
+       escalão, e um revendedor paga o mais baixo dos dois: nunca mais do que
+       um cliente com o mesmo cesto. */
+    const base = precoParaQuantidade(p, qtdDaPeca);
     const d = descontoDe(line.id, p.price);
-    let each = p.price - d;
-    let pvpEach = p.price;
+    let each = Math.min(base, p.price - d);
+    let pvpEach = base;
     const shown = [];
+    if (base < p.price) shown.push(tj('cesto.precoQuantidade', { n: qtdDaPeca, preco: base.toFixed(2).replace('.', ',') }));
     for (const o of p.options || []) {
       const value = (line.options || {})[o.id];
       if (value === undefined || value === '') continue;
@@ -1576,7 +1589,9 @@ async function basketPage() {
     }
     return {
       name: nomeDaPeca(cat, line.id, p), brand: p.brand, photo: p.photo, shown, each, total: each * line.qty,
-      pvpEach, pvpTotal: pvpEach * line.qty, desconto: d,
+      /* O que o revendedor poupa nesta linha, contra o PVP do mesmo cesto
+         (já com o preço por quantidade): sem poupança, não se mostra o PVP. */
+      pvpEach, pvpTotal: pvpEach * line.qty, desconto: pvpEach - each > 0.0001 ? pvpEach - each : 0,
       skus: skusDaEscolha(p, line.options),
     };
   }
@@ -1597,7 +1612,9 @@ async function basketPage() {
 
   function paint() {
     const cur = basket();
-    const priced = cur.lines.map((l) => ({ line: l, p: priceOf(l) })).filter((x) => x.p);
+    const qtdPorPeca = {};
+    for (const l of cur.lines) qtdPorPeca[l.id] = (qtdPorPeca[l.id] || 0) + (Number(l.qty) || 0);
+    const priced = cur.lines.map((l) => ({ line: l, p: priceOf(l, qtdPorPeca[l.id]) })).filter((x) => x.p);
     // A line whose product left the catalogue is dropped rather than shown at
     // a price nobody can honour.
     if (priced.length !== cur.lines.length) { cur.lines = priced.map((x) => x.line); setBasket(cur); }

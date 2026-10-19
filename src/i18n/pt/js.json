@@ -93,6 +93,7 @@
   "cesto.soN": "Só {n} em stock",
   "cesto.semStock": "Sem stock — feito para si",
   "cesto.opcaoTexto": "{opcao}: «{texto}»",
+  "cesto.precoQuantidade": "Preço por quantidade ({n} unidades): {preco} € cada",
   "cesto.pvp": "PVP {preco}",
   "cesto.remover": "Remover",
   "cesto.naoEnviamos": "não enviamos para lá",

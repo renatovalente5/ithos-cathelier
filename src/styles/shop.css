@@ -951,6 +951,14 @@ html[data-scrolled='no'] .head {
 .gallery__thumb[aria-selected='true'] { border-color: var(--accent); }
 
 .product__price { margin-block-start: .5rem; font-size: 1.35rem; font-weight: 600; color: var(--accent); font-variant-numeric: tabular-nums; }
+/* Os preços por quantidade: uma tabela pequena por baixo do preço, número à
+   esquerda e preço à direita, alinhados em colunas. */
+.product__tiers { margin-block-start: .75rem; padding: .75rem 1rem; border: 1px solid var(--line); border-radius: var(--radius, 0); max-inline-size: 22rem; }
+.product__tiers-title { font-size: 13px; font-weight: 600; letter-spacing: .02em; }
+.product__tiers dl { display: grid; gap: .2rem; margin: .4rem 0 0; font-size: 14px; font-variant-numeric: tabular-nums; }
+.product__tiers dl > div { display: flex; justify-content: space-between; gap: 1rem; }
+.product__tiers dd { margin: 0; font-weight: 600; }
+.product__tiers-note { margin-block-start: .5rem; font-size: 12px; color: var(--muted); }
 .product__lead { margin-block-start: .5rem; font-size: 13px; color: var(--muted); }
 .product__form { margin-block-start: 1.75rem; display: grid; gap: 1.25rem; }
 .product__buy { display: flex; gap: .75rem; align-items: stretch; min-width: 0; }

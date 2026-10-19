@@ -22,6 +22,7 @@ import { esc, picture } from './lib/html.mjs';
 import { fotosDaDona } from './lib/oficina.mjs';
 import { cardWidths, shapeOf } from './lib/photo.mjs';
 import { REDIRECTS } from './lib/redirects.mjs';
+import { escaloes } from './lib/quantidades.mjs';
 import { visiveis, destinoDe, fragmentosAntigos, lerSeparadores } from './lib/ocasioes.mjs';
 import { stockDe, prateleiras } from './lib/prazos.mjs';
 import { t, lingua, LOCALE, LINGUAS, ORIGEM, definirLingua, linguaDaRaiz, prefixoDe, morada, frasesPorTraduzir } from './lib/i18n.mjs';
@@ -560,6 +561,9 @@ function catalogueFile(nomesNasLinguas = {}) {
       name: p.name,
       price: p.price,
       made: p.made || 'to_order',
+      /* Os preços por quantidade (src/lib/quantidades.mjs): o Worker cobra
+         por eles, e o cesto mostra-os. */
+      ...(escaloes(p).length ? { quantityPrices: escaloes(p).map((t) => ({ from: t.from, price: t.price })) } : {}),
       /* Só os candeeiros têm stock. As peças da cathelier são sempre feitas
          por encomenda, e não levam o campo. */
       ...(lamps.includes(p) ? { stock: stockDe(p) } : {}),

@@ -136,6 +136,25 @@ function checkProduct(brand, slug, p) {
     }
   }
   if (p.videoFirst !== undefined && typeof p.videoFirst !== 'boolean') die(`${where}: videoFirst é sim ou não (true/false)`);
+  /* OS PREÇOS POR QUANTIDADE (src/lib/quantidades.mjs): só nas peças da
+     cathelier (é lá que a ficha os mostra), a partir de 2 unidades, por
+     ordem, e cada escalão mais barato do que o de antes -- um «desconto» que
+     sobe o preço era um engano a cobrar mais. */
+  if (p.quantityPrices !== undefined) {
+    const q = p.quantityPrices;
+    if (brand !== 'cathelier') die(`${where}: quantityPrices só nas peças da cathelier`);
+    else if (!Array.isArray(q) || q.length > 10) die(`${where}: quantityPrices tem de ser uma lista de até 10 escalões`);
+    else {
+      let antes = { from: 1, price: p.price };
+      for (const t of q) {
+        if (!Number.isInteger(t?.from) || t.from < 2 || t.from > 1000) { die(`${where}: um escalão começa em ${t?.from} — tem de ser um número inteiro de 2 a 1000`); break; }
+        if (typeof t.price !== 'number' || !(t.price > 0)) { die(`${where}: o escalão de ${t.from} não tem um preço`); break; }
+        if (t.from <= antes.from) { die(`${where}: os escalões têm de ir por ordem (${t.from} depois de ${antes.from})`); break; }
+        if (t.price >= antes.price) { die(`${where}: a partir de ${t.from} custa ${t.price} €, que não é menos do que ${antes.price} €`); break; }
+        antes = t;
+      }
+    }
+  }
   for (const o of p.options || []) {
     if (!o.id || !o.name) die(`${where}: an option has no id or no name`);
     if (o.type === 'choice') {

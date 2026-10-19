@@ -116,6 +116,26 @@
     "t": "Fill these in and we will send you a drawing to approve. Nothing is cut before you say yes.",
     "h": "df6f98894084"
   },
+  "ficha.quantidades.titulo": {
+    "t": "Price by quantity",
+    "h": "afebdeac83e9"
+  },
+  "ficha.quantidades.intervalo": {
+    "t": "{a} to {b}",
+    "h": "4c6dede43378"
+  },
+  "ficha.quantidades.mais": {
+    "t": "{a} or more",
+    "h": "e477cef7b3c5"
+  },
+  "ficha.quantidades.cada": {
+    "t": "€{preco} each",
+    "h": "73f40a40ccbe"
+  },
+  "ficha.quantidades.nota": {
+    "t": "Counts the total of this piece in your order, even with different names, and the price applies to all of them.",
+    "h": "84ac3148f502"
+  },
   "ficha.obrigatorio": {
     "t": "required",
     "h": "ee8ce56b0f6a"

@@ -340,6 +340,10 @@
     "t": "{opcao}: “{texto}”",
     "h": "9733e391819b"
   },
+  "cesto.precoQuantidade": {
+    "t": "Quantity price ({n} items): €{preco} each",
+    "h": "3532beb66151"
+  },
   "cesto.pvp": {
     "t": "RRP {preco}",
     "h": "6f5b714cfc9c"

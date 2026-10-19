@@ -1,6 +1,24 @@
 {
   "name": "Bola de Natal (inicial acrílico)",
   "price": 4,
+  "quantityPrices": [
+    {
+      "from": 11,
+      "price": 3.8
+    },
+    {
+      "from": 21,
+      "price": 3.65
+    },
+    {
+      "from": 51,
+      "price": 3.5
+    },
+    {
+      "from": 101,
+      "price": 3.3
+    }
+  ],
   "published": true,
   "featured": true,
   "order": 10,

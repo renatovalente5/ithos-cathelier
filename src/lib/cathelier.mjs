@@ -13,6 +13,7 @@ import { t, tn } from './i18n.mjs';
 import { fabricante } from './pages.mjs';
 import { brandPath } from './shell.mjs';
 import { videosDe, enderecoDoVideo, capaDoVideo } from './videos.mjs';
+import { escaloes } from './quantidades.mjs';
 
 /* As frases destas páginas estão em src/i18n/<língua>/cathelier.json e lêem-se
    com t() DENTRO das funções que desenham: o gerador escolhe a língua depois
@@ -24,6 +25,20 @@ import { videosDe, enderecoDoVideo, capaDoVideo } from './videos.mjs';
    número. A vírgula decimal é a de money() em html.mjs, que é quem manda. */
 const valor = (n) => Number(n).toFixed(2).replace('.', ',');
 const desde = (n) => esc(t('cathelier.desde', { preco: valor(n) }));
+
+/* OS PREÇOS POR QUANTIDADE, por baixo do preço (src/lib/quantidades.mjs):
+   «1 a 10 · 3,50 € cada», «11 a 20 · 3,30 € cada», …, «101 ou mais». A
+   primeira linha é o preço normal, para a tabela se ler sozinha. */
+function precosPorQuantidade(p) {
+  const e = escaloes(p);
+  if (!e.length) return '';
+  const linhas = [{ de: 1, ate: e[0].from - 1, preco: p.price }, ...e.map((t, i) => ({ de: t.from, ate: e[i + 1] ? e[i + 1].from - 1 : null, preco: t.price }))];
+  return `<div class="product__tiers">
+      <p class="product__tiers-title">${esc(t('cathelier.ficha.quantidades.titulo'))}</p>
+      <dl>${linhas.map((x) => `<div><dt>${esc(x.ate === null ? t('cathelier.ficha.quantidades.mais', { a: x.de }) : x.de === x.ate ? String(x.de) : t('cathelier.ficha.quantidades.intervalo', { a: x.de, b: x.ate }))}</dt><dd>${esc(t('cathelier.ficha.quantidades.cada', { preco: valor(x.preco) }))}</dd></div>`).join('')}</dl>
+      <p class="product__tiers-note">${esc(t('cathelier.ficha.quantidades.nota'))}</p>
+    </div>`;
+}
 
 /* ===========================================================================
    cathelier — navigation by collection, which is how the model shop works and
@@ -400,6 +415,7 @@ export function piece({ p, all: everything, shop, occasions, identity }) {
   <div class="product__detail">
     <h1>${esc(p.name)}</h1>
     <p class="product__price">${desde(p.price)}</p>
+    ${precosPorQuantidade(p)}
     <p class="product__lead product__lead--texto">${esc(prazos(shop.lead).encomendaPeca)}${identity?.whatsapp ? ` <a href="https://wa.me/${esc(identity.whatsapp)}" rel="noopener">${esc(prazos(shop.lead).dataCerta)}</a>` : ''}</p>
 
     <form class="product__form" data-product-form data-product-id="${esc(p.slug)}">
