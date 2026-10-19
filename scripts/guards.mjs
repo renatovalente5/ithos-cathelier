@@ -60,12 +60,23 @@ for (const c of shipping.active) {
    como texto AAAA-MM-DD no carrinho e no Worker: noutro formato, «hoje» deixava
    de as poder comparar e a campanha valia ou não valia ao acaso. */
 {
-  const c = shipping.campaign;
-  for (const k of ['from', 'to']) {
-    if (c?.[k] && !/^\d{4}-\d{2}-\d{2}$/.test(c[k])) die(`shipping.json: campaign.${k} is "${c[k]}" — it has to be AAAA-MM-DD, or the basket and the Worker cannot compare it with today`);
+  /* Agora uma lista (src/lib/campanhas.mjs): cada uma conferida, e os ids
+     únicos -- são eles que ligam a tradução do título à campanha certa. */
+  const lista = Array.isArray(shipping.campaigns) ? shipping.campaigns : (shipping.campaign ? [shipping.campaign] : []);
+  const ids = new Set();
+  for (const [i, c] of lista.entries()) {
+    const nome = `campanha ${c?.title ? `«${c.title}»` : i + 1}`;
+    if (Array.isArray(shipping.campaigns)) {
+      if (!/^[a-z0-9-]{1,40}$/.test(String(c?.id ?? ''))) die(`shipping.json: a ${nome} não tem id (letras minúsculas, algarismos e hífenes)`);
+      else if (ids.has(c.id)) die(`shipping.json: duas campanhas com o id «${c.id}»`);
+      ids.add(c?.id);
+    }
+    for (const k of ['from', 'to']) {
+      if (c?.[k] && !/^\d{4}-\d{2}-\d{2}$/.test(c[k])) die(`shipping.json: ${nome}: ${k} is "${c[k]}" — it has to be AAAA-MM-DD, or the basket and the Worker cannot compare it with today`);
+    }
+    if (c?.active && !(c.freeOver > 0)) warnings.push(`shipping.json: a ${nome} está ligada sem valor — nada fica grátis, e o site não mostra janela nem faixa`);
+    if (c?.from && c?.to && c.to < c.from) warnings.push(`shipping.json: a ${nome} acaba (${c.to}) antes de começar (${c.from}) — nunca está em vigor`);
   }
-  if (c?.active && !(c.freeOver > 0)) warnings.push('shipping.json: the free-shipping campaign is on with no amount — nothing is free, and the site shows no popup and no line');
-  if (c?.from && c?.to && c.to < c.from) warnings.push(`shipping.json: the campaign ends (${c.to}) before it starts (${c.from}) — it is never in force`);
 }
 
 /* --- the lead times -------------------------------------------------------- */

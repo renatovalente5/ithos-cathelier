@@ -1586,10 +1586,12 @@ async function basketPage() {
     const zone = s.zones.find((z) => z.countries.includes(country))
       ?? s.zones.find((z) => z.countries.includes(country.slice(0, 2)));
     if (!zone) return null;
-    const c = s.campaign;
-    // `freeOver > 0`, as the Worker does: a campaign switched on with no
-    // threshold said "free" here and charged shipping there.
-    if (c?.active && c.freeOver > 0 && dentroDasDatas(c.from, c.to) && goods >= c.freeOver && (!c.countries.length || c.countries.includes(country))) return 0;
+    /* A primeira campanha da lista que vale hoje (src/lib/campanhas.mjs, e a
+       mesma regra no Worker). `freeOver > 0`, como o Worker: uma campanha
+       ligada sem valor dizia «grátis» aqui e cobrava os portes lá. */
+    const c = (Array.isArray(s.campaigns) ? s.campaigns : (s.campaign ? [s.campaign] : []))
+      .find((x) => x?.active && x.freeOver > 0 && dentroDasDatas(x.from, x.to));
+    if (c && goods >= c.freeOver && (!(c.countries || []).length || c.countries.includes(country))) return 0;
     return zone.price;
   }
 
@@ -2542,7 +2544,10 @@ document.addEventListener('DOMContentLoaded', () => {
   for (const linha of document.querySelectorAll('.announce[data-de], .announce[data-ate]')) {
     if (!dentroDasDatas(linha.dataset.de, linha.dataset.ate)) linha.remove();
   }
-  const d = document.getElementById('aviso-campanha');
+  /* Com várias campanhas em vigor no mesmo dia, vale a primeira da lista:
+     fica a primeira faixa, e a janela é a primeira que estiver no dia. */
+  for (const a of [...document.querySelectorAll('.announce')].slice(1)) a.remove();
+  const d = [...document.querySelectorAll('dialog.aviso-campanha')].find((x) => dentroDasDatas(x.dataset.de, x.dataset.ate));
   if (!d || typeof d.showModal !== 'function') return;
   /* O Chrome devolve o `open` de um <dialog> num recarregar (ver o menu, mais
      acima): aberta assim, a janela não era modal e o showModal() rebentava. */

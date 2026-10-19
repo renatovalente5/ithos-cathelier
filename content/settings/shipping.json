@@ -83,13 +83,17 @@
       ]
     }
   ],
-  "campaign": {
-    "active": true,
-    "title": "Envio gratuito",
-    "freeOver": 30,
-    "countries": [],
-    "from": "",
-    "to": "",
-    "popup": true
-  }
+  "campaigns": [
+    {
+      "id": "portes-gratis",
+      "active": true,
+      "title": "Envio gratuito",
+      "freeOver": 30,
+      "countries": [],
+      "from": "",
+      "to": "",
+      "popup": true
+    }
+  ],
+  "_note_campaigns": "As campanhas de portes grátis, que a dona gere no painel (Campanhas). Em cada dia vale a primeira da lista que estiver ligada, com valor, e com o dia de Lisboa dentro das datas (vazias = sem limite). «countries» vazio = todos os países onde a loja vende; «popup» = a janela aos 10 segundos."
 }

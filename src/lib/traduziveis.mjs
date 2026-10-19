@@ -64,6 +64,7 @@ export function campos(caminhoDoFicheiro, obj) {
   } else if (c === 'settings/shipping.json') {
     for (const z of obj.zones ?? []) juntar(`zones.${z.id}.name`, z.name);
     juntar('campaign.title', obj.campaign?.title);
+    for (const c of obj.campaigns ?? []) if (c?.id) juntar(`campaigns.${c.id}.title`, c.title);
   } else if (c === 'settings/oficina.json') {
     /* O bloco «Olá» e as descrições das fotografias da dona. A assinatura é um
        nome e não se traduz. */
@@ -95,6 +96,7 @@ function pôr(obj, caminho, texto) {
     return;
   }
   if (p[0] === 'zones') { const z = (obj.zones ?? []).find((x) => x.id === p[1]); if (z) z[p[2]] = texto; return; }
+  if (p[0] === 'campaigns') { const c = (obj.campaigns ?? []).find((x) => x.id === p[1]); if (c) c[p[2]] = texto; return; }
   if (Array.isArray(obj)) { const o = obj.find((x) => x.slug === p[0]); if (o) o[p[1]] = texto; return; }
   let x = obj;
   for (const k of p.slice(0, -1)) { if (x[k] == null) return; x = x[k]; }

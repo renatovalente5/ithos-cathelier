@@ -1,4 +1,5 @@
 import { esc, safeHref, jsonInScript } from './html.mjs';
+import { campanhasLigadas } from './campanhas.mjs';
 import { icon } from './icons.mjs';
 import { t, lingua, LINGUAS, LOCALE, OG_LOCALE, NOMES, morada, linguaDaRaiz, prefixoDe } from './i18n.mjs';
 
@@ -301,9 +302,9 @@ ${asset.textos?.[lingua()] ? `<script src="/assets/${asset.textos[lingua()]}" de
    something: beside the button and in the questions. */
 function announcement({ brand, shipping }) {
   if (brand !== 'cathelier') return '';
-  const c = shipping?.campaign;
-  if (!c?.active || !(c.freeOver > 0)) return '';
-  return `<p class="announce" data-de="${esc(c.from || '')}" data-ate="${esc(c.to || '')}">${esc(t('shell.portesGratis', { n: Number(c.freeOver).toFixed(0) }))}</p>`;
+  /* Uma faixa por campanha ligada, cada uma com as suas datas: o shop.js tira
+     as que estão fora do dia e deixa só a primeira (campanhas.mjs). */
+  return campanhasLigadas(shipping).map((c) => `<p class="announce" data-de="${esc(c.from || '')}" data-ate="${esc(c.to || '')}">${esc(t('shell.portesGratis', { n: Number(c.freeOver).toFixed(0) }))}</p>`).join('');
 }
 
 /* A JANELA DA CAMPANHA (a dona, 18 out 2026: a da roomgaga, mas com os portes
@@ -314,19 +315,21 @@ function announcement({ brand, shipping }) {
    escreve-se a partir do freeOver, para a janela nunca prometer mais do que a
    caixa cobra. Sem campanha ligada, ou com a janela desligada, não há janela. */
 function avisoCampanha({ brand, shipping, foto }) {
-  const c = shipping?.campaign;
-  if (!c?.active || !(c.freeOver > 0) || c.popup === false) return '';
+  /* Uma janela por campanha ligada (com a janela ligada), na ordem da lista:
+     o shop.js mostra a primeira que estiver dentro do dia. */
+  return campanhasLigadas(shipping).map((c, i) => [c, i]).filter(([c]) => c.popup !== false).map(([c, i]) => {
   const chave = [c.freeOver, c.from || '', c.to || '', c.title || ''].join('|');
-  return `<dialog class="aviso-campanha" id="aviso-campanha" aria-labelledby="aviso-campanha-titulo"
+  return `<dialog class="aviso-campanha" id="aviso-campanha-${i}" aria-labelledby="aviso-campanha-titulo-${i}"
   data-de="${esc(c.from || '')}" data-ate="${esc(c.to || '')}" data-chave="${esc(chave)}">
   <form method="dialog"><button class="aviso-campanha__fechar" value="fechar" aria-label="${esc(t('shell.avisoCampanha.fechar'))}">${icon('close', 20)}</button></form>
   ${foto ? `<div class="aviso-campanha__foto"><img src="${esc(foto)}" alt="" width="960" height="540" loading="lazy" decoding="async"></div>` : ''}
   <div class="aviso-campanha__texto">
-    <h2 id="aviso-campanha-titulo">${esc(c.title || t('shell.avisoCampanha.titulo'))}</h2>
+    <h2 id="aviso-campanha-titulo-${i}">${esc(c.title || t('shell.avisoCampanha.titulo'))}</h2>
     <p>${esc(t('shell.portesGratis', { n: Number(c.freeOver).toFixed(0) }))}</p>
     <form method="dialog"><button class="aviso-campanha__ok" value="ok">${esc(t('shell.avisoCampanha.continuar'))}</button></form>
   </div>
 </dialog>`;
+  }).join('\n');
 }
 
 /* O SELETOR DE LÍNGUA: a MESMA página nas outras línguas. As moradas vão
