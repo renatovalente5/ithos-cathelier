@@ -1,6 +1,6 @@
 {
   "name": "Rodela de tronco gravada",
-  "price": 5,
+  "price": 3.5,
   "published": true,
   "featured": false,
   "order": 170,
@@ -13,12 +13,12 @@
   "text": "Uma rodela de tronco com casca, gravada com um desenho de Natal.",
   "photoFolder": "log-slice",
   "photos": [
+    "03",
     "01",
     "02",
-    "03",
     "04"
   ],
-  "cover": "01",
+  "cover": "03",
   "options": [
     {
       "id": "design",
