@@ -1,4 +1,4 @@
-<!-- origem: 3d66dcfcabf7 partes: d9b93824be36 8d0f21e51521 a92a4bc3f838 9ad95c906ee6 9a5ebd727f78 -->
+<!-- origem: 87191b98ca1e partes: d9b93824be36 8d0f21e51521 50f56d8f556d 9ad95c906ee6 9a5ebd727f78 -->
 # Your right to cancel
 
 ## Fourteen days
@@ -16,19 +16,11 @@ use]({{FORM_URL}}) if you prefer, but you do not have to.
 What counts is the date you send us your decision: if you send it before the
 period ends, you have cancelled in time (article 11 of Decree-Law 24/2014).
 
-## What cannot be cancelled
+## What cannot be returned
 
-**Personalised pieces.** You can cancel anything made to your specification or
-clearly meant for you alone — a name, a date, your words engraved into it —
-until we start making it. From then on, the right to cancel no longer applies
-and the piece cannot be returned: this is article 17(1)(c) of Decree-Law
-24/2014. The legal guarantee still applies.
+**Personalised pieces.** Items made according to your instructions or clearly intended only for you — a name, a date, your engraved words — do not have a right to cancel and cannot be returned once the order has been paid: this is point c) of no. 1 of article 17 of Decree-Law no. 24/2014. The legal guarantee remains in effect.
 
-We start making a piece when we cut or engrave it for your order; preparing the
-drawing does not count yet. For a lamp in stock, that is when we engrave it.
-
-Choosing between colours we already offer is **not** personalisation. A lamp in
-a colour from our list can be cancelled like anything else.
+Choosing from colours we already offer is **not** personalisation. A lamp in a colour from our list can be returned just like any other item.
 
 ## Sending it back
 
