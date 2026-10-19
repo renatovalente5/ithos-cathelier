@@ -1,14 +1,14 @@
 {
-  "name": "Bola vazada com etiqueta",
-  "price": 5,
+  "name": "Conjunto 12 desejos de Natal",
+  "price": 18,
   "published": true,
   "featured": true,
   "order": 110,
   "made": "to_order",
   "occasion": "christmas",
   "alsoIn": [],
-  "summary": "Uma bola recortada com um desenho de Natal e uma palavra na etiqueta.",
-  "text": "Uma bola recortada com um desenho de Natal e uma palavra na etiqueta.",
+  "summary": "Conjunto de 12 bolas decorativas com mensagens personalizadas que correspondem aos 12 desejos de Natal.",
+  "text": "Mais do que simples enfeites, são 12 desejos cheios de amor, esperança e magia para iluminar o Natal.\nCada bola, em MDF lacado a branco e delicadamente recortada, guarda uma mensagem especial para nos lembrar do que realmente importa: o amor, a família, a amizade, a paz, a alegria, a harmonia, a fé, o amor, a paixão  de estarmos juntos.\nUm conjunto criado com carinho para decorar a árvore de Natal e encher cada lar de ternura, união e momentos inesquecíveis. ",
   "photoFolder": "cutout-bauble",
   "photos": [
     "01",
