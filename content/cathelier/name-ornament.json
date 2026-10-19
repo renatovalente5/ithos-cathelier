@@ -1,5 +1,5 @@
 {
-  "name": "Bola de Natal",
+  "name": "Bola de Natal (inicial acrílico)",
   "price": 4,
   "published": true,
   "featured": false,
@@ -24,7 +24,7 @@
       "type": "text",
       "required": true,
       "personalises": true,
-      "max": 40,
+      "max": 20,
       "extra": 0,
       "example": "Miguel"
     }
