@@ -44,5 +44,7 @@
   "ficha.muitas": "Vai encomendar muitas? <a href=\"/cathelier/quote/\">Peça um orçamento</a> e damos-lhe o preço do lote inteiro.",
   "ficha.maisEm": "Mais em",
   "ficha.mesmaColecao": "a mesma coleção",
-  "ficha.verTodas": "Ver as {n} peças de {nome}"
+  "ficha.verTodas": "Ver as {n} peças de {nome}",
+  "ficha.video": "Vídeo {i} da peça {nome}",
+  "ficha.videoMiniatura": "Vídeo {i}"
 }

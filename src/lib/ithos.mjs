@@ -11,6 +11,7 @@ import { prazos } from './prazos.mjs';
 import { t, tn } from './i18n.mjs';
 import { fabricante } from './pages.mjs';
 import { fotosDaDona } from './oficina.mjs';
+import { videosDe, enderecoDoVideo as enderecoDeVideo, capaDoVideo as capaDeVideo } from './videos.mjs';
 
 /* ===========================================================================
    ithos — the pages, in the order the model shop puts things.
@@ -56,11 +57,9 @@ export function fromPrice(p) {
 /* A COR DE UM QUADRADINHO, só se for mesmo uma cor (#rrggbb). Vem do
    conteúdo, e o conteúdo escreve-o o painel: o esc() impedia que saísse do
    atributo, mas não que o style levasse outra coisa além de uma cor. */
-/* OS VÍDEOS DE UM CANDEEIRO (o painel junta-os: public/media/video/ithos/
-   <pasta>/<nome>.mp4, e a capa <nome>.jpg ao lado). Só nomes do painel. */
-export const videosDe = (p) => (Array.isArray(p.videos) ? p.videos.filter((n) => /^v[a-z0-9]{4,40}\.(mp4|webm)$/.test(String(n))) : []);
-const enderecoDoVideo = (p, n) => `/media/video/ithos/${p.photoFolder}/${n}`;
-const capaDoVideo = (p, n) => enderecoDoVideo(p, n).replace(/\.(mp4|webm)$/, '.jpg');
+/* Os vídeos de um candeeiro: ver videos.mjs. */
+const enderecoDoVideo = (p, n) => enderecoDeVideo('ithos', p, n);
+const capaDoVideo = (p, n) => capaDeVideo('ithos', p, n);
 
 const corDoQuadrado = (c) => (typeof c === 'string' && /^#[0-9a-f]{6}$/i.test(c) ? c : '');
 /* O NOME DE UM MODELO COM COR É UMA COR. `data-cor` marca-o (no quadradinho do

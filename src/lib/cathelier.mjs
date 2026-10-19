@@ -12,6 +12,7 @@ import { prazos } from './prazos.mjs';
 import { t, tn } from './i18n.mjs';
 import { fabricante } from './pages.mjs';
 import { brandPath } from './shell.mjs';
+import { videosDe, enderecoDoVideo, capaDoVideo } from './videos.mjs';
 
 /* As frases destas páginas estão em src/i18n/<língua>/cathelier.json e lêem-se
    com t() DENTRO das funções que desenham: o gerador escolhe a língua depois
@@ -80,7 +81,8 @@ export function card(p, { eager = false } = {}) {
   return `<article class="card" data-product="${esc(p.slug)}" data-family="${esc(tags)}"
   data-price="${p.price}"${p.added ? ` data-added="${esc(p.added)}"` : ''}${temFotos
     ? `
-  data-shots="${esc(shots.join(','))}" data-dir="cathelier/${esc(p.photoFolder)}"` : ''}>
+  data-shots="${esc(shots.join(','))}" data-dir="cathelier/${esc(p.photoFolder)}"` : ''}${videosDe(p).length && temFotos
+    ? ` data-video="${esc(enderecoDoVideo('cathelier', p, videosDe(p)[0]))}"` : ''}>
   <a class="card__media" href="${href}" tabindex="-1" aria-hidden="true">
     ${frame(p, '(min-width: 64rem) 280px, (min-width: 48rem) 30vw, 46vw', eager, true)}
   </a>
@@ -328,6 +330,7 @@ export function piece({ p, all: everything, shop, occasions, identity }) {
      (added in the back office) has a folder of its own, same name on both
      sides. */
   const pastaDosMasters = p.photoFolder === 'pool' ? '_raw' : p.photoFolder;
+  const videos = videosDe(p);
   const shapes = (p.photos || []).map((n) => shapeOf(join(PHOTOS, 'cathelier', pastaDosMasters, `${n}.jpg`)));
   /* «MORE IN» PROCURA IRMÃS EM TODOS OS SEPARADORES DA PEÇA, e não só no
      principal. Com os separadores de 25 set 2026 a Páscoa ficou com uma peça
@@ -350,24 +353,34 @@ export function piece({ p, all: everything, shop, occasions, identity }) {
   return `
 <section class="product shell">
   <div class="product__gallery">
-    ${(p.photos || []).length > 1 ? `
+    ${/* Os vídeos vêm depois das fotografias, como nos candeeiros. Uma
+         fotografia sozinha fica na moldura simples; com mais alguma coisa
+         (outra fotografia ou um vídeo), é a galeria. */ ''}${(p.photos || []).length + videos.length > 1 ? `
     <div class="gallery" data-gallery>
       <div class="gallery__track" data-gallery-track>
-        ${p.photos.map((n, i) => `<div class="gallery__slide" style="--focus:${cardFocus(`cathelier/${p.photoFolder}/${n}`, shapes[i])}">${wholePicture({
+        ${(p.photos || []).map((n, i) => `<div class="gallery__slide" style="--focus:${cardFocus(`cathelier/${p.photoFolder}/${n}`, shapes[i])}">${wholePicture({
           key: `cathelier/${p.photoFolder}/${n}`, shape: shapes[i], widths: rungs(shapes[i].w),
           alt: t('cathelier.ficha.fotoAlt', { nome: p.name, i: i + 1 }),
           sizes: '(min-width: 64rem) 560px, 100vw',
           loading: i === 0 ? 'eager' : 'lazy',
         })}</div>`).join('\n        ')}
+        ${videos.map((n, k) => `<div class="gallery__slide gallery__slide--video">
+          <video class="gallery__video" src="${esc(enderecoDoVideo('cathelier', p, n))}" poster="${esc(capaDoVideo('cathelier', p, n))}" muted loop playsinline preload="none" controls
+            aria-label="${esc(t('cathelier.ficha.video', { nome: p.name, i: k + 1 }))}"></video>
+        </div>`).join('\n        ')}
       </div>
       <button class="gallery__open" type="button" data-box-open aria-label="${esc(t('cathelier.ficha.ampliar'))}">${icon('search', 18)}</button>
       <button class="gallery__arrow gallery__arrow--prev" type="button" data-gallery-prev aria-label="${esc(t('cathelier.ficha.anterior'))}">${icon('arrowLeft', 20)}</button>
       <button class="gallery__arrow gallery__arrow--next" type="button" data-gallery-next aria-label="${esc(t('cathelier.ficha.seguinte'))}">${icon('arrowRight', 20)}</button>
     </div>
     <div class="gallery__thumbs" role="tablist" aria-label="${esc(t('cathelier.ficha.fotografias'))}">
-      ${p.photos.map((n, i) => `<button class="frame gallery__thumb" type="button" role="tab"
+      ${(p.photos || []).map((n, i) => `<button class="frame gallery__thumb" type="button" role="tab"
         data-gallery-go="${i}" aria-selected="${i === 0}" aria-label="${esc(t('cathelier.ficha.fotografia', { i: i + 1 }))}">
         ${picture({ dir: `cathelier/${p.photoFolder}`, name: n, alt: '', sizes: '84px', widths: [200] })}
+      </button>`).join('\n      ')}
+      ${videos.map((n, k) => `<button class="frame gallery__thumb gallery__thumb--video" type="button" role="tab"
+        data-gallery-go="${(p.photos || []).length + k}" aria-selected="${(p.photos || []).length + k === 0}" aria-label="${esc(t('cathelier.ficha.videoMiniatura', { i: k + 1 }))}">
+        <img src="${esc(capaDoVideo('cathelier', p, n))}" alt="" width="84" height="112" loading="lazy" decoding="async">${icon('play', 18)}
       </button>`).join('\n      ')}
     </div>` : frame(p, '(min-width: 64rem) 560px, 100vw', true)}
   </div>

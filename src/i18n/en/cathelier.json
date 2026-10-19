@@ -179,5 +179,13 @@
   "ficha.verTodas": {
     "t": "See all {n} pieces in {nome}",
     "h": "908cc6237367"
+  },
+  "ficha.video": {
+    "t": "Video {i} of {nome}",
+    "h": "fea740a5d5f9"
+  },
+  "ficha.videoMiniatura": {
+    "t": "Video {i}",
+    "h": "45e46f1735a3"
   }
 }
