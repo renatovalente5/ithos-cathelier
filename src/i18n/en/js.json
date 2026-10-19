@@ -114,7 +114,7 @@
   },
   "stock.revendaFicha": {
     "t": "{n} in stock — leaves the workshop in {prazo}.",
-    "h": "86c3ea3a8687"
+    "h": "ca2ceccba9dd"
   },
   "pagamento.indisponivel": {
     "t": "The shop cannot take payments yet.",
@@ -266,7 +266,7 @@
   },
   "mapa.titulo": {
     "t": "Where the workshop is",
-    "h": "f6e6dd3fff83"
+    "h": "758823e4b8ae"
   },
   "retratacao.indisponivel": {
     "t": "The form is not available here yet. Withdraw by email instead, as explained further down this page.",

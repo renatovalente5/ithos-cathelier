@@ -6,11 +6,11 @@
   "desde": "desde {preco} €",
   "separadores": "Explorar as peças",
   "pedirOrcamento": "Pedir orçamento",
-  "inicio.maisVendidas": "Mais vendidas",
+  "inicio.maisVendidas": "Em destaque",
   "inicio.quantidade.titulo": "Cinquenta peças, cinquenta nomes",
   "inicio.quantidade.texto1": "Lembranças de casamento, recordações de batizado, marcadores de lugar, ofertas de empresa, uma época inteira de troféus — tudo o que aqui está pode ser feito em quantidade, com um nome diferente gravado em cada peça.",
   "inicio.quantidade.texto2": "Diga-nos mais ou menos o quê e mais ou menos quantas. Não há formulários complicados: basta uma mensagem, e respondemos com um preço e uma data.",
-  "inicio.quantidade.fotoAlt": "Peças personalizadas da oficina",
+  "inicio.quantidade.fotoAlt": "Peças personalizadas do ateliê",
   "inicio.mais.titulo": "Mais por onde escolher",
   "inicio.mais.texto.um": "Topos de bolo, placas, troféus, marcadores de livros, caixas, porta-chaves. {n} peça ao todo, e leva um nome.",
   "inicio.mais.texto.varios": "Topos de bolo, placas, troféus, marcadores de livros, caixas, porta-chaves. {n} peças ao todo, e todas levam um nome.",
@@ -38,10 +38,11 @@
   "ficha.garantia.desenho": "Um desenho para aprovar antes de se cortar seja o que for",
   "ficha.garantia.mao": "Cortado e gravado a laser, acabado à mão",
   "ficha.garantia.envio": "Envio dentro de Portugal",
-  "ficha.garantia.oficina": "Feito numa pequena oficina em Castelo Branco",
+  "ficha.garantia.oficina": "Feito num pequeno ateliê em Castelo Branco",
   "ficha.cuidados": "Cuidados e segurança",
   "ficha.cuidadosPagina": "Como cuidar da sua peça e os avisos de todas as peças",
   "ficha.muitas": "Vai encomendar muitas? <a href=\"/cathelier/quote/\">Peça um orçamento</a> e damos-lhe o preço do lote inteiro.",
   "ficha.maisEm": "Mais em",
-  "ficha.mesmaColecao": "a mesma coleção"
+  "ficha.mesmaColecao": "a mesma coleção",
+  "ficha.verTodas": "Ver as {n} peças de {nome}"
 }

@@ -13,8 +13,8 @@
     "h": "fa953a1853eb"
   },
   "migalha.oficina": {
-    "t": "The workshop",
-    "h": "9cd657069f2a"
+    "t": "About us",
+    "h": "8a0ef3302ec9"
   },
   "migalha.cuidados": {
     "t": "Care and safety",
@@ -73,20 +73,20 @@
     "h": "98aae30a37ce"
   },
   "oficina.titulo": {
-    "t": "The workshop — ithos",
-    "h": "bdc42a145fec"
+    "t": "About us — ithos",
+    "h": "24e5a210a870"
   },
   "oficina.descricao": {
     "t": "A small workshop in Castelo Branco, Portugal, where every wooden night light is cut, sanded, painted and wired by hand.",
-    "h": "4a74be300519"
+    "h": "600068e53a7a"
   },
   "oficinaCath.titulo": {
-    "t": "The workshop — cathelier",
-    "h": "a73f14e3c48c"
+    "t": "About us — cathelier",
+    "h": "952cca839e54"
   },
   "oficinaCath.descricao": {
     "t": "The laser side of a small Portuguese workshop: personalised pieces drawn, cut and engraved to order, with a proof to approve before anything is cut.",
-    "h": "6f3cba23373a"
+    "h": "0924cf31a9ff"
   },
   "cuidados.titulo": {
     "t": "Care and safety — ithos",
@@ -214,7 +214,7 @@
   },
   "obrigado.descricao": {
     "t": "Your order is placed and the workshop starts now.",
-    "h": "c4f4432bfd70"
+    "h": "02992fe2b396"
   },
   "cancelada.titulo": {
     "t": "Nothing was charged",

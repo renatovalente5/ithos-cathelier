@@ -16,18 +16,15 @@ import { fotosDaDona } from './oficina.mjs';
    ithos — the pages, in the order the model shop puts things.
    =========================================================================== */
 
-/** Families for the catalogue filter. Deliberately NOT in the data: the owner
- *  should not have to classify every lamp, and 26 of them do not justify a
- *  field in the back office she will forget to fill in. */
-const FAMILY = {
-  animals: ['fox', 'mouse', 'hedgehog', 'snail', 'rabbit', 'tiger', 'raccoon', 'flamingo',
-            'deer', 'koala', 'lion', 'bear', 'penguin', 'owl', 'giraffe', 'goose', 'unicorn', 'dinosaur'],
-  vehicles: ['red-racer', 'wood-racer', 'rocket', 'train'],
-  nature: ['whale', 'acorn', 'mushroom'],
-  festive: ['santa', 'train'],
-};
-export const familiesOf = (slug) =>
-  Object.entries(FAMILY).filter(([, list]) => list.includes(slug)).map(([k]) => k);
+/** AS FAMÍLIAS DO FILTRO DO CATÁLOGO (Animais, Veículos, Natureza, Festivos).
+ *  Eram uma tabela aqui, «para a dona não ter de classificar cada candeeiro»;
+ *  a 18 out 2026 ela juntou o cão, o cavalo, a ovelha e a preguiça, nenhum
+ *  entrou em «Animais», e a baleia estava em «Natureza» sem ela a querer lá.
+ *  Agora são um campo de cada candeeiro (`families`), com caixinhas no painel.
+ *  Um candeeiro sem o campo (de antes, ou acabado de criar) não entra em
+ *  nenhuma, e aparece só em «Todos». */
+export const FAMILIAS = ['animals', 'vehicles', 'nature', 'festive'];
+export const familiesOf = (p) => (Array.isArray(p?.families) ? p.families.filter((f) => FAMILIAS.includes(f)) : []);
 
 /* Os rótulos são CHAVES de tradução (src/i18n/<língua>/ithos.json), lidas ao
    desenhar: esta tabela é avaliada ao importar, antes de o gerador escolher a
@@ -68,7 +65,7 @@ const corDoQuadrado = (c) => (typeof c === 'string' && /^#[0-9a-f]{6}$/i.test(c)
 export function card(p, { eager = false } = {}) {
   const { low, high } = fromPrice(p);
   const range = high > low;
-  const fams = familiesOf(p.slug).join(' ');
+  const fams = familiesOf(p).join(' ');
 
   /* A SWATCH ONLY WHERE THERE IS A COLOUR TO SHOW.
      This row used to draw one square per variant, with nothing in it: no
@@ -276,7 +273,7 @@ export function product({ p, all, shop, identity }) {
    * draw a seam instead of hiding one. */
   const shapes = photos.map((n) => shapeOf(join(PHOTOS, dir, `${n}.jpg`)));
   const related = all.filter((x) => x.slug !== p.slug)
-    .filter((x) => familiesOf(x.slug).some((f) => familiesOf(p.slug).includes(f)))
+    .filter((x) => familiesOf(x).some((f) => familiesOf(p).includes(f)))
     .slice(0, 4);
   const size = p.size || {};
   const dims = [

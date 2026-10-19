@@ -337,10 +337,12 @@ export function piece({ p, all: everything, shop, occasions, identity }) {
   const familias = (x) => [x.occasion, ...(x.alsoIn || [])];
   let here = occasions.find((o) => o.slug === p.occasion);
   let related = [];
+  let noSeparador = 0;
   for (const slug of familias(p)) {
     const irmas = everything.filter((x) => x.slug !== p.slug && familias(x).includes(slug));
     if (irmas.length) {
       related = irmas.slice(0, 4);
+      noSeparador = irmas.length + 1;
       here = occasions.find((o) => o.slug === slug) ?? here;
       break;
     }
@@ -446,6 +448,12 @@ ${related.length ? `<section class="collection" style="background:var(--bg-soft)
              : `<h2>${esc(t('cathelier.ficha.mesmaColecao'))}</h2>`}
     </div>
     <div class="grid-products" style="margin-block-start:2rem">${related.map((x) => card(x)).join('\n      ')}</div>
+    ${/* O TÍTULO JÁ LEVAVA À LISTA TODA, e ninguém o viu: a 18 out 2026 a dona
+         olhou para estas quatro e concluiu que o site só tinha quatro peças de
+         Natal (tinha vinte). Um botão com o número diz que há mais, e quantas. */
+      here && noSeparador > related.length + 1
+        ? `<p class="collection__mais"><a class="btn btn--ghost" href="/cathelier/pieces/#${esc(here.slug)}">${esc(t('cathelier.ficha.verTodas', { n: noSeparador, nome: here.name }))}</a></p>`
+        : ''}
   </div>
 </section>` : ''}
 `;

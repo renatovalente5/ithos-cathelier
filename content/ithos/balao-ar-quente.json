@@ -4,6 +4,9 @@
   "published": true,
   "featured": false,
   "order": 290,
+  "families": [
+    "vehicles"
+  ],
   "made": "to_order",
   "size": {
     "height": 40,

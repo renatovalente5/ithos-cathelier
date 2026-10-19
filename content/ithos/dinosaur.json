@@ -3,7 +3,10 @@
   "price": 135,
   "published": false,
   "featured": false,
-  "order": 240,
+  "order": 930,
+  "families": [
+    "animals"
+  ],
   "made": "to_order",
   "size": {},
   "summary": "Candeeiro dinossauro",

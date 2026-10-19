@@ -4,6 +4,9 @@
   "published": true,
   "featured": false,
   "order": 210,
+  "families": [
+    "nature"
+  ],
   "made": "to_order",
   "size": {},
   "summary": "Candeeiro bolota",

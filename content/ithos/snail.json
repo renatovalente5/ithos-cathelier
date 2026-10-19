@@ -3,7 +3,10 @@
   "price": 120,
   "published": false,
   "featured": false,
-  "order": 40,
+  "order": 900,
+  "families": [
+    "animals"
+  ],
   "made": "to_order",
   "size": {
     "height": 25,

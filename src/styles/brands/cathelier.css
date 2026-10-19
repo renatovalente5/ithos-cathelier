@@ -207,6 +207,8 @@
 :where([data-brand='cathelier']) .collection { padding-block: clamp(2rem, 5vw, 3.5rem); }
 :where([data-brand='cathelier']) .collection__head { text-align: center; max-width: 46rem; margin-inline: auto; }
 :where([data-brand='cathelier']) .collection__head .eyebrow { display: block; margin-block-end: .5rem; }
+/* «Ver as 20 peças de Natal», por baixo das quatro irmãs na ficha de uma peça. */
+:where([data-brand='cathelier']) .collection__mais { margin: 2rem 0 0; text-align: center; }
 
 /* --- cards, round instead of square ----------------------------------------- */
 [data-brand='cathelier'] .frame { border-radius: var(--radius); }

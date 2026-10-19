@@ -8,6 +8,6 @@ Os nossos ithos para além de serem luzes de presença, são também peças deco
 
 Qualquer itho pode ser personalizado ao gosto de cada pessoa, na escolha das cores, dos detalhes pintados à mão e para tornar cada peça ainda mais especial  e carregada de significado, poderá também incluir uma gravação a laser de uma pequena frase, um nome ou uma data especial,  criando assim uma peça única, feita à sua medida e que guarda consigo memórias e sentimentos inesquecíveis.
 
-## A outra metade da oficina
+## A outra metade do ateliê
 
 As mesmas mãos fazem a CATHELIER uma marca associada de lembranças e produtos  de decoração, que, tal como nós, primam pela qualidade, detalhe e exclusividade.

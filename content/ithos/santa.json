@@ -4,6 +4,9 @@
   "published": true,
   "featured": false,
   "order": 250,
+  "families": [
+    "festive"
+  ],
   "made": "to_order",
   "size": {
     "height": 38,

@@ -4,6 +4,9 @@
   "published": true,
   "featured": false,
   "order": 120,
+  "families": [
+    "animals"
+  ],
   "made": "to_order",
   "size": {
     "height": 40,

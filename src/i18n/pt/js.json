@@ -30,7 +30,7 @@
   "revenda.semLigacao": "Não conseguimos chegar à loja. Verifique a sua ligação e tente outra vez.",
   "revenda.codigoFalhou": "Esse código não funcionou. Dura 15 minutos — se expirou, peça um email novo no formulário lá em cima.",
 
-  "stock.revendaFicha": "{n} em stock — sai da oficina em {prazo}.",
+  "stock.revendaFicha": "{n} em stock — sai do ateliê em {prazo}.",
 
   "pagamento.indisponivel": "A loja ainda não pode receber pagamentos.",
   "checkout.aEnviar": "A enviar o pedido…",
@@ -72,7 +72,7 @@
   "mbway.recusadoTexto": "Não foi cobrado nada. Se não foi você, ou se mudou de ideias, o seu cesto continua aqui — encomende outra vez e escolha outra forma de pagamento.",
   "mbway.expirouTexto": "Não foi cobrado nada. O seu cesto continua aqui, por isso pode encomendar outra vez — e se o MB WAY estiver a dar problemas, uma referência Multibanco funciona sempre.",
 
-  "mapa.titulo": "Onde fica a oficina",
+  "mapa.titulo": "Onde fica o ateliê",
 
   "retratacao.indisponivel": "O formulário ainda não está disponível aqui. Retrate-se por email, como explicamos mais abaixo nesta página.",
   "retratacao.aEnviar": "A enviar…",

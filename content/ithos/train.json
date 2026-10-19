@@ -4,6 +4,10 @@
   "published": true,
   "featured": false,
   "order": 260,
+  "families": [
+    "vehicles",
+    "festive"
+  ],
   "made": "to_order",
   "size": {
     "height": 24,

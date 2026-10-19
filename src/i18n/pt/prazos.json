@@ -6,7 +6,7 @@
   "dias.um": "{n} dia útil",
   "dias.varios": "{n} dias úteis",
   "dias.intervalo": "{a} a {b} dias úteis",
-  "stock": "Em stock — sai da oficina em {dias}.",
+  "stock": "Em stock — sai do ateliê em {dias}.",
   "semStock": "Sem stock — fazemos o seu, e chega até si em {semanas}.",
   "encomenda": "Feito por encomenda — chega até si em {semanas}.",
   "junto": "Segue tudo junto, quando a última peça estiver pronta."

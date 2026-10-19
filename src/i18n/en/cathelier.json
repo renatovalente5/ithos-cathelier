@@ -25,8 +25,8 @@
     "h": "f115441b2660"
   },
   "inicio.maisVendidas": {
-    "t": "Bestsellers",
-    "h": "13b3152c8c33"
+    "t": "Featured",
+    "h": "0da6f4d04ef0"
   },
   "inicio.quantidade.titulo": {
     "t": "Fifty of them, fifty names",
@@ -42,7 +42,7 @@
   },
   "inicio.quantidade.fotoAlt": {
     "t": "Personalised pieces from the workshop",
-    "h": "b3c14efbbb33"
+    "h": "52280d8011e3"
   },
   "inicio.mais.titulo": {
     "t": "More to choose from",
@@ -154,7 +154,7 @@
   },
   "ficha.garantia.oficina": {
     "t": "Made in a small workshop in Castelo Branco",
-    "h": "dd5baff0e97a"
+    "h": "7270e70eccea"
   },
   "ficha.cuidados": {
     "t": "Care and safety",
@@ -175,5 +175,9 @@
   "ficha.mesmaColecao": {
     "t": "the same collection",
     "h": "6ae169baf7d9"
+  },
+  "ficha.verTodas": {
+    "t": "See all {n} pieces in {nome}",
+    "h": "908cc6237367"
   }
 }

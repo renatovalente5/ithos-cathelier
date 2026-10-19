@@ -37,8 +37,8 @@
     "h": "1e06e6dac28b"
   },
   "inicio.maisVendidos": {
-    "t": "Bestsellers",
-    "h": "a6011eeaaa1a"
+    "t": "Featured",
+    "h": "0da6f4d04ef0"
   },
   "inicio.ola": {
     "t": "Hello",
@@ -46,7 +46,7 @@
   },
   "inicio.apresentacao": {
     "t": "Lovely that you are here. We are a small family workshop in Castelo Branco, where we make wooden night lights for children’s rooms by hand, one at a time.",
-    "h": "905a187e8dc7"
+    "h": "0d205f35a0fd"
   },
   "inicio.convite": {
     "t": "Come and look around. We hope you find something here that steals your heart.",
@@ -55,7 +55,7 @@
   "inicio.fotoOficina": "Cathia in the workshop, holding a wooden owl",
   "inicio.maisDaOficina": {
     "t": "More from the workshop",
-    "h": "007cd3f4765c"
+    "h": "4ee335af7bc8"
   },
   "inicio.verTodos": {
     "t": "See all {n} lamps",
