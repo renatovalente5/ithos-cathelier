@@ -1,4 +1,4 @@
-<!-- origem: 334a5efb5269 partes: 385996f20f05 95a292592920 74b642e8c44a e12484043fef b837d242faac 48e0e2a7afa3 55b8cca956e1 7303925a6a5e 5df13b1d4273 8d1bbcc50936 37247a30ba8d a42c1b8e95aa -->
+<!-- origem: d7dd8032268a partes: 385996f20f05 95a292592920 74b642e8c44a e12484043fef b837d242faac 48e0e2a7afa3 6b4767cac8c8 7303925a6a5e 5df13b1d4273 8d1bbcc50936 37247a30ba8d a42c1b8e95aa -->
 # Terms of sale
 
 ## Who is selling
@@ -67,21 +67,24 @@ shelf, and you owe nothing — put the basket together again whenever you like.
 
 ## Making and delivering
 
-**A lamp in stock** leaves the workshop {{IN_STOCK_DAYS}} after your payment.
+**An in-stock lamp** leaves the workshop {{IN_STOCK_DAYS}} after your
+payment.
 
-**A lamp out of stock** can still be ordered: we make yours, and it is with you
-in {{TO_ORDER_WEEKS}}. Each product page and the basket say which it is before
-you pay. If the last one in stock goes to someone else while you are ordering,
-we tell you before taking any payment, and you choose whether to wait.
+**An out-of-stock lamp** can still be ordered: we will make yours, and
+it will reach you in {{TO_ORDER_WEEKS}}. Each product page and the basket will
+indicate which is the case before you pay. If the last one in stock is taken by
+someone else while you are ordering, we will let you know before receiving any
+payment, and the decision to
+wait is yours.
 
-**Pieces from cathelier** are always made to order: {{TO_ORDER_WEEKS}}, counted from
-when you approve the drawing.
+**cathelier pieces** are always made to order: {{TO_ORDER_WEEKS}},
+starting from the approval of the design.
 
-If one thing in an order is made to order, the whole order ships together when
-it is ready.
+If an item in an order is made to order, the entire order will be sent
+together once it is ready.
 
-Shipping is by {{CARRIER}}. Delivery times are estimates and start when the
-parcel leaves the workshop.
+Shipping is handled by {{CARRIER}}. Delivery times are estimates and
+begin when the order leaves the workshop.
 
 ## If something is wrong
 
