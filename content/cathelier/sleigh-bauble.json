@@ -1,6 +1,6 @@
 {
   "name": "Bola do trenó com nome",
-  "price": 5.5,
+  "price": 1.8,
   "published": true,
   "featured": false,
   "order": 30,
@@ -11,11 +11,10 @@
   "text": "O trenó a voar dentro de uma bola, com um nome e uma palavra na etiqueta.",
   "photoFolder": "sleigh-bauble",
   "photos": [
+    "04",
     "02",
-    "05",
     "01",
-    "03",
-    "04"
+    "05"
   ],
   "cover": "01",
   "options": [
