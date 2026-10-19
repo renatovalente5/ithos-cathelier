@@ -59,7 +59,7 @@
      SHAPE: on a 390x844 phone it wins at 585px, so the frame is really 2:3 and
      not 4:5, which is the shape the tall film is cut to. */
   min-block-size: min(70svh, 150vw);
-  max-block-size: calc(100svh - 3rem);
+  max-block-size: calc(100svh - var(--head-h) - var(--anuncio-h, 0px) - 3rem);
   overflow: hidden;
 }
 .cover__img {
@@ -124,11 +124,9 @@
   display: grid;
   place-items: center;
   text-align: center;
+  /* A barra já não está por cima da capa, por isso as palavras centram-se na
+     caixa toda. */
   padding: clamp(1rem, 4vw, 3rem);
-  /* The bar is standing on the top of this box, so the words are centred in
-     what is left BELOW it rather than in the box -- otherwise the headline
-     sits visibly high on every screen. */
-  padding-block-start: calc(var(--head-h) + var(--anuncio-h, 0px) + clamp(1rem, 4vw, 3rem));
 }
 .cover__block {
   display: grid;
@@ -157,7 +155,7 @@
   .cover__media {
     aspect-ratio: 4 / 3;
     min-block-size: 0;
-    max-block-size: calc(100svh - 3rem);
+    max-block-size: calc(100svh - var(--head-h) - var(--anuncio-h, 0px) - 3rem);
   }
   .cover__img { object-position: var(--cover-focus-wide, 50% 50%); }
 }
@@ -179,7 +177,10 @@
  * 9rem -- o espaço para o título da secção seguinte se ver. No telemóvel nada
  * muda: a capa alta já deixava ver o título (medido a 390x664 e a 430x932). */
 @media (width >= 48rem) {
-  .cover__media { max-block-size: calc(100svh - 9rem); }
+  /* Com a barra fora da capa, o que fica para o título seguinte é o resto da
+     janela depois da barra e da capa: 5rem, o mesmo que os 9rem de antes
+     davam com a barra (4rem) por cima. */
+  .cover__media { max-block-size: calc(100svh - var(--head-h) - var(--anuncio-h, 0px) - 5rem); }
 }
 
 .hero__cta {
@@ -235,10 +236,12 @@ html:has(.head .announce) { --anuncio-h: 34px; }
    partir de --head-h, que é a altura EM REPOUSO. Ligá-lo à altura encolhida
    faria a página inteira subir 34px a meio do gesto, que é precisamente o
    defeito que sair do fluxo veio evitar.
-   Nas duas páginas com capa não se devolve nada: aí é a capa que passa por
-   baixo da barra, de propósito. */
+   Nas duas páginas com capa também: a capa passava por baixo da barra, e a
+   barra, com as letras brancas, obrigava o véu a ficar nos 56% para o «Menu»
+   se ler sobre a luz de um candeeiro. A dona achou o vídeo muito escuro (18
+   out 2026) e pôs o véu no mínimo; com a barra fora da capa, o véu só tem de
+   segurar o título grande, e desce até 44%. */
 body { padding-block-start: calc(var(--head-h) + var(--anuncio-h, 0px)); }
-html[data-cover='yes'] body { padding-block-start: 0; }
 
 /* A BARRA DEPOIS DE DESCER: VIDRO FOSCO, NÃO UM BLOCO BRANCO.
    Quatro coisas em vez de uma, e é o conjunto que faz a diferença: fundo a
@@ -279,11 +282,9 @@ html[data-cover='yes'] body { padding-block-start: 0; }
    A bar that loses its ground only when a script says so can never be left
    floating illegibly over the page body by a script that failed to load.
 
-   The lightening is separate, and narrower: only the two pages that have a
-   cover get it, because only there is the bar standing on something dark.
-   Everywhere else 'no background' is invisible -- var(--bg) is the same colour
-   the body already is -- and the ink must stay dark. That is why this is
-   keyed on data-cover and not on data-scrolled alone. */
+   Nas páginas com capa a barra já não clareia (letras brancas sobre o
+   filme): desde 19 out 2026 a capa começa por baixo dela, e o que está por
+   trás da barra transparente é o fundo da página, como em todas as outras. */
 html[data-scrolled='no'] .head {
   background: transparent;
   /* blur(0px) e não `none`: `none` não interpola, e o desfoque entraria de uma
@@ -292,30 +293,6 @@ html[data-scrolled='no'] .head {
   backdrop-filter: blur(0px);
   box-shadow: 0 0 0 rgb(0 0 0 / 0);
   border-block-end-color: transparent;
-}
-html[data-cover='yes'][data-scrolled='no'] .head :is(.icon-btn, .open-menu__word, .head__sibling) {
-  color: var(--cover-ink);
-}
-/* Hover cannot be the accent here: terracotta on the veil measures 1.2:1.
-   It stays white and underlines instead, which is a change a reader can see
-   without a change a reader cannot read. */
-html[data-cover='yes'][data-scrolled='no'] .head .icon-btn:hover { color: var(--cover-ink); }
-html[data-cover='yes'][data-scrolled='no'] .head :is(.open-menu__word, .head__sibling):hover {
-  text-decoration: underline; text-underline-offset: .25em;
-}
-/* O LOGÓTIPO CLAREIA POR FILTRO, NÃO POR DUAS IMAGENS A CRUZAREM-SE.
-   Um <img> desenha o seu próprio documento e não vê as custom properties desta
-   página, por isso durante um tempo isto foram DOIS ficheiros empilhados, um
-   deles gerado claro na construção. Funcionava, mas a meio do cruzamento havia
-   os dois desenhos sobrepostos a 50%, e obrigava a manter um segundo ficheiro
-   em passo com o primeiro.
-   `brightness(0) invert(1)` faz a mesma coisa com uma imagem só: achata a arte
-   a branco puro, que é exactamente o que o ficheiro claro continha. É assim
-   que a barra do weldstaff.pt o faz, e transita no mesmo relógio que o resto.
-   A arte não é redesenhada -- é a do cliente, pintada a uma cor, que é o uso
-   normal de um lockup invertido. */
-html[data-cover='yes'][data-scrolled='no'] :is(.head__mark, .head__sibling-mark) img {
-  filter: brightness(0) invert(1);
 }
 .head__sibling-mark { display: inline-flex; align-items: center; }
 /* Sized per SHAPE and not per brand-that-owns-it: the door in the ithos shop
@@ -336,8 +313,6 @@ html[data-cover='yes'][data-scrolled='no'] :is(.head__mark, .head__sibling-mark)
 }
 .linguas a:hover { color: var(--accent); }
 .linguas [aria-current] { color: var(--ink); text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: .35em; }
-html[data-cover='yes'][data-scrolled='no'] .head .linguas :is(a, span) { color: var(--cover-ink); }
-html[data-cover='yes'][data-scrolled='no'] .head .linguas a:hover { text-decoration: underline; text-underline-offset: .35em; }
 .linguas--gaveta {
   display: flex; gap: .25rem; flex: none; padding: .75rem var(--gutter) 1.25rem;
   border-block-start: 1px solid var(--line-soft, var(--line)); font-size: .9rem;

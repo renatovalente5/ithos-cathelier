@@ -446,6 +446,18 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
     die('cover.mjs: the cover no longer writes --cover-veil-a from covers.json — the darkness the owner '
       + 'chooses in the back office would be saved and ignored');
   }
+  /* QUANTO TEM DE DAR. Com a barra por cima da capa (letras brancas sobre o
+     véu: as regras html[data-cover='yes'][data-scrolled='no'] .head, ou a
+     capa a passar por baixo dela), as palavras pequenas da barra precisam de
+     4,5:1. Sem ela, só o título grande está no véu: 3:1, desde que seja
+     mesmo grande (24px ou mais no mínimo do clamp). */
+  const barraNaCapa = /html\[data-cover='yes'\]\[data-scrolled='no'\][^{]*\.head/.test(shopCss)
+    || /html\[data-cover='yes'\]\s+body\s*\{[^}]*padding-block-start:\s*0/.test(shopCss);
+  const tamanhoTitulo = shopCss.match(/\.cover \.cover__title\s*\{[^}]*font-size:\s*clamp\(\s*([\d.]+)rem/);
+  if (!barraNaCapa && !(tamanhoTitulo && Number(tamanhoTitulo[1]) >= 1.5)) {
+    die('shop.css: o título da capa tem de começar em 1.5rem ou mais (clamp) — é por ser texto grande que o véu pode ficar nos 3:1');
+  }
+  const minimo = barraNaCapa ? 4.5 : 3;
   const contraste = (rgb, a, inkHex) => {
     const over = rgb.map((v) => a * v + (1 - a) * 255);   // the veil over WHITE
     const [hi, lo] = [lum(...over), lum(...doHex(inkHex))].sort((x, y) => y - x);
@@ -469,12 +481,9 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
     }
     for (const [a, onde] of casos) {
       const ratio = contraste(rgb, a, ink[1]);
-      /* 4.5 and not 3: the header floats on this veil too, and the bar's own
-         words -- "Menu", and the arrow beside the other shop's mark -- are small
-         text. Were the bar icons alone, 3:1 would do. */
-      if (ratio < 4.5) {
+      if (ratio < minimo) {
         die(`${brand}: the cover veil at ${Math.round(a * 100)}% (${onde}) over a white frame reads ${ratio.toFixed(2)}:1 against `
-          + `${ink[1]} — below the 4.5:1 that the header's own small words need`);
+          + `${ink[1]} — below the ${minimo}:1 that ${minimo === 3 ? 'the large headline' : "the header's own small words"} need${minimo === 3 ? 's' : ''}`);
       }
     }
   }

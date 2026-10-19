@@ -25,7 +25,7 @@
  *
  * HOW DARK IT IS, AND HOW LIGHT IT MAY GET
  *
- * The owner sets the veil in the back office (covers.json "veil", 0.56 to
+ * The owner sets the veil in the back office (covers.json "veil", 0.44 to
  * 0.9), with a live preview of the film under it; without the line it is the
  * brand stylesheet's .58. What is NOT a taste decision is the floor:
  *
@@ -34,14 +34,15 @@
  * frames contains a clipped white pixel, because the subject is lit LEDs, and
  * 909 of them have one inside the box the headline sits in. So the bound is
  * the same one a sheet of white paper would give, and it is honest for every
- * film and photograph the owner will ever put here. This veil's warm
- * near-black over white reaches 4.5:1 for small white text at 56% (55% gives
- * 4.36:1), so 56% is the lightest the panel offers -- and scripts/guards.mjs
- * computes it for the value actually saved rather than trusting this paragraph.
+ * film and photograph the owner will ever put here.
  *
- * The header's own words are what force the small-text threshold. Were the bar
- * icons alone, 42% would do -- non-text controls are allowed 3:1 -- but the
- * burger has the word "Menu" beside it and words are read, not recognised.
+ * Until 19 Oct 2026 the header floated on this veil too, white, and its small
+ * words ("Menu") needed 4.5:1 -- 56% with this warm near-black. The owner
+ * found the film too dark at that, so the header now sits above the cover on
+ * its own ground, and what reads on the veil is the headline alone: large
+ * text (at least 2rem), which needs 3:1 -- 44% (43% gives 2.95:1). The button
+ * has its own solid ground. scripts/guards.mjs computes it for the value
+ * actually saved, and goes back to 4.5 if the header ever floats again.
  */
 import { esc, coverPicture, safeHref } from './html.mjs';
 
