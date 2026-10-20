@@ -19,7 +19,7 @@ import * as ithos from './lib/ithos.mjs';
 import * as cath from './lib/cathelier.mjs';
 import * as pages from './lib/pages.mjs';
 import { esc, picture } from './lib/html.mjs';
-import { fotosDaDona } from './lib/oficina.mjs';
+import { fotosDaDona, enquadramentoDaDona } from './lib/oficina.mjs';
 import { cardWidths, shapeOf } from './lib/photo.mjs';
 import { REDIRECTS } from './lib/redirects.mjs';
 import { escaloes } from './lib/quantidades.mjs';
@@ -800,7 +800,7 @@ function mirror(path, { title, description, crumbs, body, schema = [], noindex =
 function buildShared() {
   prose('/about/', 'about.md', { title: t('build.oficina.titulo'), crumbs: [{ name: t('build.migalha.inicio'), href: '/' }, { name: t('build.migalha.oficina') }],
     description: t('build.oficina.descricao'),
-    bloco: `<div class="frame oficina__foto">${picture({ dir: 'ithos/oficina', name: fotosDaDona.sobre, alt: dona?.textos?.fotoSobre || t('build.oficina.foto'), sizes: '(min-width: 40rem) 22rem, 100vw' })}</div>` });
+    bloco: `<div class="frame oficina__foto"${enquadramentoDaDona.sobre}>${picture({ dir: 'ithos/oficina', name: fotosDaDona.sobre, alt: dona?.textos?.fotoSobre || t('build.oficina.foto'), sizes: '(min-width: 40rem) 22rem, 100vw' })}</div>` });
 
   prose('/cathelier/about/', 'cathelier/about.md', { brand: 'cathelier',
     title: t('build.oficinaCath.titulo'), crumbs: [{ name: 'cathelier', href: '/cathelier/' }, { name: t('build.migalha.oficina') }],

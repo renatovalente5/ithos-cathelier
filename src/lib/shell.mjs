@@ -619,8 +619,9 @@ function footer({ brand, identity, shop }) {
         ${marcasDePagamento(shop)}
         ${/* A FUNÇÃO DE RETRATAÇÃO FICA FORA DO ACORDEÃO, de propósito. O artigo
             11.º-A da Diretiva 2011/83 (pela Diretiva (UE) 2023/2673) quer a
-            ligação «retrate-se do contrato aqui» permanentemente disponível e
-            bem visível; numa linha de uma lista que se fecha no telemóvel não é
+            ligação «retratar-se do contrato aqui» (ou uma frase equivalente
+            e inequívoca: aqui «Desistir da compra aqui», escolhida pelo Renato
+            a 20 out 2026) permanentemente disponível e bem visível; numa linha de uma lista que se fecha no telemóvel não é
             nenhuma das duas coisas. Não pode sair (o Renato perguntou, 20 out
             2026): fica na linha de baixo de todas as páginas, num botão leve à
             altura das marcas de pagamento. scripts/check-output.mjs recusa uma

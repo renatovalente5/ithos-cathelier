@@ -17,12 +17,22 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const NOME = /^[A-Za-z0-9._-]{1,80}$/;
 
 let lidas = [];
+let enquadradas = [];
 try {
   const s = JSON.parse(readFileSync(join(ROOT, 'content/settings/oficina.json'), 'utf8'));
   if (Array.isArray(s.photos)) lidas = s.photos;
+  if (Array.isArray(s.enquadramento)) enquadradas = s.enquadramento;
 } catch { /* sem ficheiro: as de origem (o guards.mjs já o disse) */ }
 
 export const fotosDaDona = {
   inicio: NOME.test(String(lidas[0] ?? '')) ? lidas[0] : '01',
   sobre: NOME.test(String(lidas[1] ?? '')) ? lidas[1] : '02',
 };
+
+/* O ENQUADRAMENTO de cada uma na sua moldura, escolhido no painel («Ajustar»,
+   20 out 2026): o object-position do CSS, «50% 22%». Vai para um style, por
+   isso só passa a forma exacta (o Worker e o guards.mjs conferem o mesmo);
+   sem ele, fica o do CSS. Devolve o atributo inteiro, ou nada. */
+export const POSICAO = /^(?:100|\d{1,2}(?:\.\d)?)% (?:100|\d{1,2}(?:\.\d)?)%$/;
+const estilo = (x) => (POSICAO.test(String(x ?? '')) ? ` style="--foco:${x}"` : '');
+export const enquadramentoDaDona = { inicio: estilo(enquadradas[0]), sobre: estilo(enquadradas[1]) };

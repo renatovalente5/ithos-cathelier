@@ -8,7 +8,7 @@ qualquer motivo — é o **artigo 10.º do Decreto-Lei n.º 24/2014**. O prazo c
 a partir do dia em que lhe chega o último artigo.
 
 Para desistir, diga-nos de forma clara. Pode fazê-lo aqui no site: carregue em
-[Retrate-se do contrato aqui](/legal/withdraw/) — a ligação também está no fundo
+[Desistir da compra aqui](/legal/withdraw/) — a ligação também está no fundo
 de todas as páginas — e recebe por email um aviso de receção. Ou escreva para
 [{{EMAIL}}](mailto:{{EMAIL}}): um email chega. Há um [formulário que pode
 usar]({{FORM_URL}}) se preferir, mas não é obrigatório.

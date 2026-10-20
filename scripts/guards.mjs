@@ -1485,6 +1485,14 @@ for (const [o, n] of esgotados) {
         }
       }
     }
+    /* O enquadramento («Ajustar» no painel): vai para um style, por isso só
+       dois números entre 0 e 100, ou null para o do CSS. */
+    if (s.enquadramento !== undefined) {
+      const bom = (x) => x === null || (typeof x === 'string' && /^(?:100|\d{1,2}(?:\.\d)?)% (?:100|\d{1,2}(?:\.\d)?)%$/.test(x));
+      if (!Array.isArray(s.enquadramento) || s.enquadramento.length > 2 || !s.enquadramento.every(bom)) {
+        die('content/settings/oficina.json: enquadramento é uma lista de até duas posições como «50% 22%» (ou null)');
+      }
+    }
   }
   for (const marca of ['ithos', 'cathelier']) {
     const pasta = join(CONTENT, marca);

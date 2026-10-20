@@ -1551,8 +1551,10 @@ html.menu-open { overflow: hidden; }
 .maker__text .btn { margin-block-start: 1.75rem; }
 .maker__photo { --frame-ratio: 1.3333; }
 .oficina__foto { max-inline-size: 22rem; margin: 1.5rem auto 2rem; border-radius: var(--radius, 0); }
-/* Uma pessoa de pé numa moldura deitada: o corte ao meio levava-lhe a cara. */
-.maker__photo--retrato img { object-position: 50% 22%; }
+/* Uma pessoa de pé numa moldura deitada: o corte ao meio levava-lhe a cara.
+   A dona escolhe outro no painel («Ajustar»), e chega aqui como --foco. */
+.maker__photo--retrato img { object-position: var(--foco, 50% 22%); }
+.oficina__foto img { object-position: var(--foco, 50% 50%); }
 
 .product__blurb { margin-block-start: 1rem; font-size: 15px; line-height: 1.8; color: var(--muted); }
 .product__lead { display: flex; align-items: center; gap: .5rem; }

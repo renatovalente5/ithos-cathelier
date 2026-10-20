@@ -10,7 +10,7 @@ import { cover } from './cover.mjs';
 import { prazos } from './prazos.mjs';
 import { t, tn } from './i18n.mjs';
 import { fabricante } from './pages.mjs';
-import { fotosDaDona } from './oficina.mjs';
+import { fotosDaDona, enquadramentoDaDona } from './oficina.mjs';
 import { videosDe, enderecoDoVideo as enderecoDeVideo, capaDoVideo as capaDeVideo } from './videos.mjs';
 
 /* ===========================================================================
@@ -207,7 +207,7 @@ ${cover(coverText, 'ithos', coverArt)}
         ${paragrafos.map((x) => `<p>${esc(x)}</p>`).join('\n        ')}
         ${ola.assinatura === '' ? '' : `<p class="maker__sign">${esc(ola.assinatura || 'Cathia')}</p>`}
       </div>
-      <div class="frame maker__photo maker__photo--retrato">
+      <div class="frame maker__photo maker__photo--retrato"${enquadramentoDaDona.inicio}>
         ${picture({
           /* O bloco é assinado «Cathia», e a fotografia é ela (com autorização,
              outubro de 2026). Qual é diz-o o painel: ver oficina.mjs. */

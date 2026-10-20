@@ -915,7 +915,10 @@ if (titulosPorTraduzir.length) {
   const catalogo = hash && existsSync(join(OUT, 'data', `catalogue.${hash}.json`))
     ? JSON.parse(readFileSync(join(OUT, 'data', `catalogue.${hash}.json`), 'utf8')) : { products: {} };
   const personaliza = (slug) => (catalogo.products[slug]?.options || []).some((o) => o.personalises);
-  const ROTULOS_RETRATAR = ['Retrate-se do contrato aqui', 'Withdraw from contract here'];
+  /* «Desistir da compra aqui» é a «formulação inequívoca correspondente» que o
+     art. 11.º-A deixa usar no lugar de «retratar-se do contrato aqui»: a dona
+     leu «retrate-se» como «retrato» (20 out 2026), e o Renato escolheu esta. */
+  const ROTULOS_RETRATAR = ['Desistir da compra aqui', 'Withdraw from contract here'];
   const esc = (x) => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const ligacao = (caminho) => new RegExp(`href="${esc(BASE)}(?:/[a-z]{2})?(?:/cathelier)?${esc(caminho)}"`);
   /* O aviso, por língua. Uma língua nova sem ele pára aqui: é preciso dizer
@@ -936,10 +939,10 @@ if (titulosPorTraduzir.length) {
     const onde = f.slice(OUT.length) || '/';
     const lang = (/<html lang="([a-z]{2})/.exec(html) ?? [])[1];
     const retratar = html.match(/class="foot__withdraw"><a href="([^"]*)">([^<]*)<\/a>/);
-    if (!retratar) deaths.push(`${onde}: sem a ligação «retrate-se do contrato aqui» no rodapé (art. 11.º-A da Diretiva 2011/83)`);
+    if (!retratar) deaths.push(`${onde}: sem a ligação «desistir da compra aqui» no rodapé (art. 11.º-A da Diretiva 2011/83)`);
     else {
       if (!ligacao('/legal/withdraw/').test(`href="${retratar[1]}"`)) deaths.push(`${onde}: a ligação de retratação vai para ${retratar[1]}`);
-      if (!ROTULOS_RETRATAR.includes(retratar[2])) deaths.push(`${onde}: a ligação de retratação diz «${retratar[2]}», e a diretiva manda dizer «retrate-se do contrato aqui»`);
+      if (!ROTULOS_RETRATAR.includes(retratar[2])) deaths.push(`${onde}: a ligação de retratação diz «${retratar[2]}», e tem de dizer «desistir da compra aqui» (ou «retratar-se do contrato aqui», da diretiva)`);
     }
     const rodape = html.slice(html.indexOf('<footer'));
     if (!ligacao('/legal/guarantee/').test(rodape)) deaths.push(`${onde}: o rodapé não tem a ligação para o aviso da garantia legal`);

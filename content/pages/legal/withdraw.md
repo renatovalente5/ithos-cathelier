@@ -1,4 +1,4 @@
-# Retratar-se do contrato
+# Desistir da compra
 
 Se comprou como consumidor, pode desistir da compra aqui, no site, dentro dos
 {{COOLING_OFF_DAYS}} dias do seu [direito de livre resolução](/legal/cancellation/)
