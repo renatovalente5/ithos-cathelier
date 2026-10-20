@@ -308,20 +308,40 @@ export function all({ pieces, occasions }) {
    duas lojas --, com o valor mais barato que se pode comprar marcado.
    A ajuda (`help`) também nunca aparecia: é aí que uma peça com fotografia diz
    como a fotografia chega. */
-function campoDaPeca(o) {
+/* O valor que a ficha abre marcado: o mais barato que se pode comprar. */
+function marcadoDe(o) {
+  const ha = o.values.filter((v) => v.available !== false);
+  const pool = ha.length ? ha : o.values;
+  const barato = Math.min(...pool.map((v) => v.extra || 0));
+  return pool.find((v) => (v.extra || 0) === barato) ?? pool[0];
+}
+
+/* OS CAMPOS CONDICIONAIS (`onlyWith`, 20 out 2026): «Nome da família» só
+   quando se escolhe o conjunto dos 12 desejos. O campo vai escondido e
+   desligado (não se valida nem se envia) se a escolha marcada ao abrir não o
+   pede; o shop.js mostra-o e esconde-o quando a escolha muda, e o Worker
+   exige-o -- ou ignora-o -- pela mesma regra (catalogue.js). */
+function condicao(o, p) {
+  const c = o.onlyWith;
+  if (!c || !Array.isArray(c.values)) return { attrs: '', escondido: false };
+  const dono = (p.options || []).find((x) => x.id === c.option && x.type === 'choice' && Array.isArray(x.values) && x.values.length);
+  const escondido = dono ? !c.values.map(String).includes(String(marcadoDe(dono).id)) : false;
+  return { attrs: ` data-so-com="${esc(c.option)}" data-so-com-valores="${esc(c.values.join(' '))}"${escondido ? ' hidden' : ''}`, escondido };
+}
+
+function campoDaPeca(o, p) {
+  const { attrs, escondido } = condicao(o, p);
+  const desligado = escondido ? ' disabled' : '';
   if (o.type === 'choice' && Array.isArray(o.values) && o.values.length) {
-    const ha = o.values.filter((v) => v.available !== false);
-    const pool = ha.length ? ha : o.values;
-    const barato = Math.min(...pool.map((v) => v.extra || 0));
-    const marcado = pool.find((v) => (v.extra || 0) === barato) ?? pool[0];
-    return `<fieldset class="field">
+    const marcado = marcadoDe(o);
+    return `<fieldset class="field"${attrs}>
         <legend>${esc(o.name)}</legend>
         ${o.help ? `<p class="field__help">${esc(o.help)}</p>` : ''}
         <div class="choices">
           ${o.values.map((v) => {
     const off = v.available === false;
     return `<label class="choice${off ? ' choice--off' : ''}">
-            <input type="radio" name="opt-${esc(o.id)}" value="${esc(v.id)}" data-option="${esc(o.id)}"${v.id === marcado.id ? ' checked' : ''}${off ? ' disabled' : ''}>
+            <input type="radio" name="opt-${esc(o.id)}" value="${esc(v.id)}" data-option="${esc(o.id)}"${v.id === marcado.id ? ' checked' : ''}${off || escondido ? ' disabled' : ''}>
             <span>${esc(v.name)}${v.extra ? ` <em>+${esc(valor(v.extra))} €</em>` : ''}</span>
           </label>`;
   }).join('\n          ')}
@@ -329,11 +349,11 @@ function campoDaPeca(o) {
       </fieldset>`;
   }
   const descreve = [o.help ? `opt-${o.id}-ajuda` : '', o.personalises ? 'opt-aviso-personalizada' : ''].filter(Boolean).join(' ');
-  return `<div class="field">
+  return `<div class="field"${attrs}>
         <label for="opt-${esc(o.id)}">${esc(o.name)}${o.required ? ` <span class="field__req">${esc(t('cathelier.ficha.obrigatorio'))}</span>` : ''}</label>
         ${o.help ? `<p class="field__help" id="opt-${esc(o.id)}-ajuda">${esc(o.help)}</p>` : ''}
         <input id="opt-${esc(o.id)}" type="text" maxlength="${Number.isInteger(o.max) && o.max > 0 ? o.max : 60}"
-               data-option="${esc(o.id)}"${o.required ? ' required' : ''}${descreve ? ` aria-describedby="${esc(descreve)}"` : ''}
+               data-option="${esc(o.id)}"${o.required ? ' required' : ''}${desligado}${descreve ? ` aria-describedby="${esc(descreve)}"` : ''}
                placeholder="${esc(o.example || '')}">
         <p class="field__limit">${esc(t('cathelier.ficha.limite', { n: o.max || 60 }))}</p>
       </div>`;
@@ -425,7 +445,7 @@ export function piece({ p, all: everything, shop, occasions, identity }) {
       ${(p.options || []).some((o) => o.personalises) ? `<p class="field__help" style="margin-block-end:.25rem">
         ${esc(t('cathelier.ficha.ajuda'))}
       </p>` : ''}
-      ${(p.options || []).map(campoDaPeca).join('\n      ')}
+      ${(p.options || []).map((o) => campoDaPeca(o, p)).join('\n      ')}
       ${/* UMA PEÇA COM UM NOME NÃO TEM OS CATORZE DIAS, e diz-se aqui, junto
           dos campos, antes de a pôr no cesto (DL 24/2014, art. 4.º n.º 1 al.
           p)). Só nas peças que têm um campo que personaliza -- que hoje são

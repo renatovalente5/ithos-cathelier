@@ -62,14 +62,20 @@
     },
     {
       "id": "family",
-      "name": "Nome da família (só no conjunto)",
+      "name": "Nome da família",
       "type": "text",
-      "required": false,
+      "required": true,
       "personalises": true,
       "max": 40,
       "extra": 0,
       "example": "Família Simão",
-      "help": "Vai gravado na bola do trenó, oferecida com o conjunto dos 12."
+      "help": "Vai gravado na bola do trenó, oferecida com o conjunto dos 12.",
+      "onlyWith": {
+        "option": "escolha",
+        "values": [
+          "conjunto"
+        ]
+      }
     }
   ],
   "gpsr": {

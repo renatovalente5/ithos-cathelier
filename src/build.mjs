@@ -569,7 +569,7 @@ function catalogueFile(nomesNasLinguas = {}) {
       ...(lamps.includes(p) ? { stock: stockDe(p) } : {}),
       photo: p.photoFolder && p.cover
         ? `${lamps.includes(p) ? 'ithos' : 'cathelier'}/${p.photoFolder}/${p.cover}` : '',
-      options: (p.options || []).map((o) => (o.type === 'text'
+      options: (p.options || []).map((o) => ({ ...(o.type === 'text'
         ? { id: o.id, name: o.name, type: 'text', required: !!o.required,
             personalises: !!o.personalises, max: o.max || 40, extra: o.extra || 0 }
         : { id: o.id, name: o.name, type: 'choice', required: !!o.required,
@@ -581,7 +581,10 @@ function catalogueFile(nomesNasLinguas = {}) {
             values: o.values.map((v) => ({
               id: v.id, name: v.name, extra: v.extra || 0,
               ...(v.available === false ? { available: false } : {}),
-            })) })),
+            })) }),
+        /* Um campo condicional diz de que escolha depende: o Worker exige-o
+           ou ignora-o pela mesma regra (catalogue.js, condicaoCumprida). */
+        ...(o.onlyWith ? { onlyWith: { option: String(o.onlyWith.option), values: (o.onlyWith.values || []).map(String) } } : {}) })),
     }]), ARTIGO_DE_PROVA]),
   };
   const json = JSON.stringify(body);

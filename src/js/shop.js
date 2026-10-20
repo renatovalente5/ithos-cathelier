@@ -201,6 +201,13 @@ const esperarRevenda = () => (revendaPronta ??= carregarRevenda({ fresco: revend
 /* OS PREÇOS POR QUANTIDADE (src/lib/quantidades.mjs; a mesma conta no
    Worker, catalogue.js): o escalão conta TODAS as linhas da mesma peça, e vale
    para todas as unidades. O cesto e o total da ficha usam-na. */
+/* OS CAMPOS CONDICIONAIS (`onlyWith`): um campo que só conta quando outra
+   escolha tem um destes valores. A mesma regra do Worker (catalogue.js). */
+function aplica(o, opcoes) {
+  const c = o.onlyWith;
+  return !c || (Array.isArray(c.values) && c.values.map(String).includes(String((opcoes || {})[c.option] ?? '')));
+}
+
 function precoParaQuantidade(p, qtd) {
   let preco = p.price;
   for (const t of (p.quantityPrices || []).slice().sort((a, b) => a.from - b.from)) if (qtd >= t.from) preco = t.price;
@@ -1575,6 +1582,7 @@ async function basketPage() {
     for (const o of p.options || []) {
       const value = (line.options || {})[o.id];
       if (value === undefined || value === '') continue;
+      if (!aplica(o, line.options)) continue;
       if (o.type === 'choice') {
         const v = o.values.find((x) => x.id === value);
         if (!v) continue;
@@ -2364,6 +2372,20 @@ function productForm() {
   $('[data-qty-down]', form)?.addEventListener('click', () => { qty.value = Math.max(1, +qty.value - 1); });
   $('[data-qty-up]', form)?.addEventListener('click', () => { qty.value = Math.min(tecto, +qty.value + 1); });
 
+  /* OS CAMPOS CONDICIONAIS aparecem quando a escolha de que dependem os pede,
+     e desaparecem (desligados: o browser não os valida nem os envia) quando
+     não. Registado antes do total, que lê os campos já no estado certo. */
+  const condicionais = $$('[data-so-com]', form);
+  const aplicarCondicoes = () => {
+    for (const w of condicionais) {
+      const marcado = form.querySelector(`input[data-option="${CSS.escape(w.dataset.soCom)}"]:checked`);
+      const sim = Boolean(marcado) && w.dataset.soComValores.split(' ').includes(marcado.value);
+      w.hidden = !sim;
+      for (const i of $$('input, textarea, select', w)) i.disabled = !sim;
+    }
+  };
+  if (condicionais.length) { form.addEventListener('change', aplicarCondicoes); aplicarCondicoes(); }
+
   /* O TOTAL AO PÉ DO BOTÃO (20 out 2026): com os conjuntos («O conjunto dos
      12, +16,20 €» sobre «desde 1,80 €») e os preços por quantidade, quem
      compra tinha de fazer a conta de cabeça. A mesma conta do cesto e do
@@ -2381,12 +2403,12 @@ function productForm() {
         let cada = Math.min(base, p.price - descontoDe(slug, p.price));
         for (const o of p.options || []) {
           if (o.type === 'choice') {
-            const marcado = form.querySelector(`input[data-option="${CSS.escape(o.id)}"]:checked`);
+            const marcado = form.querySelector(`input[data-option="${CSS.escape(o.id)}"]:checked:not(:disabled)`);
             const v = marcado && (o.values || []).find((x) => String(x.id) === marcado.value);
             if (v) cada += v.extra || 0;
           } else {
             const campo = form.querySelector(`[data-option="${CSS.escape(o.id)}"]`);
-            if (campo && String(campo.value || '').trim()) cada += o.extra || 0;
+            if (campo && !campo.disabled && String(campo.value || '').trim()) cada += o.extra || 0;
           }
         }
         total.textContent = q > 1
@@ -2440,6 +2462,7 @@ function productForm() {
 
     const options = {};
     for (const el of $$('[data-option]', form)) {
+      if (el.disabled) continue;            // escondido (um campo condicional que não se aplica)
       if (el.type === 'radio' && !el.checked) continue;
       if (el.value.trim()) options[el.dataset.option] = el.value.trim();
     }

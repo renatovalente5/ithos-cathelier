@@ -155,6 +155,19 @@ function checkProduct(brand, slug, p) {
       }
     }
   }
+  /* OS CAMPOS CONDICIONAIS (`onlyWith`): dependem de uma escolha da MESMA
+     peça, que vem antes, e de valores que ela tem -- senão o campo nunca
+     aparecia, ou aparecia sempre. Só na cathelier (é lá que a ficha os
+     desenha). */
+  for (const o of p.options || []) {
+    if (o.onlyWith === undefined) continue;
+    const c = o.onlyWith;
+    const dono = (p.options || []).find((x) => x.id === c?.option);
+    if (brand !== 'cathelier') die(`${where}: «${o.name}» é condicional, e isso só existe nas peças da cathelier`);
+    else if (!dono || dono.type !== 'choice' || dono === o) die(`${where}: «${o.name}» depende de «${c?.option}», que não é uma escolha desta peça`);
+    else if ((p.options || []).indexOf(dono) > (p.options || []).indexOf(o)) die(`${where}: «${o.name}» depende de «${dono.name}», que vem depois dele — ponha a escolha antes`);
+    else if (!Array.isArray(c.values) || !c.values.length || c.values.some((v) => !dono.values.some((x) => String(x.id) === String(v)))) die(`${where}: «${o.name}» depende de valores que «${dono.name}» não tem`);
+  }
   for (const o of p.options || []) {
     if (!o.id || !o.name) die(`${where}: an option has no id or no name`);
     if (o.type === 'choice') {
