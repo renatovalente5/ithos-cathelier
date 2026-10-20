@@ -398,6 +398,18 @@ const esgotados = new Set();
 let esgotouAgora = false;
 let reavaliarCesto = () => {};
 
+/* O CESTO MUDOU NOUTRO SÍTIO: voltar atrás, ou outro separador.
+   A seta do browser não carrega a página outra vez: repõe-na da memória
+   (bfcache) tal como estava, sem DOMContentLoaded, e o contador ficava com
+   o número de quando se saiu dela -- juntava-se um candeeiro na ficha, voltava-
+   -se à lista e o cesto dizia-se vazio até recarregar (o Renato, 20 out 2026).
+   O `pageshow` com `persisted` é esse regresso; o `storage` é outro
+   separador a mexer no cesto. Nos dois, o contador e a página do cesto (se
+   for esta) voltam a ler o que está guardado. */
+const cestoMudouNoutroSitio = () => { paintCount(); reavaliarCesto(); };
+addEventListener('pageshow', (ev) => { if (ev.persisted) cestoMudouNoutroSitio(); });
+addEventListener('storage', (ev) => { if (ev.key === BASKET || ev.key === null) cestoMudouNoutroSitio(); });
+
 document.addEventListener('DOMContentLoaded', () => {
   paintCount();
 
@@ -1689,7 +1701,10 @@ async function basketPage() {
     avaliar(priced);
   }
 
-  reavaliarCesto = paint;
+  /* Repintar a partir do que está guardado inclui o país: outro separador
+     pode tê-lo mudado, e o seletor ficava a dizer um e os portes a contar
+     outro. */
+  reavaliarCesto = () => { const pais = basket().country; if (countrySel && pais) countrySel.value = pais; paint(); };
   paint();
 }
 

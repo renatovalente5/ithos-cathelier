@@ -189,8 +189,14 @@
      vem a fila dos círculos (Natal, Nascimento, Nomes…), e os 5rem só
      deixavam ver o cimo deles: medido a 1440x790, a fila acaba 160px abaixo
      do topo da secção. A capa guarda 11rem para ela; num ecrã muito baixo
-     não desce dos 22rem, para o título e o botão continuarem a caber. */
-  .cover:has(+ .occasions-lead) .cover__media {
+     não desce dos 22rem, para o título e o botão continuarem a caber.
+     E NO ITHOS, O «EM DESTAQUE» (a dona, 20 out 2026: «as que dizem em
+     destaque, se ficassem um bocadinho acima, já levava a perceber que para
+     baixo há coisas»). Com os 5rem o título da secção começava exactamente no
+     fundo da janela, em todos os portáteis medidos (1280x720 a 1920x950). Os
+     mesmos 11rem deixam ver o título e o cimo das fotografias. */
+  .cover:has(+ .occasions-lead) .cover__media,
+  .cover:has(+ .section) .cover__media {
     max-block-size: max(22rem, calc(100svh - var(--head-h) - var(--anuncio-h, 0px) - 11rem));
   }
 }
@@ -296,13 +302,17 @@ body { padding-block-start: calc(var(--head-h) + var(--anuncio-h, 0px)); }
 
    Nas páginas com capa a barra já não clareia (letras brancas sobre o
    filme): desde 19 out 2026 a capa começa por baixo dela, e o que está por
-   trás da barra transparente é o fundo da página, como em todas as outras. */
+   trás da barra no topo é o fundo da página, como em todas as outras.
+
+   NO TOPO A BARRA GUARDA O CHÃO; só a sombra e o fio esperam pelo descer
+   (o Renato, 20 out 2026: «quando começo a descer na página não fica muito
+   bem a navbar»). O chão só muda de estado aos 40px e demora 350ms a
+   chegar, mas a página começa a passar por baixo da barra no primeiro
+   pixel: entretanto a capa subia por trás de uma barra ainda transparente e
+   o logótipo ficava pendurado em cima da fotografia. A faixa dos portes
+   grátis pôs a barra 34px mais alta e tornou isso evidente. Sobre o fundo
+   da página, o chão fosco no topo não se distingue de nada. */
 html[data-scrolled='no'] .head {
-  background: transparent;
-  /* blur(0px) e não `none`: `none` não interpola, e o desfoque entraria de uma
-     vez enquanto o fundo ainda vinha a caminho. */
-  -webkit-backdrop-filter: blur(0px);
-  backdrop-filter: blur(0px);
   box-shadow: 0 0 0 rgb(0 0 0 / 0);
   border-block-end-color: transparent;
 }

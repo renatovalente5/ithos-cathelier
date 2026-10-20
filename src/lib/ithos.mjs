@@ -81,10 +81,15 @@ export function card(p, { eager = false } = {}) {
      them, two are sizes ("Large 25x22", "30x65 cm"). A size painted as a
      coloured square says nothing. So the colour is now a field on the value,
      the square is drawn only when it is filled in, and a variant that is a
-     size simply has no row. */
+     size simply has no row.
+     E SÓ COM DUAS CORES OU MAIS (20 out 2026): a dona deu à Raposa uma «Cor»
+     com um só valor, Branco. No cartão isso era um quadrado branco sobre
+     branco, com ar de caixa vazia, e uma linha a mais que punha o nome e o
+     preço da Raposa abaixo dos da fila. Uma cor só não é uma escolha; a
+     ficha continua a dizê-la. */
   const swatches = (p.options || []).find((o) => o.id === 'variant');
   const coloured = (swatches?.values || []).filter((v) => corDoQuadrado(v.colour));
-  const dots = coloured.length
+  const dots = coloured.length > 1
     ? `<div class="card__swatches" aria-hidden="true">${coloured.slice(0, 6)
         .map((v) => `<span class="swatch" data-cor style="background:${corDoQuadrado(v.colour)}" title="${esc(v.name)}"></span>`).join('')}</div>`
     : '';
