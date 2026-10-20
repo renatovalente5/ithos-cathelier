@@ -11,6 +11,18 @@
     "t": "The ithos®️ wooden children's lamp, with its delicate rainbow silhouette, combines timeless design, cosy light and the charm of small details. Its warm white LED lighting creates a soft and comforting atmosphere, ideal for accompanying moments of reading, tranquillity and snuggliness before sleep, as well as being the perfect companion for a protected night for little ones' eyes.\n\nDuring the day, it serves as a decorative piece that adds personality and tenderness to the children's bedroom. With careful finishes and hand-painted details, it integrates harmoniously into any setting, with soft woods and neutral tones.\nCreated to make rest moments even sweeter and more special.",
     "h": "c4e28ba20a33"
   },
+  "options.variant.name": {
+    "t": "Colour",
+    "h": "2237b88f398f"
+  },
+  "options.variant.values.1.name": {
+    "t": "blue",
+    "h": "a4bd1d3a69aa"
+  },
+  "options.variant.values.2.name": {
+    "t": "green",
+    "h": "ec061fafb777"
+  },
   "options.power.name": {
     "t": "Power supply",
     "h": "0853883db432"
