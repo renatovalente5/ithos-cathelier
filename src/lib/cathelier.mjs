@@ -360,7 +360,10 @@ function campoDaPeca(o, p) {
     const off = v.available === false;
     return `<label class="choice${off ? ' choice--off' : ''}">
             <input type="radio" name="opt-${esc(o.id)}" value="${esc(v.id)}" data-option="${esc(o.id)}"${v.id === marcado.id ? ' checked' : ''}${off || escondido ? ' disabled' : ''}>
-            ${corDoQuadrado(v.colour) ? `<span class="choice__cor" style="background:${corDoQuadrado(v.colour)}" aria-hidden="true"></span>` : ''}<span>${esc(v.name)}${v.extra ? ` <em>+${esc(valor(v.extra))} €</em>` : ''}</span>
+            ${corDoQuadrado(v.colour) ? `<span class="choice__cor" style="background:${corDoQuadrado(v.colour)}" aria-hidden="true"></span>` : ''}<span>${
+      /* Com quadradinho, o nome é o de uma cor (data-cor): «Verde caqui» não
+         é uma alegação ambiental (scripts/alegacoes-ambientais.mjs). */
+      corDoQuadrado(v.colour) ? `<span data-cor>${esc(v.name)}</span>` : esc(v.name)}${v.extra ? ` <em>+${esc(valor(v.extra))} €</em>` : ''}</span>
           </label>`;
   }).join('\n          ')}
         </div>

@@ -89,6 +89,39 @@
           "extra": 5
         }
       ]
+    },
+    {
+      "id": "cor",
+      "name": "Cor da pintura",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "values": [
+        {
+          "id": "rosa-claro",
+          "name": "Rosa claro",
+          "extra": 0,
+          "colour": "#F4C9D2"
+        },
+        {
+          "id": "azul-claro",
+          "name": "Azul claro",
+          "extra": 0,
+          "colour": "#B9D4EA"
+        },
+        {
+          "id": "verde-caqui",
+          "name": "Verde caqui",
+          "extra": 0,
+          "colour": "#8E8C5E"
+        }
+      ],
+      "onlyWith": {
+        "option": "acabamento",
+        "values": [
+          "pintado"
+        ]
+      }
     }
   ],
   "gpsr": {
