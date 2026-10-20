@@ -6,7 +6,9 @@
   "order": 280,
   "made": "to_order",
   "occasion": "names",
-  "alsoIn": [],
+  "alsoIn": [
+    "new-baby"
+  ],
   "summary": "Grinalda personalizada com nome ",
   "text": "Delicadas, originais e feitas com muito carinho, as nossas grinaldas personalizadas são criadas em MDF e unidas por um cordel natural, prontas a pendurar e dar um toque especial a qualquer espaço.\nDisponíveis em diferentes formatos, como bandeirolas, flores, corações, estrelas... cada peça representa uma letra do nome da criança. As letras são feitas em contraplacado e revestidas com tecido na cor escolhida pelo cliente, permitindo criar uma combinação única e harmoniosa.\nPerfeitas para decorar quartos de bebé, quartos infantis ou espaços especiais, estas grinaldas tornam cada cantinho ainda mais acolhedor e cheio de personalidade.",
   "photoFolder": "name-bunting",
@@ -35,7 +37,7 @@
         {
           "id": "l8",
           "name": "8 letras",
-          "extra": 3.0
+          "extra": 3
         },
         {
           "id": "l9",
@@ -45,7 +47,7 @@
         {
           "id": "l10",
           "name": "10 letras",
-          "extra": 6.0
+          "extra": 6
         }
       ]
     },
