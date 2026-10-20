@@ -11,6 +11,38 @@
     "t": "Delicate and timeless, this pine plywood cloud preserves the most precious details of your baby's birth. The name, in raised acrylic, brings the piece to life, while the date of birth is laser-engraved onto the main cloud. The three pendants, personalised with the date, time, and length at birth, eternalise every detail of this very special moment.\nWith delicate shapes, natural cotton thread, and neutral tones, it is a piece created to decorate with love and to keep the magic of the first day forever.",
     "h": "ed4235c9f956"
   },
+  "options.material.name": {
+    "t": "Name in",
+    "h": "763dc588ecd6"
+  },
+  "options.material.values.acrilico-dourado.name": {
+    "t": "Gold acrylic",
+    "h": "6e761d6bd990"
+  },
+  "options.material.values.acrilico-branco.name": {
+    "t": "White acrylic",
+    "h": "51aab8fd4e7e"
+  },
+  "options.material.values.contraplacado.name": {
+    "t": "Plywood",
+    "h": "afee605fd28c"
+  },
+  "options.pendentes.name": {
+    "t": "Hanging from the cloud",
+    "h": "908923c1e525"
+  },
+  "options.pendentes.values.nuvens.name": {
+    "t": "Clouds",
+    "h": "f3f5902c50c6"
+  },
+  "options.pendentes.values.flor-borboleta-coracao.name": {
+    "t": "Flower, butterfly and heart",
+    "h": "aa89ad45be17"
+  },
+  "options.pendentes.values.estrelas.name": {
+    "t": "Stars",
+    "h": "beacc3e324b4"
+  },
   "options.name.name": {
     "t": "Name",
     "h": "5086900635fe"
