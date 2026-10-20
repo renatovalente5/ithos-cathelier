@@ -489,15 +489,15 @@ export function piece({ p, all: everything, shop, occasions, identity }) {
     <div class="product__text stack" style="--stack:1rem">${prose(p.text)}</div>
 
     ${/* OS AVISOS DE SEGURANÇA (Reg. (UE) 2023/988, art. 19.º: na oferta
-        online, bem visíveis). Primeiro os da peça (ímanes, vela, topo de
-        bolo, fio para pendurar…), depois os de todas as peças. Uma peça com
-        um risco próprio mostra-os abertos: um aviso de ímanes fechado numa
-        caixa que ninguém abre não está «bem visível».
+        online). Primeiro os da peça (ímanes, vela, topo de bolo, fio para
+        pendurar…), depois os de todas as peças. SEMPRE FECHADOS, como na
+        ithos: o Renato, a 20 out 2026 -- «se as pessoas quiserem ler elas
+        expandem». Até aí, uma peça com um risco próprio abria-os sozinha.
         E NO FIM, A PÁGINA DE CUIDADOS DA CATHELIER: como limpar e guardar a
         peça, e os avisos de todas as outras -- os mesmos dados, noutro sítio. */ ''}${(() => {
       const proprios = (p.gpsr?.warnings ?? []).filter((w) => String(w).trim());
       const todos = [...proprios, ...(shop.safetyCathelier ?? []).filter((w) => String(w).trim())];
-      return `<details class="product__safety"${proprios.length ? ' open' : ''}>
+      return `<details class="product__safety">
       <summary>${esc(t('cathelier.ficha.cuidados'))}</summary>
       ${todos.length ? `<ul>${todos.map((w) => `<li>${esc(w)}</li>`).join('')}</ul>` : ''}
       <p class="product__safety-mais"><a href="/cathelier/care-and-safety/">${esc(t('cathelier.ficha.cuidadosPagina'))}</a></p>
