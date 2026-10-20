@@ -1,0 +1,38 @@
+{
+  "name": "Globo - Feliz Natal",
+  "price": 5,
+  "published": true,
+  "featured": false,
+  "order": 410,
+  "made": "to_order",
+  "occasion": "christmas",
+  "alsoIn": [],
+  "summary": "Globo com guiso e descritivo Feliz Natal",
+  "text": "",
+  "photoFolder": "globo-feliz-natal",
+  "photos": [
+    "fmvgsba4u59"
+  ],
+  "cover": "fmvgsba4u59",
+  "options": [
+    {
+      "id": "name",
+      "name": "Nome",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 40,
+      "extra": 0,
+      "example": ""
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}
