@@ -1,5 +1,5 @@
 {
-  "name": "Móbile de nuvem com nome",
+  "name": "Nuvem decorativa personalizada",
   "price": 32,
   "published": true,
   "featured": false,
@@ -10,8 +10,8 @@
     "wall-decor",
     "hanging"
   ],
-  "summary": "Uma nuvem com o nome e tudo sobre o dia em que chegou, com peças penduradas por baixo.",
-  "text": "Uma nuvem com o nome e tudo sobre o dia em que chegou, com peças penduradas por baixo.",
+  "summary": "Nuvem decorativa de nascimento  personalizada",
+  "text": "Delicada e intemporal, esta nuvem em contraplacado de pinho guarda os detalhes mais preciosos do nascimento do seu bebé. O nome, em acrílico saliente, dá vida à peça, enquanto a data de nascimento é gravada a laser na nuvem principal. Os três pendentes, personalizados com a data, a hora e o comprimento à nascença, eternizam cada detalhe deste momento tão especial.\nCom formas delicadas, fio de algodão natural e tons neutros, é uma peça criada para decorar com amor e guardar para sempre a magia do primeiro dia.",
   "photoFolder": "cloud-mobile",
   "photos": [
     "01",
@@ -26,7 +26,7 @@
       "type": "text",
       "required": true,
       "personalises": true,
-      "max": 40,
+      "max": 30,
       "extra": 0,
       "example": "Beatriz"
     },
@@ -66,9 +66,9 @@
       "type": "text",
       "required": true,
       "personalises": true,
-      "max": 12,
+      "max": 25,
       "extra": 0,
-      "example": "47 cm"
+      "example": "48"
     }
   ],
   "gpsr": {
