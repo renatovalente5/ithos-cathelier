@@ -26,9 +26,9 @@
     "foto": "cathelier-foto",
     "mostrar": "foto",
     "quantidade": {
-      "titulo": "Cinquenta peças, cinquenta nomes",
-      "texto1": "Lembranças de casamento, recordações de batizado, marcadores de lugar, ofertas de empresa, uma época inteira de troféus — tudo o que aqui está pode ser feito em quantidade, com um nome diferente gravado em cada peça.",
-      "texto2": "Diga-nos mais ou menos o quê e mais ou menos quantas. Não há formulários complicados: basta uma mensagem, e respondemos com um preço e uma data."
+      "titulo": "Olá, seja muito bem-vindo",
+      "texto1": "Na CATHELIER, criamos peças personalizadas em acrílico, madeira, MDF e contraplacado, pensadas para tornar cada ocasião ainda mais especial.\nLembranças de casamento, batizado, comunhão e aniversário, ofertas para empresas, troféus e recordações de nascimento. Cada peça é criada com delicadeza, cuidado e atenção ao detalhe.",
+      "texto2": "Fale conosco e partilhe a sua ideia e quantidade pretendida. Teremos todo o gosto em apresentar-lhe um orçamento e indicar a data de entrega."
     }
   },
   "_note_foto": "\"foto\" é um par de imagens paradas em photos/_covers (<foto>-still.jpg, alta 2:3, e <foto>-still-wide.jpg, larga 16:9), e \"mostrar\": \"foto\" põe-nas na capa no lugar do filme; \"filme\" volta ao filme. Escolhe-se no painel, em Páginas iniciais.",
