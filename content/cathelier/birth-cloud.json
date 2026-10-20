@@ -1,6 +1,6 @@
 {
   "name": "Nuvem de nascimento",
-  "price": 28,
+  "price": 20,
   "published": true,
   "featured": false,
   "order": 240,
@@ -9,8 +9,8 @@
   "alsoIn": [
     "wall-decor"
   ],
-  "summary": "Uma nuvem com o nome e tudo sobre o dia em que chegou.",
-  "text": "Uma nuvem com o nome e tudo sobre o dia em que chegou.",
+  "summary": "Uma nuvem com o nome e tudo sobre o dia em que o seu bebé nasceu ",
+  "text": "Delicada e intemporal, esta nuvem em contraplacado de pinho guarda os detalhes mais preciosos do nascimento do seu bebé. O nome, em contraplacado saliente, dá vida à peça, enquanto a data de nascimento é gravada a laser bem como a data, a hora e o comprimento à nascença, eternizam cada detalhe deste momento tão especial.\nCom formas delicadas, fio de algodão natural para pendurar a peça, é uma peça criada para decorar com amor e guardar para sempre a magia do primeiro dia.",
   "photoFolder": "birth-cloud",
   "photos": [
     "01",
