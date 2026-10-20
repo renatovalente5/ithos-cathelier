@@ -11,6 +11,42 @@
     "t": "Snowflake - one family, one story.\nAs delicate as snow and as unique as the bonds that unite us, these personalised snowflakes celebrate what makes every family so special.\nCrafted from pine plywood and laser-engraved with the family name and each of its members, they are small details that hold great meaning. A piece designed to decorate the Christmas tree with identity, tenderness, and memories that return, year after year.",
     "h": "2972370e6c6c"
   },
+  "options.flocos.name": {
+    "t": "How many names (one snowflake each)",
+    "h": "d25db5d8e179"
+  },
+  "options.flocos.values.ate-3.name": {
+    "t": "Up to 3 names",
+    "h": "5433440be301"
+  },
+  "options.flocos.values.n4.name": {
+    "t": "4 names",
+    "h": "c3b0a3185709"
+  },
+  "options.flocos.values.n5.name": {
+    "t": "5 names",
+    "h": "fcb722b1929f"
+  },
+  "options.flocos.values.n6.name": {
+    "t": "6 names",
+    "h": "f0087b122d6c"
+  },
+  "options.flocos.values.n7.name": {
+    "t": "7 names",
+    "h": "e8d0696d0243"
+  },
+  "options.flocos.values.n8.name": {
+    "t": "8 names",
+    "h": "eb8c4365a05b"
+  },
+  "options.flocos.values.n9.name": {
+    "t": "9 names",
+    "h": "617d94a70be9"
+  },
+  "options.flocos.values.n10.name": {
+    "t": "10 names",
+    "h": "dc3209262fa1"
+  },
   "options.family.name": {
     "t": "Surname",
     "h": "07631ef9bec8"
@@ -24,8 +60,8 @@
     "h": "6951b149fbe5"
   },
   "options.names.example": {
-    "t": "Ana, Rui, Tiago, Inês",
-    "h": "00b3bda231a3"
+    "t": "Ana, Rui, Tiago",
+    "h": "9cecb4ad9ca6"
   },
   "gpsr.warnings.0": {
     "t": "This is a decoration and not a toy: hang it out of reach of small children, who may put it in their mouths.",
