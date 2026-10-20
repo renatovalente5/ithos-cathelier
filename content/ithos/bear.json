@@ -17,8 +17,7 @@
   "photoFolder": "urso",
   "photos": [
     "02",
-    "01",
-    "04"
+    "01"
   ],
   "cover": "02",
   "colours": [],
@@ -64,5 +63,8 @@
   "seo": {
     "title": "",
     "description": ""
-  }
+  },
+  "videos": [
+    "vmvgkbwrmvi.mp4"
+  ]
 }
