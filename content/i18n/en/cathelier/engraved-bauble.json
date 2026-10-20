@@ -11,6 +11,26 @@
     "t": "Elegant pine plywood Christmas bauble, featuring a red velvet ribbon, a golden bell and a personalised phrase, created to embrace your Christmas decor and preserve memories with a subtle, timeless charm.",
     "h": "4a82925ae6ab"
   },
+  "options.desenho.name": {
+    "t": "Design",
+    "h": "244c968a7a0b"
+  },
+  "options.desenho.values.casinha-pinheiro.name": {
+    "t": "Little house with pine tree",
+    "h": "b9a95c109d2d"
+  },
+  "options.desenho.values.casinha-arvores.name": {
+    "t": "Little house among trees",
+    "h": "735ea935e649"
+  },
+  "options.desenho.values.cabana-bosque.name": {
+    "t": "Cabin in the woods",
+    "h": "94475175d65b"
+  },
+  "options.desenho.values.casa-grande.name": {
+    "t": "Big house",
+    "h": "2e6e19225a38"
+  },
   "options.name.name": {
     "t": "Name",
     "h": "5086900635fe"
