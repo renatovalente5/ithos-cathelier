@@ -1,0 +1,30 @@
+{
+  "name": {
+    "t": "Nativity Scene Christmas Bauble",
+    "h": "924c85f91db6"
+  },
+  "summary": {
+    "t": "Christmas bauble with a white lacquered MDF nativity scene, featuring a star and a laser-engraved «Merry Christmas» tag.",
+    "h": "56ed6e89aa13"
+  },
+  "text": {
+    "t": "Christmas ornament with a white lacquered MDF nativity silhouette, featuring a small laser-engraved «Merry Christmas» tag and a star. With a golden cord, it is perfect for decorating the Christmas tree or as a gift.",
+    "h": "d4efaf5bbe7b"
+  },
+  "options.word.name": {
+    "t": "Tag wording (optional)",
+    "h": "b183c6c2ce2a"
+  },
+  "options.word.help": {
+    "t": "Empty, the tag says «Merry Christmas».",
+    "h": "6ffe7fb52e40"
+  },
+  "options.word.example": {
+    "t": "Merry Christmas",
+    "h": "427681111a37"
+  },
+  "gpsr.warnings.0": {
+    "t": "This is an ornament and not a toy: hang it out of reach of small children, who may put it in their mouths.",
+    "h": "ded79a9ab86f"
+  }
+}
