@@ -11,6 +11,26 @@
     "t": "Delicate, elegant and full of charm, our pine wood letters are created to add a unique and special touch to every moment. \nPerfect for decorating children's rooms, personalising parties, celebrating special occasions or giving a meaningful keepsake.\nEach letter is thoughtfully crafted, celebrating the natural beauty of the wood and making every creation even more special with colour details.",
     "h": "2128fc722b93"
   },
+  "options.tamanho.name": {
+    "t": "How many letters in the name",
+    "h": "104d5edafb8a"
+  },
+  "options.tamanho.values.ate-5.name": {
+    "t": "Up to 5 letters",
+    "h": "2f15116af19b"
+  },
+  "options.tamanho.values.mais-5.name": {
+    "t": "6 letters or more",
+    "h": "6917ea6c85c2"
+  },
+  "options.nome-curto.name": {
+    "t": "The name (up to 5 letters)",
+    "h": "1ee316200dea"
+  },
+  "options.nome-curto.example": {
+    "t": "Rita",
+    "h": "c0ee4f342a72"
+  },
   "options.name.name": {
     "t": "The name",
     "h": "01bd1e2b89c0"
@@ -18,5 +38,17 @@
   "options.name.example": {
     "t": "Beatriz",
     "h": "ac8a9e876b6c"
+  },
+  "options.acabamento.name": {
+    "t": "Finish",
+    "h": "3b09f4dede26"
+  },
+  "options.acabamento.values.natural.name": {
+    "t": "Natural wood",
+    "h": "97378d5a5474"
+  },
+  "options.acabamento.values.pintado.name": {
+    "t": "Painted",
+    "h": "0c90f3d80bae"
   }
 }
