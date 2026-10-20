@@ -2,7 +2,7 @@
   "name": "Grinalda pendente personalizada",
   "price": 9,
   "published": true,
-  "featured": true,
+  "featured": false,
   "order": 80,
   "made": "to_order",
   "occasion": "christmas",
