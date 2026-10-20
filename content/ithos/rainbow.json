@@ -40,9 +40,9 @@
         },
         {
           "id": "3",
-          "name": "amarelo",
+          "name": "bege",
           "extra": 0,
-          "colour": "#DDE84A",
+          "colour": "#E1DCBC",
           "available": false
         }
       ]
