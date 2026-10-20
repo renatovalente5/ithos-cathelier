@@ -1,15 +1,15 @@
 {
   "name": {
-    "t": "Birth disc",
-    "h": "3ec15093b614"
+    "t": "Birth plaque",
+    "h": "28c9a5e8c2aa"
   },
   "summary": {
-    "t": "A round disc carrying everything about the day they arrived.",
-    "h": "8871cf8352a3"
+    "t": "Birth plaque with the details of the day your baby was born.",
+    "h": "a70ca168553b"
   },
   "text": {
-    "t": "A round disc with the name, the date, the time, the weight and the length engraved into it.\n\nIt is the piece people hang over a cot and then never take down.",
-    "h": "35e970b6f652"
+    "t": "A delicate and charming piece, created to eternalise the first details of your baby's life.\nMade from pine plywood in a circular shape, it brings together the birth details in a unique and meaningful composition, featuring laser engraving of the name and a delicate lace for hanging.\nA little handmade treasure, where every detail tells a love story.",
+    "h": "de45e792d54b"
   },
   "options.name.name": {
     "t": "Name",
