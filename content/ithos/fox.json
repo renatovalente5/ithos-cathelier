@@ -24,6 +24,22 @@
   "colours": [],
   "options": [
     {
+      "id": "variant",
+      "name": "Cor",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "help": "",
+      "values": [
+        {
+          "id": "1",
+          "name": "Branco",
+          "extra": 0,
+          "colour": "#FFFFFF"
+        }
+      ]
+    },
+    {
       "id": "power",
       "name": "Alimentação",
       "type": "choice",
