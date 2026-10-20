@@ -1,0 +1,46 @@
+{
+  "name": "Bola de Natal presépio",
+  "price": 1.8,
+  "published": true,
+  "featured": false,
+  "order": 31,
+  "made": "to_order",
+  "occasion": "christmas",
+  "alsoIn": [],
+  "summary": "Bola de Natal com o presépio em mdf lacado a branco, com estrela e etiqueta «Feliz Natal» gravada a laser.",
+  "text": "Enfeite de Natal com a silhueta do presépio em mdf lacado a branco, com uma pequena etiqueta gravada a laser com «Feliz Natal» e uma estrela. Com um cordão dourado, é perfeita para decorar a árvore de Natal ou para oferecer.",
+  "photoFolder": "nativity-bauble",
+  "photos": [
+    "01",
+    "02",
+    "03"
+  ],
+  "cover": "01",
+  "options": [
+    {
+      "id": "word",
+      "name": "Palavra da etiqueta (opcional)",
+      "type": "text",
+      "required": false,
+      "personalises": true,
+      "max": 14,
+      "extra": 0,
+      "example": "Feliz Natal",
+      "help": "Vazio, a etiqueta diz «Feliz Natal»."
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": [
+      "É um enfeite e não um brinquedo: pendure-o fora do alcance de crianças pequenas, que o podem pôr na boca."
+    ]
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  },
+  "videos": [
+    "vmvghdl76xi.mp4"
+  ]
+}
