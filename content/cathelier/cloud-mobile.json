@@ -21,6 +21,54 @@
   "cover": "01",
   "options": [
     {
+      "id": "material",
+      "name": "Nome em",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "values": [
+        {
+          "id": "acrilico-dourado",
+          "name": "Acrílico dourado",
+          "extra": 0
+        },
+        {
+          "id": "acrilico-branco",
+          "name": "Acrílico branco",
+          "extra": 0
+        },
+        {
+          "id": "contraplacado",
+          "name": "Contraplacado",
+          "extra": 0
+        }
+      ]
+    },
+    {
+      "id": "pendentes",
+      "name": "O que pende da nuvem",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "values": [
+        {
+          "id": "nuvens",
+          "name": "Nuvens",
+          "extra": 0
+        },
+        {
+          "id": "flor-borboleta-coracao",
+          "name": "Flor, borboleta e coração",
+          "extra": 0
+        },
+        {
+          "id": "estrelas",
+          "name": "Estrelas",
+          "extra": 0
+        }
+      ]
+    },
+    {
       "id": "name",
       "name": "Nome",
       "type": "text",
