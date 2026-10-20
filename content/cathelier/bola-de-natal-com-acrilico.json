@@ -2,7 +2,7 @@
   "name": "Bola de Natal com acrílico e guiso",
   "price": 4,
   "published": true,
-  "featured": true,
+  "featured": false,
   "order": 400,
   "made": "to_order",
   "occasion": "christmas",
