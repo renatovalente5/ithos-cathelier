@@ -19,6 +19,55 @@
   "cover": "04",
   "options": [
     {
+      "id": "flocos",
+      "name": "Quantos nomes (um floco cada)",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "values": [
+        {
+          "id": "ate-3",
+          "name": "Até 3 nomes",
+          "extra": 0
+        },
+        {
+          "id": "n4",
+          "name": "4 nomes",
+          "extra": 0.5
+        },
+        {
+          "id": "n5",
+          "name": "5 nomes",
+          "extra": 1.0
+        },
+        {
+          "id": "n6",
+          "name": "6 nomes",
+          "extra": 1.5
+        },
+        {
+          "id": "n7",
+          "name": "7 nomes",
+          "extra": 2.0
+        },
+        {
+          "id": "n8",
+          "name": "8 nomes",
+          "extra": 2.5
+        },
+        {
+          "id": "n9",
+          "name": "9 nomes",
+          "extra": 3.0
+        },
+        {
+          "id": "n10",
+          "name": "10 nomes",
+          "extra": 3.5
+        }
+      ]
+    },
+    {
       "id": "family",
       "name": "Nome de família",
       "type": "text",
@@ -36,7 +85,7 @@
       "personalises": true,
       "max": 160,
       "extra": 0,
-      "example": "Ana, Rui, Tiago, Inês"
+      "example": "Ana, Rui, Tiago"
     }
   ],
   "gpsr": {
