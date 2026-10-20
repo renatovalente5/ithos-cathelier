@@ -312,7 +312,10 @@ ${asset.textos?.[lingua()] ? `<script src="/assets/${asset.textos[lingua()]}" de
    promise it was making is already on the page, twice, where it means
    something: beside the button and in the questions. */
 function announcement({ brand, shipping }) {
-  if (brand !== 'cathelier') return '';
+  /* NAS DUAS MARCAS (a dona, 20 out 2026: «no cathelier aparece portes
+     grátis a partir de 30 €, mas no ithos não»). O cesto é um só e os portes
+     grátis valem para tudo o que lá está -- candeeiros incluídos --, por isso
+     a faixa diz-se em todas as páginas; até aqui só a cathelier a tinha. */
   /* Uma faixa por campanha ligada, cada uma com as suas datas: o shop.js tira
      as que estão fora do dia e deixa só a primeira (campanhas.mjs). */
   return campanhasLigadas(shipping).map((c) => `<p class="announce" data-de="${esc(c.from || '')}" data-ate="${esc(c.to || '')}">${esc(t('shell.portesGratis', { n: Number(c.freeOver).toFixed(0) }))}</p>`).join('');

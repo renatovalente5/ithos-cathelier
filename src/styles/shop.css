@@ -145,7 +145,10 @@
 .cover .cover__title {
   margin: 0;
   color: var(--cover-ink);
-  font-size: clamp(2rem, 6.5vw, 4rem);
+  /* Também pela altura do ecrã (8svh): num portátil baixo a capa encolhe
+     para deixar ver o que vem a seguir, e um título de quatro linhas ao
+     tamanho de um ecrã alto saía por baixo dela, com o botão. */
+  font-size: clamp(2rem, min(6.5vw, 8svh), 4rem);
   line-height: 1.04;
   text-wrap: balance;
 }
@@ -181,6 +184,15 @@
      janela depois da barra e da capa: 5rem, o mesmo que os 9rem de antes
      davam com a barra (4rem) por cima. */
   .cover__media { max-block-size: calc(100svh - var(--head-h) - var(--anuncio-h, 0px) - 5rem); }
+  /* NA CATHELIER, OS SEPARADORES À VISTA (a dona, 20 out 2026: «no cathelier
+     também não se veem aqueles ícones»). A seguir à capa da página inicial
+     vem a fila dos círculos (Natal, Nascimento, Nomes…), e os 5rem só
+     deixavam ver o cimo deles: medido a 1440x790, a fila acaba 160px abaixo
+     do topo da secção. A capa guarda 11rem para ela; num ecrã muito baixo
+     não desce dos 22rem, para o título e o botão continuarem a caber. */
+  .cover:has(+ .occasions-lead) .cover__media {
+    max-block-size: max(22rem, calc(100svh - var(--head-h) - var(--anuncio-h, 0px) - 11rem));
+  }
 }
 
 .hero__cta {
