@@ -156,6 +156,18 @@
     "t": "The shop has not opened yet — you cannot order just now.",
     "h": "be75b84e3490"
   },
+  "loja.pausa": {
+    "t": "Orders are paused.",
+    "h": "748c2134f0bd"
+  },
+  "loja.pausaNota": {
+    "t": "Online orders are paused — you cannot order just now.",
+    "h": "242734d66f0f"
+  },
+  "loja.pausaNotaAte": {
+    "t": "Online orders are paused until {data} — you can order from then on.",
+    "h": "1f70c0ec4494"
+  },
   "erro.paisSemEnvio": {
     "t": "We do not ship to that country yet. Write to us and we will see what we can do.",
     "h": "5df3ae51e2de"
@@ -407,17 +419,5 @@
   "botao.adicionar": {
     "t": "Add to basket",
     "h": "5a3ec32580e8"
-  },
-  "loja.pausa": {
-    "t": "Orders are paused.",
-    "h": "748c2134f0bd"
-  },
-  "loja.pausaNota": {
-    "t": "Online orders are paused — you cannot order just now.",
-    "h": "242734d66f0f"
-  },
-  "loja.pausaNotaAte": {
-    "t": "Online orders are paused until {data} — you can order from then on.",
-    "h": "1f70c0ec4494"
   }
 }
