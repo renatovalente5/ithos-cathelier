@@ -32,12 +32,27 @@
         },
         {
           "id": "sleigh",
-          "name": "Trenó",
+          "name": "Trenó e renas",
           "extra": 0
         },
         {
           "id": "tree",
-          "name": "Árvore",
+          "name": "Pinheiro",
+          "extra": 0
+        },
+        {
+          "id": "quebra-noses",
+          "name": "Quebra noses",
+          "extra": 0
+        },
+        {
+          "id": "boneco-de-neve",
+          "name": "Boneco de neve",
+          "extra": 0
+        },
+        {
+          "id": "duende",
+          "name": "Duende",
           "extra": 0
         }
       ]
