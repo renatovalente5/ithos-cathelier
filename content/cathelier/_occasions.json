@@ -39,21 +39,21 @@
     "name": "Nomes",
     "summary": "Peças personalizadas em madeira de pinho para pousar ou pendurar, com acabamento cuidado e atenção ao detalhe. Produzidas por medida com pormenores únicos. ",
     "order": 60,
-    "published": true
+    "published": false
   },
   {
     "slug": "hanging",
     "name": "Pendentes",
     "summary": "Peças personalizadas em contraplacado pendurar, com acabamento cuidado e atenção ao detalhe. Produzidas por medida com pormenores únicos e delicados. ",
     "order": 70,
-    "published": true
+    "published": false
   },
   {
     "slug": "wall-decor",
     "name": "Decoração",
     "summary": "Peças personalizadas em contraplacado pendurar, com acabamento cuidado e atenção ao detalhe. Produzidas por medida com pormenores únicos e delicados. ",
     "order": 80,
-    "published": true
+    "published": false
   },
   {
     "slug": "custom",
