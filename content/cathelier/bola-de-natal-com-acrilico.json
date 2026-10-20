@@ -1,0 +1,42 @@
+{
+  "name": "Bola de Natal com acrílico e guiso",
+  "price": 4,
+  "published": true,
+  "featured": true,
+  "order": 400,
+  "made": "to_order",
+  "occasion": "christmas",
+  "alsoIn": [],
+  "summary": "Bola de Natal personalizada com acrílico e guiso",
+  "text": "",
+  "photoFolder": "bola-de-natal-com-acrilico",
+  "photos": [
+    "fmvgs504g3b",
+    "fmvgs5g9l29",
+    "fmvgs5zzi9j",
+    "fmvgs6i6g8e",
+    "fmvgs6ug32d"
+  ],
+  "cover": "fmvgs504g3b",
+  "options": [
+    {
+      "id": "name",
+      "name": "Nome",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 40,
+      "extra": 0,
+      "example": ""
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}
