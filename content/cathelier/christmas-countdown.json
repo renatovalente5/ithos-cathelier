@@ -1,14 +1,14 @@
 {
   "name": "Contagem para o Natal",
-  "price": 22,
+  "price": 15,
   "published": true,
   "featured": false,
   "order": 100,
   "made": "to_order",
   "occasion": "christmas",
   "alsoIn": [],
-  "summary": "Uma casinha com um disco que roda: faltam tantos dias para o Natal.",
-  "text": "Uma casinha com um disco que roda: faltam tantos dias para o Natal.",
+  "summary": "Contagem para o natal em forma de casinha de gengibre: a magia da espera ",
+  "text": "Inspirada no encanto das tradicionais casinhas de gengibre, esta peça é criada em contraplacado de pinho, com delicados pormenores em acrílico branco e uma elegante fita de renda para pendurar.\nPensada para tornar a contagem decrescente até ao Natal ainda mais especial, permite escrever o número de dias que faltam para a noite mais mágica do ano.\nUm detalhe delicado e intemporal, que celebra a beleza das tradições e a alegria de esperar pelo Natal em família.",
   "photoFolder": "christmas-countdown",
   "photos": [
     "01",
