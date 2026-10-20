@@ -87,10 +87,14 @@ export const MIRRORED = [
 /** The address of a shared page in the dress of the shop you are standing in.
  *  Every link to one goes through here -- the bar, the menu, the footer, the
  *  breadcrumbs and the bodies -- so there is one place to be wrong, not forty. */
-/* A VALIDAÇÃO DO SEARCH CONSOLE (20 out 2026, no dia em que a loja abriu):
+/* AS VALIDAÇÕES DOS MOTORES DE PESQUISA (20 out 2026, no dia em que a loja abriu).
+   A do Search Console:
    a propriedade «https://ithos-cathelier.pt/» na conta renato.lima.valente@
    gmail.com valida-se por esta etiqueta. Tirá-la desvalida a propriedade. */
 const GOOGLE_VERIFICACAO = 'Nj88gKrsYHOgMjGXC70miMHPdTWL_dZ7p9jtu9740Nk';
+/* E a do Bing Webmaster Tools (a mesma data, na conta onde estão os sites
+   dos clientes do Renato). */
+const BING_VERIFICACAO = 'DE1BA388910A8DC62D873CAEEF7B2BB8';
 
 export function brandPath(path, brand) {
   if (brand !== 'cathelier') return path;
@@ -216,6 +220,7 @@ export function page(o) {
 ${semMorada ? '' : `<link rel="canonical" href="${esc(canonical)}">`}
 ${noindex || preview ? '<meta name="robots" content="noindex, nofollow">' : ''}
 <meta name="google-site-verification" content="${GOOGLE_VERIFICACAO}">
+<meta name="msvalidate.01" content="${BING_VERIFICACAO}">
 <meta name="theme-color" content="${themeColour}">
 
 <meta property="og:type" content="website">
