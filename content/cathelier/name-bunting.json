@@ -16,15 +16,118 @@
   "cover": "01",
   "options": [
     {
-      "id": "name",
-      "name": "Nome",
+      "id": "letras",
+      "name": "Quantas letras tem o nome",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "values": [
+        {
+          "id": "ate-6",
+          "name": "Até 6 letras",
+          "extra": 0
+        },
+        {
+          "id": "l7",
+          "name": "7 letras",
+          "extra": 1.5
+        },
+        {
+          "id": "l8",
+          "name": "8 letras",
+          "extra": 3.0
+        },
+        {
+          "id": "l9",
+          "name": "9 letras",
+          "extra": 4.5
+        },
+        {
+          "id": "l10",
+          "name": "10 letras",
+          "extra": 6.0
+        }
+      ]
+    },
+    {
+      "id": "nome-6",
+      "name": "O nome (até 6 letras)",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 6,
+      "extra": 0,
+      "example": "Mateus",
+      "onlyWith": {
+        "option": "letras",
+        "values": [
+          "ate-6"
+        ]
+      }
+    },
+    {
+      "id": "nome-7",
+      "name": "O nome (7 letras)",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 7,
+      "extra": 0,
+      "example": "Beatriz",
+      "onlyWith": {
+        "option": "letras",
+        "values": [
+          "l7"
+        ]
+      }
+    },
+    {
+      "id": "nome-8",
+      "name": "O nome (8 letras)",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 8,
+      "extra": 0,
+      "example": "Lourenço",
+      "onlyWith": {
+        "option": "letras",
+        "values": [
+          "l8"
+        ]
+      }
+    },
+    {
+      "id": "nome-9",
+      "name": "O nome (9 letras)",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 9,
+      "extra": 0,
+      "example": "Francisco",
+      "onlyWith": {
+        "option": "letras",
+        "values": [
+          "l9"
+        ]
+      }
+    },
+    {
+      "id": "nome-10",
+      "name": "O nome (10 letras)",
       "type": "text",
       "required": true,
       "personalises": true,
       "max": 10,
       "extra": 0,
-      "example": "Lourenço",
-      "help": "Até dez letras."
+      "example": "Henriqueta",
+      "onlyWith": {
+        "option": "letras",
+        "values": [
+          "l10"
+        ]
+      }
     }
   ],
   "gpsr": {

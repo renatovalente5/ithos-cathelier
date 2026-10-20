@@ -39,7 +39,7 @@
     "name": "Nomes",
     "summary": "Peças personalizadas em madeira de pinho para pousar ou pendurar, com acabamento cuidado e atenção ao detalhe. Produzidas por medida com pormenores únicos. ",
     "order": 60,
-    "published": false
+    "published": true
   },
   {
     "slug": "hanging",
