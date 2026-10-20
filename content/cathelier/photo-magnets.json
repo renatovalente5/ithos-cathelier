@@ -1,5 +1,5 @@
 {
-  "name": "Ímanes com fotografia",
+  "name": "Ímanes personalizados",
   "price": 3,
   "published": true,
   "featured": false,
@@ -9,8 +9,8 @@
   "alsoIn": [
     "keepsakes"
   ],
-  "summary": "A sua fotografia num íman redondo, para o frigorífico.",
-  "text": "A sua fotografia num íman redondo, para o frigorífico.",
+  "summary": "Imanes personalizados, fotografia, imagem, mensagem",
+  "text": "Torne este Natal ainda mais especial com ímanes personalizados, criados com carinho para guardar os momentos mais bonitos desta época mágica.\nCom uma fotografia especial, o nome da criança, uma mensagem personalizada ou simplesmente um Feliz Natal, cada peça é uma lembrança única, perfeita para oferecer à família, aos amigos, aos professores ou a quem torna a nossa vida mais bonita.",
   "photoFolder": "photo-magnets",
   "photos": [
     "01",
