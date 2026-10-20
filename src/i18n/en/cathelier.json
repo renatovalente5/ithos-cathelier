@@ -136,6 +136,10 @@
     "t": "Counts the total of this piece in your order, even with different names, and the price applies to all of them.",
     "h": "84ac3148f502"
   },
+  "ficha.quantidades.extras": {
+    "t": "Paid choices are added on top.",
+    "h": "49ab0f3b215e"
+  },
   "ficha.obrigatorio": {
     "t": "required",
     "h": "ee8ce56b0f6a"

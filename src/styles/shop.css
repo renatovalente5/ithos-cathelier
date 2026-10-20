@@ -959,6 +959,8 @@ html[data-scrolled='no'] .head {
 .product__tiers dl > div { display: flex; justify-content: space-between; gap: 1rem; }
 .product__tiers dd { margin: 0; font-weight: 600; }
 .product__tiers-note { margin-block-start: .5rem; font-size: 12px; color: var(--muted); }
+/* O total ao pé do botão (shop.js, productForm): o preço do que se vai juntar ao cesto. */
+.product__total { margin-block-start: .6rem; font-size: 14px; font-weight: 600; font-variant-numeric: tabular-nums; }
 .product__lead { margin-block-start: .5rem; font-size: 13px; color: var(--muted); }
 .product__form { margin-block-start: 1.75rem; display: grid; gap: 1.25rem; }
 .product__buy { display: flex; gap: .75rem; align-items: stretch; min-width: 0; }

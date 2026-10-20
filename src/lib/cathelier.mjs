@@ -32,11 +32,14 @@ const desde = (n) => esc(t('cathelier.desde', { preco: valor(n) }));
 function precosPorQuantidade(p) {
   const e = escaloes(p);
   if (!e.length) return '';
+  /* Com escolhas pagas (a Bola da família, por pessoa a mais), a tabela é a
+     da peça sem elas, e diz-se. */
+  const pagas = (p.options || []).some((o) => (o.extra || 0) > 0 || (o.values || []).some((v) => (v.extra || 0) > 0));
   const linhas = [{ de: 1, ate: e[0].from - 1, preco: p.price }, ...e.map((t, i) => ({ de: t.from, ate: e[i + 1] ? e[i + 1].from - 1 : null, preco: t.price }))];
   return `<div class="product__tiers">
       <p class="product__tiers-title">${esc(t('cathelier.ficha.quantidades.titulo'))}</p>
       <dl>${linhas.map((x) => `<div><dt>${esc(x.ate === null ? t('cathelier.ficha.quantidades.mais', { a: x.de }) : x.de === x.ate ? String(x.de) : t('cathelier.ficha.quantidades.intervalo', { a: x.de, b: x.ate }))}</dt><dd>${esc(t('cathelier.ficha.quantidades.cada', { preco: valor(x.preco) }))}</dd></div>`).join('')}</dl>
-      <p class="product__tiers-note">${esc(t('cathelier.ficha.quantidades.nota'))}</p>
+      <p class="product__tiers-note">${esc(t('cathelier.ficha.quantidades.nota'))}${pagas ? ` ${esc(t('cathelier.ficha.quantidades.extras'))}` : ''}</p>
     </div>`;
 }
 
@@ -437,6 +440,7 @@ export function piece({ p, all: everything, shop, occasions, identity }) {
         </div>
         <button class="btn btn--wide" type="submit" data-add>${esc(t('cathelier.ficha.adicionar'))}</button>
       </div>
+      <p class="product__total" data-product-total aria-live="polite" hidden></p>
     </form>
 
     <div class="reassure">

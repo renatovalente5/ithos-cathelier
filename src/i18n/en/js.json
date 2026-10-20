@@ -344,6 +344,14 @@
     "t": "Quantity price ({n} items): €{preco} each",
     "h": "3532beb66151"
   },
+  "ficha.total": {
+    "t": "Total: {total}",
+    "h": "6b53049f6290"
+  },
+  "ficha.totalVarios": {
+    "t": "Total: {n} × {cada} = {total}",
+    "h": "2a94eebb1f8a"
+  },
   "cesto.pvp": {
     "t": "RRP {preco}",
     "h": "6f5b714cfc9c"

@@ -34,6 +34,7 @@
   "ficha.quantidades.mais": "{a} ou mais",
   "ficha.quantidades.cada": "{preco} € cada",
   "ficha.quantidades.nota": "Conta o total desta peça na encomenda, mesmo com nomes diferentes, e o preço vale para todas.",
+  "ficha.quantidades.extras": "As escolhas pagas somam-se por cima.",
   "ficha.obrigatorio": "obrigatório",
   "ficha.limite": "Até {n} caracteres.",
   "ficha.menosUm": "Menos um",

@@ -81,9 +81,9 @@
       "type": "text",
       "required": true,
       "personalises": true,
-      "max": 40,
+      "max": 160,
       "extra": 0,
-      "example": "Ana, Rui, Tiago"
+      "example": "Ana, Rui, Tiago, Inês"
     }
   ],
   "gpsr": {

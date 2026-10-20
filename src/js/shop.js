@@ -198,6 +198,15 @@ const esperarRevenda = () => (revendaPronta ??= carregarRevenda({ fresco: revend
 
 /** The discount on one piece, in euros, or 0. `preco` is ALWAYS the product's
  *  base price, `p.price` -- the same condition the Worker applies. */
+/* OS PREÇOS POR QUANTIDADE (src/lib/quantidades.mjs; a mesma conta no
+   Worker, catalogue.js): o escalão conta TODAS as linhas da mesma peça, e vale
+   para todas as unidades. O cesto e o total da ficha usam-na. */
+function precoParaQuantidade(p, qtd) {
+  let preco = p.price;
+  for (const t of (p.quantityPrices || []).slice().sort((a, b) => a.from - b.from)) if (qtd >= t.from) preco = t.price;
+  return preco;
+}
+
 function descontoDe(slug, preco) {
   if (!revenda.activa) return 0;
   const d = (revenda.descontos[slug] || 0) / 100;
@@ -1549,15 +1558,6 @@ async function basketPage() {
     return !esgotouAgora && p.skus.every(temUm) ? tj('cesto.emStock') : tj('cesto.semStock');
   }
 
-  /* OS PREÇOS POR QUANTIDADE (src/lib/quantidades.mjs; a mesma conta no
-     Worker, catalogue.js): o escalão conta TODAS as linhas da mesma peça, e
-     vale para todas as unidades. */
-  function precoParaQuantidade(p, qtd) {
-    let preco = p.price;
-    for (const t of (p.quantityPrices || []).slice().sort((a, b) => a.from - b.from)) if (qtd >= t.from) preco = t.price;
-    return preco;
-  }
-
   function priceOf(line, qtdDaPeca = line.qty) {
     const p = cat.products[line.id];
     if (!p) return null;
@@ -2363,6 +2363,44 @@ function productForm() {
   const tecto = Number(qty?.max) || 20;
   $('[data-qty-down]', form)?.addEventListener('click', () => { qty.value = Math.max(1, +qty.value - 1); });
   $('[data-qty-up]', form)?.addEventListener('click', () => { qty.value = Math.min(tecto, +qty.value + 1); });
+
+  /* O TOTAL AO PÉ DO BOTÃO (20 out 2026): com os conjuntos («O conjunto dos
+     12, +16,20 €» sobre «desde 1,80 €») e os preços por quantidade, quem
+     compra tinha de fazer a conta de cabeça. A mesma conta do cesto e do
+     Worker: o escalão da quantidade, o preço de revendedor se for mais baixo,
+     e as escolhas pagas por cima. Só a quantidade deste formulário -- o que já
+     estiver no cesto da mesma peça o cesto junta. Sem catálogo, não aparece. */
+  const total = $('[data-product-total]', form);
+  if (total) {
+    catalogue().then((c) => {
+      const p = c.products[slug];
+      if (!p) return;
+      const pintar = () => {
+        const q = Math.min(tecto, Math.max(1, Math.floor(Number(qty?.value)) || 1));
+        const base = precoParaQuantidade(p, q);
+        let cada = Math.min(base, p.price - descontoDe(slug, p.price));
+        for (const o of p.options || []) {
+          if (o.type === 'choice') {
+            const marcado = form.querySelector(`input[data-option="${CSS.escape(o.id)}"]:checked`);
+            const v = marcado && (o.values || []).find((x) => String(x.id) === marcado.value);
+            if (v) cada += v.extra || 0;
+          } else {
+            const campo = form.querySelector(`[data-option="${CSS.escape(o.id)}"]`);
+            if (campo && String(campo.value || '').trim()) cada += o.extra || 0;
+          }
+        }
+        total.textContent = q > 1
+          ? tj('ficha.totalVarios', { n: q, cada: dinheiro(cada), total: dinheiro(cada * q) })
+          : tj('ficha.total', { total: dinheiro(cada) });
+        total.hidden = false;
+      };
+      form.addEventListener('input', pintar);
+      form.addEventListener('change', pintar);
+      /* Os botões − e + mudam o valor sem evento de input. */
+      form.addEventListener('click', (ev) => { if (ev.target.closest('[data-qty-up], [data-qty-down]')) pintar(); });
+      pintar();
+    }).catch(() => {});
+  }
 
   /* Uma linha por baixo do botão, com o mesmo desenho da do checkout: o cesto
      nunca deve mudar de ideias em silêncio. */

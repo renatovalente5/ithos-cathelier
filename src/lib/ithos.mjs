@@ -364,6 +364,7 @@ export function product({ p, all, shop, identity }) {
         </div>
         <button class="btn btn--wide" type="submit" data-add>${esc(t('ithos.botao.adicionar'))}</button>
       </div>
+      <p class="product__total" data-product-total aria-live="polite" hidden></p>
     </form>
 
     <div class="reassure">
