@@ -1,6 +1,6 @@
 {
-  "name": "Nome em madeira",
-  "price": 32,
+  "name": "Nome personalizados ",
+  "price": 2,
   "published": true,
   "featured": true,
   "order": 210,
@@ -9,8 +9,8 @@
   "alsoIn": [
     "wall-decor"
   ],
-  "summary": "Para a parede do quarto, pintado na cor que escolher.",
-  "text": "Para a parede do quarto, pintado na cor que escolher.",
+  "summary": "Nomes personalizados em madeira de pinho",
+  "text": "Nomes delicados, elegantes e cheias de encanto, as nossas letras em madeira de pinho, são criadas para dar um toque único e especial a cada momento. \nPerfeitas para decorar quartos de criança, personalizar festas, celebrar ocasiões especiais ou oferecer uma lembrança cheia de significado.\nCada letra é pensada com carinho, valorizando a beleza natural da madeira e tornando cada criação ainda mais especial com pormenores de cor.",
   "photoFolder": "wooden-name",
   "photos": [
     "01",
