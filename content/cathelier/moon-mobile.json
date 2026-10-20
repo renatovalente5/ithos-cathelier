@@ -1,6 +1,6 @@
 {
   "name": "Móbile de lua e estrelas",
-  "price": 26,
+  "price": 20,
   "published": true,
   "featured": false,
   "order": 270,
@@ -13,10 +13,11 @@
   "text": "Uma lua com o nome e três estrelas penduradas.",
   "photoFolder": "moon-mobile",
   "photos": [
-    "01",
-    "02"
+    "02",
+    "fmvgu3uuye4",
+    "fmvgu4ah3zy"
   ],
-  "cover": "01",
+  "cover": "02",
   "options": [
     {
       "id": "name",
