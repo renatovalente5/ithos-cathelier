@@ -23,7 +23,15 @@
     "provider": "ifthenpay",
     "methods": "referência Multibanco, MB WAY, cartão, Google Pay ou Apple Pay",
     "referenceDays": 2,
-    "_note": "Esta frase é mostrada ao comprador nos termos, e o artigo 7.º do DL 24/2014 obriga a indicar os meios de pagamento aceites de forma clara, o mais tardar no início do processo de encomenda. Esteve a dizer «Multibanco reference or MB WAY» depois de o Payshop já estar no cesto: uma frase escrita à mão que ninguém voltou a ler. scripts/check-output.mjs compara-a agora com as opções que o cesto construído oferece mesmo, e recusa publicar se divergirem — não voltar a editar uma sem a outra."
+    "_note": "Esta frase é mostrada ao comprador nos termos, e o artigo 7.º do DL 24/2014 obriga a indicar os meios de pagamento aceites de forma clara, o mais tardar no início do processo de encomenda. Esteve a dizer «Multibanco reference or MB WAY» depois de o Payshop já estar no cesto: uma frase escrita à mão que ninguém voltou a ler. scripts/check-output.mjs compara-a agora com as opções que o cesto construído oferece mesmo, e recusa publicar se divergirem — não voltar a editar uma sem a outra.",
+    "marks": [
+      "mbway",
+      "multibanco",
+      "mastercard",
+      "visa",
+      "googlepay"
+    ],
+    "_note_marks": "As marcas no rodapé, por esta ordem (o MB WAY antes do Multibanco, regra da SIBS). O Apple Pay entra («applepay») depois de uma compra de teste a sério num iPhone: a marca é uma promessa. Antes de abrir a loja, a SIBS tem de validar a aplicação dos logótipos MB WAY e Multibanco (marketing@sibs.pt). Ver assets/brand/pay/LEIA.md."
   },
   "safetyIthos": [
     "Isto não é um brinquedo. É um candeeiro de presença decorativo.",

@@ -481,7 +481,7 @@ export function quote({ identity }) {
    disso. Medi a alternativa de pôr tudo a 38 -- cumpre à letra e fica pior,
    com o Apple Pay e o Google Pay a dominar a lista. */
 const MARCAS = {
-  mbway: { w: 143.2, h: 69.57, alto: 24 },
+  mbway: { w: 480, h: 234, alto: 24 },
   multibanco: { w: 153.98, h: 181.88, alto: 38 },
   applepay: { w: 165.52107, h: 105.9651, alto: 28 },
   googlepay: { w: 41, h: 17, alto: 28 },
@@ -493,9 +493,17 @@ const MARCAS = {
    descarga. E mostrar marcas de aceitação é opcional: não as mostrar não custa
    nada, mostrá-las mal custa. O porquê por extenso está em
    assets/brand/pay/LEIA.md. */
+/* O CARTÃO MOSTRA AS MARCAS DA VISA E DA MASTERCARD (20 out 2026), oficiais,
+   das páginas de marca das duas (assets/brand/pay/LEIA.md). A Mastercard quer
+   a sua marca onde se mostram as dos outros meios de pagamento, ao mesmo
+   nível; a Visa pede a dela a quem a aceita online. À mesma altura do MB WAY
+   (24px) cabem as duas na caixa de 5,25rem, porque os ficheiros já trazem a
+   área livre de cada uma. Aqui o `alt` diz qual é qual: o nome da opção é só
+   «Cartão», e quem não vê os logótipos perdia que cartões são. */
+const CARTOES = { visa: { w: 295.2, h: 144, nome: 'Visa' }, mastercard: { w: 152.4, h: 108, nome: 'Mastercard' } };
 function marca(qual) {
   if (qual === 'cartao') {
-    return `<span class="pay-choice__marca">${icon('card', 30)}</span>`;
+    return `<span class="pay-choice__marca pay-choice__marca--duas">${Object.entries(CARTOES).map(([q, m]) => `<img src="/assets/pay/${q}.svg" alt="${m.nome}" width="${Math.round((m.w / m.h) * 24)}" height="24" style="height:24px" loading="lazy" decoding="async">`).join('')}</span>`;
   }
   const m = MARCAS[qual];
   if (!m) throw new Error(`logótipo desconhecido: ${qual}`);

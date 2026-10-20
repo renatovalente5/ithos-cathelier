@@ -1230,10 +1230,14 @@ for (const [o, n] of esgotados) {
  * no mesmo tamanho óptico. */
 {
   const esperado = {
-    'mbway.svg': [143.2, 69.57],
+    'mbway.svg': [480, 234],
     'multibanco.svg': [153.98, 181.88],
+    'multibanco-horizontal.svg': [416, 88],
     'applepay.svg': [165.52107, 105.9651],
     'googlepay.svg': [41, 17],
+    'googlepay-marca.svg': [1094, 742],
+    'visa.svg': [295.2, 144],
+    'mastercard.svg': [152.4, 108],
   };
   for (const [nome, [w, h]] of Object.entries(esperado)) {
     const caminho = join(ROOT, 'assets', 'brand', 'pay', nome);
@@ -1274,6 +1278,23 @@ for (const [o, n] of esgotados) {
     if (Math.abs(vw / vh - w / h) > 0.01) {
       die(`assets/brand/pay/${nome} mudou de forma: viewBox diz ${vw}x${vh}, `
         + `src/lib/pages.mjs conta com ${w}x${h} — acertar os dois ou a caixa fica do tamanho errado`);
+    }
+  }
+  /* AS MARCAS DO RODAPÉ (shop.json, payment.marks; shell.mjs) são promessas:
+     cada uma tem de ser de um meio que a loja diz aceitar (a mesma frase que o
+     check-output compara com o cesto), e o MB WAY vem antes do Multibanco
+     (regra da SIBS). */
+  {
+    const pay = JSON.parse(readFileSync(join(ROOT, 'content', 'settings', 'shop.json'), 'utf8')).payment ?? {};
+    const metodos = String(pay.methods ?? '');
+    const precisa = { mbway: /MB WAY/i, multibanco: /Multibanco/i, mastercard: /cart[ãa]o|card/i, visa: /cart[ãa]o|card/i, googlepay: /Google Pay/, applepay: /Apple Pay/ };
+    const marks = Array.isArray(pay.marks) ? pay.marks : [];
+    for (const m of marks) {
+      if (!precisa[m]) die(`shop.json payment.marks: «${m}» não é uma marca conhecida (${Object.keys(precisa).join(', ')})`);
+      else if (!precisa[m].test(metodos)) die(`shop.json payment.marks: «${m}» está no rodapé, mas a loja não diz aceitar esse meio («${metodos}»)`);
+    }
+    if (marks.includes('mbway') && marks.includes('multibanco') && marks.indexOf('mbway') > marks.indexOf('multibanco')) {
+      die('shop.json payment.marks: o MB WAY tem de vir antes do Multibanco (regra da SIBS para os dois logótipos juntos)');
     }
   }
   /* E o LEIA.md, que é onde está escrito de onde vieram e que não se mexe

@@ -195,5 +195,9 @@
   },
   "avisoCampanha.titulo": "Free shipping",
   "avisoCampanha.continuar": "Keep browsing",
-  "avisoCampanha.fechar": "Close"
+  "avisoCampanha.fechar": "Close",
+  "pagamentos": {
+    "t": "Accepted payments",
+    "h": "2b3bd6e9d072"
+  }
 }

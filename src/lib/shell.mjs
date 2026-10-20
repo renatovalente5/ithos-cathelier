@@ -268,7 +268,7 @@ ${body}
 </main>
 
 ${drawer({ brand, identity, counts, site, canonicalPath })}
-${footer({ brand, identity })}
+${footer({ brand, identity, shop })}
 
 <a class="to-top" href="#top" hidden aria-label="${esc(t('shell.topo'))}">${icon('arrowUp', 22)}</a>
 ${avisoCampanha({ brand, shipping, foto: campanhaFotos[brand] })}
@@ -466,7 +466,33 @@ function breadcrumbs(items, brand) {
    Only the social accounts of the brand you are looking at. Both used to show
    at once: two Instagram links side by side with the same icon, and clicking
    one landed you in the other brand's world with no idea why. */
-function footer({ brand, identity }) {
+/* OS MEIOS DE PAGAMENTO NO RODAPÉ (20 out 2026). Obra-de-arte oficial, ficheiro
+   a ficheiro (assets/brand/pay/LEIA.md diz de onde veio e as regras de cada
+   marca), à mesma altura, em cartões brancos de contorno escuro -- o Apple Pay
+   e o Google Pay já trazem o seu cartão e o seu contorno, e as outras ganham
+   um igual. Quais aparecem diz content/settings/shop.json (payment.marks), e
+   as guardas recusam uma marca de um meio que a loja não diz aceitar. */
+const MARCAS_DE_PAGAMENTO = {
+  mbway: { ficheiro: 'mbway.svg', nome: 'MB WAY', w: 480, h: 234, tipo: 'cartao' },
+  multibanco: { ficheiro: 'multibanco-horizontal.svg', nome: 'Multibanco', w: 416, h: 88, tipo: 'cartao' },
+  mastercard: { ficheiro: 'mastercard.svg', nome: 'Mastercard', w: 152.4, h: 108, tipo: 'cartao' },
+  visa: { ficheiro: 'visa.svg', nome: 'Visa', w: 295.2, h: 144, tipo: 'cartao' },
+  googlepay: { ficheiro: 'googlepay-marca.svg', nome: 'Google Pay', w: 1094, h: 742, tipo: 'google' },
+  applepay: { ficheiro: 'applepay.svg', nome: 'Apple Pay', w: 165.52107, h: 105.9651, tipo: 'proprio' },
+};
+function marcasDePagamento(shop) {
+  const lista = (shop?.payment?.marks ?? []).filter((m) => MARCAS_DE_PAGAMENTO[m]);
+  if (!lista.length) return '';
+  return `<div class="foot__pay">
+      <p class="foot__pay-title" id="foot-pagamentos">${esc(t('shell.pagamentos'))}</p>
+      <ul class="pay-marks" aria-labelledby="foot-pagamentos">${lista.map((m) => {
+    const x = MARCAS_DE_PAGAMENTO[m];
+    return `<li class="pay-mark pay-mark--${x.tipo}"><img src="/assets/pay/${x.ficheiro}" alt="${esc(x.nome)}" width="${x.w}" height="${x.h}" loading="lazy" decoding="async"></li>`;
+  }).join('')}</ul>
+    </div>`;
+}
+
+function footer({ brand, identity, shop }) {
   const i = identity;
   const social = brand === 'cathelier'
     ? [[i.instagramCathelier, t('shell.noInstagram', { marca: 'cathelier' }), 'instagram']]
@@ -582,6 +608,8 @@ function footer({ brand, identity }) {
 
          The call-cost line stays wherever the telephone number appears. That
          one is not about access — it has to sit beside the number. -->
+    ${marcasDePagamento(shop)}
+
     <p class="foot__end">© ${new Date().getFullYear()} ${esc(i.tradingName)}</p>
   </div>
 </footer>`;
