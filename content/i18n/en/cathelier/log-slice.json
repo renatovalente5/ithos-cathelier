@@ -20,12 +20,24 @@
     "h": "19b85c406b56"
   },
   "options.design.values.sleigh.name": {
-    "t": "Sleigh",
-    "h": "a41844ab07bf"
+    "t": "Sleigh and reindeer",
+    "h": "74017cbeaffb"
   },
   "options.design.values.tree.name": {
-    "t": "Tree",
-    "h": "3f87f7d207cb"
+    "t": "Pine tree",
+    "h": "9ef35b3ca6c9"
+  },
+  "options.design.values.quebra-noses.name": {
+    "t": "Rudolph",
+    "h": "26f8b29b2ace"
+  },
+  "options.design.values.boneco-de-neve.name": {
+    "t": "Snowman",
+    "h": "070c3d441a96"
+  },
+  "options.design.values.duende.name": {
+    "t": "Elf",
+    "h": "ee1ea6b626bf"
   },
   "gpsr.warnings.0": {
     "t": "This is an ornament and not a toy: hang it out of reach of young children, who may put it in their mouths.",
