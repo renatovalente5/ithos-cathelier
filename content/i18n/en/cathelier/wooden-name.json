@@ -50,5 +50,21 @@
   "options.acabamento.values.pintado.name": {
     "t": "Painted",
     "h": "0c90f3d80bae"
+  },
+  "options.cor.name": {
+    "t": "Paint colour",
+    "h": "61b341013cac"
+  },
+  "options.cor.values.rosa-claro.name": {
+    "t": "Light pink",
+    "h": "026cbd0f3421"
+  },
+  "options.cor.values.azul-claro.name": {
+    "t": "Light blue",
+    "h": "f78a352d2d39"
+  },
+  "options.cor.values.verde-caqui.name": {
+    "t": "Khaki green",
+    "h": "4d0783a2c2bb"
   }
 }
