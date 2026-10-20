@@ -1360,7 +1360,7 @@ html.menu-open { overflow: hidden; }
 .pay-marks { --h: 32px; list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .pay-mark { display: flex; block-size: var(--h); }
 .pay-mark img { display: block; block-size: 100%; inline-size: auto; }
-.pay-mark--cartao { box-sizing: border-box; padding: calc(var(--h) * .17) calc(var(--h) * .26); background: #fff; border-radius: calc(var(--h) * .18); }
+.pay-mark--cartao { box-sizing: border-box; padding: calc(var(--h) * .12) calc(var(--h) * .22); background: #fff; border-radius: calc(var(--h) * .18); }
 .pay-mark--google { position: relative; overflow: hidden; inline-size: calc(var(--h) * 752 / 400); }
 .pay-mark--google img { position: absolute; block-size: calc(var(--h) * 742 / 400); inline-size: auto; max-inline-size: none;
   inset-inline-start: calc(var(--h) * -170.7 / 400); inset-block-start: calc(var(--h) * -170 / 400); }
@@ -1382,9 +1382,9 @@ html.menu-open { overflow: hidden; }
      a seguir, lia-se como uma linha a mais. */
   .foot__base { border-block-start: 0; margin-block-start: 1.5rem; padding-block-start: 0; }
   /* As cinco marcas numa fila num telemóvel de 375 px: um pouco mais baixas e
-     mais juntas. Todas à mesma altura (a Google não deixa a dela menor). */
-  .pay-marks { --h: 30px; gap: 5px; }
-  .pay-mark--cartao { padding-inline: calc(var(--h) * .2); }
+     mais juntas, até aos 360 px (o MB WAY fica com 44 px de largura, 50 no computador). Todas à mesma altura (a Google não deixa a dela menor). */
+  .pay-marks { --h: 28px; gap: 5px; }
+  .pay-mark--cartao { padding-inline: calc(var(--h) * .1); }
 }
 
 /* --- back to top ----------------------------------------------------------- */

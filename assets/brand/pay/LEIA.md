@@ -134,7 +134,7 @@ Voltar à mesma fonte e substituir o ficheiro inteiro. Não abrir num editor par
 
 O Renato perguntou se as marcas tinham de ter «aquela borda». Não: o contorno
 escuro (#3c4043) era nosso, para as outras ficarem iguais à pílula do Google Pay.
-Saiu. As marcas ficam em cartões brancos sem contorno, a 32 px (30 no telemóvel,
+Saiu. As marcas ficam em cartões brancos sem contorno, a 32 px (28 no telemóvel,
 para as cinco caberem numa fila). O Google Pay continua com o contorno dele,
 porque faz parte da marca: «Don't change the color or weight of the mark's
 outline, or alter the mark in any way» (brand guidelines da Google). A SIBS tem
