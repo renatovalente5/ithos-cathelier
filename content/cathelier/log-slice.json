@@ -1,14 +1,12 @@
 {
-  "name": "Rodela de tronco gravada",
+  "name": "Bola de Natal - tronco natural",
   "price": 3.5,
   "published": true,
   "featured": false,
   "order": 170,
   "made": "to_order",
   "occasion": "christmas",
-  "alsoIn": [
-    "hanging"
-  ],
+  "alsoIn": [],
   "summary": "Uma rodela de tronco com casca, gravada com um desenho de Natal.",
   "text": "Uma rodela de tronco com casca, gravada com um desenho de Natal.",
   "photoFolder": "log-slice",
@@ -55,5 +53,8 @@
   "seo": {
     "title": "",
     "description": ""
-  }
+  },
+  "videos": [
+    "vmvgp18mjs5.mp4"
+  ]
 }
