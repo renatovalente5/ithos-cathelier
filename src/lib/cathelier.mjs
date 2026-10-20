@@ -207,10 +207,13 @@ export function home({ occasions, pieces, cover: coverText, coverArt }) {
     return saiu;
   };
 
-  /* Oito e não seis: a grelha é de 2 colunas abaixo de 48rem, 3 acima e 4 a
-     partir de 90rem, e oito fecha a fila nas três larguras. São menos, se a
-     dona marcar menos. */
-  const destaques = espalhar(pieces.filter((x) => x.featured), 8);
+  /* OS EM DESTAQUE SÃO TODOS os que a dona marcar (o Renato, 20 out 2026:
+     eram no máximo 8, e um nono não aparecia em lado nenhum). O painel
+     aconselha 6 ou 12: a grelha é de 2 colunas abaixo de 48rem, 3 acima e 4 a
+     partir de 90rem, e 12 enche as filas nas três (6, nas duas primeiras).
+     Sem nenhum, a secção não aparece. */
+  const marcadas = pieces.filter((x) => x.featured);
+  const destaques = espalhar(marcadas, marcadas.length);
   const resto = espalhar(pieces.filter((x) => !x.featured), 8);
 
   /* A fotografia ao lado do texto procura uma que ainda não esteja na página.
@@ -229,7 +232,7 @@ ${cover(coverText, 'cathelier', coverArt)}
   </div>
 </section>
 
-<section class="collection">
+${destaques.length ? `<section class="collection">
   <div class="shell">
     <div class="collection__head"><h2>${esc(t('cathelier.inicio.maisVendidas'))}</h2></div>
     <div class="grid-products" style="margin-block-start:2rem">
@@ -237,7 +240,7 @@ ${cover(coverText, 'cathelier', coverArt)}
     </div>
   </div>
 </section>
-
+` : ''}
 <section class="collection collection--alt">
   <div class="shell">
     <div class="maker">

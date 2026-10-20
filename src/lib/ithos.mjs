@@ -184,12 +184,16 @@ export function home({ products, identity, cover: coverText, coverArt, dona }) {
      keeping the heading honest means keeping that list matched to real sales.
      (This note lives here and not in the markup: an HTML comment inside the
      template would ship to every visitor who opens the source.) */
-  const featured = products.filter((p) => p.featured).slice(0, 8);
+  /* TODOS OS EM DESTAQUE (o Renato, 20 out 2026): eram no máximo 8, e com 12
+     marcados no painel quatro não apareciam em lado nenhum. O painel aconselha
+     6 ou 12, que enchem as filas (js/destaques.js do painel); sem nenhum, a
+     secção não aparece, em vez de um título sobre uma grelha vazia. */
+  const featured = products.filter((p) => p.featured);
   const rest = products.filter((p) => !p.featured).slice(0, 8);
 
   return `
 ${cover(coverText, 'ithos', coverArt)}
-
+${featured.length ? `
 <section class="section">
   <div class="shell">
     <div class="section__head"><h2>${esc(t('ithos.inicio.maisVendidos'))}</h2></div>
@@ -198,7 +202,7 @@ ${cover(coverText, 'ithos', coverArt)}
     </div>
   </div>
 </section>
-
+` : ''}
 <section class="section section--soft">
   <div class="shell">
     <div class="maker">

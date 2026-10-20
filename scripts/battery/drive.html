@@ -265,18 +265,44 @@ async function medirDeriva(w, res) {
      2026). A deriva conduz-se num cartão sem vídeo -- com o primeiro da lista,
      a bateria caiu dez vezes no dia em que a dona juntou um vídeo ao Enfeite
      de Natal com nome --, e o cartão com vídeo tem a sua pergunta. */
+  /* O vídeo é da FOTOGRAFIA (.card__media), não do cartão inteiro (a dona,
+     20 out 2026: «quando clico nas imagens não para de dar o vídeo»): com o
+     rato nas miniaturas pára, e uma miniatura escolhida fica sem vídeo por
+     cima até se voltar à primeira. */
   const comVideo = d.querySelector('[data-video] .card__frame')?.closest('[data-video]');
   if (comVideo) {
-    comVideo.dispatchEvent(new w.PointerEvent('pointerenter', { bubbles: true }));
-    await new Promise((r) => setTimeout(r, 2500));
+    const zona = comVideo.querySelector('.card__media') ?? comVideo;
+    const entrar = () => zona.dispatchEvent(new w.PointerEvent('pointerenter', { bubbles: false }));
+    const sair = () => zona.dispatchEvent(new w.PointerEvent('pointerleave', { bubbles: false }));
+    entrar();
+    await new Promise((r) => setTimeout(r, 120));
+    nota(comVideo.dataset.aTocar !== 'yes', 'o vídeo espera um pouco antes de começar (um rato que só passa não o acende)');
+    await new Promise((r) => setTimeout(r, 2400));
     const v = comVideo.querySelector('.card__video');
     nota(v && comVideo.dataset.aTocar === 'yes', 'um cartão com vídeo toca o vídeo ao parar o rato',
       v ? `readyState ${v.readyState}, ${v.paused ? 'parado' : 'a tocar'}` : 'sem <video>');
     nota(comVideo.querySelectorAll('.card__frame picture').length === 1, 'e não roda as fotografias por baixo',
       `${comVideo.querySelectorAll('.card__frame picture').length} camadas`);
-    comVideo.dispatchEvent(new w.PointerEvent('pointerleave', { bubbles: true }));
+    sair();
     await new Promise((r) => setTimeout(r, 300));
-    nota(!comVideo.dataset.aTocar && (!v || v.paused), 'e pára quando o rato sai');
+    nota(!comVideo.dataset.aTocar && (!v || v.paused), 'e pára quando o rato sai da fotografia');
+    const miniaturas = comVideo.querySelectorAll('.card__thumb');
+    if (miniaturas.length > 1) {
+      entrar();
+      await new Promise((r) => setTimeout(r, 900));
+      miniaturas[1].click();
+      await new Promise((r) => setTimeout(r, 300));
+      nota(!comVideo.dataset.aTocar && (!v || v.paused), 'escolher uma miniatura pára o vídeo');
+      sair(); entrar();
+      await new Promise((r) => setTimeout(r, 900));
+      nota(!comVideo.dataset.aTocar, 'e com outra fotografia escolhida, o vídeo não volta a tapá-la');
+      miniaturas[0].click();
+      sair(); entrar();
+      await new Promise((r) => setTimeout(r, 900));
+      nota(comVideo.dataset.aTocar === 'yes', 'de volta à primeira fotografia, o vídeo volta a tocar');
+      sair();
+      await new Promise((r) => setTimeout(r, 200));
+    }
   }
 
   const card = [...d.querySelectorAll('[data-shots]')]

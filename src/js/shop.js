@@ -2144,6 +2144,26 @@ function cardShots() {
       if (at !== back) { at = back; point(base, shots[at]); markThumbs(); }
     };
 
+    /* AS MINIATURAS SÃO PARA ESCOLHER. Com o rato nelas a deriva pára -- na
+       fotografia em que está, sem voltar à capa --, para nada mudar debaixo
+       do rato (com uma fotografia a cada 2 s, a marca da miniatura fugia de
+       onde se ia carregar). De volta à fotografia, recomeça, se nenhuma foi
+       escolhida entretanto. */
+    const pausar = () => {
+      run++;
+      clearTimeout(dwellTimer); dwellTimer = null;
+      delete card.dataset.showing;
+      driving = false;
+      clean();
+      base.style.scale = '';
+    };
+    strip?.addEventListener('pointerenter', pausar);
+    strip?.addEventListener('pointerleave', (e) => {
+      if (chosen !== null || !card.contains(e.relatedTarget)) return;
+      clearTimeout(dwellTimer);
+      dwellTimer = setTimeout(start, DWELL);
+    });
+
     /* A pointer crossing a card is not a visitor looking at it. Nothing is
        fetched, cloned or decoded until it has stayed put: a mouse swept across
        the catalogue touches all twenty-six cards in a second, and the old code
@@ -2164,6 +2184,9 @@ function cardShots() {
         driving = false;
         delete card.dataset.showing;
         chosen = n;
+        /* O vídeo do cartão lê isto: com outra fotografia escolhida, não
+           volta a tocar por cima dela (videosDosCartoes). */
+        if (n) card.dataset.escolhida = String(n); else delete card.dataset.escolhida;
         if (n === at) { clean(); markThumbs(); return; }
         const mine = run;
         if (CALM || !over) {
@@ -2341,8 +2364,14 @@ function lightbox() {
    que ainda tinha de chegar; e aparecia em 0,45 s. Agora o vídeo dos cartões
    à vista é pedido antes (preload), e toca no instante em que o rato entra.
    Quem pediu ao browser para poupar dados não o recebe antes: esse espera
-   pelo rato, como antes. */
+   pelo rato, como antes.
+   COM UM PEQUENO ATRASO (a dona, no mesmo dia, depois de o ver instantâneo:
+   «podes dar um pequeno delay quando passo o rato por cima»): 300 ms com o
+   rato no cartão. Um rato que só atravessa a grelha não acende os vídeos
+   todos pelo caminho; e como o vídeo já está carregado, ao fim dos 300 ms
+   começa logo, sem a espera da rede que havia antes. */
 function videosDosCartoes() {
+  const ATRASO = 300;
   if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const poupar = Boolean(navigator.connection?.saveData) || /(^|-)2g$/.test(String(navigator.connection?.effectiveType ?? ''));
@@ -2380,6 +2409,14 @@ function videosDosCartoes() {
   for (const card of $$('[data-video]')) {
     const frame = $('.card__frame', card);
     if (!frame) continue;
+    /* O VÍDEO É DA FOTOGRAFIA, não do cartão inteiro (a dona, 20 out 2026:
+       «quando clico nas imagens não para de dar o vídeo»). Tocava com o rato
+       em qualquer sítio do cartão -- nas miniaturas também --, e escolher
+       uma miniatura mudava a fotografia por baixo do vídeo, que continuava a
+       tapá-la. Agora toca com o rato na fotografia; vai-se às miniaturas e
+       pára; escolhe-se uma e fica a fotografia escolhida, sem o vídeo, até
+       se voltar à primeira (data-escolhida, posto pela deriva). */
+    const zona = $('.card__media', card) ?? frame;
     let v = null;
     let dentro = false;
     const preparar = () => {
@@ -2393,15 +2430,29 @@ function videosDosCartoes() {
       return v;
     };
     card.prepararVideo = preparar;
+    let espera = 0;
     const tocar = () => {
       dentro = true;
-      preparar().play().then(() => { if (dentro) card.dataset.aTocar = 'yes'; else v.pause(); }).catch(() => {});
+      clearTimeout(espera);
+      if (card.dataset.escolhida) return;
+      espera = setTimeout(() => {
+        if (!dentro || card.dataset.escolhida) return;
+        preparar().play().then(() => { if (dentro) card.dataset.aTocar = 'yes'; else v.pause(); }).catch(() => {});
+      }, ATRASO);
     };
-    const parar = () => { dentro = false; delete card.dataset.aTocar; v?.pause(); };
-    card.addEventListener('pointerenter', tocar);
-    card.addEventListener('pointerleave', parar);
+    const parar = () => { dentro = false; clearTimeout(espera); delete card.dataset.aTocar; v?.pause(); };
+    card.pararVideo = parar;
+    zona.addEventListener('pointerenter', tocar);
+    zona.addEventListener('pointerleave', parar);
+    /* Uma miniatura carregada pára-o já (o rato pode ter voltado à
+       fotografia a meio, ou o clique ter vindo do teclado). */
+    card.addEventListener('click', (e) => { if (e.target.closest('.card__thumb')) parar(); });
     vistos?.observe(card);
   }
+  /* Ao sair da página (um clique num produto) os vídeos param: o browser
+     guarda a página como estava para o botão «voltar», e um vídeo deixado a
+     tocar voltava a tocar sem rato nenhum em cima. */
+  addEventListener('pagehide', () => { for (const c of $$('[data-video]')) c.pararVideo?.(); });
 }
 
 function gallery() {
