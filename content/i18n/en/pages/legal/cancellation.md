@@ -1,20 +1,21 @@
-<!-- origem: 87191b98ca1e partes: d9b93824be36 8d0f21e51521 50f56d8f556d 9ad95c906ee6 9a5ebd727f78 -->
+<!-- origem: 1d6efc63e940 partes: d9b93824be36 8c9676949d0b 50f56d8f556d 9ad95c906ee6 9a5ebd727f78 -->
 # Your right to cancel
 
 ## Fourteen days
 
-If you are buying as a consumer, you may cancel within **{{COOLING_OFF_DAYS}} days**
-of receiving your order, without giving any reason — this is **article 10 of
-Decree-Law 24/2014**. The period runs from the day the last item reaches you.
+If you are buying as a consumer, you may withdraw from the purchase within a period of
+**{{COOLING_OFF_DAYS}} days** from the receipt of your order, without giving
+any reason — as per **Article 10 of Decree-Law no. 24/2014**. The period begins
+from the day the last item reaches you.
 
-To cancel, tell us clearly. You can do it here on the site: click [Withdraw
-from contract here](/legal/withdraw/) — the link is also at the foot of every
-page — and you get an acknowledgement of receipt by email. Or write to
-[{{EMAIL}}](mailto:{{EMAIL}}): an email is enough. There is a [form you can
-use]({{FORM_URL}}) if you prefer, but you do not have to.
+To withdraw, please inform us clearly. You can do so here on the website: click on
+[Withdraw from purchase here](/legal/withdraw/) — this link is also in the footer
+of all pages — and you will receive an acknowledgement of receipt by email. Alternatively, write to
+[{{EMAIL}}](mailto:{{EMAIL}}): an email will be received. There is a [form you can
+use]({{FORM_URL}}) if you prefer, but it is not mandatory.
 
-What counts is the date you send us your decision: if you send it before the
-period ends, you have cancelled in time (article 11 of Decree-Law 24/2014).
+The date you send us your decision is what counts: if you send it before the period
+expires, you have withdrawn in time (Article 11 of Decree-Law no. 24/2014).
 
 ## What cannot be returned
 

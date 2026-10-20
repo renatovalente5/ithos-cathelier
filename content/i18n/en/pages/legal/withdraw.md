@@ -1,11 +1,7 @@
-<!-- origem: fe76ee08ea74 partes: fae3941b8794 1bd98a266339 8c40226eccb6 -->
-# Withdraw from the contract
+<!-- origem: 36eee85c7389 partes: 124d2a15e55f 1bd98a266339 8c40226eccb6 -->
+# Cancel your purchase
 
-If you bought as a consumer, you can cancel the purchase here, on the site,
-within the {{COOLING_OFF_DAYS}} days of your [right to cancel](/legal/cancellation/)
-— European law calls it withdrawal. Fill in the statement and press
-**Confirm withdrawal**: you get an acknowledgement of receipt by email, with
-what you sent us and the date and time you sent it (Lisbon time).
+If you purchased as a consumer, you can cancel your purchase here, on the website, within {{COOLING_OFF_DAYS}} days of your [right to cancel](/legal/cancellation/) — European law calls this withdrawal. Fill in the declaration and click **Confirm withdrawal**: you will receive an acknowledgement of receipt by email, containing what you sent us and the date and time you sent it (Lisbon time).
 
 ## By email, if you prefer
 
