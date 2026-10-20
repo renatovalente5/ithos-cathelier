@@ -1399,7 +1399,8 @@ async function payPage() {
   }
 
   /* DUAS CADÊNCIAS, e não uma. Com o MB WAY há alguém a olhar para o ecrã com
-     o telemóvel na mão: cinco segundos. Com uma referência, o pagamento chega
+     o telemóvel na mão: segundo e meio (eram cinco, e o «pago» chegava uns 10 s
+     depois de aceitar na app -- o Renato, 20 out 2026). Com uma referência, o pagamento chega
      hoje à noite ou amanhã e sondar não adianta -- vinte segundos durante
      cinco minutos, para apanhar quem paga logo no home banking, e depois
      pára. O email é que traz a notícia, e o Worker trata dela sozinho. */
@@ -1409,8 +1410,8 @@ async function payPage() {
     if (!continuar) return;
     const mbway = !$('[data-pay-mbway]')?.hidden;
     if (!mbway && voltas > 15) return;
-    if (mbway && voltas > 60) return;
-    temporizador = setTimeout(volta, mbway ? 5000 : 20000);
+    if (mbway && voltas > 200) return;
+    temporizador = setTimeout(volta, mbway ? 1500 : 20000);
   }
 
   /* Um separador escondido não pinta nem dispara temporizadores com fiabilidade
