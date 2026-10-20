@@ -57,6 +57,36 @@
           "id": "feliz-natal",
           "name": "Feliz Natal",
           "extra": 0
+        },
+        {
+          "id": "presepio",
+          "name": "Presépio",
+          "extra": 0
+        },
+        {
+          "id": "veado-estrelas",
+          "name": "Veado estrelas",
+          "extra": 0
+        },
+        {
+          "id": "pinheiro",
+          "name": "Pinheiro",
+          "extra": 0
+        },
+        {
+          "id": "pinheiros-e-veado",
+          "name": "Pinheiros e veado",
+          "extra": 0
+        },
+        {
+          "id": "boneco-de-neve",
+          "name": "Boneco de neve",
+          "extra": 0
+        },
+        {
+          "id": "quebra-noses",
+          "name": "Quebra noses",
+          "extra": 0
         }
       ]
     },
