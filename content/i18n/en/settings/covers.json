@@ -22,5 +22,17 @@
   "cathelier.alt": {
     "t": "At cathelier, every keepsake comes to life in the small wooden details, with love and care to celebrate special moments and transform beautiful moments into memories forever",
     "h": "df19f9e525ab"
+  },
+  "cathelier.quantidade.titulo": {
+    "t": "Fifty of them, fifty names",
+    "h": "05fdf02cefa9"
+  },
+  "cathelier.quantidade.texto1": {
+    "t": "Wedding favours, christening keepsakes, place cards, corporate gifts, a season of trophies — anything here can be made in quantity, with a different name cut into every one.",
+    "h": "7fbf852bf54f"
+  },
+  "cathelier.quantidade.texto2": {
+    "t": "Tell us roughly what and roughly how many. There is no form to fight with: a message is enough, and we come back with a price and a date.",
+    "h": "b74fe628d1ff"
   }
 }

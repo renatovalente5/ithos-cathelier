@@ -24,7 +24,13 @@
     "focusWide": "50% 50%",
     "veil": 0.44,
     "foto": "cathelier-foto",
-    "mostrar": "foto"
+    "mostrar": "foto",
+    "quantidade": {
+      "titulo": "Cinquenta peças, cinquenta nomes",
+      "texto1": "Lembranças de casamento, recordações de batizado, marcadores de lugar, ofertas de empresa, uma época inteira de troféus — tudo o que aqui está pode ser feito em quantidade, com um nome diferente gravado em cada peça.",
+      "texto2": "Diga-nos mais ou menos o quê e mais ou menos quantas. Não há formulários complicados: basta uma mensagem, e respondemos com um preço e uma data."
+    }
   },
-  "_note_foto": "\"foto\" é um par de imagens paradas em photos/_covers (<foto>-still.jpg, alta 2:3, e <foto>-still-wide.jpg, larga 16:9), e \"mostrar\": \"foto\" põe-nas na capa no lugar do filme; \"filme\" volta ao filme. Escolhe-se no painel, em Páginas iniciais."
+  "_note_foto": "\"foto\" é um par de imagens paradas em photos/_covers (<foto>-still.jpg, alta 2:3, e <foto>-still-wide.jpg, larga 16:9), e \"mostrar\": \"foto\" põe-nas na capa no lugar do filme; \"filme\" volta ao filme. Escolhe-se no painel, em Páginas iniciais.",
+  "_note_quantidade": "cathelier.quantidade é o bloco a meio da página inicial da cathelier, com o botão «Pedir orçamento»: o título e dois parágrafos (o segundo pode ficar vazio). Muda-se no painel, em Páginas iniciais."
 }

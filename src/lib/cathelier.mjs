@@ -155,6 +155,13 @@ export function home({ occasions, pieces, cover: coverText, coverArt }) {
      é uma afirmação sobre o que se vende mesmo. As peças que lá estão são as
      que ela marca no backoffice, e manter o título honesto é manter essa lista
      junto das vendas a sério. */
+  /* O BLOCO DO ORÇAMENTO, que a dona muda no painel (covers.json
+     cathelier.quantidade, a 20 out 2026). Sem ele, as frases de sempre. */
+  const q = coverText?.quantidade;
+  const tem = (v) => typeof v === 'string' && v.trim() !== '';
+  const quantidade = q && tem(q.titulo) && tem(q.texto1)
+    ? { titulo: q.titulo.trim(), textos: [q.texto1, q.texto2].filter(tem).map((x) => x.trim()) }
+    : { titulo: t('cathelier.inicio.quantidade.titulo'), textos: [t('cathelier.inicio.quantidade.texto1'), t('cathelier.inicio.quantidade.texto2')] };
   const retrato = (x) => (x.photoFolder && (x.cover || x.photos?.[0])
     ? `${x.photoFolder}/${x.cover || x.photos[0]}` : `sem-fotografia:${x.slug}`);
 
@@ -228,9 +235,8 @@ ${cover(coverText, 'cathelier', coverArt)}
   <div class="shell">
     <div class="maker">
       <div class="maker__text">
-        <h2>${esc(t('cathelier.inicio.quantidade.titulo'))}</h2>
-        <p>${esc(t('cathelier.inicio.quantidade.texto1'))}</p>
-        <p>${esc(t('cathelier.inicio.quantidade.texto2'))}</p>
+        <h2>${esc(quantidade.titulo)}</h2>
+        ${quantidade.textos.map((x) => `<p>${esc(x)}</p>`).join('\n        ')}
         <a class="btn" href="/cathelier/quote/">${esc(t('cathelier.pedirOrcamento'))}</a>
       </div>
       <div class="frame maker__photo">

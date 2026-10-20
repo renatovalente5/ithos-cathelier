@@ -430,6 +430,23 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
       die(`covers.json: ${brand}.text is set but nothing reads it any more — `
         + 'the cover carries a short title and a button, and no sentence. Delete the field.');
     }
+    /* O BLOCO DO ORÇAMENTO (só a cathelier o tem): título e primeiro
+       parágrafo obrigatórios, o segundo pode ficar vazio. Os tectos são os
+       do painel e do Worker. */
+    if (c.quantidade !== undefined) {
+      const q = c.quantidade;
+      const tecto = { titulo: 80, texto1: 500, texto2: 400 };
+      if (brand !== 'cathelier' || !q || typeof q !== 'object' || Array.isArray(q)) die(`covers.json: ${brand}.quantidade só existe na cathelier, e é um objecto`);
+      else {
+        for (const [k, max] of Object.entries(tecto)) {
+          const v = q[k];
+          if (v !== undefined && typeof v !== 'string') die(`covers.json: cathelier.quantidade.${k} tem de ser texto`);
+          else if ((k !== 'texto2') && !String(v ?? '').trim()) die(`covers.json: cathelier.quantidade.${k} está vazio`);
+          else if (String(v ?? '').length > max) die(`covers.json: cathelier.quantidade.${k} passa dos ${max} caracteres`);
+        }
+        for (const k of Object.keys(q)) if (!(k in tecto)) die(`covers.json: cathelier.quantidade.${k} não é nada que o site leia`);
+      }
+    }
 
     /* The film is optional and deleting the line is meant to be safe, so a
        missing "film" is silence. A film that is NAMED and not on disk is not:
