@@ -37,6 +37,13 @@
           "name": "verde",
           "extra": 0,
           "colour": "#36786D"
+        },
+        {
+          "id": "3",
+          "name": "amarelo",
+          "extra": 0,
+          "colour": "#DDE84A",
+          "available": false
         }
       ]
     },
