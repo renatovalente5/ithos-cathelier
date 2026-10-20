@@ -1726,6 +1726,23 @@ async function basketPage() {
  * offering it as "newest" would be a control that lies. The moment two
  * products carry an `added` date in the back office, the option appears.
  */
+/* A ORDEM DO SEPARADOR (a dona, 20 out 2026: «em cada separador, por exemplo
+   no Natal, conseguir alterar a ordem do aparecimento das peças»). O botão do
+   filtro traz a ordem escolhida no painel em data-ordem (endereços separados
+   por espaços); com «A nossa ordem», as peças desse separador aparecem por
+   ela, e as que lá não estão vêm depois, pela ordem de sempre -- a mesma
+   conta do gerador (src/lib/ordem.mjs). O filtro avisa a ordenação quando
+   muda, e é ela quem arruma a lista. */
+let reordenarLista = () => {};
+function pelaOrdemDoFiltro(cards) {
+  const b = document.querySelector('[data-filters] [data-filter][aria-pressed="true"]');
+  const lista = (b?.dataset.ordem ?? '').split(' ').filter(Boolean);
+  if (!lista.length) return cards;
+  const lugar = new Map(lista.map((s, i) => [s, i]));
+  return cards.map((c, k) => ({ c, k, l: lugar.get(c.dataset.product) ?? Infinity }))
+    .sort((a, b) => a.l - b.l || a.k - b.k).map((x) => x.c);
+}
+
 function sorting() {
   const list = $('[data-product-list]');
   const bar = $('[data-filters]');
@@ -1773,15 +1790,20 @@ function sorting() {
   box.append(label, caixa);
   bar.after(box);
 
-  sel.addEventListener('change', () => {
+  const arrumar = () => {
     const chosen = ORDERS.find(([id2]) => id2 === sel.value);
-    const order = chosen && chosen[2] ? asBuilt.slice().sort(chosen[2]) : asBuilt;
+    const order = chosen && chosen[2] ? asBuilt.slice().sort(chosen[2]) : pelaOrdemDoFiltro(asBuilt);
     /* One fragment, one insertion: appending 26 cards one at a time to a live
        grid is 26 layouts. */
     const frag = document.createDocumentFragment();
     for (const c of order) frag.append(c);
     list.append(frag);
-  });
+  };
+  sel.addEventListener('change', arrumar);
+  /* O filtro corre antes desta função ao arrancar (uma morada com #christmas
+     já o escolheu): arruma-se uma vez agora, e daí em diante a cada filtro. */
+  reordenarLista = arrumar;
+  arrumar();
 }
 
 function filters() {
@@ -1806,6 +1828,7 @@ function filters() {
     if (none) none.hidden = shown > 0;
     const nota = $('[data-custom-note]');
     if (nota) nota.hidden = want !== 'custom';
+    reordenarLista();                         // a ordem própria deste separador, se tiver
     open();                                   // a chosen chip must never hide
   }
 

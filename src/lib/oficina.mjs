@@ -27,6 +27,9 @@ try {
 export const fotosDaDona = {
   inicio: NOME.test(String(lidas[0] ?? '')) ? lidas[0] : '01',
   sobre: NOME.test(String(lidas[1] ?? '')) ? lidas[1] : '02',
+  /* A terceira é opcional (20 out 2026): a do bloco do orçamento da página
+     inicial da cathelier. Sem ela, null, e o site usa a de uma peça. */
+  orcamento: NOME.test(String(lidas[2] ?? '')) ? lidas[2] : null,
 };
 
 /* O ENQUADRAMENTO de cada uma na sua moldura, escolhido no painel («Ajustar»,
@@ -35,4 +38,4 @@ export const fotosDaDona = {
    sem ele, fica o do CSS. Devolve o atributo inteiro, ou nada. */
 export const POSICAO = /^(?:100|\d{1,2}(?:\.\d)?)% (?:100|\d{1,2}(?:\.\d)?)%$/;
 const estilo = (x) => (POSICAO.test(String(x ?? '')) ? ` style="--foco:${x}"` : '');
-export const enquadramentoDaDona = { inicio: estilo(enquadradas[0]), sobre: estilo(enquadradas[1]) };
+export const enquadramentoDaDona = { inicio: estilo(enquadradas[0]), sobre: estilo(enquadradas[1]), orcamento: estilo(enquadradas[2]) };

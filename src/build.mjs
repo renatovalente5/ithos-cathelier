@@ -656,7 +656,7 @@ function buildCathelier() {
     title: t('build.cathelier.titulo'),
     description: t('build.cathelier.descricao', { n: pieces.length, m: occasions.length }),
     cover: true,
-    body: cath.home({ occasions, pieces, cover: covers.cathelier, coverArt: coverArt('cathelier') }),
+    body: cath.home({ occasions, pieces, cover: covers.cathelier, coverArt: coverArt('cathelier'), dona }),
   }));
 
   /* E NO LUGAR DELAS, DEZ SINAIS DE TRÂNSITO.

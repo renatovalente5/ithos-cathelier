@@ -1473,11 +1473,13 @@ for (const [o, n] of esgotados) {
   try { s = JSON.parse(readFileSync(f, 'utf8')); } catch { die('content/settings/oficina.json falta ou não é JSON — diz quais são as fotografias da dona (src/lib/oficina.mjs)'); }
   if (s) {
     if (s.photoFolder !== 'oficina') die('content/settings/oficina.json: photoFolder tem de ser «oficina»');
-    for (const [k, max] of [['titulo', 60], ['texto', 1200], ['assinatura', 40], ['fotoInicio', 200], ['fotoSobre', 200]]) {
+    for (const [k, max] of [['titulo', 60], ['texto', 1200], ['assinatura', 40], ['fotoInicio', 200], ['fotoSobre', 200], ['fotoOrcamento', 200]]) {
       const v = s.textos?.[k];
       if (v !== undefined && (typeof v !== 'string' || v.length > max)) die(`content/settings/oficina.json: textos.${k} tem de ser um texto até ${max} caracteres`);
     }
-    if (!Array.isArray(s.photos) || s.photos.length !== 2) die('content/settings/oficina.json: photos tem de ter duas fotografias (a da página inicial e a da página Sobre)');
+    /* Duas, e uma terceira opcional: a do bloco do orçamento da página inicial
+       da cathelier (20 out 2026). */
+    if (!Array.isArray(s.photos) || s.photos.length < 2 || s.photos.length > 3) die('content/settings/oficina.json: photos tem de ter duas fotografias (a da página inicial e a da página Sobre), e uma terceira opcional (a do bloco do orçamento da cathelier)');
     else {
       for (const n of s.photos) {
         if (!/^[A-Za-z0-9._-]{1,80}$/.test(String(n)) || !existsSync(join(ROOT, 'photos', 'ithos', 'oficina', `${n}.jpg`))) {
@@ -1489,8 +1491,8 @@ for (const [o, n] of esgotados) {
        dois números entre 0 e 100, ou null para o do CSS. */
     if (s.enquadramento !== undefined) {
       const bom = (x) => x === null || (typeof x === 'string' && /^(?:100|\d{1,2}(?:\.\d)?)% (?:100|\d{1,2}(?:\.\d)?)%$/.test(x));
-      if (!Array.isArray(s.enquadramento) || s.enquadramento.length > 2 || !s.enquadramento.every(bom)) {
-        die('content/settings/oficina.json: enquadramento é uma lista de até duas posições como «50% 22%» (ou null)');
+      if (!Array.isArray(s.enquadramento) || s.enquadramento.length > 3 || !s.enquadramento.every(bom)) {
+        die('content/settings/oficina.json: enquadramento é uma lista de até três posições como «50% 22%» (ou null)');
       }
     }
   }

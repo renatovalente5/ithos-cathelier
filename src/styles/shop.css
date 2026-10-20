@@ -1593,6 +1593,7 @@ html.menu-open { overflow: hidden; }
    A dona escolhe outro no painel («Ajustar»), e chega aqui como --foco. */
 .maker__photo--retrato img { object-position: var(--foco, 50% 22%); }
 .oficina__foto img { object-position: var(--foco, 50% 50%); }
+.maker__photo--dona img { object-position: var(--foco, 50% 50%); }
 
 .product__blurb { margin-block-start: 1rem; font-size: 15px; line-height: 1.8; color: var(--muted); }
 .product__lead { display: flex; align-items: center; gap: .5rem; }

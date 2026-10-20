@@ -14,6 +14,8 @@ import { fabricante } from './pages.mjs';
 import { brandPath } from './shell.mjs';
 import { videosDe, enderecoDoVideo, capaDoVideo, videoDoCartao } from './videos.mjs';
 import { escaloes } from './quantidades.mjs';
+import { pelaLista } from './ordem.mjs';
+import { fotosDaDona, enquadramentoDaDona } from './oficina.mjs';
 
 /* As frases destas páginas estão em src/i18n/<língua>/cathelier.json e lêem-se
    com t() DENTRO das funções que desenham: o gerador escolhe a língua depois
@@ -142,7 +144,7 @@ function occasionRow(occasions) {
 
 
 
-export function home({ occasions, pieces, cover: coverText, coverArt }) {
+export function home({ occasions, pieces, cover: coverText, coverArt, dona }) {
   /* AS MESMAS TRÊS SECÇÕES DA ITHOS, pela mesma ordem: as mais vendidas, um
      bloco de texto com fotografia ao lado, e o resto das peças com o botão
      para a lista inteira. O bloco do meio é que muda: lá é o "Hello" da
@@ -213,7 +215,10 @@ export function home({ occasions, pieces, cover: coverText, coverArt }) {
      partir de 90rem, e 12 enche as filas nas três (6, nas duas primeiras).
      Sem nenhum, a secção não aparece. */
   const marcadas = pieces.filter((x) => x.featured);
-  const destaques = espalhar(marcadas, marcadas.length);
+  /* Com uma ordem escolhida no painel (covers.json, cathelier.destaques), é
+     essa, tal e qual (src/lib/ordem.mjs); sem ela, espalhados como sempre. */
+  const ordemDosDestaques = Array.isArray(coverText?.destaques) && coverText.destaques.length ? coverText.destaques : null;
+  const destaques = ordemDosDestaques ? pelaLista(marcadas, ordemDosDestaques) : espalhar(marcadas, marcadas.length);
   const resto = espalhar(pieces.filter((x) => !x.featured), 8);
 
   /* A fotografia ao lado do texto procura uma que ainda não esteja na página.
@@ -249,14 +254,24 @@ ${destaques.length ? `<section class="collection">
         ${quantidade.textos.map((x) => `<p>${esc(x)}</p>`).join('\n        ')}
         <a class="btn" href="/cathelier/quote/">${esc(t('cathelier.pedirOrcamento'))}</a>
       </div>
-      <div class="frame maker__photo">
+      ${/* A FOTOGRAFIA AO LADO: a que a dona escolher no painel (a terceira
+           de oficina.json; a dona, 20 out 2026: «gostava de alterar essa
+           foto, não tenho acesso»), ou, sem ela, a de uma peça que ainda não
+           esteja na página. */ ''}${fotosDaDona.orcamento ? `<div class="frame maker__photo maker__photo--dona"${enquadramentoDaDona.orcamento}>
+        ${picture({
+          dir: 'ithos/oficina',
+          name: fotosDaDona.orcamento,
+          alt: dona?.textos?.fotoOrcamento || t('cathelier.inicio.quantidade.fotoAlt'),
+          sizes: '(min-width: 56rem) 45vw, 100vw',
+        })}
+      </div>` : `<div class="frame maker__photo">
         ${picture({
           dir: `cathelier/${aoLado.photoFolder}`,
           name: aoLado.cover || aoLado.photos[0],
           alt: t('cathelier.inicio.quantidade.fotoAlt'),
           sizes: '(min-width: 56rem) 45vw, 100vw', widths: [200, 400],
         })}
-      </div>
+      </div>`}
     </div>
   </div>
 </section>
@@ -291,7 +306,8 @@ export function all({ pieces, occasions }) {
 
     <div class="filters" data-filters style="margin-block-start:1.25rem;justify-content:center">
       <button class="filter" type="button" data-filter="all" aria-pressed="true">${esc(t('cathelier.lista.todas'))}</button>
-      ${occasions.map((o) => `<button class="filter" type="button" data-filter="${esc(o.slug)}" aria-pressed="false">${esc(o.name)}</button>`).join('\n      ')}
+      ${/* A ordem das peças que a dona escolheu para o separador (painel), lida
+           pelo filtro em shop.js: só endereços, separados por espaços. */ ''}${occasions.map((o) => `<button class="filter" type="button" data-filter="${esc(o.slug)}"${Array.isArray(o.ordem) && o.ordem.length ? ` data-ordem="${esc(o.ordem.join(' '))}"` : ''} aria-pressed="false">${esc(o.name)}</button>`).join('\n      ')}
     </div>
 
     <!-- OS PEDIDOS ESPECIAIS LEVAM AO ORÇAMENTO. A dona quis as duas coisas:
@@ -412,7 +428,8 @@ export function piece({ p, all: everything, shop, occasions, identity }) {
   let related = [];
   let noSeparador = 0;
   for (const slug of familias(p)) {
-    const irmas = everything.filter((x) => x.slug !== p.slug && familias(x).includes(slug));
+    /* Pela ordem que a dona escolheu para esse separador (src/lib/ordem.mjs). */
+    const irmas = pelaLista(everything.filter((x) => x.slug !== p.slug && familias(x).includes(slug)), occasions.find((o) => o.slug === slug)?.ordem);
     if (irmas.length) {
       related = irmas.slice(0, 4);
       noSeparador = irmas.length + 1;

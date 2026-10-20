@@ -11,6 +11,7 @@ import { prazos } from './prazos.mjs';
 import { t, tn } from './i18n.mjs';
 import { fabricante } from './pages.mjs';
 import { fotosDaDona, enquadramentoDaDona } from './oficina.mjs';
+import { pelaLista } from './ordem.mjs';
 import { videosDe, enderecoDoVideo as enderecoDeVideo, capaDoVideo as capaDeVideo, videoDoCartao } from './videos.mjs';
 
 /* ===========================================================================
@@ -192,8 +193,10 @@ export function home({ products, identity, cover: coverText, coverArt, dona }) {
   /* TODOS OS EM DESTAQUE (o Renato, 20 out 2026): eram no máximo 8, e com 12
      marcados no painel quatro não apareciam em lado nenhum. O painel aconselha
      6 ou 12, que enchem as filas (js/destaques.js do painel); sem nenhum, a
-     secção não aparece, em vez de um título sobre uma grelha vazia. */
-  const featured = products.filter((p) => p.featured);
+     secção não aparece, em vez de um título sobre uma grelha vazia.
+     PELA ORDEM QUE A DONA ESCOLHE no painel (covers.json, ithos.destaques:
+     src/lib/ordem.mjs); os que lá não estão vêm depois, pela ordem de sempre. */
+  const featured = pelaLista(products.filter((p) => p.featured), coverText?.destaques);
   const rest = products.filter((p) => !p.featured).slice(0, 8);
 
   return `
