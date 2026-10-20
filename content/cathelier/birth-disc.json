@@ -1,14 +1,16 @@
 {
-  "name": "Disco de nascimento",
-  "price": 24,
+  "name": "Placa de nascimento",
+  "price": 15,
   "published": true,
-  "featured": true,
+  "featured": false,
   "order": 230,
   "made": "to_order",
   "occasion": "new-baby",
-  "alsoIn": [],
-  "summary": "Um disco redondo com tudo sobre o dia em que chegou.",
-  "text": "Um disco redondo com o nome, a data, a hora, o peso e o comprimento gravados.\n\nÉ a peça que se pendura por cima do berço e que depois nunca mais se tira.",
+  "alsoIn": [
+    "hanging"
+  ],
+  "summary": "Placa de nascimento com os dados sobre o dia em que o seu bebé nasceu.",
+  "text": "Uma peça delicada e cheia de encanto, criada para eternizar os primeiros detalhes da vida do teu bebé.\nEm contraplacado de pinho, com formato circular, reúne os dados de nascimento numa composição única e cheia de significado bem como a gravação do nome a laser e uma delicada renda para pendurar.\nUm pequeno tesouro artesanal, onde cada detalhe conta uma história de amor.",
   "photoFolder": "birth-disc",
   "photos": [
     "01",
