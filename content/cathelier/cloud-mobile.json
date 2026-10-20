@@ -1,5 +1,5 @@
 {
-  "name": "Nuvem decorativa personalizada",
+  "name": "Nuvem/Lua decorativa personalizada",
   "price": 25,
   "published": true,
   "featured": false,
@@ -10,12 +10,13 @@
     "wall-decor",
     "hanging"
   ],
-  "summary": "Nuvem decorativa de nascimento  personalizada",
-  "text": "Delicada e intemporal, esta nuvem em contraplacado de pinho guarda os detalhes mais preciosos do nascimento do seu bebé. O nome, em acrílico saliente, dá vida à peça, enquanto a data de nascimento é gravada a laser na nuvem principal. Os três pendentes, personalizados com a data, a hora e o comprimento à nascença, eternizam cada detalhe deste momento tão especial.\nCom formas delicadas, fio de algodão natural e tons neutros, é uma peça criada para decorar com amor e guardar para sempre a magia do primeiro dia.",
+  "summary": "Nuvem/Lua decorativa de nascimento  personalizada",
+  "text": "Delicada e intemporal, esta nuvem ou lua em contraplacado de pinho guarda os detalhes mais preciosos do nascimento do seu bebé. O nome, em acrílico saliente, dá vida à peça, enquanto a data de nascimento é gravada a laser na nuvem principal. Os três pendentes, personalizados com a data, a hora e o comprimento à nascença, eternizam cada detalhe deste momento tão especial.\nCom formas delicadas, fio de algodão natural e tons neutros, é uma peça criada para decorar com amor e guardar para sempre a magia do primeiro dia.",
   "photoFolder": "cloud-mobile",
   "photos": [
     "01",
-    "02"
+    "02",
+    "fmvgu6eb73z"
   ],
   "cover": "01",
   "options": [

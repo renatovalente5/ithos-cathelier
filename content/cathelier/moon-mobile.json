@@ -13,11 +13,10 @@
   "text": "Uma lua com o nome e três estrelas penduradas.",
   "photoFolder": "moon-mobile",
   "photos": [
-    "02",
     "fmvgu3uuye4",
     "fmvgu4ah3zy"
   ],
-  "cover": "02",
+  "cover": "fmvgu3uuye4",
   "options": [
     {
       "id": "name",
