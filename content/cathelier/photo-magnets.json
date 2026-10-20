@@ -1,7 +1,7 @@
 {
   "name": "Ímanes com fotografia",
   "price": 2.5,
-  "published": false,
+  "published": true,
   "featured": false,
   "order": 290,
   "made": "to_order",
