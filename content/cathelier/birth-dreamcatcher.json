@@ -1,7 +1,7 @@
 {
   "name": "Caça-sonhos de nascimento",
   "price": 25,
-  "published": true,
+  "published": false,
   "featured": false,
   "order": 260,
   "made": "to_order",
