@@ -162,6 +162,13 @@ export function home({ occasions, pieces, cover: coverText, coverArt }) {
   const quantidade = q && tem(q.titulo) && tem(q.texto1)
     ? { titulo: q.titulo.trim(), textos: [q.texto1, q.texto2].filter(tem).map((x) => x.trim()) }
     : { titulo: t('cathelier.inicio.quantidade.titulo'), textos: [t('cathelier.inicio.quantidade.texto1'), t('cathelier.inicio.quantidade.texto2')] };
+  /* E O TEXTO DO FIM, também do painel (cathelier.mais, 20 out 2026): o {n}
+     é o número de peças à venda, contado aqui, para nunca ficar desactualizado
+     quando a dona junta ou esconde uma peça. */
+  const m = coverText?.mais;
+  const mais = m && tem(m.titulo) && tem(m.texto)
+    ? { titulo: m.titulo.trim(), texto: m.texto.trim().replace(/\{n\}/g, String(pieces.length)) }
+    : { titulo: t('cathelier.inicio.mais.titulo'), texto: tn('cathelier.inicio.mais.texto', pieces.length) };
   const retrato = (x) => (x.photoFolder && (x.cover || x.photos?.[0])
     ? `${x.photoFolder}/${x.cover || x.photos[0]}` : `sem-fotografia:${x.slug}`);
 
@@ -254,8 +261,8 @@ ${cover(coverText, 'cathelier', coverArt)}
 <section class="collection">
   <div class="shell">
     <div class="collection__head">
-      <h2>${esc(t('cathelier.inicio.mais.titulo'))}</h2>
-      <p>${esc(tn('cathelier.inicio.mais.texto', pieces.length))}</p>
+      <h2>${esc(mais.titulo)}</h2>
+      <p>${esc(mais.texto)}</p>
     </div>
     <div class="grid-products" style="margin-block-start:2rem">
       ${resto.map((p) => card(p)).join('\n      ')}

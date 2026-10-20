@@ -468,9 +468,9 @@ function breadcrumbs(items, brand) {
    one landed you in the other brand's world with no idea why. */
 /* OS MEIOS DE PAGAMENTO NO RODAPÉ (20 out 2026). Obra-de-arte oficial, ficheiro
    a ficheiro (assets/brand/pay/LEIA.md diz de onde veio e as regras de cada
-   marca), à mesma altura, em cartões brancos de contorno escuro -- o Apple Pay
-   e o Google Pay já trazem o seu cartão e o seu contorno, e as outras ganham
-   um igual. Quais aparecem diz content/settings/shop.json (payment.marks), e
+   marca), à mesma altura, em cartões brancos SEM contorno (o Renato, no mesmo
+   dia: «tem de ter aquela borda?» -- não: só o Google Pay traz contorno, e
+   esse faz parte da marca e não se tira nem se muda). Quais aparecem diz content/settings/shop.json (payment.marks), e
    as guardas recusam uma marca de um meio que a loja não diz aceitar. */
 const MARCAS_DE_PAGAMENTO = {
   mbway: { ficheiro: 'mbway.svg', nome: 'MB WAY', w: 480, h: 234, tipo: 'cartao' },
@@ -484,7 +484,7 @@ function marcasDePagamento(shop) {
   const lista = (shop?.payment?.marks ?? []).filter((m) => MARCAS_DE_PAGAMENTO[m]);
   if (!lista.length) return '';
   return `<div class="foot__pay">
-      <p class="foot__pay-title" id="foot-pagamentos">${esc(t('shell.pagamentos'))}</p>
+      <p class="foot__pay-title sr-only" id="foot-pagamentos">${esc(t('shell.pagamentos'))}</p>
       <ul class="pay-marks" aria-labelledby="foot-pagamentos">${lista.map((m) => {
     const x = MARCAS_DE_PAGAMENTO[m];
     return `<li class="pay-mark pay-mark--${x.tipo}"><img src="/assets/pay/${x.ficheiro}" alt="${esc(x.nome)}" width="${x.w}" height="${x.h}" loading="lazy" decoding="async"></li>`;
@@ -555,40 +555,46 @@ function footer({ brand, identity, shop }) {
       ['/legal/identification/', t('shell.rodape.identificacao')],
       ['/resellers/', t('shell.rodape.revendedores')],
     ]],
-    /* O quarto campo é o desenho, e só este grupo o leva: estas três são as
-       maneiras de falar connosco e reconhecem-se pela forma antes de se
-       lerem. Nas outras colunas são páginas, e uma página não tem desenho
-       que a distinga -- vinte ícones diferentes numa lista seriam ruído. */
-    [t('shell.rodape.falar'), [
-      [`tel:${i.phone}`, i.phoneText, CALL_COST(), 'phone'],
-      /* Sem número de WhatsApp não há ligação: um «wa.me/» vazio abria a
-         aplicação sem destinatário. */
-      ...(i.whatsapp ? [[`https://wa.me/${i.whatsapp}`, 'WhatsApp', '', 'whatsapp']] : []),
-      [`mailto:${i.email}`, i.email, '', 'mail'],
-    ]],
   ];
+  /* FALAR CONNOSCO VAI PARA DEBAIXO DO LOGÓTIPO (20 out 2026, o Renato pediu
+     o rodapé melhor): a marca à esquerda, com as três maneiras de falar com a
+     loja e as redes, e as páginas nas colunas ao lado. No telemóvel fica à
+     vista, fora do acordeão -- ligar ou mandar mensagem é o que mais se
+     procura num rodapé de uma loja pequena.
+     O desenho só aqui: estas três reconhecem-se pela forma antes de se lerem.
+     Nas colunas são páginas, e uma página não tem desenho que a distinga --
+     vinte ícones diferentes numa lista seriam ruído. */
+  const contactos = [
+    [`tel:${i.phone}`, i.phoneText, CALL_COST(), 'phone'],
+    /* Sem número de WhatsApp não há ligação: um «wa.me/» vazio abria a
+       aplicação sem destinatário. */
+    ...(i.whatsapp ? [[`https://wa.me/${i.whatsapp}`, 'WhatsApp', '', 'whatsapp']] : []),
+    [`mailto:${i.email}`, i.email, '', 'mail'],
+  ];
+  const linha = ([h, txt, note, ic]) => `<li${ic ? ' class="foot__with-icon"' : ''}><a href="${
+    esc(brandPath(safeHref(h, `the footer link «${txt}»`), brand))}">${ic ? icon(ic, 16) : ''}${esc(txt)}</a>${
+    note ? `<span class="foot__note">${esc(note)}</span>` : ''}</li>`;
+  const mark = MARK[brand] ?? MARK.ithos;
+  const home = brand === 'cathelier' ? '/cathelier/' : '/';
 
   return `<footer class="foot">
   <div class="shell">
-    <div class="foot__grid">
-      ${groups.map(([name, links]) => `<details class="foot__group" open>
-        <summary>${esc(name)}</summary>
-        <ul>${links.map(([h, t, note, ic]) => `<li${ic ? ' class="foot__with-icon"' : ''}><a href="${
-          esc(brandPath(safeHref(h, `the footer link «${t}»`), brand))}">${ic ? icon(ic, 16) : ''}${esc(t)}</a>${
-          note ? `<span class="foot__note">${esc(note)}</span>` : ''}</li>`).join('')}</ul>
-      </details>`).join('\n      ')}
-    </div>
+    <div class="foot__top">
+      <div class="foot__brand">
+        <a class="foot__mark" href="${home}" aria-label="${esc(t('shell.inicioDe', { marca: mark.alt }))}"><img src="${mark.src}" alt="" width="${mark.w}" height="${mark.h}" loading="lazy" decoding="async"></a>
+        <ul class="foot__contact" aria-label="${esc(t('shell.rodape.falar'))}">${contactos.map(linha).join('')}</ul>
+        <div class="foot__social">
+          ${social.filter(([href]) => href).map(([href, label, ic]) =>
+            `<a href="${esc(safeHref(href, label))}" rel="noopener" aria-label="${esc(label)}">${icon(ic, 18)}</a>`).join('\n          ')}
+        </div>
+      </div>
 
-    ${/* A FUNÇÃO DE RETRATAÇÃO FICA FORA DO ACORDEÃO, de propósito. O artigo
-        11.º-A da Diretiva 2011/83 (pela Diretiva (UE) 2023/2673) quer a
-        ligação «retrate-se do contrato aqui» permanentemente disponível e bem
-        visível; numa linha de uma lista que se fecha no telemóvel não é
-        nenhuma das duas coisas. scripts/check-output.mjs recusa uma página
-        sem ela. */ ''}<p class="foot__withdraw"><a href="${esc(brandPath('/legal/withdraw/', brand))}">${esc(t('paginas.retratacao.ligacao'))}</a></p>
-
-    <div class="foot__social">
-      ${social.filter(([href]) => href).map(([href, label, ic]) =>
-        `<a href="${esc(safeHref(href, label))}" rel="noopener" aria-label="${esc(label)}">${icon(ic, 18)}</a>`).join('\n      ')}
+      <div class="foot__grid">
+        ${groups.map(([name, links]) => `<details class="foot__group" open>
+          <summary>${esc(name)}</summary>
+          <ul>${links.map(linha).join('')}</ul>
+        </details>`).join('\n        ')}
+      </div>
     </div>
 
     <!-- The seller's identification used to be printed here in full, on all 94
@@ -598,7 +604,7 @@ function footer({ brand, identity, shop }) {
          DL 7/2004 asks for the name, address and tax number to be
          "permanently, easily and directly accessible", and a permanent link in
          the footer of every page to a page that carries them is exactly that.
-         It lives at /legal/identification/ and is linked under Terms below.
+         It lives at /legal/identification/ and is linked under Terms above.
 
          The two things that must be ON the site rather than merely reachable
          are still on it: the electronic complaints book is a link under
@@ -608,9 +614,20 @@ function footer({ brand, identity, shop }) {
 
          The call-cost line stays wherever the telephone number appears. That
          one is not about access — it has to sit beside the number. -->
-    ${marcasDePagamento(shop)}
-
-    <p class="foot__end">© ${new Date().getFullYear()} ${esc(i.tradingName)}</p>
+    <div class="foot__base">
+      <div class="foot__base-end">
+        ${marcasDePagamento(shop)}
+        ${/* A FUNÇÃO DE RETRATAÇÃO FICA FORA DO ACORDEÃO, de propósito. O artigo
+            11.º-A da Diretiva 2011/83 (pela Diretiva (UE) 2023/2673) quer a
+            ligação «retrate-se do contrato aqui» permanentemente disponível e
+            bem visível; numa linha de uma lista que se fecha no telemóvel não é
+            nenhuma das duas coisas. Não pode sair (o Renato perguntou, 20 out
+            2026): fica na linha de baixo de todas as páginas, num botão leve à
+            altura das marcas de pagamento. scripts/check-output.mjs recusa uma
+            página sem ela. */ ''}<p class="foot__withdraw"><a href="${esc(brandPath('/legal/withdraw/', brand))}">${esc(t('paginas.retratacao.ligacao'))}</a></p>
+      </div>
+      <p class="foot__end">© ${new Date().getFullYear()} ${esc(i.tradingName)}</p>
+    </div>
   </div>
 </footer>`;
 }

@@ -34,5 +34,13 @@
   "cathelier.quantidade.texto2": {
     "t": "Get in touch and share your idea and the quantity you need. We will be delighted to provide you with a quote and an estimated delivery date.",
     "h": "76f9007b402a"
+  },
+  "cathelier.mais.titulo": {
+    "t": "More to choose from",
+    "h": "d286ab34ac53"
+  },
+  "cathelier.mais.texto": {
+    "t": "Cake toppers, signs, trophies, bookmarks, boxes, keyrings. {n} pieces in all, and every one of them takes a name.",
+    "h": "a37a14c51a80"
   }
 }

@@ -56,8 +56,10 @@ export function campos(caminhoDoFicheiro, obj) {
     for (const marca of ['ithos', 'cathelier']) {
       for (const k of ['title', 'buttonLabel', 'alt']) juntar(`${marca}.${k}`, obj[marca]?.[k]);
     }
-    /* O bloco do orçamento a meio da página inicial da cathelier. */
+    /* O bloco do orçamento a meio da página inicial da cathelier, e o texto
+       do fim dela (o {n} é o número de peças, e fica tal e qual). */
     for (const k of ['titulo', 'texto1', 'texto2']) juntar(`cathelier.quantidade.${k}`, obj.cathelier?.quantidade?.[k]);
+    for (const k of ['titulo', 'texto']) juntar(`cathelier.mais.${k}`, obj.cathelier?.mais?.[k]);
   } else if (c === 'settings/shop.json') {
     juntar('notice.text', obj.notice?.text);
     juntar('payment.methods', obj.payment?.methods);

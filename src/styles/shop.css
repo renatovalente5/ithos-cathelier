@@ -1293,9 +1293,20 @@ html.menu-open { overflow: hidden; }
    between two coloured blocks. The owner saw it and read it as a mistake,
    which is what it looked like. The footer's own top padding is what separates
    it from the text above; the margin was separating it from nothing. */
-.foot { background: var(--bg-soft, var(--bg)); border-block-start: 1px solid var(--line); padding-block: clamp(2.25rem, 5vw, 3.5rem) 2rem; }
+/* The bottom padding clears the round back-to-top button (fixed, 46px at
+   1.25rem from the corner): with 2rem the last row ran under it. */
+.foot { background: var(--bg-soft, var(--bg)); border-block-start: 1px solid var(--line); padding-block: clamp(2.25rem, 5vw, 3.5rem) 4.75rem; }
+/* A MARCA À ESQUERDA E AS PÁGINAS AO LADO (20 out 2026): o logótipo, as três
+   maneiras de falar connosco e as redes numa coluna; as três listas de
+   páginas noutras três. No telemóvel, a marca por cima e as listas em
+   acordeão por baixo. */
+.foot__top { display: grid; gap: 1.5rem; }
+@media (width >= 60rem) { .foot__top { grid-template-columns: minmax(14rem, 1fr) 3fr; gap: 3rem; } }
+.foot__mark { display: inline-flex; }
+.foot__mark img { display: block; block-size: 40px; inline-size: auto; }
+.foot__contact { list-style: none; margin: 1.25rem 0 0; padding: 0; display: grid; font-size: 13px; }
 .foot__grid { display: grid; gap: 0; }
-@media (width >= 60rem) { .foot__grid { grid-template-columns: repeat(4, 1fr); gap: 2rem; } }
+@media (width >= 60rem) { .foot__grid { grid-template-columns: repeat(3, 1fr); gap: 2rem; } }
 
 .foot__group { border-block-end: 1px solid var(--line); }
 .foot__group summary { display: flex; align-items: center; justify-content: space-between; min-height: 52px; cursor: pointer; font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; list-style: none; }
@@ -1305,14 +1316,14 @@ html.menu-open { overflow: hidden; }
 .foot__group ul { list-style: none; padding: 0 0 1rem; margin: 0; display: grid; font-size: 13px; }
 /* A link on its own line in a list is a target, not a word inside a sentence:
    the standard's exemption does not cover it. These were 16px tall. */
-.foot__group a { text-decoration: none; color: var(--muted); display: inline-flex; align-items: center; min-height: 28px; }
-.foot__group a:hover { color: var(--accent); }
+:is(.foot__group, .foot__contact) a { text-decoration: none; color: var(--muted); display: inline-flex; align-items: center; min-height: 28px; }
+:is(.foot__group, .foot__contact) a:hover { color: var(--accent); }
 /* O DESENHO NÃO PODE SER ESMAGADO. Estas ligações já eram `inline-flex`, e num
    contentor flex quem paga é quem encolhe: um SVG sem `flex: none` fica a zero
    de largura -- visível, opaco, da cor certa e sem desenho nenhum, que é
    exactamente como o hambúrguer da barra esteve. */
-.foot__group a { gap: .5rem; }
-.foot__group a svg { flex: none; }
+:is(.foot__group, .foot__contact) a { gap: .5rem; }
+:is(.foot__group, .foot__contact) a svg { flex: none; }
 /* O custo da chamada é irmão da ligação e não filho dela, por isso não herda o
    avanço do desenho: sem isto ficava encostado à margem, desalinhado do número
    que explica. */
@@ -1324,35 +1335,57 @@ html.menu-open { overflow: hidden; }
 }
 
 .foot__note { display: block; font-size: 12px; color: var(--muted); margin-block-start: -.15rem; }
-.foot__social { display: flex; gap: .6rem; margin-block-start: 1.75rem; }
+.foot__social { display: flex; gap: .6rem; margin-block-start: 1.25rem; }
+.foot__social:empty { display: none; }
 .foot__social a { width: 44px; height: 44px; display: grid; place-items: center; border: 1px solid var(--line); border-radius: 999px; color: var(--muted); }
 .foot__social a:hover { color: var(--accent); border-color: var(--accent); }
-/* Os meios de pagamento (shell.mjs, marcasDePagamento): todas à mesma altura,
-   em cartões brancos de contorno escuro. O Apple Pay e o Google Pay trazem o
-   cartão deles; o Google traz ainda margem à volta da pílula (x 170,7–922,7 e
-   y 170–570 num desenho de 1094×742), que se corta aqui para a marca ficar da
+/* A LINHA DE BAIXO: os meios de pagamento e a retratação à direita, o © à
+   esquerda; no telemóvel, uns por cima dos outros, com o © no fim. */
+.foot__base { margin-block-start: 2rem; padding-block-start: 1.25rem; border-block-start: 1px solid var(--line);
+  display: flex; flex-direction: column; gap: 1rem; }
+.foot__base-end { display: flex; flex-wrap: wrap; align-items: center; gap: .75rem 1.25rem; }
+.foot__end { margin: 0; font-size: 12px; color: var(--muted); }
+@media (width >= 60rem) {
+  .foot__base { flex-direction: row-reverse; align-items: center; justify-content: space-between; gap: 1rem 2rem; }
+}
+/* Os meios de pagamento (shell.mjs, marcasDePagamento): todos à mesma altura,
+   em cartões brancos sem contorno -- no creme da ithos lêem-se como fichas, no
+   branco da cathelier as marcas ficam soltas. Só o Google Pay tem contorno, e
+   é dele: «Don't change the color or weight of the mark's outline» (as regras
+   da Google). O ficheiro traz margem à volta da pílula (x 170,7–922,7 e y
+   170–570 num desenho de 1094×742), que se corta aqui para a marca ficar da
    mesma altura das outras -- a Google proíbe-a mais pequena. A marca não muda:
    só a margem transparente do ficheiro fica de fora. */
-.foot__pay { margin-block-start: 1.75rem; }
-.foot__pay-title { font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; margin-block-end: .75rem; }
-.pay-marks { --h: 40px; list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.foot__pay { margin: 0; }
+.pay-marks { --h: 32px; list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 .pay-mark { display: flex; block-size: var(--h); }
 .pay-mark img { display: block; block-size: 100%; inline-size: auto; }
-.pay-mark--cartao { box-sizing: border-box; padding: calc(var(--h) * .16) calc(var(--h) * .24); background: #fff; border: 1px solid #3c4043; border-radius: calc(var(--h) * .15); }
+.pay-mark--cartao { box-sizing: border-box; padding: calc(var(--h) * .17) calc(var(--h) * .26); background: #fff; border-radius: calc(var(--h) * .18); }
 .pay-mark--google { position: relative; overflow: hidden; inline-size: calc(var(--h) * 752 / 400); }
 .pay-mark--google img { position: absolute; block-size: calc(var(--h) * 742 / 400); inline-size: auto; max-inline-size: none;
   inset-inline-start: calc(var(--h) * -170.7 / 400); inset-block-start: calc(var(--h) * -170 / 400); }
-.foot__end { margin-block-start: 1.75rem; padding-block-start: 1.25rem; border-block-start: 1px solid var(--line); font-size: 12px; color: var(--muted); }
-/* A FUNÇÃO DE RETRATAÇÃO, bem visível e fora do acordeão (art. 11.º-A da
-   Diretiva 2011/83, pela Diretiva (UE) 2023/2673). Tem forma de botão e não
-   de linha de lista: é a única ligação do rodapé que a lei manda destacar. */
-.foot__withdraw { margin-block-start: 1.5rem; }
+/* A FUNÇÃO DE RETRATAÇÃO (art. 11.º-A da Diretiva 2011/83, pela Diretiva (UE)
+   2023/2673): em todas as páginas, fora do acordeão, bem visível. É a única
+   ligação do rodapé que a lei manda destacar, por isso tem forma de botão --
+   leve, com o traço das outras linhas e à altura das marcas de pagamento. No
+   telemóvel vem primeiro. */
+.foot__withdraw { margin: 0; }
 .foot__withdraw a {
-  display: inline-flex; align-items: center; min-height: 44px; padding: .5rem 1rem;
-  border: 1px solid currentColor; border-radius: var(--radius, 0);
-  font-size: 14px; font-weight: 600; color: var(--ink); text-decoration: none;
+  display: inline-flex; align-items: center; min-height: 32px; padding: .25rem .95rem;
+  border: 1px solid color-mix(in srgb, var(--ink) 30%, transparent); border-radius: var(--pill, var(--radius, 0));
+  font-size: 13px; font-weight: 500; color: var(--ink); text-decoration: none; background: transparent;
 }
-.foot__withdraw a:hover { color: var(--accent); }
+.foot__withdraw a:hover { color: var(--accent); border-color: currentColor; }
+@media (width < 60rem) {
+  .foot__withdraw { order: -1; flex-basis: 100%; }
+  /* O último grupo do acordeão já tem o seu traço por baixo: um segundo, logo
+     a seguir, lia-se como uma linha a mais. */
+  .foot__base { border-block-start: 0; margin-block-start: 1.5rem; padding-block-start: 0; }
+  /* As cinco marcas numa fila num telemóvel de 375 px: um pouco mais baixas e
+     mais juntas. Todas à mesma altura (a Google não deixa a dela menor). */
+  .pay-marks { --h: 30px; gap: 5px; }
+  .pay-mark--cartao { padding-inline: calc(var(--h) * .2); }
+}
 
 /* --- back to top ----------------------------------------------------------- */
 .to-top {

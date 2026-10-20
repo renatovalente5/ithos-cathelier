@@ -129,3 +129,13 @@ oficiais acima.) Até lá, a opção de cartão mostrava um ícone NOSSO e a pal
 
 Voltar à mesma fonte e substituir o ficheiro inteiro. Não abrir num editor para
 «arranjar» a cor, o espaçamento ou a caixa.
+
+## 20 out 2026, à tarde: sem contorno
+
+O Renato perguntou se as marcas tinham de ter «aquela borda». Não: o contorno
+escuro (#3c4043) era nosso, para as outras ficarem iguais à pílula do Google Pay.
+Saiu. As marcas ficam em cartões brancos sem contorno, a 32 px (30 no telemóvel,
+para as cinco caberem numa fila). O Google Pay continua com o contorno dele,
+porque faz parte da marca: «Don't change the color or weight of the mark's
+outline, or alter the mark in any way» (brand guidelines da Google). A SIBS tem
+de receber as capturas novas.

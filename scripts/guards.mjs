@@ -447,6 +447,22 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
         for (const k of Object.keys(q)) if (!(k in tecto)) die(`covers.json: cathelier.quantidade.${k} não é nada que o site leia`);
       }
     }
+    /* O TEXTO DO FIM (só a cathelier): título e frase, e na frase só o {n}
+       entre chavetas -- outra coisa qualquer saía tal e qual na página. */
+    if (c.mais !== undefined) {
+      const m = c.mais;
+      const tecto = { titulo: 80, texto: 400 };
+      if (brand !== 'cathelier' || !m || typeof m !== 'object' || Array.isArray(m)) die(`covers.json: ${brand}.mais só existe na cathelier, e é um objecto`);
+      else {
+        for (const [k, max] of Object.entries(tecto)) {
+          const v = m[k];
+          if (typeof v !== 'string' || !v.trim()) die(`covers.json: cathelier.mais.${k} está vazio`);
+          else if (v.length > max) die(`covers.json: cathelier.mais.${k} passa dos ${max} caracteres`);
+          else if (/[{}]/.test(v.replace(/\{n\}/g, ''))) die(`covers.json: cathelier.mais.${k} tem chavetas que não são o {n}`);
+        }
+        for (const k of Object.keys(m)) if (!(k in tecto)) die(`covers.json: cathelier.mais.${k} não é nada que o site leia`);
+      }
+    }
 
     /* The film is optional and deleting the line is meant to be safe, so a
        missing "film" is silence. A film that is NAMED and not on disk is not:
