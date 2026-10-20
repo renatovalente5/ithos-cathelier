@@ -11,17 +11,69 @@
     "t": "Delicate, original and made with great care, our personalised garlands are crafted from MDF and joined by a natural cord, ready to hang and add a special touch to any space.\nAvailable in different shapes, such as bunting, flowers, hearts, stars... each piece represents a letter of the child's name. The letters are made from plywood and covered with fabric in the colour chosen by you, allowing for a unique and harmonious combination.\nPerfect for decorating nurseries, children's rooms or special spaces, these garlands make every little corner even more cosy and full of personality.",
     "h": "af7461336387"
   },
-  "options.name.name": {
-    "t": "Name",
-    "h": "5086900635fe"
+  "options.letras.name": {
+    "t": "How many letters in the name",
+    "h": "104d5edafb8a"
   },
-  "options.name.help": {
-    "t": "Up to ten letters.",
-    "h": "0eb2e24f7fec"
+  "options.letras.values.ate-6.name": {
+    "t": "Up to 6 letters",
+    "h": "89e4c15ed780"
   },
-  "options.name.example": {
+  "options.letras.values.l7.name": {
+    "t": "7 letters",
+    "h": "b29eff0b4a04"
+  },
+  "options.letras.values.l8.name": {
+    "t": "8 letters",
+    "h": "9dc1b1fd7c56"
+  },
+  "options.letras.values.l9.name": {
+    "t": "9 letters",
+    "h": "5ae8d33bf44e"
+  },
+  "options.letras.values.l10.name": {
+    "t": "10 letters",
+    "h": "f62071b8af0d"
+  },
+  "options.nome-6.name": {
+    "t": "The name (up to 6 letters)",
+    "h": "6af79281c446"
+  },
+  "options.nome-6.example": {
+    "t": "Mateus",
+    "h": "0f8c257f771c"
+  },
+  "options.nome-7.name": {
+    "t": "The name (7 letters)",
+    "h": "6d26dc1c8c4f"
+  },
+  "options.nome-7.example": {
+    "t": "Beatriz",
+    "h": "ac8a9e876b6c"
+  },
+  "options.nome-8.name": {
+    "t": "The name (8 letters)",
+    "h": "c6fafe71dc6e"
+  },
+  "options.nome-8.example": {
     "t": "Lourenço",
     "h": "d42adcfdf231"
+  },
+  "options.nome-9.name": {
+    "t": "The name (9 letters)",
+    "h": "8ac01439fea3"
+  },
+  "options.nome-9.example": {
+    "t": "Francisco",
+    "h": "594323b42fab"
+  },
+  "options.nome-10.name": {
+    "t": "The name (10 letters)",
+    "h": "1a10142f8783"
+  },
+  "options.nome-10.example": {
+    "t": "Henriqueta",
+    "h": "64aeb7c43720"
   },
   "gpsr.warnings.0": {
     "t": "Always hang out of reach of the baby — above or outside the cot, never inside it: the string could entangle. Check occasionally that it remains securely fastened.",
