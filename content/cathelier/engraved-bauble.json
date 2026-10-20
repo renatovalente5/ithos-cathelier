@@ -39,6 +39,35 @@
   "cover": "fmvgr2f3u1u",
   "options": [
     {
+      "id": "desenho",
+      "name": "Desenho",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "values": [
+        {
+          "id": "casinha-pinheiro",
+          "name": "Casinha com pinheiro",
+          "extra": 0
+        },
+        {
+          "id": "casinha-arvores",
+          "name": "Casinha entre árvores",
+          "extra": 0
+        },
+        {
+          "id": "cabana-bosque",
+          "name": "Cabana no bosque",
+          "extra": 0
+        },
+        {
+          "id": "casa-grande",
+          "name": "Casa grande",
+          "extra": 0
+        }
+      ]
+    },
+    {
       "id": "name",
       "name": "Nome",
       "type": "text",
