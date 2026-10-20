@@ -1,7 +1,7 @@
 {
   "name": "Peças de outono",
   "price": 6,
-  "published": true,
+  "published": false,
   "featured": false,
   "order": 380,
   "made": "to_order",

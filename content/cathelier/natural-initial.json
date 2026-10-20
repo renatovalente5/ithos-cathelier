@@ -1,7 +1,7 @@
 {
   "name": "Inicial em madeira natural com nome em acrílico",
   "price": 35,
-  "published": true,
+  "published": false,
   "featured": false,
   "order": 225,
   "made": "to_order",

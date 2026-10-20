@@ -1,7 +1,7 @@
 {
   "name": "Gansos",
   "price": 20,
-  "published": true,
+  "published": false,
   "featured": false,
   "order": 360,
   "made": "to_order",
