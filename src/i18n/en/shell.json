@@ -199,5 +199,13 @@
   "pagamentos": {
     "t": "Accepted payments",
     "h": "2b3bd6e9d072"
+  },
+  "pausa": {
+    "t": "Online orders are paused — back soon.",
+    "h": "89de3b6120fa"
+  },
+  "pausaAte": {
+    "t": "Online orders paused until {data}.",
+    "h": "0f99412dc169"
   }
 }

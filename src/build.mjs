@@ -510,6 +510,8 @@ function catalogueFile(nomesNasLinguas = {}) {
   const body = {
     ...(Object.keys(nomesNasLinguas).length ? { i18n: nomesNasLinguas } : {}),
     preview: PREVIEW || !shop.open,
+    /* Vendas em pausa (o painel, «Vendas online»): o shop.js diz até quando. */
+    ...(!PREVIEW && !shop.open ? { pausa: { ate: /^\d{4}-\d{2}-\d{2}$/.test(shop.pausa?.ate ?? '') ? shop.pausa.ate : null } } : {}),
     currency: 'EUR',
     lead: { inStockDays: shop.lead.inStockDays, toOrderWeeks: shop.lead.toOrderWeeks },
     /* AS PRATELEIRAS DO STOCK, com o nome que a dona reconhece. Os números não

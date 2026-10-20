@@ -52,5 +52,7 @@
   "avisoCampanha.titulo": "Envio gratuito",
   "avisoCampanha.continuar": "Continuar a ver a loja",
   "avisoCampanha.fechar": "Fechar",
-  "pagamentos": "Pagamentos aceites"
+  "pagamentos": "Pagamentos aceites",
+  "pausa": "Vendas online em pausa — voltamos em breve.",
+  "pausaAte": "Vendas online em pausa até {data}."
 }

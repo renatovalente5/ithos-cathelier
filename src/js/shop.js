@@ -890,6 +890,7 @@ function checkout() {
        fragmentos antigos: um código «constructor» devolvia uma função. */
     const FRASES = {
       shop_not_open_yet: 'loja.fechada',
+      shop_paused: 'loja.pausaNota',
       country_not_served: 'erro.paisSemEnvio',
       empty_basket: 'erro.cestoVazio',
       unknown_product: 'erro.pecaIndisponivel',
@@ -2738,9 +2739,15 @@ function coverFilm() {
 async function previewLock() {
   const cat = await catalogue().catch(() => null);
   if (!cat?.preview) return;
+  /* EM PAUSA (férias: o painel, «Vendas online») diz-se assim, com a data de
+     regresso se a dona a escreveu; «ainda não abriu» era o antes do lançamento. */
+  const pausa = cat.pausa;
+  const ate = pausa?.ate ? new Intl.DateTimeFormat(LINGUA === 'en' ? 'en-GB' : 'pt-PT', { day: 'numeric', month: 'long', timeZone: 'UTC' }).format(new Date(`${pausa.ate}T00:00:00Z`)) : '';
+  const titulo = pausa ? tj('loja.pausa') : tj('loja.fechada');
+  const nota = pausa ? (ate ? tj('loja.pausaNotaAte', { data: ate }) : tj('loja.pausaNota')) : tj('loja.fechadaNota');
   for (const b of $$('[data-add], [data-pay], [data-to-checkout]')) {
     b.setAttribute('aria-disabled', 'true');
-    b.title = tj('loja.fechada');
+    b.title = titulo;
     /* Com a loja fechada não se valida nada: o botão de adicionar é agora um
        botão de submissão, e sem isto clicá-lo numa loja fechada mostrava os
        balões de «preencha este campo» a quem não pode comprar de qualquer
@@ -2749,7 +2756,7 @@ async function previewLock() {
     const note = document.createElement('p');
     note.className = 'small muted';
     note.style.marginBlockStart = '.5rem';
-    note.textContent = tj('loja.fechadaNota');
+    note.textContent = nota;
     b.after(note);
   }
 }

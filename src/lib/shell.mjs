@@ -271,7 +271,7 @@ ${(() => {
 <body class="${esc(bodyClass)}" id="top">
 <a class="skip" href="#main">${esc(t('shell.saltar'))}</a>
 
-${header({ brand, path, site, canonicalPath, anuncio: announcement({ brand, shipping }) })}
+${header({ brand, path, site, canonicalPath, anuncio: announcement({ brand, shipping, shop }) })}
 ${crumbs ? breadcrumbs(crumbs, brand) : ''}
 
 <main id="main">
@@ -282,7 +282,7 @@ ${drawer({ brand, identity, counts, site, canonicalPath })}
 ${footer({ brand, identity, shop })}
 
 <a class="to-top" href="#top" hidden aria-label="${esc(t('shell.topo'))}">${icon('arrowUp', 22)}</a>
-${avisoCampanha({ brand, shipping, foto: campanhaFotos[brand] })}
+${shop?.open === false ? '' : avisoCampanha({ brand, shipping, foto: campanhaFotos[brand] })}
 
 <!-- There is no site-wide cookie notice, and that is a decision, not an
      omission. This site sets no analytics and no advertising cookies, the
@@ -311,7 +311,18 @@ ${asset.textos?.[lingua()] ? `<script src="/assets/${asset.textos[lingua()]}" de
    true next month. A permanent claim sitting there is just furniture, and the
    promise it was making is already on the page, twice, where it means
    something: beside the button and in the questions. */
-function announcement({ brand, shipping }) {
+/* AS VENDAS EM PAUSA (o Renato, 20 out 2026: «um botão para bloquear as
+   vendas online para o caso de a dona ir de férias»): com a loja fechada no
+   painel (shop.json `open: false`), a faixa de cima diz isso -- e, se ela
+   escreveu, até quando --, em vez de anunciar portes grátis que ninguém pode
+   usar. O Worker recusa as encomendas (o catálogo diz `preview`) e o shop.js
+   desliga os botões de comprar. */
+const dataCurta = (iso) => new Intl.DateTimeFormat(lingua() === 'en' ? 'en-GB' : 'pt-PT', { day: 'numeric', month: 'long', timeZone: 'UTC' }).format(new Date(`${iso}T00:00:00Z`));
+function announcement({ brand, shipping, shop }) {
+  if (shop?.open === false) {
+    const ate = /^\d{4}-\d{2}-\d{2}$/.test(shop.pausa?.ate ?? '') ? shop.pausa.ate : '';
+    return `<p class="announce announce--pausa">${esc(ate ? t('shell.pausaAte', { data: dataCurta(ate) }) : t('shell.pausa'))}</p>`;
+  }
   /* NAS DUAS MARCAS (a dona, 20 out 2026: «no cathelier aparece portes
      grátis a partir de 30 €, mas no ithos não»). O cesto é um só e os portes
      grátis valem para tudo o que lá está -- candeeiros incluídos --, por isso

@@ -43,6 +43,9 @@
 
   "loja.fechada": "A loja ainda não abriu.",
   "loja.fechadaNota": "A loja ainda não abriu — por agora não é possível encomendar.",
+  "loja.pausa": "As encomendas estão em pausa.",
+  "loja.pausaNota": "As vendas online estão em pausa — por agora não é possível encomendar.",
+  "loja.pausaNotaAte": "As vendas online estão em pausa até {data} — pode encomendar a partir daí.",
   "erro.paisSemEnvio": "Ainda não enviamos para esse país. Escreva-nos e vemos o que se pode fazer.",
   "erro.cestoVazio": "O seu cesto está vazio.",
   "erro.pecaIndisponivel": "Há uma peça no seu cesto que já não está disponível. Recarregue a página, por favor.",
