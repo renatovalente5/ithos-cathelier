@@ -1,15 +1,15 @@
 {
   "name": {
-    "t": "Cloud name mobile",
-    "h": "c97265191489"
+    "t": "Personalised decorative cloud",
+    "h": "2791f5f9d02d"
   },
   "summary": {
-    "t": "A cloud with the name and everything about the day they arrived, with pieces hanging below.",
-    "h": "f3a6a88a0af5"
+    "t": "Personalised birth decorative cloud",
+    "h": "56416d168da0"
   },
   "text": {
-    "t": "A cloud with the name and everything about the day they arrived, with pieces hanging below.",
-    "h": "f3a6a88a0af5"
+    "t": "Delicate and timeless, this pine plywood cloud preserves the most precious details of your baby's birth. The name, in raised acrylic, brings the piece to life, while the date of birth is laser-engraved onto the main cloud. The three pendants, personalised with the date, time, and length at birth, eternalise every detail of this very special moment.\nWith delicate shapes, natural cotton thread, and neutral tones, it is a piece created to decorate with love and to keep the magic of the first day forever.",
+    "h": "ed4235c9f956"
   },
   "options.name.name": {
     "t": "Name",
@@ -48,8 +48,8 @@
     "h": "49ed0eef5143"
   },
   "options.length.example": {
-    "t": "47 cm",
-    "h": "4630af3bd524"
+    "t": "48",
+    "h": "98010bd9270f"
   },
   "gpsr.warnings.0": {
     "t": "Always hang out of reach of the baby — above or outside the cot, never inside it: the cord could entangle. Check occasionally that it remains securely fastened.",
