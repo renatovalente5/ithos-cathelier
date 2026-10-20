@@ -1,6 +1,6 @@
 {
   "name": "Caça-sonhos de nascimento",
-  "price": 35,
+  "price": 25,
   "published": true,
   "featured": false,
   "order": 260,
@@ -9,12 +9,13 @@
   "alsoIn": [
     "hanging"
   ],
-  "summary": "Uma placa com os dados do nascimento e fitas de renda por baixo.",
-  "text": "Uma placa com os dados do nascimento e fitas de renda por baixo.",
+  "summary": "Caça sonhos com dados do nascimento do seu bebé",
+  "text": "Uma peça delicada e cheia de encanto, criada para eternizar os primeiros detalhes da vida do teu bebé.\nEm contraplacado de pinho, com formato oval, circular ou nuvem e nome em acrílico dourado ou branco, reúne os dados de nascimento numa composição única e cheia de significado.\nAs rendas delicadas, as fitas de seda, a fita com pompons e o fio de lã natural dão vida a uma decoração romântica e intemporal, finalizada com um coração em acrílico dourado com inicial do bebé.\nUm pequeno tesouro artesanal, onde cada detalhe conta uma história de amor.",
   "photoFolder": "birth-dreamcatcher",
   "photos": [
     "01",
     "02",
+    "fmvgtajwvyh",
     "03"
   ],
   "cover": "01",
