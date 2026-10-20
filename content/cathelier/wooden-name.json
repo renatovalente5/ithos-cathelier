@@ -1,6 +1,6 @@
 {
   "name": "Nome personalizados ",
-  "price": 2,
+  "price": 15,
   "published": true,
   "featured": true,
   "order": 210,
@@ -21,6 +21,41 @@
   "cover": "01",
   "options": [
     {
+      "id": "tamanho",
+      "name": "Quantas letras tem o nome",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "values": [
+        {
+          "id": "ate-5",
+          "name": "Até 5 letras",
+          "extra": 0
+        },
+        {
+          "id": "mais-5",
+          "name": "6 letras ou mais",
+          "extra": 5
+        }
+      ]
+    },
+    {
+      "id": "nome-curto",
+      "name": "O nome (até 5 letras)",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 5,
+      "extra": 0,
+      "example": "Rita",
+      "onlyWith": {
+        "option": "tamanho",
+        "values": [
+          "ate-5"
+        ]
+      }
+    },
+    {
       "id": "name",
       "name": "O nome",
       "type": "text",
@@ -28,7 +63,32 @@
       "personalises": true,
       "max": 40,
       "extra": 0,
-      "example": "Beatriz"
+      "example": "Beatriz",
+      "onlyWith": {
+        "option": "tamanho",
+        "values": [
+          "mais-5"
+        ]
+      }
+    },
+    {
+      "id": "acabamento",
+      "name": "Acabamento",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "values": [
+        {
+          "id": "natural",
+          "name": "Madeira natural",
+          "extra": 0
+        },
+        {
+          "id": "pintado",
+          "name": "Pintado",
+          "extra": 5
+        }
+      ]
     }
   ],
   "gpsr": {

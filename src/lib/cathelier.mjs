@@ -342,6 +342,11 @@ function condicao(o, p) {
   return { attrs: ` data-so-com="${esc(c.option)}" data-so-com-valores="${esc(c.values.join(' '))}"${escondido ? ' hidden' : ''}`, escondido };
 }
 
+/* O QUADRADINHO DE COR de uma escolha (a dona, 20 out 2026: a cor da pintura
+   do Nome em madeira), como nos modelos dos candeeiros (ithos.mjs). Vai para
+   um style, por isso só #rrggbb -- as guardas e o Worker conferem o mesmo. */
+const corDoQuadrado = (c) => (typeof c === 'string' && /^#[0-9a-f]{6}$/i.test(c) ? c : '');
+
 function campoDaPeca(o, p) {
   const { attrs, escondido } = condicao(o, p);
   const desligado = escondido ? ' disabled' : '';
@@ -355,7 +360,7 @@ function campoDaPeca(o, p) {
     const off = v.available === false;
     return `<label class="choice${off ? ' choice--off' : ''}">
             <input type="radio" name="opt-${esc(o.id)}" value="${esc(v.id)}" data-option="${esc(o.id)}"${v.id === marcado.id ? ' checked' : ''}${off || escondido ? ' disabled' : ''}>
-            <span>${esc(v.name)}${v.extra ? ` <em>+${esc(valor(v.extra))} €</em>` : ''}</span>
+            ${corDoQuadrado(v.colour) ? `<span class="choice__cor" style="background:${corDoQuadrado(v.colour)}" aria-hidden="true"></span>` : ''}<span>${esc(v.name)}${v.extra ? ` <em>+${esc(valor(v.extra))} €</em>` : ''}</span>
           </label>`;
   }).join('\n          ')}
         </div>
