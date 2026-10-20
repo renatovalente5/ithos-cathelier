@@ -1,6 +1,6 @@
 {
-  "name": "Inicial com o nome",
-  "price": 28,
+  "name": "Inicial Personalizada com nom",
+  "price": 18,
   "published": true,
   "featured": false,
   "order": 220,
@@ -9,8 +9,8 @@
   "alsoIn": [
     "wall-decor"
   ],
-  "summary": "A inicial grande, com o nome escrito por cima.",
-  "text": "A inicial grande, com o nome escrito por cima.",
+  "summary": "Inicial Personalizada em Madeira de Pinho e nome em acrílico dourado",
+  "text": "",
   "photoFolder": "initial-with-name",
   "photos": [
     "03",
