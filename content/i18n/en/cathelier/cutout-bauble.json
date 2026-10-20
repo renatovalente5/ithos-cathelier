@@ -39,6 +39,30 @@
     "t": "Merry Christmas",
     "h": "427681111a37"
   },
+  "options.escolha.values.presepio.name": {
+    "t": "Nativity Scene",
+    "h": "619683bc7547"
+  },
+  "options.escolha.values.veado-estrelas.name": {
+    "t": "Starry deer",
+    "h": "fd4130b9cb92"
+  },
+  "options.escolha.values.pinheiro.name": {
+    "t": "Pine tree",
+    "h": "9ef35b3ca6c9"
+  },
+  "options.escolha.values.pinheiros-e-veado.name": {
+    "t": "Pine trees and deer",
+    "h": "a11851fdfd77"
+  },
+  "options.escolha.values.boneco-de-neve.name": {
+    "t": "Snowman",
+    "h": "070c3d441a96"
+  },
+  "options.escolha.values.quebra-noses.name": {
+    "t": "Jack Frost",
+    "h": "26f8b29b2ace"
+  },
   "options.family.name": {
     "t": "Family name",
     "h": "21f62318a5d8"
