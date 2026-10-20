@@ -20,9 +20,12 @@ import { t } from './i18n.mjs';
 export function viewer() {
   return `<dialog class="lightbox" id="photo" aria-label="${esc(t('visor.rotulo'))}">
   <div class="lightbox__bar">
+    <span class="lightbox__count" data-box-count aria-live="polite"></span>
     <button class="icon-btn lightbox__close" type="button" data-box-close aria-label="${esc(t('visor.fechar'))}">${icon('close', 24)}</button>
   </div>
   <div class="lightbox__stage" data-box-stage></div>
+  <button class="lightbox__nav lightbox__nav--prev" type="button" data-box-prev aria-label="${esc(t('visor.anterior'))}" hidden>${icon('arrowLeft', 22)}</button>
+  <button class="lightbox__nav lightbox__nav--next" type="button" data-box-next aria-label="${esc(t('visor.seguinte'))}" hidden>${icon('arrowRight', 22)}</button>
 </dialog>`;
 }
 

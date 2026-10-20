@@ -2207,14 +2207,28 @@ function lightbox() {
 
   let last = null;                      // what to give the focus back to
 
+  /* PASSAR ENTRE AS FOTOGRAFIAS (a dona, 20 out 2026: «depois devia dar para
+     passar entre imagens em tamanho grande»). A lupa conhece as fotografias
+     da galeria, pela ordem (os vídeos ficam de fora: não há o que ampliar),
+     e passa entre elas com as setas, com as do teclado e, no telemóvel, a
+     deslizar o dedo. Ao fechar, a galeria fica na que se estava a ver. */
+  const slides = $$('.gallery__slide', g);
+  const fotos = slides.filter((sl) => $('picture', sl));
+  const prev = $('[data-box-prev]', box);
+  const next = $('[data-box-next]', box);
+  const count = $('[data-box-count]', box);
+  let atual = 0;
+
   /* Sem botão de tamanho real: a lupa mostra a fotografia inteira à maior
      dimensão que cabe, e mais nada. Um segundo estado dentro de um visor que
      já é um estado era uma escolha a pedir outra escolha. */
   const fit = () => stage.scrollTo(0, 0);
 
-  const show = (from) => {
-    const src = $('img', from);
-    if (!src) return;
+  const pintar = (i) => {
+    if (!fotos.length) return false;    // $(…, undefined) would search the whole page
+    atual = (i + fotos.length) % fotos.length;
+    const from = $('picture', fotos[atual]);
+    if (!from) return false;
     stage.replaceChildren();
     const pic = from.cloneNode(true);
     const im = $('img', pic);
@@ -2230,6 +2244,15 @@ function lightbox() {
     im.className = 'lightbox__img';
     stage.append(pic);
     fit();
+    const varias = fotos.length > 1;
+    if (prev) prev.hidden = !varias;
+    if (next) next.hidden = !varias;
+    if (count) count.textContent = varias ? `${atual + 1} / ${fotos.length}` : '';
+    return true;
+  };
+
+  const show = (i) => {
+    if (!pintar(i)) return;
     if (box.open) box.close();
     box.showModal();
     document.documentElement.classList.add('menu-open');   // the same derived lock
@@ -2243,24 +2266,44 @@ function lightbox() {
     (last && last.isConnected ? last : opener)?.focus();
   };
 
+  const naGaleria = () => slides.findIndex((sl) => {
+    const r = sl.getBoundingClientRect(); const gr = g.getBoundingClientRect();
+    return Math.abs(r.left - gr.left) < 2;          // the one on screen
+  });
+
   opener?.addEventListener('click', () => {
     last = opener;
-    const slide = $$('.gallery__slide', g).find((sl) => {
-      const r = sl.getBoundingClientRect(); const gr = g.getBoundingClientRect();
-      return Math.abs(r.left - gr.left) < 2;          // the one on screen
-    }) || $('.gallery__slide', g);
-    if ($('picture', slide)) show($('picture', slide));
+    const i = fotos.indexOf(slides[naGaleria()]);
+    show(i >= 0 ? i : 0);
   });
 
   /* Clicking the photograph itself opens it too -- it is what everyone tries
      before they look for a button. */
   g.addEventListener('click', (ev) => {
     if (ev.target.closest('button, a, video')) return;
-    const slide = ev.target.closest('.gallery__slide');
-    if (!slide || !$('picture', slide)) return;
+    const i = fotos.indexOf(ev.target.closest('.gallery__slide'));
+    if (i < 0) return;
     last = opener;
-    show($('picture', slide));
+    show(i);
   });
+
+  prev?.addEventListener('click', () => pintar(atual - 1));
+  next?.addEventListener('click', () => pintar(atual + 1));
+  box.addEventListener('keydown', (ev) => {
+    if (fotos.length < 2 || ev.altKey || ev.metaKey || ev.ctrlKey) return;
+    if (ev.key === 'ArrowLeft') { ev.preventDefault(); pintar(atual - 1); }
+    if (ev.key === 'ArrowRight') { ev.preventDefault(); pintar(atual + 1); }
+  });
+  /* A deslizar o dedo, como na galeria -- mas nunca com a fotografia ampliada
+     com dois dedos (aí o dedo está a mover a fotografia, não a pedir outra). */
+  let x0 = null;
+  stage.addEventListener('touchstart', (e) => { x0 = e.touches.length === 1 ? e.touches[0].clientX : null; }, { passive: true });
+  stage.addEventListener('touchend', (e) => {
+    if (x0 === null || fotos.length < 2 || (window.visualViewport?.scale ?? 1) > 1.01) { x0 = null; return; }
+    const dx = e.changedTouches[0].clientX - x0;
+    if (Math.abs(dx) > 50) pintar(atual + (dx < 0 ? 1 : -1));
+    x0 = null;
+  }, { passive: true });
 
   $('[data-box-close]', box)?.addEventListener('click', hide);
   /* Pressing beside the photograph closes it, and the press has to have
@@ -2272,37 +2315,56 @@ function lightbox() {
   box.addEventListener('close', () => {
     document.documentElement.classList.remove('menu-open');
     stage.replaceChildren();
+    /* A galeria fica na fotografia que se estava a ver. */
+    const i = slides.indexOf(fotos[atual]);
+    if (i >= 0) g.dispatchEvent(new CustomEvent('galeria-ir', { detail: i }));
   });
 }
 
 /* O VÍDEO DO CARTÃO (a dona, 18 out 2026: «quando pomos o rato, dá para ir
-   logo para esses vídeos em vez de passar por todas as fotos?»). Um candeeiro
-   com vídeo (data-video) toca-o por cima da fotografia quando o rato pára no
-   cartão, e pára quando sai. O vídeo só é pedido nesse momento, nunca ao
-   abrir a página; só com um rato (num telemóvel não há «passar por cima») e
-   nunca para quem pediu menos movimento. */
+   logo para esses vídeos em vez de passar por todas as fotos?»). Um produto
+   com vídeo (data-video) toca-o por cima da fotografia quando o rato entra no
+   cartão, e pára quando sai. Só com um rato (num telemóvel não há «passar por
+   cima») e nunca para quem pediu menos movimento.
+   LOGO, SEM ESPERA (a dona, 20 out 2026: «demora 1 segundo até começar…
+   queria que fosse instantâneo»). Esperava 250 ms e só então pedia o vídeo,
+   que ainda tinha de chegar; e aparecia em 0,45 s. Agora o vídeo dos cartões
+   à vista é pedido antes (preload), e toca no instante em que o rato entra.
+   Quem pediu ao browser para poupar dados não o recebe antes: esse espera
+   pelo rato, como antes. */
 function videosDosCartoes() {
   if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const poupar = Boolean(navigator.connection?.saveData) || /(^|-)2g$/.test(String(navigator.connection?.effectiveType ?? ''));
+  const vistos = !poupar && 'IntersectionObserver' in window
+    ? new IntersectionObserver((entradas) => {
+      for (const e of entradas) if (e.isIntersecting) { vistos.unobserve(e.target); e.target.prepararVideo?.(); }
+    }, { rootMargin: '200px 0px' })
+    : null;
   for (const card of $$('[data-video]')) {
     const frame = $('.card__frame', card);
     if (!frame) continue;
     let v = null;
-    let espera = null;
-    const tocar = () => {
-      if (!v) {
-        v = document.createElement('video');
-        v.className = 'card__video';
-        v.muted = true; v.loop = true; v.playsInline = true; v.preload = 'auto';
-        v.setAttribute('aria-hidden', 'true');
-        v.src = `${BASE}${card.dataset.video}`;
-        frame.append(v);
-      }
-      v.play().then(() => { card.dataset.aTocar = 'yes'; }).catch(() => {});
+    let dentro = false;
+    const preparar = () => {
+      if (v) return v;
+      v = document.createElement('video');
+      v.className = 'card__video';
+      v.muted = true; v.loop = true; v.playsInline = true; v.preload = 'auto';
+      v.setAttribute('aria-hidden', 'true');
+      v.src = `${BASE}${card.dataset.video}`;
+      frame.append(v);
+      return v;
     };
-    const parar = () => { clearTimeout(espera); delete card.dataset.aTocar; v?.pause(); };
-    card.addEventListener('pointerenter', () => { clearTimeout(espera); espera = setTimeout(tocar, 250); });
+    card.prepararVideo = preparar;
+    const tocar = () => {
+      dentro = true;
+      preparar().play().then(() => { if (dentro) card.dataset.aTocar = 'yes'; else v.pause(); }).catch(() => {});
+    };
+    const parar = () => { dentro = false; delete card.dataset.aTocar; v?.pause(); };
+    card.addEventListener('pointerenter', tocar);
     card.addEventListener('pointerleave', parar);
+    vistos?.observe(card);
   }
 }
 
@@ -2333,6 +2395,8 @@ function gallery() {
   $('[data-gallery-prev]', g)?.addEventListener('click', () => go(at - 1));
   $('[data-gallery-next]', g)?.addEventListener('click', () => go(at + 1));
   for (const t of thumbs) t.addEventListener('click', () => go(Number(t.dataset.galleryGo)));
+  /* A lupa, ao fechar, deixa a galeria na fotografia que se estava a ver. */
+  g.addEventListener('galeria-ir', (e) => { if (e.detail !== at) go(e.detail); });
   /* Com «Mostrar o vídeo primeiro», a galeria abre num vídeo: toca já (como
      tocaria ao chegar lá) e a lupa esconde-se. */
   if ($('video', slides[0])) go(0);
