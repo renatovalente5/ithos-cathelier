@@ -1,7 +1,7 @@
 {
   "name": "Inicial com o nome",
   "price": 28,
-  "published": false,
+  "published": true,
   "featured": false,
   "order": 220,
   "made": "to_order",
