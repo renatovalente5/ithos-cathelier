@@ -12,7 +12,7 @@ import { prazos } from './prazos.mjs';
 import { t, tn } from './i18n.mjs';
 import { fabricante } from './pages.mjs';
 import { brandPath } from './shell.mjs';
-import { videosDe, enderecoDoVideo, capaDoVideo } from './videos.mjs';
+import { videosDe, enderecoDoVideo, capaDoVideo, videoDoCartao } from './videos.mjs';
 import { escaloes } from './quantidades.mjs';
 
 /* As frases destas páginas estão em src/i18n/<língua>/cathelier.json e lêem-se
@@ -100,7 +100,7 @@ export function card(p, { eager = false } = {}) {
   data-price="${p.price}"${p.added ? ` data-added="${esc(p.added)}"` : ''}${temFotos
     ? `
   data-shots="${esc(shots.join(','))}" data-dir="cathelier/${esc(p.photoFolder)}"` : ''}${videosDe(p).length && temFotos
-    ? ` data-video="${esc(enderecoDoVideo('cathelier', p, videosDe(p)[0]))}"` : ''}>
+    ? ` data-video="${esc(videoDoCartao('cathelier', p, videosDe(p)[0]))}"` : ''}>
   <a class="card__media" href="${href}" tabindex="-1" aria-hidden="true">
     ${frame(p, '(min-width: 64rem) 280px, (min-width: 48rem) 30vw, 46vw', eager, true)}
   </a>

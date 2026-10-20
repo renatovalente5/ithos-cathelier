@@ -293,12 +293,23 @@ async function medirDeriva(w, res) {
     return m ? m[1] : '';
   };
 
+  /* A PRIMEIRA TROCA, quando for. Olhava-se aos 4,2 s; com a deriva mais
+     rápida (20 out 2026: a segunda fotografia aos ~0,7 s, depois uma a cada
+     2 s), um cartão de duas fotografias já tinha voltado à capa nessa altura,
+     e a bateria dizia que não tinha passado. */
   const naCapa = qual();
   card.dispatchEvent(new w.PointerEvent('pointerenter', { bubbles: true }));
-  await new Promise((r) => setTimeout(r, 4200));   // dwell + primeira + fade
+  const t0 = w.performance.now();
+  let passou = '';
+  while (!passou && w.performance.now() - t0 < 4200) {
+    await new Promise((r) => setTimeout(r, 40));
+    if (qual() !== naCapa) passou = qual();
+  }
+  const quando = Math.round(w.performance.now() - t0);
 
-  nota(qual() !== naCapa, 'ao parar o rato, o cartão passa à fotografia seguinte',
-    `começou em ${naCapa}, está em ${qual()}`);
+  nota(passou, 'ao parar o rato, o cartão passa à fotografia seguinte',
+    `começou em ${naCapa}, ${passou ? `passou a ${passou} aos ${quando} ms` : 'não passou em 4,2 s'}`);
+  nota(passou && quando < 2000, 'e passa depressa (antes de 2 s)', `${quando} ms`);
   nota(frame.querySelectorAll('picture').length === 2,
     'a segunda camada existe enquanto a deriva corre',
     `${frame.querySelectorAll('picture').length} camadas`);

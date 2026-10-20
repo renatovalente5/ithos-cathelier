@@ -11,7 +11,7 @@ import { prazos } from './prazos.mjs';
 import { t, tn } from './i18n.mjs';
 import { fabricante } from './pages.mjs';
 import { fotosDaDona, enquadramentoDaDona } from './oficina.mjs';
-import { videosDe, enderecoDoVideo as enderecoDeVideo, capaDoVideo as capaDeVideo } from './videos.mjs';
+import { videosDe, enderecoDoVideo as enderecoDeVideo, capaDoVideo as capaDeVideo, videoDoCartao } from './videos.mjs';
 
 /* ===========================================================================
    ithos — the pages, in the order the model shop puts things.
@@ -148,7 +148,7 @@ export function card(p, { eager = false } = {}) {
      grid by a number the reader cannot see. */
   return `<article class="card" data-product="${esc(p.slug)}" data-family="${esc(fams)}"
   data-price="${low}"${p.added ? ` data-added="${esc(p.added)}"` : ''}
-  data-shots="${esc(shots.join(','))}" data-dir="${esc(dir)}"${videosDe(p).length ? ` data-video="${esc(enderecoDoVideo(p, videosDe(p)[0]))}"` : ''}>
+  data-shots="${esc(shots.join(','))}" data-dir="${esc(dir)}"${videosDe(p).length ? ` data-video="${esc(videoDoCartao('ithos', p, videosDe(p)[0]))}"` : ''}>
   <a class="card__media" href="${href}" tabindex="-1" aria-hidden="true">
     <div class="frame card__frame">
       ${picture({

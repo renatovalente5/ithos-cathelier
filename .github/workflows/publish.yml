@@ -89,6 +89,36 @@ jobs:
           path: ${{ runner.temp }}/versoes
           key: ${{ steps.versoes.outputs.cache-primary-key }}
 
+      # O VÍDEO DO CARTÃO: uma cópia pequena de cada vídeo (8 s, 3:4, 540 px,
+      # sem som, uns 300 KB), para o rato por cima do cartão começar logo
+      # (scripts/videos-cartao.mjs). Não estão no git: ficam numa cache entre
+      # corridas, e só um vídeo novo paga o ffmpeg (instalado só nesse caso).
+      # A chave muda com o script (refaz-se tudo) e com os vídeos (restaura a
+      # anterior pelo prefixo e faz só os novos; as de vídeos tirados saem).
+      # Se falhar, a construção usa o vídeo inteiro: publica-se na mesma.
+      - name: Restore the card videos made on earlier runs
+        id: cartoes
+        uses: actions/cache/restore@v4
+        with:
+          path: public/media/video-cartao
+          key: videos-cartao-v1-${{ hashFiles('scripts/videos-cartao.mjs') }}-${{ hashFiles('public/media/video/**/*.mp4', 'public/media/video/**/*.webm') }}
+          restore-keys: |
+            videos-cartao-v1-${{ hashFiles('scripts/videos-cartao.mjs') }}-
+
+      - name: Card videos
+        run: |
+          if [ "$(node scripts/videos-cartao.mjs --falta)" != "0" ] && ! command -v ffmpeg >/dev/null; then
+            sudo apt-get update -qq && sudo apt-get install -y -qq ffmpeg >/dev/null || echo "sem ffmpeg: os cartões usam os vídeos inteiros"
+          fi
+          node scripts/videos-cartao.mjs || echo "as cópias dos cartões falharam: os cartões usam os vídeos inteiros"
+
+      - name: Keep the card videos for the next run
+        if: steps.cartoes.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: public/media/video-cartao
+          key: ${{ steps.cartoes.outputs.cache-primary-key }}
+
       # The guards run BEFORE the build and are allowed to kill it. A shop
       # published without the seller's legal identification on it is worse than
       # a shop that does not publish.

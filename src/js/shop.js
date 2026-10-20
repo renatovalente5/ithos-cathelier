@@ -1922,10 +1922,16 @@ function cardShots() {
   const CALM = matchMedia('(prefers-reduced-motion: reduce)').matches;
   const DRIFTS = FINE && !CALM;
 
-  const FIRST = 1400;   // before the first change: most hovers are short
-  const ZOOM = 2600;    // the dwell, which is also the length of the zoom
-  const FADE = 900;     // the dissolve
-  const DWELL = 250;    // pointer must stay before anything is fetched
+  /* MAIS DEPRESSA (a dona, 20 out 2026: «os produtos que não tiverem vídeo,
+     devia passar mais rápido para as fotos seguintes»). Eram 1,4 s antes da
+     primeira troca, 2,6 s em cada fotografia e 0,9 s de dissolver: a segunda
+     fotografia aparecia aos 2,5 s. Agora aparece a pouco mais de 1 s, e cada
+     uma fica 2 s. O zoom e o dissolver do CSS (--shot-zoom, --shot-fade)
+     acompanham estes números. */
+  const FIRST = 500;    // before the first change
+  const ZOOM = 1500;    // the dwell, which is also the length of the zoom
+  const FADE = 500;     // the dissolve
+  const DWELL = 120;    // pointer must stay before anything is fetched
   const WARM = 700;     // deadline on decode, never an open-ended wait
 
   const wait = (ms) => new Promise((r) => setTimeout(r, ms));
@@ -2105,6 +2111,10 @@ function cardShots() {
       const mine = run;
       driving = true;
       card.dataset.showing = 'yes';     // starts the zoom on the layer in flow
+      /* A segunda fotografia pede-se já, e não só na troca: com 0,5 s até
+         lá, chega a tempo e dissolve logo, sem a espera do descodificar. */
+      if (!over) over = makeOver();
+      point(over, shots[(at + 1) % shots.length]);
       await wait(FIRST);
       while (mine === run) {
         const next = (at + 1) % shots.length;
@@ -2336,9 +2346,35 @@ function videosDosCartoes() {
   if (!matchMedia('(hover: hover) and (pointer: fine)').matches) return;
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   const poupar = Boolean(navigator.connection?.saveData) || /(^|-)2g$/.test(String(navigator.connection?.effectiveType ?? ''));
+  /* UM DE CADA VEZ. As cópias dos cartões são pequenas (scripts/
+     videos-cartao.mjs, uns 300 KB), e as dos cartões à vista carregam-se
+     antes de o rato lá chegar -- mas em fila: todas ao mesmo tempo dividiam
+     a rede, e a do cartão onde o rato estava chegava mais tarde do que se
+     nada se tivesse carregado antes (a dona, 20 out 2026: «está a demorar
+     mais tempo do que antes»). O cartão onde o rato entra não espera pela
+     fila: pede o seu logo. */
+  const fila = [];
+  let aCarregar = false;
+  const seguinte = () => {
+    if (aCarregar) return;
+    const card = fila.shift();
+    if (!card) return;
+    aCarregar = true;
+    const v = card.prepararVideo();
+    let t = 0;
+    const feito = () => {
+      clearTimeout(t);
+      v.removeEventListener('canplaythrough', feito); v.removeEventListener('error', feito);
+      aCarregar = false; seguinte();
+    };
+    if (v.readyState >= 4) { feito(); return; }
+    t = setTimeout(feito, 5000);
+    v.addEventListener('canplaythrough', feito); v.addEventListener('error', feito);
+  };
   const vistos = !poupar && 'IntersectionObserver' in window
     ? new IntersectionObserver((entradas) => {
-      for (const e of entradas) if (e.isIntersecting) { vistos.unobserve(e.target); e.target.prepararVideo?.(); }
+      for (const e of entradas) if (e.isIntersecting) { vistos.unobserve(e.target); fila.push(e.target); }
+      seguinte();
     }, { rootMargin: '200px 0px' })
     : null;
   for (const card of $$('[data-video]')) {

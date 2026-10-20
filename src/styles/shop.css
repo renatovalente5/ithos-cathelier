@@ -460,12 +460,12 @@ html[data-scrolled='no'] .head {
    dissolve has no dip: fade two layers against each other and the picture sags
    at the halfway mark, because two 50% images do not add up to one. */
 .card__frame > picture {
-  transition: scale var(--shot-zoom, 2600ms) cubic-bezier(.4, 0, .6, 1);
+  transition: scale var(--shot-zoom, 1500ms) cubic-bezier(.4, 0, .6, 1);
 }
 .card__frame > picture.over {
   position: absolute; inset: 0;
   opacity: 0;
-  transition: opacity var(--shot-fade, 900ms) linear;
+  transition: opacity var(--shot-fade, 500ms) linear;
 }
 .card__frame > picture.over.up { opacity: 1; }
 /* Set by the script while a step is being set up: the incoming layer has to be
@@ -473,7 +473,7 @@ html[data-scrolled='no'] .head {
 .card__frame > picture.still { transition: none !important; }
 .card[data-showing='yes'] .card__frame > picture:not(.over) { scale: var(--shot-scale, 1.05); }
 /* Going in is slow on purpose; coming back is not. A pointer that leaves
-   should let go of the picture at once, not creep back over two and a half
+   should let go of the picture at once, not creep back over a second and a half
    seconds after the reader has moved on. */
 .card:not([data-showing]) .card__frame > picture { transition-duration: 400ms; }
 
