@@ -87,6 +87,11 @@
           "id": "quebra-noses",
           "name": "Quebra noses",
           "extra": 0
+        },
+        {
+          "id": "pai-natal-treno-e-rena",
+          "name": "Pai Natal, trenó e rena",
+          "extra": 0
         }
       ]
     },
