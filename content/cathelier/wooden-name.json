@@ -1,7 +1,7 @@
 {
   "name": "Nome em madeira",
   "price": 32,
-  "published": false,
+  "published": true,
   "featured": true,
   "order": 210,
   "made": "to_order",
