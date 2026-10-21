@@ -2,7 +2,7 @@
   "name": "Leão",
   "price": 150,
   "published": true,
-  "featured": false,
+  "featured": true,
   "order": 110,
   "families": [
     "animals"
