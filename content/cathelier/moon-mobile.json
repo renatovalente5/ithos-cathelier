@@ -2,7 +2,7 @@
   "name": "Móbile de lua e estrelas",
   "price": 20,
   "published": true,
-  "featured": false,
+  "featured": true,
   "order": 270,
   "made": "to_order",
   "occasion": "new-baby",
