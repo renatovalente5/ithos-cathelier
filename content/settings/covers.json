@@ -12,7 +12,21 @@
     "focusWide": "50% 50%",
     "veil": 0.44,
     "foto": "ithos-foto",
-    "mostrar": "foto"
+    "mostrar": "foto",
+    "destaques": [
+      "fox",
+      "cao",
+      "cat",
+      "mouse",
+      "fairy",
+      "unicorn",
+      "tiger",
+      "lion",
+      "panda",
+      "koala",
+      "rocket",
+      "red-racer"
+    ]
   },
   "cathelier": {
     "title": "Lembranças únicas, pequenos detalhes, momentos inesquecíveis",
