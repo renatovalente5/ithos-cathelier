@@ -160,7 +160,14 @@
     min-block-size: 0;
     max-block-size: calc(100svh - var(--head-h) - var(--anuncio-h, 0px) - 3rem);
   }
-  .cover__img { object-position: var(--cover-focus-wide, 50% 50%); }
+  /* Aproximar (covers.json zoomWide): scale à volta do mesmo ponto do
+     object-position. Assim a janela que fica à vista é exactamente o recorte
+     que a dona escolheu no painel (js/capas.js da API faz a mesma conta). */
+  .cover__img {
+    object-position: var(--cover-focus-wide, 50% 50%);
+    transform: scale(var(--cover-zoom-wide, 1));
+    transform-origin: var(--cover-focus-wide, 50% 50%);
+  }
 }
 @media (width >= 64rem) {
   .cover__media { aspect-ratio: 16 / 9; }

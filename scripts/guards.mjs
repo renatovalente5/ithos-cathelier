@@ -411,6 +411,9 @@ if (existsSync(join(CONTENT, 'cathelier/_occasions.json'))) {
         die(`covers.json: ${brand}.${key} must be two percentages, like "50% 44%" — got "${c[key]}"`);
       }
     }
+    if (c.zoomWide !== undefined && !(typeof c.zoomWide === 'number' && c.zoomWide >= 1 && c.zoomWide <= 2)) {
+      die(`covers.json: ${brand}.zoomWide must be a number from 1 to 2 (how much the cover photograph is enlarged) — got "${c.zoomWide}"`);
+    }
     if (!existsSync(join(ROOT, 'photos/_covers', `${brand}.jpg`))) {
       die(`covers.json: photos/_covers/${brand}.jpg is missing — run scripts/covers.py`);
     }

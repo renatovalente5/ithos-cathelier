@@ -113,7 +113,11 @@ export function cover(c, brand, art) {
     + `--cover-focus-wide:${esc(c.focusWide || c.focus || '50% 50%')}`
     /* Só um número entre 0 e 1 chega ao style; o guards.mjs já recusou
        qualquer outro e o que fique abaixo do contraste. */
-    + (typeof c.veil === 'number' && c.veil >= 0 && c.veil <= 1 ? `;--cover-veil-a:${c.veil}` : '');
+    + (typeof c.veil === 'number' && c.veil >= 0 && c.veil <= 1 ? `;--cover-veil-a:${c.veil}` : '')
+    /* O QUANTO APROXIMA no computador (o «Ajustar o que se vê» do painel; a
+       dona, 21 out 2026: «ampliar um pouco e arrastar para cima»): só um
+       número entre 1 e 2 chega ao style (o guards.mjs e o Worker conferem). */
+    + (typeof c.zoomWide === 'number' && c.zoomWide >= 1 && c.zoomWide <= 2 ? `;--cover-zoom-wide:${c.zoomWide}` : '');
   /* As duas formas (alta e larga) servem o filme e a fotografia que o pode
      substituir (covers.json "mostrar": "foto"); só a fotografia antiga, sem
      nenhum dos dois, fica na forma única de 4:5. */
