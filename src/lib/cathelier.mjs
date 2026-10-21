@@ -219,7 +219,10 @@ export function home({ occasions, pieces, cover: coverText, coverArt, dona }) {
      essa, tal e qual (src/lib/ordem.mjs); sem ela, espalhados como sempre. */
   const ordemDosDestaques = Array.isArray(coverText?.destaques) && coverText.destaques.length ? coverText.destaques : null;
   const destaques = ordemDosDestaques ? pelaLista(marcadas, ordemDosDestaques) : espalhar(marcadas, marcadas.length);
-  const resto = espalhar(pieces.filter((x) => !x.featured), 8);
+  /* Os de baixo: com uma ordem escolhida no painel (cathelier.restantes), as
+     primeiras oito dela; sem ela, espalhados como sempre. */
+  const ordemDosRestantes = Array.isArray(coverText?.restantes) && coverText.restantes.length ? coverText.restantes : null;
+  const resto = ordemDosRestantes ? pelaLista(pieces.filter((x) => !x.featured), ordemDosRestantes).slice(0, 8) : espalhar(pieces.filter((x) => !x.featured), 8);
 
   /* A fotografia ao lado do texto procura uma que ainda não esteja na página.
      Se já não houver nenhuma por usar -- e com nove não há sempre -- fica a da

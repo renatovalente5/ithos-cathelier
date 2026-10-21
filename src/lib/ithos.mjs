@@ -197,7 +197,10 @@ export function home({ products, identity, cover: coverText, coverArt, dona }) {
      PELA ORDEM QUE A DONA ESCOLHE no painel (covers.json, ithos.destaques:
      src/lib/ordem.mjs); os que lá não estão vêm depois, pela ordem de sempre. */
   const featured = pelaLista(products.filter((p) => p.featured), coverText?.destaques);
-  const rest = products.filter((p) => !p.featured).slice(0, 8);
+  /* OS QUE VÊM DEPOIS, pela ordem própria desta fila (covers.json,
+     ithos.restantes; a dona, 21 out 2026: «alterar a posição das peças que não
+     estão em destaque»); os que lá não estão, pela ordem da lista. */
+  const rest = pelaLista(products.filter((p) => !p.featured), coverText?.restantes).slice(0, 8);
 
   return `
 ${cover(coverText, 'ithos', coverArt)}
