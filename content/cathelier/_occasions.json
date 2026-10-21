@@ -53,7 +53,7 @@
     "name": "Decoração",
     "summary": "Peças personalizadas em contraplacado pendurar, com acabamento cuidado e atenção ao detalhe. Produzidas por medida com pormenores únicos e delicados. ",
     "order": 80,
-    "published": false
+    "published": true
   },
   {
     "slug": "custom",
