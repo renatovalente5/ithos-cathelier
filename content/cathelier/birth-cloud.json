@@ -2,7 +2,7 @@
   "name": "Nuvem de nascimento",
   "price": 20,
   "published": true,
-  "featured": false,
+  "featured": true,
   "order": 240,
   "made": "to_order",
   "occasion": "new-baby",

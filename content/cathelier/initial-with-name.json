@@ -2,7 +2,7 @@
   "name": "Inicial Personalizada pintada com nome",
   "price": 18,
   "published": true,
-  "featured": false,
+  "featured": true,
   "order": 220,
   "made": "to_order",
   "occasion": "names",

@@ -1,13 +1,13 @@
 {
   "name": "Gansos",
   "price": 20,
-  "published": false,
-  "featured": false,
+  "published": true,
+  "featured": true,
   "order": 360,
   "made": "to_order",
   "occasion": "wall-decor",
   "alsoIn": [],
-  "summary": "Um ganso de asas abertas para a parede. Junte quantos quiser para um bando.",
+  "summary": "Conjunto de gansos decorativos",
   "text": "Gansos decorativos que conferem um toque de elegância, delicadeza e charme natural a qualquer ambiente.",
   "photoFolder": "flying-geese",
   "photos": [
