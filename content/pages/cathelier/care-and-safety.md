@@ -1,7 +1,7 @@
 # Cuidados e segurança
 
 As peças da cathelier são desenhadas, cortadas e gravadas a laser num pequeno
-ateliê em Castelo Branco, e acabadas à mão. Não precisam de manutenção, no entanto necessitam ter alguns cuidados como a limpeza das mesma terá de ser feita com um pano seco e devem estar num sítio sem grande humidade e pouco calor.
+atelier em Castelo Branco, e acabadas à mão. Não precisam de manutenção, no entanto necessitam ter alguns cuidados como a limpeza das mesma terá de ser feita com um pano seco e devem estar num sítio sem grande humidade e pouco calor.
 
 ## São peças decorativas
 

@@ -106,7 +106,9 @@ BANDS = {
     # (18 out 2026), e as de exemplo do Instagram e a margarida da capa antiga
     # saíram daqui.
     'cathelier': [('cathelier/name-ornament/01.jpg', .5, .55, 1.0), ('cathelier/birth-disc/01.jpg', .5, .5, 1.0)],
-    'ithos-cathelier': [('ithos/foguetao/01.jpg', .5, .52, 1.15), ('cathelier/initial-with-name/01.jpg', .5, .45, 1.0)],
+    # A dona, 21 out 2026: «pode ser a raposa, que é a que se vende mais, e
+    # pode ser a nuvem com pendentes».
+    'ithos-cathelier': [('ithos/raposa/03.jpg', .5, .52, 1.15), ('cathelier/cloud-mobile/01.jpg', .5, .5, 1.0)],
 }
 
 # A product card: the logo, a gap, the photograph -- one group, centred, inside

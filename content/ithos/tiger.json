@@ -3,7 +3,7 @@
   "price": 150,
   "published": true,
   "featured": true,
-  "order": 60,
+  "order": 50,
   "families": [
     "animals"
   ],

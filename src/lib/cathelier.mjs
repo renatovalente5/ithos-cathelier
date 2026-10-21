@@ -174,55 +174,19 @@ export function home({ occasions, pieces, cover: coverText, coverArt, dona }) {
   const retrato = (x) => (x.photoFolder && (x.cover || x.photos?.[0])
     ? `${x.photoFolder}/${x.cover || x.photos[0]}` : `sem-fotografia:${x.slug}`);
 
-  /* NOVE FOTOGRAFIAS DE AMOSTRA PARA QUARENTA E UMA PEÇAS.
-     Nenhuma foi fotografada ainda: partilham uma pasta comum, e nela há nove
-     imagens ao todo. Qualquer fila com mais de nove cartões repete alguma --
-     isso é aritmética e não descuido. O que se pode evitar é o que doía: a
-     MESMA imagem em dois cartões lado a lado, que foi como a dona a viu.
-     Por isso não se corta a fila nem se deixa uma peça de fora; distribui-se
-     uma volta por cada fotografia, à vez. Duas peças com a mesma imagem ficam
-     tantos cartões afastadas quantas as imagens distintas houver -- a 2, 3 ou
-     4 colunas nunca caem ao lado uma da outra. No dia em que cada peça tiver a
-     sua fotografia isto deixa de fazer diferença nenhuma, sem se lhe tocar. */
-  const espalhar = (lista, quantos) => {
-    const grupos = new Map();
-    for (const x of lista) {
-      const k = retrato(x);
-      if (!grupos.has(k)) grupos.set(k, []);
-      grupos.get(k).push(x);
-    }
-    /* O GRUPO MAIS REPETIDO ENTRA PRIMEIRO EM CADA VOLTA.
-       Sem esta ordenação a distância entre duas iguais é o que sobra da volta a
-       contar da posição do grupo -- e com as seis mais vendidas o par caía nos
-       índices 3 e 5, que a 2 colunas é uma mesmo por cima da outra. Pondo o
-       grupo carregado à cabeça, a distância passa a ser o número de
-       fotografias distintas (aqui cinco), e cinco é seguro a 2, a 3 e a 4
-       colunas: nunca ficam lado a lado nem uma por baixo da outra. */
-    const filas = [...grupos.values()].sort((a, b) => b.length - a.length);
-    const saiu = [];
-    for (let i = 0; saiu.length < quantos && filas.some((f) => f[i]); i++) {
-      for (const f of filas) {
-        if (saiu.length >= quantos) break;
-        if (f[i]) saiu.push(f[i]);
-      }
-    }
-    return saiu;
-  };
-
   /* OS EM DESTAQUE SÃO TODOS os que a dona marcar (o Renato, 20 out 2026:
      eram no máximo 8, e um nono não aparecia em lado nenhum). O painel
      aconselha 6 ou 12: a grelha é de 2 colunas abaixo de 48rem, 3 acima e 4 a
      partir de 90rem, e 12 enche as filas nas três (6, nas duas primeiras).
-     Sem nenhum, a secção não aparece. */
-  const marcadas = pieces.filter((x) => x.featured);
-  /* Com uma ordem escolhida no painel (covers.json, cathelier.destaques), é
-     essa, tal e qual (src/lib/ordem.mjs); sem ela, espalhados como sempre. */
-  const ordemDosDestaques = Array.isArray(coverText?.destaques) && coverText.destaques.length ? coverText.destaques : null;
-  const destaques = ordemDosDestaques ? pelaLista(marcadas, ordemDosDestaques) : espalhar(marcadas, marcadas.length);
-  /* Os de baixo: com uma ordem escolhida no painel (cathelier.restantes), as
-     primeiras oito dela; sem ela, espalhados como sempre. */
-  const ordemDosRestantes = Array.isArray(coverText?.restantes) && coverText.restantes.length ? coverText.restantes : null;
-  const resto = ordemDosRestantes ? pelaLista(pieces.filter((x) => !x.featured), ordemDosRestantes).slice(0, 8) : espalhar(pieces.filter((x) => !x.featured), 8);
+     Sem nenhum, a secção não aparece. PELA ORDEM DA LISTA, que já vem com os
+     em destaque primeiro (src/build.mjs, porOrdem): a dona ordena-as no
+     painel, em «Peças» → «Mudar a ordem», nos dois grupos. Até 21 out 2026 as
+     peças partilhavam nove fotografias de amostra e esta fila espalhava-as
+     para a mesma imagem não cair em dois cartões lado a lado; hoje cada peça
+     tem a sua, e a ordem é a dela, tal e qual. */
+  const destaques = pieces.filter((x) => x.featured);
+  /* Os de baixo: os primeiros oito dos outros, pela mesma ordem. */
+  const resto = pieces.filter((x) => !x.featured).slice(0, 8);
 
   /* A fotografia ao lado do texto procura uma que ainda não esteja na página.
      Se já não houver nenhuma por usar -- e com nove não há sempre -- fica a da

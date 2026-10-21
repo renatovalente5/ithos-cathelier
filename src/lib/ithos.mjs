@@ -11,7 +11,6 @@ import { prazos } from './prazos.mjs';
 import { t, tn } from './i18n.mjs';
 import { fabricante } from './pages.mjs';
 import { fotosDaDona, enquadramentoDaDona } from './oficina.mjs';
-import { pelaLista } from './ordem.mjs';
 import { videosDe, enderecoDoVideo as enderecoDeVideo, capaDoVideo as capaDeVideo, videoDoCartao } from './videos.mjs';
 
 /* ===========================================================================
@@ -194,13 +193,13 @@ export function home({ products, identity, cover: coverText, coverArt, dona }) {
      marcados no painel quatro não apareciam em lado nenhum. O painel aconselha
      6 ou 12, que enchem as filas (js/destaques.js do painel); sem nenhum, a
      secção não aparece, em vez de um título sobre uma grelha vazia.
-     PELA ORDEM QUE A DONA ESCOLHE no painel (covers.json, ithos.destaques:
-     src/lib/ordem.mjs); os que lá não estão vêm depois, pela ordem de sempre. */
-  const featured = pelaLista(products.filter((p) => p.featured), coverText?.destaques);
-  /* OS QUE VÊM DEPOIS, pela ordem própria desta fila (covers.json,
-     ithos.restantes; a dona, 21 out 2026: «alterar a posição das peças que não
-     estão em destaque»); os que lá não estão, pela ordem da lista. */
-  const rest = pelaLista(products.filter((p) => !p.featured), coverText?.restantes).slice(0, 8);
+     PELA ORDEM DA LISTA, que já vem com os em destaque primeiro (src/build.mjs,
+     porOrdem): a dona ordena-os no painel, em «Candeeiros» → «Mudar a ordem»,
+     nos dois grupos. */
+  const featured = products.filter((p) => p.featured);
+  /* OS QUE VÊM DEPOIS: os primeiros 8 dos outros, pela mesma ordem (a dona,
+     21 out 2026: «alterar a posição das peças que não estão em destaque»). */
+  const rest = products.filter((p) => !p.featured).slice(0, 8);
 
   return `
 ${cover(coverText, 'ithos', coverArt)}

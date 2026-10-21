@@ -12,21 +12,7 @@
     "focusWide": "50% 50%",
     "veil": 0.44,
     "foto": "ithos-foto",
-    "mostrar": "foto",
-    "destaques": [
-      "fox",
-      "cao",
-      "cat",
-      "rabbit",
-      "tiger",
-      "lion",
-      "koala",
-      "panda",
-      "fairy",
-      "unicorn",
-      "rocket",
-      "red-racer"
-    ]
+    "mostrar": "foto"
   },
   "cathelier": {
     "title": "Lembranças únicas, pequenos detalhes, momentos inesquecíveis",
@@ -48,16 +34,6 @@
       "titulo": "Há muito mais para descobrir ",
       "texto": "Do nascimento aos momentos mais especiais, criamos peças personalizadas, lembranças, brindes e troféus em madeira, MDF, contraplacado e acrílico para celebrar histórias, criar memórias e recordações únicas."
     },
-    "destaques": [
-      "cloud-mobile",
-      "birth-cloud",
-      "moon-mobile",
-      "flying-geese",
-      "birth-disc",
-      "natural-initial",
-      "initial-with-name",
-      "wooden-name"
-    ],
     "zoomWide": 1.15
   },
   "_note_foto": "\"foto\" é um par de imagens paradas em photos/_covers (<foto>-still.jpg, alta 2:3, e <foto>-still-wide.jpg, larga 16:9), e \"mostrar\": \"foto\" põe-nas na capa no lugar do filme; \"filme\" volta ao filme. Escolhe-se no painel, em Páginas iniciais.",

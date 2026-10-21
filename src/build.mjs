@@ -181,8 +181,17 @@ function loadProducts(brand) {
     const p = lerNaLingua(`${brand}/${f}`);
     p.slug = f.replace(/\.json$/, '');
     return p;
-  }).filter((p) => p.published).sort((a, b) => (a.order ?? 999) - (b.order ?? 999));
+  }).filter((p) => p.published).sort(porOrdem);
 }
+
+/* A ORDEM DO SITE, UMA SÓ POR MARCA (21 out 2026): os em destaque primeiro,
+   depois a «Ordem nas listas» de cada ficha (order). A página inicial mostra
+   os em destaque na fila de cima e os primeiros 8 dos outros por baixo; a
+   página de todos mostra-os pela mesma ordem. O painel ordena-os em dois
+   grupos (js/destaques.js), e os números só contam dentro do grupo. As
+   ordens próprias de 20-21 out (covers.json destaques/restantes) saíram:
+   uma chave dessas, se ficar, não faz nada. */
+export const porOrdem = (a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0) || (a.order ?? 999) - (b.order ?? 999);
 
 let lamps; let pieces; let occasions; let counts; let shellArgs; let MARKERS;
 

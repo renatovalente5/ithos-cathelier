@@ -3,7 +3,7 @@
   "price": 130,
   "published": true,
   "featured": true,
-  "order": 150,
+  "order": 110,
   "families": [
     "vehicles"
   ],

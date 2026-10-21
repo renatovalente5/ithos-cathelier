@@ -64,7 +64,7 @@ volte a montar o cesto quando quiser.
 
 ## Fazer e entregar
 
-**Um candeeiro em stock** sai do ateliê {{IN_STOCK_DAYS}} depois do seu
+**Um candeeiro em stock** sai do atelier {{IN_STOCK_DAYS}} depois do seu
 pagamento.
 
 **Um candeeiro sem stock** pode ser encomendado na mesma: fazemos o seu, e
@@ -80,7 +80,7 @@ Se uma coisa numa encomenda for feita por encomenda, a encomenda inteira segue
 junta quando estiver pronta.
 
 O envio é feito pela {{CARRIER}}. Os prazos de entrega são estimativas e
-começam quando a encomenda sai do ateliê.
+começam quando a encomenda sai do atelier.
 
 ## Se alguma coisa estiver mal
 

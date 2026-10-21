@@ -33,7 +33,7 @@
   "revenda.escalaoTabela": "Em encomendas a partir de {desde} (a preço de venda ao público), o desconto é maior: o cesto mostra os preços certos.",
   "revenda.codigoFalhou": "Esse código não funcionou. Dura 15 minutos — se expirou, peça um email novo no formulário lá em cima.",
 
-  "stock.revendaFicha": "{n} em stock — sai do ateliê em {prazo}.",
+  "stock.revendaFicha": "{n} em stock — sai do atelier em {prazo}.",
 
   "pagamento.indisponivel": "A loja ainda não pode receber pagamentos.",
   "checkout.aEnviar": "A enviar o pedido…",
@@ -78,7 +78,7 @@
   "mbway.recusadoTexto": "Não foi cobrado nada. Se não foi você, ou se mudou de ideias, o seu cesto continua aqui — encomende outra vez e escolha outra forma de pagamento.",
   "mbway.expirouTexto": "Não foi cobrado nada. O seu cesto continua aqui, por isso pode encomendar outra vez — e se o MB WAY estiver a dar problemas, uma referência Multibanco funciona sempre.",
 
-  "mapa.titulo": "Onde fica o ateliê",
+  "mapa.titulo": "Onde fica o atelier",
 
   "retratacao.indisponivel": "O formulário ainda não está disponível aqui. Retrate-se por email, como explicamos mais abaixo nesta página.",
   "retratacao.aEnviar": "A enviar…",
