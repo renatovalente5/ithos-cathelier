@@ -26,7 +26,7 @@
   },
   "stock": {
     "t": "In stock — leaves the workshop in {dias}.",
-    "h": "7ddca2f54c47"
+    "h": "f42bb0e162d0"
   },
   "semStock": {
     "t": "Out of stock — we make yours, with you in {semanas}.",

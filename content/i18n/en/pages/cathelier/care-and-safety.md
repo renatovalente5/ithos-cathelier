@@ -1,4 +1,4 @@
-<!-- origem: eb4f709e954c partes: 83c2e303251e 788eb985e8d2 98fde65e2c59 11c9bba4dcfb 77e72bd76ea0 5df13b1d4273 1efb82bd9714 -->
+<!-- origem: 4adc8a589fc1 partes: 60f721a49e53 788eb985e8d2 98fde65e2c59 11c9bba4dcfb 77e72bd76ea0 5df13b1d4273 1efb82bd9714 -->
 # Care and safety
 
 The pieces from cathelier are designed, laser-cut and engraved in a small workshop in Castelo Branco, and finished by hand. They do not require maintenance; however, they do need some care, such as cleaning them with a dry cloth, and they should be kept in a place without high humidity or excessive heat.

@@ -1,11 +1,11 @@
-<!-- origem: 8c1dd595e469 partes: 549f878a8e13 0dab42e5cdd0 0c86ab03c64f 3387ff0151d4 85be0388d41b 096904943b83 -->
+<!-- origem: 228a4cd82669 partes: 549f878a8e13 396a10bae519 e40325c0371e 3387ff0151d4 85be0388d41b 096904943b83 -->
 # Delivery and returns
 
-## How long does it take
+## How long it takes
 
 A lamp in stock leaves the workshop {{IN_STOCK_DAYS}} after your payment.
-A lamp that is out of stock is made for you and arrives in {{TO_ORDER_WEEKS}}.
-cathelier pieces are always made to order and arrive within {{TO_ORDER_MAX}}, counting from the approval of the design — almost always sooner. Each product page and the basket will tell you which is the case before you pay, and an order will be shipped together once the last piece is ready.
+A lamp that is out of stock is made for you and will arrive in {{TO_ORDER_WEEKS}}.
+Pieces from cathelier are always made to order and arrive within {{TO_ORDER_MAX}}, counting from the approval of the design — almost always sooner. Each product page and the basket will tell you which is the case before you pay, and an order will be shipped together once the last piece is ready.
 
 After leaving the workshop, delivery is made by {{CARRIER}}.
 
