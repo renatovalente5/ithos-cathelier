@@ -1516,7 +1516,12 @@ html.menu-open { overflow: hidden; }
 
 /* --- contact ---------------------------------------------------------------- */
 .contact-cards { display: grid; gap: .75rem; margin-block: 1.75rem; }
-@media (width >= 44rem) { .contact-cards { grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); } }
+@media (width >= 44rem) {
+  .contact-cards { grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); }
+  /* Com um número ímpar de cartões, o último ocupa a linha toda em vez de
+     ficar sozinho a meio (a página de orçamento ganhou o Instagram, 21 out). */
+  .contact-cards > .contact-card:last-child:nth-child(odd) { grid-column: 1 / -1; }
+}
 .contact-card {
   display: flex; gap: .9rem; align-items: flex-start; padding: 1rem;
   border: 1px solid var(--line); border-radius: var(--radius, 0);

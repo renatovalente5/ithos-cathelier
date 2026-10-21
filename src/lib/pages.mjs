@@ -421,6 +421,12 @@ export const FAQ = (shop) => [
 
 /* --- quote ---------------------------------------------------------------- */
 
+/** A mensagem directa de uma conta de Instagram (https://www.instagram.com/<conta>/), ou null. */
+const dmDoInstagram = (url) => {
+  const m = /^https:\/\/(?:www\.)?instagram\.com\/([A-Za-z0-9._]{1,30})\/?$/.exec(String(url ?? '').trim());
+  return m ? `https://ig.me/m/${m[1]}` : null;
+};
+
 export function quote({ identity }) {
   return `
 <section class="section">
@@ -432,6 +438,11 @@ export function quote({ identity }) {
     <div class="contact-cards">
       ${identity.whatsapp ? `<a class="contact-card" href="https://wa.me/${esc(identity.whatsapp)}" rel="noopener">
         ${icon('whatsapp', 22)}<span><strong>WhatsApp</strong><br>${esc(t('paginas.orcamento.whatsapp'))}</span>
+      </a>` : ''}
+      ${/* O INSTAGRAM (a dona, 21 out 2026: «dá para pôr as mensagens do
+           Instagram?»): ig.me/m/<conta> abre logo uma mensagem directa, na
+           aplicação ou no browser. A conta é a do rodapé (identity.json). */ ''}${dmDoInstagram(identity.instagramCathelier) ? `<a class="contact-card" href="${esc(dmDoInstagram(identity.instagramCathelier))}" rel="noopener">
+        ${icon('instagram', 22)}<span><strong>Instagram</strong><br>${esc(t('paginas.orcamento.instagram'))}</span>
       </a>` : ''}
       <a class="contact-card" href="mailto:${esc(identity.email)}?subject=${esc(encodeURIComponent(t('paginas.orcamento.assunto')))}">
         ${icon('mail', 22)}<span><strong>${esc(identity.email)}</strong><br>${esc(t('paginas.orcamento.email'))}</span>
