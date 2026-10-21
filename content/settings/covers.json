@@ -35,7 +35,7 @@
     "alt": "Na CATHELIER, cada lembrança ganha vida nos pequenos detalhes em madeira, com amor e carinho para celebrar momentos especiais e transformar momentos bonitos em memórias para sempre  ",
     "film": "cathelier-capa",
     "focus": "50% 50%",
-    "focusWide": "50% 100%",
+    "focusWide": "50% 92%",
     "veil": 0.44,
     "foto": "cathelier-foto",
     "mostrar": "foto",
@@ -57,7 +57,8 @@
       "wooden-name",
       "natural-initial",
       "initial-with-name"
-    ]
+    ],
+    "zoomWide": 1.15
   },
   "_note_foto": "\"foto\" é um par de imagens paradas em photos/_covers (<foto>-still.jpg, alta 2:3, e <foto>-still-wide.jpg, larga 16:9), e \"mostrar\": \"foto\" põe-nas na capa no lugar do filme; \"filme\" volta ao filme. Escolhe-se no painel, em Páginas iniciais.",
   "_note_quantidade": "cathelier.quantidade é o bloco a meio da página inicial da cathelier, com o botão «Pedir orçamento»: o título e dois parágrafos (o segundo pode ficar vazio). Muda-se no painel, em Páginas iniciais.",
