@@ -419,5 +419,17 @@
   "botao.adicionar": {
     "t": "Add to basket",
     "h": "5a3ec32580e8"
+  },
+  "revenda.escalaoFalta": {
+    "t": "{falta} more (at retail prices) and you reach the larger reseller discount, for orders from {desde}.",
+    "h": "ca7bbdc2cfc2"
+  },
+  "revenda.escalaoActivo": {
+    "t": "Order from {desde}: you already have the larger reseller discount.",
+    "h": "786d06ab4e70"
+  },
+  "revenda.escalaoTabela": {
+    "t": "On orders from {desde} (at retail prices) the discount is larger: the basket shows the right prices.",
+    "h": "d8668870f43b"
   }
 }

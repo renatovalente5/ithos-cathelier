@@ -160,7 +160,10 @@ function esquecerRevenda() {
   Object.assign(revenda, { activa: false, sessao: null, nif: null, firma: null, versao: null, descontos: {}, stock: null });
 }
 
-const revenda = { activa: false, sessao: null, nif: null, firma: null, versao: null, descontos: {}, stock: null };
+/* `escaloes`: os descontos de cada escalão pelo valor da encomenda ([{ desde,
+   descontos }], o Worker já os dá em cêntimos por peça); `mapa`, os do escalão
+   que o cesto alcançou (null fora do cesto: as fichas mostram os de base). */
+const revenda = { activa: false, sessao: null, nif: null, firma: null, versao: null, descontos: {}, escaloes: [], mapa: null, stock: null };
 
 /* Asks the Worker for this reseller's discounts. A 401 means the session ended
    -- expired, signed out elsewhere, or the shop switched the reseller off --
@@ -182,6 +185,7 @@ async function carregarRevenda({ fresco = false } = {}) {
     const j = await r.json();
     Object.assign(revenda, {
       activa: true, sessao: s.sessao, nif: j.nif, firma: j.firma, versao: j.versao, descontos: j.descontos || {},
+      escaloes: Array.isArray(j.escaloes) ? j.escaloes.filter((e) => Number(e?.desde) > 0 && e.descontos && typeof e.descontos === 'object') : [],
       /* How many of each lamp are free. Only resellers get the numbers -- the
          owner's rule; everyone else is told "in stock" or "out of stock". */
       stock: j.stock && typeof j.stock === 'object' ? j.stock : null,
@@ -216,7 +220,7 @@ function precoParaQuantidade(p, qtd) {
 
 function descontoDe(slug, preco) {
   if (!revenda.activa) return 0;
-  const d = (revenda.descontos[slug] || 0) / 100;
+  const d = ((revenda.mapa || revenda.descontos)[slug] || 0) / 100;
   return d > 0 && d < preco ? d : 0;
 }
 
@@ -1000,6 +1004,17 @@ async function paginaRevenda() {
         <td data-rotulo="${rotulo.preco}">${d ? `<strong>${preco(low - d)}</strong> <span class="rv-menos">−${eurosRv(d)}</span>` : `<span class="muted">${escRv(tj('revenda.semPreco'))}</span>`}</td>
         <td class="rv-stock" data-rotulo="${rotulo.stock}">${stockNaTabela(cat, slug, p)}</td></tr>`;
     }).join('');
+    /* OS ESCALÕES (desconto maior em encomendas maiores), por baixo da tabela:
+       a tabela mostra os preços de base, e o cesto os do escalão alcançado. */
+    let notaEsc = $('[data-rv-escaloes]', raiz);
+    if (!notaEsc) {
+      notaEsc = document.createElement('p');
+      notaEsc.className = 'small muted';
+      notaEsc.dataset.rvEscaloes = '';
+      $('.rv-table-wrap', raiz)?.after(notaEsc);
+    }
+    notaEsc.textContent = revenda.escaloes.map((e) => tj('revenda.escalaoTabela', { desde: dinheiro(e.desde) })).join(' ');
+    notaEsc.hidden = !revenda.escaloes.length;
   }
 
   /* How many are free, per model: "Large 2 · Small 0". The combinations
@@ -1636,7 +1651,31 @@ async function basketPage() {
     const cur = basket();
     const qtdPorPeca = {};
     for (const l of cur.lines) qtdPorPeca[l.id] = (qtdPorPeca[l.id] || 0) + (Number(l.qty) || 0);
-    const priced = cur.lines.map((l) => ({ line: l, p: priceOf(l, qtdPorPeca[l.id]) })).filter((x) => x.p);
+    let priced = cur.lines.map((l) => ({ line: l, p: priceOf(l, qtdPorPeca[l.id]) })).filter((x) => x.p);
+    /* O ESCALÃO DO REVENDEDOR (a dona, 21 out 2026: «até 500 € 25 %, a partir
+       dos 500 € 30 %»): pelo valor do cesto a preço de venda ao público, sem
+       portes -- a mesma conta do Worker (src/revenda.js, percentagensPara),
+       que é a que se cobra. O PVP não depende do desconto, por isso a primeira
+       volta chega para escolher; com o escalão, refazem-se os preços. */
+    const notaEscalao = $('[data-rv-escalao]');
+    if (notaEscalao) notaEscalao.hidden = true;
+    if (revenda.activa && revenda.escaloes.length) {
+      const pvpAntes = priced.reduce((t, x) => t + x.p.pvpTotal, 0);
+      const ordem = revenda.escaloes.slice().sort((a, b) => a.desde - b.desde);
+      const alcancado = ordem.filter((e) => e.desde <= pvpAntes + 1e-9).at(-1) ?? null;
+      const seguinte = ordem.find((e) => e.desde > pvpAntes + 1e-9) ?? null;
+      const mapa = alcancado ? alcancado.descontos : null;
+      if (mapa !== revenda.mapa) {
+        revenda.mapa = mapa;
+        priced = cur.lines.map((l) => ({ line: l, p: priceOf(l, qtdPorPeca[l.id]) })).filter((x) => x.p);
+      }
+      if (notaEscalao && priced.length) {
+        notaEscalao.textContent = seguinte
+          ? tj('revenda.escalaoFalta', { falta: dinheiro(seguinte.desde - pvpAntes), desde: dinheiro(seguinte.desde) })
+          : tj('revenda.escalaoActivo', { desde: dinheiro(alcancado.desde) });
+        notaEscalao.hidden = false;
+      }
+    }
     // A line whose product left the catalogue is dropped rather than shown at
     // a price nobody can honour.
     if (priced.length !== cur.lines.length) { cur.lines = priced.map((x) => x.line); setBasket(cur); }

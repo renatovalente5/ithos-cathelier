@@ -557,6 +557,9 @@ export function basket({ shipping, shop }) {
           <dt>${esc(t('paginas.cesto.portes'))}</dt><dd data-sum-shipping>—</dd>
           <dt class="basket__grand">${esc(t('paginas.cesto.aPagar'))}</dt><dd class="basket__grand" data-sum-total>—</dd>
         </dl>
+        <!-- O escalão do revendedor (desconto maior em encomendas maiores),
+             escrito pelo script só numa sessão de revendedor. -->
+        <p class="small muted" data-rv-escalao hidden></p>
         <!-- O prazo da encomenda inteira, escrito pelo script depois de
              perguntar ao Worker pelo stock. As frases vêm daqui, dos mesmos
              números da ficha e dos emails (src/lib/prazos.mjs). -->

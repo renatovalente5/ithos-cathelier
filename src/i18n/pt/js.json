@@ -28,6 +28,9 @@
   "revenda.espereSegundo": "Um momento — espere um segundo e tente outra vez.",
   "revenda.erroNosso": "Algo correu mal do nosso lado. Tente outra vez daqui a um minuto.",
   "revenda.semLigacao": "Não conseguimos chegar à loja. Verifique a sua ligação e tente outra vez.",
+  "revenda.escalaoFalta": "Faltam {falta} (a preço de venda ao público) para o desconto maior de revendedor, em encomendas a partir de {desde}.",
+  "revenda.escalaoActivo": "Encomenda a partir de {desde}: já tem o desconto maior de revendedor.",
+  "revenda.escalaoTabela": "Em encomendas a partir de {desde} (a preço de venda ao público), o desconto é maior: o cesto mostra os preços certos.",
   "revenda.codigoFalhou": "Esse código não funcionou. Dura 15 minutos — se expirou, peça um email novo no formulário lá em cima.",
 
   "stock.revendaFicha": "{n} em stock — sai do ateliê em {prazo}.",
