@@ -108,62 +108,6 @@
     "t": "Questions",
     "h": "cf96d9da5781"
   },
-  "faq.prazo": {
-    "t": "How long does it take?",
-    "h": "43c0eed19ea0"
-  },
-  "faq.prazo.resposta": {
-    "t": "<p>An in-stock lamp leaves the workshop in {dias}. If it is out of stock, you can still order it: we will make yours, and it will reach you in {semanas}. Each product page specifies which is the case.</p> <p>cathelier pieces are always made to order — {semanas}, starting from the day you approve the design. If any piece in the order is made to order, everything will be sent together.</p>",
-    "h": "fdc3a3bab035"
-  },
-  "faq.nome": {
-    "t": "Can I have a name on it?",
-    "h": "d700b97d557d"
-  },
-  "faq.nome.resposta": {
-    "t": "<p>Yes, on anything, and it costs nothing extra. Put it in the engraving box on the product page — a name, a date, or a short phrase.</p> <p>One thing to know: a piece with a name on it is made for you alone, so it does not have the {dias}-day right to cancel. Choosing a colour we already offer is not personalisation and does not affect your right to cancel.</p>",
-    "h": "8641520a1c20"
-  },
-  "faq.seguranca": {
-    "t": "Is it safe in a baby’s room?",
-    "h": "786111119216"
-  },
-  "faq.seguranca.resposta": {
-    "t": "<p>These are decorative night lights, not toys. They are made of solid pine with water-based paints and every edge is sanded by hand, but they are not tested as toys and should not be handed to a small child to play with.</p> <p>If it is going in a cot room, keep the cable out of the cot. <a href=\"/care-and-safety/\">Everything about care and safety</a>.</p>",
-    "h": "e4b1f1680a3b"
-  },
-  "faq.pilhas": {
-    "t": "Batteries or mains?",
-    "h": "d61f0775cd72"
-  },
-  "faq.pilhas.resposta": {
-    "t": "<p>Both, at the same price. The battery version takes two AA cells, which are included. The mains version comes with a remote that dims it, times it and makes it pulse.</p>",
-    "h": "639d0f3a65e7"
-  },
-  "faq.portes": {
-    "t": "What does delivery cost?",
-    "h": "002a0580fb4a"
-  },
-  "faq.portes.resposta": {
-    "t": "<p>It depends where you are. <a href=\"/legal/shipping-and-returns/\">The full table is here</a>.</p>",
-    "h": "3000d50e9e74"
-  },
-  "faq.desistir": {
-    "t": "Can I change my mind?",
-    "h": "11d8cc3744e8"
-  },
-  "faq.desistir.resposta": {
-    "t": "<p>You have {dias} days to change your mind. A personalised piece is made just for you, so it does not have those days. <a href=\"/legal/cancellation/\">How it works</a>.</p>",
-    "h": "719598bf0d6e"
-  },
-  "faq.quantidade": {
-    "t": "Do you take large orders?",
-    "h": "ba0a518c9052"
-  },
-  "faq.quantidade.resposta": {
-    "t": "<p>Yes — favours, place cards, corporate gifts, club trophies. <a href=\"/cathelier/quote/\">Ask for a quote</a> and say roughly how many.</p>",
-    "h": "43cc258fd6d7"
-  },
   "orcamento.titulo": {
     "t": "Ask for a quote",
     "h": "f115441b2660"

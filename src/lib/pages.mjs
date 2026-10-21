@@ -396,9 +396,10 @@ export function contact({ identity, shop, faq }) {
       </button>
     </div>
 
-    <h2 id="faq">${esc(t('paginas.contacto.perguntas'))}</h2>
+    <h2 id="faq">${esc(faq.titulo || t('paginas.contacto.perguntas'))}</h2>
+    ${faq.entrada}
     <div class="faq">
-      ${faq.map(([q, a]) => `<details class="faq__item">
+      ${faq.itens.map(([q, a]) => `<details class="faq__item">
         <summary>${esc(q)}</summary>
         <div>${a}</div>
       </details>`).join('\n      ')}
@@ -407,17 +408,29 @@ export function contact({ identity, shop, faq }) {
 </section>`;
 }
 
-/* As respostas levam marcação (<p>, <a>), e por isso vão para o dicionário
-   com ela: as duas línguas têm as mesmas etiquetas, e só o texto muda. */
-export const FAQ = (shop) => [
-  [t('paginas.faq.prazo'), t('paginas.faq.prazo.resposta', { dias: prazos(shop.lead).dias, semanas: prazos(shop.lead).semanas })],
-  [t('paginas.faq.nome'), t('paginas.faq.nome.resposta', { dias: shop.returns.coolingOffDays })],
-  [t('paginas.faq.seguranca'), t('paginas.faq.seguranca.resposta')],
-  [t('paginas.faq.pilhas'), t('paginas.faq.pilhas.resposta')],
-  [t('paginas.faq.portes'), t('paginas.faq.portes.resposta')],
-  [t('paginas.faq.desistir'), t('paginas.faq.desistir.resposta', { dias: shop.returns.coolingOffDays })],
-  [t('paginas.faq.quantidade'), t('paginas.faq.quantidade.resposta')],
-];
+/* AS PERGUNTAS DA PÁGINA DE CONTACTOS escreve-as a dona, em «Páginas» (a
+   dona, 21 out 2026, com uma fotografia delas: «onde consigo alterar estes
+   textos?» -- estavam no dicionário do código, e nenhum ecrã as mudava).
+   Vivem em content/pages/faq.md, com os mesmos marcadores das outras páginas
+   ({{IN_STOCK_DAYS}}, {{COOLING_OFF_DAYS}}…), já preenchidos quando chegam
+   aqui; as outras línguas traduzem-se como as outras páginas. O «# » é o
+   título da secção; cada «## » é uma pergunta, e o que está por baixo, até à
+   seguinte, a resposta. O texto antes da primeira pergunta, se houver, vai
+   por baixo do título. Uma pergunta sem resposta não entra. */
+export function perguntas(md) {
+  let titulo = ''; const entrada = []; const itens = []; let actual = null;
+  for (const linha of String(md ?? '').split('\n')) {
+    if (!titulo && !itens.length && /^# /.test(linha)) { titulo = linha.replace(/^# +/, '').trim(); continue; }
+    if (/^## /.test(linha)) { actual = { q: linha.replace(/^## +/, '').replace(/\s*\{#[a-z0-9-]+\}\s*$/, '').trim(), a: [] }; itens.push(actual); continue; }
+    (actual ? actual.a : entrada).push(linha);
+  }
+  const corpo = (ls) => ls.join('\n').trim();
+  return {
+    titulo,
+    entrada: corpo(entrada) ? markdown(corpo(entrada)) : '',
+    itens: itens.filter((x) => x.q && corpo(x.a)).map((x) => [x.q, markdown(corpo(x.a))]),
+  };
+}
 
 /* --- quote ---------------------------------------------------------------- */
 

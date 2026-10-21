@@ -849,14 +849,16 @@ function buildShared() {
       crumbs: [{ name: t('build.migalha.inicio'), href: '/' }, { name: title }] });
   }
 
+  /* As perguntas, da página que a dona escreve (src/lib/pages.mjs, perguntas). */
+  const faq = pages.perguntas(pages.fill(readPage('faq.md'), MARKERS));
   mirror('/contact/', {
     title: t('build.contactos.titulo'),
     description: t('build.contactos.descricao'),
     crumbs: [{ name: t('build.migalha.inicio'), href: '/' }, { name: t('build.migalha.contactos') }],
-    body: pages.contact({ identity, shop, faq: pages.FAQ(shop) }),
+    body: pages.contact({ identity, shop, faq }),
     schema: [{
       '@context': 'https://schema.org', '@type': 'FAQPage',
-      mainEntity: pages.FAQ(shop).map(([q, a]) => ({
+      mainEntity: faq.itens.map(([q, a]) => ({
         '@type': 'Question', name: q,
         acceptedAnswer: { '@type': 'Answer', text: a.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim() },
       })),
