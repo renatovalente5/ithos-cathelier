@@ -189,14 +189,8 @@
      vem a fila dos círculos (Natal, Nascimento, Nomes…), e os 5rem só
      deixavam ver o cimo deles: medido a 1440x790, a fila acaba 160px abaixo
      do topo da secção. A capa guarda 11rem para ela; num ecrã muito baixo
-     não desce dos 22rem, para o título e o botão continuarem a caber.
-     E NO ITHOS, O «EM DESTAQUE» (a dona, 20 out 2026: «as que dizem em
-     destaque, se ficassem um bocadinho acima, já levava a perceber que para
-     baixo há coisas»). Com os 5rem o título da secção começava exactamente no
-     fundo da janela, em todos os portáteis medidos (1280x720 a 1920x950). Os
-     mesmos 11rem deixam ver o título e o cimo das fotografias. */
-  .cover:has(+ .occasions-lead) .cover__media,
-  .cover:has(+ .section) .cover__media {
+     não desce dos 22rem, para o título e o botão continuarem a caber. */
+  .cover:has(+ .occasions-lead) .cover__media {
     max-block-size: max(22rem, calc(100svh - var(--head-h) - var(--anuncio-h, 0px) - 11rem));
   }
 }
@@ -620,6 +614,13 @@ html[data-scrolled='no'] .head {
 .btn[aria-disabled='true'] { opacity: .45; cursor: not-allowed; }
 
 .section { padding-block: clamp(2.5rem, 6vw, 5rem); }
+/* NO ITHOS, O «EM DESTAQUE» À VISTA SEM CORTAR A CAPA (a dona, 21 out 2026:
+   «eu só queria puxar as letras para cima e não cortar mais a imagem de
+   capa»). Com os 5rem de cima, o título da secção a seguir à capa começava
+   exactamente no fundo da janela em todos os portáteis medidos (1280x720 a
+   1920x950). Encolher a capa (a primeira tentativa, 20 out) cortava mais a
+   fotografia; o que se tira é o espaço entre a capa e o título. */
+.cover + .section { padding-block-start: 1.5rem; }
 .section--soft { background: var(--bg-soft); }
 .section__head { text-align: center; margin-block-end: clamp(1.5rem, 4vw, 2.75rem); }
 
