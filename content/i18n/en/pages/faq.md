@@ -1,4 +1,4 @@
-<!-- origem: 9ee58b8b7d2e partes: a9f5355a42f7 15e1f22cf38b bb694c976aa8 39101eaf6b0b e5e59fbd129a e975ad517e2e 159c93cd33a7 6f6d1281f9ee -->
+<!-- origem: aabe213f01da partes: a9f5355a42f7 15e1f22cf38b bb694c976aa8 39101eaf6b0b e5e59fbd129a e975ad517e2e 159c93cd33a7 ce7cd4643b9e -->
 # Questions
 
 ## How long does it take?
@@ -31,6 +31,6 @@ It depends where you are. [The full table is here](/legal/shipping-and-returns/)
 
 You have {{COOLING_OFF_DAYS}} days to change your mind. A personalised piece is made just for you, so it does not have those days. [How it works](/legal/cancellation/).
 
-## Do you take large orders?
+## Do you accept large orders?
 
-Yes — favours, place cards, corporate gifts, club trophies. [Ask for a quote](/cathelier/quote/) and say roughly how many.
+Yes — wooden, MDF, plywood and acrylic keepsakes, gifts and trophies. [Request a quote](/cathelier/quote/) and let us know roughly how many.
