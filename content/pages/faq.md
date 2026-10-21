@@ -32,4 +32,4 @@ Tem {{COOLING_OFF_DAYS}} dias para mudar de ideias. Uma peça personalizada é f
 
 ## Aceitam encomendas grandes?
 
-Sim — lembranças, marcadores de lugar, ofertas de empresa, troféus de clubes. [Peça um orçamento](/cathelier/quote/) e diga-nos mais ou menos quantas.
+Sim — lembranças, brindes e troféus em madeira, MDF, contraplacado e acrílico. [Peça um orçamento](/cathelier/quote/) e diga-nos mais ou menos quantas.
