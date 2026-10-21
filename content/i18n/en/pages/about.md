@@ -1,4 +1,4 @@
-<!-- origem: 753c857b3eb4 partes: c7c5c54b43b5 7864a94ca025 a59a4bdab256 -->
+<!-- origem: 19a9adff88a4 partes: c7c5c54b43b5 7864a94ca025 6c7d55b8141f -->
 # ithos
 
 ithos is a dream come true to fulfil the wishes of little ones, and because everything handmade comes from the heart, we dedicate our very best to sending love! They are unique, special pieces, each with the characteristics that give them charm, and when they are sent, they are full of magic and emotion!
