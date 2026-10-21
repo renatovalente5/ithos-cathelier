@@ -2,7 +2,7 @@
   "name": "Coelho",
   "price": 130,
   "published": true,
-  "featured": false,
+  "featured": true,
   "order": 50,
   "families": [
     "animals"
