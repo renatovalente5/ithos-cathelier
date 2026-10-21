@@ -20,7 +20,7 @@
     }
   ],
   "published": true,
-  "featured": true,
+  "featured": false,
   "order": 10,
   "made": "to_order",
   "occasion": "christmas",
