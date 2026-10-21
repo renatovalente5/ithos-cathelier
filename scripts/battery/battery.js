@@ -95,6 +95,30 @@ window.__bateria = function () {
       `max="${quantidade?.max}"`);
   }
 
+  /* O CESTO NO CARTÃO (a dona, 21 out 2026: «dá para pôr o carrinho de compras
+     só para telefones e com estas opções?»). No telemóvel, cada candeeiro com
+     escolhas tem um botão de 44 px no canto da fotografia, que abre o painel
+     das escolhas (src/js/shop.js, cestoNoCartao); a partir de 48rem não existe.
+     Pergunta-se dos dois lados: à vista só onde deve, do tamanho de um dedo,
+     dentro da fotografia, e com nome. */
+  const rapidos = [...document.querySelectorAll('[data-rapido]')];
+  if (rapidos.length) {
+    const estreito = !matchMedia('(width >= 48rem)').matches;   // como em shop.css
+    const visiveis = rapidos.filter((b) => b.getClientRects().length && getComputedStyle(b).display !== 'none');
+    if (estreito) {
+      nota(visiveis.length === rapidos.length, 'no telemóvel, os candeeiros com escolhas têm o botão do cesto', `${visiveis.length} de ${rapidos.length}`);
+      const fora = visiveis.filter((b) => {
+        const r = b.getBoundingClientRect();
+        const f = b.closest('.card__topo')?.querySelector('.card__frame')?.getBoundingClientRect();
+        return r.width < 44 || r.height < 44 || !f || r.left < f.left - 1 || r.right > f.right + 1 || r.top < f.top - 1 || r.bottom > f.bottom + 1;
+      }).map((b) => b.closest('[data-product]')?.dataset.product);
+      nota(fora.length === 0, 'e o botão tem 44 px e fica dentro da fotografia', fora.slice(0, 3).join(', '));
+      nota(rapidos.every((b) => (b.getAttribute('aria-label') ?? '').trim()), 'e diz o que faz');
+    } else {
+      nota(visiveis.length === 0, 'a partir de 48rem, o botão do cesto no cartão não aparece', `${visiveis.length} à vista`);
+    }
+  }
+
   // --- transbordo lateral --------------------------------------------------
   const de = document.documentElement;
   nota(de.scrollWidth <= de.clientWidth + 1, 'não rola de lado',

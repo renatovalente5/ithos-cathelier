@@ -1,6 +1,7 @@
 import { esc, safeHref, jsonInScript } from './html.mjs';
 import { campanhasLigadas } from './campanhas.mjs';
 import { icon } from './icons.mjs';
+import { prazos } from './prazos.mjs';
 import { t, lingua, LINGUAS, LOCALE, OG_LOCALE, NOMES, morada, linguaDaRaiz, prefixoDe } from './i18n.mjs';
 
 /* ===========================================================================
@@ -268,7 +269,7 @@ ${(() => {
 
   <script>${MARCA_DE_POSICAO}</script>
 </head>
-<body class="${esc(bodyClass)}" id="top">
+<body class="${esc(bodyClass)}" id="top"${shop?.lead ? ` data-prazo-stock="${esc(prazos(shop.lead).stock)}" data-prazo-sem="${esc(prazos(shop.lead).semStock)}" data-prazo-dias="${esc(prazos(shop.lead).dias)}"` : ''}>
 <a class="skip" href="#main">${esc(t('shell.saltar'))}</a>
 
 ${header({ brand, path, site, canonicalPath, anuncio: announcement({ brand, shipping, shop }) })}

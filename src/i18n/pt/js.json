@@ -118,5 +118,8 @@
   "filtros.mais.varios": "Mostrar mais {n} filtros",
 
   "botao.adicionado": "Adicionado",
-  "botao.adicionar": "Adicionar ao cesto"
+  "botao.adicionar": "Adicionar ao cesto",
+  "rapido.ficha": "Ver o candeeiro: fotografias, medidas e um nome gravado",
+  "rapido.fechar": "Fechar",
+  "rapido.indisponivel": "Indisponível"
 }

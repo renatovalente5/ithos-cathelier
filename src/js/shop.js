@@ -353,6 +353,74 @@ function skusDaEscolha(p, options) {
 /** How many of a choice a reseller could take: the scarcest shelf it uses. */
 const quantosHa = (skus, livres) => Math.min(...skus.map((k) => livres?.[k] ?? 0));
 
+/* AS PEÇAS QUE A FICHA E O CESTO NO CARTÃO PARTILHAM (cestoNoCartao, 21 out
+   2026): a escolha de um formulário, o preço de uma unidade com ela, a frase
+   do prazo e o juntar ao cesto. Escritas uma vez, para os dois sítios nunca
+   dizerem preços, prazos ou linhas do cesto diferentes. */
+
+/** O que um formulário escolheu: { opção: valor }, pela ordem dos campos (a
+    mesma das opções da peça -- o cesto junta linhas iguais comparando-as). Um
+    campo desligado (condicional que não se aplica) ou vazio não conta. */
+function escolhaDe(form, seletor = '[data-option]', chave = 'option') {
+  const escolha = {};
+  for (const el of $$(seletor, form)) {
+    if (el.disabled) continue;
+    if (el.type === 'radio' && !el.checked) continue;
+    const v = String(el.value ?? '').trim();
+    if (v) escolha[el.dataset[chave]] = v;
+  }
+  return escolha;
+}
+
+/** O preço de UMA unidade com a escolha feita: o escalão da quantidade, o preço
+    de revendedor se for mais baixo, e as escolhas pagas por cima. A mesma conta
+    do cesto e do Worker. */
+function precoCada(p, slug, q, escolha) {
+  let cada = Math.min(precoParaQuantidade(p, q), p.price - descontoDe(slug, p.price));
+  for (const o of p.options || []) {
+    const v = escolha[o.id];
+    if (v === undefined) continue;
+    if (o.type === 'choice') cada += (o.values || []).find((x) => String(x.id) === String(v))?.extra || 0;
+    else cada += o.extra || 0;
+  }
+  return cada;
+}
+
+/** A frase do prazo para uma escolha: em stock (todas as prateleiras que ela
+    gasta têm), sem stock, ou -- para um revendedor com sessão -- quantos há.
+    `frases`: { stock, sem, dias }, as frases que o gerador escreveu. */
+function fraseDoPrazo(p, escolha, ha, frases) {
+  const skus = skusDaEscolha(p, escolha);
+  if (skus && revenda.activa && revenda.stock) {
+    const n = quantosHa(skus, revenda.stock);
+    if (n > 0) return tj('stock.revendaFicha', { n, prazo: frases.dias });
+  } else if (skus && ha && skus.every((k) => ha.has(k))) {
+    return frases.stock;
+  }
+  return frases.sem;
+}
+
+/** Junta ao cesto: a mesma linha se lá estiver a mesma peça com as mesmas
+    escolhas, nunca acima do tecto. Diz quantas ficaram e se o tecto cortou. */
+function juntarAoCesto(slug, options, quantas, tecto) {
+  const b = basket();
+  const same = b.lines.find((l) => l.id === slug && JSON.stringify(l.options) === JSON.stringify(options));
+  const antes = same ? same.qty : 0;
+  if (same) same.qty = Math.min(tecto, same.qty + quantas);
+  else b.lines.push({ id: slug, qty: quantas, options });
+  setBasket(b);
+  const ficaram = same ? same.qty : quantas;
+  return { ficaram, cortou: ficaram < antes + quantas };
+}
+
+/** O que se diz por baixo de um botão de comprar com as vendas em pausa (ou
+    antes de a loja abrir), com a data de regresso se a dona a escreveu. */
+function notaDaPausa(cat) {
+  const pausa = cat?.pausa;
+  const ate = pausa?.ate ? new Intl.DateTimeFormat(LINGUA === 'en' ? 'en-GB' : 'pt-PT', { day: 'numeric', month: 'long', timeZone: 'UTC' }).format(new Date(`${pausa.ate}T00:00:00Z`)) : '';
+  return pausa ? (ate ? tj('loja.pausaNotaAte', { data: ate }) : tj('loja.pausaNota')) : tj('loja.fechadaNota');
+}
+
 /* THE LINE UNDER THE PRICE on a lamp's page. It is drawn with the slow case
    and kept invisible while the script asks (html[data-js] in the CSS), so the
    reader never sees "Out of stock" turn into "In stock". It is shown after the
@@ -368,21 +436,9 @@ async function stockNaFicha() {
 
   const [cat, ha] = await Promise.all([catalogue().catch(() => null), stockPublico(), esperarRevenda()]);
   const p = cat?.products[form.dataset.productId];
+  const frases = { stock: linha.dataset.leadStock, sem: linha.dataset.leadNone, dias: linha.dataset.leadDays };
   const pintar = () => {
-    const escolha = {};
-    for (const el of $$('[data-option]', form)) {
-      if (el.type === 'radio' && !el.checked) continue;
-      if (el.value) escolha[el.dataset.option] = el.value;
-    }
-    const skus = skusDaEscolha(p, escolha);
-    let frase = linha.dataset.leadNone;
-    if (skus && revenda.activa && revenda.stock) {
-      const n = quantosHa(skus, revenda.stock);
-      if (n > 0) frase = tj('stock.revendaFicha', { n, prazo: linha.dataset.leadDays });
-    } else if (skus && ha && skus.every((k) => ha.has(k))) {
-      frase = linha.dataset.leadStock;
-    }
-    if (texto) texto.textContent = frase;
+    if (texto) texto.textContent = fraseDoPrazo(p, escolhaDe(form), ha, frases);
   };
   pintar();
   clearTimeout(travao);
@@ -687,6 +743,7 @@ document.addEventListener('DOMContentLoaded', () => {
   cardShots();
   gallery();
   videosDosCartoes();
+  cestoNoCartao();
   lightbox();
   productForm();
   stockNaFicha();
@@ -2629,18 +2686,7 @@ function productForm() {
       if (!p) return;
       const pintar = () => {
         const q = Math.min(tecto, Math.max(1, Math.floor(Number(qty?.value)) || 1));
-        const base = precoParaQuantidade(p, q);
-        let cada = Math.min(base, p.price - descontoDe(slug, p.price));
-        for (const o of p.options || []) {
-          if (o.type === 'choice') {
-            const marcado = form.querySelector(`input[data-option="${CSS.escape(o.id)}"]:checked:not(:disabled)`);
-            const v = marcado && (o.values || []).find((x) => String(x.id) === marcado.value);
-            if (v) cada += v.extra || 0;
-          } else {
-            const campo = form.querySelector(`[data-option="${CSS.escape(o.id)}"]`);
-            if (campo && !campo.disabled && String(campo.value || '').trim()) cada += o.extra || 0;
-          }
-        }
+        const cada = precoCada(p, slug, q, escolhaDe(form));
         total.textContent = q > 1
           ? tj('ficha.totalVarios', { n: q, cada: dinheiro(cada), total: dinheiro(cada * q) })
           : tj('ficha.total', { total: dinheiro(cada) });
@@ -2690,24 +2736,14 @@ function productForm() {
        recusado no pagamento, sem dizer o que faltava nem onde. */
     if (!form.reportValidity()) return;
 
-    const options = {};
-    for (const el of $$('[data-option]', form)) {
-      if (el.disabled) continue;            // escondido (um campo condicional que não se aplica)
-      if (el.type === 'radio' && !el.checked) continue;
-      if (el.value.trim()) options[el.dataset.option] = el.value.trim();
-    }
+    /* Um campo escondido (condicional que não se aplica) ou vazio não vai. */
+    const options = escolhaDe(form);
     const quantas = Math.min(tecto, Math.max(1, Number(qty.value) || 1));
-    const b = basket();
-    const same = b.lines.find((l) => l.id === slug && JSON.stringify(l.options) === JSON.stringify(options));
-    const antes = same ? same.qty : 0;
-    if (same) same.qty = Math.min(tecto, same.qty + quantas);
-    else b.lines.push({ id: slug, qty: quantas, options });
-    setBasket(b);
+    const { ficaram, cortou } = juntarAoCesto(slug, options, quantas, tecto);
 
     /* Se o tecto cortou o pedido, diz-se. Cortar e calar é o defeito que
        estava aqui. */
-    const ficaram = same ? same.qty : quantas;
-    if (ficaram < antes + quantas) dizer(tj('cesto.tecto', { max: tecto, n: ficaram }));
+    if (cortou) dizer(tj('cesto.tecto', { max: tecto, n: ficaram }));
     else dizer('');
 
     add.textContent = tj('botao.adicionado');
@@ -2715,6 +2751,121 @@ function productForm() {
   };
 
   form.addEventListener('submit', juntar);
+}
+
+/* --- o cesto no cartão, no telemóvel ----------------------------------------
+   A dona, 21 out 2026, com capturas de uma loja de candeeiros no telefone:
+   «dá para pôr o carrinho de compras só para telefones e com estas opções?» e
+   «depois têm logo a escolha assim sem ter de entrar no candeeiro». O botão do
+   cesto no canto da fotografia (src/lib/ithos.mjs: só nos candeeiros cujas
+   escolhas obrigatórias são todas escolhas, e só abaixo de 48rem) abre um
+   painel por baixo, com as escolhas da ficha, a mesma marcada (a mais barata
+   que se pode comprar), o total, a frase do prazo -- em stock ou não, como na
+   ficha -- e «Adicionar ao cesto». Dentro do cartão não cabia: numa coluna de
+   170px, duas escolhas, o total e o prazo ficavam ilegíveis. Um nome gravado
+   continua na ficha, e a ligação leva lá. Em pausa, o botão fica desligado e
+   diz porquê, como na ficha. É um <dialog> nativo com showModal(): o foco vai
+   para dentro e lá fica, o Esc fecha, e ao fechar o foco volta ao botão. */
+const corDaEscolha = (c) => (typeof c === 'string' && /^#[0-9a-f]{6}$/i.test(c) ? c : '');
+function cestoNoCartao() {
+  const botoes = $$('[data-rapido]');
+  if (!botoes.length) return;
+  const corpo = document.body.dataset;
+  const frases = { stock: corpo.prazoStock || '', sem: corpo.prazoSem || '', dias: corpo.prazoDias || '' };
+  const TECTO = 20;          // o mesmo da ficha de um candeeiro (o max do campo)
+  let painel = null;
+  let deQuem = null;
+  const criar = () => {
+    painel = document.createElement('dialog');
+    painel.className = 'rapido';
+    painel.setAttribute('aria-labelledby', 'rapido-nome');
+    /* Um toque fora do painel (no fundo escurecido) fecha. */
+    painel.addEventListener('click', (ev) => { if (ev.target === painel) painel.close(); });
+    painel.addEventListener('close', () => {
+      deQuem?.setAttribute('aria-expanded', 'false');
+      deQuem?.focus();
+      deQuem = null;
+    });
+    document.body.append(painel);
+  };
+
+  const abrir = async (botao) => {
+    const card = botao.closest('[data-product]');
+    const slug = card?.dataset.product;
+    const ficha = card?.querySelector('.card__link')?.getAttribute('href') ?? '';
+    const [cat, ha] = await Promise.all([catalogue().catch(() => null), stockPublico(), esperarRevenda()]);
+    const p = cat?.products?.[slug];
+    /* Sem o catálogo não há preços nem escolhas: a ficha faz tudo. */
+    if (!p) { if (ficha) location.href = ficha; return; }
+    if (!painel) criar();
+    const foto = card.querySelector('.card__frame img');
+    const escolhas = (p.options || []).filter((o) => o.type === 'choice' && (o.values || []).length);
+    const campo = (o) => {
+      const aVenda = o.values.filter((v) => v.available !== false);
+      const entre = aVenda.length ? aVenda : o.values;
+      const barato = Math.min(...entre.map((v) => v.extra || 0));
+      const marcado = entre.find((v) => (v.extra || 0) === barato) ?? entre[0];
+      /* Uma escolha de um valor só não é escolha: vai marcada, sem se ver. */
+      return `<fieldset class="field"${o.values.length < 2 ? ' hidden' : ''}>
+        <legend>${escRv(nomeDaOpcao(cat, slug, o))}</legend>
+        <div class="choices">${o.values.map((v) => {
+          const off = v.available === false;
+          const cor = corDaEscolha(v.colour);
+          return `<label class="choice${off ? ' choice--off' : ''}">
+            <input type="radio" name="rapido-${escRv(o.id)}" value="${escRv(v.id)}" data-rapido-opcao="${escRv(o.id)}"${v.id === marcado.id ? ' checked' : ''}${off ? ' disabled' : ''}>
+            ${cor ? `<span class="choice__cor" style="background:${cor}" aria-hidden="true"></span>` : ''}<span>${escRv(nomeDoValor(cat, slug, o, v))}${v.extra ? ` <em>+${escRv(dinheiro(v.extra))}</em>` : ''}${off ? ` <em class="choice__off">${escRv(v.note || tj('rapido.indisponivel'))}</em>` : ''}</span>
+          </label>`;
+        }).join('')}</div>
+      </fieldset>`;
+    };
+    painel.innerHTML = `<form class="rapido__corpo" data-rapido-form>
+      <div class="rapido__topo">
+        ${foto ? `<img class="rapido__foto" src="${escRv(foto.currentSrc || foto.src)}" alt="" width="64" height="64">` : '<span></span>'}
+        <div>
+          <h2 class="rapido__nome" id="rapido-nome">${escRv(nomeDaPeca(cat, slug, p))}</h2>
+          <p class="rapido__total" data-rapido-total></p>
+        </div>
+        <button class="icon-btn rapido__fechar" type="button" data-rapido-fechar aria-label="${escRv(tj('rapido.fechar'))}"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+      </div>
+      ${escolhas.map(campo).join('')}
+      <p class="rapido__prazo small" data-rapido-prazo></p>
+      <button class="btn" type="submit" data-rapido-juntar>${escRv(tj('botao.adicionar'))}</button>
+      <p class="small" role="status" data-rapido-msg></p>
+      <a class="rapido__ficha small" href="${escRv(ficha)}">${escRv(tj('rapido.ficha'))}</a>
+    </form>`;
+    const form = $('[data-rapido-form]', painel);
+    const total = $('[data-rapido-total]', painel);
+    const prazo = $('[data-rapido-prazo]', painel);
+    const juntar = $('[data-rapido-juntar]', painel);
+    const msg = $('[data-rapido-msg]', painel);
+    const escolha = () => escolhaDe(form, '[data-rapido-opcao]', 'rapidoOpcao');
+    const pintar = () => {
+      total.textContent = tj('ficha.total', { total: dinheiro(precoCada(p, slug, 1, escolha())) });
+      prazo.textContent = fraseDoPrazo(p, escolha(), ha, frases);
+    };
+    form.addEventListener('change', pintar);
+    pintar();
+    if (cat.preview) {
+      juntar.setAttribute('aria-disabled', 'true');
+      juntar.title = cat.pausa ? tj('loja.pausa') : tj('loja.fechada');
+      msg.textContent = notaDaPausa(cat);
+      msg.className = 'small muted';
+    }
+    $('[data-rapido-fechar]', painel).addEventListener('click', () => painel.close());
+    form.addEventListener('submit', (ev) => {
+      ev.preventDefault();
+      if (juntar.getAttribute('aria-disabled') === 'true') return;
+      const { ficaram, cortou } = juntarAoCesto(slug, escolha(), 1, TECTO);
+      juntar.textContent = tj('botao.adicionado');
+      msg.textContent = cortou ? tj('cesto.tecto', { max: TECTO, n: ficaram }) : '';
+      setTimeout(() => { if (painel.open) painel.close(); }, cortou ? 2600 : 900);
+    });
+    deQuem = botao;
+    botao.setAttribute('aria-expanded', 'true');
+    painel.showModal();
+    ($('fieldset:not([hidden]) input:checked', painel) ?? juntar).focus();
+  };
+  for (const b of botoes) b.addEventListener('click', () => abrir(b));
 }
 
 /* --- the film on the cover -------------------------------------------------
@@ -2818,10 +2969,8 @@ async function previewLock() {
   if (!cat?.preview) return;
   /* EM PAUSA (férias: o painel, «Vendas online») diz-se assim, com a data de
      regresso se a dona a escreveu; «ainda não abriu» era o antes do lançamento. */
-  const pausa = cat.pausa;
-  const ate = pausa?.ate ? new Intl.DateTimeFormat(LINGUA === 'en' ? 'en-GB' : 'pt-PT', { day: 'numeric', month: 'long', timeZone: 'UTC' }).format(new Date(`${pausa.ate}T00:00:00Z`)) : '';
-  const titulo = pausa ? tj('loja.pausa') : tj('loja.fechada');
-  const nota = pausa ? (ate ? tj('loja.pausaNotaAte', { data: ate }) : tj('loja.pausaNota')) : tj('loja.fechadaNota');
+  const titulo = cat.pausa ? tj('loja.pausa') : tj('loja.fechada');
+  const nota = notaDaPausa(cat);
   for (const b of $$('[data-add], [data-pay], [data-to-checkout]')) {
     b.setAttribute('aria-disabled', 'true');
     b.title = titulo;

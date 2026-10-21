@@ -47,5 +47,6 @@
   "opcao.exemplo": "Um nome, uma data, uma frase curta",
   "opcao.indisponivel": "Indisponível",
   "ficha.video": "Vídeo {n} do candeeiro {nome}",
-  "ficha.videoMiniatura": "Vídeo {n}"
+  "ficha.videoMiniatura": "Vídeo {n}",
+  "cartao.rapido": "Escolher e adicionar ao cesto: {nome}"
 }
