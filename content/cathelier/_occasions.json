@@ -4,7 +4,30 @@
     "name": "Natal",
     "summary": "Enfeites com o nome de toda a família, para pendurar outra vez todos os anos.",
     "order": 10,
-    "published": true
+    "published": true,
+    "ordem": [
+      "name-ornament",
+      "engraved-bauble",
+      "snow-globe-photo",
+      "family-bauble",
+      "sleigh-bauble",
+      "christmas-initial",
+      "cocoa-ornament",
+      "snowflake-mobile",
+      "advent-calendar",
+      "christmas-countdown",
+      "cutout-bauble",
+      "gingerbread-house",
+      "nordic-ornaments",
+      "painted-tree",
+      "pinecone-tree",
+      "pinecone-tag",
+      "nativity-bauble",
+      "log-slice",
+      "acrylic-photo-bauble",
+      "bola-de-natal-com-acrilico",
+      "globo-feliz-natal"
+    ]
   },
   {
     "slug": "easter",
