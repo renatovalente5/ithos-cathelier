@@ -2,7 +2,7 @@
   "name": "Inicial de Natal com nome",
   "price": 5,
   "published": true,
-  "featured": true,
+  "featured": false,
   "order": 60,
   "made": "to_order",
   "occasion": "christmas",

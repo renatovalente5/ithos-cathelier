@@ -2,7 +2,7 @@
   "name": "Globo de neve com fotografia e mensagem",
   "price": 8,
   "published": true,
-  "featured": true,
+  "featured": false,
   "order": 40,
   "made": "to_order",
   "occasion": "christmas",
