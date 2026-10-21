@@ -2,7 +2,7 @@
   "name": "Conjunto 12 desejos de Natal",
   "price": 1.8,
   "published": true,
-  "featured": true,
+  "featured": false,
   "order": 110,
   "made": "to_order",
   "occasion": "christmas",
