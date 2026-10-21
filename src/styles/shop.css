@@ -678,17 +678,19 @@ html[data-scrolled='no'] .head {
    It carries the other shop's OWN lockup, small, and an arrow that points out.
    A label does not point out of the page; a door does.
 
-   On a phone it is not here at all. The lockup does FIT beside the burger, the
-   wordmark and the basket -- measured, 74px in a 375px bar -- but fitting was
-   never the question the owner was answering: on a small screen the door to
-   the other shop belongs in the side menu, with the rest of the navigation,
-   and a fourth thing in the bar is a fourth thing to read past.
+   NO TELEMÓVEL TAMBÉM (a dona, 21 out 2026, ao ver o site no telefone: «não
+   aparece o cathelier em cima, é normal?» e depois «podem ficar os dois logos
+   lá em cima?»). Até aí a porta para a outra loja vivia só no menu. A marca
+   onde se está continua a ser a grande, ao centro; a outra é pequena e leva a
+   seta -- é assim que se sabe em que loja se está. Para caber sem empurrar a
+   marca do centro, no telemóvel a escolha da língua sai da barra: já está no
+   menu, ao fundo (.linguas--gaveta), e quase ninguém a muda.
 
    The arrow is 12px and not smaller. It is aria-hidden, but it is still a
    glyph with a box, and the battery's floor for anything with text in it is
    12px: at 11 it read as a defect, correctly. */
 .head__sibling {
-  display: none; align-items: center; gap: .35em;
+  display: inline-flex; align-items: center; gap: .35em;
   /* --ink-soft e não --muted. Aqui o tom só pinta a setinha -- o nome da outra
      loja é o lockup ao lado -- e --muted é o tom mais fraco da casa: na
      cathelier já está a 4,63:1 sobre creme OPACO, portanto qualquer
@@ -696,7 +698,24 @@ html[data-scrolled='no'] .head {
      e a seta fica mais fácil de ler de caminho. */
   text-decoration: none; color: var(--ink-soft); padding: .5rem;
 }
-@media (width >= 48rem) { .head__sibling { display: inline-flex; } }
+/* Nunca encolhida: num telemóvel de 360px o flex espremia o lockup (30x30 a
+   27x30) para o fazer caber, e uma marca deformada é pior do que nenhuma. */
+.head__sibling, .head__sibling img { flex: none; }
+@media (width < 48rem) {
+  .head__right > .linguas { display: none; }
+  .head__sibling { padding: .5rem .25rem; }
+  /* As colunas de lado são iguais (1fr) para a marca ficar ao centro; o
+     intervalo entre elas e a marca é o que sobra para a porta da outra loja. */
+  .head__row { column-gap: .5rem; }
+}
+/* Abaixo de 336px (um iPhone SE de 2016 tem 320) não cabem a marca, a porta
+   com a seta e o cesto: a porta fica mais pequena e sem a seta. Medido em
+   320, 360, 375, 390 e 414. */
+@media (width < 21rem) {
+  .head__sibling-arrow { display: none; }
+  .head__sibling-mark img { block-size: 22px; }
+  [data-brand='ithos'] .head__sibling-mark img { block-size: 16px; }
+}
 .head__sibling:hover { color: var(--accent); }
 .head__sibling-arrow { font-size: 12px; opacity: .8; }
 
