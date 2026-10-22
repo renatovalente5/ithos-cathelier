@@ -409,7 +409,8 @@ html[data-scrolled='no'] .head {
    later would lose and the wordmark would cross-fade in one frame. */
 .head[data-anim='yes'] :is(.head__mark, .head__sibling-mark) img {
   transition: height var(--head-move) var(--head-ease),
-              filter var(--head-move) var(--head-ease);
+              filter var(--head-move) var(--head-ease),
+              transform 200ms var(--head-ease);
 }
 
 /* The shrink itself is motion, so a reader who asked for less of it does not
@@ -783,6 +784,13 @@ html:has(.rapido[open]) { overflow: hidden; }
   [data-brand='ithos'] .head__sibling-mark img { block-size: 20px; }
 }
 .head__sibling:hover { color: var(--accent); }
+/* O LOGÓTIPO DA OUTRA LOJA CRESCE À PASSAGEM DO RATO (a dona, 22 out 2026:
+   «dá para ampliar o logo quando se passa o rato»), e com o foco do teclado.
+   Só cresce para fora do sítio dele (transform), sem empurrar o cesto. */
+@media (hover: hover) and (prefers-reduced-motion: no-preference) {
+  .head__sibling-mark img { transform-origin: center; }
+  .head__sibling:is(:hover, :focus-visible) .head__sibling-mark img { transform: scale(1.25); }
+}
 .head__sibling-arrow { font-size: 12px; opacity: .8; }
 
 /* --- the word beside the three lines --------------------------------------
