@@ -96,7 +96,7 @@ window.__bateria = function () {
   }
 
   /* O CESTO NO CARTÃO (a dona e o Renato, 21 out 2026): cada produto tem um
-     botão de 44 px no canto da fotografia, em todas as larguras, que abre o
+     botão de 44 px no canto da fotografia (no telemóvel e em ecrãs pequenos), que abre o
      formulário da ficha num painel (src/js/shop.js, cestoNoCartao). À vista,
      do tamanho de um dedo, dentro da fotografia, e com nome. */
   /* Só os cartões à vista: numa lista filtrada (/cathelier/pieces/#christmas)
@@ -104,6 +104,13 @@ window.__bateria = function () {
   const cartoes = [...document.querySelectorAll('.card[data-product]')].filter((c) => c.getClientRects().length);
   if (cartoes.length) {
     const rapidos = cartoes.map((c) => c.querySelector('[data-rapido]'));
+    /* Num ecrã largo com rato o botão não aparece (o Renato, 22 out 2026): a
+       mesma pergunta do CSS (.card__rapido em src/styles/shop.css). */
+    const QUEM_NAO_TEM = '(width >= 48rem) and (hover: hover) and (pointer: fine)';
+    if (matchMedia(QUEM_NAO_TEM).matches) {
+      const comBotao = rapidos.filter((b) => b && b.getClientRects().length).length;
+      nota(comBotao === 0, 'num ecrã largo com rato, os cartões não têm o botão do cesto', `${comBotao} à vista`);
+    } else {
     const semBotao = cartoes.filter((c, k) => !rapidos[k] || !rapidos[k].getClientRects().length).map((c) => c.dataset.product);
     nota(semBotao.length === 0, 'cada produto tem o botão do cesto no cartão', semBotao.slice(0, 3).join(', '));
     const fora = rapidos.filter((b) => b && b.getClientRects().length).filter((b) => {
@@ -113,6 +120,7 @@ window.__bateria = function () {
     }).map((b) => b.closest('[data-product]')?.dataset.product);
     nota(fora.length === 0, 'e o botão tem 44 px e fica dentro da fotografia', fora.slice(0, 3).join(', '));
     nota(rapidos.every((b) => !b || (b.getAttribute('aria-label') ?? '').trim()), 'e diz o que faz');
+    }
   }
 
   // --- transbordo lateral --------------------------------------------------

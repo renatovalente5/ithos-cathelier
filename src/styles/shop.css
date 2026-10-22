@@ -471,6 +471,12 @@ html[data-scrolled='no'] .head {
 .card__rapido[aria-busy='true'] { opacity: .7; cursor: progress; }
 /* Na cathelier as fotografias têm os cantos redondos: o do botão acompanha. */
 [data-brand='cathelier'] .card__rapido { border-end-start-radius: var(--radius, 0); }
+/* SÓ NO TELEMÓVEL E EM ECRÃS PEQUENOS (o Renato, 22 out 2026: «retirar este
+   cesto apenas da web»). Escondido num ecrã largo com rato; um tablet (sem
+   rato) continua a tê-lo. A bateria usa esta mesma pergunta (QUEM_NAO_TEM). */
+@media (width >= 48rem) and (hover: hover) and (pointer: fine) {
+  .card__rapido { display: none; }
+}
 .rapido {
   position: fixed; inset: auto 0 0 0; margin: 0; padding: 0; border: 0;
   inline-size: 100%; max-inline-size: 100%; max-block-size: min(88dvh, 40rem); overflow: auto;
