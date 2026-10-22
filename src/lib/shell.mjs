@@ -191,6 +191,10 @@ export function page(o) {
        página leva o da marca que veste. */
     cartoes = {}, partilha = null,
     bodyClass = '', noindex = false, crumbs = null, extraHead = '', preview = false,
+    /* FORA DO GOOGLE, mas com as ligações seguidas (o Renato, 22 out 2026: «só
+       apareçam as páginas do Ithos e do Cathelier, nada de outras páginas
+       como sobre nós, políticas»): «noindex, follow», e fora do sitemap. */
+    foraDoGoogle = false,
     /* True on the two pages that open with a cover. It rides on <html> so the
        stylesheet can lighten the header's ink there and nowhere else -- on the
        other 92 pages the bar at rest is standing on the page's own background
@@ -220,20 +224,25 @@ export function page(o) {
 <title>${esc(title)}</title>
 <meta name="description" content="${esc(description)}">
 ${semMorada ? '' : `<link rel="canonical" href="${esc(canonical)}">`}
-${noindex || preview ? '<meta name="robots" content="noindex, nofollow">' : ''}
+${noindex || preview ? '<meta name="robots" content="noindex, nofollow">' : (foraDoGoogle ? '<meta name="robots" content="noindex, follow">' : '')}
 <meta name="google-site-verification" content="${GOOGLE_VERIFICACAO}">
 <meta name="msvalidate.01" content="${BING_VERIFICACAO}">
 <meta name="theme-color" content="${themeColour}">
 
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="${esc(identity.tradingName)}">
+<meta property="og:site_name" content="${brand === 'cathelier' ? 'Cathelier' : 'Ithos'}">
 <meta property="og:title" content="${esc(title)}">
 <meta property="og:description" content="${esc(description)}">
 ${semMorada ? '' : `<meta property="og:url" content="${esc(canonical)}">`}
 ${etiquetasDaImagem(cartao)}
 <meta property="og:locale" content="${OG_LOCALE[lingua()]}">
-${LINGUAS.length > 1 && !semMorada ? [...LINGUAS.map((l) => `<link rel="alternate" hreflang="${LOCALE[l]}" href="${esc(abs(morada(canonicalPath, l)))}">`),
-  `<link rel="alternate" hreflang="x-default" href="${esc(abs(morada(canonicalPath, linguaDaRaiz())))}">`].join('\n') : ''}
+${/* AS LÍNGUAS NO GOOGLE (o Renato, 22 out 2026: «em português para quem
+     pesquisa em português, e o mesmo para o inglês»). A página portuguesa
+     vale também para «pt» sem país (o Brasil, por exemplo), e quem pesquisa
+     noutra língua vai para a inglesa (x-default), que lê melhor do que a
+     portuguesa. */ ''}${LINGUAS.length > 1 && !semMorada ? [...LINGUAS.map((l) => `<link rel="alternate" hreflang="${LOCALE[l]}" href="${esc(abs(morada(canonicalPath, l)))}">`),
+  ...(LINGUAS.includes('pt') && LOCALE.pt !== 'pt' ? [`<link rel="alternate" hreflang="pt" href="${esc(abs(morada(canonicalPath, 'pt')))}">`] : []),
+  `<link rel="alternate" hreflang="x-default" href="${esc(abs(morada(canonicalPath, LINGUAS.includes('en') ? 'en' : linguaDaRaiz())))}">`].join('\n') : ''}
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:image" content="${esc(cartao.url)}">
 <meta name="twitter:image:alt" content="${esc(cartao.alt)}">

@@ -635,9 +635,22 @@ function buildIthos() {
     partilha: 'ithos-cathelier',
     cover: true,
     body: ithos.home({ products: lamps, identity, cover: covers.ithos, coverArt: coverArt('ithos'), dona }),
+    /* QUEM PESQUISA «ITHOS» (o Renato, 22 out 2026: «só aparece se as pessoas
+       escreverem ithos cathelier»). O WebSite dá ao Google o nome do site
+       (o que aparece por cima do resultado, em vez de «ithos-cathelier.pt»),
+       e a Organization diz que «ithos» é esta loja, com o logótipo e as redes
+       que já a mostram (sameAs). */
     schema: [{
+      '@context': 'https://schema.org', '@type': 'WebSite',
+      name: 'Ithos', alternateName: ['ithos', 'Ithos Cathelier', 'ithos-cathelier.pt'],
+      url: `${SITE}/`, inLanguage: LOCALE[lingua()],
+    }, {
       '@context': 'https://schema.org', '@type': 'Organization',
-      name: 'ithos', url: prefixoDe() ? `${SITE}${prefixoDe()}/` : SITE, email: identity.email, telephone: identity.phone,
+      name: 'Ithos', alternateName: ['ithos', 'ithos woodenlamp'],
+      url: prefixoDe() ? `${SITE}${prefixoDe()}/` : `${SITE}/`, logo: `${SITE}/assets/ithos-wordmark.svg`,
+      email: identity.email, telephone: identity.phone,
+      sameAs: [identity.instagramIthos, identity.facebookIthos].filter(Boolean),
+      address: { '@type': 'PostalAddress', addressLocality: identity.town, addressCountry: 'PT' },
     }],
   }));
 
@@ -684,6 +697,14 @@ function buildCathelier() {
     description: t('build.cathelier.descricao', { n: pieces.length, m: occasions.length }),
     cover: true,
     body: cath.home({ occasions, pieces, cover: covers.cathelier, coverArt: coverArt('cathelier'), dona }),
+    schema: [{
+      '@context': 'https://schema.org', '@type': 'Organization',
+      name: 'Cathelier', alternateName: ['cathelier'],
+      url: `${SITE}${prefixoDe()}/cathelier/`, logo: `${SITE}/assets/cathelier.svg`,
+      email: identity.email, telephone: identity.phone,
+      sameAs: [identity.instagramCathelier].filter(Boolean),
+      address: { '@type': 'PostalAddress', addressLocality: identity.town, addressCountry: 'PT' },
+    }],
   }));
 
   /* E NO LUGAR DELAS, DEZ SINAIS DE TRÂNSITO.
@@ -768,7 +789,7 @@ const readPage = (f) => {
   return lida.texto;
 };
 
-function prose(path, file, { brand = 'ithos', title, description, crumbs, both = false, bloco = '' }) {
+function prose(path, file, { brand = 'ithos', title, description, crumbs, both = false, bloco = '', fora = true }) {
   /* render() e não markdown(fill()): as peças da legal-comum ({{RAL}},
      {{DESTINATARIOS}}…) são HTML feito e entram depois do Markdown. */
   const html = pages.comBloco(pages.render(readPage(file), MARKERS), bloco);
@@ -778,11 +799,11 @@ function prose(path, file, { brand = 'ithos', title, description, crumbs, both =
      o leitor saltava para a cópia vestida de ithos a meio de uma frase. É o
      mesmo que o mirror() faz à cópia de uma página partilhada. */
   const body = pages.prosePage(brand === 'cathelier' ? dressBody(html) : html);
-  if (both) { mirror(path, { title, description, crumbs, body }); return; }
+  if (both) { mirror(path, { title, description, crumbs, body, fora }); return; }
   write(path, page({
     ...shellArgs, brand, path, title, description, crumbs,
-    noindex: false, body,
-  }));
+    noindex: false, foraDoGoogle: fora, body,
+  }), { sitemap: !fora });
 }
 
 /* Writes a shared page TWICE: at its own address wearing ithos, and under
@@ -805,14 +826,14 @@ function dressBody(html) {
   return out;
 }
 
-function mirror(path, { title, description, crumbs, body, schema = [], noindex = false }) {
-  const common = { ...shellArgs, path, title, description, body, noindex };
+function mirror(path, { title, description, crumbs, body, schema = [], noindex = false, fora = false }) {
+  const common = { ...shellArgs, path, title, description, body, noindex, foraDoGoogle: fora };
   /* A cópia ithos é a canónica das DUAS lojas (o og:url da cópia cathelier
      aponta para ela, e o Facebook e o Messenger vão buscar a imagem à morada
      do og:url): leva o cartão das duas marcas. A cópia cathelier leva o seu,
      que é o que o WhatsApp mostra -- ele lê a página que recebe. */
   write(path, page({ ...common, brand: 'ithos', crumbs, schema, partilha: 'ithos-cathelier' }),
-    { sitemap: !noindex });
+    { sitemap: !noindex && !fora });
   write(`/cathelier${path}`, page({
     ...common, brand: 'cathelier', path: `/cathelier${path}`, canonicalPath: path,
     /* And the links INSIDE the words, not just the ones in the frame. The
@@ -880,7 +901,11 @@ function buildShared() {
 
   /* As perguntas, da página que a dona escreve (src/lib/pages.mjs, perguntas). */
   const faq = pages.perguntas(pages.fill(readPage('faq.md'), MARKERS));
+  /* As páginas de informação (sobre nós, cuidados, políticas, contactos,
+     orçamento) ficam FORA DO GOOGLE (prose e mirror com `fora`): no Google só
+     as duas lojas, as listas e os produtos (o Renato, 22 out 2026). */
   mirror('/contact/', {
+    fora: true,
     title: t('build.contactos.titulo'),
     description: t('build.contactos.descricao'),
     crumbs: [{ name: t('build.migalha.inicio'), href: '/' }, { name: t('build.migalha.contactos') }],
@@ -900,7 +925,8 @@ function buildShared() {
     description: t('build.orcamento.descricao'),
     crumbs: [{ name: 'cathelier', href: '/cathelier/' }, { name: t('build.migalha.orcamento') }],
     body: pages.quote({ identity }),
-  }));
+    foraDoGoogle: true,
+  }), { sitemap: false });
 
   /* The basket is the worst of them and the one nobody would have listed: its
      icon is in the header AND the drawer of every page, so a cathelier reader
