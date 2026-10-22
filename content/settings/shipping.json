@@ -103,7 +103,7 @@
     },
     {
       "id": "campanha-ilpsx2",
-      "active": false,
+      "active": true,
       "title": "",
       "freeOver": 70,
       "countries": [
