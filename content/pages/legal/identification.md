@@ -15,14 +15,13 @@
 Livro de Reclamações Eletrónico:
 [{{COMPLAINTS_BOOK}}]({{COMPLAINTS_BOOK}})
 
+{{LIVRO_BOTAO}}
+
 ## Resolução extrajudicial de litígios — RAL
 
-Resolução Alternativa de Litígios de Consumo. A entidade competente para este
-vendedor é:
+Resolução Alternativa de Litígios de Consumo: pode recorrer a um destes centros.
 
-**{{ADR_NAME}}**
-{{ADR_ADDRESS}}
-[{{ADR_SITE}}]({{ADR_SITE}}) · [{{ADR_EMAIL}}](mailto:{{ADR_EMAIL}}) · {{ADR_PHONE}}
+{{RAL}}
 
 Esta informação é publicada ao abrigo do artigo 10.º do Decreto-Lei n.º 7/2004 e
 do artigo 4.º do Decreto-Lei n.º 24/2014.

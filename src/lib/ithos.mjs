@@ -10,6 +10,7 @@ import { cover } from './cover.mjs';
 import { prazos } from './prazos.mjs';
 import { t, tn } from './i18n.mjs';
 import { fabricante } from './pages.mjs';
+import { avisoRetoma } from './legal.mjs';
 import { fotosDaDona, enquadramentoDaDona } from './oficina.mjs';
 import { videosDe, enderecoDoVideo as enderecoDeVideo, capaDoVideo as capaDeVideo, videoDoCartao } from './videos.mjs';
 
@@ -411,7 +412,12 @@ export function product({ p, all, shop, identity }) {
       <ul>${(shop.safetyIthos || []).map((s) => `<li>${esc(s)}</li>`).join('')}</ul>
     </details>
 
-    ${fabricante(identity)}
+    ${/* A RETOMA GRATUITA (DL 152-D/2017, art. 13.º): um candeeiro é
+        equipamento eléctrico, e quem o compra pode entregar-nos um usado
+        equivalente; as pilhas portáteis usadas recebem-se sem compra. O
+        texto é o da legal-comum (AVISO_RETOMA), pelo dicionário. */ ''}<p class="retoma product__retoma">${esc(avisoRetoma())}</p>
+
+    ${fabricante(identity, p)}
   </div>
 </section>
 

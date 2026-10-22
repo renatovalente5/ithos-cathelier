@@ -79,12 +79,27 @@ durante o tempo que a lei fiscal exige.
   retratação, as retratações feitas no site e os registos dos nossos
   revendedores. É também por ela que saem os emails da loja, e é ela que serve
   estas páginas ao seu browser, por isso vê o pedido, incluindo o seu endereço
-  IP. A Cloudflare pode tratar estes dados fora da União Europeia, ao abrigo
-  das cláusulas contratuais-tipo da Comissão Europeia.
+  IP.
+- **Microsoft (Outlook)**, onde está a nossa caixa de correio: recebemos lá a
+  folha de cada encomenda e os emails que nos escreve.
+- **WhatsApp (Meta)**, se nos escrever por lá; e o Instagram e o Facebook, se
+  nos seguir ou nos escrever nessas redes.
 - O nosso contabilista, e a Autoridade Tributária, para as faturas.
 
-Mais ninguém. Os seus dados não são vendidos nem usados para lhe fazer
-publicidade.
+Os serviços que recebem mesmo os seus dados, para quê, onde estão e com que
+base saem da União Europeia quando saem:
+
+{{DESTINATARIOS}}
+
+Os seus dados não são vendidos nem usados para lhe fazer publicidade.
+
+## Cookies e o mapa
+
+Este site não tem aviso de cookies porque não tem cookies de estatística nem de
+publicidade. O que fica no seu aparelho está descrito acima: o cesto, a sessão
+de revendedor se entrar, e a escolha do mapa.
+
+{{COOKIES_MAPA}}
 
 ## Durante quanto tempo
 

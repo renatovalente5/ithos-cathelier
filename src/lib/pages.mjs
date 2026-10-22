@@ -2,6 +2,7 @@ import { esc, money, safeHref } from './html.mjs';
 import { icon } from './icons.mjs';
 import { prazos, ateSemanas } from './prazos.mjs';
 import { t, tn, lingua } from './i18n.mjs';
+import * as legal from './legal.mjs';
 
 /* ===========================================================================
    The pages that are prose, plus the three that are not.
@@ -36,11 +37,18 @@ export const enderecoDe = (i) => [i.street, [i.postcode, i.town].filter(Boolean)
    peças e quem as vende, e os três dados saem de content/settings/identity.json
    -- nunca escritos aqui, pela mesma razão das páginas legais: no dia em que a
    morada mudar, muda em todo o lado ou em lado nenhum. */
-export function fabricante(identity) {
+/* E A REFERÊNCIA DO PRODUTO (al. b) do mesmo artigo), quando a ficha a tem
+   (gpsr.type: «ITH-RAP» na raposa; vazia nas peças da cathelier até a dona a
+   preencher no painel). Sem referência não se inventa nada: a linha fica como
+   estava, e a guarda da construção avisa. */
+export function fabricante(identity, produto) {
   const i = identity;
+  const ref = String(produto?.gpsr?.type ?? '').trim();
   return `<p class="product__maker"><strong>${esc(t('paginas.fabricante.rotulo'))}:</strong> `
     + `${esc(i.legalName)}, ${esc(enderecoDe(i))} · `
-    + `<a href="mailto:${esc(i.email)}">${esc(i.email)}</a></p>`;
+    + `<a href="mailto:${esc(i.email)}">${esc(i.email)}</a>`
+    + (ref ? ` · <strong>${esc(t('paginas.fabricante.referencia'))}:</strong> <span class="product__ref">${esc(ref)}</span>` : '')
+    + '</p>';
 }
 
 /* UM TEXTO DA DONA NUMA LINHA DE MARKDOWN. O aviso de uma peça escreve-se no
@@ -115,6 +123,31 @@ export function markers({ identity, shop, shipping, pieces = [] }) {
     // Under the Portuguese small-business exemption there is no VAT to state,
     // and saying so is required rather than optional.
     VAT_NOTE: t('paginas.iva'),
+    /* AS PEÇAS LEGAIS COMUNS (legal-comum/, pelo src/lib/legal.mjs): são HTML
+       já feito, e entram na página DEPOIS do Markdown (ver render()), para o
+       Markdown não as escapar. A lista dos centros de arbitragem, o aviso da
+       retoma, os passos da encomenda, a tabela dos destinatários, o mapa e o
+       botão do Livro. */
+    RAL: legal.ralBloco(),
+    RETOMA: legal.blocoRetoma(),
+    COMO_SE_FAZ_A_ENCOMENDA: legal.comoSeFazBloco({ shop }),
+    DESTINATARIOS: legal.destinatariosBloco(),
+    COOKIES_MAPA: legal.cookiesMapaBloco(),
+    LIVRO_BOTAO: `<p class="livro-bloco">${legal.livroBotao()}</p>`,
+  };
+}
+
+/* OS MESMOS MARCADORES EM TEXTO, para o ficheiro das condições de venda que o
+   Worker mete no PDF da confirmação (data/condicoes-<língua>.txt). `abs` faz
+   de uma morada relativa uma absoluta. */
+export function markersTexto({ shop, abs = (u) => u }) {
+  return {
+    RAL: legal.ralTextoDoSite(),
+    RETOMA: legal.avisoRetoma(),
+    COMO_SE_FAZ_A_ENCOMENDA: legal.comoSeFazTexto({ shop, abs }),
+    DESTINATARIOS: legal.destinatariosTexto(),
+    COOKIES_MAPA: legal.cookiesMapaTextos().join('\n\n'),
+    LIVRO_BOTAO: `${t('shell.rodape.reclamacoes')}: ${legal.LIVRO_URL}`,
   };
 }
 
@@ -122,11 +155,74 @@ export function markers({ identity, shop, shipping, pieces = [] }) {
    a um parágrafo, um «- aviso» era lido como texto corrido e a lista de
    segurança saía numa linha só. O painel já o exige; isto é a rede por baixo. */
 const MARCADORES_DE_BLOCO = new Set(['SHIPPING_TABLE', 'SAFETY_LIST', 'SAFETY_LIST_CATHELIER', 'SAFETY_BY_PIECE']);
-export function fill(text, table) {
+/* OS MARCADORES QUE SÃO HTML FEITO (as peças da legal-comum). O leitor de
+   Markdown escapa tudo o que lê, e é assim que deve ser -- o conteúdo é da
+   dona. Estes entram só depois dele: fill() deixa no lugar um sinal sem
+   sublinhados nem sinais de pontuação (o Markdown lia «_» como itálico), e
+   render() troca-o pelo HTML quando a página já está feita. */
+export const MARCADORES_HTML = new Set(['RAL', 'RETOMA', 'COMO_SE_FAZ_A_ENCOMENDA', 'DESTINATARIOS', 'COOKIES_MAPA', 'LIVRO_BOTAO']);
+export function fill(text, table, { blocos = null } = {}) {
   return text.replace(/\{\{([A-Z_]+)\}\}/g, (whole, key) => {
     if (!(key in table)) throw new Error(`Unknown marker ${whole} — a legal page would ship with a hole in it`);
-    return MARCADORES_DE_BLOCO.has(key) ? `\n\n${table[key]}\n\n` : table[key];
+    if (MARCADORES_HTML.has(key) && /^\s*</.test(String(table[key]))) {
+      if (!blocos) throw new Error(`${whole} is HTML and this text is not rendered with render() — it would be escaped`);
+      blocos.push(table[key]);
+      return `\n\n@@BLOCO${blocos.length - 1}@@\n\n`;
+    }
+    return MARCADORES_DE_BLOCO.has(key) || MARCADORES_HTML.has(key) ? `\n\n${table[key]}\n\n` : table[key];
   });
+}
+
+/** Uma página de Markdown com marcadores, feita: os de texto dentro do
+ *  Markdown, os de HTML no lugar deles depois. */
+export function render(text, table) {
+  const blocos = [];
+  const html = markdown(fill(text, table, { blocos }));
+  return html.replace(/<p>@@BLOCO(\d+)@@<\/p>/g, (_, n) => blocos[Number(n)]);
+}
+
+/* A MESMA PÁGINA EM TEXTO SIMPLES: para o Worker a pôr inteira no PDF da
+   confirmação (DL 7/2004, art. 31.º: os termos em suporte duradouro). Títulos
+   de secção em maiúsculas numa linha só (é assim que o Worker os reconhece),
+   ligações com a morada entre parênteses, listas com «-», tabelas linha a
+   linha. O que não é texto (negrito, itálico, âncoras) sai. */
+export function textoSimples(md, table, { abs = (u) => u } = {}) {
+  const inline = (s) => String(s)
+    .replace(/\s*\{#[a-z0-9-]+\}\s*$/, '')
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (m, txt, h) => (/^(mailto|tel):/i.test(h) || h === txt ? txt : `${txt} (${abs(h)})`))
+    .replace(/\*\*([^*]+)\*\*/g, '$1')
+    .replace(/(^|[\s(])\*([^*]+)\*/g, '$1$2')
+    .replace(/_{3,}/g, '____________')
+    .replace(/(^|[\s(])_([^_]+)_/g, '$1$2')
+    .replace(/\s+/g, ' ').trim();
+  const out = [];
+  const lines = fill(md, table).split('\n');
+  let i = 0;
+  while (i < lines.length) {
+    const line = lines[i];
+    if (/^#{1,4} /.test(line)) { out.push(inline(line.replace(/^#+ /, '')).toUpperCase()); i++; continue; }
+    if (/^---+\s*$/.test(line) || !line.trim()) { i++; continue; }
+    if (/^\| /.test(line)) {
+      const rows = [];
+      while (i < lines.length && /^\|/.test(lines[i])) rows.push(lines[i++]);
+      const cells = (r) => r.split('|').slice(1, -1).map((c) => inline(c)).filter(Boolean);
+      out.push(rows.filter((r) => !/^[|\s:-]+$/.test(r)).map((r) => cells(r).join(' — ')).join('\n'));
+      continue;
+    }
+    if (/^(?:[-*]|\d+\.) /.test(line)) {
+      const items = [];
+      while (i < lines.length && /^(?:[-*]|\d+\.) /.test(lines[i])) {
+        const m = lines[i++].match(/^((?:[-*]|\d+\.) )(.*)$/);
+        items.push(`${m[1] === '- ' || m[1] === '* ' ? '- ' : m[1]}${inline(m[2])}`);
+      }
+      out.push(items.join('\n'));
+      continue;
+    }
+    const para = [];
+    while (i < lines.length && lines[i].trim() && !/^(#{1,4} |[-*] |\d+\. |\||---)/.test(lines[i])) para.push(lines[i++]);
+    out.push(inline(para.join(' ')));
+  }
+  return `${out.join('\n\n')}\n`;
 }
 
 /* A deliberately small Markdown reader. It understands what these pages use and
@@ -381,6 +477,10 @@ export function contact({ identity, shop, faq }) {
       </a>
     </div>
 
+    ${/* O LIVRO DE RECLAMAÇÕES TAMBÉM AQUI (a forma segura do manual da DGC:
+        na página de apoio ao cliente, além do rodapé), pela legal-comum. */ ''}
+    <p class="contact-livro"><span class="contact-livro__rotulo">${esc(t('paginas.contacto.reclamacoes'))}</span> ${legal.livroBotao()}</p>
+
     <h2>${esc(t('paginas.contacto.ondeEstamos'))}</h2>
     <p>${esc(t('paginas.contacto.oficina', { cidade: i.town, pais: i.country }))}</p>
 
@@ -395,6 +495,12 @@ export function contact({ identity, shop, faq }) {
         ${esc(t('paginas.contacto.mapaAviso'))}</span>
       </button>
     </div>
+    ${/* RETIRAR TEM DE SER TÃO FÁCIL COMO DAR (Lei 41/2004, art. 5.º). A escolha
+        de mostrar o mapa fica no aparelho (ic-map-v1, src/js/shop.js); este
+        botão apaga-a e tira o mapa na hora. Escondido enquanto não há nada
+        para retirar; o script mostra-o. A política de privacidade diz como
+        ({{COOKIES_MAPA}}, pela legal-comum). */ ''}
+    <p class="map__retirar-linha"><button class="map__retirar" type="button" data-map-forget hidden>${esc(t('paginas.contacto.mapaRetirar'))}</button></p>
 
     <h2 id="faq">${esc(faq.titulo || t('paginas.contacto.perguntas'))}</h2>
     ${faq.entrada}
@@ -613,6 +719,8 @@ export function basket({ shipping, shop }) {
         <label class="field"><span>${esc(t('paginas.entrega.nif'))} <span class="field__optional">${esc(t('paginas.entrega.nifNota'))}</span></span>
           <input type="text" name="nif" inputmode="numeric" maxlength="20"></label>
       </div>
+      ${/* Para quê e até quando se guardam estes dados, junto dos campos
+          (RGPD, art. 13.º), com a ligação à política: pela legal-comum. */ ''}${legal.frasePrivacidade('cesto')}
       <!-- A ESCOLHA DO MÉTODO PASSOU A SER AQUI.
            Era feita numa página da ifthenpay, depois de sair daqui. Agora o
            pagamento acontece numa página nossa, e por isso a pergunta é feita
@@ -706,11 +814,28 @@ export function basket({ shipping, shop }) {
            direitos do consumidor não se aplicam. Um comentário dentro de
            ${…} e não em HTML: não vai para a página servida. */ ''}
       <p class="basket__aviso" data-basket-personal hidden>${esc(t('paginas.aviso.personalizada', { n: shop.returns.coolingOffDays }))}</p>
+      ${/* O RESUMO, LOGO ACIMA DO BOTÃO (DL 7/2004, art. 27.º; DL 24/2014,
+          art. 5.º n.º 3): quantos artigos, o total já com os portes e o prazo,
+          no último ecrã antes de assumir a obrigação de pagar, com as duas
+          ligações que mais importam ali. As frases vêm daqui; os números, da
+          mesma paint() que pinta o cesto (src/js/shop.js). A retoma (no fim
+          do formulário) só aparece com um candeeiro no cesto. */ ''}
+      <section class="basket__resumo" data-basket-resumo aria-labelledby="resumo-titulo" hidden
+         data-um="${esc(t('paginas.cesto.resumoArtigos.um'))}"
+         data-varios="${esc(t('paginas.cesto.resumoArtigos.varios'))}"
+         data-total="${esc(t('paginas.cesto.resumoTotal'))}">
+        <h2 id="resumo-titulo">${esc(t('paginas.cesto.resumo'))}</h2>
+        <p class="basket__resumo-linha" data-resumo-linha></p>
+        <p class="basket__resumo-prazo" data-resumo-prazo hidden></p>
+        <p class="small muted" style="margin-block-start:.4rem">${esc(t('paginas.cesto.resumoNota'))}</p>
+        <p class="basket__resumo-ligacoes"><a href="/legal/terms/">${esc(t('shell.rodape.condicoesVenda'))}</a><a href="/legal/cancellation/">${esc(t('shell.rodape.resolucao'))}</a></p>
+      </section>
       <button class="btn btn--wide" type="submit" data-to-checkout style="margin-block-start:1.25rem">
         ${esc(t('paginas.botao.encomendarEPagar'))}</button>
       <p class="small muted" style="margin-block-start:.6rem">
         ${esc(t('paginas.cesto.ifthenpay'))}</p>
       <p class="small basket__direitos"><a href="/legal/guarantee/">${esc(t('paginas.garantia.ligacao'))}</a></p>
+      <p class="basket__retoma retoma" data-basket-retoma hidden>${esc(legal.avisoRetoma())}</p>
     </form>
   </div>
 </section>`;
@@ -919,6 +1044,7 @@ export function resellers() {
         <button class="btn" type="submit">${esc(t('paginas.revenda.pedirLigacao'))}</button>
       </form>
       <p class="rv-msg" data-rv-pedir-msg role="status" hidden></p>
+      ${legal.frasePrivacidade('revenda')}
 
       <h2>${esc(t('paginas.revenda.outroDispositivo'))}</h2>
       <form class="rv-form" data-rv-codigo novalidate>

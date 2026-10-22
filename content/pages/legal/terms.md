@@ -30,6 +30,15 @@ Os preços estão em euros. {{VAT_NOTE}}
 O preço que vê na página de um produto é o preço dessa peça com as escolhas
 indicadas. Os portes somam-se no pagamento e são mostrados antes de pagar.
 
+## Como se faz uma encomenda
+
+{{COMO_SE_FAZ_A_ENCOMENDA}}
+
+Antes de carregar no botão, o cesto mostra um resumo com cada artigo, as
+escolhas, as quantidades, os portes e o total a pagar: pode mudar as
+quantidades, tirar artigos e corrigir qualquer campo. O registo da sua compra é
+o email de confirmação, com estas condições em anexo.
+
 ## Peças personalizadas
 
 Tudo o que leva um nome, uma data ou palavras escolhidas por si é feito só para
@@ -102,15 +111,21 @@ peça durante 10 anos depois de a última unidade desse modelo ser colocada no
 mercado (artigo 21.º do Decreto-Lei n.º 84/2021). Se precisar de reparação,
 escreva-nos.
 
+## Retoma gratuita de equipamento usado
+
+Os candeeiros ithos são equipamento elétrico.
+
+{{RETOMA}}
+
 ## Reclamações e litígios
 
 Existe o Livro de Reclamações Eletrónico, em
 [{{COMPLAINTS_BOOK}}]({{COMPLAINTS_BOOK}}).
 
 Para a resolução extrajudicial de litígios — Resolução Alternativa de Litígios
-de Consumo (RAL) — a entidade competente é o **{{ADR_NAME}}** —
-[{{ADR_SITE}}]({{ADR_SITE}}), {{ADR_ADDRESS}}, [{{ADR_EMAIL}}](mailto:{{ADR_EMAIL}}),
-{{ADR_PHONE}}.
+de Consumo (RAL) — pode recorrer a um destes centros:
+
+{{RAL}}
 
 ## Para revendedores {#resellers}
 

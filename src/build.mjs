@@ -18,6 +18,7 @@ import { page, MIRRORED, partilhaDe, etiquetasDaImagem } from './lib/shell.mjs';
 import * as ithos from './lib/ithos.mjs';
 import * as cath from './lib/cathelier.mjs';
 import * as pages from './lib/pages.mjs';
+import * as legal from './lib/legal.mjs';
 import { esc, picture } from './lib/html.mjs';
 import { fotosDaDona, enquadramentoDaDona } from './lib/oficina.mjs';
 import { cardWidths, shapeOf } from './lib/photo.mjs';
@@ -399,6 +400,9 @@ function assets() {
   const css = ['styles/base.css', 'styles/brands/ithos.css', 'styles/brands/cathelier.css', 'styles/shop.css']
     .filter((f) => existsSync(join(HERE, f)))
     .map((f) => `/* ===== ${f} ===== */\n${readFileSync(join(HERE, f), 'utf8')}`)
+    /* O botão do Livro de Reclamações, com o CSS da legal-comum (que confere
+       o contraste e pára aqui se não chegar a 4,5:1). */
+    .concat(`/* ===== legal-comum (livroCss) ===== */\n${legal.livroEstilos()}`)
     .join('\n\n');
   mkdirSync(join(OUT, 'assets'), { recursive: true });
   const cssOut = prefixCss(css);
@@ -765,7 +769,9 @@ const readPage = (f) => {
 };
 
 function prose(path, file, { brand = 'ithos', title, description, crumbs, both = false, bloco = '' }) {
-  const html = pages.comBloco(pages.markdown(pages.fill(readPage(file), MARKERS)), bloco);
+  /* render() e não markdown(fill()): as peças da legal-comum ({{RAL}},
+     {{DESTINATARIOS}}…) são HTML feito e entram depois do Markdown. */
+  const html = pages.comBloco(pages.render(readPage(file), MARKERS), bloco);
   /* UMA PÁGINA DA CATHELIER FICA NA CATHELIER, também nas ligações que a dona
      escreve no texto. Quem escreve «[garantia legal](/legal/guarantee/)» na
      página de cuidados da cathelier escreve a morada que conhece -- e sem isto
@@ -862,6 +868,15 @@ function buildShared() {
       description: t(`build.legal.${nome}.descricao`, { dias: shop.returns.coolingOffDays }), bloco: blocos[nome],
       crumbs: [{ name: t('build.migalha.inicio'), href: '/' }, { name: title }] });
   }
+
+  /* AS CONDIÇÕES DE VENDA EM TEXTO, para o Worker as pôr INTEIRAS no PDF da
+     confirmação (DL 7/2004, art. 31.º; DL 24/2014, art. 6.º): o comprador
+     guarda os termos tal como estavam no dia da compra, e não uma ligação.
+     Um ficheiro por língua, em /data/ (que é o mesmo para todas). */
+  const abs = (u) => (/^\//.test(u) ? `${SITE}${morada(u)}` : u);
+  mkdirSync(join(OUT, 'data'), { recursive: true });
+  writeFileSync(join(OUT, 'data', `condicoes-${lingua()}.txt`),
+    pages.textoSimples(readPage('legal/terms.md'), { ...MARKERS, ...pages.markersTexto({ shop, abs }) }, { abs }));
 
   /* As perguntas, da página que a dona escreve (src/lib/pages.mjs, perguntas). */
   const faq = pages.perguntas(pages.fill(readPage('faq.md'), MARKERS));

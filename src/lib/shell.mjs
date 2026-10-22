@@ -2,6 +2,7 @@ import { esc, safeHref, jsonInScript } from './html.mjs';
 import { campanhasLigadas, zonasDaCampanha } from './campanhas.mjs';
 import { icon } from './icons.mjs';
 import { prazos } from './prazos.mjs';
+import { livroBotao } from './legal.mjs';
 import { t, lingua, LINGUAS, LOCALE, OG_LOCALE, NOMES, morada, linguaDaRaiz, prefixoDe } from './i18n.mjs';
 
 /* ===========================================================================
@@ -550,7 +551,8 @@ function footer({ brand, identity, shop }) {
          for laser-cut keepsakes, with the warnings of every piece read from
          the data. */
       ['/legal/returns-form/', t('shell.rodape.formulario')],
-      [i.complaintsBook, t('shell.rodape.reclamacoes')],
+      /* O Livro de Reclamações saiu desta lista: é o botão da linha de baixo
+         (legal-comum), fora do acordeão, visível também no telemóvel. */
     ]],
     /* THE FOOTER STAYS IN THE SHOP YOU ARE IN.
        It listed both shops' pages on every page, so the footer of an ithos
@@ -646,10 +648,10 @@ function footer({ brand, identity, shop }) {
          It lives at /legal/identification/ and is linked under Terms above.
 
          The two things that must be ON the site rather than merely reachable
-         are still on it: the electronic complaints book is a link under
-         Customer care, where somebody with a complaint would look for it, and
-         the out-of-court dispute body is named on the terms page and on the
-         identification page, which is what article 18 of Lei 144/2015 asks.
+         are still on it: the electronic complaints book is a button on the
+         bottom row of every page (legal-comum), outside the accordion, and
+         the out-of-court dispute bodies are listed on the terms page and on
+         the identification page, which is what article 18 of Lei 144/2015 asks.
 
          The call-cost line stays wherever the telephone number appears. That
          one is not about access — it has to sit beside the number. -->
@@ -665,6 +667,10 @@ function footer({ brand, identity, shop }) {
             2026): fica na linha de baixo de todas as páginas, num botão leve à
             altura das marcas de pagamento. scripts/check-output.mjs recusa uma
             página sem ela. */ ''}<p class="foot__withdraw"><a href="${esc(brandPath('/legal/withdraw/', brand))}">${esc(t('paginas.retratacao.ligacao'))}</a></p>
+        ${/* O LIVRO DE RECLAMAÇÕES (DL 156/2005, art. 5.º-B: «visível e de forma
+            destacada»), num botão com o ícone, pela legal-comum: fora do
+            acordeão, na linha de baixo de todas as páginas. Também está nos
+            Contactos e na identificação do vendedor. */ ''}<p class="foot__livro">${livroBotao()}</p>
       </div>
       <p class="foot__end">© ${new Date().getFullYear()} ${esc(i.tradingName)}</p>
     </div>

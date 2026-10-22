@@ -1516,6 +1516,59 @@ for (const [o, n] of esgotados) {
   }
 }
 
+/* --- legal-comum: identificação e fichas, a AVISAR ------------------------
+   As guardas da biblioteca (legal-comum/, verificarIdentificacao e
+   verificarProduto) correm aqui em modo «avisar»: dizem o que falta e nunca
+   param a publicação nem escondem uma peça -- quem decide é a dona. As que
+   param são as de cima. */
+{
+  const { verificarIdentificacao, verificarProduto } = await import('../legal-comum/index.mjs');
+  const formas = { 'empresária em nome individual': 'eni', 'empresário em nome individual': 'eni' };
+  const id = verificarIdentificacao({
+    nome: identity.legalName,
+    formaJuridica: formas[String(identity.legalForm ?? '').trim().toLowerCase()] ?? identity.legalForm,
+    nif: identity.taxNumber,
+    morada: [identity.street, [identity.postcode, identity.town].filter(Boolean).join(' ')].filter(Boolean).join(', '),
+    email: identity.email,
+    telefone: identity.phone,
+  }, { modo: 'avisar', ecra: 'content/settings/identity.json' });
+  for (const x of id.problemas) warnings.push(`identificação (legal-comum): ${x.mensagem}`);
+
+  const shopLegal = read('settings/shop.json');
+  const fabricante = {
+    nome: identity.legalName,
+    morada: [identity.street, [identity.postcode, identity.town].filter(Boolean).join(' '), identity.country].filter(Boolean).join(', '),
+    email: identity.email,
+  };
+  const semReferencia = { ithos: [], cathelier: [] };
+  for (const marca of ['ithos', 'cathelier']) {
+    const pasta = join(CONTENT, marca);
+    if (!existsSync(pasta)) continue;
+    for (const x of readdirSync(pasta).filter((y) => y.endsWith('.json') && !y.startsWith('_'))) {
+      let p;
+      try { p = JSON.parse(readFileSync(join(pasta, x), 'utf8')); } catch { continue; }
+      if (p.published === false) continue;
+      const r = verificarProduto({
+        nome: p.name, preco: p.price, fabricante,
+        referencia: p.gpsr?.type,
+        avisos: [...(p.gpsr?.warnings ?? []), ...(marca === 'ithos' ? shopLegal.safetyIthos ?? [] : shopLegal.safetyCathelier ?? [])],
+        /* A ficha de cada candeeiro mostra o aviso da retoma (src/lib/ithos.mjs). */
+        retoma: marca === 'ithos',
+      }, { categoria: marca === 'ithos' ? 'eee' : 'geral', modo: 'avisar' });
+      for (const q of r.problemas) {
+        if (q.campo === 'referencia') semReferencia[marca].push(p.name || x);
+        else warnings.push(`ficha (legal-comum) content/${marca}/${x}: ${q.mensagem}`);
+      }
+    }
+  }
+  for (const [marca, nomes] of Object.entries(semReferencia)) {
+    if (nomes.length) {
+      warnings.push(`fichas sem referência do produto (Regulamento (UE) 2023/988, art. 19.º) em ${marca}: ${nomes.length} — `
+        + `${nomes.slice(0, 6).join(', ')}${nomes.length > 6 ? ', …' : ''} (painel: «Referência» de cada peça)`);
+    }
+  }
+}
+
 /* --- report --------------------------------------------------------------- */
 for (const w of warnings) console.warn(`  warning: ${w}`);
 if (deaths.length) {

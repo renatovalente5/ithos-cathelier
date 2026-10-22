@@ -1574,8 +1574,27 @@ function mapConsent() {
       + ' referrerpolicy="no-referrer-when-downgrade"'
       + ' src="https://www.google.com/maps?q=Castelo+Branco,+Portugal&output=embed"></iframe>';
   };
-  if (read(MAP_OK, false)) { show(); return; }
-  $('[data-map-load]', box)?.addEventListener('click', () => { save(MAP_OK, true); show(); });
+  /* RETIRAR TEM DE SER TÃO FÁCIL COMO DAR (Lei 41/2004, art. 5.º): o botão
+     «Deixar de carregar o mapa» (pages.mjs, contact) apaga a escolha guardada
+     e tira o mapa na hora -- volta a fachada de antes, que nada carrega. Fica
+     escondido enquanto não há nada para retirar. */
+  const fachada = box.innerHTML;
+  const retirar = $('[data-map-forget]');
+  const ligar = () => {
+    $('[data-map-load]', box)?.addEventListener('click', () => {
+      save(MAP_OK, true); show();
+      if (retirar) { retirar.hidden = false; retirar.focus(); }
+    });
+  };
+  retirar?.addEventListener('click', () => {
+    try { localStorage.removeItem(MAP_OK); } catch { /* nada a apagar */ }
+    box.innerHTML = fachada;
+    retirar.hidden = true;
+    ligar();
+    $('[data-map-load]', box)?.focus();
+  });
+  if (read(MAP_OK, false)) { show(); if (retirar) retirar.hidden = false; return; }
+  ligar();
 }
 
 /* --- the basket page ------------------------------------------------------
@@ -1640,6 +1659,9 @@ async function basketPage() {
     prazoCaixa.textContent = deStock ? d.leadStock
       : [d.leadOrder, pouco ? d.leadFew : '', priced.length > 1 ? d.leadTogether : ''].filter(Boolean).join(' ');
     prazoCaixa.hidden = false;
+    /* O mesmo prazo no resumo de cima do botão (ver paint()). */
+    const prazoResumo = $('[data-resumo-prazo]');
+    if (prazoResumo) { prazoResumo.textContent = prazoCaixa.textContent; prazoResumo.hidden = false; }
   }
 
   /* One line's own state. Out of stock is said on the line, so a basket that
@@ -1763,6 +1785,8 @@ async function basketPage() {
     }
     const direitos = $('.basket__direitos');
     if (direitos) direitos.hidden = revenda.activa;
+    const resumo = $('[data-basket-resumo]');
+    if (resumo) resumo.hidden = !any;
     if (!any) { vez++; prazoNoCesto = 'encomenda'; return; }
 
     linesBox.innerHTML = priced.map(({ line, p }, i) => `<div class="basket-line">
@@ -1797,6 +1821,18 @@ async function basketPage() {
     $('[data-sum-shipping]').textContent = post === null ? tj('cesto.naoEnviamos')
       : post === 0 ? tj('cesto.gratis') : euros(post);
     $('[data-sum-total]').textContent = post === null ? '—' : euros(goods + post);
+    /* O RESUMO LOGO ACIMA DE «ENCOMENDAR E PAGAR» (pages.mjs, basket): os
+       mesmos números desta pintura -- quantos artigos e o total já com os
+       portes --; o prazo chega pelo avaliar(), como o do quadro do total. A
+       retoma aparece só com um candeeiro (equipamento eléctrico) no cesto. */
+    if (resumo) {
+      const n = priced.reduce((t, x) => t + (Number(x.line.qty) || 0), 0);
+      const artigos = (n === 1 ? resumo.dataset.um : resumo.dataset.varios).replace('{n}', String(n));
+      const total = post === null ? tj('cesto.naoEnviamos') : euros(goods + post);
+      $('[data-resumo-linha]', resumo).textContent = `${artigos} · ${resumo.dataset.total.replace('{total}', total)}`;
+      const retoma = $('[data-basket-retoma]');
+      if (retoma) retoma.hidden = !priced.some(({ p }) => p.brand === 'ithos');
+    }
     avaliar(priced);
   }
 

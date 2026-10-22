@@ -1918,3 +1918,42 @@ html[data-js='yes'] .product__lead[data-lead]:not([data-lead-ready]) { visibilit
 }
 @keyframes aviso-campanha-entra { from { opacity: 0; transform: translateY(12px) scale(.98); } }
 @keyframes aviso-campanha-fundo { from { opacity: 0; } }
+
+/* --- peças legais comuns (legal-comum, src/lib/legal.mjs) --------------------
+   O botão do Livro de Reclamações (o CSS dele vem da biblioteca, no fim do
+   ficheiro de estilos): no rodapé, na linha de baixo, fora do acordeão; no
+   telemóvel, logo a seguir à retratação. O foco desenha-se na cor da letra da
+   página -- o da biblioteca usa a cor do botão, que no creme não se via. */
+.foot__livro { margin: 0; }
+.foot__livro .lr-botao, .contact-livro .lr-botao, .livro-bloco .lr-botao { min-height: 44px; }
+.foot__livro .lr-botao:focus-visible, .contact-livro .lr-botao:focus-visible, .livro-bloco .lr-botao:focus-visible { outline-color: var(--ink); }
+@media (width < 60rem) { .foot__livro { order: -1; } }
+.contact-livro { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem 1rem; margin-block: 1.5rem; }
+.contact-livro__rotulo { font-size: 14px; color: var(--ink-soft, var(--ink)); }
+.livro-bloco { margin-block: 1rem; }
+
+/* Os centros de arbitragem, os passos da encomenda e a tabela de quem recebe
+   os dados, dentro das páginas legais. */
+.ral__lista, .como-encomendar { padding-inline-start: 1.25rem; display: grid; gap: .4rem; margin-block: .75rem; }
+.destinatarios { width: 100%; border-collapse: collapse; font-size: 14px; }
+.destinatarios th, .destinatarios td { text-align: start; vertical-align: top; padding: .5rem .6rem; border-block-end: 1px solid var(--line); }
+.destinatarios th { font-weight: 600; color: var(--ink); }
+.retoma { font-size: 14px; color: var(--ink-soft, var(--ink)); }
+.product__ref { font-variant-numeric: tabular-nums; letter-spacing: .02em; }
+
+/* O RESUMO DA ENCOMENDA, logo acima de «Encomendar e pagar» (DL 7/2004, art.
+   27.º: ver e corrigir antes de assumir a obrigação de pagar). O script pinta-o
+   com a mesma paint() do cesto. */
+.basket__resumo { margin-block-start: 1.75rem; padding: 1rem 1.1rem; border: 1px solid var(--line); border-radius: var(--radius, 0); background: var(--bg-soft, transparent); }
+.basket__resumo h2 { font-size: 1rem; margin: 0 0 .5rem; }
+.basket__resumo-linha { margin: 0; font-size: 15px; color: var(--ink); }
+.basket__resumo-linha strong { font-variant-numeric: tabular-nums; }
+.basket__resumo-prazo { margin: .25rem 0 0; font-size: 14px; color: var(--ink-soft, var(--ink)); }
+.basket__resumo-ligacoes { margin: .5rem 0 0; font-size: 13px; display: flex; flex-wrap: wrap; gap: .25rem 1rem; }
+.basket__retoma { margin-block-start: .75rem; font-size: 13px; color: var(--ink-soft, var(--ink)); }
+.privacidade-formulario { margin-block-start: .6rem; color: var(--ink-soft, var(--ink)); }
+
+/* Retirar a autorização do mapa (ic-map-v1): um botão de texto debaixo dele. */
+.map__retirar-linha { margin: .5rem 0 0; }
+.map__retirar { min-height: 44px; padding: .25rem 0; border: 0; background: none; font: inherit; font-size: 14px; color: var(--ink-soft, var(--ink)); text-decoration: underline; text-underline-offset: .2em; cursor: pointer; }
+.map__retirar:hover { color: var(--accent); }

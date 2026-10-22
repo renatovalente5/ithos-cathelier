@@ -510,7 +510,7 @@ export function piece({ p, all: everything, shop, occasions, identity }) {
       ${t('cathelier.ficha.muitas')}
     </p>
 
-    ${fabricante(identity)}
+    ${fabricante(identity, p)}
   </div>
 </section>
 
