@@ -1,4 +1,4 @@
-<!-- origem: aabe213f01da partes: a9f5355a42f7 15e1f22cf38b bb694c976aa8 39101eaf6b0b e5e59fbd129a e975ad517e2e 159c93cd33a7 ce7cd4643b9e -->
+<!-- origem: 71da4c2ec20c partes: a9f5355a42f7 15e1f22cf38b bb694c976aa8 39101eaf6b0b e5e59fbd129a e975ad517e2e 159c93cd33a7 46b026307256 -->
 # Questions
 
 ## How long does it take?
@@ -33,4 +33,4 @@ You have {{COOLING_OFF_DAYS}} days to change your mind. A personalised piece is 
 
 ## Do you accept large orders?
 
-Yes — wooden, MDF, plywood and acrylic keepsakes, gifts and trophies. [Request a quote](/cathelier/quote/) and let us know roughly how many.
+Yes — decorative pieces, keepsakes, gifts and trophies in wood, MDF, plywood and acrylic. [Request a quote](/cathelier/quote/) and let us know roughly how many.
