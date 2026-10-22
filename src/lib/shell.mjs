@@ -366,6 +366,10 @@ function announcement({ brand, shipping, shop }) {
    («Envio gratuito», editável no painel), a condição não -- «a partir de 30 €»
    escreve-se a partir do freeOver, para a janela nunca prometer mais do que a
    caixa cobra. Sem campanha ligada, ou com a janela desligada, não há janela. */
+const igualSemPontos = (a, b) => {
+  const n = (x) => String(x ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9€]+/g, ' ').trim();
+  return n(a) === n(b);
+};
 function avisoCampanha({ brand, shipping, foto: daCapa, fotosDasCampanhas = {} }) {
   /* Uma janela por campanha ligada (com a janela ligada), na ordem da lista:
      o shop.js mostra a primeira que estiver dentro do dia. */
@@ -380,7 +384,8 @@ function avisoCampanha({ brand, shipping, foto: daCapa, fotosDasCampanhas = {} }
   ${foto ? `<div class="aviso-campanha__foto"><img src="${esc(foto)}" alt="" width="960" height="540" loading="lazy" decoding="async"></div>` : ''}
   <div class="aviso-campanha__texto">
     <h2 id="aviso-campanha-titulo-${i}">${esc(c.title || t('shell.avisoCampanha.titulo'))}</h2>
-    ${String(c.texto ?? '').trim() ? `<p class="aviso-campanha__nota">${esc(c.texto.trim())}</p>` : ''}
+    ${/* O mesmo texto duas vezes não (a dona escreveu a mesma frase no texto e
+        na frase da faixa, 22 out 2026): fica só a linha da condição. */ ''}${String(c.texto ?? '').trim() && igualSemPontos(c.texto, condicaoDaCampanha(c, shipping)) === false ? `<p class="aviso-campanha__nota">${esc(c.texto.trim())}</p>` : ''}
     <p>${esc(condicaoDaCampanha(c, shipping))}</p>
     <form method="dialog"><button class="aviso-campanha__ok" value="ok">${esc(t('shell.avisoCampanha.continuar'))}</button></form>
   </div>
