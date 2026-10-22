@@ -791,7 +791,8 @@ html:has(.rapido[open]) { overflow: hidden; }
 }
 .head__sibling:hover { color: var(--accent); }
 /* --- as duas marcas, lado a lado (o Renato, 22 out 2026) -------------------
-   Como separadores: a da loja onde se está a cheio e sublinhada, a outra
+   Como separadores: a da loja onde se está a cheio (sem sublinhado: o Renato
+   tirou-o), a outra
    esbatida (o exemplo do amigo da dona: «o ícone que não está seleccionado
    fica mais esbatido»), que acende à passagem do rato ou com o foco. */
 .head__marcas {
@@ -799,7 +800,6 @@ html:has(.rapido[open]) { overflow: hidden; }
   display: flex; align-items: flex-end; gap: clamp(.9rem, 2.5vw, 1.75rem);
 }
 .head__marcas > a { display: grid; place-items: center; min-width: 44px; min-height: 44px; padding-block-end: 5px; text-decoration: none; }
-.head__marcas > .head__mark { border-block-end: 2px solid var(--ink); padding-block-end: 3px; }
 .head__outra { opacity: .4; transition: opacity 200ms ease; }
 .head__outra:is(:hover, :focus-visible) { opacity: 1; }
 .head__outra img { width: auto; }
