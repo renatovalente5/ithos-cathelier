@@ -850,11 +850,15 @@ function mirror(path, { title, description, crumbs, body, schema = [], noindex =
 }
 
 function buildShared() {
-  prose('/about/', 'about.md', { title: t('build.oficina.titulo'), crumbs: [{ name: t('build.migalha.inicio'), href: '/' }, { name: t('build.migalha.oficina') }],
+  /* «SOBRE NÓS» E OS CONTACTOS VOLTAM AO GOOGLE (o Renato, 22 out 2026, a
+     ver os sitelinks da roomGAGA: «Sobre nós» e «Contactos» são os que o
+     Google mostra por baixo da marca). As políticas e os cuidados continuam
+     fora. */
+  prose('/about/', 'about.md', { fora: false, title: t('build.oficina.titulo'), crumbs: [{ name: t('build.migalha.inicio'), href: '/' }, { name: t('build.migalha.oficina') }],
     description: t('build.oficina.descricao'),
     bloco: `<div class="frame oficina__foto"${enquadramentoDaDona.sobre}>${picture({ dir: 'ithos/oficina', name: fotosDaDona.sobre, alt: dona?.textos?.fotoSobre || t('build.oficina.foto'), sizes: '(min-width: 40rem) 22rem, 100vw' })}</div>` });
 
-  prose('/cathelier/about/', 'cathelier/about.md', { brand: 'cathelier',
+  prose('/cathelier/about/', 'cathelier/about.md', { brand: 'cathelier', fora: false,
     title: t('build.oficinaCath.titulo'), crumbs: [{ name: 'cathelier', href: '/cathelier/' }, { name: t('build.migalha.oficina') }],
     description: t('build.oficinaCath.descricao') });
 
@@ -901,11 +905,10 @@ function buildShared() {
 
   /* As perguntas, da página que a dona escreve (src/lib/pages.mjs, perguntas). */
   const faq = pages.perguntas(pages.fill(readPage('faq.md'), MARKERS));
-  /* As páginas de informação (sobre nós, cuidados, políticas, contactos,
-     orçamento) ficam FORA DO GOOGLE (prose e mirror com `fora`): no Google só
-     as duas lojas, as listas e os produtos (o Renato, 22 out 2026). */
+  /* As páginas de informação (cuidados, políticas, orçamento) ficam FORA DO
+     GOOGLE (prose e mirror com `fora`): no Google as duas lojas, as listas,
+     os produtos, «Sobre nós» e os contactos (o Renato, 22 out 2026). */
   mirror('/contact/', {
-    fora: true,
     title: t('build.contactos.titulo'),
     description: t('build.contactos.descricao'),
     crumbs: [{ name: t('build.migalha.inicio'), href: '/' }, { name: t('build.migalha.contactos') }],
