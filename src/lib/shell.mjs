@@ -450,9 +450,9 @@ function header({ brand, site, canonicalPath, anuncio = '' }) {
           leitor de ecrã não o repete. */ ''}<a class="head__sibling" href="${sibling.href}" data-other-brand
          aria-label="${esc(t('shell.irPara', { nome: sibling.name, nota: t(`shell.${sibling.note}`) }))}"
          title="${esc(t('shell.irPara', { nome: sibling.name, nota: t(`shell.${sibling.note}`) }))}">
-        <span class="head__sibling-mark">
+        <span class="head__sibling-corpo"><span class="head__sibling-mark">
           <img src="${other.src}" alt="" width="${other.w}" height="${other.h}">
-        </span><span class="head__sibling-arrow" aria-hidden="true">↗</span>
+        </span><span class="head__sibling-arrow" aria-hidden="true">↗</span></span>
       </a>
       <a class="icon-btn" href="${brandPath('/cart/', brand)}" aria-label="${esc(t('shell.cesto'))}" title="${esc(t('shell.cesto'))}">
         ${icon('cart', 22)}<span class="cart-count" data-cart-count data-empty="yes"></span>
