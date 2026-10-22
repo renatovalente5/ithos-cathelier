@@ -89,7 +89,9 @@
       "active": true,
       "title": "Envio gratuito",
       "freeOver": 30,
-      "countries": [],
+      "countries": [
+        "PT"
+      ],
       "from": "",
       "to": "",
       "popup": true
