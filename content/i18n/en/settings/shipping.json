@@ -22,5 +22,13 @@
   "campaigns.portes-gratis.title": {
     "t": "Free shipping",
     "h": "ec44803dfff4"
+  },
+  "campaigns.portes-gratis.texto": {
+    "t": "Free shipping to Portugal",
+    "h": "23f5d83c0f9d"
+  },
+  "campaigns.portes-gratis.frase": {
+    "t": "Free shipping to Portugal",
+    "h": "23f5d83c0f9d"
   }
 }
