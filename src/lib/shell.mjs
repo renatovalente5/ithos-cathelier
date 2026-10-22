@@ -445,21 +445,24 @@ function header({ brand, site, canonicalPath, anuncio = '' }) {
               aria-label="${esc(t('shell.abrirMenu'))}">${icon('menu', 24)}<span class="open-menu__word">${esc(t('shell.menu'))}</span></button>
     </div>
 
-    <a class="head__mark" href="${home}" aria-label="${esc(t('shell.inicioDe', { marca: mark.alt }))}">
-      <img src="${mark.src}" alt="${esc(mark.alt)}" width="${mark.w}" height="${mark.h}">
-    </a>
-
-    <div class="head__right">
-      ${/* A porta para a outra loja À ESQUERDA do PT/EN (o Renato, 22 out 2026). */ ''}${/* O NOME À PASSAGEM DO RATO (a dona, 22 out 2026: «a pequena mensagem,
-          tal como no ícone inglês» -- o «EN» já mostrava «English»). Nos
-          botões só com desenho, o `title` é o mesmo texto do aria-label: um
-          leitor de ecrã não o repete. */ ''}<a class="head__sibling" href="${sibling.href}" data-other-brand
+    ${/* AS DUAS MARCAS LADO A LADO, COMO SEPARADORES (o Renato, 22 out 2026,
+        com o exemplo de um amigo da dona: «o ícone que não está seleccionado
+        fica mais esbatido»). Sempre pela mesma ordem, ithos e cathelier; a da
+        loja onde se está a cheio e sublinhada (aria-current), a outra
+        esbatida, que acende à passagem do rato e dá sinal nas páginas
+        iniciais. Substitui a porta pequena com a seta, à direita. */ ''}<div class="head__marcas">
+      ${['ithos', 'cathelier'].map((m) => (m === brand
+    ? `<a class="head__mark" href="${home}" aria-current="true" aria-label="${esc(t('shell.inicioDe', { marca: mark.alt }))}">
+        <img src="${mark.src}" alt="${esc(mark.alt)}" width="${mark.w}" height="${mark.h}">
+      </a>`
+    : `<a class="head__outra" href="${sibling.href}" data-other-brand
          aria-label="${esc(t('shell.irPara', { nome: sibling.name, nota: t(`shell.${sibling.note}`) }))}"
          title="${esc(t('shell.irPara', { nome: sibling.name, nota: t(`shell.${sibling.note}`) }))}">
-        <span class="head__sibling-corpo"><span class="head__sibling-mark">
-          <img src="${other.src}" alt="" width="${other.w}" height="${other.h}">
-        </span><span class="head__sibling-arrow" aria-hidden="true">↗</span></span>
-      </a>
+        <img src="${other.src}" alt="" width="${other.w}" height="${other.h}">
+      </a>`)).join('\n      ')}
+    </div>
+
+    <div class="head__right">
       ${seletorDeLingua({ site, canonicalPath, classe: 'linguas' })}
       <a class="icon-btn" href="${brandPath('/cart/', brand)}" aria-label="${esc(t('shell.cesto'))}" title="${esc(t('shell.cesto'))}">
         ${icon('cart', 22)}<span class="cart-count" data-cart-count data-empty="yes"></span>

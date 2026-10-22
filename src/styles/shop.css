@@ -413,7 +413,7 @@ html[data-scrolled='no'] .head {
    element replaces this one rather than adding to it, and this selector
    carries an element name -- (0,3,1) -- so any list-of-classes rule written
    later would lose and the wordmark would cross-fade in one frame. */
-.head[data-anim='yes'] :is(.head__mark, .head__sibling-mark) img {
+.head[data-anim='yes'] :is(.head__mark, .head__outra) img {
   transition: height var(--head-move) var(--head-ease),
               filter var(--head-move) var(--head-ease);
 }
@@ -430,6 +430,7 @@ html[data-scrolled='no'] .head {
 @media (prefers-reduced-motion: no-preference) {
   .head[data-shrunk='yes'] .head__row { --head-h: 62px; }
   .head[data-shrunk='yes'] .head__mark img { height: 40px; }
+  .head[data-shrunk='yes'] .head__outra img { height: 34px; }
 }
 /* An SVG with a viewBox and no intrinsic size collapses to nothing when it is
    given `width: auto` and no height. Moving these rules between files dropped
@@ -789,42 +790,37 @@ html:has(.rapido[open]) { overflow: hidden; }
   [data-brand='ithos'] .head__sibling-mark img { block-size: 20px; }
 }
 .head__sibling:hover { color: var(--accent); }
-/* O LOGÓTIPO DA OUTRA LOJA CRESCE À PASSAGEM DO RATO (a dona, 22 out 2026:
-   «dá para ampliar o logo quando se passa o rato»), e com o foco do teclado.
-   Só cresce para fora do sítio dele (transform), sem empurrar o cesto. */
+/* --- as duas marcas, lado a lado (o Renato, 22 out 2026) -------------------
+   Como separadores: a da loja onde se está a cheio e sublinhada, a outra
+   esbatida (o exemplo do amigo da dona: «o ícone que não está seleccionado
+   fica mais esbatido»), que acende à passagem do rato ou com o foco. */
+.head__marcas {
+  grid-area: mark; justify-self: center;
+  display: flex; align-items: flex-end; gap: clamp(.9rem, 2.5vw, 1.75rem);
+}
+.head__marcas > a { display: grid; place-items: center; min-width: 44px; min-height: 44px; padding-block-end: 5px; text-decoration: none; }
+.head__marcas > .head__mark { border-block-end: 2px solid var(--ink); padding-block-end: 3px; }
+.head__outra { opacity: .4; transition: opacity 200ms ease; }
+.head__outra:is(:hover, :focus-visible) { opacity: 1; }
+.head__outra img { width: auto; }
+/* A outra marca à altura que tem na sua própria loja (um pouco abaixo). */
+[data-brand='ithos'] .head__outra img { height: clamp(36px, 4.6vw, 50px); }
+[data-brand='cathelier'] .head__outra img { height: clamp(42px, 5.6vw, 60px); }
+
 /* NA PÁGINA INICIAL DE CADA LOJA, A OUTRA DÁ SINAL (o Renato, 22 out 2026:
    «sempre que ele vem para uma página principal de cada marca, temos ali um
    movimento da outra marca a crescer e a voltar à posição normal, para se
-   saber que tem ali qualquer coisa»). Uma vez por chegada, quase logo ao
-   abrir (0,15 s: «quase instantâneo», pediu ele depois de ver o de 0,9 s),
-   duas vezes seguidas (a dona: «a repetir só duas vezes»); sem pedido de menos movimento. data-inicio vem do
-   shell.mjs (/ e /cathelier/, em todas as línguas). */
+   saber que tem ali qualquer coisa»): acende e cresce, quase logo ao abrir
+   (0,15 s), duas vezes (a dona: «a repetir só duas vezes»); sem pedido de
+   menos movimento. data-inicio vem do shell.mjs (/ e /cathelier/). */
 @keyframes outra-loja {
-  0%, 100% { transform: scale(1); }
-  30% { transform: scale(1.35); }
-  55% { transform: scale(.97); }
-  75% { transform: scale(1.12); }
-}
-/* No telemóvel há menos espaço entre as duas marcas: o pico é mais baixo,
-   para a da outra loja nunca tocar na do centro (medido a 375). */
-@keyframes outra-loja-estreito {
-  0%, 100% { transform: scale(1); }
-  30% { transform: scale(1.2); }
-  55% { transform: scale(.98); }
-  75% { transform: scale(1.08); }
+  0%, 100% { transform: scale(1); opacity: .4; }
+  30% { transform: scale(1.18); opacity: 1; }
+  55% { transform: scale(.98); opacity: 1; }
+  75% { transform: scale(1.07); opacity: 1; }
 }
 @media (prefers-reduced-motion: no-preference) {
-  html[data-inicio='yes'] .head__sibling-corpo { animation: outra-loja 1.3s cubic-bezier(.4, 0, .2, 1) .15s 2; }
-}
-@media (prefers-reduced-motion: no-preference) and (width < 48rem) {
-  html[data-inicio='yes'] .head__sibling-corpo { animation-name: outra-loja-estreito; }
-}
-/* O logótipo e a seta crescem juntos (o Renato: «aumenta também a seta»),
-   num invólucro só deles -- o .head__sibling já tem a sua transição. */
-.head__sibling-corpo { display: inline-flex; align-items: center; gap: .35em; }
-@media (hover: hover) and (prefers-reduced-motion: no-preference) {
-  .head__sibling-corpo { transition: transform 200ms var(--head-ease, ease); }
-  .head__sibling:is(:hover, :focus-visible) .head__sibling-corpo { transform: scale(1.2); }
+  html[data-inicio='yes'] .head__outra { animation: outra-loja 1.3s cubic-bezier(.4, 0, .2, 1) .15s 2; }
 }
 .head__sibling-arrow { font-size: 12px; opacity: .8; }
 
