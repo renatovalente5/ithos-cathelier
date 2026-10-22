@@ -217,7 +217,7 @@ export function page(o) {
   const cartao = partilhaDe({ partilha, cartoes, brand });
 
   return `<!doctype html>
-<html lang="${LOCALE[lingua()]}"${prefixoDe() ? ` data-prefixo="${prefixoDe()}"` : ''} data-brand="${brand}"${cover ? ' data-cover="yes"' : ''}>
+<html lang="${LOCALE[lingua()]}"${prefixoDe() ? ` data-prefixo="${prefixoDe()}"` : ''} data-brand="${brand}"${cover ? ' data-cover="yes"' : ''}${path === '/' || path === '/cathelier/' ? ' data-inicio="yes"' : ''}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">

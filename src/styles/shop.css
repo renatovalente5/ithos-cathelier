@@ -786,6 +786,32 @@ html:has(.rapido[open]) { overflow: hidden; }
 /* O LOGÓTIPO DA OUTRA LOJA CRESCE À PASSAGEM DO RATO (a dona, 22 out 2026:
    «dá para ampliar o logo quando se passa o rato»), e com o foco do teclado.
    Só cresce para fora do sítio dele (transform), sem empurrar o cesto. */
+/* NA PÁGINA INICIAL DE CADA LOJA, A OUTRA DÁ SINAL (o Renato, 22 out 2026:
+   «sempre que ele vem para uma página principal de cada marca, temos ali um
+   movimento da outra marca a crescer e a voltar à posição normal, para se
+   saber que tem ali qualquer coisa»). Uma vez por chegada, depois de a
+   página assentar; sem pedido de menos movimento. data-inicio vem do
+   shell.mjs (/ e /cathelier/, em todas as línguas). */
+@keyframes outra-loja {
+  0%, 100% { transform: scale(1); }
+  30% { transform: scale(1.35); }
+  55% { transform: scale(.97); }
+  75% { transform: scale(1.12); }
+}
+/* No telemóvel há menos espaço entre as duas marcas: o pico é mais baixo,
+   para a da outra loja nunca tocar na do centro (medido a 375). */
+@keyframes outra-loja-estreito {
+  0%, 100% { transform: scale(1); }
+  30% { transform: scale(1.2); }
+  55% { transform: scale(.98); }
+  75% { transform: scale(1.08); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  html[data-inicio='yes'] .head__sibling-corpo { animation: outra-loja 1.3s cubic-bezier(.4, 0, .2, 1) .9s 1; }
+}
+@media (prefers-reduced-motion: no-preference) and (width < 48rem) {
+  html[data-inicio='yes'] .head__sibling-corpo { animation-name: outra-loja-estreito; }
+}
 /* O logótipo e a seta crescem juntos (o Renato: «aumenta também a seta»),
    num invólucro só deles -- o .head__sibling já tem a sua transição. */
 .head__sibling-corpo { display: inline-flex; align-items: center; gap: .35em; }
