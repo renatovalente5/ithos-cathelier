@@ -220,7 +220,21 @@ function prepararLingua(l) {
     const w = ws.includes(960) ? 960 : ws.at(-1);
     return [m, w ? `/media/covers/${stem}-${w}.webp` : null];
   }));
-  shellArgs = { site: SITE, identity, counts, preview: PREVIEW, shipping, shop, asset: ASSET, cartoes: CARTOES, campanhaFotos };
+  /* E A DE CADA CAMPANHA, quando a dona escolheu uma no painel (a dona, 22
+     out 2026: «dá-me acesso à imagem da campanha»): photos/ithos/campanhas/,
+     na versão INTEIRA (public/media/whole/, que o renditions.py faz de todos
+     os originais) -- a versão do cartão é cortada ao alto, e a janela é larga
+     (16:10, cortada pelo CSS). Sem ela (uma fotografia que ainda não passou
+     pelo CI), a janela fica com a da capa: uma imagem de promoção nunca pára
+     a publicação; diz-se. */
+  const fotosDasCampanhas = {};
+  for (const c of shipping.campaigns ?? []) {
+    if (!c?.id || !c.foto) continue;
+    const w = [1000, 600, 400].find((x) => existsSync(join(ROOT, 'public', 'media', 'whole', 'ithos', 'campanhas', `${c.foto}-${x}.webp`)));
+    if (w) fotosDasCampanhas[c.id] = `/media/whole/ithos/campanhas/${c.foto}-${w}.webp`;
+    else console.warn(`  aviso: a fotografia da campanha «${c.title || c.id}» (${c.foto}) não tem versões web: a janela usa a da capa`);
+  }
+  shellArgs = { site: SITE, identity, counts, preview: PREVIEW, shipping, shop, asset: ASSET, cartoes: CARTOES, campanhaFotos, fotosDasCampanhas };
   /* As peças vão para os marcadores por causa da página de cuidados da
      cathelier, que lista os avisos de cada uma (na língua do passo). */
   MARKERS = pages.markers({ identity, shop, shipping, pieces });

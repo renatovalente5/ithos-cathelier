@@ -181,7 +181,7 @@ export function etiquetasDaImagem(c) {
 export function page(o) {
   const {
     brand = 'ithos', title, description, path, body,
-    site, identity, schema = [], counts = {}, shipping = null, shop = null, asset = {}, campanhaFotos = {},
+    site, identity, schema = [], counts = {}, shipping = null, shop = null, asset = {}, campanhaFotos = {}, fotosDasCampanhas = {},
     /* O CARTÃO DE PARTILHA (og:image), que é o que o WhatsApp mostra.
        `cartoes` são os três cartões das marcas, medidos pelo gerador
        (src/build.mjs, cartoes()); `partilha` escolhe um deles pelo nome --
@@ -283,7 +283,7 @@ ${drawer({ brand, identity, counts, site, canonicalPath })}
 ${footer({ brand, identity, shop })}
 
 <a class="to-top" href="#top" hidden aria-label="${esc(t('shell.topo'))}">${icon('arrowUp', 22)}</a>
-${shop?.open === false ? '' : avisoCampanha({ brand, shipping, foto: campanhaFotos[brand] })}
+${shop?.open === false ? '' : avisoCampanha({ brand, shipping, foto: campanhaFotos[brand], fotosDasCampanhas })}
 
 <!-- There is no site-wide cookie notice, and that is a decision, not an
      omission. This site sets no analytics and no advertising cookies, the
@@ -349,18 +349,21 @@ function announcement({ brand, shipping, shop }) {
    («Envio gratuito», editável no painel), a condição não -- «a partir de 30 €»
    escreve-se a partir do freeOver, para a janela nunca prometer mais do que a
    caixa cobra. Sem campanha ligada, ou com a janela desligada, não há janela. */
-function avisoCampanha({ brand, shipping, foto }) {
+function avisoCampanha({ brand, shipping, foto: daCapa, fotosDasCampanhas = {} }) {
   /* Uma janela por campanha ligada (com a janela ligada), na ordem da lista:
      o shop.js mostra a primeira que estiver dentro do dia. */
   return campanhasLigadas(shipping).map((c, i) => [c, i]).filter(([c]) => c.popup !== false).map(([c, i]) => {
   /* Outro sítio onde vale também é outra campanha: volta a aparecer. */
   const chave = [c.freeOver, c.from || '', c.to || '', c.title || '', (c.countries ?? []).join(' ')].join('|');
+  /* A fotografia da campanha, se a dona escolheu uma; senão a da capa da marca. */
+  const foto = fotosDasCampanhas[c.id] ?? daCapa;
   return `<dialog class="aviso-campanha" id="aviso-campanha-${i}" aria-labelledby="aviso-campanha-titulo-${i}"
   data-de="${esc(c.from || '')}" data-ate="${esc(c.to || '')}" data-chave="${esc(chave)}">
   <form method="dialog"><button class="aviso-campanha__fechar" value="fechar" aria-label="${esc(t('shell.avisoCampanha.fechar'))}">${icon('close', 20)}</button></form>
   ${foto ? `<div class="aviso-campanha__foto"><img src="${esc(foto)}" alt="" width="960" height="540" loading="lazy" decoding="async"></div>` : ''}
   <div class="aviso-campanha__texto">
     <h2 id="aviso-campanha-titulo-${i}">${esc(c.title || t('shell.avisoCampanha.titulo'))}</h2>
+    ${String(c.texto ?? '').trim() ? `<p class="aviso-campanha__nota">${esc(c.texto.trim())}</p>` : ''}
     <p>${esc(condicaoDaCampanha(c, shipping))}</p>
     <form method="dialog"><button class="aviso-campanha__ok" value="ok">${esc(t('shell.avisoCampanha.continuar'))}</button></form>
   </div>
