@@ -22,7 +22,7 @@ import * as legal from './lib/legal.mjs';
 import { esc, picture } from './lib/html.mjs';
 import { fotosDaDona, enquadramentoDaDona } from './lib/oficina.mjs';
 import { cardWidths, shapeOf } from './lib/photo.mjs';
-import { REDIRECTS } from './lib/redirects.mjs';
+import { REDIRECTS, MORADAS_MUDADAS } from './lib/redirects.mjs';
 import { escaloes } from './lib/quantidades.mjs';
 import { visiveis, destinoDe, fragmentosAntigos, lerSeparadores } from './lib/ocasioes.mjs';
 import { stockDe, prateleiras } from './lib/prazos.mjs';
@@ -488,6 +488,12 @@ function assets() {
      Duas regras que apanhem o mesmo ficheiro JUNTAM os valores: por isso a
      de /* não leva Cache-Control. */
   const imutavel = 'Cache-Control: public, max-age=31536000, immutable';
+  /* AS MORADAS QUE MUDARAM (src/lib/redirects.mjs, MORADAS_MUDADAS): 301 a
+     sério, pela Cloudflare, em todas as línguas e com e sem a barra do fim. */
+  writeFileSync(join(OUT, '_redirects'), MORADAS_MUDADAS.flatMap(({ de, para }) => LINGUAS.flatMap((l) => {
+    const p = l === linguaDaRaiz() ? '' : `/${l}`;
+    return [`${p}${de} ${p}${para} 301`, `${p}${de.replace(/\/$/, '')} ${p}${para} 301`];
+  })).join('\n') + '\n');
   writeFileSync(join(OUT, '_headers'), [
     '/assets/styles.*.css', `  ${imutavel}`,
     '/assets/shop.*.js', `  ${imutavel}`,

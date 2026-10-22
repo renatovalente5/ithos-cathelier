@@ -40,3 +40,20 @@ export const REDIRECTS = [
   // Os troféus e as placas foram para os pedidos especiais.
   { from: '/cathelier/awards/', to: '/cathelier/pieces/#custom' },
 ];
+
+/* AS MORADAS DE PRODUTOS QUE PASSARAM A INGLÊS (o Renato, 22 out 2026: «dá
+ * para meter tudo em inglês?» -- /lamps/cao/ ao lado de /lamps/fox/). Não são
+ * stubs: vão para public/_redirects, que a Cloudflare serve como 301 a sério
+ * (o Google passa a morada nova para o resultado). Em todas as línguas, com e
+ * sem a barra do fim. O stock das moradas antigas passou para as novas no
+ * Worker (src/stock.js, SKUS_RENOMEADOS); as fotografias não mudaram de
+ * pasta (photoFolder). */
+export const MORADAS_MUDADAS = [
+  { de: '/lamps/cao/', para: '/lamps/dog/' },
+  { de: '/lamps/cavalo/', para: '/lamps/horse/' },
+  { de: '/lamps/ovelha/', para: '/lamps/sheep/' },
+  { de: '/lamps/preguica/', para: '/lamps/sloth/' },
+  { de: '/lamps/balao-ar-quente/', para: '/lamps/hot-air-balloon/' },
+  { de: '/cathelier/pieces/bola-de-natal-com-acrilico/', para: '/cathelier/pieces/acrylic-christmas-bauble/' },
+  { de: '/cathelier/pieces/globo-feliz-natal/', para: '/cathelier/pieces/merry-christmas-globe/' },
+];
