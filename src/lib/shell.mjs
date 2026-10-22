@@ -450,8 +450,7 @@ function header({ brand, site, canonicalPath, anuncio = '' }) {
     </a>
 
     <div class="head__right">
-      ${seletorDeLingua({ site, canonicalPath, classe: 'linguas' })}
-      ${/* O NOME À PASSAGEM DO RATO (a dona, 22 out 2026: «a pequena mensagem,
+      ${/* A porta para a outra loja À ESQUERDA do PT/EN (o Renato, 22 out 2026). */ ''}${/* O NOME À PASSAGEM DO RATO (a dona, 22 out 2026: «a pequena mensagem,
           tal como no ícone inglês» -- o «EN» já mostrava «English»). Nos
           botões só com desenho, o `title` é o mesmo texto do aria-label: um
           leitor de ecrã não o repete. */ ''}<a class="head__sibling" href="${sibling.href}" data-other-brand
@@ -461,6 +460,7 @@ function header({ brand, site, canonicalPath, anuncio = '' }) {
           <img src="${other.src}" alt="" width="${other.w}" height="${other.h}">
         </span><span class="head__sibling-arrow" aria-hidden="true">↗</span></span>
       </a>
+      ${seletorDeLingua({ site, canonicalPath, classe: 'linguas' })}
       <a class="icon-btn" href="${brandPath('/cart/', brand)}" aria-label="${esc(t('shell.cesto'))}" title="${esc(t('shell.cesto'))}">
         ${icon('cart', 22)}<span class="cart-count" data-cart-count data-empty="yes"></span>
       </a>
