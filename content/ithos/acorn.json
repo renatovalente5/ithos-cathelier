@@ -8,11 +8,7 @@
     "nature"
   ],
   "made": "to_order",
-  "size": {
-    "depth": 5.6,
-    "height": 21,
-    "width": 23
-  },
+  "size": {},
   "summary": "Candeeiro bolota",
   "text": "O candeeiro em madeira da ithos®️, com a delicada silhueta de pequenas bolotas, combina design intemporal, luz acolhedora e o encanto dos pequenos detalhes. A sua iluminação LED branca quente cria uma atmosfera suave e reconfortante, ideal para acompanhar os momentos de leitura, tranquilidade e aconchego antes de dormir.\n\nDurante o dia, assume o papel de uma peça decorativa que acrescenta personalidade e ternura ao quarto infantil. Com acabamentos cuidados e detalhes pintados à mão, integra-se harmoniosamente em ambientes de inspiração natural, madeiras suaves e tons neutros.\nCriado para tornar os momentos de descanso ainda mais doces e especiais.",
   "photoFolder": "bolota",
@@ -34,12 +30,12 @@
       "values": [
         {
           "id": "1",
-          "name": "Grande (22×21 cm)",
+          "name": "Grande (22×21×5,6 cm)",
           "extra": 10
         },
         {
           "id": "2",
-          "name": "Pequena (17×16 cm)",
+          "name": "Pequena (17×16×5,6 cm)",
           "extra": 0
         },
         {
