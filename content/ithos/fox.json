@@ -36,6 +36,12 @@
           "name": "Branco",
           "extra": 0,
           "colour": "#FFFFFF"
+        },
+        {
+          "id": "2",
+          "name": "terracota",
+          "extra": 0,
+          "colour": "#E37B35"
         }
       ]
     },
