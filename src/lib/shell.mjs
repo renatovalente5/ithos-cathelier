@@ -1,5 +1,5 @@
 import { esc, safeHref, jsonInScript, paraFora, fora, noutroSeparador } from './html.mjs';
-import { campanhasLigadas, zonasDaCampanha } from './campanhas.mjs';
+import { campanhasLigadas, zonasDaCampanha, daLoja, segundosDaJanela } from './campanhas.mjs';
 import { icon } from './icons.mjs';
 import { prazos } from './prazos.mjs';
 import { livroLigacao } from './legal.mjs';
@@ -325,9 +325,12 @@ const dataCurta = (iso) => new Intl.DateTimeFormat(lingua() === 'en' ? 'en-GB' :
 function condicaoDaCampanha(c, shipping) {
   const n = Number(c.freeOver).toFixed(0);
   const onde = zonasDaCampanha(c, shipping);
+  /* Numa campanha de uma loja, a frase diz que só contam as peças dela: a
+     faixa nunca promete mais do que a caixa cobra. */
+  const marca = c.marca ? `Marca.${c.marca}` : '';
   return onde.length
-    ? t('shell.portesGratisPara', { n, onde: new Intl.ListFormat(lingua() === 'en' ? 'en-GB' : 'pt-PT', { type: 'conjunction' }).format(onde) })
-    : t('shell.portesGratis', { n });
+    ? t(`shell.portesGratisPara${marca}`, { n, onde: new Intl.ListFormat(lingua() === 'en' ? 'en-GB' : 'pt-PT', { type: 'conjunction' }).format(onde) })
+    : t(`shell.portesGratis${marca}`, { n });
 }
 function announcement({ brand, shipping, shop }) {
   if (shop?.open === false) {
@@ -337,14 +340,15 @@ function announcement({ brand, shipping, shop }) {
   /* NAS DUAS MARCAS (a dona, 20 out 2026: «no cathelier aparece portes
      grátis a partir de 30 €, mas no ithos não»). O cesto é um só e os portes
      grátis valem para tudo o que lá está -- candeeiros incluídos --, por isso
-     a faixa diz-se em todas as páginas; até aqui só a cathelier a tinha. */
+     a faixa diz-se em todas as páginas; até aqui só a cathelier a tinha.
+     Uma campanha de uma só loja (`marca`, 22 out 2026) só nas páginas dela. */
   /* Uma faixa por campanha ligada, cada uma com as suas datas: o shop.js tira
      as que estão fora do dia e deixa só a primeira (campanhas.mjs). */
-  return campanhasLigadas(shipping).map((c) => `<p class="announce" data-de="${esc(c.from || '')}" data-ate="${esc(c.to || '')}">${esc(condicaoDaCampanha(c, shipping))}</p>`).join('');
+  return campanhasLigadas(shipping).filter((c) => daLoja(c, brand)).map((c) => `<p class="announce" data-de="${esc(c.from || '')}" data-ate="${esc(c.to || '')}">${esc(condicaoDaCampanha(c, shipping))}</p>`).join('');
 }
 
 /* A JANELA DA CAMPANHA (a dona, 18 out 2026: a da roomgaga, mas com os portes
-   grátis). Aparece aos 10 segundos de visita, uma vez por visita -- o shop.js
+   grátis). Aparece aos segundos de visita escolhidos no painel (10 se nada), uma vez por visita -- o shop.js
    conta o tempo e as datas. O que ela promete sai dos MESMOS números que o
    carrinho e o Worker cobram (shipping.json, campaign): o título é da dona
    («Envio gratuito», editável no painel), a condição não -- «a partir de 30 €»
@@ -353,13 +357,13 @@ function announcement({ brand, shipping, shop }) {
 function avisoCampanha({ brand, shipping, foto: daCapa, fotosDasCampanhas = {} }) {
   /* Uma janela por campanha ligada (com a janela ligada), na ordem da lista:
      o shop.js mostra a primeira que estiver dentro do dia. */
-  return campanhasLigadas(shipping).map((c, i) => [c, i]).filter(([c]) => c.popup !== false).map(([c, i]) => {
+  return campanhasLigadas(shipping).map((c, i) => [c, i]).filter(([c]) => c.popup !== false && daLoja(c, brand)).map(([c, i]) => {
   /* Outro sítio onde vale também é outra campanha: volta a aparecer. */
-  const chave = [c.freeOver, c.from || '', c.to || '', c.title || '', (c.countries ?? []).join(' ')].join('|');
+  const chave = [c.freeOver, c.from || '', c.to || '', c.title || '', (c.countries ?? []).join(' '), c.marca || ''].join('|');
   /* A fotografia da campanha, se a dona escolheu uma; senão a da capa da marca. */
   const foto = fotosDasCampanhas[c.id] ?? daCapa;
   return `<dialog class="aviso-campanha" id="aviso-campanha-${i}" aria-labelledby="aviso-campanha-titulo-${i}"
-  data-de="${esc(c.from || '')}" data-ate="${esc(c.to || '')}" data-chave="${esc(chave)}">
+  data-de="${esc(c.from || '')}" data-ate="${esc(c.to || '')}" data-chave="${esc(chave)}" data-segundos="${segundosDaJanela(c)}">
   <form method="dialog"><button class="aviso-campanha__fechar" value="fechar" aria-label="${esc(t('shell.avisoCampanha.fechar'))}">${icon('close', 20)}</button></form>
   ${foto ? `<div class="aviso-campanha__foto"><img src="${esc(foto)}" alt="" width="960" height="540" loading="lazy" decoding="async"></div>` : ''}
   <div class="aviso-campanha__texto">

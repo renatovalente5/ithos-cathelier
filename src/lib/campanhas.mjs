@@ -10,6 +10,14 @@
  * como uma lista de uma. */
 export const campanhasDe = (s) => (Array.isArray(s?.campaigns) ? s.campaigns : (s?.campaign ? [s.campaign] : []));
 export const campanhasLigadas = (s) => campanhasDe(s).filter((c) => c && c.active && Number(c.freeOver) > 0);
+/* DE QUE LOJA (o Renato, 22 out 2026: «campanhas diferentes para o ithos e
+   para o Cathelier»). Uma campanha com `marca` é só dessa loja -- a faixa e a
+   janela aparecem só nas páginas dela, e para os portes grátis contam só as
+   peças dela --; sem `marca`, é das duas. Em cada loja vale a primeira da
+   lista que a cobre (a mesma regra no Worker, src/catalogue.js, e no cesto). */
+export const daLoja = (c, brand) => !c?.marca || c.marca === brand;
+/* Aos quantos segundos de visita aparece a janela (sem nada, aos 10). */
+export const segundosDaJanela = (c) => (Number.isInteger(c?.segundos) && c.segundos >= 0 ? c.segundos : 10);
 
 /* ONDE VALE (o painel, 21 out 2026: «Onde vale» em cada campanha). `countries`
    são os códigos das zonas de «Envios» escolhidas (PT, PT-20, PT-30…); sem

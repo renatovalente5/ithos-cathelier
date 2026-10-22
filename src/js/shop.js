@@ -1715,7 +1715,7 @@ async function basketPage() {
     };
   }
 
-  function shippingFor(country, goods) {
+  function shippingFor(country, linhas) {
     const s = cat.shipping;
     const zone = s.zones.find((z) => z.countries.includes(country))
       ?? s.zones.find((z) => z.countries.includes(country.slice(0, 2)));
@@ -1723,9 +1723,16 @@ async function basketPage() {
     /* A primeira campanha da lista que vale hoje (src/lib/campanhas.mjs, e a
        mesma regra no Worker). `freeOver > 0`, como o Worker: uma campanha
        ligada sem valor dizia «grátis» aqui e cobrava os portes lá. */
-    const c = (Array.isArray(s.campaigns) ? s.campaigns : (s.campaign ? [s.campaign] : []))
-      .find((x) => x?.active && x.freeOver > 0 && dentroDasDatas(x.from, x.to));
-    if (c && goods >= c.freeOver && (!(c.countries || []).length || c.countries.includes(country))) return 0;
+    /* Em cada loja vale a primeira que a cobre; uma campanha de uma loja conta
+       só as peças dela, ao PVP (o Renato, 22 out 2026; src/catalogue.js do
+       Worker, campanhasDeHoje e valorParaCampanha). */
+    const emVigor = (Array.isArray(s.campaigns) ? s.campaigns : (s.campaign ? [s.campaign] : []))
+      .filter((x) => x?.active && x.freeOver > 0 && dentroDasDatas(x.from, x.to));
+    const valem = new Set(['ithos', 'cathelier'].map((m) => emVigor.find((x) => !x.marca || x.marca === m)).filter(Boolean));
+    for (const c of valem) {
+      const conta = linhas.filter((x) => !c.marca || x.brand === c.marca).reduce((t, x) => t + x.pvpTotal, 0);
+      if (conta >= c.freeOver - 1e-9 && (!(c.countries || []).length || c.countries.includes(country))) return 0;
+    }
     return zone.price;
   }
 
@@ -1815,8 +1822,7 @@ async function basketPage() {
     /* The same basket pays the same shipping: the free-shipping threshold is
        measured at retail value, as the Worker does, or a reseller would lose
        free shipping for paying less. */
-    const pvpGoods = priced.reduce((t, x) => t + x.p.pvpTotal, 0);
-    const post = shippingFor(cur.country || 'PT', pvpGoods);
+    const post = shippingFor(cur.country || 'PT', priced.map((x) => x.p));
     $('[data-sum-goods]').textContent = euros(goods);
     $('[data-sum-shipping]').textContent = post === null ? tj('cesto.naoEnviamos')
       : post === 0 ? tj('cesto.gratis') : euros(post);
@@ -3023,8 +3029,8 @@ function trancarSeEmPausa(raiz, cat) {
  * cima, a janela) e no Worker (o que se cobra) -- com a mesma conta, para o
  * carrinho nunca mostrar portes grátis que a caixa depois cobra.
  *
- * A JANELA (a dona, 18 out 2026): aparece quando a pessoa já passou 10
- * segundos no site -- somados de página em página, e só com o separador à
+ * A JANELA (a dona, 18 out 2026): aparece quando a pessoa já passou os
+ * segundos escolhidos no painel (data-segundos; 10 se nada) no site -- somados de página em página, e só com o separador à
  * vista --, uma vez por visita (sessionStorage), e nunca no pagamento nem por
  * cima do menu aberto. Fecha no X, no botão, com Esc ou clicando fora. Uma
  * campanha diferente (outro valor, outras datas, outro título) volta a
@@ -3055,7 +3061,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const ler = () => { try { return sessionStorage.getItem(chave); } catch { return null; } };
   const escrever = (v) => { try { sessionStorage.setItem(chave, v); } catch { /* sem memória da visita */ } };
   if (ler() === 'visto') return;
-  const ALVO = 10000;
+  /* Os segundos escolhidos no painel, em cada campanha (sem nada, 10). */
+  const s = Number(d.dataset.segundos);
+  const ALVO = (Number.isFinite(s) && s >= 0 ? s : 10) * 1000;
   let gasto = Number(ler()) || 0;
   let desde = null; let relogio = null;
   const contar = () => { if (desde !== null) { gasto += performance.now() - desde; desde = null; } escrever(String(Math.round(gasto))); };

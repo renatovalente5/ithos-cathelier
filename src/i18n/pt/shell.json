@@ -56,5 +56,9 @@
   "pagamentos": "Pagamentos aceites",
   "pausa": "Vendas online em pausa — voltamos em breve.",
   "pausaAte": "Vendas online em pausa até {data}.",
-  "portesGratisPara": "Portes grátis para {onde} em encomendas a partir de {n} €"
+  "portesGratisPara": "Portes grátis para {onde} em encomendas a partir de {n} €",
+  "portesGratisMarca.ithos": "Portes grátis em candeeiros ithos a partir de {n} €",
+  "portesGratisMarca.cathelier": "Portes grátis em peças cathelier a partir de {n} €",
+  "portesGratisParaMarca.ithos": "Portes grátis para {onde} em candeeiros ithos a partir de {n} €",
+  "portesGratisParaMarca.cathelier": "Portes grátis para {onde} em peças cathelier a partir de {n} €"
 }

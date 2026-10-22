@@ -209,5 +209,9 @@
     "t": "Online orders paused until {data}.",
     "h": "0f99412dc169"
   },
-  "portesGratisPara": "Free shipping to {onde} on orders from €{n}"
+  "portesGratisPara": "Free shipping to {onde} on orders from €{n}",
+  "portesGratisMarca.ithos": "Free shipping on ithos lamps from €{n}",
+  "portesGratisMarca.cathelier": "Free shipping on cathelier pieces from €{n}",
+  "portesGratisParaMarca.ithos": "Free shipping to {onde} on ithos lamps from €{n}",
+  "portesGratisParaMarca.cathelier": "Free shipping to {onde} on cathelier pieces from €{n}"
 }
