@@ -88,7 +88,7 @@
       "id": "portes-gratis",
       "active": true,
       "title": "Envio gratuito",
-      "freeOver": 30,
+      "freeOver": 0,
       "countries": [
         "PT-20",
         "PT-30"
