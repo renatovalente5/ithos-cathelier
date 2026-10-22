@@ -2,7 +2,7 @@ import { esc, safeHref, jsonInScript } from './html.mjs';
 import { campanhasLigadas, zonasDaCampanha } from './campanhas.mjs';
 import { icon } from './icons.mjs';
 import { prazos } from './prazos.mjs';
-import { livroBotao } from './legal.mjs';
+import { livroLigacao } from './legal.mjs';
 import { t, lingua, LINGUAS, LOCALE, OG_LOCALE, NOMES, morada, linguaDaRaiz, prefixoDe } from './i18n.mjs';
 
 /* ===========================================================================
@@ -648,7 +648,7 @@ function footer({ brand, identity, shop }) {
          It lives at /legal/identification/ and is linked under Terms above.
 
          The two things that must be ON the site rather than merely reachable
-         are still on it: the electronic complaints book is a button on the
+         are still on it: the electronic complaints book is a link on the
          bottom row of every page (legal-comum), outside the accordion, and
          the out-of-court dispute bodies are listed on the terms page and on
          the identification page, which is what article 18 of Lei 144/2015 asks.
@@ -667,10 +667,13 @@ function footer({ brand, identity, shop }) {
             2026): fica na linha de baixo de todas as páginas, num botão leve à
             altura das marcas de pagamento. scripts/check-output.mjs recusa uma
             página sem ela. */ ''}<p class="foot__withdraw"><a href="${esc(brandPath('/legal/withdraw/', brand))}">${esc(t('paginas.retratacao.ligacao'))}</a></p>
-        ${/* O LIVRO DE RECLAMAÇÕES (DL 156/2005, art. 5.º-B: «visível e de forma
-            destacada»), num botão com o ícone, pela legal-comum: fora do
-            acordeão, na linha de baixo de todas as páginas. Também está nos
-            Contactos e na identificação do vendedor. */ ''}<p class="foot__livro">${livroBotao()}</p>
+        ${/* O LIVRO DE RECLAMAÇÕES (DL 156/2005, art. 5.º-B: acesso visível na
+            página de entrada), pela legal-comum: discreto -- o ícone e o
+            texto, com a letra e a cor das ligações do rodapé, sem caixa --,
+            mas FORA do acordeão, na linha de baixo de todas as páginas, ao
+            lado da retratação: no telemóvel os grupos de cima fecham-se, e o
+            Livro ficava escondido. Também está nos Contactos e na
+            identificação do vendedor. */ ''}<p class="foot__livro">${livroLigacao()}</p>
       </div>
       <p class="foot__end">© ${new Date().getFullYear()} ${esc(i.tradingName)}</p>
     </div>

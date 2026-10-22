@@ -73,7 +73,9 @@ export function iconeLivro({ classe = 'lr-icone' } = {}) {
 /**
  * A ligação ao Livro de Reclamações Electrónico.
  * @param {object} [opcoes]
- * @param {'botao'|'texto'} [opcoes.variante='botao'] botão destacado, ou ligação simples em negrito
+ * @param {'discreto'|'botao'|'texto'} [opcoes.variante='discreto'] «discreto» (por omissão): ícone + texto com a
+ *   letra e a cor das outras ligações do rodapé, sem caixa — o ícone é o destaque; «botao»: caixa colorida;
+ *   «texto»: ligação simples em negrito
  * @param {string} [opcoes.texto='Livro de Reclamações']
  * @param {string} [opcoes.classe] 'lr-botao' no botão, 'lr-texto' na ligação simples
  * @param {string} [opcoes.href=LIVRO_URL]
@@ -84,7 +86,7 @@ export function iconeLivro({ classe = 'lr-icone' } = {}) {
  * @returns {string} HTML de um <a> com target="_blank" e rel="noopener"
  */
 export function livroReclamacoes({
-  variante = 'botao',
+  variante = 'discreto',
   texto = 'Livro de Reclamações',
   classe,
   href = LIVRO_URL,
@@ -92,15 +94,20 @@ export function livroReclamacoes({
   icone,
   lingua = 'pt',
 } = {}) {
-  if (variante !== 'botao' && variante !== 'texto') throw new Error(`Variante desconhecida: ${variante} (usa 'botao' ou 'texto')`);
+  if (!['discreto', 'botao', 'texto'].includes(variante)) {
+    throw new Error(`Variante desconhecida: ${variante} (usa 'discreto', 'botao' ou 'texto')`);
+  }
   if (cor !== undefined && !CORES_LIVRO[cor]) {
     throw new Error(`Cor desconhecida: ${cor} (usa ${Object.keys(CORES_LIVRO).join(', ')}, ou passa a cor a livroCss)`);
   }
-  const base = classe || (variante === 'botao' ? 'lr-botao' : 'lr-texto');
+  const base = classe || { discreto: 'lr-discreto', botao: 'lr-botao', texto: 'lr-texto' }[variante];
   const classes = cor ? `${base} ${base}--${cor}` : base;
-  const comIcone = icone ?? variante === 'botao';
+  const comIcone = icone ?? variante !== 'texto';
   const novaJanela = '<span class="lr-sr"> (abre numa nova janela)</span>';
   const atributos = `class="${esc(classes)}" href="${esc(href)}" target="_blank" rel="noopener" lang="${esc(lingua)}"`;
+  if (variante === 'discreto') {
+    return `<a ${atributos}>${comIcone ? iconeLivro() : ''}<span>${esc(texto)}</span>${novaJanela}</a>`;
+  }
   if (variante === 'texto') {
     return `<a ${atributos}>${comIcone ? iconeLivro() : ''}<strong>${esc(texto)}</strong>${novaJanela}</a>`;
   }
@@ -134,6 +141,11 @@ export function livroCss(classe = 'lr-botao', { cor = CORES_LIVRO.vermelho.cor, 
     `${c}:focus-visible{outline:3px solid currentColor;outline-offset:3px}`,
     `${c} svg{width:1.5em;height:1.5em;flex:none}`,
     modificadores,
+    // Discreto: mesma letra e cor das outras ligações do rodapé (nunca mais pequena nem esbatida); o ícone destaca-o.
+    '.lr-discreto{display:inline-flex;align-items:center;gap:.4em;min-height:24px;color:inherit;font:inherit;text-decoration:none;white-space:nowrap}',
+    '.lr-discreto:hover,.lr-discreto:focus-visible{text-decoration:underline;text-underline-offset:.15em}',
+    '.lr-discreto:focus-visible{outline:2px solid currentColor;outline-offset:2px}',
+    '.lr-discreto svg{width:1.15em;height:1.15em;flex:none}',
     '.lr-texto{font-weight:700;color:inherit;text-decoration:underline;text-underline-offset:.15em}',
     '.lr-texto svg{width:1.2em;height:1.2em;vertical-align:-.2em;margin-right:.3em}',
     '.lr-sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}',

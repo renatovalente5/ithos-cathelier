@@ -133,7 +133,7 @@ export function markers({ identity, shop, shipping, pieces = [] }) {
     COMO_SE_FAZ_A_ENCOMENDA: legal.comoSeFazBloco({ shop }),
     DESTINATARIOS: legal.destinatariosBloco(),
     COOKIES_MAPA: legal.cookiesMapaBloco(),
-    LIVRO_BOTAO: `<p class="livro-bloco">${legal.livroBotao()}</p>`,
+    LIVRO_BOTAO: `<p class="livro-bloco">${legal.livroLigacao()}</p>`,
   };
 }
 
@@ -479,7 +479,7 @@ export function contact({ identity, shop, faq }) {
 
     ${/* O LIVRO DE RECLAMAÇÕES TAMBÉM AQUI (a forma segura do manual da DGC:
         na página de apoio ao cliente, além do rodapé), pela legal-comum. */ ''}
-    <p class="contact-livro"><span class="contact-livro__rotulo">${esc(t('paginas.contacto.reclamacoes'))}</span> ${legal.livroBotao()}</p>
+    <p class="contact-livro"><span class="contact-livro__rotulo">${esc(t('paginas.contacto.reclamacoes'))}</span> ${legal.livroLigacao()}</p>
 
     <h2>${esc(t('paginas.contacto.ondeEstamos'))}</h2>
     <p>${esc(t('paginas.contacto.oficina', { cidade: i.town, pais: i.country }))}</p>

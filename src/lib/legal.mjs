@@ -66,17 +66,16 @@ export const blocoRetoma = () => `<p class="retoma">${esc(avisoRetoma())}</p>`;
 
 /* --- Livro de Reclamações (DL 156/2005, art. 5.º-B) ----------------------- */
 
-/* O botão, entre marcadores de versão (verificar-versoes.mjs lê-os; o
-   check-output exige-os em todas as páginas). A cor é um dos presets do
-   manual da DGC. */
-export function livroBotao({ classe = 'lr-botao' } = {}) {
-  const a = livroReclamacoes({
-    variante: 'botao', texto: t('shell.rodape.reclamacoes'), classe, cor: 'vermelho', lingua: LOCALE[lingua()],
-  });
+/* A ligação, DISCRETA (o Renato, 22 out 2026: «quero algo mais discreto»):
+   o ícone pequeno do livro e o texto, com a letra e a cor das outras ligações
+   à volta, sem caixa nem fundo (variante por omissão da legal-comum v1.1.0).
+   Entre marcadores de versão (verificar-versoes.mjs lê-os). */
+export function livroLigacao() {
+  const a = livroReclamacoes({ texto: t('shell.rodape.reclamacoes'), lingua: LOCALE[lingua()] });
   return `<!-- legal-comum:livro v${VERSAO} -->${a}<!-- /legal-comum:livro -->`;
 }
 
-/** O CSS do botão (a biblioteca confere o contraste e lança erro se falhar). */
+/** O CSS da ligação (da biblioteca; traz também o da variante em botão). */
 export const livroEstilos = () => livroCss('lr-botao');
 
 /* --- RAL (Lei 144/2015, art. 18.º) ----------------------------------------- */

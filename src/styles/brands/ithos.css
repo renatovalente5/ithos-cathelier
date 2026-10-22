@@ -122,6 +122,7 @@
 [data-brand='ithos'] .foot__end,
 [data-brand='ithos'] .foot__end a,
 [data-brand='ithos'] .foot__note,
+[data-brand='ithos'] .foot__livro .lr-discreto,
 [data-brand='ithos'] .foot__cost { color: #6B4A38; }   /* 6.28:1 on the peach */
 [data-brand='ithos'] .foot__group summary,
 [data-brand='ithos'] .foot__withdraw a { color: #3A2219; border-color: rgb(140 66 48 / .35); }
