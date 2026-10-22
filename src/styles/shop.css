@@ -807,21 +807,6 @@ html:has(.rapido[open]) { overflow: hidden; }
 [data-brand='ithos'] .head__outra img { height: clamp(36px, 4.6vw, 50px); }
 [data-brand='cathelier'] .head__outra img { height: clamp(42px, 5.6vw, 60px); }
 
-/* NA PÁGINA INICIAL DE CADA LOJA, A OUTRA DÁ SINAL (o Renato, 22 out 2026:
-   «sempre que ele vem para uma página principal de cada marca, temos ali um
-   movimento da outra marca a crescer e a voltar à posição normal, para se
-   saber que tem ali qualquer coisa»): acende e cresce, quase logo ao abrir
-   (0,15 s), duas vezes (a dona: «a repetir só duas vezes»); sem pedido de
-   menos movimento. data-inicio vem do shell.mjs (/ e /cathelier/). */
-@keyframes outra-loja {
-  0%, 100% { transform: scale(1); opacity: .4; }
-  30% { transform: scale(1.18); opacity: 1; }
-  55% { transform: scale(.98); opacity: 1; }
-  75% { transform: scale(1.07); opacity: 1; }
-}
-@media (prefers-reduced-motion: no-preference) {
-  html[data-inicio='yes'] .head__outra { animation: outra-loja 1.3s cubic-bezier(.4, 0, .2, 1) .15s 2; }
-}
 .head__sibling-arrow { font-size: 12px; opacity: .8; }
 
 /* --- the word beside the three lines --------------------------------------

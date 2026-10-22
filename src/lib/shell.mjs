@@ -217,7 +217,7 @@ export function page(o) {
   const cartao = partilhaDe({ partilha, cartoes, brand });
 
   return `<!doctype html>
-<html lang="${LOCALE[lingua()]}"${prefixoDe() ? ` data-prefixo="${prefixoDe()}"` : ''} data-brand="${brand}"${cover ? ' data-cover="yes"' : ''}${path === '/' || path === '/cathelier/' ? ' data-inicio="yes"' : ''}>
+<html lang="${LOCALE[lingua()]}"${prefixoDe() ? ` data-prefixo="${prefixoDe()}"` : ''} data-brand="${brand}"${cover ? ' data-cover="yes"' : ''}>
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -449,8 +449,9 @@ function header({ brand, site, canonicalPath, anuncio = '' }) {
         com o exemplo de um amigo da dona: «o ícone que não está seleccionado
         fica mais esbatido»). Sempre pela mesma ordem, ithos e cathelier; a da
         loja onde se está a cheio e sublinhada (aria-current), a outra
-        esbatida, que acende à passagem do rato e dá sinal nas páginas
-        iniciais. Substitui a porta pequena com a seta, à direita. */ ''}<div class="head__marcas">
+        esbatida, que acende à passagem do rato (o sinal que dava nas páginas
+        iniciais saiu: «agora não precisas de piscar», o Renato). Substitui a
+        porta pequena com a seta, à direita. */ ''}<div class="head__marcas">
       ${['ithos', 'cathelier'].map((m) => (m === brand
     ? `<a class="head__mark" href="${home}" aria-current="true" aria-label="${esc(t('shell.inicioDe', { marca: mark.alt }))}">
         <img src="${mark.src}" alt="${esc(mark.alt)}" width="${mark.w}" height="${mark.h}">
