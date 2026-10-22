@@ -356,7 +356,9 @@ function announcement({ brand, shipping, shop }) {
      Uma campanha de uma só loja (`marca`, 22 out 2026) só nas páginas dela. */
   /* Uma faixa por campanha ligada, cada uma com as suas datas: o shop.js tira
      as que estão fora do dia e deixa só a primeira (campanhas.mjs). */
-  return campanhasLigadas(shipping).filter((c) => daLoja(c, brand)).map((c) => `<p class="announce" data-de="${esc(c.from || '')}" data-ate="${esc(c.to || '')}">${esc(condicaoDaCampanha(c, shipping))}</p>`).join('');
+  /* `faixa: false` (o Renato, 22 out 2026): a campanha vale e a janela pode
+     aparecer, mas sem a faixa do topo. */
+  return campanhasLigadas(shipping).filter((c) => daLoja(c, brand) && c.faixa !== false).map((c) => `<p class="announce" data-de="${esc(c.from || '')}" data-ate="${esc(c.to || '')}">${esc(condicaoDaCampanha(c, shipping))}</p>`).join('');
 }
 
 /* A JANELA DA CAMPANHA (a dona, 18 out 2026: a da roomgaga, mas com os portes

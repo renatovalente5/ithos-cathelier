@@ -74,6 +74,7 @@ for (const c of shipping.active) {
     for (const k of ['from', 'to']) {
       if (c?.[k] && !/^\d{4}-\d{2}-\d{2}$/.test(c[k])) die(`shipping.json: ${nome}: ${k} is "${c[k]}" — it has to be AAAA-MM-DD, or the basket and the Worker cannot compare it with today`);
     }
+    if (c?.faixa !== undefined && typeof c.faixa !== 'boolean') die(`shipping.json: ${nome}: faixa tem de ser true ou false`);
     if (c?.tipo !== undefined && !['portes', 'aviso'].includes(c.tipo)) die(`shipping.json: ${nome}: tipo «${c.tipo}» — só «portes» ou «aviso»`);
     if (c?.frase !== undefined && (typeof c.frase !== 'string' || c.frase.length > 120)) die(`shipping.json: ${nome}: a frase tem de ser texto até 120 letras`);
     if (c?.active && c.tipo === 'aviso' && !String(c.frase ?? '').trim()) warnings.push(`shipping.json: a ${nome} é um aviso ligado sem frase — o site não mostra nada`);
