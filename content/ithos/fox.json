@@ -33,15 +33,15 @@
       "values": [
         {
           "id": "1",
-          "name": "Branco",
+          "name": "Terracota",
           "extra": 0,
-          "colour": "#FFFFFF"
+          "colour": "#E37B35"
         },
         {
           "id": "2",
-          "name": "terracota",
+          "name": "Branco",
           "extra": 0,
-          "colour": "#E37B35"
+          "colour": "#FFFFFF"
         }
       ]
     },
