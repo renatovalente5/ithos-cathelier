@@ -789,8 +789,8 @@ html:has(.rapido[open]) { overflow: hidden; }
 /* NA PÁGINA INICIAL DE CADA LOJA, A OUTRA DÁ SINAL (o Renato, 22 out 2026:
    «sempre que ele vem para uma página principal de cada marca, temos ali um
    movimento da outra marca a crescer e a voltar à posição normal, para se
-   saber que tem ali qualquer coisa»). Uma vez por chegada, depois de a
-   página assentar; sem pedido de menos movimento. data-inicio vem do
+   saber que tem ali qualquer coisa»). Uma vez por chegada, quase logo ao
+   abrir (0,15 s: «quase instantâneo», pediu ele depois de ver o de 0,9 s); sem pedido de menos movimento. data-inicio vem do
    shell.mjs (/ e /cathelier/, em todas as línguas). */
 @keyframes outra-loja {
   0%, 100% { transform: scale(1); }
@@ -807,7 +807,7 @@ html:has(.rapido[open]) { overflow: hidden; }
   75% { transform: scale(1.08); }
 }
 @media (prefers-reduced-motion: no-preference) {
-  html[data-inicio='yes'] .head__sibling-corpo { animation: outra-loja 1.3s cubic-bezier(.4, 0, .2, 1) .9s 1; }
+  html[data-inicio='yes'] .head__sibling-corpo { animation: outra-loja 1.3s cubic-bezier(.4, 0, .2, 1) .15s 1; }
 }
 @media (prefers-reduced-motion: no-preference) and (width < 48rem) {
   html[data-inicio='yes'] .head__sibling-corpo { animation-name: outra-loja-estreito; }
