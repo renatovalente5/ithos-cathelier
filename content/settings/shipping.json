@@ -90,7 +90,9 @@
       "title": "Envio gratuito",
       "freeOver": 30,
       "countries": [
-        "PT"
+        "PT",
+        "PT-20",
+        "PT-30"
       ],
       "from": "",
       "to": "",
@@ -99,6 +101,21 @@
       "marca": "ithos",
       "frase": "Portes gratuitos para Portugal",
       "texto": "Portes gratuitos para Portugal"
+    },
+    {
+      "id": "campanha-ilpsx2",
+      "active": false,
+      "title": "",
+      "freeOver": 70,
+      "countries": [
+        "PT",
+        "PT-20",
+        "PT-30"
+      ],
+      "from": "",
+      "to": "",
+      "popup": true,
+      "marca": "cathelier"
     }
   ],
   "_note_campaigns": "As campanhas de portes grátis, que a dona gere no painel (Campanhas). Em cada dia vale a primeira da lista que estiver ligada, com valor, e com o dia de Lisboa dentro das datas (vazias = sem limite). «countries» vazio = todos os países onde a loja vende; «popup» = a janela aos 10 segundos."
