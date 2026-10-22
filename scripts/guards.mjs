@@ -74,7 +74,10 @@ for (const c of shipping.active) {
     for (const k of ['from', 'to']) {
       if (c?.[k] && !/^\d{4}-\d{2}-\d{2}$/.test(c[k])) die(`shipping.json: ${nome}: ${k} is "${c[k]}" — it has to be AAAA-MM-DD, or the basket and the Worker cannot compare it with today`);
     }
-    if (c?.active && !(c.freeOver > 0)) warnings.push(`shipping.json: a ${nome} está ligada sem valor — nada fica grátis, e o site não mostra janela nem faixa`);
+    if (c?.tipo !== undefined && !['portes', 'aviso'].includes(c.tipo)) die(`shipping.json: ${nome}: tipo «${c.tipo}» — só «portes» ou «aviso»`);
+    if (c?.frase !== undefined && (typeof c.frase !== 'string' || c.frase.length > 120)) die(`shipping.json: ${nome}: a frase tem de ser texto até 120 letras`);
+    if (c?.active && c.tipo === 'aviso' && !String(c.frase ?? '').trim()) warnings.push(`shipping.json: a ${nome} é um aviso ligado sem frase — o site não mostra nada`);
+    if (c?.active && c.tipo !== 'aviso' && !(c.freeOver > 0) && c.sempre !== true) warnings.push(`shipping.json: a ${nome} está ligada sem valor — nada fica grátis, e o site não mostra janela nem faixa`);
     if (c?.marca !== undefined && !['ithos', 'cathelier'].includes(c.marca)) die(`shipping.json: ${nome}: a marca é «${c.marca}» — só «ithos», «cathelier» ou nenhuma (as duas)`);
     if (c?.segundos !== undefined && !(Number.isInteger(c.segundos) && c.segundos >= 0 && c.segundos <= 300)) die(`shipping.json: ${nome}: segundos «${c.segundos}» — um número inteiro de 0 a 300`);
     if (c?.from && c?.to && c.to < c.from) warnings.push(`shipping.json: a ${nome} acaba (${c.to}) antes de começar (${c.from}) — nunca está em vigor`);

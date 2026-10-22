@@ -60,5 +60,11 @@
   "portesGratisMarca.ithos": "Portes grátis em candeeiros ithos a partir de {n} €",
   "portesGratisMarca.cathelier": "Portes grátis em peças cathelier a partir de {n} €",
   "portesGratisParaMarca.ithos": "Portes grátis para {onde} em candeeiros ithos a partir de {n} €",
-  "portesGratisParaMarca.cathelier": "Portes grátis para {onde} em peças cathelier a partir de {n} €"
+  "portesGratisParaMarca.cathelier": "Portes grátis para {onde} em peças cathelier a partir de {n} €",
+  "portesGratisSempre": "Portes grátis em todas as encomendas",
+  "portesGratisSemprePara": "Portes grátis para {onde} em todas as encomendas",
+  "portesGratisSempreMarca.ithos": "Portes grátis em todos os candeeiros ithos",
+  "portesGratisSempreMarca.cathelier": "Portes grátis em todas as peças cathelier",
+  "portesGratisSempreParaMarca.ithos": "Portes grátis para {onde} em todos os candeeiros ithos",
+  "portesGratisSempreParaMarca.cathelier": "Portes grátis para {onde} em todas as peças cathelier"
 }

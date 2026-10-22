@@ -1726,12 +1726,18 @@ async function basketPage() {
     /* Em cada loja vale a primeira que a cobre; uma campanha de uma loja conta
        só as peças dela, ao PVP (o Renato, 22 out 2026; src/catalogue.js do
        Worker, campanhasDeHoje e valorParaCampanha). */
+    /* Em condições (src/lib/campanhas.mjs, emCondicoes): um aviso não mexe nos
+       portes, e uma campanha «sem mínimo» (`sempre`) basta ter uma peça que
+       conte. */
+    const emCondicoes = (x) => x?.active && (x.tipo === 'aviso' ? String(x.frase || '').trim() : (x.sempre === true || x.freeOver > 0));
     const emVigor = (Array.isArray(s.campaigns) ? s.campaigns : (s.campaign ? [s.campaign] : []))
-      .filter((x) => x?.active && x.freeOver > 0 && dentroDasDatas(x.from, x.to));
+      .filter((x) => emCondicoes(x) && dentroDasDatas(x.from, x.to));
     const valem = new Set(['ithos', 'cathelier'].map((m) => emVigor.find((x) => !x.marca || x.marca === m)).filter(Boolean));
     for (const c of valem) {
+      if (c.tipo === 'aviso') continue;
       const conta = linhas.filter((x) => !c.marca || x.brand === c.marca).reduce((t, x) => t + x.pvpTotal, 0);
-      if (conta >= c.freeOver - 1e-9 && (!(c.countries || []).length || c.countries.includes(country))) return 0;
+      const chega = c.sempre === true ? conta > 0 : conta >= c.freeOver - 1e-9;
+      if (chega && (!(c.countries || []).length || c.countries.includes(country))) return 0;
     }
     return zone.price;
   }

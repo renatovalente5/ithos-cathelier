@@ -9,7 +9,20 @@
  * uma para o shop.js escolher. Um ficheiro antigo, só com `campaign`, lê-se
  * como uma lista de uma. */
 export const campanhasDe = (s) => (Array.isArray(s?.campaigns) ? s.campaigns : (s?.campaign ? [s.campaign] : []));
-export const campanhasLigadas = (s) => campanhasDe(s).filter((c) => c && c.active && Number(c.freeOver) > 0);
+/* O QUE UMA CAMPANHA PODE SER (o Renato, 22 out 2026: «a promoção pode não
+   ser 30 € mas sim envio gratuito ou muitas outras coisas»):
+   · `tipo: 'portes'` (sem tipo, é esta): portes grátis a partir de `freeOver`
+     euros, ou em todas as encomendas (`sempre`);
+   · `tipo: 'aviso'`: só a faixa e a janela, com a `frase` da dona -- não mexe
+     em preço nenhum.
+   A `frase`, se a dona a escrever, substitui a frase automática na faixa e na
+   janela; o que se cobra continua a sair dos campos (tipo, valor, sempre,
+   zonas, loja). Em condições = ligada e com o que precisa (valor ou sempre;
+   a frase, num aviso). A mesma regra no Worker (src/catalogue.js) e no cesto. */
+export const tipoDe = (c) => (c?.tipo === 'aviso' ? 'aviso' : 'portes');
+export const emCondicoes = (c) => Boolean(c && c.active
+  && (tipoDe(c) === 'aviso' ? String(c.frase ?? '').trim() : (c.sempre === true || Number(c.freeOver) > 0)));
+export const campanhasLigadas = (s) => campanhasDe(s).filter(emCondicoes);
 /* DE QUE LOJA (o Renato, 22 out 2026: «campanhas diferentes para o ithos e
    para o Cathelier»). Uma campanha com `marca` é só dessa loja -- a faixa e a
    janela aparecem só nas páginas dela, e para os portes grátis contam só as

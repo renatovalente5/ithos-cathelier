@@ -213,5 +213,11 @@
   "portesGratisMarca.ithos": "Free shipping on ithos lamps from €{n}",
   "portesGratisMarca.cathelier": "Free shipping on cathelier pieces from €{n}",
   "portesGratisParaMarca.ithos": "Free shipping to {onde} on ithos lamps from €{n}",
-  "portesGratisParaMarca.cathelier": "Free shipping to {onde} on cathelier pieces from €{n}"
+  "portesGratisParaMarca.cathelier": "Free shipping to {onde} on cathelier pieces from €{n}",
+  "portesGratisSempre": "Free shipping on every order",
+  "portesGratisSemprePara": "Free shipping to {onde} on every order",
+  "portesGratisSempreMarca.ithos": "Free shipping on every ithos lamp",
+  "portesGratisSempreMarca.cathelier": "Free shipping on every cathelier piece",
+  "portesGratisSempreParaMarca.ithos": "Free shipping to {onde} on every ithos lamp",
+  "portesGratisSempreParaMarca.cathelier": "Free shipping to {onde} on every cathelier piece"
 }

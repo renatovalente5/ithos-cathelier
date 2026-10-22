@@ -332,14 +332,17 @@ const dataCurta = (iso) => new Intl.DateTimeFormat(lingua() === 'en' ? 'en-GB' :
 /* A CONDIÇÃO DE UMA CAMPANHA, na faixa e na janela: o valor, e onde vale se
    não for em todo o lado (campanhas.mjs, zonasDaCampanha). */
 function condicaoDaCampanha(c, shipping) {
+  /* A frase da dona, se a escreveu (num aviso é sempre a dela). */
+  if (String(c.frase ?? '').trim()) return c.frase.trim();
   const n = Number(c.freeOver).toFixed(0);
   const onde = zonasDaCampanha(c, shipping);
   /* Numa campanha de uma loja, a frase diz que só contam as peças dela: a
      faixa nunca promete mais do que a caixa cobra. */
   const marca = c.marca ? `Marca.${c.marca}` : '';
+  const sempre = c.sempre === true ? 'Sempre' : '';
   return onde.length
-    ? t(`shell.portesGratisPara${marca}`, { n, onde: new Intl.ListFormat(lingua() === 'en' ? 'en-GB' : 'pt-PT', { type: 'conjunction' }).format(onde) })
-    : t(`shell.portesGratis${marca}`, { n });
+    ? t(`shell.portesGratis${sempre}Para${marca}`, { n, onde: new Intl.ListFormat(lingua() === 'en' ? 'en-GB' : 'pt-PT', { type: 'conjunction' }).format(onde) })
+    : t(`shell.portesGratis${sempre}${marca}`, { n });
 }
 function announcement({ brand, shipping, shop }) {
   if (shop?.open === false) {
@@ -368,7 +371,7 @@ function avisoCampanha({ brand, shipping, foto: daCapa, fotosDasCampanhas = {} }
      o shop.js mostra a primeira que estiver dentro do dia. */
   return campanhasLigadas(shipping).map((c, i) => [c, i]).filter(([c]) => c.popup !== false && daLoja(c, brand)).map(([c, i]) => {
   /* Outro sítio onde vale também é outra campanha: volta a aparecer. */
-  const chave = [c.freeOver, c.from || '', c.to || '', c.title || '', (c.countries ?? []).join(' '), c.marca || ''].join('|');
+  const chave = [c.freeOver, c.from || '', c.to || '', c.title || '', (c.countries ?? []).join(' '), c.marca || '', c.tipo || '', c.sempre ? 's' : '', c.frase || ''].join('|');
   /* A fotografia da campanha, se a dona escolheu uma; senão a da capa da marca. */
   const foto = fotosDasCampanhas[c.id] ?? daCapa;
   return `<dialog class="aviso-campanha" id="aviso-campanha-${i}" aria-labelledby="aviso-campanha-titulo-${i}"

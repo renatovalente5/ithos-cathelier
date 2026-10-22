@@ -68,7 +68,7 @@ export function campos(caminhoDoFicheiro, obj) {
   } else if (c === 'settings/shipping.json') {
     for (const z of obj.zones ?? []) juntar(`zones.${z.id}.name`, z.name);
     juntar('campaign.title', obj.campaign?.title);
-    for (const c of obj.campaigns ?? []) if (c?.id) { juntar(`campaigns.${c.id}.title`, c.title); juntar(`campaigns.${c.id}.texto`, c.texto); }
+    for (const c of obj.campaigns ?? []) if (c?.id) { juntar(`campaigns.${c.id}.title`, c.title); juntar(`campaigns.${c.id}.texto`, c.texto); juntar(`campaigns.${c.id}.frase`, c.frase); }
   } else if (c === 'settings/oficina.json') {
     /* O bloco «Olá» e as descrições das fotografias da dona. A assinatura é um
        nome e não se traduz. */
