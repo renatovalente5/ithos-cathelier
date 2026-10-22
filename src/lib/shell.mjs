@@ -1,4 +1,4 @@
-import { esc, safeHref, jsonInScript } from './html.mjs';
+import { esc, safeHref, jsonInScript, paraFora, fora, noutroSeparador } from './html.mjs';
 import { campanhasLigadas, zonasDaCampanha } from './campanhas.mjs';
 import { icon } from './icons.mjs';
 import { prazos } from './prazos.mjs';
@@ -428,13 +428,17 @@ function header({ brand, site, canonicalPath, anuncio = '' }) {
 
     <div class="head__right">
       ${seletorDeLingua({ site, canonicalPath, classe: 'linguas' })}
-      <a class="head__sibling" href="${sibling.href}" data-other-brand
-         aria-label="${esc(t('shell.irPara', { nome: sibling.name, nota: t(`shell.${sibling.note}`) }))}">
+      ${/* O NOME À PASSAGEM DO RATO (a dona, 22 out 2026: «a pequena mensagem,
+          tal como no ícone inglês» -- o «EN» já mostrava «English»). Nos
+          botões só com desenho, o `title` é o mesmo texto do aria-label: um
+          leitor de ecrã não o repete. */ ''}<a class="head__sibling" href="${sibling.href}" data-other-brand
+         aria-label="${esc(t('shell.irPara', { nome: sibling.name, nota: t(`shell.${sibling.note}`) }))}"
+         title="${esc(t('shell.irPara', { nome: sibling.name, nota: t(`shell.${sibling.note}`) }))}">
         <span class="head__sibling-mark">
           <img src="${other.src}" alt="" width="${other.w}" height="${other.h}">
         </span><span class="head__sibling-arrow" aria-hidden="true">↗</span>
       </a>
-      <a class="icon-btn" href="${brandPath('/cart/', brand)}" aria-label="${esc(t('shell.cesto'))}">
+      <a class="icon-btn" href="${brandPath('/cart/', brand)}" aria-label="${esc(t('shell.cesto'))}" title="${esc(t('shell.cesto'))}">
         ${icon('cart', 22)}<span class="cart-count" data-cart-count data-empty="yes"></span>
       </a>
     </div>
@@ -460,7 +464,7 @@ function drawer({ brand, identity, counts, site, canonicalPath }) {
   <div class="drawer__top">
     <button class="icon-btn close-menu" type="button" aria-label="${esc(t('shell.fecharMenu'))}">${icon('close', 24)}</button>
     <img class="drawer__mark" src="${mark.src}" alt="${esc(mark.alt)}" width="${mark.w}" height="${mark.h}">
-    <a class="icon-btn drawer__cart" href="${brandPath('/cart/', brand)}" aria-label="${esc(t('shell.cesto'))}">
+    <a class="icon-btn drawer__cart" href="${brandPath('/cart/', brand)}" aria-label="${esc(t('shell.cesto'))}" title="${esc(t('shell.cesto'))}">
       ${icon('cart', 22)}<span class="cart-count" data-cart-count data-empty="yes"></span>
     </a>
   </div>
@@ -484,7 +488,7 @@ function drawer({ brand, identity, counts, site, canonicalPath }) {
   <div class="drawer__contact">
     <a href="tel:${esc(identity.phone)}">${icon('phone', 18)}<span>${esc(identity.phoneText)}</span></a>
     <p class="drawer__cost">${esc(CALL_COST())}</p>
-    ${identity.whatsapp ? `<a href="https://wa.me/${esc(identity.whatsapp)}" rel="noopener">${icon('whatsapp', 18)}<span>WhatsApp</span></a>` : ''}
+    ${identity.whatsapp ? `<a href="https://wa.me/${esc(identity.whatsapp)}" ${fora}>${icon('whatsapp', 18)}<span>WhatsApp${noutroSeparador()}</span></a>` : ''}
   </div>
   ${seletorDeLingua({ site, canonicalPath, classe: 'linguas linguas--gaveta' })}
 </dialog>`;
@@ -613,7 +617,7 @@ function footer({ brand, identity, shop }) {
     [`mailto:${i.email}`, i.email, '', 'mail'],
   ];
   const linha = ([h, txt, note, ic]) => `<li${ic ? ' class="foot__with-icon"' : ''}><a href="${
-    esc(brandPath(safeHref(h, `the footer link «${txt}»`), brand))}">${ic ? icon(ic, 16) : ''}${esc(txt)}</a>${
+    esc(brandPath(safeHref(h, `the footer link «${txt}»`), brand))}"${paraFora(h) ? ` ${fora}` : ''}>${ic ? icon(ic, 16) : ''}${esc(txt)}${paraFora(h) ? noutroSeparador() : ''}</a>${
     note ? `<span class="foot__note">${esc(note)}</span>` : ''}</li>`;
   const mark = MARK[brand] ?? MARK.ithos;
   const home = brand === 'cathelier' ? '/cathelier/' : '/';
@@ -626,7 +630,7 @@ function footer({ brand, identity, shop }) {
         <ul class="foot__contact" aria-label="${esc(t('shell.rodape.falar'))}">${contactos.map(linha).join('')}</ul>
         <div class="foot__social">
           ${social.filter(([href]) => href).map(([href, label, ic]) =>
-            `<a href="${esc(safeHref(href, label))}" rel="noopener" aria-label="${esc(label)}">${icon(ic, 18)}</a>`).join('\n          ')}
+            `<a href="${esc(safeHref(href, label))}" ${fora} aria-label="${esc(`${label} (${t('shell.novoSeparador')})`)}" title="${esc(label)}">${icon(ic, 18)}</a>`).join('\n          ')}
         </div>
       </div>
 

@@ -22,6 +22,15 @@ export function safeHref(h, where = 'a link') {
   throw new Error(`${where}: "${s.slice(0, 80)}" is not an address this site links to — only /…, #…, https://…, mailto: and tel:`);
 }
 
+/* UMA LIGAÇÃO PARA FORA DO SITE ABRE NOUTRO SEPARADOR (a dona, 22 out 2026:
+   «pode abrir uma nova aba em vez de sair da página do site?», pelas redes e
+   pelo WhatsApp). `fora` dá os atributos, e quem usa um leitor de ecrã ouve
+   que abre noutro separador (`noutroSeparador`, escondido à vista).
+   scripts/check-output.mjs recusa uma ligação https para fora sem eles. */
+export const paraFora = (h) => /^https?:\/\//i.test(String(h ?? '').trim()) && !/^https?:\/\/(www\.)?ithos-cathelier\.pt(\/|$)/i.test(String(h).trim());
+export const fora = 'target="_blank" rel="noopener"';
+export const noutroSeparador = () => `<span class="sr-only"> (${esc(t('shell.novoSeparador'))})</span>`;
+
 /* STRUCTURED DATA INSIDE <script> IS NOT HTML, AND `esc()` DOES NOT APPLY.
    JSON.stringify leaves `<` alone, so a product called
    `</script><script>…` closed the tag and ran. \u003c is the same character

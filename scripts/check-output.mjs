@@ -888,6 +888,29 @@ if (titulosPorTraduzir.length) {
   }
 }
 
+/* --- uma ligação para fora do site abre noutro separador -------------------
+   A dona, 22 out 2026: «pode abrir uma nova aba em vez de sair da página do
+   site?» (as redes no rodapé, e o WhatsApp). Uma ligação https que sai do
+   site leva target="_blank" com rel="noopener" -- e diz a quem usa um leitor
+   de ecrã que abre noutro separador (texto escondido, ou no aria-label). */
+{
+  const semNovo = new Map();
+  for (const f of pages) {
+    const html = readFileSync(f, 'utf8');
+    for (const m of html.matchAll(/<a\s[^>]*href="(https?:\/\/[^"]+)"[^>]*>([\s\S]*?)<\/a>/g)) {
+      if (/^https?:\/\/(www\.)?ithos-cathelier\.pt(\/|$)/.test(m[1])) continue;
+      const abre = m[0].slice(0, m[0].indexOf('>') + 1);
+      const avisa = /sr-only">[^<]*\((?:abre noutro separador|opens in a new tab)\)/.test(m[2]) || /aria-label="[^"]*\((?:abre noutro separador|opens in a new tab)\)"/.test(abre)
+        || /legal-comum|lr-/.test(abre);
+      if (!/target="_blank"/.test(abre) || !/rel="[^"]*noopener/.test(abre) || !avisa) {
+        const host = new URL(m[1]).host;
+        if (!semNovo.has(host)) semNovo.set(host, f.slice(OUT.length));
+      }
+    }
+  }
+  for (const [host, onde] of semNovo) deaths.push(`${onde}: uma ligação para ${host} não abre noutro separador (target="_blank" rel="noopener" e o aviso «abre noutro separador»; html.mjs: fora e noutroSeparador)`);
+}
+
 /* --- o que a lei manda estar À VISTA, página a página ----------------------
    Promessas das páginas legais que só valem se o código as cumprir em todo o
    lado -- e que desaparecem sem erro nenhum no dia em que alguém mexe num

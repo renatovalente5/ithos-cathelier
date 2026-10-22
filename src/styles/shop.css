@@ -321,9 +321,14 @@ html[data-scrolled='no'] .head {
 /* Sized per SHAPE and not per brand-that-owns-it: the door in the ithos shop
    shows the cathelier lockup, which is wide (117x54), and the door in the
    cathelier shop shows the ithos one, which is nearly square (119x120). One
-   height for both would make one of them a postage stamp. */
+   height for both would make one of them a postage stamp.
+   O da cathelier cresceu a 22 out 2026 (a dona: «ampliar para se perceber o
+   nome cathelier»): as letras são finas e altas, e a 20px não se liam. */
 .head__sibling-mark img { inline-size: auto; block-size: 30px; }
-[data-brand='ithos'] .head__sibling-mark img { block-size: 20px; }
+[data-brand='ithos'] .head__sibling-mark img { block-size: 26px; }
+@media (width >= 48rem) {
+  [data-brand='ithos'] .head__sibling-mark img { block-size: 34px; }
+}
 
 /* A LÍNGUA. Duas letras por língua, a actual sublinhada e sem ligação (é onde
    se está). Pequeno, porque quase ninguém muda -- mas cada letra é um alvo de
@@ -769,7 +774,7 @@ html:has(.rapido[open]) { overflow: hidden; }
 @media (width < 21rem) {
   .head__sibling-arrow { display: none; }
   .head__sibling-mark img { block-size: 22px; }
-  [data-brand='ithos'] .head__sibling-mark img { block-size: 16px; }
+  [data-brand='ithos'] .head__sibling-mark img { block-size: 20px; }
 }
 .head__sibling:hover { color: var(--accent); }
 .head__sibling-arrow { font-size: 12px; opacity: .8; }

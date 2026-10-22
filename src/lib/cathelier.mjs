@@ -1,4 +1,4 @@
-import { esc, picture, prose, wholePicture } from './html.mjs';
+import { esc, picture, prose, wholePicture, fora, noutroSeparador } from './html.mjs';
 import { shapeOf, rungs, cardFocus } from './photo.mjs';
 import { viewer } from './viewer.mjs';
 import { join, dirname } from 'node:path';
@@ -454,7 +454,7 @@ export function piece({ p, all: everything, shop, occasions, identity }) {
     <h1>${esc(p.name)}</h1>
     <p class="product__price">${desde(p.price)}</p>
     ${precosPorQuantidade(p)}
-    <p class="product__lead product__lead--texto">${esc(prazos(shop.lead).encomendaPeca)}${identity?.whatsapp ? ` <a href="https://wa.me/${esc(identity.whatsapp)}" rel="noopener">${esc(prazos(shop.lead).dataCerta)}</a>` : ''}</p>
+    <p class="product__lead product__lead--texto">${esc(prazos(shop.lead).encomendaPeca)}${identity?.whatsapp ? ` <a href="https://wa.me/${esc(identity.whatsapp)}" ${fora}>${esc(prazos(shop.lead).dataCerta)}${noutroSeparador()}</a>` : ''}</p>
 
     <form class="product__form" data-product-form data-product-id="${esc(p.slug)}">
       ${(p.options || []).some((o) => o.personalises) ? `<p class="field__help" style="margin-block-end:.25rem">

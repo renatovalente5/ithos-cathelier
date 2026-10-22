@@ -25,7 +25,7 @@ import {
   textoDefinicoesCookies, esc as escBiblioteca,
 } from '../../legal-comum/index.mjs';
 import { t, lingua, LOCALE, ORIGEM } from './i18n.mjs';
-import { esc } from './html.mjs';
+import { esc, noutroSeparador } from './html.mjs';
 
 export { LIVRO_URL, VERSAO as VERSAO_LEGAL_COMUM };
 
@@ -96,7 +96,10 @@ function textosRal() {
 }
 
 /** Os dez centros, com a frase do centro competente, para as páginas. */
-export const ralBloco = () => ralHtml({ ambito: 'nacional', lingua: LOCALE[lingua()], textos: textosRal(), classe: 'ral' });
+/* A biblioteca já abre os centros noutro separador; o site junta o aviso para
+   quem usa um leitor de ecrã, como nas outras ligações para fora (html.mjs). */
+export const ralBloco = () => ralHtml({ ambito: 'nacional', lingua: LOCALE[lingua()], textos: textosRal(), classe: 'ral' })
+  .replace(/(<a [^>]*target="_blank"[^>]*>)([^<]*)<\/a>/g, (_, abre, txt) => `${abre}${txt}${noutroSeparador()}</a>`);
 
 /** O mesmo em texto (para o ficheiro das condições que vai no PDF). */
 export const ralTextoDoSite = () => ralTexto({ ambito: 'nacional', textos: textosRal() });

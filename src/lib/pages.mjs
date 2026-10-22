@@ -1,4 +1,4 @@
-import { esc, money, safeHref } from './html.mjs';
+import { esc, money, safeHref, paraFora, fora, noutroSeparador } from './html.mjs';
 import { icon } from './icons.mjs';
 import { prazos, ateSemanas } from './prazos.mjs';
 import { t, tn, lingua } from './i18n.mjs';
@@ -236,7 +236,7 @@ export function markdown(src) {
   // the same to a screen reader, which would otherwise announce forty-seven
   // underscores.
   const inline = (s) => esc(s).replace(/_{3,}/g, '<span class="blank" aria-hidden="true"></span>')
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (m, t, h) => `<a href="${safeHref(h, `the link «${t}»`)}">${t}</a>`)
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (m, t, h) => (paraFora(h) ? `<a href="${safeHref(h, `the link «${t}»`)}" ${fora}>${t}${noutroSeparador()}</a>` : `<a href="${safeHref(h, `the link «${t}»`)}">${t}</a>`))
     .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
     .replace(/(^|[\s(])\*([^*]+)\*/g, '$1<em>$2</em>')
     .replace(/_([^_]+)_/g, '<em>$1</em>');
@@ -331,7 +331,7 @@ export function avisoGarantia() {
     throw new Error(`Não há aviso harmonizado da garantia legal em «${lingua()}». Copie-o do arquivo SVG `
       + 'da Comissão para assets/legal/ e junte-o a AVISO_GARANTIA em src/lib/pages.mjs.');
   }
-  const ligacao = `<a href="${esc(t('paginas.garantia.url'))}" rel="noopener">${esc(t('paginas.garantia.urlTexto'))}</a>`;
+  const ligacao = `<a href="${esc(t('paginas.garantia.url'))}" ${fora}>${esc(t('paginas.garantia.urlTexto'))}${noutroSeparador()}</a>`;
   return `<figure class="aviso-garantia">
       <div class="aviso-garantia__caixa" role="region" tabindex="0" aria-label="${esc(t('paginas.garantia.avisoRegiao'))}">
         <img src="${a.svg}" width="595" height="842" decoding="async" alt="${esc(t('paginas.garantia.avisoAlt'))}">
@@ -466,8 +466,8 @@ export function contact({ identity, shop, faq }) {
     <p class="lede">${esc(t('paginas.contacto.entrada'))}</p>
 
     <div class="contact-cards">
-      ${i.whatsapp ? `<a class="contact-card" href="https://wa.me/${esc(i.whatsapp)}" rel="noopener">
-        ${icon('whatsapp', 22)}<span><strong>WhatsApp</strong><br>${esc(t('paginas.contacto.whatsapp'))}</span>
+      ${i.whatsapp ? `<a class="contact-card" href="https://wa.me/${esc(i.whatsapp)}" ${fora}>
+        ${icon('whatsapp', 22)}<span><strong>WhatsApp</strong><br>${esc(t('paginas.contacto.whatsapp'))}${noutroSeparador()}</span>
       </a>` : ''}
       <a class="contact-card" href="mailto:${esc(i.email)}">
         ${icon('mail', 22)}<span><strong>${esc(i.email)}</strong><br>${esc(t('paginas.contacto.email'))}</span>
@@ -555,13 +555,13 @@ export function quote({ identity }) {
     <p>${esc(t('paginas.orcamento.texto'))}</p>
 
     <div class="contact-cards">
-      ${identity.whatsapp ? `<a class="contact-card" href="https://wa.me/${esc(identity.whatsapp)}" rel="noopener">
-        ${icon('whatsapp', 22)}<span><strong>WhatsApp</strong><br>${esc(t('paginas.orcamento.whatsapp'))}</span>
+      ${identity.whatsapp ? `<a class="contact-card" href="https://wa.me/${esc(identity.whatsapp)}" ${fora}>
+        ${icon('whatsapp', 22)}<span><strong>WhatsApp</strong><br>${esc(t('paginas.orcamento.whatsapp'))}${noutroSeparador()}</span>
       </a>` : ''}
       ${/* O INSTAGRAM (a dona, 21 out 2026: «dá para pôr as mensagens do
            Instagram?»): ig.me/m/<conta> abre logo uma mensagem directa, na
-           aplicação ou no browser. A conta é a do rodapé (identity.json). */ ''}${dmDoInstagram(identity.instagramCathelier) ? `<a class="contact-card" href="${esc(dmDoInstagram(identity.instagramCathelier))}" rel="noopener">
-        ${icon('instagram', 22)}<span><strong>Instagram</strong><br>${esc(t('paginas.orcamento.instagram'))}</span>
+           aplicação ou no browser. A conta é a do rodapé (identity.json). */ ''}${dmDoInstagram(identity.instagramCathelier) ? `<a class="contact-card" href="${esc(dmDoInstagram(identity.instagramCathelier))}" ${fora}>
+        ${icon('instagram', 22)}<span><strong>Instagram</strong><br>${esc(t('paginas.orcamento.instagram'))}${noutroSeparador()}</span>
       </a>` : ''}
       <a class="contact-card" href="mailto:${esc(identity.email)}?subject=${esc(encodeURIComponent(t('paginas.orcamento.assunto')))}">
         ${icon('mail', 22)}<span><strong>${esc(identity.email)}</strong><br>${esc(t('paginas.orcamento.email'))}</span>
@@ -1001,7 +1001,7 @@ export function payPage(shop = {}) {
     </div>
 
     <p class="small muted" style="margin-block-start:2.5rem">
-      ${t('paginas.pagar.ifthenpay', { ifthenpay: '<a href="https://ifthenpay.com/" rel="noopener">ifthenpay</a>' })}</p>
+      ${t('paginas.pagar.ifthenpay', { ifthenpay: `<a href="https://ifthenpay.com/" ${fora}>ifthenpay${noutroSeparador()}</a>` })}</p>
   </div>
 </section>`;
 }
