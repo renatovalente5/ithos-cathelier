@@ -10,3 +10,14 @@
  * como uma lista de uma. */
 export const campanhasDe = (s) => (Array.isArray(s?.campaigns) ? s.campaigns : (s?.campaign ? [s.campaign] : []));
 export const campanhasLigadas = (s) => campanhasDe(s).filter((c) => c && c.active && Number(c.freeOver) > 0);
+
+/* ONDE VALE (o painel, 21 out 2026: «Onde vale» em cada campanha). `countries`
+   são os códigos das zonas de «Envios» escolhidas (PT, PT-20, PT-30…); sem
+   lista, vale em todo o lado. Para a faixa e a janela dizerem onde, os nomes
+   das zonas que a campanha cobre inteiras -- a mesma lista que o carrinho e o
+   Worker usam para cobrar. */
+export function zonasDaCampanha(c, shipping) {
+  const lista = Array.isArray(c?.countries) ? c.countries : [];
+  if (!lista.length) return [];
+  return (shipping?.zones ?? []).filter((z) => (z.countries ?? []).length && z.countries.every((k) => lista.includes(k))).map((z) => z.name);
+}

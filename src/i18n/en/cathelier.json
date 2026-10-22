@@ -211,5 +211,6 @@
   "ficha.videoMiniatura": {
     "t": "Video {i}",
     "h": "45e46f1735a3"
-  }
+  },
+  "cartao.rapido": "Choose and add to basket: {nome}"
 }

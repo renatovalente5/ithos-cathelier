@@ -429,7 +429,10 @@ function notaDaPausa(cat) {
 async function stockNaFicha() {
   const linha = $('[data-lead]');
   const form = $('[data-product-form]');
-  if (!linha || !form) return;
+  if (linha && form) await ligarPrazo(linha, form);
+}
+/* A linha do prazo de um formulário: a da ficha, e a mesma no cesto no cartão. */
+async function ligarPrazo(linha, form) {
   const texto = $('[data-lead-text]', linha);
   const mostrar = () => linha.setAttribute('data-lead-ready', '');
   const travao = setTimeout(mostrar, 2500);
@@ -2636,9 +2639,14 @@ function gallery() {
 }
 
 /* --- add to basket -------------------------------------------------------- */
-function productForm() {
-  const form = $('[data-product-form]');
-  const add = $('[data-add]');
+function productForm() { ligarFormulario($('[data-product-form]')); }
+
+/* O FORMULÁRIO DE UMA PEÇA: o da ficha e o mesmo dentro do cesto no cartão
+   (cestoNoCartao), que o vai buscar à própria ficha -- os mesmos campos, as
+   mesmas regras e os mesmos avisos nos dois sítios. `depois` corre quando a
+   peça entra no cesto (o painel do cartão fecha-se). */
+function ligarFormulario(form, { depois } = {}) {
+  const add = form ? $('[data-add]', form) : null;
   if (!form || !add) return;
   // The id comes from the FORM, which is the only element that knows which
   // product this page is about. It used to come from `$('[data-product]')`,
@@ -2748,31 +2756,51 @@ function productForm() {
 
     add.textContent = tj('botao.adicionado');
     setTimeout(() => { add.textContent = tj('botao.adicionar'); }, 1600);
+    depois?.({ cortou });
   };
 
   form.addEventListener('submit', juntar);
 }
 
-/* --- o cesto no cartão, no telemóvel ----------------------------------------
-   A dona, 21 out 2026, com capturas de uma loja de candeeiros no telefone:
+/* --- o cesto no cartão ------------------------------------------------------
+   A dona, 21 out 2026, com capturas de outra loja de candeeiros no telefone:
    «dá para pôr o carrinho de compras só para telefones e com estas opções?» e
-   «depois têm logo a escolha assim sem ter de entrar no candeeiro». O botão do
-   cesto no canto da fotografia (src/lib/ithos.mjs: só nos candeeiros cujas
-   escolhas obrigatórias são todas escolhas, e só abaixo de 48rem) abre um
-   painel por baixo, com as escolhas da ficha, a mesma marcada (a mais barata
-   que se pode comprar), o total, a frase do prazo -- em stock ou não, como na
-   ficha -- e «Adicionar ao cesto». Dentro do cartão não cabia: numa coluna de
-   170px, duas escolhas, o total e o prazo ficavam ilegíveis. Um nome gravado
-   continua na ficha, e a ligação leva lá. Em pausa, o botão fica desligado e
-   diz porquê, como na ficha. É um <dialog> nativo com showModal(): o foco vai
-   para dentro e lá fica, o Esc fecha, e ao fechar o foco volta ao botão. */
-const corDaEscolha = (c) => (typeof c === 'string' && /^#[0-9a-f]{6}$/i.test(c) ? c : '');
+   «depois têm logo a escolha assim sem ter de entrar no candeeiro»; o Renato:
+   «também devia aparecer quando o ecrã está grande» e «para o Cathelier
+   também … nos produtos todos».
+   O botão do cesto no canto da fotografia de cada produto abre um painel (por
+   baixo, no telemóvel; ao centro, num ecrã grande) com O FORMULÁRIO DA PRÓPRIA
+   FICHA, ido buscar à página dela quando se toca: as mesmas escolhas, os
+   mesmos campos do nome e das datas, os mesmos avisos (uma peça com um nome
+   não tem os 14 dias), a quantidade, os preços por quantidade, o total e a
+   frase do prazo -- e ligado pelas mesmas funções (ligarFormulario,
+   ligarPrazo, trancarSeEmPausa). Uma cópia do formulário escrita aqui ia,
+   um dia, dizer outra coisa do que a ficha. Sem rede, o botão leva à ficha.
+   É um <dialog> nativo com showModal(): o foco vai para dentro e lá fica, o
+   Esc fecha, e ao fechar o foco volta ao botão. */
+const fichasLidas = new Map();     // morada → o HTML da ficha (a segunda vez é imediata)
+function lerFicha(href) {
+  if (!fichasLidas.has(href)) {
+    fichasLidas.set(href, fetch(href).then((r) => (r.ok ? r.text() : Promise.reject(new Error(String(r.status)))))
+      .catch((e) => { fichasLidas.delete(href); throw e; }));
+  }
+  return fichasLidas.get(href);
+}
+/* Os ids da ficha levam um sufixo: no ecrã de uma ficha (as peças parecidas,
+   por baixo dela) dois campos com o mesmo id trocavam as etiquetas. */
+function semIdsRepetidos(raiz, sufixo) {
+  const ids = new Set();
+  for (const el of raiz.querySelectorAll('[id]')) { ids.add(el.id); el.id += sufixo; }
+  for (const el of raiz.querySelectorAll('label[for]')) if (ids.has(el.htmlFor)) el.htmlFor += sufixo;
+  for (const a of ['aria-describedby', 'aria-labelledby', 'aria-controls']) {
+    for (const el of raiz.querySelectorAll(`[${a}]`)) {
+      el.setAttribute(a, el.getAttribute(a).split(/\s+/).map((x) => (ids.has(x) ? x + sufixo : x)).join(' '));
+    }
+  }
+}
 function cestoNoCartao() {
   const botoes = $$('[data-rapido]');
   if (!botoes.length) return;
-  const corpo = document.body.dataset;
-  const frases = { stock: corpo.prazoStock || '', sem: corpo.prazoSem || '', dias: corpo.prazoDias || '' };
-  const TECTO = 20;          // o mesmo da ficha de um candeeiro (o max do campo)
   let painel = null;
   let deQuem = null;
   const criar = () => {
@@ -2791,79 +2819,42 @@ function cestoNoCartao() {
 
   const abrir = async (botao) => {
     const card = botao.closest('[data-product]');
-    const slug = card?.dataset.product;
-    const ficha = card?.querySelector('.card__link')?.getAttribute('href') ?? '';
-    const [cat, ha] = await Promise.all([catalogue().catch(() => null), stockPublico(), esperarRevenda()]);
-    const p = cat?.products?.[slug];
-    /* Sem o catálogo não há preços nem escolhas: a ficha faz tudo. */
-    if (!p) { if (ficha) location.href = ficha; return; }
+    const link = card?.querySelector('.card__link');
+    const ficha = link?.getAttribute('href');
+    if (!ficha) return;
+    botao.setAttribute('aria-busy', 'true');
+    let doc = null;
+    try { doc = new DOMParser().parseFromString(await lerFicha(ficha), 'text/html'); } catch { /* sem rede */ }
+    botao.removeAttribute('aria-busy');
+    const form = doc?.querySelector('[data-product-form]');
+    if (!form) { location.href = ficha; return; }
     if (!painel) criar();
+    const detalhe = form.closest('.product__detail') ?? doc;
     const foto = card.querySelector('.card__frame img');
-    const escolhas = (p.options || []).filter((o) => o.type === 'choice' && (o.values || []).length);
-    const campo = (o) => {
-      const aVenda = o.values.filter((v) => v.available !== false);
-      const entre = aVenda.length ? aVenda : o.values;
-      const barato = Math.min(...entre.map((v) => v.extra || 0));
-      const marcado = entre.find((v) => (v.extra || 0) === barato) ?? entre[0];
-      /* Uma escolha de um valor só não é escolha: vai marcada, sem se ver. */
-      return `<fieldset class="field"${o.values.length < 2 ? ' hidden' : ''}>
-        <legend>${escRv(nomeDaOpcao(cat, slug, o))}</legend>
-        <div class="choices">${o.values.map((v) => {
-          const off = v.available === false;
-          const cor = corDaEscolha(v.colour);
-          return `<label class="choice${off ? ' choice--off' : ''}">
-            <input type="radio" name="rapido-${escRv(o.id)}" value="${escRv(v.id)}" data-rapido-opcao="${escRv(o.id)}"${v.id === marcado.id ? ' checked' : ''}${off ? ' disabled' : ''}>
-            ${cor ? `<span class="choice__cor" style="background:${cor}" aria-hidden="true"></span>` : ''}<span>${escRv(nomeDoValor(cat, slug, o, v))}${v.extra ? ` <em>+${escRv(dinheiro(v.extra))}</em>` : ''}${off ? ` <em class="choice__off">${escRv(v.note || tj('rapido.indisponivel'))}</em>` : ''}</span>
-          </label>`;
-        }).join('')}</div>
-      </fieldset>`;
-    };
-    painel.innerHTML = `<form class="rapido__corpo" data-rapido-form>
+    painel.innerHTML = `<div class="rapido__corpo">
       <div class="rapido__topo">
         ${foto ? `<img class="rapido__foto" src="${escRv(foto.currentSrc || foto.src)}" alt="" width="64" height="64">` : '<span></span>'}
-        <div>
-          <h2 class="rapido__nome" id="rapido-nome">${escRv(nomeDaPeca(cat, slug, p))}</h2>
-          <p class="rapido__total" data-rapido-total></p>
-        </div>
+        <h2 class="rapido__nome" id="rapido-nome">${escRv(link.textContent.trim())}</h2>
         <button class="icon-btn rapido__fechar" type="button" data-rapido-fechar aria-label="${escRv(tj('rapido.fechar'))}"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" aria-hidden="true" focusable="false"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
       </div>
-      ${escolhas.map(campo).join('')}
-      <p class="rapido__prazo small" data-rapido-prazo></p>
-      <button class="btn" type="submit" data-rapido-juntar>${escRv(tj('botao.adicionar'))}</button>
-      <p class="small" role="status" data-rapido-msg></p>
+      <div class="rapido__ficha-corpo" data-rapido-ficha></div>
       <a class="rapido__ficha small" href="${escRv(ficha)}">${escRv(tj('rapido.ficha'))}</a>
-    </form>`;
-    const form = $('[data-rapido-form]', painel);
-    const total = $('[data-rapido-total]', painel);
-    const prazo = $('[data-rapido-prazo]', painel);
-    const juntar = $('[data-rapido-juntar]', painel);
-    const msg = $('[data-rapido-msg]', painel);
-    const escolha = () => escolhaDe(form, '[data-rapido-opcao]', 'rapidoOpcao');
-    const pintar = () => {
-      total.textContent = tj('ficha.total', { total: dinheiro(precoCada(p, slug, 1, escolha())) });
-      prazo.textContent = fraseDoPrazo(p, escolha(), ha, frases);
-    };
-    form.addEventListener('change', pintar);
-    pintar();
-    if (cat.preview) {
-      juntar.setAttribute('aria-disabled', 'true');
-      juntar.title = cat.pausa ? tj('loja.pausa') : tj('loja.fechada');
-      msg.textContent = notaDaPausa(cat);
-      msg.className = 'small muted';
+    </div>`;
+    const sitio = $('[data-rapido-ficha]', painel);
+    for (const n of [detalhe.querySelector('.product__lead'), detalhe.querySelector('.product__tiers'), form]) {
+      if (n) sitio.append(document.importNode(n, true));
     }
+    semIdsRepetidos(sitio, '-rapido');
+    const f = $('[data-product-form]', sitio);
+    ligarFormulario(f, { depois: ({ cortou }) => setTimeout(() => { if (painel.open) painel.close(); }, cortou ? 2600 : 900) });
+    const linha = $('[data-lead]', sitio);
+    if (linha) ligarPrazo(linha, f);
+    const cat = await catalogue().catch(() => null);
+    if (cat?.preview) trancarSeEmPausa(sitio, cat);
     $('[data-rapido-fechar]', painel).addEventListener('click', () => painel.close());
-    form.addEventListener('submit', (ev) => {
-      ev.preventDefault();
-      if (juntar.getAttribute('aria-disabled') === 'true') return;
-      const { ficaram, cortou } = juntarAoCesto(slug, escolha(), 1, TECTO);
-      juntar.textContent = tj('botao.adicionado');
-      msg.textContent = cortou ? tj('cesto.tecto', { max: TECTO, n: ficaram }) : '';
-      setTimeout(() => { if (painel.open) painel.close(); }, cortou ? 2600 : 900);
-    });
     deQuem = botao;
     botao.setAttribute('aria-expanded', 'true');
     painel.showModal();
-    ($('fieldset:not([hidden]) input:checked', painel) ?? juntar).focus();
   };
   for (const b of botoes) b.addEventListener('click', () => abrir(b));
 }
@@ -2966,12 +2957,16 @@ function coverFilm() {
    preview — this is only so nobody wastes their time. */
 async function previewLock() {
   const cat = await catalogue().catch(() => null);
-  if (!cat?.preview) return;
+  if (cat?.preview) trancarSeEmPausa(document, cat);
+}
+/* Os botões de comprar de um sítio (a página, ou o painel do cesto no cartão)
+   desligados, com a razão por baixo. */
+function trancarSeEmPausa(raiz, cat) {
   /* EM PAUSA (férias: o painel, «Vendas online») diz-se assim, com a data de
      regresso se a dona a escreveu; «ainda não abriu» era o antes do lançamento. */
   const titulo = cat.pausa ? tj('loja.pausa') : tj('loja.fechada');
   const nota = notaDaPausa(cat);
-  for (const b of $$('[data-add], [data-pay], [data-to-checkout]')) {
+  for (const b of $$('[data-add], [data-pay], [data-to-checkout]', raiz)) {
     b.setAttribute('aria-disabled', 'true');
     b.title = titulo;
     /* Com a loja fechada não se valida nada: o botão de adicionar é agora um

@@ -432,7 +432,6 @@
     "t": "Add to basket",
     "h": "5a3ec32580e8"
   },
-  "rapido.ficha": "See the lamp: photos, sizes and an engraved name",
-  "rapido.fechar": "Close",
-  "rapido.indisponivel": "Unavailable"
+  "rapido.ficha": "See the full page, with the photos and the description",
+  "rapido.fechar": "Close"
 }

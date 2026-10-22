@@ -1,5 +1,5 @@
 import { esc, safeHref, jsonInScript } from './html.mjs';
-import { campanhasLigadas } from './campanhas.mjs';
+import { campanhasLigadas, zonasDaCampanha } from './campanhas.mjs';
 import { icon } from './icons.mjs';
 import { prazos } from './prazos.mjs';
 import { t, lingua, LINGUAS, LOCALE, OG_LOCALE, NOMES, morada, linguaDaRaiz, prefixoDe } from './i18n.mjs';
@@ -319,6 +319,15 @@ ${asset.textos?.[lingua()] ? `<script src="/assets/${asset.textos[lingua()]}" de
    usar. O Worker recusa as encomendas (o catálogo diz `preview`) e o shop.js
    desliga os botões de comprar. */
 const dataCurta = (iso) => new Intl.DateTimeFormat(lingua() === 'en' ? 'en-GB' : 'pt-PT', { day: 'numeric', month: 'long', timeZone: 'UTC' }).format(new Date(`${iso}T00:00:00Z`));
+/* A CONDIÇÃO DE UMA CAMPANHA, na faixa e na janela: o valor, e onde vale se
+   não for em todo o lado (campanhas.mjs, zonasDaCampanha). */
+function condicaoDaCampanha(c, shipping) {
+  const n = Number(c.freeOver).toFixed(0);
+  const onde = zonasDaCampanha(c, shipping);
+  return onde.length
+    ? t('shell.portesGratisPara', { n, onde: new Intl.ListFormat(lingua() === 'en' ? 'en-GB' : 'pt-PT', { type: 'conjunction' }).format(onde) })
+    : t('shell.portesGratis', { n });
+}
 function announcement({ brand, shipping, shop }) {
   if (shop?.open === false) {
     const ate = /^\d{4}-\d{2}-\d{2}$/.test(shop.pausa?.ate ?? '') ? shop.pausa.ate : '';
@@ -330,7 +339,7 @@ function announcement({ brand, shipping, shop }) {
      a faixa diz-se em todas as páginas; até aqui só a cathelier a tinha. */
   /* Uma faixa por campanha ligada, cada uma com as suas datas: o shop.js tira
      as que estão fora do dia e deixa só a primeira (campanhas.mjs). */
-  return campanhasLigadas(shipping).map((c) => `<p class="announce" data-de="${esc(c.from || '')}" data-ate="${esc(c.to || '')}">${esc(t('shell.portesGratis', { n: Number(c.freeOver).toFixed(0) }))}</p>`).join('');
+  return campanhasLigadas(shipping).map((c) => `<p class="announce" data-de="${esc(c.from || '')}" data-ate="${esc(c.to || '')}">${esc(condicaoDaCampanha(c, shipping))}</p>`).join('');
 }
 
 /* A JANELA DA CAMPANHA (a dona, 18 out 2026: a da roomgaga, mas com os portes
@@ -344,14 +353,15 @@ function avisoCampanha({ brand, shipping, foto }) {
   /* Uma janela por campanha ligada (com a janela ligada), na ordem da lista:
      o shop.js mostra a primeira que estiver dentro do dia. */
   return campanhasLigadas(shipping).map((c, i) => [c, i]).filter(([c]) => c.popup !== false).map(([c, i]) => {
-  const chave = [c.freeOver, c.from || '', c.to || '', c.title || ''].join('|');
+  /* Outro sítio onde vale também é outra campanha: volta a aparecer. */
+  const chave = [c.freeOver, c.from || '', c.to || '', c.title || '', (c.countries ?? []).join(' ')].join('|');
   return `<dialog class="aviso-campanha" id="aviso-campanha-${i}" aria-labelledby="aviso-campanha-titulo-${i}"
   data-de="${esc(c.from || '')}" data-ate="${esc(c.to || '')}" data-chave="${esc(chave)}">
   <form method="dialog"><button class="aviso-campanha__fechar" value="fechar" aria-label="${esc(t('shell.avisoCampanha.fechar'))}">${icon('close', 20)}</button></form>
   ${foto ? `<div class="aviso-campanha__foto"><img src="${esc(foto)}" alt="" width="960" height="540" loading="lazy" decoding="async"></div>` : ''}
   <div class="aviso-campanha__texto">
     <h2 id="aviso-campanha-titulo-${i}">${esc(c.title || t('shell.avisoCampanha.titulo'))}</h2>
-    <p>${esc(t('shell.portesGratis', { n: Number(c.freeOver).toFixed(0) }))}</p>
+    <p>${esc(condicaoDaCampanha(c, shipping))}</p>
     <form method="dialog"><button class="aviso-campanha__ok" value="ok">${esc(t('shell.avisoCampanha.continuar'))}</button></form>
   </div>
 </dialog>`;

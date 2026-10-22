@@ -54,5 +54,6 @@
   "avisoCampanha.fechar": "Fechar",
   "pagamentos": "Pagamentos aceites",
   "pausa": "Vendas online em pausa — voltamos em breve.",
-  "pausaAte": "Vendas online em pausa até {data}."
+  "pausaAte": "Vendas online em pausa até {data}.",
+  "portesGratisPara": "Portes grátis para {onde} em encomendas a partir de {n} €"
 }

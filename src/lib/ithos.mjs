@@ -148,15 +148,6 @@ export function card(p, { eager = false } = {}) {
         data-thumb="${n}" aria-pressed="${n === 0 ? 'true' : 'false'}" tabindex="${n === 0 ? '0' : '-1'}"
         aria-label="${esc(t('ithos.cartao.fotoDe', { n: n + 1, total: shots.length }))}"></button>`;
 
-  /* O CESTO NO CARTÃO, NO TELEMÓVEL (a dona, 21 out 2026: «dá para pôr o
-     carrinho de compras só para telefones e com estas opções?»). Um botão no
-     canto da fotografia abre as escolhas por baixo (src/js/shop.js,
-     cestoNoCartao), sem entrar na ficha. Só onde as escolhas obrigatórias são
-     todas escolhas (a alimentação, a cor): um texto obrigatório pede a ficha.
-     Escondido a partir de 48rem (shop.css). */
-  const rapido = (p.options || []).some((o) => o.type === 'choice')
-    && (p.options || []).every((o) => !o.required || o.type === 'choice');
-
   /* data-price is the price the card SHOWS -- the lowest this lamp can actually
      be bought for, not p.price. Sorting by anything else would reorder the
      grid by a number the reader cannot see. */
@@ -175,8 +166,10 @@ export function card(p, { eager = false } = {}) {
       })}
     </div>
   </a>
-  ${rapido ? `<button class="card__rapido" type="button" data-rapido aria-haspopup="dialog" aria-expanded="false"
-          aria-label="${esc(t('ithos.cartao.rapido', { nome: p.name }))}">${icon('cart', 20)}</button>` : ''}
+  ${/* O CESTO NO CARTÃO (a dona e o Renato, 21 out 2026): o botão abre o
+      formulário da ficha num painel, sem sair da lista (src/js/shop.js,
+      cestoNoCartao). */ ''}<button class="card__rapido" type="button" data-rapido aria-haspopup="dialog" aria-expanded="false"
+          aria-label="${esc(t('ithos.cartao.rapido', { nome: p.name }))}">${icon('cart', 20)}</button>
   </div>
   ${shots.length > 1
     ? `<div class="card__thumbs" role="group" aria-label="${esc(t('ithos.cartao.fotografias', { nome: p.name, n: shots.length }))}">

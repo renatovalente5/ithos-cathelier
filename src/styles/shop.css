@@ -449,11 +449,13 @@ html[data-scrolled='no'] .head {
 .card { display: flex; flex-direction: column; }
 .card__media { display: block; text-decoration: none; }
 
-/* --- o cesto no cartão, no telemóvel (src/js/shop.js, cestoNoCartao) -------
+/* --- o cesto no cartão (src/js/shop.js, cestoNoCartao) ----------------------
    A dona, 21 out 2026: «dá para pôr o carrinho de compras só para telefones e
-   com estas opções?». Um quadrado de 44px no canto da fotografia, da cor do
-   botão de comprar, e um painel que sobe do fundo do ecrã com as escolhas.
-   A partir de 48rem não existe: há espaço para a ficha, e o rato tem o vídeo. */
+   com estas opções?»; o Renato: «também devia aparecer quando o ecrã está
+   grande», e «para o Cathelier também». Um quadrado de 44px no canto da
+   fotografia de cada produto, da cor do botão de comprar, e um painel com o
+   formulário da ficha: no telemóvel sobe do fundo do ecrã; num ecrã grande
+   abre ao centro, como a janela da campanha. */
 .card__topo { position: relative; }
 .card__rapido {
   position: absolute; inset-inline-start: 0; inset-block-end: 0; z-index: 2;
@@ -461,7 +463,9 @@ html[data-scrolled='no'] .head {
   border: 0; border-radius: 0; background: var(--accent); color: var(--accent-ink); cursor: pointer;
 }
 .card__rapido:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
-@media (width >= 48rem) { .card__rapido { display: none; } }
+.card__rapido[aria-busy='true'] { opacity: .7; cursor: progress; }
+/* Na cathelier as fotografias têm os cantos redondos: o do botão acompanha. */
+[data-brand='cathelier'] .card__rapido { border-end-start-radius: var(--radius, 0); }
 .rapido {
   position: fixed; inset: auto 0 0 0; margin: 0; padding: 0; border: 0;
   inline-size: 100%; max-inline-size: 100%; max-block-size: min(88dvh, 40rem); overflow: auto;
@@ -481,11 +485,23 @@ html:has(.rapido[open]) { overflow: hidden; }
 .rapido .btn { inline-size: 100%; }
 .rapido [data-rapido-msg] { margin: -.5rem 0 0; }
 .rapido__ficha { justify-self: start; min-block-size: 44px; display: inline-flex; align-items: center; color: var(--ink-soft); }
+/* O formulário da ficha, dentro do painel, sem a margem de cima que tem lá. */
+.rapido__ficha-corpo { display: grid; gap: .75rem; }
+.rapido__ficha-corpo .product__form { margin-block-start: .25rem; }
+.rapido__ficha-corpo .product__lead { margin-block-start: 0; }
+/* Num ecrã grande, ao centro, com a largura de uma ficha. */
+@media (width >= 48rem) {
+  .rapido { inset: 0; margin: auto; inline-size: min(32rem, calc(100vw - 4rem)); max-block-size: min(86dvh, 48rem); border-radius: var(--radius, 0); }
+}
 @media (prefers-reduced-motion: no-preference) {
   .rapido[open] { animation: rapido-sobe 220ms cubic-bezier(.2, .8, .2, 1); }
   .rapido[open]::backdrop { animation: rapido-fundo 220ms ease-out; }
 }
+@media (prefers-reduced-motion: no-preference) and (width >= 48rem) {
+  .rapido[open] { animation-name: rapido-aparece; }
+}
 @keyframes rapido-sobe { from { transform: translateY(100%); } }
+@keyframes rapido-aparece { from { opacity: 0; transform: translateY(12px); } }
 @keyframes rapido-fundo { from { opacity: 0; } }
 /* The name is now the card's only link, and a bare line of text is a 20px
    target -- the whole card used to be the link, so this was never a question

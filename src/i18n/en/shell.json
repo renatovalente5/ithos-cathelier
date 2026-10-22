@@ -207,5 +207,6 @@
   "pausaAte": {
     "t": "Online orders paused until {data}.",
     "h": "0f99412dc169"
-  }
+  },
+  "portesGratisPara": "Free shipping to {onde} on orders from €{n}"
 }

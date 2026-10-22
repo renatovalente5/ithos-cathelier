@@ -103,9 +103,16 @@ export function card(p, { eager = false } = {}) {
     ? `
   data-shots="${esc(shots.join(','))}" data-dir="cathelier/${esc(p.photoFolder)}"` : ''}${videosDe(p).length && temFotos
     ? ` data-video="${esc(videoDoCartao('cathelier', p, videosDe(p)[0]))}"` : ''}>
+  <div class="card__topo">
   <a class="card__media" href="${href}" tabindex="-1" aria-hidden="true">
     ${frame(p, '(min-width: 64rem) 280px, (min-width: 48rem) 30vw, 46vw', eager, true)}
   </a>
+  ${/* O CESTO NO CARTÃO (o Renato, 21 out 2026: «para o Cathelier também
+      devia aparecer o cesto nos produtos todos»): o painel traz o formulário
+      da ficha, com os campos do nome e o aviso da personalização (src/js/
+      shop.js, cestoNoCartao). */ ''}<button class="card__rapido" type="button" data-rapido aria-haspopup="dialog" aria-expanded="false"
+          aria-label="${esc(t('cathelier.cartao.rapido', { nome: p.name }))}">${icon('cart', 20)}</button>
+  </div>
   ${shots.length > 1
     ? `<div class="card__thumbs" role="group" aria-label="${esc(t('cathelier.cartao.fotos', { nome: p.name, n: shots.length }))}">
     ${shots.map(thumb).join('\n    ')}

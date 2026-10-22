@@ -52,5 +52,6 @@
   "ficha.mesmaColecao": "a mesma coleção",
   "ficha.verTodas": "Ver as {n} peças de {nome}",
   "ficha.video": "Vídeo {i} da peça {nome}",
-  "ficha.videoMiniatura": "Vídeo {i}"
+  "ficha.videoMiniatura": "Vídeo {i}",
+  "cartao.rapido": "Escolher e adicionar ao cesto: {nome}"
 }
