@@ -448,7 +448,7 @@ function header({ brand, site, canonicalPath, anuncio = '' }) {
     ${/* AS DUAS MARCAS LADO A LADO, COMO SEPARADORES (o Renato, 22 out 2026,
         com o exemplo de um amigo da dona: «o ícone que não está seleccionado
         fica mais esbatido»). Sempre pela mesma ordem, ithos e cathelier; a da
-        loja onde se está a cheio (aria-current; sem sublinhado), a outra
+        loja onde se está a cheio e sublinhada (aria-current), a outra
         esbatida, que acende à passagem do rato (o sinal que dava nas páginas
         iniciais saiu: «agora não precisas de piscar», o Renato). Substitui a
         porta pequena com a seta, à direita. */ ''}<div class="head__marcas">
