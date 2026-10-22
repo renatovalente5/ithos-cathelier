@@ -325,9 +325,15 @@ html[data-scrolled='no'] .head {
    O da cathelier cresceu a 22 out 2026 (a dona: «ampliar para se perceber o
    nome cathelier»): as letras são finas e altas, e a 20px não se liam. */
 .head__sibling-mark img { inline-size: auto; block-size: 30px; }
-[data-brand='ithos'] .head__sibling-mark img { block-size: 26px; }
+[data-brand='ithos'] .head__sibling-mark img { block-size: 28px; }
+/* E cresceu outra vez no computador (a dona, 22 out: «pode ficar um pouco
+   maior»), as duas portas: lá há espaço de sobra. */
 @media (width >= 48rem) {
-  [data-brand='ithos'] .head__sibling-mark img { block-size: 34px; }
+  .head__sibling-mark img { block-size: 36px; }
+  [data-brand='ithos'] .head__sibling-mark img { block-size: 42px; }
+  /* Espaço para o sinal das páginas iniciais crescer sem tocar no «EN» nem
+     no cesto (no pico passava 5px por cima dos dois). */
+  .head__sibling { margin-inline: .75rem; }
 }
 
 /* A LÍNGUA. Duas letras por língua, a actual sublinhada e sem ligação (é onde
@@ -790,7 +796,8 @@ html:has(.rapido[open]) { overflow: hidden; }
    «sempre que ele vem para uma página principal de cada marca, temos ali um
    movimento da outra marca a crescer e a voltar à posição normal, para se
    saber que tem ali qualquer coisa»). Uma vez por chegada, quase logo ao
-   abrir (0,15 s: «quase instantâneo», pediu ele depois de ver o de 0,9 s); sem pedido de menos movimento. data-inicio vem do
+   abrir (0,15 s: «quase instantâneo», pediu ele depois de ver o de 0,9 s),
+   duas vezes seguidas (a dona: «a repetir só duas vezes»); sem pedido de menos movimento. data-inicio vem do
    shell.mjs (/ e /cathelier/, em todas as línguas). */
 @keyframes outra-loja {
   0%, 100% { transform: scale(1); }
@@ -807,7 +814,7 @@ html:has(.rapido[open]) { overflow: hidden; }
   75% { transform: scale(1.08); }
 }
 @media (prefers-reduced-motion: no-preference) {
-  html[data-inicio='yes'] .head__sibling-corpo { animation: outra-loja 1.3s cubic-bezier(.4, 0, .2, 1) .15s 1; }
+  html[data-inicio='yes'] .head__sibling-corpo { animation: outra-loja 1.3s cubic-bezier(.4, 0, .2, 1) .15s 2; }
 }
 @media (prefers-reduced-motion: no-preference) and (width < 48rem) {
   html[data-inicio='yes'] .head__sibling-corpo { animation-name: outra-loja-estreito; }
