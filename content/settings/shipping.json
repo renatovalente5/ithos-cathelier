@@ -114,7 +114,8 @@
       "popup": true,
       "marca": "cathelier",
       "segundos": 5,
-      "frase": "Portes gratuitos para Portugal"
+      "frase": "Portes gratuitos para Portugal",
+      "sempre": true
     }
   ],
   "_note_campaigns": "As campanhas de portes grátis, que a dona gere no painel (Campanhas). Em cada dia vale a primeira da lista que estiver ligada, com valor, e com o dia de Lisboa dentro das datas (vazias = sem limite). «countries» vazio = todos os países onde a loja vende; «popup» = a janela aos 10 segundos."
