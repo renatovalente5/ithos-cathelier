@@ -1,4 +1,4 @@
-<!-- origem: 74bee2f2aa87 partes: f64f1fa9ac8a 28df60905360 9b5ed8bfe814 9dafa14fa943 2aac7d4a27e6 926bd6403145 c02bf8b6ba04 -->
+<!-- origem: 7ffd05060452 partes: f64f1fa9ac8a 28df60905360 9b5ed8bfe814 9dafa14fa943 78001efdd5d7 912817ef712a 926bd6403145 c02bf8b6ba04 -->
 # Privacy
 
 ## The short version
@@ -65,25 +65,41 @@ you are in, and on the device only if you tick "keep me signed in"; nothing is
 kept if you never sign in. When you stop being a reseller we delete the record;
 invoices are kept for as long as tax law requires.
 
-## Who else sees it
+## Who else sees them
 
-- **{{PAYMENT_PROVIDER}}**, to take the payment: your name, your email and the
-  amount. We never see your bank or card details. If you pay by MB WAY, your telephone
-  number goes to them too, because that is how the request reaches your phone.
-- **{{CARRIER}}**, to deliver the parcel: your name, address and telephone.
-- **Resend**, to deliver our emails to you: the confirmation carries your name,
-  what you ordered and the address it is going to, so Resend handles all of it
-  on the way. Their servers for this domain are in Ireland.
-- **Cloudflare**, which runs the checkout and holds the order from the moment
-  you press **Order and pay** until it is deleted, what remains of it for
-  withdrawals, the withdrawals made on the site and the records of our
-  resellers. They are also who our shop emails leave through, and they serve
-  these pages to your browser, so they see the request, including your IP
-  address. Cloudflare may process this data outside the European Union, under
-  the European Commission's standard contractual clauses.
-- Our accountant, and the tax authority, for invoices.
+- **{{PAYMENT_PROVIDER}}**, to receive the payment: your name, your email and
+  the amount. We never see your bank or card details. If you pay via MB
+  WAY, your phone number is also shared with them, as that is how the order
+  reaches your mobile.
+- **{{CARRIER}}**, to deliver your order: your name, address and phone number.
+- **Resend**, to deliver our emails to you: the confirmation includes your
+  name, what you ordered and the delivery address, so Resend handles all of
+  that along the way. Their servers for this domain are located in
+  Ireland.
+- **Cloudflare**, which processes the payment and stores the order from the moment
+  you click **Order and pay** until it is deleted, including what is kept for
+  withdrawals, withdrawals made on the site and our resellers' records. It is
+  also through them that the shop's emails are sent, and they serve these
+  pages to your browser, which is why your order, including your IP address,
+  is visible.
+- **Microsoft (Outlook)**, where our mailbox is located: we receive the
+  order sheet for each order and the emails you write to us there.
+- **WhatsApp (Meta)**, if you write to us there; and Instagram and Facebook, if
+  you follow us or write to us on those networks.
+- Our accountant, and the Tax Authority, for invoicing purposes.
 
-Nobody else. Your details are not sold, and not used to advertise at you.
+The services that actually receive your data, for what purpose, where they are
+located and on what basis they leave the European Union when they do:
+
+{{DESTINATARIOS}}
+
+Your data is not sold nor used to show you advertising.
+
+## Cookies and the map
+
+This website does not have a cookie notice because it does not use statistical or advertising cookies. What remains on your device is described above: the basket, the reseller session if you log in, and your map selection.
+
+{{COOKIES_MAPA}}
 
 ## How long
 

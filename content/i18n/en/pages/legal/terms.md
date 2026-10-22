@@ -1,4 +1,4 @@
-<!-- origem: 4f36925fe70b partes: 385996f20f05 95a292592920 74b642e8c44a e12484043fef 53283dbe7dbb 48e0e2a7afa3 f0e1684c6ab9 7303925a6a5e 5df13b1d4273 8d1bbcc50936 37247a30ba8d a42c1b8e95aa -->
+<!-- origem: fea2d5a7fcb9 partes: 385996f20f05 95a292592920 74b642e8c44a e12484043fef b9bacc6b6765 53283dbe7dbb 48e0e2a7afa3 f0e1684c6ab9 7303925a6a5e 5df13b1d4273 9b2ecfa0cec6 40d4012a548e 37247a30ba8d a42c1b8e95aa -->
 # Terms of sale
 
 ## Who is selling
@@ -30,6 +30,15 @@ Prices are in euros. {{VAT_NOTE}}
 
 The price you see on a product page is the price for that piece with the choices
 shown. Shipping is added at checkout and shown before you pay.
+
+## How to place an order
+
+{{COMO_SE_FAZ_A_ENCOMENDA}}
+
+Before clicking the button, the basket shows a summary with each item, the
+choices, the quantities, the shipping and the total to pay: you can change the
+quantities, remove items and correct any field. Your purchase record is the
+confirmation email, with these terms attached.
 
 ## Personalised pieces
 
@@ -94,15 +103,20 @@ As the makers, we keep the parts needed to repair each piece available for 10
 years after the last unit of that model is placed on the market (Article 21 of
 Decree-Law No 84/2021). If it needs repairing, write to us.
 
+## Free trade-in of used equipment
+
+ithos lamps are electrical equipment.
+
+{{RETOMA}}
+
 ## Complaints and disputes
 
-There is an electronic complaints book — *Livro de Reclamações Eletrónico* —
-at [{{COMPLAINTS_BOOK}}]({{COMPLAINTS_BOOK}}).
+The Electronic Complaints Book is available at
+[{{COMPLAINTS_BOOK}}]({{COMPLAINTS_BOOK}}).
 
-For out-of-court dispute resolution — *Resolução Alternativa de Litígios de
-Consumo (RAL)* — the competent arbitration centre is **{{ADR_NAME}}** —
-[{{ADR_SITE}}]({{ADR_SITE}}), {{ADR_ADDRESS}}, [{{ADR_EMAIL}}](mailto:{{ADR_EMAIL}}),
-{{ADR_PHONE}}.
+For the out-of-court settlement of disputes — Alternative Dispute Resolution (ADR) — you may contact one of these centres:
+
+{{RAL}}
 
 ## For resellers {#resellers}
 

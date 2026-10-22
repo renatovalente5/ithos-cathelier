@@ -1,4 +1,4 @@
-<!-- origem: 80ab95f9fc5c partes: 720d780e4078 9643c5155f15 57ee95195b75 -->
+<!-- origem: 247d74e6d5dd partes: 720d780e4078 1eb361f45ad5 26c54ab02930 -->
 # Who you are buying from
 
 | | |
@@ -11,19 +11,18 @@
 | Email | [{{EMAIL}}](mailto:{{EMAIL}}) |
 | Telephone | [{{PHONE_TEXT}}](tel:{{PHONE}}) *{{CALL_COST}}* |
 
-## Complaints — Livro de Reclamações
+## Complaints — Complaints Book
 
-Electronic complaints book (*Livro de Reclamações Eletrónico*):
+Electronic Complaints Book:
 [{{COMPLAINTS_BOOK}}]({{COMPLAINTS_BOOK}})
 
-## Out-of-court dispute resolution — RAL
+{{LIVRO_BOTAO}}
 
-*Resolução Alternativa de Litígios de Consumo.* The competent arbitration
-centre for this seller is:
+## Extrajudicial dispute resolution — ADR
 
-**{{ADR_NAME}}**
-{{ADR_ADDRESS}}
-[{{ADR_SITE}}]({{ADR_SITE}}) · [{{ADR_EMAIL}}](mailto:{{ADR_EMAIL}}) · {{ADR_PHONE}}
+Alternative Dispute Resolution for Consumer Affairs: you may resort to one of these centres.
 
-This information is published under article 10 of Decree-Law 7/2004 and article
-4 of Decree-Law 24/2014.
+{{RAL}}
+
+This information is published under Article 10 of Decree-Law no. 7/2004 and
+Article 4 of Decree-Law no. 24/2014.

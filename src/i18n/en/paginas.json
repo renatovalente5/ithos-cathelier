@@ -732,5 +732,165 @@
   "retratacao.revenda": {
     "t": "This order was placed as a reseller: the right to cancel does not apply to purchases for resale. We will reply to you by email.",
     "h": "565fd46d3543"
+  },
+  "fabricante.referencia": {
+    "t": "Reference",
+    "h": "6fac4ad8493d"
+  },
+  "cesto.resumo": {
+    "t": "Order summary",
+    "h": "cc8cd5b48f6e"
+  },
+  "cesto.resumoNota": {
+    "t": "Check everything before ordering: you can change the quantities or remove items above, and correct the fields.",
+    "h": "372a1ffd7549"
+  },
+  "cesto.resumoArtigos.um": {
+    "t": "1 item",
+    "h": "b42ce96c8ccb"
+  },
+  "cesto.resumoArtigos.varios": {
+    "t": "{n} items",
+    "h": "fca0fc3adb61"
+  },
+  "cesto.resumoTotal": {
+    "t": "total with shipping: {total}",
+    "h": "4f6cd758f957"
+  },
+  "contacto.mapaRetirar": {
+    "t": "Stop loading the map",
+    "h": "cf3098690cec"
+  },
+  "contacto.reclamacoes": {
+    "t": "Complaints",
+    "h": "4cbedf79eddd"
+  },
+  "legal.condicoesTitulo": {
+    "t": "Terms of sale",
+    "h": "112d2efe0b39"
+  },
+  "retoma.aviso": {
+    "t": "When buying new electrical or electronic equipment, you may return an equivalent used piece of equipment to us free of charge (of the same type and with the same functions); please let us know when ordering. You may also return used portable batteries and accumulators to us free of charge, without the obligation to buy; please let us know when ordering. (Decree-Law no. 152-D/2017, art. 13.)",
+    "h": "27462a4dcd7a"
+  },
+  "ral.enquadramento": {
+    "t": "In the event of a consumer dispute, the consumer may resort to an alternative dispute resolution entity. The competent centre is that of the consumer's domicile or the place of contracting; in disputes up to €5,000, arbitration or mediation is mandatory for the supplier if the consumer chooses it (Law no. 24/96, art. 14, no. 2; Law no. 144/2015, art. 18).",
+    "h": "1cc6a52d9a8d"
+  },
+  "ral.supletivoNacional": {
+    "t": "for those residing outside the areas of the other centres",
+    "h": "c5f16c22c7c3"
+  },
+  "ral.lista": {
+    "t": "The updated list of entities is at the",
+    "h": "9ba9a3110d46"
+  },
+  "ral.portal": {
+    "t": "Consumer Portal",
+    "h": "6151106b79a5"
+  },
+  "comoEncomendar.1": {
+    "t": "Choose your items and add them to the basket.",
+    "h": "c6b1ce6c2240"
+  },
+  "comoEncomendar.2": {
+    "t": "Before confirming, check the summary with the items, quantities, total price and shipping, and you can correct any errors.",
+    "h": "33f86c394724"
+  },
+  "comoEncomendar.3": {
+    "t": "Your order is placed when you click «{botao}». You can pay via {pagamentos}.",
+    "h": "6bb1b04404b6"
+  },
+  "comoEncomendar.4": {
+    "t": "You will immediately receive an email: the order acknowledgement or, as soon as payment is confirmed, the order confirmation with the full terms attached (PDF) — always before delivery.",
+    "h": "b13267d0d391"
+  },
+  "comoEncomendar.5": {
+    "t": "The contract is made in Portuguese or English. We keep the order and the confirmation for 90 days (the invoice, for 10 years) and you can ask us for a copy at any time.",
+    "h": "5602a2d120df"
+  },
+  "comoEncomendar.6": {
+    "t": "The general terms can be saved and printed: <a href=\"/legal/terms/\">general terms</a>.",
+    "h": "415c0a281942"
+  },
+  "destinatarios.quem": {
+    "t": "Who",
+    "h": "ea0be612ab48"
+  },
+  "destinatarios.paraQue": {
+    "t": "For what",
+    "h": "3a314ac6cac0"
+  },
+  "destinatarios.onde": {
+    "t": "Where",
+    "h": "8431766c440b"
+  },
+  "destinatarios.transferencia": {
+    "t": "Transfer outside the EU",
+    "h": "7832b1ebe5ba"
+  },
+  "destinatarios.DPF": {
+    "t": "USA: included in the Data Privacy Framework list (European Commission adequacy decision)",
+    "h": "5615cfb29351"
+  },
+  "destinatarios.UE": {
+    "t": "No transfer: data remains within the European Union",
+    "h": "51e6e4ea5ec9"
+  },
+  "destinatarios.pais.eua": {
+    "t": "USA",
+    "h": "11a5cca621a0"
+  },
+  "destinatarios.pais.euaIrlanda": {
+    "t": "USA / Ireland",
+    "h": "1064ef823a44"
+  },
+  "destinatarios.pais.portugal": {
+    "t": "Portugal",
+    "h": "4c7de2c3da6d"
+  },
+  "destinatarios.f.cloudflare": {
+    "t": "website hosting and delivery (Pages/Workers); technical access logs; domain DNS",
+    "h": "4037fde69b85"
+  },
+  "destinatarios.f.microsoft": {
+    "t": "mailbox (Microsoft 365/Outlook): the emails you send us and the replies; and each order sheet received via email (name, address, phone, email, NIF and items)",
+    "h": "df3803ca3ebf"
+  },
+  "destinatarios.f.google": {
+    "t": "embedded map, loaded only after you click (IP address and Google cookies)",
+    "h": "b062e436e424"
+  },
+  "destinatarios.f.resend": {
+    "t": "sending automated emails (confirmations and notices)",
+    "h": "8825d3cc679f"
+  },
+  "destinatarios.f.ifthenpay": {
+    "t": "Multibanco references and MB WAY requests; payments by card, Google Pay and Apple Pay (your name, your email and the amount; for MB WAY, your mobile number)",
+    "h": "47eb2b3250d6"
+  },
+  "destinatarios.f.meta": {
+    "t": "WhatsApp conversations (your number and messages); Instagram profile and your statistics (joint responsibility «Page Insights»); Facebook page and your statistics (joint responsibility «Page Insights»)",
+    "h": "986fe48c6c93"
+  },
+  "destinatarios.f.github": {
+    "t": "the website code, texts and its construction (never order data)",
+    "h": "7c93b62bd0c0"
+  },
+  "cookies.mapa": {
+    "t": "The contact page map is only loaded from Google servers after you click «{botao}», and this choice is stored on your device (localStorage) until you remove it via «{retirar}».",
+    "h": "663ebab437e0"
+  },
+  "cookies.retirar": {
+    "t": "To withdraw the authorisation you gave to the map, click «{retirar}» next to the map: the choice is deleted from your device and the map will stop loading immediately. You can authorise it again whenever you like, with a single click on the map.",
+    "h": "c9fa6c7d86b7"
+  },
+  "privacidade.cesto": {
+    "t": "The data you provide is used only to process the order, deliver it and issue the invoice; the order is kept for 90 days and the invoice for 10 years. Find out more in the <a href=\"/legal/privacy/\">privacy policy</a>.",
+    "h": "97277417eed8"
+  },
+  "privacidade.revenda": {
+    "t": "The NIF you provide is used only to send you reseller access; registration data is kept for as long as you are a reseller. Find out more in the <a href=\"/legal/privacy/\">privacy policy</a>.",
+    "h": "e1278c163ad7"
   }
 }
