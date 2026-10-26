@@ -268,6 +268,14 @@
     "t": "Confirm my subscription",
     "h": "940df5f82350"
   },
+  "email.sairEntrada": {
+    "t": "One tap and you will stop receiving news and offers from ithos · cathelier by email.",
+    "h": "936c40ce1b66"
+  },
+  "email.sair": {
+    "t": "Leave the list",
+    "h": "cce98cf4751c"
+  },
   "cesto.stockInsuficiente": {
     "t": "There are not enough in stock for these quantities.",
     "h": "65990687ec27"

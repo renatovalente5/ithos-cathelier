@@ -143,6 +143,10 @@
   "lista.expirou": "Esta ligação já caducou (vale 7 dias). Peça outra vez num «Avise-me» do site.",
   "lista.ligacaoMa": "Esta ligação não está certa. Abra-a outra vez a partir do email.",
   "lista.falhou": "Não conseguimos confirmar agora. Tente outra vez daqui a pouco.",
+  "lista.saiu": "Saiu da lista. Não lhe enviamos mais novidades nem promoções.",
+  "lista.sairLigacaoMa": "Esta ligação não está certa. Para sair, responda a um dos nossos emails e tratamos disso.",
+  "lista.sairFalhou": "Não foi possível sair da lista agora. Tente outra vez daqui a pouco.",
+  "lista.sairTeste": "Isto é um email de teste: aqui, a ligação não tira ninguém da lista.",
 
   "ordenar.rotulo": "Ordenar por",
   "ordenar.nossa": "A nossa ordem",

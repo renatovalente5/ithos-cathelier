@@ -536,6 +536,22 @@
     "t": "We could not confirm right now. Please try again shortly.",
     "h": "5acd58a3157d"
   },
+  "lista.saiu": {
+    "t": "You have left the list. We will not send you any more news or offers.",
+    "h": "ffd26e74bb4a"
+  },
+  "lista.sairLigacaoMa": {
+    "t": "This link is not right. To leave, reply to any of our emails and we will take care of it.",
+    "h": "2891ee73a140"
+  },
+  "lista.sairFalhou": {
+    "t": "We could not take you off the list right now. Please try again shortly.",
+    "h": "3afcfa42b79f"
+  },
+  "lista.sairTeste": {
+    "t": "This is a test email: here, the link does not take anyone off the list.",
+    "h": "3bac2261ef88"
+  },
   "ordenar.rotulo": {
     "t": "Sort by",
     "h": "1b8d52ae1c04"

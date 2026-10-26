@@ -1032,8 +1032,17 @@ export function emailPage() {
 <section class="section">
   <div class="shell shell--narrow page-prose" style="text-align:center" data-lista>
     <h1>${esc(t('paginas.email.titulo'))}</h1>
-    <p class="lede" data-lista-texto>${esc(t('paginas.email.entrada'))}</p>
-    <p style="margin-block-start:1.5rem"><button class="btn" type="button" data-lista-confirmar>${esc(t('paginas.email.confirmar'))}</button></p>
+    <div data-lista-entrar>
+      <p class="lede">${esc(t('paginas.email.entrada'))}</p>
+      <p style="margin-block-start:1.5rem"><button class="btn" type="button" data-lista-confirmar>${esc(t('paginas.email.confirmar'))}</button></p>
+    </div>
+    ${/* SAIR (o Renato, 26 out 2026: a página da Resend só fala inglês): a
+        ligação «Sair da lista» das promoções vem aqui, com ?sair=<a ligação
+        da Resend>, e o shop.js mostra este bloco em vez do de cima. Pede um
+        toque, como o de confirmar: os filtros de correio abrem as ligações. */ ''}<div data-lista-sair hidden>
+      <p class="lede">${esc(t('paginas.email.sairEntrada'))}</p>
+      <p style="margin-block-start:1.5rem"><button class="btn" type="button" data-lista-sair-botao>${esc(t('paginas.email.sair'))}</button></p>
+    </div>
     <p data-lista-nota role="status" hidden></p>
   </div>
 </section>`;

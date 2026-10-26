@@ -67,6 +67,8 @@
   "email.titulo": "Novidades por email",
   "email.entrada": "Falta um toque para receber por email as novidades e as promoções da ithos · cathelier.",
   "email.confirmar": "Confirmar a inscrição",
+  "email.sairEntrada": "Um toque e deixa de receber por email as novidades e as promoções da ithos · cathelier.",
+  "email.sair": "Sair da lista",
   "cesto.stockInsuficiente": "Não há stock suficiente para estas quantidades.",
   "cesto.ifthenpay": "Os pagamentos são tratados pela ifthenpay. Nunca vemos o seu cartão, o seu banco nem o PIN do seu MB WAY.",
   "entrega.titulo": "Para onde vai",

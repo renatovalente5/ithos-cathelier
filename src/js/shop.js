@@ -627,9 +627,39 @@ function paginaDaLista() {
   const botao = $('[data-lista-confirmar]', raiz);
   const nota = $('[data-lista-nota]', raiz);
   const u = new URL(location.href);
+  const dizer = (texto) => { nota.hidden = false; nota.textContent = texto; };
+  /* SAIR: ?sair=<a ligação de sair da Resend> (o «Sair da lista» das
+     promoções), ou `teste` num email de teste. O Worker faz a saída na Resend
+     (POST /lista, src/lista.js na API). A ligação da Resend traz `?` e `=`;
+     o searchParams parte só no primeiro `=`, e ela chega inteira. */
+  if (u.searchParams.has('sair')) {
+    $('[data-lista-entrar]', raiz).hidden = true;
+    const bloco = $('[data-lista-sair]', raiz);
+    const sair = $('[data-lista-sair-botao]', bloco);
+    const ligacao = u.searchParams.get('sair');
+    bloco.hidden = false;
+    if (!ligacao) { sair.hidden = true; dizer(tj('lista.semLigacao')); return; }
+    sair.addEventListener('click', async () => {
+      if (ligacao === 'teste') { dizer(tj('lista.sairTeste')); return; }
+      if (!API) { dizer(tj('lista.sairFalhou')); return; }
+      sair.disabled = true;
+      try {
+        const r = await fetch(`${API}/lista`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ acao: 'sair', ligacao }) });
+        if (r.ok) {
+          bloco.hidden = true;
+          dizer(tj('lista.saiu'));
+          history.replaceState(history.state, '', u.pathname);
+          return;
+        }
+        if (r.status === 400 || r.status === 403) { sair.hidden = true; dizer(tj('lista.sairLigacaoMa')); return; }
+        dizer(tj('lista.sairFalhou'));
+      } catch { dizer(tj('lista.sairFalhou')); }
+      sair.disabled = false;
+    });
+    return;
+  }
   const h = u.searchParams.get('h');
   const t = u.searchParams.get('t');
-  const dizer = (texto) => { nota.hidden = false; nota.textContent = texto; };
   if (!h || !t) { botao.hidden = true; dizer(tj('lista.semLigacao')); return; }
   botao.addEventListener('click', async () => {
     if (!API) { dizer(tj('lista.falhou')); return; }
@@ -637,8 +667,7 @@ function paginaDaLista() {
     try {
       const r = await fetch(`${API}/lista`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ acao: 'confirmar', h, t }) });
       if (r.ok) {
-        botao.hidden = true;
-        $('[data-lista-texto]', raiz).hidden = true;
+        $('[data-lista-entrar]', raiz).hidden = true;
         dizer(tj('lista.feito'));
         history.replaceState(history.state, '', u.pathname);
         return;
