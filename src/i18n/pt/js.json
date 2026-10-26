@@ -126,6 +126,8 @@
   "cupao.jaGratis": "Os portes desta encomenda já são grátis.",
   "cupao.retirado": "O cupão {codigo} saiu do cesto: {motivo}",
   "cupao.saiu": "O cupão {codigo} não foi aplicado: {motivo} Nada foi cobrado. O total foi atualizado; confira-o antes de encomendar.",
+  "cupao.mudou": "O cupão {codigo} mudou entretanto. O total foi atualizado; confira-o antes de encomendar.",
+  "cupao.ligacao": "O cupão {codigo} da ligação não foi aplicado: {motivo}",
 
   "ordenar.rotulo": "Ordenar por",
   "ordenar.nossa": "A nossa ordem",

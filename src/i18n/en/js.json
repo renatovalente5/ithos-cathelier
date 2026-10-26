@@ -468,6 +468,14 @@
     "t": "Coupon {codigo} was not applied: {motivo} Nothing has been charged. The total has been updated; please check it before ordering.",
     "h": "4801c0c7fb3c"
   },
+  "cupao.mudou": {
+    "t": "Coupon {codigo} has changed in the meantime. The total has been updated; please check it before ordering.",
+    "h": "5f4a842eb285"
+  },
+  "cupao.ligacao": {
+    "t": "The coupon {codigo} from the link was not applied: {motivo}",
+    "h": "22db37ec43b9"
+  },
   "ordenar.rotulo": {
     "t": "Sort by",
     "h": "1b8d52ae1c04"

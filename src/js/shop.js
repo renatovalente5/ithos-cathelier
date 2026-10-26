@@ -476,6 +476,12 @@ const diaPorExtenso = (d) => {
   try { return new Date(`${d}T12:00:00Z`).toLocaleDateString(LOCALE_DATAS, { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }); } catch { return d; }
 };
 
+/* A mesma regra do Worker (src/cupoes.js, normalizarCodigo). */
+const normalizarCodigo = (s) => {
+  const c = String(s ?? '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s+/g, '').toUpperCase();
+  return /^[A-Z0-9][A-Z0-9-]{2,23}$/.test(c) ? c : null;
+};
+
 /* O que o Worker diz de um código, numa frase para o comprador. */
 function fraseDoCupao(codigo, extra = {}) {
   const base = String(codigo ?? '').split(':')[0];
@@ -510,15 +516,25 @@ function descontoDoCupao(cupao, linhas, shippingCents) {
   else if (cupao.tipo === 'portes') portes = 0;
   const bruto = goodsCents + portes;
   desconto = Math.max(0, Math.min(desconto, bruto - 100));
-  return { aplica: true, desconto, portes, nota: cupao.tipo === 'portes' && shippingCents === 0 ? tj('cupao.jaGratis') : '' };
+  /* Sem efeito (portes grátis numa encomenda que já os tem, ou um desconto
+     que o mínimo de 1 € come): não se manda, e não gasta um uso -- o Worker
+     faz o mesmo (aplicarCupao, `semEfeito`). */
+  if (desconto === 0 && portes === shippingCents) return { nota: cupao.tipo === 'portes' ? tj('cupao.jaGratis') : tj('cupao.naoChega') };
+  return { aplica: true, desconto, portes, nota: '' };
 }
+
+/* A tentativa anterior deste cesto com o mesmo cupão (o pagamento falhou e o
+   comprador voltou): o uso que ela prendeu é dele (src/cupoes.js, reservar). */
+const anteriorDoCupao = (cur, codigo) => (cur.cupaoReserva?.codigo === codigo ? cur.cupaoReserva.id : undefined);
+/* O que o cesto mostrou, para o checkout recusar se o cupão mudou entretanto. */
+const cupaoVisto = (c) => ({ tipo: c.tipo, valor: c.valor ?? null, marca: c.marca ?? null, minimo: c.minimo ?? null });
 
 /* Pergunta ao Worker por um código. `definitivo`: o Worker respondeu que não
    serve (e o cesto deixa-o); sem rede, fica como estava. */
-async function perguntarCupao(codigo) {
+async function perguntarCupao(codigo, anterior) {
   if (!API) return { erro: tj('cupao.semResposta') };
   try {
-    const r = await fetch(`${API}/cupao`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ codigo }) });
+    const r = await fetch(`${API}/cupao`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ codigo, anterior }) });
     const d = await r.json().catch(() => ({}));
     if (r.ok && d.cupao) return { cupao: d.cupao };
     return { erro: fraseDoCupao(r.status === 429 ? 'too_many_requests' : d.error, d), definitivo: r.status === 404 || r.status === 409 };
@@ -960,7 +976,9 @@ function checkout() {
           telemovel: metodo() === 'MBWAY' ? (campoTelemovel?.value ?? '').trim() : undefined,
           revenda: revenda.activa ? { sessao: revenda.sessao, versao: revenda.versao } : undefined,
           /* Só o código de um cupão que se aplica a este cesto (paint()). */
-          cupao: !revenda.activa && cupaoNoCheckout ? cupaoNoCheckout : undefined,
+          ...(!revenda.activa && cupaoNoCheckout && cur.cupao?.codigo === cupaoNoCheckout ? {
+            cupao: cupaoNoCheckout, cupaoVisto: cupaoVisto(cur.cupao), cupaoAnterior: anteriorDoCupao(cur, cupaoNoCheckout),
+          } : {}),
         }),
       });
       const data = await r.json().catch(() => ({}));
@@ -1005,18 +1023,25 @@ function checkout() {
       /* O CUPÃO DEIXOU DE VALER entre o cesto e o botão (a dona desligou-o,
          acabou, ou o último uso foi para outra pessoa): sai do cesto, o total
          volta a ser pintado sem ele, e a próxima carga é escolha do comprador.
-         Um que não chega ao mínimo, ou de outra loja, o cesto já não manda;
-         se o Worker o recusar por isso, o cesto está desactualizado, e
-         repinta-se. */
+         Se MUDOU (outro valor, outro mínimo, outra loja), fica o de agora --
+         o Worker manda-o com o 409, ou pergunta-se outra vez -- e o cesto
+         repinta o total com ele antes de o comprador carregar outra vez. */
       if (String(data.error ?? '').startsWith('coupon_')) {
         const cur = basket();
         const codigo = cur.cupao?.codigo ?? '';
-        if (['coupon_unknown', 'coupon_expired', 'coupon_exhausted', 'coupon_not_started', 'coupon_not_for_resellers'].includes(data.error)) {
-          delete cur.cupao;
-          setBasket(cur);
+        const saiu = ['coupon_unknown', 'coupon_expired', 'coupon_exhausted', 'coupon_not_started', 'coupon_not_for_resellers'].includes(data.error);
+        let novo = saiu ? null : data.cupao ?? null;
+        let motivo = fraseDoCupao(data.error, data);
+        if (!saiu && !novo && codigo) {
+          const p = await perguntarCupao(codigo, anteriorDoCupao(cur, codigo));
+          novo = p.cupao ?? null;
+          if (!novo) motivo = p.erro;
         }
+        const agora = basket();
+        if (novo) agora.cupao = novo; else delete agora.cupao;
+        setBasket(agora);
         reavaliarCesto();
-        say(tj('cupao.saiu', { codigo, motivo: fraseDoCupao(data.error, data) }));
+        say(novo ? tj('cupao.mudou', { codigo }) : tj('cupao.saiu', { codigo, motivo }));
         return;
       }
 
@@ -1031,6 +1056,14 @@ function checkout() {
          `/order` -- assim recarregar funciona, e voltar dois dias depois
          mostra a mesma referência Multibanco. */
       if (!r.ok || !data.proxima) { say(reason(data.error)); return; }
+      /* Se o pagamento não chegar ao fim e o comprador voltar ao cesto, o uso
+         do cupão que esta encomenda prendeu continua a ser dele. O cesto
+         esvazia-se quando o pagamento é confirmado, e isto vai com ele. */
+      if (cupaoNoCheckout && data.reference) {
+        const depois = basket();
+        depois.cupaoReserva = { id: data.reference, codigo: cupaoNoCheckout };
+        setBasket(depois);
+      }
       location.href = naLingua(data.proxima);
     } catch {
       say(tj('checkout.semLigacao'));
@@ -1742,7 +1775,7 @@ async function basketPage() {
     const codigo = String(campo.value || '').trim();
     if (!codigo) { campo.focus(); return; }
     botao.disabled = true;
-    const r = await perguntarCupao(codigo);
+    const r = await perguntarCupao(codigo, anteriorDoCupao(basket(), normalizarCodigo(codigo)));
     botao.disabled = false;
     if (r.cupao) {
       guardarCupao(r.cupao);
@@ -1763,15 +1796,22 @@ async function basketPage() {
   const conferirCupaoGuardado = async () => {
     if (revenda.activa) return;
     const cur = basket();
-    const codigo = cur.cupaoPendente || cur.cupao?.codigo;
+    const pendente = cur.cupaoPendente || null;
+    const codigo = pendente || cur.cupao?.codigo;
     if (!codigo) return;
-    const r = await perguntarCupao(codigo);
-    if (r.cupao) { guardarCupao(r.cupao); paint(); return; }
-    if (r.definitivo || cur.cupaoPendente) {
-      guardarCupao(cur.cupaoPendente ? cur.cupao ?? null : null);
-      dizerCupao(tj('cupao.retirado', { codigo: String(codigo).toUpperCase(), motivo: r.erro }));
-      paint();
-    }
+    const r = await perguntarCupao(codigo, anteriorDoCupao(cur, normalizarCodigo(codigo)));
+    /* Entretanto o comprador pode ter tirado o cupão, ou aplicado outro: a
+       resposta só conta se o cesto ainda estiver como estava quando se
+       perguntou. */
+    const agora = basket();
+    if ((agora.cupaoPendente || null) !== pendente || (!pendente && agora.cupao?.codigo !== codigo)) return;
+    if (r.cupao) { guardarCupao(r.cupao); dizerCupao(''); paint(); return; }
+    /* Sem rede (ou à espera da janela das tentativas), nada muda: o código
+       que veio numa ligação fica para a próxima vez que o cesto abrir. */
+    if (!r.definitivo) return;
+    guardarCupao(pendente ? agora.cupao ?? null : null);
+    paint();
+    dizerCupao(tj(pendente ? 'cupao.ligacao' : 'cupao.retirado', { codigo: normalizarCodigo(codigo) || String(codigo).toUpperCase(), motivo: r.erro }));
   };
   const ha = await stockPublico();
   const prazoCaixa = $('[data-basket-lead]');
