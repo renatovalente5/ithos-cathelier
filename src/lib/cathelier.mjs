@@ -11,6 +11,7 @@ import { cover } from './cover.mjs';
 import { prazos } from './prazos.mjs';
 import { t, tn } from './i18n.mjs';
 import { fabricante } from './pages.mjs';
+import { janelaDoAviso, botoesDasEscolhas } from './avisar.mjs';
 import { brandPath } from './shell.mjs';
 import { videosDe, enderecoDoVideo, capaDoVideo, videoDoCartao } from './videos.mjs';
 import { escaloes } from './quantidades.mjs';
@@ -360,6 +361,7 @@ function campoDaPeca(o, p) {
           </label>`;
   }).join('\n          ')}
         </div>
+        ${botoesDasEscolhas(o)}
       </fieldset>`;
   }
   const descreve = [o.help ? `opt-${o.id}-ajuda` : '', o.personalises ? 'opt-aviso-personalizada' : ''].filter(Boolean).join(' ');
@@ -477,6 +479,7 @@ export function piece({ p, all: everything, shop, occasions, identity }) {
       </div>
       <p class="product__total" data-product-total aria-live="polite" hidden></p>
     </form>
+    ${(p.options ?? []).some((o) => (o.values ?? []).some((v) => v.available === false)) ? janelaDoAviso(p.slug) : ''}
 
     <div class="reassure">
       ${/* Aqui dizia «madeira de florestas com gestão responsável». Desde 27 set

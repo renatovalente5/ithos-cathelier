@@ -8,6 +8,8 @@
 const D = {
   menu: '<path d="M4 7h16M4 12h16M4 17h16"/>',
   close: '<path d="M6 6l12 12M18 6 6 18"/>',
+  /* O sino do «Avise-me quando voltar» (src/lib/avisar.mjs). */
+  bell: '<path d="M6 16V11a6 6 0 0 1 12 0v5l1.5 2h-15Z"/><path d="M10 20a2 2 0 0 0 4 0"/>',
   cart: '<path d="M4 7h16l-1.4 11.2a2 2 0 0 1-2 1.8H7.4a2 2 0 0 1-2-1.8L4 7Z"/><path d="M9 7V5.5a3 3 0 0 1 6 0V7"/>',
   /* O cartão da escolha de pagamento. É NOSSO de propósito: as marcas da Visa
      e da Mastercard têm regras próprias e a obra-de-arte oficial está atrás de

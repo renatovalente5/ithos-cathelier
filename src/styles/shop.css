@@ -1974,6 +1974,55 @@ html[data-js='yes'] .product__lead[data-lead]:not([data-lead-ready]) { visibilit
 @keyframes aviso-campanha-entra { from { opacity: 0; transform: translateY(12px) scale(.98); } }
 @keyframes aviso-campanha-fundo { from { opacity: 0; } }
 
+/* --- «Avise-me quando voltar» (src/lib/avisar.mjs) -----------------------------
+   O botão é uma ligação discreta com um sino, por baixo do prazo ou das
+   escolhas: não compete com «Adicionar ao cesto». A janela é um cartão da
+   cor da página (não da marca, como a da campanha): é um formulário, e
+   lê-se melhor em claro. Padding zero no <dialog>, como na campanha, para um
+   toque no fundo escuro ser um toque nele (o shop.js fecha). */
+.avisar__abrir {
+  display: inline-flex; align-items: center; gap: .45rem; min-height: 44px; padding: 0;
+  background: none; border: 0; color: var(--ink); font: inherit; font-size: 14px; cursor: pointer;
+  text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--line);
+}
+.avisar__abrir:hover { text-decoration-color: currentColor; }
+.avisar__abrir svg { flex: none; color: var(--accent); }
+.field > .avisar__abrir { margin-block-start: .35rem; }
+.product__lead + .avisar__abrir { margin-block: -.5rem .75rem; }
+.avisar {
+  margin: auto; padding: 0; border: 0; width: min(26rem, calc(100vw - 2rem)); max-height: calc(100dvh - 2rem); overflow: auto;
+  border-radius: calc(var(--radius, 0px) + 6px); background: var(--bg); color: var(--ink); box-shadow: 0 24px 60px rgb(0 0 0 / .35);
+}
+.avisar::backdrop { background: rgb(16 10 7 / .55); }
+.avisar > form[method='dialog'] { margin: 0; }
+.avisar__fechar {
+  position: absolute; top: .5rem; right: .5rem; width: 44px; height: 44px; display: grid; place-items: center;
+  border: 0; border-radius: 999px; background: transparent; color: var(--ink); cursor: pointer;
+}
+.avisar__form { display: grid; gap: .65rem; padding: 1.75rem 1.5rem 1.4rem; margin: 0; }
+.avisar__form h2 { margin: 0 2rem 0 0; font-family: var(--font-display); font-weight: 500; font-size: clamp(1.35rem, 5vw, 1.6rem); line-height: 1.2; text-wrap: balance; }
+.avisar__o-que { margin: 0 0 .35rem; color: var(--muted); font-size: 15px; }
+.avisar__rotulo { font-size: 13px; font-weight: 600; }
+.avisar__email {
+  min-height: 48px; padding: .6rem .8rem; font: inherit; font-size: 16px;
+  border: 1px solid var(--line); background: var(--bg); color: var(--ink); border-radius: var(--radius, 0);
+}
+.avisar__email:focus { border-color: var(--accent); outline: none; }
+.avisar__mel { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.avisar__novidades { display: flex; gap: .6rem; align-items: flex-start; font-size: 14px; line-height: 1.5; cursor: pointer; padding-block: .25rem; }
+.avisar__novidades input { flex: none; width: 20px; height: 20px; margin: .1rem 0 0; accent-color: var(--accent); }
+.avisar__nota { margin: 0; font-size: 14px; line-height: 1.55; color: var(--ink); }
+.avisar__nota--bom { padding: .75rem .9rem; background: color-mix(in srgb, var(--accent) 10%, var(--bg)); border-radius: var(--radius, 0); }
+.avisar__legal { margin: .25rem 0 0; font-size: 12px; line-height: 1.55; color: var(--muted); }
+.avisar__legal a { color: inherit; }
+.avisar__form--feito .avisar__rotulo, .avisar__form--feito .avisar__email,
+.avisar__form--feito .avisar__novidades, .avisar__form--feito [data-avisar-enviar] { display: none; }
+.avisar__fechar:focus-visible, .avisar__abrir:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+@media (prefers-reduced-motion: no-preference) {
+  .avisar[open] { animation: aviso-campanha-entra .28s ease-out; }
+  .avisar[open]::backdrop { animation: aviso-campanha-fundo .28s ease-out; }
+}
+
 /* --- peças legais comuns (legal-comum, src/lib/legal.mjs) --------------------
    O Livro de Reclamações, DISCRETO (o Renato, 22 out 2026): o ícone e o texto,
    sem caixa nem fundo (o CSS dele vem da biblioteca, no fim do ficheiro de

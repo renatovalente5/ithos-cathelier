@@ -476,6 +476,66 @@
     "t": "The coupon {codigo} from the link was not applied: {motivo}",
     "h": "22db37ec43b9"
   },
+  "avisar.oQue": {
+    "t": "{nome} — {valor}",
+    "h": "a12d9f1f351f"
+  },
+  "avisar.feito": {
+    "t": "Done: we will write to {email} when it is back.",
+    "h": "4a3c04b430a4"
+  },
+  "avisar.feitoNovidades": {
+    "t": "Done: we will write to {email} when it is back. We have also sent you an email to confirm your subscription to our news.",
+    "h": "e227adde26be"
+  },
+  "avisar.jaNaLista": {
+    "t": "Done: we will write to {email} when it is back. You are already on our news list.",
+    "h": "b5dfe01b088b"
+  },
+  "avisar.novidadesMaisTarde": {
+    "t": "Done: we will write to {email} when it is back. We could not sign you up for our news today: please try again tomorrow.",
+    "h": "ae892daa2caf"
+  },
+  "avisar.emailMau": {
+    "t": "Please write a full email address, such as name@example.com.",
+    "h": "ddf94d15b593"
+  },
+  "avisar.jaHa": {
+    "t": "It is in stock now: you can order it.",
+    "h": "bd7b274ac242"
+  },
+  "avisar.jaVoltou": {
+    "t": "It is back: you can choose it now.",
+    "h": "38ece683cd30"
+  },
+  "avisar.muitos": {
+    "t": "Too many requests in a row. Please try again in a few minutes.",
+    "h": "09d70247a750"
+  },
+  "avisar.falhou": {
+    "t": "We could not save your request. Please try again shortly.",
+    "h": "fc8ca0c5a6f8"
+  },
+  "lista.semLigacao": {
+    "t": "This link is incomplete. Please open it again from the email.",
+    "h": "5d6f2940a170"
+  },
+  "lista.feito": {
+    "t": "You are subscribed. You can leave at any time, using the link at the end of each email.",
+    "h": "96e146b58fe6"
+  },
+  "lista.expirou": {
+    "t": "This link has expired (it lasts 7 days). Please ask again from a “Let me know” on our website.",
+    "h": "26b8290456bc"
+  },
+  "lista.ligacaoMa": {
+    "t": "This link is not right. Please open it again from the email.",
+    "h": "47b24d84feab"
+  },
+  "lista.falhou": {
+    "t": "We could not confirm right now. Please try again shortly.",
+    "h": "5acd58a3157d"
+  },
   "ordenar.rotulo": {
     "t": "Sort by",
     "h": "1b8d52ae1c04"

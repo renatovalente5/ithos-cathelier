@@ -41,6 +41,21 @@ encomenda paga dessa forma, pedimos-lhe um IBAN para transferir o reembolso.
 Usamo-lo para essa transferência e para mais nada, e fica guardado com a
 fatura durante o tempo que a lei fiscal exige.
 
+**Se pedir um aviso.** No «Avise-me quando voltar» de um produto, guardamos o
+seu email, a língua da página e o produto ou a escolha de que está à espera.
+Usamo-los para lhe escrever uma vez, quando voltar, e apagamos o pedido logo a
+seguir; se nunca voltar, ao fim de um ano. O fundamento é o seu pedido. Contamos
+também quantas pessoas esperam por cada produto, sem nomes, para sabermos o que
+fazer primeiro.
+
+**Se se inscrever nas novidades.** Só se marcar o quadrado das novidades e
+confirmar no email que lhe enviamos. Guardamos o seu email, a língua, e quando
+se inscreveu e confirmou, que é a prova do seu consentimento. Usamo-los para lhe
+enviar as novidades e as promoções da loja, e para mais nada. O fundamento é o
+seu consentimento, que pode retirar quando quiser, pela ligação no fim de cada
+email ou escrevendo-nos. Se não confirmar, o pedido é apagado ao fim de 7 dias;
+quando sai, a sua inscrição é apagada.
+
 **O seu cesto.** Enquanto está a escolher, vive no seu próprio browser e nós
 nunca o vemos. Chega-nos no momento em que carrega em **Encomendar e pagar**:
 guardamos a encomenda — o seu nome, morada, telefone, contribuinte e o que
@@ -72,12 +87,13 @@ durante o tempo que a lei fiscal exige.
 - **{{CARRIER}}**, para entregar a encomenda: o seu nome, morada e telefone.
 - **Resend**, para lhe fazer chegar os nossos emails: a confirmação leva o seu
   nome, o que encomendou e a morada para onde vai, por isso a Resend trata de
-  tudo isso pelo caminho. Os servidores deles para este domínio estão na
-  Irlanda.
+  tudo isso pelo caminho. Se se inscrever nas novidades, é também lá que fica a
+  lista para onde as enviamos (o seu email e a língua). Os servidores deles
+  para este domínio estão na Irlanda.
 - **Cloudflare**, que corre o pagamento e guarda a encomenda desde o momento em
   que carrega em **Encomendar e pagar** até ser apagada, o que fica dela para a
-  retratação, as retratações feitas no site e os registos dos nossos
-  revendedores. É também por ela que saem os emails da loja, e é ela que serve
+  retratação, as retratações feitas no site, os pedidos de aviso, as inscrições
+  nas novidades e os registos dos nossos revendedores. É também por ela que saem os emails da loja, e é ela que serve
   estas páginas ao seu browser, por isso vê o pedido, incluindo o seu endereço
   IP.
 - **Microsoft (Outlook)**, onde está a nossa caixa de correio: recebemos lá a
@@ -91,7 +107,8 @@ base saem da União Europeia quando saem:
 
 {{DESTINATARIOS}}
 
-Os seus dados não são vendidos nem usados para lhe fazer publicidade.
+Os seus dados não são vendidos, e só lhe enviamos publicidade se se inscrever
+nas novidades.
 
 ## Cookies e o mapa
 
@@ -110,8 +127,9 @@ respondermos a uma pergunta sobre ela. De uma encomenda paga por um consumidor
 ficam, durante 18 meses, o número, o nome, o email, o nome dos artigos, a data
 e a hora do pagamento e a língua, para a função de retratação. Uma retratação
 feita no site guarda-se durante 3 anos a contar da última declaração de livre
-resolução dessa encomenda. Os emails guardam-se enquanto forem úteis e depois
-são apagados.
+resolução dessa encomenda. Um pedido de aviso apaga-se quando o aviso sai, ou
+ao fim de um ano. Uma inscrição nas novidades fica até sair; por confirmar, 7
+dias. Os emails guardam-se enquanto forem úteis e depois são apagados.
 
 ## O que pode pedir
 

@@ -1021,6 +1021,24 @@ export function payPage(shop = {}) {
 </section>`;
 }
 
+/* CONFIRMAR A INSCRIÇÃO NAS NOVIDADES (src/lib/avisar.mjs; a API, src/avisos.js).
+   A ligação do email traz o resumo e a senha (?h=…&t=…) e a página mostra um
+   BOTÃO: os filtros de correio abrem as ligações dos emails para as
+   verificar, e uma página que confirmasse ao abrir confirmava por quem nunca
+   a viu. O shop.js (paginaDaLista) manda o toque ao Worker e tira a senha da
+   morada. Não se indexa. */
+export function emailPage() {
+  return `
+<section class="section">
+  <div class="shell shell--narrow page-prose" style="text-align:center" data-lista>
+    <h1>${esc(t('paginas.email.titulo'))}</h1>
+    <p class="lede" data-lista-texto>${esc(t('paginas.email.entrada'))}</p>
+    <p style="margin-block-start:1.5rem"><button class="btn" type="button" data-lista-confirmar>${esc(t('paginas.email.confirmar'))}</button></p>
+    <p data-lista-nota role="status" hidden></p>
+  </div>
+</section>`;
+}
+
 export function orderCancelled() {
   return `
 <section class="section">

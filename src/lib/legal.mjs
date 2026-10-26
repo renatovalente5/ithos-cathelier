@@ -164,11 +164,13 @@ export const FORNECEDORES = Object.freeze({
 /* O que a biblioteca não diz e esta loja precisa de dizer (acrescentado à
    finalidade dela, nunca no lugar): a folha de cada encomenda chega à caixa
    Outlook; a ifthenpay recebe também os pagamentos por cartão, Google Pay e
-   Apple Pay. E o GitHub, que a biblioteca só conhece como alojamento (aqui
+   Apple Pay; a Resend guarda também a lista das novidades. E o GitHub, que a biblioteca só conhece como alojamento (aqui
    não o é): guarda o código e os textos do site e constrói-o. */
 const EXTRA_FINALIDADE = {
   microsoft: 'e a folha de cada encomenda, que nos chega por email (nome, morada, telefone, email, NIF e artigos)',
   ifthenpay: 'pagamentos por cartão, Google Pay e Apple Pay (o seu nome, o seu email e o valor; no MB WAY, o seu número de telemóvel)',
+  /* A lista das novidades (src/lib/avisar.mjs; a API, src/lista.js). */
+  resend: 'e a lista das novidades, se se inscrever (o seu email e a língua)',
 };
 const GITHUB = {
   chave: 'github', ...CATALOGO_DESTINATARIOS.github,

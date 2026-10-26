@@ -224,6 +224,14 @@
     "t": "You closed the payment page, so the order was not placed.",
     "h": "c394d3d9ecfe"
   },
+  "email.titulo": {
+    "t": "News by email",
+    "h": "148fea2b7865"
+  },
+  "email.descricao": {
+    "t": "Confirm your subscription to news and offers from ithos · cathelier.",
+    "h": "1fead990bbeb"
+  },
   "naoEncontrada.titulo": {
     "t": "Not found — ithos · cathelier",
     "h": "3d429bb61c4c"

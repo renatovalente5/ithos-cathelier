@@ -216,6 +216,58 @@
     "t": "Remove",
     "h": "a3037dc71a43"
   },
+  "avisar.abrirStock": {
+    "t": "Let me know when it is in stock",
+    "h": "c3487b3e2b75"
+  },
+  "avisar.abrirEscolha": {
+    "t": "Let me know when “{valor}” is back",
+    "h": "0893d16b59e3"
+  },
+  "avisar.tituloStock": {
+    "t": "We will let you know when it is in stock",
+    "h": "826578b650c2"
+  },
+  "avisar.tituloEscolha": {
+    "t": "We will let you know when it is back",
+    "h": "4f6ce9354294"
+  },
+  "avisar.email": {
+    "t": "Your email",
+    "h": "3c16531aed8f"
+  },
+  "avisar.novidades": {
+    "t": "I would also like to receive news and offers by email.",
+    "h": "c03a619b9b57"
+  },
+  "avisar.enviar": {
+    "t": "Let me know",
+    "h": "2a691c2433ff"
+  },
+  "avisar.legal": {
+    "t": "We use your email only for this notification and, if you tick the box, for our news. You can leave at any time.",
+    "h": "064514652406"
+  },
+  "avisar.privacidade": {
+    "t": "Privacy",
+    "h": "2bb2d8436a5c"
+  },
+  "avisar.fechar": {
+    "t": "Close",
+    "h": "0f2bd88ef0ac"
+  },
+  "email.titulo": {
+    "t": "News by email",
+    "h": "148fea2b7865"
+  },
+  "email.entrada": {
+    "t": "One tap left to receive news and offers from ithos · cathelier by email.",
+    "h": "ff0d8f3f77fd"
+  },
+  "email.confirmar": {
+    "t": "Confirm my subscription",
+    "h": "940df5f82350"
+  },
   "cesto.stockInsuficiente": {
     "t": "There are not enough in stock for these quantities.",
     "h": "65990687ec27"
@@ -878,8 +930,8 @@
     "h": "b062e436e424"
   },
   "destinatarios.f.resend": {
-    "t": "sending automated emails (confirmations and notices)",
-    "h": "8825d3cc679f"
+    "t": "sending automated emails (confirmations and notices); and the news list, if you subscribe (your email and language)",
+    "h": "4eab3e6d2f27"
   },
   "destinatarios.f.ifthenpay": {
     "t": "Multibanco references and MB WAY requests; payments by card, Google Pay and Apple Pay (your name, your email and the amount; for MB WAY, your mobile number)",

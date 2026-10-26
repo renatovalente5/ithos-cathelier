@@ -958,6 +958,7 @@ function buildShared() {
     ['/pay/', 'pagar', pages.payPage(shop)],
     ['/thank-you/', 'obrigado', pages.thankYou(shop)],
     ['/order-cancelled/', 'cancelada', pages.orderCancelled()],
+    ['/email/', 'email', pages.emailPage()],
   ]) {
     const title = t(`build.${chave}.titulo`);
     const description = t(`build.${chave}.descricao`);

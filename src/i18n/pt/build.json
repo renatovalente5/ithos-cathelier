@@ -56,6 +56,8 @@
   "obrigado.descricao": "A sua encomenda está feita e o atelier começa agora.",
   "cancelada.titulo": "Nada foi cobrado",
   "cancelada.descricao": "Fechou a página de pagamento, por isso a encomenda não foi feita.",
+  "email.titulo": "Novidades por email",
+  "email.descricao": "Confirmar a inscrição nas novidades e promoções da ithos · cathelier.",
   "naoEncontrada.titulo": "Página não encontrada — ithos · cathelier",
   "naoEncontrada.descricao": "A página que procurava mudou de sítio ou nunca existiu.",
   "naoEncontrada.tituloCathelier": "Página não encontrada — cathelier",

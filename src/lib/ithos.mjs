@@ -10,6 +10,7 @@ import { cover } from './cover.mjs';
 import { prazos } from './prazos.mjs';
 import { t, tn } from './i18n.mjs';
 import { fabricante } from './pages.mjs';
+import { janelaDoAviso, botaoDoStock, botoesDasEscolhas } from './avisar.mjs';
 import { avisoRetoma } from './legal.mjs';
 import { fotosDaDona, enquadramentoDaDona } from './oficina.mjs';
 import { videosDe, enderecoDoVideo as enderecoDeVideo, capaDoVideo as capaDeVideo, videoDoCartao } from './videos.mjs';
@@ -372,6 +373,7 @@ export function product({ p, all, shop, identity }) {
        data-lead-stock="${esc(prazos(shop.lead).stock)}"
        data-lead-none="${esc(prazos(shop.lead).semStock)}"
        data-lead-days="${esc(prazos(shop.lead).dias)}">${icon('truck', 15)}<span data-lead-text>${esc(prazos(shop.lead).semStock)}</span></p>
+    ${botaoDoStock()}
 
     <form class="product__form" data-product-form data-product-id="${esc(p.slug)}">
       ${(p.options || []).map((o) => optionField(o, shop.returns.coolingOffDays)).join('\n      ')}
@@ -387,6 +389,7 @@ export function product({ p, all, shop, identity }) {
       </div>
       <p class="product__total" data-product-total aria-live="polite" hidden></p>
     </form>
+    ${janelaDoAviso(p.slug)}
 
     <div class="reassure">
       ${/* Aqui havia uma FOLHA ao lado de «Pinho maciço e tintas de base
@@ -477,5 +480,6 @@ function optionField(o, diasDeResolucao) {
           </label>`;
   }).join('\n          ')}
         </div>
+        ${botoesDasEscolhas(o)}
       </fieldset>`;
 }

@@ -541,6 +541,115 @@ async function perguntarCupao(codigo, anterior) {
   } catch { return { erro: tj('cupao.semResposta') }; }
 }
 
+/* --- «Avise-me quando voltar» (src/lib/avisar.mjs) ---------------------------
+   A Cathia, 26 out 2026. Uma janela por página, que se abre do botão por
+   baixo do prazo (um candeeiro sem stock, na escolha de agora) ou do de uma
+   escolha esgotada. O pedido vai ao Worker (POST /aviso), que confere tudo
+   outra vez contra o catálogo e o stock: aqui só se diz o que ele respondeu. */
+async function avisoNaFicha() {
+  const janela = $('[data-avisar]');
+  if (!janela) return;
+  const form = $('[data-avisar-form]', janela);
+  const ficha = $('[data-product-form]');
+  const nota = $('[data-avisar-nota]', janela);
+  const enviar = $('[data-avisar-enviar]', janela);
+  const email = $('[name=email]', form);
+  const nomeDoProduto = $('.product__detail h1')?.textContent.trim() ?? '';
+  let pedido = null;
+  const dizer = (texto, bom = false) => { nota.hidden = !texto; nota.textContent = texto || ''; nota.classList.toggle('avisar__nota--bom', bom); };
+  const abrir = (p, titulo, oQue) => {
+    pedido = p;
+    $('[data-avisar-titulo]', janela).textContent = titulo;
+    $('[data-avisar-o-que]', janela).textContent = oQue;
+    form.classList.remove('avisar__form--feito');
+    enviar.disabled = false;
+    dizer('');
+    janela.showModal();
+    email.focus();
+  };
+  /* Um toque no fundo escuro é um toque no próprio <dialog>: fecha. */
+  janela.addEventListener('click', (ev) => { if (ev.target === janela) janela.close(); });
+  for (const b of $$('[data-avisar-opcao]')) {
+    b.addEventListener('click', () => abrir({ opcao: b.dataset.avisarOpcao, valor: b.dataset.avisarValor },
+      janela.dataset.tituloEscolha, tj('avisar.oQue', { nome: nomeDoProduto, valor: b.dataset.avisarNome })));
+  }
+  const botaoStock = $('[data-avisar-stock]');
+  if (botaoStock && ficha) {
+    const [cat, ha] = await Promise.all([catalogue().catch(() => null), stockPublico()]);
+    const p = cat?.products[ficha.dataset.productId];
+    const modelo = p?.stock?.option ?? null;
+    /* Só sem stock na escolha de agora -- e só quando se sabe: sem resposta
+       do Worker, o botão não aparece. */
+    const pintar = () => {
+      const skus = skusDaEscolha(p, escolhaDe(ficha));
+      botaoStock.hidden = !(skus && ha && !skus.every((k) => ha.has(k)));
+    };
+    pintar();
+    ficha.addEventListener('change', pintar);
+    botaoStock.addEventListener('click', () => {
+      const escolha = escolhaDe(ficha);
+      const nomeModelo = modelo ? $(`input[data-option="${CSS.escape(modelo)}"]:checked`, ficha)?.closest('.choice')?.querySelector('span')?.textContent.trim() : '';
+      abrir({ escolha: modelo ? { [modelo]: escolha[modelo] ?? '' } : {} }, janela.dataset.tituloStock,
+        nomeModelo ? tj('avisar.oQue', { nome: nomeDoProduto, valor: nomeModelo }) : nomeDoProduto);
+    });
+  }
+  form.addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    const escrito = email.value.trim();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]{2,}$/.test(escrito)) { dizer(tj('avisar.emailMau')); email.focus(); return; }
+    if (!API) { dizer(tj('avisar.falhou')); return; }
+    enviar.disabled = true;
+    let ok = false;
+    try {
+      const r = await fetch(`${API}/aviso`, {
+        method: 'POST', headers: { 'content-type': 'application/json' },
+        body: JSON.stringify({ produto: janela.dataset.produto, ...pedido, email: escrito, novidades: $('[name=novidades]', form).checked, lingua: LINGUA === 'en' ? 'en' : 'pt', site: $('[name=site]', form).value }),
+      });
+      const d = await r.json().catch(() => ({}));
+      ok = r.ok;
+      if (ok) {
+        form.classList.add('avisar__form--feito');
+        dizer(tj(({ pendente: 'avisar.feitoNovidades', confirmada: 'avisar.jaNaLista', 'mais-tarde': 'avisar.novidadesMaisTarde' })[d.novidades] ?? 'avisar.feito', { email: escrito }), true);
+      } else {
+        dizer(tj(r.status === 429 ? 'avisar.muitos' : ({ already_in_stock: 'avisar.jaHa', already_available: 'avisar.jaVoltou', bad_email: 'avisar.emailMau' })[d.error] ?? 'avisar.falhou'));
+      }
+    } catch { dizer(tj('avisar.falhou')); }
+    if (!ok) enviar.disabled = false;
+  });
+}
+
+/* A PÁGINA QUE CONFIRMA A INSCRIÇÃO NAS NOVIDADES (/email/?h=…&t=…, src/lib/
+   pages.mjs, emailPage). Confirma-se com o botão, nunca ao abrir. Depois de
+   confirmada, a senha sai da morada. */
+function paginaDaLista() {
+  const raiz = $('[data-lista]');
+  if (!raiz) return;
+  const botao = $('[data-lista-confirmar]', raiz);
+  const nota = $('[data-lista-nota]', raiz);
+  const u = new URL(location.href);
+  const h = u.searchParams.get('h');
+  const t = u.searchParams.get('t');
+  const dizer = (texto) => { nota.hidden = false; nota.textContent = texto; };
+  if (!h || !t) { botao.hidden = true; dizer(tj('lista.semLigacao')); return; }
+  botao.addEventListener('click', async () => {
+    if (!API) { dizer(tj('lista.falhou')); return; }
+    botao.disabled = true;
+    try {
+      const r = await fetch(`${API}/lista`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ acao: 'confirmar', h, t }) });
+      if (r.ok) {
+        botao.hidden = true;
+        $('[data-lista-texto]', raiz).hidden = true;
+        dizer(tj('lista.feito'));
+        history.replaceState(history.state, '', u.pathname);
+        return;
+      }
+      dizer(tj(r.status === 410 ? 'lista.expirou' : r.status === 403 ? 'lista.ligacaoMa' : 'lista.falhou'));
+      if (r.status === 410 || r.status === 403) { botao.hidden = true; return; }
+    } catch { dizer(tj('lista.falhou')); }
+    botao.disabled = false;
+  });
+}
+
 /* UM CUPÃO NA MORADA (?cupao=NATAL10): uma ligação partilhada pela loja deixa
    o código no cesto, que o confere quando abrir. A morada fica limpa, para o
    código não ficar no histórico nem numa ligação copiada daqui. */
@@ -857,6 +966,8 @@ document.addEventListener('DOMContentLoaded', () => {
   revendaNaPagina();
   paginaRevenda();
   retratacao();
+  avisoNaFicha();
+  paginaDaLista();
 });
 
 /* --- checkout -------------------------------------------------------------
