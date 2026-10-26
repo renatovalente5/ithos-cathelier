@@ -1,4 +1,4 @@
-<!-- origem: fea2d5a7fcb9 partes: 385996f20f05 95a292592920 74b642e8c44a e12484043fef b9bacc6b6765 53283dbe7dbb 48e0e2a7afa3 f0e1684c6ab9 7303925a6a5e 5df13b1d4273 9b2ecfa0cec6 40d4012a548e 37247a30ba8d a42c1b8e95aa -->
+<!-- origem: f1c474f43d92 partes: 385996f20f05 95a292592920 74b642e8c44a 18e631390cab b9bacc6b6765 53283dbe7dbb 48e0e2a7afa3 f0e1684c6ab9 7303925a6a5e 5df13b1d4273 9b2ecfa0cec6 40d4012a548e 37247a30ba8d a42c1b8e95aa -->
 # Terms of sale
 
 ## Who is selling
@@ -28,8 +28,9 @@ may not be the colour of the wood.
 
 Prices are in euros. {{VAT_NOTE}}
 
-The price you see on a product page is the price for that piece with the choices
-shown. Shipping is added at checkout and shown before you pay.
+The price you see on a product page is the price for that piece with the selected options. Shipping costs are added at checkout and are shown before you pay.
+
+A discount coupon is entered in the basket, one per order. The discount and the coupon conditions (the pieces it applies to, the minimum purchase, the dates) appear in the basket before you pay. A coupon cannot be exchanged for cash nor combined with reseller prices. In the event of a return, you will be refunded the amount paid, including the discount.
 
 ## How to place an order
 
