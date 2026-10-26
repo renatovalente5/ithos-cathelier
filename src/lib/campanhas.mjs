@@ -42,3 +42,17 @@ export function zonasDaCampanha(c, shipping) {
   if (!lista.length) return [];
   return (shipping?.zones ?? []).filter((z) => (z.countries ?? []).length && z.countries.every((k) => lista.includes(k))).map((z) => z.name);
 }
+
+/* AS DE PORTES NA FICHA DE UM PRODUTO (o Renato, 26 out 2026): a ficha do
+   candeeiro dizia «5 € de portes» e a janela da campanha, na mesma página,
+   «Portes gratuitos». As ligadas que tiram portes nessa loja e valem em
+   Portugal continental (a linha fala do envio dentro de Portugal), pela ordem
+   da lista: o shop.js mostra a primeira que está no dia. */
+export const portesNaFicha = (s, brand) => campanhasLigadas(s)
+  .filter((c) => tipoDe(c) === 'portes' && daLoja(c, brand) && (!c.countries?.length || c.countries.includes('PT')));
+/* O dia de Lisboa dentro das datas -- a mesma conta do shop.js
+   (dentroDasDatas) e do Worker (campanhaEmDia). */
+export function emDiaDeLisboa(c, agora = new Date()) {
+  const hoje = new Intl.DateTimeFormat('en-CA', { timeZone: 'Europe/Lisbon', year: 'numeric', month: '2-digit', day: '2-digit' }).format(agora);
+  return (!c.from || hoje >= c.from) && (!c.to || hoje <= c.to);
+}

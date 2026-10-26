@@ -331,7 +331,7 @@ ${asset.textos?.[lingua()] ? `<script src="/assets/${asset.textos[lingua()]}" de
 const dataCurta = (iso) => new Intl.DateTimeFormat(lingua() === 'en' ? 'en-GB' : 'pt-PT', { day: 'numeric', month: 'long', timeZone: 'UTC' }).format(new Date(`${iso}T00:00:00Z`));
 /* A CONDIÇÃO DE UMA CAMPANHA, na faixa e na janela: o valor, e onde vale se
    não for em todo o lado (campanhas.mjs, zonasDaCampanha). */
-function condicaoDaCampanha(c, shipping) {
+export function condicaoDaCampanha(c, shipping) {
   /* A frase da dona, se a escreveu (num aviso é sempre a dela). */
   if (String(c.frase ?? '').trim()) return c.frase.trim();
   const n = Number(c.freeOver).toFixed(0);

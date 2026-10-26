@@ -681,7 +681,7 @@ function buildIthos() {
       description: p.summary,
       partilha: cartaoDoProduto('ithos', p),
       crumbs: [{ name: t('build.migalha.inicio'), href: '/' }, { name: t('build.migalha.candeeiros'), href: '/lamps/' }, { name: p.name }],
-      body: ithos.product({ p, all: lamps, shop, identity }),
+      body: ithos.product({ p, all: lamps, shop, identity, shipping }),
       schema: [{
         '@context': 'https://schema.org', '@type': 'Product',
         name: t('build.candeeiro.nomeProduto', { nome: p.name }), description: p.summary,

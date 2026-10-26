@@ -138,8 +138,8 @@
     "h": "5a3ec32580e8"
   },
   "garantias.envio": {
-    "t": "Shipped within Portugal — €5 to the mainland",
-    "h": "d2a5951839b0"
+    "t": "Shipped within Portugal — €{n} to the mainland",
+    "h": "fec0c1ddda08"
   },
   "garantias.materiais": {
     "t": "Solid pine and water-based paints",

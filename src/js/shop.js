@@ -3381,6 +3381,16 @@ document.addEventListener('DOMContentLoaded', () => {
   /* Com várias campanhas em vigor no mesmo dia, vale a primeira da lista:
      fica a primeira faixa, e a janela é a primeira que estiver no dia. */
   for (const a of [...document.querySelectorAll('.announce')].slice(1)) a.remove();
+  /* Os portes na ficha de um candeeiro (ithos.mjs, linhasDoEnvio): a
+     primeira campanha que está no dia substitui a linha do preço; sem
+     nenhuma, fica o preço. O build já escolheu; aqui conta o dia de hoje. */
+  const linhasDosPortes = [...document.querySelectorAll('[data-envio-campanha]')];
+  if (linhasDosPortes.length) {
+    const vale = linhasDosPortes.find((l) => dentroDasDatas(l.dataset.de, l.dataset.ate));
+    for (const l of linhasDosPortes) l.hidden = l !== vale;
+    const base = document.querySelector('[data-envio-base]');
+    if (base) base.hidden = Boolean(vale);
+  }
   const d = [...document.querySelectorAll('dialog.aviso-campanha')].find((x) => dentroDasDatas(x.dataset.de, x.dataset.ate));
   if (!d || typeof d.showModal !== 'function') return;
   /* O Chrome devolve o `open` de um <dialog> num recarregar (ver o menu, mais

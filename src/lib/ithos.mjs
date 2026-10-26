@@ -11,6 +11,8 @@ import { prazos } from './prazos.mjs';
 import { t, tn } from './i18n.mjs';
 import { fabricante } from './pages.mjs';
 import { janelaDoAviso, botaoDoStock, botoesDasEscolhas } from './avisar.mjs';
+import { portesNaFicha, emDiaDeLisboa } from './campanhas.mjs';
+import { condicaoDaCampanha } from './shell.mjs';
 import { avisoRetoma } from './legal.mjs';
 import { fotosDaDona, enquadramentoDaDona } from './oficina.mjs';
 import { videosDe, enderecoDoVideo as enderecoDeVideo, capaDoVideo as capaDeVideo, videoDoCartao } from './videos.mjs';
@@ -281,7 +283,29 @@ export function catalogue({ products }) {
 `;
 }
 
-export function product({ p, all, shop, identity }) {
+/* OS PORTES NA FICHA (o Renato, 26 out 2026). A linha dizia «5 € de portes
+   para o continente», escrita à mão, e a janela da campanha na mesma página
+   «Portes gratuitos para Portugal» -- e o que se cobrava era 0. Agora a linha
+   do preço sai da zona de Portugal continental (Envios, no painel), e por
+   cima dela fica uma linha por campanha de portes do ithos, com a frase da
+   faixa e da janela e as suas datas. Já vem escolhida a que vale no dia do
+   build; o shop.js volta a escolher no dia de quem abre a página, porque uma
+   campanha pode começar ou acabar sem o site ser publicado. */
+function linhasDoEnvio(shipping, agora = new Date()) {
+  const zona = (shipping?.zones ?? []).find((z) => (z.countries ?? []).includes('PT'));
+  const preco = Number(zona?.price);
+  const n = Number.isInteger(preco) ? String(preco) : preco.toFixed(2).replace('.', ',');
+  const base = Number.isFinite(preco) ? t('ithos.garantias.envio', { n }) : t('cathelier.ficha.garantia.envio');
+  const campanhas = portesNaFicha(shipping, 'ithos');
+  const vale = campanhas.find((c) => emDiaDeLisboa(c, agora));
+  const linha = (texto, atributos, escondida) => `<p ${atributos}${escondida ? ' hidden' : ''}>${icon('truck', 18)}<span>${esc(texto)}</span></p>`;
+  return [
+    ...campanhas.map((c) => linha(condicaoDaCampanha(c, shipping), `data-envio-campanha data-de="${esc(c.from || '')}" data-ate="${esc(c.to || '')}"`, c !== vale)),
+    linha(base, 'data-envio-base', Boolean(vale)),
+  ].join('\n      ');
+}
+
+export function product({ p, all, shop, identity, shipping }) {
   const { low, high } = fromPrice(p);
   const photos = p.photos;
   /* Os vídeos vêm depois das fotografias (a dona: «quando tivermos os vídeos
@@ -397,8 +421,8 @@ export function product({ p, all, shop, identity }) {
           folha não: uma folha, uma árvore ou uma gota junto de um produto
           lêem-se como selo ambiental (FAQ da Comissão sobre a Diretiva
           2024/825, P2 e P5), e um selo sem certificação é prática proibida
-          (anexo I da Diretiva 2005/29, ponto 2-A). Ficou um desenho neutro. */ ''}${[['truck', t('ithos.garantias.envio')],
-         ['layers', t('ithos.garantias.materiais')],
+          (anexo I da Diretiva 2005/29, ponto 2-A). Ficou um desenho neutro. */ ''}${linhasDoEnvio(shipping)}
+      ${[['layers', t('ithos.garantias.materiais')],
          ['shield', `${tn('ithos.garantias.anos', shop.returns.warrantyYears)} · ${tn('ithos.garantias.mudarDeIdeias', shop.returns.coolingOffDays)}`],
          ['hand', t('ithos.garantias.feitoAMao')]]
         .map(([i, texto]) => `<p>${icon(i, 18)}<span>${esc(texto)}</span></p>`).join('\n      ')}
