@@ -461,6 +461,86 @@ const esgotados = new Set();
 let esgotouAgora = false;
 let reavaliarCesto = () => {};
 
+/* --- o cupão -----------------------------------------------------------------
+   O Renato, 26 out 2026: a dona cria cupões no painel, e o cliente escreve o
+   código no cesto. Os códigos não estão no catálogo nem em lado nenhum do
+   site (o repositório é público): o cesto pergunta ao Worker por UM código
+   (POST /cupao) e guarda no próprio cesto o que ele dá. A conta faz-se aqui
+   para mostrar o desconto antes de pagar, e é a mesma do Worker
+   (src/cupoes.js, aplicarCupao) -- mas é a do Worker que se cobra. */
+/* O código que o checkout leva: o do cupão que se aplica ao cesto pintado
+   agora, ou null (sem cupão, ou um que não chega ao mínimo). */
+let cupaoNoCheckout = null;
+
+const diaPorExtenso = (d) => {
+  try { return new Date(`${d}T12:00:00Z`).toLocaleDateString(LOCALE_DATAS, { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'UTC' }); } catch { return d; }
+};
+
+/* O que o Worker diz de um código, numa frase para o comprador. */
+function fraseDoCupao(codigo, extra = {}) {
+  const base = String(codigo ?? '').split(':')[0];
+  if (base === 'coupon_exhausted') return tj('cupao.esgotado');
+  if (base === 'coupon_expired') return tj('cupao.terminou');
+  if (base === 'coupon_not_started') return extra.inicio ? tj('cupao.aindaNao', { data: diaPorExtenso(extra.inicio) }) : tj('cupao.desconhecido');
+  if (base === 'coupon_not_for_resellers') return tj('cupao.revenda');
+  if (base === 'coupon_minimum') return tj('cupao.naoChega');
+  if (base === 'coupon_wrong_brand') return tj('cupao.naoChega');
+  if (base === 'coupons_unavailable' || base === 'too_many_requests') return tj(base === 'too_many_requests' ? 'cupao.muitas' : 'cupao.semResposta');
+  return tj('cupao.desconhecido');
+}
+
+/* A MESMA CONTA DO WORKER (src/cupoes.js, aplicarCupao), em cêntimos: o
+   desconto sobre as peças da loja do cupão (ou todas), ao preço que se paga
+   por elas; portes grátis num cupão de portes; e o total nunca abaixo de 1 €.
+   Um cupão que não se aplica a este cesto (só de outra loja, ou abaixo do
+   mínimo) devolve só a nota que o diz -- e o checkout não leva o código. */
+function descontoDoCupao(cupao, linhas, shippingCents) {
+  const elegiveis = linhas.filter((p) => !cupao.marca || p.brand === cupao.marca);
+  if (!elegiveis.length) return { nota: tj(`cupao.soMarca.${cupao.marca}`, { codigo: cupao.codigo }) };
+  const base = elegiveis.reduce((t, p) => t + Math.round(p.total * 100), 0);
+  const minimo = Math.round((Number(cupao.minimo) || 0) * 100);
+  if (minimo && base < minimo) {
+    return { nota: tj(cupao.marca ? `cupao.minimoMarca.${cupao.marca}` : 'cupao.minimo', { codigo: cupao.codigo, minimo: dinheiro(minimo / 100), falta: dinheiro((minimo - base) / 100) }) };
+  }
+  const goodsCents = linhas.reduce((t, p) => t + Math.round(p.total * 100), 0);
+  let desconto = 0;
+  let portes = shippingCents;
+  if (cupao.tipo === 'percentagem') desconto = Math.round((base * cupao.valor) / 100);
+  else if (cupao.tipo === 'valor') desconto = Math.min(Math.round(cupao.valor * 100), base);
+  else if (cupao.tipo === 'portes') portes = 0;
+  const bruto = goodsCents + portes;
+  desconto = Math.max(0, Math.min(desconto, bruto - 100));
+  return { aplica: true, desconto, portes, nota: cupao.tipo === 'portes' && shippingCents === 0 ? tj('cupao.jaGratis') : '' };
+}
+
+/* Pergunta ao Worker por um código. `definitivo`: o Worker respondeu que não
+   serve (e o cesto deixa-o); sem rede, fica como estava. */
+async function perguntarCupao(codigo) {
+  if (!API) return { erro: tj('cupao.semResposta') };
+  try {
+    const r = await fetch(`${API}/cupao`, { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ codigo }) });
+    const d = await r.json().catch(() => ({}));
+    if (r.ok && d.cupao) return { cupao: d.cupao };
+    return { erro: fraseDoCupao(r.status === 429 ? 'too_many_requests' : d.error, d), definitivo: r.status === 404 || r.status === 409 };
+  } catch { return { erro: tj('cupao.semResposta') }; }
+}
+
+/* UM CUPÃO NA MORADA (?cupao=NATAL10): uma ligação partilhada pela loja deixa
+   o código no cesto, que o confere quando abrir. A morada fica limpa, para o
+   código não ficar no histórico nem numa ligação copiada daqui. */
+function cupaoDaMorada() {
+  try {
+    const u = new URL(location.href);
+    const c = u.searchParams.get('cupao');
+    if (!c) return;
+    const cur = basket();
+    cur.cupaoPendente = String(c).slice(0, 30);
+    setBasket(cur);
+    u.searchParams.delete('cupao');
+    history.replaceState(history.state, '', `${u.pathname}${u.search}${u.hash}`);
+  } catch { /* sem morada para ler, nada a fazer */ }
+}
+
 /* O CESTO MUDOU NOUTRO SÍTIO: voltar atrás, ou outro separador.
    A seta do browser não carrega a página outra vez: repõe-na da memória
    (bfcache) tal como estava, sem DOMContentLoaded, e o contador ficava com
@@ -750,6 +830,7 @@ document.addEventListener('DOMContentLoaded', () => {
   lightbox();
   productForm();
   stockNaFicha();
+  cupaoDaMorada();
   basketPage();
   mapConsent();
   checkout();
@@ -878,6 +959,8 @@ function checkout() {
           prazo: prazoNoCesto,
           telemovel: metodo() === 'MBWAY' ? (campoTelemovel?.value ?? '').trim() : undefined,
           revenda: revenda.activa ? { sessao: revenda.sessao, versao: revenda.versao } : undefined,
+          /* Só o código de um cupão que se aplica a este cesto (paint()). */
+          cupao: !revenda.activa && cupaoNoCheckout ? cupaoNoCheckout : undefined,
         }),
       });
       const data = await r.json().catch(() => ({}));
@@ -916,6 +999,24 @@ function checkout() {
         reavaliarCesto();
         const caixa = $('[data-basket-lead]');
         say(tj('checkout.esgotou', { prazo: caixa?.dataset.leadWeeks || tj('checkout.algumasSemanas') }));
+        return;
+      }
+
+      /* O CUPÃO DEIXOU DE VALER entre o cesto e o botão (a dona desligou-o,
+         acabou, ou o último uso foi para outra pessoa): sai do cesto, o total
+         volta a ser pintado sem ele, e a próxima carga é escolha do comprador.
+         Um que não chega ao mínimo, ou de outra loja, o cesto já não manda;
+         se o Worker o recusar por isso, o cesto está desactualizado, e
+         repinta-se. */
+      if (String(data.error ?? '').startsWith('coupon_')) {
+        const cur = basket();
+        const codigo = cur.cupao?.codigo ?? '';
+        if (['coupon_unknown', 'coupon_expired', 'coupon_exhausted', 'coupon_not_started', 'coupon_not_for_resellers'].includes(data.error)) {
+          delete cur.cupao;
+          setBasket(cur);
+        }
+        reavaliarCesto();
+        say(tj('cupao.saiu', { codigo, motivo: fraseDoCupao(data.error, data) }));
         return;
       }
 
@@ -985,6 +1086,7 @@ function checkout() {
       text_too_long: 'erro.textoLongo',
       stock_unavailable: 'erro.stockIndisponivel',
       stock_changed: 'erro.stockMudou',
+      coupons_unavailable: 'cupao.semResposta',
     };
     const base = String(code).split(':')[0];
     if (Object.hasOwn(FRASES, base)) return tj(FRASES[base]);
@@ -1621,6 +1723,56 @@ async function basketPage() {
   });
 
   const euros = (n) => dinheiro(n);
+
+  /* O CUPÃO NO CESTO: uma pergunta escondida por baixo dos totais, e o cupão
+     aplicado numa linha dos totais, com «Remover». Numa sessão de revendedor
+     não há: os preços de revenda já são o desconto (e o Worker recusa os
+     dois juntos). */
+  const caixaCupao = $('[data-cupao]');
+  const abrirCupao = $('[data-cupao-abrir]');
+  const formCupao = $('[data-cupao-form]');
+  const notaCupao = $('[data-cupao-nota]');
+  const dizerCupao = (texto) => { if (notaCupao) { notaCupao.textContent = texto || ''; notaCupao.hidden = !texto; } };
+  const guardarCupao = (cupao) => { const cur = basket(); if (cupao) cur.cupao = cupao; else delete cur.cupao; delete cur.cupaoPendente; setBasket(cur); };
+  if (caixaCupao) caixaCupao.hidden = revenda.activa;
+  formCupao?.addEventListener('submit', async (ev) => {
+    ev.preventDefault();
+    const campo = formCupao.elements.cupao;
+    const botao = formCupao.querySelector('button');
+    const codigo = String(campo.value || '').trim();
+    if (!codigo) { campo.focus(); return; }
+    botao.disabled = true;
+    const r = await perguntarCupao(codigo);
+    botao.disabled = false;
+    if (r.cupao) {
+      guardarCupao(r.cupao);
+      campo.value = '';
+      dizerCupao('');
+      paint();
+      $('[data-cupao-tirar]')?.focus();
+    } else dizerCupao(r.erro);
+  });
+  $('[data-cupao-tirar]')?.addEventListener('click', () => {
+    guardarCupao(null);
+    dizerCupao('');
+    paint();
+    if (abrirCupao) { abrirCupao.open = true; formCupao?.elements.cupao.focus(); }
+  });
+  /* O cupão guardado confere-se ao abrir o cesto: pode ter acabado, ou a
+     dona pode tê-lo mudado. O que veio numa ligação (?cupao=) entra aqui. */
+  const conferirCupaoGuardado = async () => {
+    if (revenda.activa) return;
+    const cur = basket();
+    const codigo = cur.cupaoPendente || cur.cupao?.codigo;
+    if (!codigo) return;
+    const r = await perguntarCupao(codigo);
+    if (r.cupao) { guardarCupao(r.cupao); paint(); return; }
+    if (r.definitivo || cur.cupaoPendente) {
+      guardarCupao(cur.cupaoPendente ? cur.cupao ?? null : null);
+      dizerCupao(tj('cupao.retirado', { codigo: String(codigo).toUpperCase(), motivo: r.erro }));
+      paint();
+    }
+  };
   const ha = await stockPublico();
   const prazoCaixa = $('[data-basket-lead]');
   const temUm = (k) => Boolean(ha?.has(k)) && !esgotados.has(k);
@@ -1828,11 +1980,32 @@ async function basketPage() {
     /* The same basket pays the same shipping: the free-shipping threshold is
        measured at retail value, as the Worker does, or a reseller would lose
        free shipping for paying less. */
-    const post = shippingFor(cur.country || 'PT', priced.map((x) => x.p));
+    const postDaZona = shippingFor(cur.country || 'PT', priced.map((x) => x.p));
+    /* O cupão muda os portes (num de portes grátis) e tira o desconto ao total. */
+    const cupao = revenda.activa ? null : cur.cupao ?? null;
+    const conta = cupao && postDaZona !== null ? descontoDoCupao(cupao, priced.map((x) => x.p), Math.round(postDaZona * 100)) : null;
+    const post = conta?.aplica ? conta.portes / 100 : postDaZona;
+    const desconto = conta?.aplica ? conta.desconto / 100 : 0;
+    cupaoNoCheckout = conta?.aplica ? cupao.codigo : null;
+    const rotuloCupao = $('[data-sum-cupao-rotulo]');
+    const valorCupao = $('[data-sum-cupao]');
+    if (rotuloCupao && valorCupao) {
+      rotuloCupao.hidden = valorCupao.hidden = !cupao;
+      const nome = $('[data-sum-cupao-nome]', rotuloCupao);
+      if (nome) nome.textContent = cupao ? tj('cupao.linha', { codigo: cupao.codigo }) : '';
+      valorCupao.textContent = !cupao ? '' : !conta?.aplica ? '—'
+        : cupao.tipo === 'portes' && !conta.desconto ? tj('cupao.portesGratis') : `−${euros(desconto)}`;
+    }
+    if (abrirCupao) abrirCupao.hidden = Boolean(cupao);
+    /* Com um cupão no cesto, a nota é a dele (não chega ao mínimo, é só de
+       outra loja, os portes já eram grátis) -- ou nenhuma. Sem cupão, fica a
+       última resposta a quem tentou um código. */
+    if (cupao) dizerCupao(conta?.nota || '');
+    const aPagar = post === null ? null : goods + post - desconto;
     $('[data-sum-goods]').textContent = euros(goods);
     $('[data-sum-shipping]').textContent = post === null ? tj('cesto.naoEnviamos')
       : post === 0 ? tj('cesto.gratis') : euros(post);
-    $('[data-sum-total]').textContent = post === null ? '—' : euros(goods + post);
+    $('[data-sum-total]').textContent = aPagar === null ? '—' : euros(aPagar);
     /* O RESUMO LOGO ACIMA DE «ENCOMENDAR E PAGAR» (pages.mjs, basket): os
        mesmos números desta pintura -- quantos artigos e o total já com os
        portes --; o prazo chega pelo avaliar(), como o do quadro do total. A
@@ -1840,7 +2013,7 @@ async function basketPage() {
     if (resumo) {
       const n = priced.reduce((t, x) => t + (Number(x.line.qty) || 0), 0);
       const artigos = (n === 1 ? resumo.dataset.um : resumo.dataset.varios).replace('{n}', String(n));
-      const total = post === null ? tj('cesto.naoEnviamos') : euros(goods + post);
+      const total = aPagar === null ? tj('cesto.naoEnviamos') : euros(aPagar);
       $('[data-resumo-linha]', resumo).textContent = `${artigos} · ${resumo.dataset.total.replace('{total}', total)}`;
       const retoma = $('[data-basket-retoma]');
       if (retoma) retoma.hidden = !priced.some(({ p }) => p.brand === 'ithos');
@@ -1853,6 +2026,7 @@ async function basketPage() {
      outro. */
   reavaliarCesto = () => { const pais = basket().country; if (countrySel && pais) countrySel.value = pais; paint(); };
   paint();
+  conferirCupaoGuardado();
 }
 
 /* --- catalogue filters ----------------------------------------------------

@@ -674,8 +674,23 @@ export function basket({ shipping, shop }) {
         <dl class="basket__sums">
           <dt>${esc(t('paginas.cesto.pecas'))}</dt><dd data-sum-goods>—</dd>
           <dt>${esc(t('paginas.cesto.portes'))}</dt><dd data-sum-shipping>—</dd>
+          <dt data-sum-cupao-rotulo hidden><span data-sum-cupao-nome></span> <button class="basket__cupao-tirar" type="button" data-cupao-tirar>${esc(t('paginas.cesto.cupao.remover'))}</button></dt><dd class="basket__cupao-valor" data-sum-cupao hidden></dd>
           <dt class="basket__grand">${esc(t('paginas.cesto.aPagar'))}</dt><dd class="basket__grand" data-sum-total>—</dd>
         </dl>
+        ${/* O CUPÃO (src/js/shop.js; o Worker confere-o em src/cupoes.js).
+            Escondido até o script o ligar: sem script não há quem pergunte
+            pelo código, e numa sessão de revendedor fica escondido. */ ''}
+        <div class="basket__cupao" data-cupao hidden>
+          <details class="basket__cupao-abrir" data-cupao-abrir>
+            <summary>${esc(t('paginas.cesto.cupao.pergunta'))}</summary>
+            <form class="basket__cupao-form" data-cupao-form novalidate>
+              <label class="sr-only" for="cupao">${esc(t('paginas.cesto.cupao.rotulo'))}</label>
+              <input id="cupao" name="cupao" type="text" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="30" enterkeyhint="done">
+              <button class="btn btn--ghost" type="submit">${esc(t('paginas.cesto.cupao.aplicar'))}</button>
+            </form>
+          </details>
+          <p class="basket__cupao-nota" data-cupao-nota role="status" hidden></p>
+        </div>
         <!-- O escalão do revendedor (desconto maior em encomendas maiores),
              escrito pelo script só numa sessão de revendedor. -->
         <p class="small muted" data-rv-escalao hidden></p>

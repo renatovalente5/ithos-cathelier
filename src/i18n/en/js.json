@@ -396,6 +396,78 @@
     "t": "The basket holds at most {max} of these, so it now has {n}.",
     "h": "57c98da94bfd"
   },
+  "cupao.linha": {
+    "t": "Coupon {codigo}",
+    "h": "d2b2bacbf94d"
+  },
+  "cupao.portesGratis": {
+    "t": "free shipping",
+    "h": "09ffdca579a8"
+  },
+  "cupao.desconhecido": {
+    "t": "We couldn't find that coupon. Please check the code.",
+    "h": "99c38d1371a4"
+  },
+  "cupao.esgotado": {
+    "t": "This coupon has already been used as many times as it can be.",
+    "h": "1a145214b182"
+  },
+  "cupao.terminou": {
+    "t": "This coupon has ended.",
+    "h": "6d9a3ee758b8"
+  },
+  "cupao.aindaNao": {
+    "t": "This coupon is only valid from {data}.",
+    "h": "d4f17f49126c"
+  },
+  "cupao.revenda": {
+    "t": "Coupons can't be combined with reseller prices.",
+    "h": "423d8bea4475"
+  },
+  "cupao.naoChega": {
+    "t": "This coupon doesn't apply to this basket.",
+    "h": "b13b2107be63"
+  },
+  "cupao.muitas": {
+    "t": "Too many attempts in a row. Please wait a few minutes and try again.",
+    "h": "a95f03a5091c"
+  },
+  "cupao.semResposta": {
+    "t": "We couldn't check the coupon just now. Please try again shortly.",
+    "h": "449a6447eb98"
+  },
+  "cupao.soMarca.ithos": {
+    "t": "Coupon {codigo} is only valid on ithos lamps.",
+    "h": "ebbc0a23fe20"
+  },
+  "cupao.soMarca.cathelier": {
+    "t": "Coupon {codigo} is only valid on cathelier pieces.",
+    "h": "fa3f79bdae6a"
+  },
+  "cupao.minimo": {
+    "t": "Coupon {codigo} applies to orders from {minimo}: {falta} to go.",
+    "h": "c4553a9d759e"
+  },
+  "cupao.minimoMarca.ithos": {
+    "t": "Coupon {codigo} applies to ithos lamps from {minimo}: {falta} to go.",
+    "h": "5f7530be24f0"
+  },
+  "cupao.minimoMarca.cathelier": {
+    "t": "Coupon {codigo} applies to cathelier pieces from {minimo}: {falta} to go.",
+    "h": "0fe88e21041a"
+  },
+  "cupao.jaGratis": {
+    "t": "Shipping on this order is already free.",
+    "h": "3b7356ea8689"
+  },
+  "cupao.retirado": {
+    "t": "Coupon {codigo} was removed from your basket: {motivo}",
+    "h": "e8bf996f88c4"
+  },
+  "cupao.saiu": {
+    "t": "Coupon {codigo} was not applied: {motivo} Nothing has been charged. The total has been updated; please check it before ordering.",
+    "h": "4801c0c7fb3c"
+  },
   "ordenar.rotulo": {
     "t": "Sort by",
     "h": "1b8d52ae1c04"

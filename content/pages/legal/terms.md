@@ -30,6 +30,12 @@ Os preços estão em euros. {{VAT_NOTE}}
 O preço que vê na página de um produto é o preço dessa peça com as escolhas
 indicadas. Os portes somam-se no pagamento e são mostrados antes de pagar.
 
+Um cupão de desconto escreve-se no cesto, um por encomenda. O desconto e as
+condições do cupão (as peças a que se aplica, a compra mínima, as datas)
+aparecem no cesto antes de pagar. Um cupão não se troca por dinheiro nem se
+junta aos preços de revenda. Numa devolução, reembolsa-se o que foi pago, já
+com o desconto.
+
 ## Como se faz uma encomenda
 
 {{COMO_SE_FAZ_A_ENCOMENDA}}

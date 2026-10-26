@@ -200,6 +200,22 @@
     "t": "To pay",
     "h": "10b395a46468"
   },
+  "cesto.cupao.pergunta": {
+    "t": "Have a coupon?",
+    "h": "ea31e564d383"
+  },
+  "cesto.cupao.rotulo": {
+    "t": "Coupon code",
+    "h": "1cdc75e70108"
+  },
+  "cesto.cupao.aplicar": {
+    "t": "Apply",
+    "h": "3a04898a6b8b"
+  },
+  "cesto.cupao.remover": {
+    "t": "Remove",
+    "h": "a3037dc71a43"
+  },
   "cesto.stockInsuficiente": {
     "t": "There are not enough in stock for these quantities.",
     "h": "65990687ec27"
