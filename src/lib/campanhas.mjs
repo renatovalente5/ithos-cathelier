@@ -43,13 +43,17 @@ export function zonasDaCampanha(c, shipping) {
   return (shipping?.zones ?? []).filter((z) => (z.countries ?? []).length && z.countries.every((k) => lista.includes(k))).map((z) => z.name);
 }
 
-/* AS DE PORTES NA FICHA DE UM PRODUTO (o Renato, 26 out 2026): a ficha do
-   candeeiro dizia «5 € de portes» e a janela da campanha, na mesma página,
-   «Portes gratuitos». As ligadas que tiram portes nessa loja e valem em
-   Portugal continental (a linha fala do envio dentro de Portugal), pela ordem
-   da lista: o shop.js mostra a primeira que está no dia. */
-export const portesNaFicha = (s, brand) => campanhasLigadas(s)
-  .filter((c) => tipoDe(c) === 'portes' && daLoja(c, brand) && (!c.countries?.length || c.countries.includes('PT')));
+/* AS DE UMA LOJA, PELA ORDEM DA LISTA. Em cada dia vale a primeira que está
+   nas datas, SEJA ELA QUAL FOR -- um aviso, ou uma campanha só das ilhas, à
+   frente, tapa as que vêm depois: é o que o Worker cobra (src/catalogue.js,
+   campanhaDeHoje) e o cesto mostra. A faixa, a janela e a linha dos portes da
+   ficha escrevem uma marca por cada uma, mesmo as que não as mostram, para o
+   shop.js escolher a mesma: senão uma campanha sem faixa à frente deixava ver
+   a faixa da seguinte, e a página prometia o que a caixa não dá (27 out). */
+export const campanhasDaLoja = (s, brand) => campanhasLigadas(s).filter((c) => daLoja(c, brand));
+/* Tira os portes a uma encomenda para Portugal continental (a linha da ficha
+   fala do envio dentro de Portugal) -- com a condição dela (o valor). */
+export const tiraPortesNoContinente = (c) => tipoDe(c) === 'portes' && (!c.countries?.length || c.countries.includes('PT'));
 /* O dia de Lisboa dentro das datas -- a mesma conta do shop.js
    (dentroDasDatas) e do Worker (campanhaEmDia). */
 export function emDiaDeLisboa(c, agora = new Date()) {

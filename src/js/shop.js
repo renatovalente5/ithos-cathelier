@@ -571,6 +571,15 @@ function avisoNaFicha() {
     b.addEventListener('click', () => abrir({ opcao: b.dataset.avisarOpcao, valor: b.dataset.avisarValor },
       tj('avisar.oQue', { nome: nomeDoProduto, valor: b.dataset.avisarNome })));
   }
+  /* Vindo do «Avise-me» da janela rápida de uma lista (cestoNoCartao), que
+     não tem a janela: #avisar=<opção>:<escolha> abre-a aqui. */
+  const vindo = /^#avisar=([^:]+):(.+)$/.exec(location.hash);
+  if (vindo) {
+    history.replaceState(null, '', location.pathname + location.search);
+    let o = '', v = '';
+    try { o = decodeURIComponent(vindo[1]); v = decodeURIComponent(vindo[2]); } catch { /* morada estragada */ }
+    $$('[data-avisar-opcao]').find((b) => b.dataset.avisarOpcao === o && b.dataset.avisarValor === v)?.click();
+  }
   form.addEventListener('submit', async (ev) => {
     ev.preventDefault();
     const escrito = email.value.trim();
@@ -3225,6 +3234,13 @@ function cestoNoCartao() {
       if (n) sitio.append(document.importNode(n, true));
     }
     semIdsRepetidos(sitio, '-rapido');
+    /* O «Avise-me» de uma escolha esgotada vem com o formulário, mas a janela
+       do aviso é da ficha: o toque leva lá, com ela aberta (avisoNaFicha). */
+    for (const b of $$('[data-avisar-opcao]', sitio)) {
+      b.addEventListener('click', () => {
+        location.href = `${ficha}#avisar=${encodeURIComponent(b.dataset.avisarOpcao)}:${encodeURIComponent(b.dataset.avisarValor)}`;
+      });
+    }
     const f = $('[data-product-form]', sitio);
     ligarFormulario(f, { depois: ({ cortou }) => setTimeout(() => { if (painel.open) painel.close(); }, cortou ? 2600 : 900) });
     const linha = $('[data-lead]', sitio);
@@ -3382,24 +3398,26 @@ function dentroDasDatas(de, ate) {
   return (!de || h >= de) && (!ate || h <= ate);
 }
 document.addEventListener('DOMContentLoaded', () => {
-  for (const linha of document.querySelectorAll('.announce[data-de], .announce[data-ate]')) {
-    if (!dentroDasDatas(linha.dataset.de, linha.dataset.ate)) linha.remove();
-  }
-  /* Com várias campanhas em vigor no mesmo dia, vale a primeira da lista:
-     fica a primeira faixa, e a janela é a primeira que estiver no dia. */
-  for (const a of [...document.querySelectorAll('.announce')].slice(1)) a.remove();
+  /* Com várias campanhas em vigor no mesmo dia, vale a primeira da lista --
+     a regra do Worker, que é o que se cobra (src/lib/campanhas.mjs,
+     campanhasDaLoja). Se essa for sem faixa (data-sem-faixa), não há faixa:
+     nunca a de uma campanha que não é a que vale. */
+  const faixas = [...document.querySelectorAll('.announce[data-de], [data-sem-faixa]')];
+  const faixa = faixas.find((l) => dentroDasDatas(l.dataset.de, l.dataset.ate));
+  for (const l of faixas) if (l !== faixa || l.hasAttribute('data-sem-faixa')) l.remove();
   /* Os portes na ficha de um candeeiro (ithos.mjs, linhasDoEnvio): a
      primeira campanha que está no dia substitui a linha do preço; sem
      nenhuma, fica o preço. O build já escolheu; aqui conta o dia de hoje. */
   const linhasDosPortes = [...document.querySelectorAll('[data-envio-campanha]')];
   if (linhasDosPortes.length) {
     const vale = linhasDosPortes.find((l) => dentroDasDatas(l.dataset.de, l.dataset.ate));
-    for (const l of linhasDosPortes) l.hidden = l !== vale;
+    const gratis = Boolean(vale) && !vale.hasAttribute('data-sem-portes');
+    for (const l of linhasDosPortes) l.hidden = l !== vale || !gratis;
     const base = document.querySelector('[data-envio-base]');
-    if (base) base.hidden = Boolean(vale);
+    if (base) base.hidden = gratis;
   }
-  const d = [...document.querySelectorAll('dialog.aviso-campanha')].find((x) => dentroDasDatas(x.dataset.de, x.dataset.ate));
-  if (!d || typeof d.showModal !== 'function') return;
+  const d = [...document.querySelectorAll('dialog.aviso-campanha, [data-sem-janela]')].find((x) => dentroDasDatas(x.dataset.de, x.dataset.ate));
+  if (!d || d.tagName !== 'DIALOG' || typeof d.showModal !== 'function') return;
   /* O Chrome devolve o `open` de um <dialog> num recarregar (ver o menu, mais
      acima): aberta assim, a janela não era modal e o showModal() rebentava. */
   if (d.open) d.close();

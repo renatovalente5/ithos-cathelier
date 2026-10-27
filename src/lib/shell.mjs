@@ -1,5 +1,5 @@
 import { esc, safeHref, jsonInScript, paraFora, fora, noutroSeparador } from './html.mjs';
-import { campanhasLigadas, zonasDaCampanha, daLoja, segundosDaJanela } from './campanhas.mjs';
+import { campanhasLigadas, campanhasDaLoja, zonasDaCampanha, daLoja, segundosDaJanela } from './campanhas.mjs';
 import { icon } from './icons.mjs';
 import { prazos } from './prazos.mjs';
 import { livroLigacao } from './legal.mjs';
@@ -357,8 +357,12 @@ function announcement({ brand, shipping, shop }) {
   /* Uma faixa por campanha ligada, cada uma com as suas datas: o shop.js tira
      as que estão fora do dia e deixa só a primeira (campanhas.mjs). */
   /* `faixa: false` (o Renato, 22 out 2026): a campanha vale e a janela pode
-     aparecer, mas sem a faixa do topo. */
-  return campanhasLigadas(shipping).filter((c) => daLoja(c, brand) && c.faixa !== false).map((c) => `<p class="announce" data-de="${esc(c.from || '')}" data-ate="${esc(c.to || '')}">${esc(condicaoDaCampanha(c, shipping))}</p>`).join('');
+     aparecer, mas sem a faixa do topo -- fica só a marca das datas
+     (data-sem-faixa), para a faixa da campanha seguinte não aparecer no lugar
+     da que vale (campanhas.mjs, campanhasDaLoja). */
+  return campanhasDaLoja(shipping, brand).map((c) => (c.faixa === false
+    ? `<span data-sem-faixa data-de="${esc(c.from || '')}" data-ate="${esc(c.to || '')}" hidden></span>`
+    : `<p class="announce" data-de="${esc(c.from || '')}" data-ate="${esc(c.to || '')}">${esc(condicaoDaCampanha(c, shipping))}</p>`)).join('');
 }
 
 /* A JANELA DA CAMPANHA (a dona, 18 out 2026: a da roomgaga, mas com os portes
@@ -373,9 +377,11 @@ const igualSemPontos = (a, b) => {
   return n(a) === n(b);
 };
 function avisoCampanha({ brand, shipping, foto: daCapa, fotosDasCampanhas = {} }) {
-  /* Uma janela por campanha ligada (com a janela ligada), na ordem da lista:
-     o shop.js mostra a primeira que estiver dentro do dia. */
-  return campanhasLigadas(shipping).map((c, i) => [c, i]).filter(([c]) => c.popup !== false && daLoja(c, brand)).map(([c, i]) => {
+  /* Uma janela por campanha da loja, na ordem da lista: o shop.js mostra a
+     primeira que estiver dentro do dia. Uma com a janela desligada deixa só a
+     marca das datas (data-sem-janela): valendo ela, não há janela. */
+  return campanhasLigadas(shipping).map((c, i) => [c, i]).filter(([c]) => daLoja(c, brand)).map(([c, i]) => {
+  if (c.popup === false) return `<span data-sem-janela data-de="${esc(c.from || '')}" data-ate="${esc(c.to || '')}" hidden></span>`;
   /* Outro sítio onde vale também é outra campanha: volta a aparecer. */
   const chave = [c.freeOver, c.from || '', c.to || '', c.title || '', (c.countries ?? []).join(' '), c.marca || '', c.tipo || '', c.sempre ? 's' : '', c.frase || ''].join('|');
   /* A fotografia da campanha, se a dona escolheu uma; senão a da capa da marca. */

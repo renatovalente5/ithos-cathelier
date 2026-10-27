@@ -11,7 +11,7 @@ import { prazos } from './prazos.mjs';
 import { t, tn } from './i18n.mjs';
 import { fabricante } from './pages.mjs';
 import { janelaDoAviso, botoesDasEscolhas } from './avisar.mjs';
-import { portesNaFicha, emDiaDeLisboa } from './campanhas.mjs';
+import { campanhasDaLoja, tiraPortesNoContinente, emDiaDeLisboa } from './campanhas.mjs';
 import { condicaoDaCampanha } from './shell.mjs';
 import { avisoRetoma } from './legal.mjs';
 import { fotosDaDona, enquadramentoDaDona } from './oficina.mjs';
@@ -287,21 +287,27 @@ export function catalogue({ products }) {
    para o continente», escrita à mão, e a janela da campanha na mesma página
    «Portes gratuitos para Portugal» -- e o que se cobrava era 0. Agora a linha
    do preço sai da zona de Portugal continental (Envios, no painel), e por
-   cima dela fica uma linha por campanha de portes do ithos, com a frase da
-   faixa e da janela e as suas datas. Já vem escolhida a que vale no dia do
-   build; o shop.js volta a escolher no dia de quem abre a página, porque uma
-   campanha pode começar ou acabar sem o site ser publicado. */
+   cima dela fica uma linha por campanha do ithos, com a frase da faixa e da
+   janela e as suas datas -- ou só uma marca (data-sem-portes), se a campanha
+   não tira os portes no continente: valendo essa, fica o preço. Já vem
+   escolhida a que vale no dia do build; o shop.js volta a escolher no dia de
+   quem abre a página, porque uma campanha pode começar ou acabar sem o site
+   ser publicado. */
 function linhasDoEnvio(shipping, agora = new Date()) {
   const zona = (shipping?.zones ?? []).find((z) => (z.countries ?? []).includes('PT'));
   const preco = Number(zona?.price);
   const n = Number.isInteger(preco) ? String(preco) : preco.toFixed(2).replace('.', ',');
   const base = Number.isFinite(preco) ? t('ithos.garantias.envio', { n }) : t('cathelier.ficha.garantia.envio');
-  const campanhas = portesNaFicha(shipping, 'ithos');
+  const campanhas = campanhasDaLoja(shipping, 'ithos');
   const vale = campanhas.find((c) => emDiaDeLisboa(c, agora));
+  const portesGratis = Boolean(vale) && tiraPortesNoContinente(vale);
   const linha = (texto, atributos, escondida) => `<p ${atributos}${escondida ? ' hidden' : ''}>${icon('truck', 18)}<span>${esc(texto)}</span></p>`;
+  const datas = (c) => `data-envio-campanha data-de="${esc(c.from || '')}" data-ate="${esc(c.to || '')}"`;
   return [
-    ...campanhas.map((c) => linha(condicaoDaCampanha(c, shipping), `data-envio-campanha data-de="${esc(c.from || '')}" data-ate="${esc(c.to || '')}"`, c !== vale)),
-    linha(base, 'data-envio-base', Boolean(vale)),
+    ...campanhas.map((c) => (tiraPortesNoContinente(c)
+      ? linha(condicaoDaCampanha(c, shipping), datas(c), c !== vale)
+      : `<span ${datas(c)} data-sem-portes hidden></span>`)),
+    linha(base, 'data-envio-base', portesGratis),
   ].join('\n      ');
 }
 

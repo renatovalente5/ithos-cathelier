@@ -41,11 +41,11 @@ encomenda paga dessa forma, pedimos-lhe um IBAN para transferir o reembolso.
 Usamo-lo para essa transferência e para mais nada, e fica guardado com a
 fatura durante o tempo que a lei fiscal exige.
 
-**Se pedir um aviso.** No «Avise-me quando voltar» de um produto, guardamos o
-seu email, a língua da página e o produto ou a escolha de que está à espera.
+**Se pedir um aviso.** No «Avise-me quando voltar» de uma escolha esgotada,
+guardamos o seu email, a língua da página e a escolha de que está à espera.
 Usamo-los para lhe escrever uma vez, quando voltar, e apagamos o pedido logo a
 seguir; se nunca voltar, ao fim de um ano. O fundamento é o seu pedido. Contamos
-também quantas pessoas esperam por cada produto, sem nomes, para sabermos o que
+também quantas pessoas esperam por cada escolha, sem nomes, para sabermos o que
 fazer primeiro.
 
 **Se se inscrever nas novidades.** Só se marcar o quadrado das novidades e
