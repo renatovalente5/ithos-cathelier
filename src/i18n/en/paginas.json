@@ -216,17 +216,9 @@
     "t": "Remove",
     "h": "a3037dc71a43"
   },
-  "avisar.abrirStock": {
-    "t": "Let me know when it is in stock",
-    "h": "c3487b3e2b75"
-  },
   "avisar.abrirEscolha": {
     "t": "Let me know when “{valor}” is back",
     "h": "0893d16b59e3"
-  },
-  "avisar.tituloStock": {
-    "t": "We will let you know when it is in stock",
-    "h": "826578b650c2"
   },
   "avisar.tituloEscolha": {
     "t": "We will let you know when it is back",

@@ -134,7 +134,6 @@
   "avisar.jaNaLista": "Combinado: escrevemos para {email} quando voltar. Já está na lista das novidades.",
   "avisar.novidadesMaisTarde": "Combinado: escrevemos para {email} quando voltar. A inscrição nas novidades não ficou feita hoje: tente outra vez amanhã.",
   "avisar.emailMau": "Escreva um email completo, como nome@exemplo.pt.",
-  "avisar.jaHa": "Já há em stock: pode encomendar agora.",
   "avisar.jaVoltou": "Já voltou: pode escolhê-la agora.",
   "avisar.muitos": "Muitos pedidos seguidos. Tente daqui a uns minutos.",
   "avisar.falhou": "Não conseguimos guardar o pedido. Tente outra vez daqui a pouco.",

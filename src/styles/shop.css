@@ -1988,7 +1988,6 @@ html[data-js='yes'] .product__lead[data-lead]:not([data-lead-ready]) { visibilit
 .avisar__abrir:hover { text-decoration-color: currentColor; }
 .avisar__abrir svg { flex: none; color: var(--accent); }
 .field > .avisar__abrir { margin-block-start: .35rem; }
-.product__lead + .avisar__abrir { margin-block: -.5rem .75rem; }
 .avisar {
   margin: auto; padding: 0; border: 0; width: min(26rem, calc(100vw - 2rem)); max-height: calc(100dvh - 2rem); overflow: auto;
   border-radius: calc(var(--radius, 0px) + 6px); background: var(--bg); color: var(--ink); box-shadow: 0 24px 60px rgb(0 0 0 / .35);

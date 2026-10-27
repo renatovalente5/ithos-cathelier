@@ -542,24 +542,22 @@ async function perguntarCupao(codigo, anterior) {
 }
 
 /* --- «Avise-me quando voltar» (src/lib/avisar.mjs) ---------------------------
-   A Cathia, 26 out 2026. Uma janela por página, que se abre do botão por
-   baixo do prazo (um candeeiro sem stock, na escolha de agora) ou do de uma
-   escolha esgotada. O pedido vai ao Worker (POST /aviso), que confere tudo
-   outra vez contra o catálogo e o stock: aqui só se diz o que ele respondeu. */
-async function avisoNaFicha() {
+   A Cathia, 26 out 2026. Uma janela por página, que se abre do botão de uma
+   escolha esgotada (um candeeiro sem stock vende-se por encomenda e não leva
+   aviso, 27 out). O pedido vai ao Worker (POST /aviso), que confere tudo
+   outra vez contra o catálogo: aqui só se diz o que ele respondeu. */
+function avisoNaFicha() {
   const janela = $('[data-avisar]');
   if (!janela) return;
   const form = $('[data-avisar-form]', janela);
-  const ficha = $('[data-product-form]');
   const nota = $('[data-avisar-nota]', janela);
   const enviar = $('[data-avisar-enviar]', janela);
   const email = $('[name=email]', form);
   const nomeDoProduto = $('.product__detail h1')?.textContent.trim() ?? '';
   let pedido = null;
   const dizer = (texto, bom = false) => { nota.hidden = !texto; nota.textContent = texto || ''; nota.classList.toggle('avisar__nota--bom', bom); };
-  const abrir = (p, titulo, oQue) => {
+  const abrir = (p, oQue) => {
     pedido = p;
-    $('[data-avisar-titulo]', janela).textContent = titulo;
     $('[data-avisar-o-que]', janela).textContent = oQue;
     form.classList.remove('avisar__form--feito');
     enviar.disabled = false;
@@ -571,27 +569,7 @@ async function avisoNaFicha() {
   janela.addEventListener('click', (ev) => { if (ev.target === janela) janela.close(); });
   for (const b of $$('[data-avisar-opcao]')) {
     b.addEventListener('click', () => abrir({ opcao: b.dataset.avisarOpcao, valor: b.dataset.avisarValor },
-      janela.dataset.tituloEscolha, tj('avisar.oQue', { nome: nomeDoProduto, valor: b.dataset.avisarNome })));
-  }
-  const botaoStock = $('[data-avisar-stock]');
-  if (botaoStock && ficha) {
-    const [cat, ha] = await Promise.all([catalogue().catch(() => null), stockPublico()]);
-    const p = cat?.products[ficha.dataset.productId];
-    const modelo = p?.stock?.option ?? null;
-    /* Só sem stock na escolha de agora -- e só quando se sabe: sem resposta
-       do Worker, o botão não aparece. */
-    const pintar = () => {
-      const skus = skusDaEscolha(p, escolhaDe(ficha));
-      botaoStock.hidden = !(skus && ha && !skus.every((k) => ha.has(k)));
-    };
-    pintar();
-    ficha.addEventListener('change', pintar);
-    botaoStock.addEventListener('click', () => {
-      const escolha = escolhaDe(ficha);
-      const nomeModelo = modelo ? $(`input[data-option="${CSS.escape(modelo)}"]:checked`, ficha)?.closest('.choice')?.querySelector('span')?.textContent.trim() : '';
-      abrir({ escolha: modelo ? { [modelo]: escolha[modelo] ?? '' } : {} }, janela.dataset.tituloStock,
-        nomeModelo ? tj('avisar.oQue', { nome: nomeDoProduto, valor: nomeModelo }) : nomeDoProduto);
-    });
+      tj('avisar.oQue', { nome: nomeDoProduto, valor: b.dataset.avisarNome })));
   }
   form.addEventListener('submit', async (ev) => {
     ev.preventDefault();
@@ -611,7 +589,7 @@ async function avisoNaFicha() {
         form.classList.add('avisar__form--feito');
         dizer(tj(({ pendente: 'avisar.feitoNovidades', confirmada: 'avisar.jaNaLista', 'mais-tarde': 'avisar.novidadesMaisTarde' })[d.novidades] ?? 'avisar.feito', { email: escrito }), true);
       } else {
-        dizer(tj(r.status === 429 ? 'avisar.muitos' : ({ already_in_stock: 'avisar.jaHa', already_available: 'avisar.jaVoltou', bad_email: 'avisar.emailMau' })[d.error] ?? 'avisar.falhou'));
+        dizer(tj(r.status === 429 ? 'avisar.muitos' : ({ already_available: 'avisar.jaVoltou', bad_email: 'avisar.emailMau' })[d.error] ?? 'avisar.falhou'));
       }
     } catch { dizer(tj('avisar.falhou')); }
     if (!ok) enviar.disabled = false;
