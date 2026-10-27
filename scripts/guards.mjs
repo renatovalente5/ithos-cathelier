@@ -65,7 +65,7 @@ for (const c of shipping.active) {
   const lista = Array.isArray(shipping.campaigns) ? shipping.campaigns : (shipping.campaign ? [shipping.campaign] : []);
   const ids = new Set();
   for (const [i, c] of lista.entries()) {
-    const nome = `campanha ${c?.title ? `«${c.title}»` : i + 1}`;
+    const nome = `campanha ${c?.nome || c?.title ? `«${c.nome || c.title}»` : i + 1}`;
     if (Array.isArray(shipping.campaigns)) {
       if (!/^[a-z0-9-]{1,40}$/.test(String(c?.id ?? ''))) die(`shipping.json: a ${nome} não tem id (letras minúsculas, algarismos e hífenes)`);
       else if (ids.has(c.id)) die(`shipping.json: duas campanhas com o id «${c.id}»`);
@@ -77,6 +77,7 @@ for (const c of shipping.active) {
     if (c?.faixa !== undefined && typeof c.faixa !== 'boolean') die(`shipping.json: ${nome}: faixa tem de ser true ou false`);
     if (c?.tipo !== undefined && !['portes', 'aviso'].includes(c.tipo)) die(`shipping.json: ${nome}: tipo «${c.tipo}» — só «portes» ou «aviso»`);
     if (c?.frase !== undefined && (typeof c.frase !== 'string' || c.frase.length > 120)) die(`shipping.json: ${nome}: a frase tem de ser texto até 120 letras`);
+    if (c?.nome !== undefined && (typeof c.nome !== 'string' || c.nome.length > 60)) die(`shipping.json: ${nome}: o nome (só do painel) tem de ser texto até 60 letras`);
     if (c?.active && c.tipo === 'aviso' && !String(c.frase ?? '').trim()) warnings.push(`shipping.json: a ${nome} é um aviso ligado sem frase — o site não mostra nada`);
     if (c?.active && c.tipo !== 'aviso' && !(c.freeOver > 0) && c.sempre !== true) warnings.push(`shipping.json: a ${nome} está ligada sem valor — nada fica grátis, e o site não mostra janela nem faixa`);
     if (c?.marca !== undefined && !['ithos', 'cathelier'].includes(c.marca)) die(`shipping.json: ${nome}: a marca é «${c.marca}» — só «ithos», «cathelier» ou nenhuma (as duas)`);
