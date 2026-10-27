@@ -38,9 +38,9 @@ the contract between us and the legal obligation to acknowledge receipt; keeping
 We use it for that transfer and for nothing else, and it is kept with the
 invoice for the period required by tax law.
 
-**If you request a notification.** For the "Notify me when back in stock" of an out of stock choice, we
+**If you request a notification.** For the "Let me know when it is back" of a sold-out choice, we
 keep your email, the page language, and the choice you are waiting for.
-We use them to write to you once, when it is back in stock, and we delete the request immediately after; if it never comes back, after one year. The legal basis is your request. We also count
+We use them to write to you once, when it is back, and we delete the request immediately after; if it never comes back, after one year. The legal basis is your request. We also count
 how many people are waiting for each choice, without names, so we know what
 to prioritise.
 
