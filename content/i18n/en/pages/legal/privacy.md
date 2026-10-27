@@ -1,4 +1,4 @@
-<!-- origem: 8841e4a60ad2 partes: f64f1fa9ac8a 28df60905360 9b5ed8bfe814 07c79804a576 539f6cce09ea 912817ef712a d92e2f7c174d c02bf8b6ba04 -->
+<!-- origem: ba8f41277657 partes: f64f1fa9ac8a 28df60905360 9b5ed8bfe814 db7c5ced1a25 539f6cce09ea 912817ef712a d92e2f7c174d c02bf8b6ba04 -->
 # Privacy
 
 ## The short version
@@ -17,23 +17,53 @@ Write to [{{EMAIL}}](mailto:{{EMAIL}}) about anything on this page.
 
 ## What we keep, and why
 
-**When you order.** Your name, address, email, phone number, and what you bought. We need this to make the piece, send it, and issue the invoice. The legal basis is the contract between us, and tax law in the case of the invoice.
+**When you order.** Your name, address, email, phone number, and what you bought.
+We need this to make the piece, send it, and issue the invoice. The legal basis is
+the contract between us, and tax law in the case of the invoice.
 
-**What you write for engraving.** A name, a date, a phrase. We keep it with the order, because it is what we made.
+**What you write for engraving.** A name, a date, a phrase. We keep it with the
+order, because it is what we have made.
 
-**When you write to us.** Whatever is in your message, for the duration of the response time and a reasonable period afterwards.
+**When you write to us.** Whatever is in your message, for the duration of the
+response time and a reasonable period afterwards.
 
-**If you withdraw via the website form.** Your name, the order number, the email you provide (which may not be the one used for the purchase) and, if you provide them, the items. We use them to process the withdrawal and to send you the acknowledgement of receipt, and we keep them for 3 years from the date of the last notice of the right to cancel for that order, as proof of when you sent us the withdrawal. The legal basis is the contract between us and the legal obligation to acknowledge receipt; keeping them afterwards is our and your legitimate interest in being able to prove that date.
+**If you withdraw via the website form.** Your name, the order number, the email
+you provide (which may not be the one used for the purchase) and, if you provide them,
+the items. We use them to
+process the withdrawal and to send you the acknowledgement of receipt, and we keep them
+for 3 years from the last declaration of the right to cancel for that order, as proof of when you sent us the withdrawal. The legal basis is
+the contract between us and the legal obligation to acknowledge receipt; keeping them afterwards is the legitimate interest, yours and ours, in being able to prove that date.
 
-**Your IBAN, but only if we owe you money from a non-refundable payment.** A Multibanco reference cannot be reversed; therefore, if you cancel an order paid this way, we will ask you for an IBAN to transfer the refund. We use it for that transfer and for nothing else, and it is kept with the invoice for the time required by tax law.
+**Your IBAN, but only if we owe you money from a non-refundable payment.** A Multibanco reference cannot be reversed; therefore, if you cancel an order paid this way, we ask you for an IBAN to transfer the refund.
+We use it for that transfer and for nothing else, and it is kept with the
+invoice for the period required by tax law.
 
-**If you request a notification.** In the "Notify me when back in stock" for a product, we keep your email, the page language, and the product or the choice you are waiting for. We use them to write to you once, when it is back in stock, and we delete the request immediately after; if it never returns, after one year. The legal basis is your request. We also count how many people are waiting for each product, without names, so we know what to prioritise.
+**If you request a notification.** For the "Notify me when back in stock" of an out of stock choice, we
+keep your email, the page language, and the choice you are waiting for.
+We use them to write to you once, when it is back in stock, and we delete the request immediately after; if it never comes back, after one year. The legal basis is your request. We also count
+how many people are waiting for each choice, without names, so we know what
+to prioritise.
 
-**If you subscribe to news.** Only if you tick the news box and confirm via the email we send you. We keep your email, the language, and when you subscribed and confirmed, which is the proof of your consent. We use them to send you news and shop promotions, and for nothing else. The legal basis is your consent, which you can withdraw whenever you wish, via the link at the end of each email or by writing to us. If you do not confirm, the request is deleted after 7 days; once it is sent, your subscription is deleted.
+**If you subscribe to news.** Only if you tick the news box and
+confirm via the email we send you. We keep your email, the language, and when
+you subscribed and confirmed, which is the proof of your consent. We use them to
+send you news and shop promotions, and for nothing else. The legal basis is
+your consent, which you can withdraw whenever you wish, via the link at the end of each
+email or by writing to us. If you do not confirm, the request is deleted after 7 days;
+when you unsubscribe, your subscription is deleted.
 
-**Your basket.** While you are choosing, it lives in your own browser and we never see it. It reaches us at the moment you click **Order and pay**: we keep the order — your name, address, phone number, tax ID, and what you chose — before requesting payment, because a payment that arrives without anything to link it to is a payment that no one can fulfil. Whether you pay or not, this order is deleted after ninety days; after that, the invoice remains if you paid, and what is stated in the following paragraph.
+**Your basket.** While you are choosing, it lives in your own browser and we
+never see it. It reaches us at the moment you click **Order and pay**:
+we keep the order — your name, address, phone number, tax ID and what
+you chose — before requesting payment, because a payment that arrives without anything to
+link it to is a payment that no one can fulfil. Whether you pay or not, that
+order is deleted after ninety days; after that, the invoice remains if you
+paid, and what is stated in the following paragraph.
 
-**After paying.** In a purchase as a consumer, we keep the order number, your name, your email, the names of the items, the date and time of payment, and the order language for 18 months, so that the website's withdrawal function works throughout the entire period in which you may withdraw, even if the piece takes time to be made and delivered. The legal basis is the legal obligation to have this function available and the contract between us.
+**After paying.** In a purchase as a consumer, we keep the order number, your name, your email, the names of the items, the date and
+time of payment, and the order language for 18 months, so that the website's withdrawal function works throughout the entire period in which you can
+withdraw, even if the piece takes time to be made and delivered. The legal basis is the
+legal obligation to have that function available and the contract between us.
 
 **If you are a reseller.** The company name, VAT number, registered office, and email addresses you provided, so that you can log in to view your prices and ensure your invoices contain the correct details. This is based on the contract between us. When you log in, your browser saves a signed session for the tab you are using, and on your device, it only marks "keep me logged in"; nothing is saved if you never log in. When you cease to be a reseller, we delete your registration; invoices are kept for the period required by tax law.
 
