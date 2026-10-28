@@ -631,6 +631,103 @@ function catalogueFile(nomesNasLinguas = {}) {
 }
 
 
+/* O QUE O GOOGLE MOSTRA NO SEPARADOR COMPRAS (o Renato, 28 out 2026: «podes
+   mostrar os produtos no separador do Google»). As fichas de comerciante (os
+   dados estruturados de cada produto) e a lista que o Merchant Center vai
+   buscar (/feeds/google.xml) dizem o mesmo que a ficha:
+   · o preço é o que a ficha mostra ao abrir -- a escolha mais barata que se
+     pode comprar (fromPrice), a mesma que vem marcada;
+   · «InStock»: tudo se pode encomendar já. Era «MadeToOrder», que o Google
+     não aceita nas fichas de comerciante, e só 4 produtos lhe serviam; quanto
+     demora diz-se no envio (os dias de preparação, na lista) e na ficha. Com
+     as vendas em pausa, «OutOfStock»;
+   · devoluções: a política da marca (os dias de desistência, pelo correio),
+     e uma peça cuja personalização é obrigatória não tem devolução (as
+     condições do site). Quem paga o envio de volta as condições não dizem,
+     e por isso também não se diz aqui. */
+const disponivel = () => (shop.open === false ? 'OutOfStock' : 'InStock');
+const precoAoAbrir = (p) => ithos.fromPrice(p).low;
+const semDevolucao = (p) => (p.options ?? []).some((o) => o.personalises && o.required);
+const nomeDaMarca = (marca) => (marca === 'ithos' ? 'Ithos' : 'Cathelier');
+function fotosDoProduto(marca, p, max = 6) {
+  if (!p.photoFolder || !p.cover) return [];
+  return [p.cover, ...(p.photos ?? []).filter((n) => n !== p.cover)].slice(0, max)
+    .map((n) => `${SITE}/media/${marca}/${p.photoFolder}/${n}-${Math.max(...cardWidths(`${marca}/${p.photoFolder}`, n))}.webp`);
+}
+const politicaDeDevolucao = () => ({
+  '@type': 'MerchantReturnPolicy', applicableCountry: 'PT',
+  returnPolicyCategory: 'https://schema.org/MerchantReturnFiniteReturnWindow',
+  merchantReturnDays: Number(shop.returns?.coolingOffDays) || 14,
+  returnMethod: 'https://schema.org/ReturnByMail',
+});
+function produtoParaOGoogle(marca, p, { nome, url }) {
+  const fotos = fotosDoProduto(marca, p);
+  return {
+    '@context': 'https://schema.org', '@type': 'Product',
+    name: nome, description: p.summary, sku: p.slug,
+    ...(fotos.length ? { image: fotos } : {}),
+    brand: { '@type': 'Brand', name: nomeDaMarca(marca) },
+    offers: {
+      '@type': 'Offer', price: precoAoAbrir(p).toFixed(2), priceCurrency: 'EUR',
+      availability: `https://schema.org/${disponivel()}`, itemCondition: 'https://schema.org/NewCondition', url,
+      ...(semDevolucao(p) ? { hasMerchantReturnPolicy: { '@type': 'MerchantReturnPolicy', applicableCountry: 'PT', returnPolicyCategory: 'https://schema.org/MerchantReturnNotPermitted' } } : {}),
+    },
+  };
+}
+
+/* A LISTA PARA O MERCHANT CENTER (RSS 2.0 com o espaço g: do Google), só na
+   língua de origem: os mesmos produtos, preços e fotografias das fichas. Os
+   portes ficam no Merchant Center, por loja (`shipping_label`), porque as
+   campanhas de portes grátis contam a encomenda e não o artigo. Os dias de
+   preparação: do mais rápido (em stock) ao mais lento (feito por encomenda). */
+function escreverListaParaOGoogle() {
+  const x = (v) => String(v ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const texto = (p) => [p.summary, String(p.text ?? '')
+    .replace(/\[([^\]]*)\]\([^)]*\)/g, '$1').replace(/[#*_>`]/g, '').replace(/\s+/g, ' ').trim()]
+    .filter(Boolean).join(' — ').slice(0, 4900);
+  const lead = shop.lead ?? {};
+  const minDias = Array.isArray(lead.inStockDays) ? lead.inStockDays[0] : Number(lead.inStockDays) || 3;
+  const maxDias = Array.isArray(lead.toOrderWeeks) ? lead.toOrderWeeks[1] * 5 : 20;
+  const item = (marca, p, nome, caminho, tipo) => {
+    const fotos = fotosDoProduto(marca, p, 11);
+    const preco = precoAoAbrir(p);
+    if (!fotos.length || !(preco > 0)) return '';
+    return ['    <item>',
+      `      <g:id>${x(`${marca}-${p.slug}`)}</g:id>`,
+      `      <g:title>${x(nome)}</g:title>`,
+      `      <g:description>${x(texto(p))}</g:description>`,
+      `      <g:link>${x(`${SITE}${caminho}`)}</g:link>`,
+      `      <g:image_link>${x(fotos[0])}</g:image_link>`,
+      ...fotos.slice(1).map((f) => `      <g:additional_image_link>${x(f)}</g:additional_image_link>`),
+      `      <g:availability>${disponivel() === 'InStock' ? 'in_stock' : 'out_of_stock'}</g:availability>`,
+      `      <g:price>${preco.toFixed(2)} EUR</g:price>`,
+      `      <g:brand>${x(nomeDaMarca(marca))}</g:brand>`,
+      '      <g:condition>new</g:condition>',
+      '      <g:identifier_exists>no</g:identifier_exists>',
+      `      <g:product_type>${x(tipo)}</g:product_type>`,
+      `      <g:shipping_label>${marca}</g:shipping_label>`,
+      `      <g:min_handling_time>${minDias}</g:min_handling_time>`,
+      `      <g:max_handling_time>${maxDias}</g:max_handling_time>`,
+      '    </item>'].join('\n');
+  };
+  const itens = [
+    ...lamps.map((p) => item('ithos', p, t('build.candeeiro.nomeProduto', { nome: p.name }), `/lamps/${p.slug}/`, 'Candeeiros de presença')),
+    ...pieces.map((p) => item('cathelier', p, p.name, `/cathelier/pieces/${p.slug}/`, 'Peças personalizadas')),
+  ].filter(Boolean);
+  mkdirSync(join(OUT, 'feeds'), { recursive: true });
+  writeFileSync(join(OUT, 'feeds', 'google.xml'), `<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:g="http://base.google.com/ns/1.0">
+  <channel>
+    <title>Ithos e Cathelier</title>
+    <link>${SITE}/</link>
+    <description>Candeeiros de presença ithos e peças personalizadas cathelier, feitos à mão em Castelo Branco.</description>
+${itens.join('\n')}
+  </channel>
+</rss>
+`);
+  return itens.length;
+}
+
 function buildIthos() {
   write('/', page({
     ...shellArgs, brand: 'ithos', path: '/',
@@ -657,6 +754,7 @@ function buildIthos() {
       email: identity.email, telephone: identity.phone,
       sameAs: [identity.instagramIthos, identity.facebookIthos].filter(Boolean),
       address: { '@type': 'PostalAddress', addressLocality: identity.town, addressCountry: 'PT' },
+      hasMerchantReturnPolicy: politicaDeDevolucao(),
     }],
   }));
 
@@ -669,12 +767,11 @@ function buildIthos() {
   }));
 
   for (const p of lamps) {
-    const { low } = ithos.fromPrice(p);
-    /* A imagem para o Google (os dados estruturados) é a MAIOR versão da capa
-       que existe -- não um -1000 fixo: a coruja (540 px) nunca o teve, e a
-       página apontava para um ficheiro que dava 404. A das redes (og:image) é
-       o cartão da ficha, com o logótipo: ver cartaoDoProduto(). */
-    const fotoGrande = `/media/ithos/${p.photoFolder}/${p.cover}-${Math.max(...cardWidths(`ithos/${p.photoFolder}`, p.cover))}.webp`;
+    /* As imagens para o Google (os dados estruturados) são as MAIORES versões
+       que existem -- não um -1000 fixo: a coruja (540 px) nunca o teve, e a
+       página apontava para um ficheiro que dava 404 (fotosDoProduto). A das
+       redes (og:image) é o cartão da ficha, com o logótipo: ver
+       cartaoDoProduto(). */
     write(`/lamps/${p.slug}/`, page({
       ...shellArgs, brand: 'ithos', path: `/lamps/${p.slug}/`,
       title: t('build.candeeiro.titulo', { nome: p.name }),
@@ -682,16 +779,7 @@ function buildIthos() {
       partilha: cartaoDoProduto('ithos', p),
       crumbs: [{ name: t('build.migalha.inicio'), href: '/' }, { name: t('build.migalha.candeeiros'), href: '/lamps/' }, { name: p.name }],
       body: ithos.product({ p, all: lamps, shop, identity, shipping }),
-      schema: [{
-        '@context': 'https://schema.org', '@type': 'Product',
-        name: t('build.candeeiro.nomeProduto', { nome: p.name }), description: p.summary,
-        image: `${SITE}${fotoGrande}`,
-        brand: { '@type': 'Brand', name: 'ithos' },
-        offers: {
-          '@type': 'Offer', price: low.toFixed(2), priceCurrency: 'EUR',
-          availability: 'https://schema.org/MadeToOrder', url: `${SITE}${morada(`/lamps/${p.slug}/`)}`,
-        },
-      }],
+      schema: [produtoParaOGoogle('ithos', p, { nome: t('build.candeeiro.nomeProduto', { nome: p.name }), url: `${SITE}${morada(`/lamps/${p.slug}/`)}` })],
     }));
   }
 }
@@ -710,6 +798,7 @@ function buildCathelier() {
       email: identity.email, telephone: identity.phone,
       sameAs: [identity.instagramCathelier].filter(Boolean),
       address: { '@type': 'PostalAddress', addressLocality: identity.town, addressCountry: 'PT' },
+      hasMerchantReturnPolicy: politicaDeDevolucao(),
     }],
   }));
 
@@ -762,18 +851,7 @@ function buildCathelier() {
          lamps did. Same shop, same basket, same law — and to a search engine
          only half of it was a shop. `MadeToOrder` is the honest availability:
          nothing here exists until somebody asks for it. */
-      schema: [{
-        '@context': 'https://schema.org', '@type': 'Product',
-        name: p.name, description: p.summary,
-        ...(p.photoFolder && p.cover
-          ? { image: `${SITE}/media/cathelier/${p.photoFolder}/${p.cover}-400.webp` } : {}),
-        brand: { '@type': 'Brand', name: 'cathelier' },
-        offers: {
-          '@type': 'Offer', price: Number(p.price).toFixed(2), priceCurrency: 'EUR',
-          availability: 'https://schema.org/MadeToOrder',
-          url: `${SITE}${morada(`/cathelier/pieces/${p.slug}/`)}`,
-        },
-      }],
+      schema: [produtoParaOGoogle('cathelier', p, { nome: p.name, url: `${SITE}${morada(`/cathelier/pieces/${p.slug}/`)}` })],
     }));
   }
 }
@@ -996,11 +1074,13 @@ if (keepMedia) { cpSync(join(ROOT, '.media-cache'), media, { recursive: true });
 assets();
 cartoes();
 /* UM PASSO POR LÍNGUA. A primeira vai para a raiz; as outras para /<língua>/. */
+let produtosNaLista = 0;
 for (const l of LINGUAS) {
   prepararLingua(l);
   buildIthos();
   buildCathelier();
   buildShared();
+  if (l === ORIGEM) produtosNaLista = escreverListaParaOGoogle();
 }
 /* O catálogo é UM só, na língua de origem: é dele que o Worker tira preços e
    nomes para os emails. Leva os nomes nas outras línguas para o cesto os
@@ -1058,6 +1138,7 @@ const stubs = written.filter((w) => w.stub).length;
 console.log(`  ${written.length - stubs} pages · ${lamps.length} lamps · ${pieces.length} pieces`
   + (stubs ? ` · ${stubs} redirect stubs (they are not pages)` : ''));
 console.log(`  catalogue.${cat.hash}.json (${cat.count} products)`);
+console.log(`  feeds/google.xml (${produtosNaLista} products for Google Shopping)`);
 /* AS FRASES DO CÓDIGO CONTAM TAMBÉM. Uma frase nova em src/i18n/pt/ sem a
    tradução dela sai em português nas outras línguas -- é o t() que o faz, em
    silêncio --, e o Worker traduz o dicionário como traduz o conteúdo. Contá-las
