@@ -126,14 +126,14 @@ export function markers({ identity, shop, shipping, pieces = [] }) {
     /* AS PEÇAS LEGAIS COMUNS (legal-comum/, pelo src/lib/legal.mjs): são HTML
        já feito, e entram na página DEPOIS do Markdown (ver render()), para o
        Markdown não as escapar. A lista dos centros de arbitragem, o aviso da
-       retoma, os passos da encomenda, a tabela dos destinatários, o mapa e o
-       botão do Livro. */
+       retoma, os passos da encomenda, a tabela dos destinatários e o mapa. O
+       Livro de Reclamações não entra nas páginas: está só no rodapé (o
+       Renato, 27 out 2026). */
     RAL: legal.ralBloco(),
     RETOMA: legal.blocoRetoma(),
     COMO_SE_FAZ_A_ENCOMENDA: legal.comoSeFazBloco({ shop }),
     DESTINATARIOS: legal.destinatariosBloco(),
     COOKIES_MAPA: legal.cookiesMapaBloco(),
-    LIVRO_BOTAO: `<p class="livro-bloco">${legal.livroLigacao()}</p>`,
   };
 }
 
@@ -147,7 +147,6 @@ export function markersTexto({ shop, abs = (u) => u }) {
     COMO_SE_FAZ_A_ENCOMENDA: legal.comoSeFazTexto({ shop, abs }),
     DESTINATARIOS: legal.destinatariosTexto(),
     COOKIES_MAPA: legal.cookiesMapaTextos().join('\n\n'),
-    LIVRO_BOTAO: `${t('shell.rodape.reclamacoes')}: ${legal.LIVRO_URL}`,
   };
 }
 
@@ -160,7 +159,7 @@ const MARCADORES_DE_BLOCO = new Set(['SHIPPING_TABLE', 'SAFETY_LIST', 'SAFETY_LI
    dona. Estes entram só depois dele: fill() deixa no lugar um sinal sem
    sublinhados nem sinais de pontuação (o Markdown lia «_» como itálico), e
    render() troca-o pelo HTML quando a página já está feita. */
-export const MARCADORES_HTML = new Set(['RAL', 'RETOMA', 'COMO_SE_FAZ_A_ENCOMENDA', 'DESTINATARIOS', 'COOKIES_MAPA', 'LIVRO_BOTAO']);
+export const MARCADORES_HTML = new Set(['RAL', 'RETOMA', 'COMO_SE_FAZ_A_ENCOMENDA', 'DESTINATARIOS', 'COOKIES_MAPA']);
 export function fill(text, table, { blocos = null } = {}) {
   return text.replace(/\{\{([A-Z_]+)\}\}/g, (whole, key) => {
     if (!(key in table)) throw new Error(`Unknown marker ${whole} — a legal page would ship with a hole in it`);
@@ -476,10 +475,6 @@ export function contact({ identity, shop, faq }) {
         ${icon('phone', 22)}<span><strong>${esc(i.phoneText)}</strong><br>${esc(t('shell.custoChamada'))}</span>
       </a>
     </div>
-
-    ${/* O LIVRO DE RECLAMAÇÕES TAMBÉM AQUI (a forma segura do manual da DGC:
-        na página de apoio ao cliente, além do rodapé), pela legal-comum. */ ''}
-    <p class="contact-livro"><span class="contact-livro__rotulo">${esc(t('paginas.contacto.reclamacoes'))}</span> ${legal.livroLigacao()}</p>
 
     <h2>${esc(t('paginas.contacto.ondeEstamos'))}</h2>
     <p>${esc(t('paginas.contacto.oficina', { cidade: i.town, pais: i.country }))}</p>

@@ -15,8 +15,6 @@
 Livro de Reclamações Eletrónico:
 [{{COMPLAINTS_BOOK}}]({{COMPLAINTS_BOOK}})
 
-{{LIVRO_BOTAO}}
-
 ## Resolução extrajudicial de litígios — RAL
 
 Resolução Alternativa de Litígios de Consumo: pode recorrer a um destes centros.

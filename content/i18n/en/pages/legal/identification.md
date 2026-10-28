@@ -1,4 +1,4 @@
-<!-- origem: 247d74e6d5dd partes: 720d780e4078 1eb361f45ad5 26c54ab02930 -->
+<!-- origem: 316483f6c71e partes: 720d780e4078 9643c5155f15 26c54ab02930 -->
 # Who you are buying from
 
 | | |
@@ -15,8 +15,6 @@
 
 Electronic Complaints Book:
 [{{COMPLAINTS_BOOK}}]({{COMPLAINTS_BOOK}})
-
-{{LIVRO_BOTAO}}
 
 ## Extrajudicial dispute resolution — ADR
 

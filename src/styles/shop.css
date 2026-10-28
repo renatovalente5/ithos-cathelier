@@ -2032,10 +2032,6 @@ html[data-js='yes'] .product__lead[data-lead]:not([data-lead-ready]) { visibilit
 .foot__livro .lr-discreto { font-size: 13px; color: var(--muted); min-height: 32px; }
 .foot__livro .lr-discreto:hover { color: var(--accent); }
 @media (width < 60rem) { .foot__livro { order: -1; flex-basis: 100%; } }
-.contact-livro { display: flex; flex-wrap: wrap; align-items: center; gap: .25rem .75rem; margin-block: 1.5rem; }
-.contact-livro__rotulo { font-size: 14px; color: var(--ink-soft, var(--ink)); }
-.contact-livro .lr-discreto, .livro-bloco .lr-discreto { color: var(--ink); text-decoration: underline; text-underline-offset: .2em; min-height: 32px; }
-.livro-bloco { margin-block: 1rem; }
 
 /* Os centros de arbitragem, os passos da encomenda e a tabela de quem recebe
    os dados, dentro das páginas legais. */
