@@ -42,13 +42,25 @@
           "id": "2",
           "name": "verde",
           "extra": 0,
-          "colour": "#17C4A7"
+          "colour": "#1CC4A8"
         },
         {
-          "id": "3",
-          "name": "amarelo",
+          "id": "4",
+          "name": "Amarelo mostarda",
           "extra": 0,
-          "colour": "#DDE84A"
+          "colour": "#E1B94C"
+        },
+        {
+          "id": "5",
+          "name": "azul",
+          "extra": 0,
+          "colour": "#307991"
+        },
+        {
+          "id": "6",
+          "name": "Verde-sálvia",
+          "extra": 0,
+          "colour": "#7A9482"
         }
       ]
     },
