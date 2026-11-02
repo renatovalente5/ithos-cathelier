@@ -45,13 +45,19 @@
           "id": "2",
           "name": "Verde-sálvia",
           "extra": 0,
-          "colour": "#7D8C80"
+          "colour": "#7A9482"
         },
         {
           "id": "3",
-          "name": "Madeira natural",
+          "name": "Amarelo mostarda",
           "extra": 0,
-          "colour": "#D8B88A"
+          "colour": "#E1B94C"
+        },
+        {
+          "id": "4",
+          "name": "Azul",
+          "extra": 0,
+          "colour": "#4D6699"
         }
       ]
     },
