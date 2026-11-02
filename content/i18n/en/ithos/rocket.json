@@ -23,9 +23,17 @@
     "t": "green",
     "h": "ec061fafb777"
   },
-  "options.variant.values.3.name": {
-    "t": "yellow",
-    "h": "b2c30a22b8ed"
+  "options.variant.values.4.name": {
+    "t": "Mustard yellow",
+    "h": "656526bd1d7d"
+  },
+  "options.variant.values.5.name": {
+    "t": "blue",
+    "h": "a4bd1d3a69aa"
+  },
+  "options.variant.values.6.name": {
+    "t": "Sage green",
+    "h": "49f81d31ba83"
   },
   "options.power.name": {
     "t": "Power",
