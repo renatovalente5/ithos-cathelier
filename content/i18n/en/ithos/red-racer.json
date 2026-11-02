@@ -25,8 +25,12 @@
     "fixo": true
   },
   "options.variant.values.3.name": {
-    "t": "Natural wood",
-    "h": "97378d5a5474"
+    "t": "Mustard yellow",
+    "h": "656526bd1d7d"
+  },
+  "options.variant.values.4.name": {
+    "t": "Blue",
+    "h": "b0bf526b23af"
   },
   "options.power.name": {
     "t": "Power",
