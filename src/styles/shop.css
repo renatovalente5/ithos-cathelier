@@ -853,15 +853,14 @@ html:has(.rapido[open]) { overflow: hidden; }
 .choice-esgotada { position: relative; }
 .choice-esgotada > .choice { padding-inline-end: 3.6rem; }
 /* .avisar__abrir.avisar__sino: o .avisar__abrir (a ligação de texto, mais abaixo) vem depois e ganhava no
-   min-height e no fundo. */
+   min-height e no sublinhado. Só o ícone, sem fundo nem destaque ao passar (o Renato, 8 nov 2026); o
+   botão continua com 40 px para o dedo e com o contorno do foco do teclado. */
 .avisar__abrir.avisar__sino {
   position: absolute; inset-inline-end: .45rem; inset-block-start: 50%; translate: 0 -50%;
   inline-size: 2.5rem; block-size: 2.5rem; min-height: 0; padding: 0; margin: 0;
   display: grid; place-items: center; border-radius: 50%; border: 0;
-  background: var(--bg-soft, #f6f1ec); background: color-mix(in srgb, var(--accent) 12%, transparent);
-  text-decoration: none;
+  background: none; text-decoration: none;
 }
-.avisar__abrir.avisar__sino:hover { background: color-mix(in srgb, var(--accent) 20%, transparent); }
 .choice--off input { cursor: not-allowed; }
 
 /* --- sort by ----------------------------------------------------------------
