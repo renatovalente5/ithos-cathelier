@@ -1,4 +1,4 @@
-import { esc, picture, prose, wholePicture, fora, noutroSeparador } from './html.mjs';
+import { esc, money, picture, prose, wholePicture, fora, noutroSeparador } from './html.mjs';
 import { shapeOf, rungs, cardFocus } from './photo.mjs';
 import { viewer } from './viewer.mjs';
 import { join, dirname } from 'node:path';
@@ -28,6 +28,11 @@ import { fotosDaDona, enquadramentoDaDona } from './oficina.mjs';
    número. A vírgula decimal é a de money() em html.mjs, que é quem manda. */
 const valor = (n) => Number(n).toFixed(2).replace('.', ',');
 const desde = (n) => esc(t('cathelier.desde', { preco: valor(n) }));
+/* «desde» só quando o preço varia: uma escolha paga, um extra no campo ou preços por quantidade
+   (o Renato, 8 nov 2026). Com um preço só, «desde 20,00 €» dava a entender que havia mais caro. */
+const variaOPreco = (p) => escaloes(p).length > 0
+  || (p.options || []).some((o) => (o.extra || 0) > 0 || (o.values || []).some((v) => (v.extra || 0) > 0));
+const precoDaPeca = (p) => (variaOPreco(p) ? desde(p.price) : esc(money(p.price)));
 
 /* OS PREÇOS POR QUANTIDADE, por baixo do preço (src/lib/quantidades.mjs):
    «1 a 10 · 3,50 € cada», «11 a 20 · 3,30 € cada», …, «101 ou mais». A
@@ -120,7 +125,7 @@ export function card(p, { eager = false } = {}) {
   </div>`
     : '<div class="card__thumbs card__thumbs--none" aria-hidden="true"></div>'}
   <h3 class="card__name"><a class="card__link" href="${href}">${esc(p.name)}</a></h3>
-  <p class="card__price">${desde(p.price)}</p>
+  <p class="card__price">${precoDaPeca(p)}</p>
 </article>`;
 }
 
@@ -341,6 +346,21 @@ function condicao(o, p) {
    um style, por isso só #rrggbb -- as guardas e o Worker conferem o mesmo. */
 const corDoQuadrado = (c) => (typeof c === 'string' && /^#[0-9a-f]{6}$/i.test(c) ? c : '');
 
+/* OS CAMPOS CURTOS LADO A LADO (o Renato, 8 nov 2026): hora, peso, comprimento… -- um campo de texto
+   até 14 caracteres, sem ajuda nem condição. Só os que vêm seguidos, e só se forem pelo menos dois. */
+const curto = (o) => o.type !== 'choice' && (Number(o.max) || 60) <= 14 && !o.help && !o.onlyWith;
+function camposDaPeca(p) {
+  const os = p.options || [];
+  const partes = [];
+  for (let i = 0; i < os.length; i++) {
+    let j = i;
+    while (j < os.length && curto(os[j])) j++;
+    if (j - i >= 2) { partes.push(`<div class="campos-curtos">${os.slice(i, j).map((o) => campoDaPeca(o, p)).join('\n      ')}</div>`); i = j - 1; }
+    else partes.push(campoDaPeca(os[i], p));
+  }
+  return partes.join('\n      ');
+}
+
 function campoDaPeca(o, p) {
   const { attrs, escondido } = condicao(o, p);
   const desligado = escondido ? ' disabled' : '';
@@ -365,12 +385,11 @@ function campoDaPeca(o, p) {
   }
   const descreve = [o.help ? `opt-${o.id}-ajuda` : '', o.personalises ? 'opt-aviso-personalizada' : ''].filter(Boolean).join(' ');
   return `<div class="field"${attrs}>
-        <label for="opt-${esc(o.id)}">${esc(o.name)}${o.required ? ` <span class="field__req">${esc(t('cathelier.ficha.obrigatorio'))}</span>` : ''}</label>
+        <label for="opt-${esc(o.id)}">${esc(o.name)}${o.required || /\b(opcional|optional)\b/i.test(o.name) ? '' : ` <span class="field__optional">${esc(t('ithos.opcao.opcional'))}</span>`}</label>
         ${o.help ? `<p class="field__help" id="opt-${esc(o.id)}-ajuda">${esc(o.help)}</p>` : ''}
         <input id="opt-${esc(o.id)}" type="text" maxlength="${Number.isInteger(o.max) && o.max > 0 ? o.max : 60}"
                data-option="${esc(o.id)}"${o.required ? ' required' : ''}${desligado}${descreve ? ` aria-describedby="${esc(descreve)}"` : ''}
                placeholder="${esc(o.example || '')}">
-        <p class="field__limit">${esc(t('cathelier.ficha.limite', { n: o.max || 60 }))}</p>
       </div>`;
 }
 
@@ -453,12 +472,12 @@ export function piece({ p, all: everything, shop, occasions, identity }) {
 
   <div class="product__detail">
     <h1>${esc(p.name)}</h1>
-    <p class="product__price">${desde(p.price)}</p>
+    <p class="product__price">${precoDaPeca(p)}</p>
     ${precosPorQuantidade(p)}
     <p class="product__lead product__lead--texto">${esc(prazos(shop.lead).encomendaPeca)}${identity?.whatsapp ? ` <a href="https://wa.me/${esc(identity.whatsapp)}" ${fora}>${esc(prazos(shop.lead).dataCerta)}${noutroSeparador()}</a>` : ''}</p>
 
     <form class="product__form" data-product-form data-product-id="${esc(p.slug)}">
-      ${(p.options || []).map((o) => campoDaPeca(o, p)).join('\n      ')}
+      ${camposDaPeca(p)}
       ${/* UMA PEÇA COM UM NOME NÃO TEM OS CATORZE DIAS, e diz-se aqui, junto
           dos campos, antes de a pôr no cesto (DL 24/2014, art. 4.º n.º 1 al.
           p)). Só nas peças que têm um campo que personaliza -- que hoje são
@@ -473,7 +492,7 @@ export function piece({ p, all: everything, shop, occasions, identity }) {
         </div>
         <button class="btn btn--wide" type="submit" data-add>${esc(t('cathelier.ficha.adicionar'))}</button>
       </div>
-      <p class="product__total" data-product-total aria-live="polite" hidden></p>
+      <p class="product__total" data-product-total${variaOPreco(p) ? '' : ` data-preco-mostrado="${esc(p.price)}"`} aria-live="polite" hidden></p>
     </form>
     ${(p.options ?? []).some((o) => (o.values ?? []).some((v) => v.available === false)) ? janelaDoAviso(p.slug) : ''}
 
@@ -508,10 +527,6 @@ export function piece({ p, all: everything, shop, occasions, identity }) {
       <p class="product__safety-mais"><a href="/cathelier/care-and-safety/">${esc(t('cathelier.ficha.cuidadosPagina'))}</a></p>
     </details>`;
     })()}
-
-    <p class="small muted" style="margin-block-start:1.25rem">
-      ${t('cathelier.ficha.muitas')}
-    </p>
 
     ${fabricante(identity, p)}
   </div>

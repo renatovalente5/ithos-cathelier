@@ -9,7 +9,7 @@
   "stock": "Em stock — sai do atelier em {dias}.",
   "semStock": "Sem stock — fazemos o seu, e chega até si em {semanas}.",
   "encomenda": "Feito por encomenda — chega até si em até {max}.",
-  "encomendaPeca": "Feito por encomenda — chega até si em até {max}, quase sempre antes.",
+  "encomendaPeca": "Feito por encomenda — chega em até {max}.",
   "dataCerta": "Precisa para uma data certa? Fale connosco.",
   "junto": "Segue tudo junto, quando a última peça estiver pronta."
 }
