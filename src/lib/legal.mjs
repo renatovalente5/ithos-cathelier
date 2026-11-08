@@ -56,7 +56,11 @@ function conferirNaBiblioteca(html, textoPt, onde) {
 
 /* --- retoma (DL 152-D/2017, art. 13.º) ------------------------------------- */
 
-const RETOMA_PT = AVISO_RETOMA({ tipos: ['eee', 'pilhas'] });
+/* O cesto não tem onde pedir a retoma; o que o código cumpre é o email, por isso a frase diz isso e não «ao encomendar». */
+const RETOMA_PT = AVISO_RETOMA({ tipos: ['eee', 'pilhas'], como: {
+  eee: 'diga-nos por email, antes ou até 30 dias depois de receber a encomenda, e combinamos a entrega sem custos para si',
+  pilhas: 'basta dizer-nos por email',
+} });
 
 /** O aviso da retoma gratuita dos candeeiros usados e das pilhas, em texto. */
 export const avisoRetoma = () => frase('paginas.retoma.aviso', RETOMA_PT);

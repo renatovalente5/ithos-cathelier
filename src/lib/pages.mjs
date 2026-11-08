@@ -836,6 +836,7 @@ export function basket({ shipping, shop }) {
          data-total="${esc(t('paginas.cesto.resumoTotal'))}">
         <h2 id="resumo-titulo">${esc(t('paginas.cesto.resumo'))}</h2>
         <p class="basket__resumo-linha" data-resumo-linha></p>
+        <ul class="basket__resumo-lista" data-resumo-lista></ul>
         <p class="basket__resumo-prazo" data-resumo-prazo hidden></p>
         <p class="small muted" style="margin-block-start:.4rem">${esc(t('paginas.cesto.resumoNota'))}</p>
         <p class="basket__resumo-ligacoes"><a href="/legal/terms/">${esc(t('shell.rodape.condicoesVenda'))}</a><a href="/legal/cancellation/">${esc(t('shell.rodape.resolucao'))}</a></p>

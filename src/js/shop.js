@@ -2182,6 +2182,11 @@ async function basketPage() {
       const artigos = (n === 1 ? resumo.dataset.um : resumo.dataset.varios).replace('{n}', String(n));
       const total = aPagar === null ? tj('cesto.naoEnviamos') : euros(aPagar);
       $('[data-resumo-linha]', resumo).textContent = `${artigos} · ${resumo.dataset.total.replace('{total}', total)}`;
+      /* As características principais de cada artigo, imediatamente antes do
+         botão (DL 24/2014, art. 5.º, n.º 2): nome, escolhas e quantidade --
+         as mesmas linhas do cesto, que ficam muito acima quando há vários. */
+      const lista = $('[data-resumo-lista]', resumo);
+      if (lista) lista.innerHTML = priced.map(({ line, p }) => `<li>${line.qty} × ${escRv(p.name)}${p.shown.length ? ` — ${p.shown.map(escRv).join(' · ')}` : ''}</li>`).join('');
       const retoma = $('[data-basket-retoma]');
       if (retoma) retoma.hidden = !priced.some(({ p }) => p.brand === 'ithos');
     }

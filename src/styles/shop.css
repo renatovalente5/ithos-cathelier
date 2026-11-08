@@ -2049,6 +2049,8 @@ html[data-js='yes'] .product__lead[data-lead]:not([data-lead-ready]) { visibilit
 .basket__resumo h2 { font-size: 1rem; margin: 0 0 .5rem; }
 .basket__resumo-linha { margin: 0; font-size: 15px; color: var(--ink); }
 .basket__resumo-linha strong { font-variant-numeric: tabular-nums; }
+.basket__resumo-lista { margin: .35rem 0 0; padding-inline-start: 1.1rem; font-size: 14px; color: var(--ink); }
+.basket__resumo-lista li { margin: .15rem 0; }
 .basket__resumo-prazo { margin: .25rem 0 0; font-size: 14px; color: var(--ink-soft, var(--ink)); }
 .basket__resumo-ligacoes { margin: .5rem 0 0; font-size: 13px; display: flex; flex-wrap: wrap; gap: .25rem 1rem; }
 .basket__retoma { margin-block-start: .75rem; font-size: 13px; color: var(--ink-soft, var(--ink)); }
