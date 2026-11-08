@@ -15,8 +15,7 @@ Depois de sair do atelier, a entrega é feita pela {{CARRIER}}.
 
 {{SHIPPING_TABLE}}
 
-Os prazos de entrega são estimativas e começam quando a encomenda sai do
-atelier.
+Os prazos da tabela contam a partir do dia em que a encomenda sai do atelier.
 
 ## Se chegar danificada
 

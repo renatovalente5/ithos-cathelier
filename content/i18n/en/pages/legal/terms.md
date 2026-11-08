@@ -1,4 +1,4 @@
-<!-- origem: f1c474f43d92 partes: 385996f20f05 95a292592920 74b642e8c44a 18e631390cab b9bacc6b6765 53283dbe7dbb 48e0e2a7afa3 f0e1684c6ab9 7303925a6a5e 5df13b1d4273 9b2ecfa0cec6 40d4012a548e 37247a30ba8d a42c1b8e95aa -->
+<!-- origem: e013697ef68f partes: 385996f20f05 95a292592920 74b642e8c44a 18e631390cab b9bacc6b6765 53283dbe7dbb e34c551d011f 317f15f9c64e 7303925a6a5e 5df13b1d4273 9b2ecfa0cec6 40d4012a548e 37247a30ba8d a42c1b8e95aa -->
 # Terms of sale
 
 ## Who is selling
@@ -51,9 +51,11 @@ With cathelier pieces, we send you a design to approve before cutting anything. 
 
 ## Ordering and paying
 
-An order is a proposal until we confirm it by email. We may decline an order —
-if a piece is no longer possible, if the engraving asks for something we will
-not cut, or if the delivery address is outside the countries we ship to.
+Your order is confirmed as soon as the payment comes in: the confirmation is
+emailed to you straight away. If a piece is no longer possible, if the
+engraving asks for something we will not cut, or if the delivery address is
+outside the countries we ship to, we will tell you within 2 working days and
+refund everything you paid.
 
 Payment is taken by {{PAYMENT_PROVIDER}}, a payment institution supervised by
 the Banco de Portugal. You can pay by {{PAYMENT_METHODS}}. We never see or
@@ -83,8 +85,8 @@ wait is yours.
 If an item in an order is made to order, the entire order will be sent
 together once it is ready.
 
-Shipping is handled by {{CARRIER}}. Delivery times are estimates and
-begin when the order leaves the workshop.
+Shipping is handled by {{CARRIER}}. The transit time counts from the day the
+order leaves the workshop.
 
 ## If something is wrong
 

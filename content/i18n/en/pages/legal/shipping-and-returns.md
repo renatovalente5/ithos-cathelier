@@ -1,4 +1,4 @@
-<!-- origem: 228a4cd82669 partes: 549f878a8e13 396a10bae519 e40325c0371e 3387ff0151d4 85be0388d41b 096904943b83 -->
+<!-- origem: f15459bc0c75 partes: 549f878a8e13 396a10bae519 64ad65bb7f8c 3387ff0151d4 85be0388d41b 096904943b83 -->
 # Delivery and returns
 
 ## How long it takes
@@ -13,8 +13,7 @@ After leaving the workshop, delivery is made by {{CARRIER}}.
 
 {{SHIPPING_TABLE}}
 
-Delivery times are estimates and begin once the order leaves the
-workshop.
+The times in the table count from the day the order leaves the workshop.
 
 ## If it arrives damaged
 

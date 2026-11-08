@@ -61,9 +61,10 @@ que recebe.
 
 ## Encomendar e pagar
 
-Uma encomenda é uma proposta até a confirmarmos por email. Podemos recusar uma
-encomenda — se uma peça já não for possível, se a gravação pedir algo que não
-cortamos, ou se a morada de entrega for fora dos países para onde enviamos.
+A encomenda fica confirmada quando o pagamento entra: a confirmação segue logo
+por email. Se uma peça já não for possível, se a gravação pedir algo que não
+cortamos, ou se a morada de entrega for fora dos países para onde enviamos,
+dizemos-lho em até 2 dias úteis e devolvemos tudo o que pagou.
 
 O pagamento é recebido pela {{PAYMENT_PROVIDER}}, instituição de pagamento
 supervisionada pelo Banco de Portugal. Pode pagar por {{PAYMENT_METHODS}}.
@@ -94,8 +95,8 @@ esperar é sua.
 Se uma coisa numa encomenda for feita por encomenda, a encomenda inteira segue
 junta quando estiver pronta.
 
-O envio é feito pela {{CARRIER}}. Os prazos de entrega são estimativas e
-começam quando a encomenda sai do atelier.
+O envio é feito pela {{CARRIER}}. O prazo do transporte conta a partir do dia
+em que a encomenda sai do atelier.
 
 ## Se alguma coisa estiver mal
 
