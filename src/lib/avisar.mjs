@@ -1,7 +1,9 @@
 /* «AVISE-ME QUANDO VOLTAR» (a Cathia, 26 out 2026).
  *
- * Uma janela por página de produto, que se abre de «Avise-me quando «…»
- * voltar», por baixo de uma escolha «Esgotado por agora». Um candeeiro sem
+ * Uma janela por página de produto, que se abre do sininho no botão de uma
+ * escolha esgotada (o Renato, 8 nov 2026: «podia ficar apenas com o icon do
+ * sininho» -- saíram o «Esgotado por agora» e a linha «Avise-me quando…»; o
+ * nome da escolha vai no aria-label e na própria janela). Um candeeiro sem
  * stock não leva aviso: vende-se na mesma, por encomenda, e escolher as duas
  * coisas não fazia sentido (a Cathia, 27 out 2026: «deixamos comprar na
  * mesma»).
@@ -31,8 +33,11 @@ export function janelaDoAviso(slug) {
     </dialog>`;
 }
 
-/** O de uma escolha esgotada, por baixo das escolhas. */
-export function botoesDasEscolhas(o) {
-  const off = (o.values ?? []).filter((v) => v.available === false);
-  return off.map((v) => `<button type="button" class="avisar__abrir" data-avisar-opcao="${esc(o.id)}" data-avisar-valor="${esc(v.id)}" data-avisar-nome="${esc(v.name)}">${icon('bell', 15)}<span>${esc(t('paginas.avisar.abrirEscolha', { valor: v.name }))}</span></button>`).join('\n        ');
+/** O sininho de uma escolha esgotada, por cima do botão dela. Não pode ir DENTRO
+    do <label>: um botão é um elemento rotulável, e o rótulo passava a ter dois. */
+export function sinoDaEscolha(o, v) {
+  return `<button type="button" class="avisar__abrir avisar__sino" data-avisar-opcao="${esc(o.id)}" data-avisar-valor="${esc(v.id)}" data-avisar-nome="${esc(v.name)}" aria-label="${esc(t('paginas.avisar.abrirEscolha', { valor: v.name }))}">${icon('bell', 19)}</button>`;
 }
+
+/** Uma escolha: o rótulo, e, se estiver esgotada, o rótulo com o sininho por cima. */
+export const comSino = (o, v, rotulo) => (v.available === false ? `<div class="choice-esgotada">${rotulo}${sinoDaEscolha(o, v)}</div>` : rotulo);

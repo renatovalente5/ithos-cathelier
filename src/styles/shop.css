@@ -848,11 +848,21 @@ html:has(.rapido[open]) { overflow: hidden; }
 .field__limit { display: block; margin-block-start: .35rem; font-size: 12px; color: var(--muted); }
 
 .choice--off { opacity: .55; cursor: not-allowed; }
-.choice--off input { cursor: not-allowed; }
-.choice__off {
-  font-style: normal; font-size: 12px; letter-spacing: .06em;
-  text-transform: uppercase; color: var(--muted);
+/* A escolha esgotada com o sininho por cima (src/lib/avisar.mjs, sinoDaEscolha):
+   o sininho fica fora do <label> e por isso não esbate com ele. */
+.choice-esgotada { position: relative; }
+.choice-esgotada > .choice { padding-inline-end: 3.6rem; }
+/* .avisar__abrir.avisar__sino: o .avisar__abrir (a ligação de texto, mais abaixo) vem depois e ganhava no
+   min-height e no fundo. */
+.avisar__abrir.avisar__sino {
+  position: absolute; inset-inline-end: .45rem; inset-block-start: 50%; translate: 0 -50%;
+  inline-size: 2.5rem; block-size: 2.5rem; min-height: 0; padding: 0; margin: 0;
+  display: grid; place-items: center; border-radius: 50%; border: 0;
+  background: var(--bg-soft, #f6f1ec); background: color-mix(in srgb, var(--accent) 12%, transparent);
+  text-decoration: none;
 }
+.avisar__abrir.avisar__sino:hover { background: color-mix(in srgb, var(--accent) 20%, transparent); }
+.choice--off input { cursor: not-allowed; }
 
 /* --- sort by ----------------------------------------------------------------
    Built by the script, so it is never on a page that cannot use it. A native
@@ -1213,8 +1223,8 @@ html:has(.rapido[open]) { overflow: hidden; }
 .reassure svg { flex: none; color: var(--accent); }
 /* A ligação para o aviso da garantia legal, e o fabricante (Reg. (UE)
    2023/988, art. 19.º al. a)): à vista, sem caixa que se abra. */
-.product__rights { margin-block-start: .75rem; font-size: 13px; }
-.product__rights a { color: var(--ink); text-underline-offset: 3px; display: inline-flex; align-items: center; min-height: 28px; }
+/* A garantia é uma linha da caixa (.reassure) que leva ao aviso da garantia legal. */
+.reassure a { color: inherit; text-underline-offset: 3px; }
 .product__maker { margin-block-start: 1.25rem; font-size: 12px; line-height: 1.7; color: var(--muted); overflow-wrap: anywhere; }
 .product__maker strong { color: var(--ink); font-weight: 600; }
 .product__maker a { color: inherit; text-underline-offset: 3px; }
@@ -1737,7 +1747,6 @@ html.menu-open { overflow: hidden; }
 .oficina__foto img { object-position: var(--foco, 50% 50%); }
 .maker__photo--dona img { object-position: var(--foco, 50% 50%); }
 
-.product__blurb { margin-block-start: 1rem; font-size: 15px; line-height: 1.8; color: var(--muted); }
 .product__lead { display: flex; align-items: center; gap: .5rem; }
 .product__lead svg { flex: none; color: var(--accent); }
 /* Na cathelier a linha é uma frase com uma ligação («Precisa para uma data

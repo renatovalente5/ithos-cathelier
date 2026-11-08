@@ -973,7 +973,8 @@ if (titulosPorTraduzir.length) {
     const ficha = onde.match(/\/(?:lamps|pieces)\/([^/]+)\/index\.html$/);
     if (ficha) {
       fichas++;
-      const direitos = html.match(/class="product__rights"><a href="([^"]*)"/);
+      /* Desde 8 nov 2026 a ligação é a linha da garantia na caixa (.reassure), com o ícone antes. */
+      const direitos = html.match(/class="product__rights"[^>]*>[\s\S]{0,800}?<a href="([^"]*)"/);
       if (!direitos || !ligacao('/legal/guarantee/').test(`href="${direitos[1]}"`)) deaths.push(`${onde}: a ficha não tem a ligação para o aviso da garantia legal`);
       const fab = html.match(/<p class="product__maker">([\s\S]*?)<\/p>/)?.[1] ?? '';
       for (const campo of ['legalName', 'street', 'postcode', 'town', 'email']) {
@@ -989,15 +990,10 @@ if (titulosPorTraduzir.length) {
         const porque = semCircunstancia(texto, lang);
         if (porque) { deaths.push(`${onde}: o aviso das personalizadas ${porque}`); break; }
       }
-      /* A linha dos candeeiros junto ao botão («14 dias de livre resolução,
-         por lei…», «14-day legal right to cancel…»): é a mesma informação, e
-         diz-se da mesma maneira. O número pode vir colado ao nome por um
-         hífen, como no inglês. */
-      const linha = html.match(/<span>[^<]*·\s*(\d+[ -][^<]*)<\/span>/)?.[1];
-      if (/\/lamps\//.test(onde) && linha) {
-        const porque = semCircunstancia(linha, lang);
-        if (porque) deaths.push(`${onde}: a linha da garantia ${porque}`);
-      } else if (/\/lamps\//.test(onde)) deaths.push(`${onde}: não encontrei a linha «garantia legal · dias para mudar de ideias»`);
+      /* A linha dos candeeiros «garantia legal · 14 dias de livre resolução»
+         saiu a 8 nov 2026 (o Renato: menos texto na ficha). Os dias dizem-se
+         junto da gravação (o field__aviso, conferido acima), no cesto e nas
+         condições. */
     }
     if (/data-basket\b/.test(html) && /data-checkout-form/.test(html)) {
       if (!/data-basket-personal/.test(html)) deaths.push(`${onde}: o cesto não tem o aviso das peças personalizadas`);

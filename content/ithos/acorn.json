@@ -55,7 +55,7 @@
       "type": "choice",
       "required": true,
       "personalises": false,
-      "help": "As pilhas estão incluídas. A versão com cabo traz um comando: liga, desliga, regula a intensidade, desliga sozinha e faz a luz pulsar devagar.",
+      "help": "Pilhas incluídas.",
       "values": [
         {
           "id": "batteries",
@@ -78,8 +78,7 @@
       "required": false,
       "personalises": true,
       "max": 40,
-      "extra": 0,
-      "help": "Um nome, uma data ou uma frase curta, gravados na madeira. Deixe vazio se preferir sem gravação."
+      "extra": 0
     }
   ],
   "gpsr": {

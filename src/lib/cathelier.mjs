@@ -11,7 +11,7 @@ import { cover } from './cover.mjs';
 import { prazos } from './prazos.mjs';
 import { t, tn } from './i18n.mjs';
 import { fabricante } from './pages.mjs';
-import { janelaDoAviso, botoesDasEscolhas } from './avisar.mjs';
+import { janelaDoAviso, comSino } from './avisar.mjs';
 import { brandPath } from './shell.mjs';
 import { videosDe, enderecoDoVideo, capaDoVideo, videoDoCartao } from './videos.mjs';
 import { escaloes } from './quantidades.mjs';
@@ -352,16 +352,15 @@ function campoDaPeca(o, p) {
         <div class="choices">
           ${o.values.map((v) => {
     const off = v.available === false;
-    return `<label class="choice${off ? ' choice--off' : ''}">
+    return comSino(o, v, `<label class="choice${off ? ' choice--off' : ''}">
             <input type="radio" name="opt-${esc(o.id)}" value="${esc(v.id)}" data-option="${esc(o.id)}"${v.id === marcado.id ? ' checked' : ''}${off || escondido ? ' disabled' : ''}>
             ${corDoQuadrado(v.colour) ? `<span class="choice__cor" style="background:${corDoQuadrado(v.colour)}" aria-hidden="true"></span>` : ''}<span>${
       /* Com quadradinho, o nome é o de uma cor (data-cor): «Verde caqui» não
          é uma alegação ambiental (scripts/alegacoes-ambientais.mjs). */
       corDoQuadrado(v.colour) ? `<span data-cor>${esc(v.name)}</span>` : esc(v.name)}${v.extra ? ` <em>+${esc(valor(v.extra))} €</em>` : ''}</span>
-          </label>`;
+          </label>`);
   }).join('\n          ')}
         </div>
-        ${botoesDasEscolhas(o)}
       </fieldset>`;
   }
   const descreve = [o.help ? `opt-${o.id}-ajuda` : '', o.personalises ? 'opt-aviso-personalizada' : ''].filter(Boolean).join(' ');
@@ -459,15 +458,12 @@ export function piece({ p, all: everything, shop, occasions, identity }) {
     <p class="product__lead product__lead--texto">${esc(prazos(shop.lead).encomendaPeca)}${identity?.whatsapp ? ` <a href="https://wa.me/${esc(identity.whatsapp)}" ${fora}>${esc(prazos(shop.lead).dataCerta)}${noutroSeparador()}</a>` : ''}</p>
 
     <form class="product__form" data-product-form data-product-id="${esc(p.slug)}">
-      ${(p.options || []).some((o) => o.personalises) ? `<p class="field__help" style="margin-block-end:.25rem">
-        ${esc(t('cathelier.ficha.ajuda'))}
-      </p>` : ''}
       ${(p.options || []).map((o) => campoDaPeca(o, p)).join('\n      ')}
       ${/* UMA PEÇA COM UM NOME NÃO TEM OS CATORZE DIAS, e diz-se aqui, junto
           dos campos, antes de a pôr no cesto (DL 24/2014, art. 4.º n.º 1 al.
           p)). Só nas peças que têm um campo que personaliza -- que hoje são
           todas, mas a marca é da opção e não da loja. */ ''}${(p.options || []).some((o) => o.personalises)
-        ? `<p class="field__aviso" id="opt-aviso-personalizada">${esc(t('paginas.aviso.personalizada', { n: shop.returns.coolingOffDays }))}</p>` : ''}
+        ? `<p class="field__aviso" id="opt-aviso-personalizada" data-aviso-ao-escrever hidden>${esc(t('paginas.aviso.personalizada', { n: shop.returns.coolingOffDays }))}</p>` : ''}
 
       <div class="product__buy">
         <div class="qty" data-qty>
@@ -486,10 +482,14 @@ export function piece({ p, all: everything, shop, occasions, identity }) {
           2026 (Diretiva 2024/825) uma alegação ambiental genérica sem prova
           reconhecida é prática comercial desleal, e não há certificação que a
           sustente. Ficou um facto que o site já diz na página da oficina. Se
-          um dia houver FSC/PEFC, volta -- citando o certificado. */ ''}${[['shield', 'desenho'], ['hand', 'mao'], ['truck', 'envio'], ['pin', 'oficina']]
+          um dia houver FSC/PEFC, volta -- citando o certificado.
+          SÓ O QUE FAZ FALTA (o Renato, 8 nov 2026): o desenho para aprovar (que
+          era também a ajuda por cima dos campos, e lá saiu), o envio e a
+          garantia, numa linha que leva ao aviso da garantia legal. «Cortado e
+          gravado a laser» e «Feito num pequeno atelier» saíram. */ ''}${[['hand', 'desenho'], ['truck', 'envio']]
         .map(([i, k]) => `<p>${icon(i, 18)}<span>${esc(t(`cathelier.ficha.garantia.${k}`))}</span></p>`).join('\n      ')}
+      <p class="product__rights">${icon('shield', 18)}<span><a href="${brandPath('/legal/guarantee/', 'cathelier')}">${esc(tn('ithos.garantias.anos', shop.returns.warrantyYears))}</a></span></p>
     </div>
-    <p class="product__rights"><a href="${brandPath('/legal/guarantee/', 'cathelier')}">${esc(t('paginas.garantia.ligacao'))}</a></p>
 
     <div class="product__text stack" style="--stack:1rem">${prose(p.text)}</div>
 

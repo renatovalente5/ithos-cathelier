@@ -3081,6 +3081,24 @@ function ligarFormulario(form, { depois } = {}) {
      Worker: o escalão da quantidade, o preço de revendedor se for mais baixo,
      e as escolhas pagas por cima. Só a quantidade deste formulário -- o que já
      estiver no cesto da mesma peça o cesto junta. Sem catálogo, não aparece. */
+  /* O AVISO DOS DIAS DE LIVRE RESOLUÇÃO APARECE QUANDO SE ESCREVE (o Renato,
+     8 nov 2026: menos texto na ficha). A lei pede-o antes de a pessoa ficar
+     vinculada (DL 24/2014, art. 4.º n.º 1 al. p)): está junto do campo assim
+     que há um nome ou uma frase, e o cesto volta a dizê-lo antes do botão.
+     Os campos que personalizam apontam para ele por aria-describedby (também
+     com os ids da janela rápida, que o semIdsRepetidos acerta nos dois lados). */
+  const avisosAoEscrever = $$('[data-aviso-ao-escrever]', form);
+  if (avisosAoEscrever.length) {
+    const pintarAvisos = () => {
+      for (const a of avisosAoEscrever) {
+        a.hidden = !$$(`[aria-describedby~="${a.id}"]`, form).some((i) => !i.disabled && String(i.value || '').trim() !== '');
+      }
+    };
+    form.addEventListener('input', pintarAvisos);
+    form.addEventListener('change', pintarAvisos);
+    pintarAvisos();
+  }
+
   const total = $('[data-product-total]', form);
   if (total) {
     catalogue().then((c) => {
@@ -3092,7 +3110,11 @@ function ligarFormulario(form, { depois } = {}) {
         total.textContent = q > 1
           ? tj('ficha.totalVarios', { n: q, cada: dinheiro(cada), total: dinheiro(cada * q) })
           : tj('ficha.total', { total: dinheiro(cada) });
-        total.hidden = false;
+        /* Com uma unidade e o preço de cima (sem extras), o total só o repetia
+           (o Renato, 8 nov 2026): esconde-se. data-preco-mostrado só vem nas
+           fichas com um preço único (ithos.mjs). */
+        const mostrado = Number(total.dataset.precoMostrado);
+        total.hidden = q === 1 && total.dataset.precoMostrado !== undefined && Math.abs(cada - mostrado) < 0.005;
       };
       form.addEventListener('input', pintar);
       form.addEventListener('change', pintar);
@@ -3410,14 +3432,14 @@ document.addEventListener('DOMContentLoaded', () => {
   const faixas = [...document.querySelectorAll('.announce[data-de], [data-sem-faixa]')];
   const faixa = faixas.find((l) => dentroDasDatas(l.dataset.de, l.dataset.ate));
   for (const l of faixas) if (l !== faixa || l.hasAttribute('data-sem-faixa')) l.remove();
-  /* Os portes na ficha de um candeeiro (ithos.mjs, linhasDoEnvio): a
-     primeira campanha que está no dia substitui a linha do preço; sem
-     nenhuma, fica o preço. O build já escolheu; aqui conta o dia de hoje. */
+  /* Os portes na ficha de um candeeiro (ithos.mjs, linhasDoEnvio): com uma
+     campanha de portes grátis no dia, a linha do preço dos portes esconde-se
+     (a campanha lê-se na faixa do topo); sem nenhuma, fica o preço. As marcas
+     das campanhas nunca aparecem. O build já escolheu; aqui conta o dia de hoje. */
   const linhasDosPortes = [...document.querySelectorAll('[data-envio-campanha]')];
   if (linhasDosPortes.length) {
     const vale = linhasDosPortes.find((l) => dentroDasDatas(l.dataset.de, l.dataset.ate));
     const gratis = Boolean(vale) && !vale.hasAttribute('data-sem-portes');
-    for (const l of linhasDosPortes) l.hidden = l !== vale || !gratis;
     const base = document.querySelector('[data-envio-base]');
     if (base) base.hidden = gratis;
   }

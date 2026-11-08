@@ -1559,7 +1559,7 @@ for (const [o, n] of esgotados) {
         nome: p.name, preco: p.price, fabricante,
         referencia: p.gpsr?.type,
         avisos: [...(p.gpsr?.warnings ?? []), ...(marca === 'ithos' ? shopLegal.safetyIthos ?? [] : shopLegal.safetyCathelier ?? [])],
-        /* A ficha de cada candeeiro mostra o aviso da retoma (src/lib/ithos.mjs). */
+        /* O aviso da retoma diz-se no cesto, com um candeeiro lá dentro, e nas condições (desde 8 nov 2026 já não na ficha). */
         retoma: marca === 'ithos',
       }, { categoria: marca === 'ithos' ? 'eee' : 'geral', modo: 'avisar' });
       for (const q of r.problemas) {

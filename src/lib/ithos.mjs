@@ -8,12 +8,10 @@ const PHOTOS = join(dirname(fileURLToPath(import.meta.url)), '..', '..', 'photos
 import { icon } from './icons.mjs';
 import { cover } from './cover.mjs';
 import { prazos } from './prazos.mjs';
-import { t, tn } from './i18n.mjs';
+import { t, tn, lingua, LOCALE } from './i18n.mjs';
 import { fabricante } from './pages.mjs';
-import { janelaDoAviso, botoesDasEscolhas } from './avisar.mjs';
+import { janelaDoAviso, comSino } from './avisar.mjs';
 import { campanhasDaLoja, tiraPortesNoContinente, emDiaDeLisboa } from './campanhas.mjs';
-import { condicaoDaCampanha } from './shell.mjs';
-import { avisoRetoma } from './legal.mjs';
 import { fotosDaDona, enquadramentoDaDona } from './oficina.mjs';
 import { videosDe, enderecoDoVideo as enderecoDeVideo, capaDoVideo as capaDeVideo, videoDoCartao } from './videos.mjs';
 
@@ -301,13 +299,13 @@ function linhasDoEnvio(shipping, agora = new Date()) {
   const campanhas = campanhasDaLoja(shipping, 'ithos');
   const vale = campanhas.find((c) => emDiaDeLisboa(c, agora));
   const portesGratis = Boolean(vale) && tiraPortesNoContinente(vale);
-  const linha = (texto, atributos, escondida) => `<p ${atributos}${escondida ? ' hidden' : ''}>${icon('truck', 18)}<span>${esc(texto)}</span></p>`;
+  /* A campanha já se lê na faixa do topo (e no cesto): na ficha não se repete
+     (o Renato, 8 nov 2026). Cada campanha deixa só uma marca escondida, para o
+     shop.js saber se a linha do preço dos portes se esconde no dia de hoje. */
   const datas = (c) => `data-envio-campanha data-de="${esc(c.from || '')}" data-ate="${esc(c.to || '')}"`;
   return [
-    ...campanhas.map((c) => (tiraPortesNoContinente(c)
-      ? linha(condicaoDaCampanha(c, shipping), datas(c), c !== vale)
-      : `<span ${datas(c)} data-sem-portes hidden></span>`)),
-    linha(base, 'data-envio-base', portesGratis),
+    ...campanhas.map((c) => `<span ${datas(c)}${tiraPortesNoContinente(c) ? '' : ' data-sem-portes'} hidden></span>`),
+    `<p data-envio-base${portesGratis ? ' hidden' : ''}>${icon('truck', 18)}<span>${esc(base)}</span></p>`,
   ].join('\n      ');
 }
 
@@ -344,11 +342,13 @@ export function product({ p, all, shop, identity, shipping }) {
     .filter((x) => familiesOf(x).some((f) => familiesOf(p).includes(f)))
     .slice(0, 4);
   const size = p.size || {};
+  /* «5,6 cm» em português e «5.6 cm» em inglês: o número no formato da língua. */
+  const num = (n) => Number(n).toLocaleString(LOCALE[lingua()]);
   const dims = [
-    size.height && t('ithos.medida.altura', { n: size.height }),
-    size.width && t('ithos.medida.largura', { n: size.width }),
-    size.length && t('ithos.medida.comprimento', { n: size.length }),
-    size.depth && t('ithos.medida.profundidade', { n: size.depth }),
+    size.height && t('ithos.medida.altura', { n: num(size.height) }),
+    size.width && t('ithos.medida.largura', { n: num(size.width) }),
+    size.length && t('ithos.medida.comprimento', { n: num(size.length) }),
+    size.depth && t('ithos.medida.profundidade', { n: num(size.depth) }),
   ].filter(Boolean).join(' · ');
 
   return `
@@ -392,7 +392,6 @@ export function product({ p, all, shop, identity, shipping }) {
   <div class="product__detail">
     <h1>${esc(p.name)}</h1>
     <p class="product__price">${high > low ? `${money(low)} – ${money(high)}` : money(low)}</p>
-    <p class="product__blurb">${esc(p.summary)}</p>
     <!-- O PRAZO DEPENDE DO STOCK, e o stock só o Worker sabe. A página nasce a
          dizer o caso mais lento, que é verdade para qualquer candeeiro; o script
          pergunta ao Worker e troca pela frase certa para o modelo escolhido.
@@ -416,7 +415,9 @@ export function product({ p, all, shop, identity, shipping }) {
         </div>
         <button class="btn btn--wide" type="submit" data-add>${esc(t('ithos.botao.adicionar'))}</button>
       </div>
-      <p class="product__total" data-product-total aria-live="polite" hidden></p>
+      ${/* data-preco-mostrado: com uma unidade e sem extras, o total é o preço de
+          cima, e não se repete (o shop.js esconde-o). Com um intervalo de
+          preços, mostra-se sempre. */ ''}<p class="product__total" data-product-total${high > low ? '' : ` data-preco-mostrado="${esc(low)}"`} aria-live="polite" hidden></p>
     </form>
     ${(p.options ?? []).some((o) => (o.values ?? []).some((v) => v.available === false)) ? janelaDoAviso(p.slug) : ''}
 
@@ -426,17 +427,18 @@ export function product({ p, all, shop, identity, shipping }) {
           folha não: uma folha, uma árvore ou uma gota junto de um produto
           lêem-se como selo ambiental (FAQ da Comissão sobre a Diretiva
           2024/825, P2 e P5), e um selo sem certificação é prática proibida
-          (anexo I da Diretiva 2005/29, ponto 2-A). Ficou um desenho neutro. */ ''}${linhasDoEnvio(shipping)}
-      ${[['layers', t('ithos.garantias.materiais')],
-         ['shield', `${tn('ithos.garantias.anos', shop.returns.warrantyYears)} · ${tn('ithos.garantias.mudarDeIdeias', shop.returns.coolingOffDays)}`],
-         ['hand', t('ithos.garantias.feitoAMao')]]
-        .map(([i, texto]) => `<p>${icon(i, 18)}<span>${esc(texto)}</span></p>`).join('\n      ')}
+          (anexo I da Diretiva 2005/29, ponto 2-A). Ficou um desenho neutro.
+          SÓ O QUE FAZ FALTA (o Renato, 8 nov 2026): o material e as medidas
+          (características essenciais) e a garantia, numa linha que leva ao
+          aviso da garantia legal. Os 14 dias dizem-se junto da gravação e no
+          cesto; «Feito à mão em Castelo Branco» saiu. */ ''}${linhasDoEnvio(shipping)}
+      <p>${icon('layers', 18)}<span>${esc(t('ithos.garantias.materiais'))}</span></p>
+      ${dims ? `<p>${icon('ruler', 18)}<span>${esc(dims)}</span></p>` : ''}
+      <p class="product__rights">${icon('shield', 18)}<span><a href="/legal/guarantee/">${esc(tn('ithos.garantias.anos', shop.returns.warrantyYears))}</a></span></p>
     </div>
-    <p class="product__rights"><a href="/legal/guarantee/">${esc(t('paginas.garantia.ligacao'))}</a></p>
 
     <div class="product__text stack" style="--stack:1rem">
       ${prose(p.text)}
-      ${dims ? `<p class="small muted">${esc(dims)}</p>` : ''}
     </div>
 
     <details class="product__safety">
@@ -444,12 +446,9 @@ export function product({ p, all, shop, identity, shipping }) {
       <ul>${(shop.safetyIthos || []).map((s) => `<li>${esc(s)}</li>`).join('')}</ul>
     </details>
 
-    ${/* A RETOMA GRATUITA (DL 152-D/2017, art. 13.º): um candeeiro é
-        equipamento eléctrico, e quem o compra pode entregar-nos um usado
-        equivalente; as pilhas portáteis usadas recebem-se sem compra. O
-        texto é o da legal-comum (AVISO_RETOMA), pelo dicionário. */ ''}<p class="retoma product__retoma">${esc(avisoRetoma())}</p>
-
-    ${fabricante(identity, p)}
+    ${/* A RETOMA GRATUITA (DL 152-D/2017, art. 13.º) diz-se no cesto, com um
+        candeeiro lá dentro, antes de encomendar, e nas condições -- já não na
+        ficha (o Renato, 8 nov 2026: menos texto). */ ''}${fabricante(identity, p)}
   </div>
 </section>
 
@@ -475,7 +474,7 @@ function optionField(o, diasDeResolucao) {
        n.º 1 al. p)). Sai da marca «personalises» da opção, a mesma que o
        Worker lê para pôr a exceção na fatura. */
     const aviso = o.personalises
-      ? `<p class="field__aviso" id="opt-${esc(o.id)}-aviso">${esc(t('paginas.aviso.personalizada', { n: diasDeResolucao }))}</p>` : '';
+      ? `<p class="field__aviso" id="opt-${esc(o.id)}-aviso" data-aviso-ao-escrever hidden>${esc(t('paginas.aviso.personalizada', { n: diasDeResolucao }))}</p>` : '';
     return `<div class="field">
         <label for="opt-${esc(o.id)}">${esc(o.name)} <span class="field__optional">${esc(t('ithos.opcao.opcional'))}</span></label>
         ${o.help ? `<p class="field__help">${esc(o.help)} <span class="field__limit">${esc(t('ithos.opcao.limite', { n: o.max || 40 }))}</span></p>` : ''}
@@ -500,15 +499,13 @@ function optionField(o, diasDeResolucao) {
         <div class="choices">
           ${o.values.map((v) => {
     const off = v.available === false;
-    return `<label class="choice${off ? ' choice--off' : ''}">
+    return comSino(o, v, `<label class="choice${off ? ' choice--off' : ''}">
             <input type="radio" name="opt-${esc(o.id)}" value="${esc(v.id)}"
                    data-option="${esc(o.id)}"${v.id === chosen.id ? ' checked' : ''}${off ? ' disabled' : ''}>
             ${corDoQuadrado(v.colour) ? `<span class="choice__cor" style="background:${corDoQuadrado(v.colour)}" aria-hidden="true"></span>` : ''}<span>${
-      corDoQuadrado(v.colour) ? `<span data-cor>${esc(v.name)}</span>` : esc(v.name)}${v.extra ? ` <em>+${money(v.extra)}</em>` : ''}${
-      off ? ` <em class="choice__off">${esc(v.note || t('ithos.opcao.indisponivel'))}</em>` : ''}</span>
-          </label>`;
+      corDoQuadrado(v.colour) ? `<span data-cor>${esc(v.name)}</span>` : esc(v.name)}${v.extra ? ` <em>+${money(v.extra)}</em>` : ''}</span>
+          </label>`);
   }).join('\n          ')}
         </div>
-        ${botoesDasEscolhas(o)}
       </fieldset>`;
 }
