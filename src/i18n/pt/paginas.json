@@ -236,6 +236,5 @@
   "destinatarios.f.github": "o código e os textos do site e a sua construção (nunca os dados das encomendas)",
   "cookies.mapa": "O mapa da página de contactos só é carregado dos servidores da Google depois de carregar em «{botao}», e essa escolha fica guardada no seu aparelho (localStorage) até a retirar em «{retirar}».",
   "cookies.retirar": "Para retirar a autorização que deu ao mapa, carregue em «{retirar}» junto ao mapa: a escolha é apagada do seu aparelho e o mapa deixa de ser carregado na hora. Pode voltar a autorizá-lo quando quiser, com um clique no mapa.",
-  "privacidade.cesto": "Os dados que escrever servem só para tratar a encomenda, entregá-la e emitir a fatura; a encomenda fica guardada 90 dias e a fatura 10 anos. Saiba mais na <a href=\"/legal/privacy/\">política de privacidade</a>.",
   "privacidade.revenda": "O NIF que escrever serve só para lhe enviar o acesso de revendedor; os dados do registo ficam guardados enquanto for revendedor. Saiba mais na <a href=\"/legal/privacy/\">política de privacidade</a>."
 }

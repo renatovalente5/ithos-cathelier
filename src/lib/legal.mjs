@@ -254,7 +254,6 @@ export const cookiesMapaBloco = () => cookiesMapaTextos().map((x) => `<p>${esc(x
    forma dela (para quê, até quando, a ligação à política) com os prazos
    verdadeiros desta loja. */
 const FORMULARIO_PT = {
-  cesto: 'Os dados que escrever servem só para tratar a encomenda, entregá-la e emitir a fatura; a encomenda fica guardada 90 dias e a fatura 10 anos. Saiba mais na <a href="/legal/privacy/">política de privacidade</a>.',
   revenda: 'O NIF que escrever serve só para lhe enviar o acesso de revendedor; os dados do registo ficam guardados enquanto for revendedor. Saiba mais na <a href="/legal/privacy/">política de privacidade</a>.',
 };
 

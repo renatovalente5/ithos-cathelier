@@ -729,8 +729,6 @@ export function basket({ shipping, shop }) {
         <label class="field"><span>${esc(t('paginas.entrega.nif'))} <span class="field__optional">${esc(t('paginas.entrega.nifNota'))}</span></span>
           <input type="text" name="nif" inputmode="numeric" maxlength="20"></label>
       </div>
-      ${/* Para quê e até quando se guardam estes dados, junto dos campos
-          (RGPD, art. 13.º), com a ligação à política: pela legal-comum. */ ''}${legal.frasePrivacidade('cesto')}
       <!-- A ESCOLHA DO MÉTODO PASSOU A SER AQUI.
            Era feita numa página da ifthenpay, depois de sair daqui. Agora o
            pagamento acontece numa página nossa, e por isso a pergunta é feita

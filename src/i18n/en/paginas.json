@@ -949,10 +949,6 @@
     "t": "To withdraw the authorisation you gave to the map, click «{retirar}» next to the map: the choice is deleted from your device and the map will stop loading immediately. You can authorise it again whenever you like, with a single click on the map.",
     "h": "c9fa6c7d86b7"
   },
-  "privacidade.cesto": {
-    "t": "The data you provide is used only to process the order, deliver it and issue the invoice; the order is kept for 90 days and the invoice for 10 years. Find out more in the <a href=\"/legal/privacy/\">privacy policy</a>.",
-    "h": "97277417eed8"
-  },
   "privacidade.revenda": {
     "t": "The NIF you provide is used only to send you reseller access; registration data is kept for as long as you are a reseller. Find out more in the <a href=\"/legal/privacy/\">privacy policy</a>.",
     "h": "e1278c163ad7"
