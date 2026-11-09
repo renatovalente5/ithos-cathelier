@@ -11,6 +11,18 @@
     "t": "The ithos®️ wooden children's lamp, with the delicate silhouette of a little rabbit, combines timeless design, cosy light and the charm of small details. Its warm white LED lighting creates a soft and comforting atmosphere, ideal for accompanying moments of reading, tranquillity and cosiness before sleep, as well as the perfect companion for a protected night for the little ones.\n\nDuring the day, it serves as a decorative piece that adds personality and tenderness to the children's bedroom. With careful finishes and hand-painted details, it integrates harmoniously into any setting, with soft woods and neutral tones.\nCreated to make rest moments even sweeter and more special.",
     "h": "fda4cb39f11b"
   },
+  "options.variant.name": {
+    "t": "Design",
+    "h": "7a90a2be022b"
+  },
+  "options.variant.values.1.name": {
+    "t": "Without flowers",
+    "h": "fcd30bd8c8cf"
+  },
+  "options.variant.values.2.name": {
+    "t": "With flowers",
+    "h": "ad535fc04920"
+  },
   "options.power.name": {
     "t": "Power",
     "h": "0853883db432"

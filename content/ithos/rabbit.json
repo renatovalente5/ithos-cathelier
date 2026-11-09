@@ -24,6 +24,26 @@
   "colours": [],
   "options": [
     {
+      "id": "variant",
+      "name": "Pintura",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "help": "",
+      "values": [
+        {
+          "id": "1",
+          "name": "Sem flores",
+          "extra": 0
+        },
+        {
+          "id": "2",
+          "name": "Com flores",
+          "extra": 0
+        }
+      ]
+    },
+    {
       "id": "power",
       "name": "Alimentação",
       "type": "choice",
