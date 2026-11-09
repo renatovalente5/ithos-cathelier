@@ -86,7 +86,7 @@
   "campaigns": [
     {
       "id": "portes-gratis",
-      "active": true,
+      "active": false,
       "title": "Envio gratuito",
       "freeOver": 0,
       "countries": [
