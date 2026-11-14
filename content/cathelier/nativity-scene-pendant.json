@@ -1,0 +1,41 @@
+{
+  "name": "Pendente presépio",
+  "price": 6,
+  "published": true,
+  "featured": false,
+  "order": 400,
+  "made": "to_order",
+  "occasion": "christmas",
+  "alsoIn": [],
+  "summary": "Pendente em contraplacado de pinho e acrílico dourado",
+  "text": "",
+  "photoFolder": "nativity-scene-pendant",
+  "photos": [
+    "fmwgx6hp3mv"
+  ],
+  "cover": "fmwgx6hp3mv",
+  "options": [
+    {
+      "id": "name",
+      "name": "Nome",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 40,
+      "extra": 0,
+      "example": ""
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  },
+  "videos": [
+    "vmwgx6wyusf.mp4"
+  ]
+}
