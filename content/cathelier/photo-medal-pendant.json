@@ -1,0 +1,38 @@
+{
+  "name": "Pendente medalha com fotografia",
+  "price": 8,
+  "published": true,
+  "featured": false,
+  "order": 420,
+  "made": "to_order",
+  "occasion": "christmas",
+  "alsoIn": [],
+  "summary": "Pendente medalha em contraplacado de pinho e acrílico com fotografia",
+  "text": "",
+  "photoFolder": "photo-medal-pendant",
+  "photos": [
+    "fmwgxw0ty6o"
+  ],
+  "cover": "fmwgxw0ty6o",
+  "options": [
+    {
+      "id": "name",
+      "name": "Nome",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 40,
+      "extra": 0,
+      "example": ""
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  }
+}
