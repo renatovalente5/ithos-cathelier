@@ -1,0 +1,41 @@
+{
+  "name": "Casinha de gengibre - acrílico branco",
+  "price": 4,
+  "published": true,
+  "featured": false,
+  "order": 430,
+  "made": "to_order",
+  "occasion": "christmas",
+  "alsoIn": [],
+  "summary": "Casinha de gengibre - contraplacado e acrílico branco",
+  "text": "Delicadamente recortadas a laser em contraplacado de pinho, estas quatro casinhas de gengibre distinguem-se pelos seus pormenores encantadores e pela inscrição Feliz Natal, que celebra a magia desta época tão especial.\nA delicada corda natalícia e bola de madeira acrescenta um toque muito especial bem como os pormenores em acrílico branco um toque de elegância, realçando a beleza natural da madeira.\nPequenos adornos, pensados para dar à árvore de Natal um encanto intemporal e acolhedor.",
+  "photoFolder": "gingerbread-house-with-acrylic",
+  "photos": [
+    "fmwgyh90scm"
+  ],
+  "cover": "fmwgyh90scm",
+  "options": [
+    {
+      "id": "name",
+      "name": "Nome",
+      "type": "text",
+      "required": true,
+      "personalises": true,
+      "max": 40,
+      "extra": 0,
+      "example": ""
+    }
+  ],
+  "gpsr": {
+    "type": "",
+    "batch": "",
+    "warnings": []
+  },
+  "seo": {
+    "title": "",
+    "description": ""
+  },
+  "videos": [
+    "vmwgyhlfl74.mp4"
+  ]
+}
