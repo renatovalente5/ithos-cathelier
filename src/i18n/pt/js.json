@@ -159,5 +159,19 @@
   "botao.adicionado": "Adicionado",
   "botao.adicionar": "Adicionar ao cesto",
   "rapido.ficha": "Ver a página completa, com as fotografias e a descrição",
-  "rapido.fechar": "Fechar"
+  "rapido.fechar": "Fechar",
+
+  "foto.aEnviar": "A preparar e a enviar a fotografia…",
+  "foto.pronta": "Fotografia pronta. Vai com a peça para o cesto.",
+  "foto.trocar": "Trocar a fotografia",
+  "foto.escolher": "Escolher fotografia",
+  "foto.aindaAEnviar": "A fotografia ainda está a ser enviada. Espere um momento.",
+  "foto.falta": "Escolha a fotografia para esta peça.",
+  "foto.naoAbre": "Esta fotografia não abre aqui. Experimente uma em JPG ou PNG, ou envie-a depois, respondendo ao email da encomenda.",
+  "foto.grande": "A fotografia é grande demais. Experimente outra, ou envie-a depois, respondendo ao email da encomenda.",
+  "foto.limite": "Já carregou muitas fotografias seguidas. Espere uns minutos e experimente outra vez.",
+  "foto.semLigacao": "A fotografia não foi enviada (sem ligação). Tente outra vez.",
+  "foto.indisponivel": "Agora não é possível carregar fotografias. Pode enviá-la depois, respondendo ao email da encomenda.",
+  "cesto.fotografia": "{opcao}: carregada",
+  "erro.fotografiaSaiu": "A fotografia de «{pecas}» já não está guardada (passou mais de uma semana). Tire a peça do cesto e junte-a outra vez, com a fotografia."
 }

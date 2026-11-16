@@ -1159,6 +1159,19 @@ html:has(.rapido[open]) { overflow: hidden; }
 .field legend, .field > label { font-size: 12px; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; display: block; margin-block-end: .5rem; }
 .field__optional { font-weight: 400; text-transform: none; letter-spacing: 0; color: var(--muted); }
 .field__help { font-size: 12px; color: var(--muted); margin-block-end: .6rem; line-height: 1.6; }
+/* A FOTOGRAFIA DO COMPRADOR (cathelier.mjs, campoDaPeca): a miniatura do que
+   se escolheu ao lado do botão, que é o rótulo do campo do ficheiro. O campo
+   em si fica fora da vista e não do teclado: o foco desenha-se no botão. */
+.foto { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; }
+.foto__miniatura { width: 4.5rem; height: 4.5rem; object-fit: cover; border: 1px solid var(--line); background: var(--bg-soft, var(--bg)); }
+.foto__accoes { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; position: relative; }
+.foto__ficheiro { position: absolute; inset: 0 auto auto 0; width: 1px; height: 1px; opacity: 0; overflow: hidden; }
+.foto__botao { cursor: pointer; }
+.foto__ficheiro:focus-visible + .foto__botao { outline: 2px solid var(--ink); outline-offset: 2px; }
+.foto__tirar { background: none; border: 0; padding: .25rem 0; font: inherit; font-size: 13px; color: var(--muted); text-decoration: underline; cursor: pointer; }
+.foto__tirar:hover { color: var(--ink); }
+.foto__estado:empty { display: none; }
+.foto__estado { margin-block: .5rem 0; }
 /* A LISTA DE TIPOS TEM DE ESTAR COMPLETA, e não estava.
    Faltava `tel`, e por isso o campo do telefone no carrinho -- e o do MB WAY
    na escolha do pagamento -- saíam com o desenho do browser: mais estreitos,

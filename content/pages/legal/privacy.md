@@ -23,6 +23,14 @@ o contrato entre nós, e a lei fiscal no caso da fatura.
 **O que escreve para gravar.** Um nome, uma data, uma frase. Guardamo-lo com a
 encomenda, porque é o que fizemos.
 
+**A fotografia que carrega.** Nas peças com fotografia, a imagem que escolher.
+Antes de sair do seu aparelho é reduzida e perde os dados que a câmara lhe
+junta, como o sítio onde foi tirada. Usamo-la só para fazer a sua peça. Se não
+chegar a encomendar, é apagada ao fim de 7 dias; numa encomenda por pagar, ao
+fim de 30; numa encomenda paga, ao fim de noventa dias, como a encomenda. Vai
+também em anexo na folha da encomenda que recebemos por email. O fundamento é
+o contrato entre nós.
+
 **Quando nos escreve.** O que estiver na sua mensagem, durante o tempo de
 responder e um tempo razoável depois.
 
@@ -91,13 +99,15 @@ durante o tempo que a lei fiscal exige.
   lista para onde as enviamos (o seu email e a língua). Os servidores deles
   para este domínio estão na Irlanda.
 - **Cloudflare**, que corre o pagamento e guarda a encomenda desde o momento em
-  que carrega em **Encomendar e pagar** até ser apagada, o que fica dela para a
+  que carrega em **Encomendar e pagar** até ser apagada, as fotografias que
+  carrega nas peças com fotografia, o que fica dela para a
   retratação, as retratações feitas no site, os pedidos de aviso, as inscrições
   nas novidades e os registos dos nossos revendedores. É também por ela que saem os emails da loja, e é ela que serve
   estas páginas ao seu browser, por isso vê o pedido, incluindo o seu endereço
   IP.
 - **Microsoft (Outlook)**, onde está a nossa caixa de correio: recebemos lá a
-  folha de cada encomenda e os emails que nos escreve.
+  folha de cada encomenda (com a fotografia, se carregou uma) e os emails que
+  nos escreve.
 - **WhatsApp (Meta)**, se nos escrever por lá; e o Instagram e o Facebook, se
   nos seguir ou nos escrever nessas redes.
 - O nosso contabilista, e a Autoridade Tributária, para as faturas.
@@ -123,7 +133,9 @@ de revendedor se entrar, e a escolha do mapa.
 As faturas guardam-se dez anos, porque a lei fiscal o exige. As encomendas,
 pagas ou não, são apagadas do sistema da loja ao fim de noventa dias — o
 suficiente para uma referência Multibanco ser paga com atraso e para
-respondermos a uma pergunta sobre ela. De uma encomenda paga por um consumidor
+respondermos a uma pergunta sobre ela. Uma fotografia carregada apaga-se ao fim
+de 7 dias se não chegar a uma encomenda, de 30 numa encomenda por pagar, e de
+noventa numa encomenda paga. De uma encomenda paga por um consumidor
 ficam, durante 18 meses, o número, o nome, o email, o nome dos artigos, a data
 e a hora do pagamento e a língua, para a função de retratação. Uma retratação
 feita no site guarda-se durante 3 anos a contar da última declaração de livre

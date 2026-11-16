@@ -212,5 +212,17 @@
     "t": "Video {i}",
     "h": "45e46f1735a3"
   },
-  "cartao.rapido": "Choose and add to basket: {nome}"
+  "cartao.rapido": "Choose and add to basket: {nome}",
+  "foto.escolher": {
+    "t": "Choose a photo",
+    "h": "9513bcdb93bc"
+  },
+  "foto.tirar": {
+    "t": "Remove",
+    "h": "115c1c9ae9a6"
+  },
+  "foto.escolhida": {
+    "t": "The photo you chose",
+    "h": "9f8aca332c74"
+  }
 }

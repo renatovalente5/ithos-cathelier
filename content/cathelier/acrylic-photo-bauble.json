@@ -26,15 +26,23 @@
       "values": [
         {
           "id": "redonda",
-          "name": "Redonda, com laço",
+          "name": "Redonda",
           "extra": 0
         },
         {
           "id": "tampa-dourada",
-          "name": "Com tampa dourada",
+          "name": "Achatada",
           "extra": 0
         }
       ]
+    },
+    {
+      "id": "foto",
+      "name": "Fotografia",
+      "type": "photo",
+      "required": false,
+      "personalises": true,
+      "help": "Se preferir, envie-a depois, respondendo ao email da encomenda."
     },
     {
       "id": "name",
@@ -44,8 +52,7 @@
       "personalises": true,
       "max": 30,
       "extra": 0,
-      "example": "Natal 2026",
-      "help": "A fotografia envia-se depois da encomenda: basta responder ao email de confirmação com ela."
+      "example": "Natal 2026"
     }
   ],
   "gpsr": {

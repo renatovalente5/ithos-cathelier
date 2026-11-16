@@ -585,5 +585,57 @@
     "h": "5a3ec32580e8"
   },
   "rapido.ficha": "See the full page, with the photos and the description",
-  "rapido.fechar": "Close"
+  "rapido.fechar": "Close",
+  "foto.aEnviar": {
+    "t": "Preparing and sending your photo…",
+    "h": "6eca14845d5f"
+  },
+  "foto.pronta": {
+    "t": "Photo ready. It goes into the basket with the piece.",
+    "h": "c3dccfb478c1"
+  },
+  "foto.trocar": {
+    "t": "Change the photo",
+    "h": "7eaef9919925"
+  },
+  "foto.escolher": {
+    "t": "Choose a photo",
+    "h": "9513bcdb93bc"
+  },
+  "foto.aindaAEnviar": {
+    "t": "Your photo is still being sent. Please wait a moment.",
+    "h": "ee3bd06af740"
+  },
+  "foto.falta": {
+    "t": "Choose the photo for this piece.",
+    "h": "f70677ab91dc"
+  },
+  "foto.naoAbre": {
+    "t": "This photo will not open here. Try a JPG or PNG, or send it later by replying to the order email.",
+    "h": "ba942ef17fcd"
+  },
+  "foto.grande": {
+    "t": "This photo is too large. Try another one, or send it later by replying to the order email.",
+    "h": "f0eea0240c49"
+  },
+  "foto.limite": {
+    "t": "You have uploaded a lot of photos in a row. Please wait a few minutes and try again.",
+    "h": "877448753f40"
+  },
+  "foto.semLigacao": {
+    "t": "The photo was not sent (no connection). Please try again.",
+    "h": "85323142fe77"
+  },
+  "foto.indisponivel": {
+    "t": "Photos cannot be uploaded right now. You can send yours later by replying to the order email.",
+    "h": "39969b31e48e"
+  },
+  "cesto.fotografia": {
+    "t": "{opcao}: uploaded",
+    "h": "e0d941b7ae03"
+  },
+  "erro.fotografiaSaiu": {
+    "t": "The photo for “{pecas}” is no longer stored (more than a week has passed). Remove the piece from the basket and add it again with the photo.",
+    "h": "502d03f47d35"
+  }
 }

@@ -1172,6 +1172,15 @@ function checkout() {
         return;
       }
 
+      /* UMA FOTOGRAFIA QUE JÁ SAIU (carregada há mais de sete dias, com o
+         cesto esquecido): diz-se de que peça, para a juntar outra vez. */
+      if (r.status === 409 && data.error === 'photo_expired') {
+        const ids = new Set(Array.isArray(data.fotos) ? data.fotos : []);
+        const pecas = [...new Set(cur.lines.filter((l) => Object.values(l.options || {}).some((v) => ids.has(v)))
+          .map((l) => nomeDaPeca(cat, l.id, cat.products[l.id] || {}) || l.id))];
+        say(tj('erro.fotografiaSaiu', { pecas: pecas.join(LINGUA === 'en' ? '”, “' : '», «') }));
+        return;
+      }
       if (r.status === 409 && data.error === 'catalogue_changed') {
         catalogueCache = null;
         say(tj('checkout.precosMudaram'));
@@ -1247,6 +1256,7 @@ function checkout() {
       stock_unavailable: 'erro.stockIndisponivel',
       stock_changed: 'erro.stockMudou',
       coupons_unavailable: 'cupao.semResposta',
+      photos_unavailable: 'foto.indisponivel',
     };
     const base = String(code).split(':')[0];
     if (Object.hasOwn(FRASES, base)) return tj(FRASES[base]);
@@ -2019,6 +2029,10 @@ async function basketPage() {
         each += v.extra || 0;
         pvpEach += v.extra || 0;
         shown.push(`${nomeDaOpcao(cat, line.id, o)}: ${nomeDoValor(cat, line.id, o, v)}`);
+      } else if (o.type === 'photo') {
+        each += o.extra || 0;
+        pvpEach += o.extra || 0;
+        shown.push(tj('cesto.fotografia', { opcao: nomeDaOpcao(cat, line.id, o) }));
       } else {
         each += o.extra || 0;
         pvpEach += o.extra || 0;
@@ -3039,6 +3053,122 @@ function productForm() { ligarFormulario($('[data-product-form]')); }
    (cestoNoCartao), que o vai buscar à própria ficha -- os mesmos campos, as
    mesmas regras e os mesmos avisos nos dois sítios. `depois` corre quando a
    peça entra no cesto (o painel do cartão fecha-se). */
+/* --- a fotografia do comprador ----------------------------------------------
+   As bolas, os globos e as medalhas com fotografia (a Cathia, 15 nov 2026).
+   A imagem não viaja no cesto: reduz-se aqui (até 2000 px, em JPEG -- o que
+   também lhe tira os metadados, e com eles o sítio onde foi tirada), vai para
+   o Worker (POST /fotografia), e o id que ele devolve é o valor do campo, como
+   o texto de uma gravação. O Worker guarda-a sete dias; presa a uma
+   encomenda, o tempo da encomenda (src/fotografias.js do Worker). */
+const FOTO_LADO = 2000;
+
+async function reduzirFotografia(ficheiro) {
+  const url = URL.createObjectURL(ficheiro);
+  try {
+    const img = new Image();
+    img.src = url;
+    await img.decode();
+    const escala = Math.min(1, FOTO_LADO / Math.max(img.naturalWidth, img.naturalHeight));
+    const c = document.createElement('canvas');
+    c.width = Math.max(1, Math.round(img.naturalWidth * escala));
+    c.height = Math.max(1, Math.round(img.naturalHeight * escala));
+    const g = c.getContext('2d');
+    /* Um PNG transparente em JPEG ficava com o fundo preto. */
+    g.fillStyle = '#fff';
+    g.fillRect(0, 0, c.width, c.height);
+    g.drawImage(img, 0, 0, c.width, c.height);
+    const blob = await new Promise((ok) => c.toBlob(ok, 'image/jpeg', 0.88));
+    if (!blob) throw Object.assign(new Error('toBlob'), { codigo: 'nao_abre' });
+    return blob;
+  } catch (e) {
+    throw e?.codigo ? e : Object.assign(new Error(String(e?.message ?? e)), { codigo: 'nao_abre' });
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+
+async function enviarFotografia(blob) {
+  if (!API) throw Object.assign(new Error('sem API'), { codigo: 'photos_unavailable' });
+  let r;
+  try {
+    r = await fetch(`${API}/fotografia`, { method: 'POST', headers: { 'content-type': 'image/jpeg' }, body: blob });
+  } catch {
+    throw Object.assign(new Error('rede'), { codigo: 'sem_ligacao' });
+  }
+  const j = await r.json().catch(() => ({}));
+  if (!r.ok || !j.id) throw Object.assign(new Error(j.error || String(r.status)), { codigo: j.error || 'erro' });
+  return j.id;
+}
+
+function fraseDaFotografia(codigo) {
+  const FRASES = {
+    nao_abre: 'foto.naoAbre', photo_invalid: 'foto.naoAbre', photo_too_big: 'foto.grande',
+    photo_limit: 'foto.limite', too_many_requests: 'foto.limite', sem_ligacao: 'foto.semLigacao',
+    photos_unavailable: 'foto.indisponivel',
+  };
+  return tj(Object.hasOwn(FRASES, codigo) ? FRASES[codigo] : 'foto.indisponivel');
+}
+
+function ligarFotografias(form) {
+  for (const caixa of $$('[data-foto]', form)) {
+    const ficheiro = $('[data-foto-ficheiro]', caixa);
+    const idCampo = $('[data-foto-id]', caixa);
+    const mostra = $('[data-foto-mostra]', caixa);
+    const rotulo = $('[data-foto-rotulo]', caixa);
+    const tirar = $('[data-foto-tirar]', caixa);
+    const estado = $('[data-foto-estado]', caixa);
+    if (!ficheiro || !idCampo) continue;
+    let url = null;
+    /* Cada escolha conta: uma resposta que chega depois de outra escolha (ou
+       de «Tirar») já não manda. */
+    let vez = 0;
+    const largar = () => {
+      idCampo.value = '';
+      if (url) URL.revokeObjectURL(url);
+      url = null;
+      if (mostra) { mostra.hidden = true; mostra.removeAttribute('src'); }
+      if (tirar) tirar.hidden = true;
+      if (rotulo) rotulo.textContent = tj('foto.escolher');
+    };
+    const mudou = () => form.dispatchEvent(new Event('change', { bubbles: true }));
+    ficheiro.addEventListener('change', async () => {
+      const f = ficheiro.files?.[0];
+      if (!f) return;
+      const minha = ++vez;
+      largar();
+      ficheiro.setCustomValidity('');
+      caixa.dataset.aEnviar = '';
+      if (estado) estado.textContent = tj('foto.aEnviar');
+      try {
+        const blob = await reduzirFotografia(f);
+        const id = await enviarFotografia(blob);
+        if (minha !== vez) return;
+        idCampo.value = id;
+        url = URL.createObjectURL(blob);
+        if (mostra) { mostra.src = url; mostra.hidden = false; }
+        if (tirar) tirar.hidden = false;
+        if (rotulo) rotulo.textContent = tj('foto.trocar');
+        if (estado) estado.textContent = tj('foto.pronta');
+      } catch (e) {
+        if (minha !== vez) return;
+        ficheiro.value = '';
+        if (estado) estado.textContent = fraseDaFotografia(e?.codigo);
+      } finally {
+        if (minha === vez) { delete caixa.dataset.aEnviar; mudou(); }
+      }
+    });
+    tirar?.addEventListener('click', () => {
+      vez++;
+      largar();
+      ficheiro.value = '';
+      delete caixa.dataset.aEnviar;
+      if (estado) estado.textContent = '';
+      mudou();
+      ficheiro.focus();
+    });
+  }
+}
+
 function ligarFormulario(form, { depois } = {}) {
   const add = form ? $('[data-add]', form) : null;
   if (!form || !add) return;
@@ -3048,6 +3178,7 @@ function ligarFormulario(form, { depois } = {}) {
   // product at the bottom: adding a fox to the basket put a mouse in it. It
   // only shows by driving the page, never by reading it.
   const slug = form.dataset.productId;
+  ligarFotografias(form);
 
   const qty = $('.qty__input', form);
   /* O TECTO VEM DO PRÓPRIO CAMPO, e não de um 20 escrito aqui três vezes.
@@ -3152,6 +3283,15 @@ function ligarFormulario(form, { depois } = {}) {
        para o cesto SEM a gravação -- o mesmo defeito com um passo a mais. */
     for (const el of $$('input[data-option]', form)) {
       if (el.type !== 'radio') el.value = el.value.trim();
+    }
+    /* A FOTOGRAFIA: a meio do envio a peça ainda não pode ir (o id não
+       chegou), e uma obrigatória sem fotografia diz-se como os outros campos,
+       pelo browser. */
+    for (const caixa of $$('[data-foto]', form)) {
+      const f = $('[data-foto-ficheiro]', caixa);
+      if (!f || f.disabled) continue;
+      f.setCustomValidity('aEnviar' in caixa.dataset ? tj('foto.aindaAEnviar')
+        : f.dataset.obrigatoria !== undefined && !$('[data-foto-id]', caixa)?.value ? tj('foto.falta') : '');
     }
     /* O browser mostra os erros dele e põe o foco no primeiro campo em falta,
        na língua de quem lá está -- é o que o checkout faz, e é melhor do que

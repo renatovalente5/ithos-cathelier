@@ -15,10 +15,6 @@
     "t": "Name or names (optional)",
     "h": "4dcac520586a"
   },
-  "options.names.help": {
-    "t": "The photograph is sent after the order: simply reply to the confirmation email with it.",
-    "h": "7239844b534d"
-  },
   "options.names.example": {
     "t": "Benedita",
     "h": "80a84f1dd1b2"
@@ -38,5 +34,13 @@
   "gpsr.warnings.0": {
     "t": "Contains magnets. Keep them out of the reach of children: if a child swallows a magnet, get medical help at once.",
     "h": "2d058453ef00"
+  },
+  "options.foto.name": {
+    "t": "Photo",
+    "h": "693ad51426e0"
+  },
+  "options.foto.help": {
+    "t": "If you prefer, send it later by replying to the order email.",
+    "h": "f40f7e373f3c"
   }
 }

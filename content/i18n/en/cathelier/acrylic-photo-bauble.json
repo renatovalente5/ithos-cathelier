@@ -16,20 +16,16 @@
     "h": "a5ab3212dad1"
   },
   "options.modelo.values.redonda.name": {
-    "t": "Round, with a bow",
-    "h": "caac53a6d48d"
+    "t": "Round",
+    "h": "6b858b1beb63"
   },
   "options.modelo.values.tampa-dourada.name": {
-    "t": "With a gold cap",
-    "h": "b3ca1d678f13"
+    "t": "Flat",
+    "h": "c2884b716008"
   },
   "options.name.name": {
     "t": "Name or date (optional)",
     "h": "168f0b7cf003"
-  },
-  "options.name.help": {
-    "t": "The photograph is sent after the order: simply reply to the confirmation email with it.",
-    "h": "7239844b534d"
   },
   "options.name.example": {
     "t": "Christmas 2026",
@@ -38,5 +34,13 @@
   "gpsr.warnings.0": {
     "t": "It is an ornament and not a toy: hang it out of reach of small children, who may put it in their mouths.",
     "h": "ded79a9ab86f"
+  },
+  "options.foto.name": {
+    "t": "Photo",
+    "h": "693ad51426e0"
+  },
+  "options.foto.help": {
+    "t": "If you prefer, send it later by replying to the order email.",
+    "h": "f40f7e373f3c"
   }
 }

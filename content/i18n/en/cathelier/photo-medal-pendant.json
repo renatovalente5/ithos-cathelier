@@ -10,5 +10,13 @@
   "options.name.name": {
     "t": "Name",
     "h": "5086900635fe"
+  },
+  "options.foto.name": {
+    "t": "Photo",
+    "h": "693ad51426e0"
+  },
+  "options.foto.help": {
+    "t": "If you prefer, send it later by replying to the order email.",
+    "h": "f40f7e373f3c"
   }
 }

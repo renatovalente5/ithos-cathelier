@@ -22,6 +22,14 @@
   "cover": "01",
   "options": [
     {
+      "id": "foto",
+      "name": "Fotografia",
+      "type": "photo",
+      "required": false,
+      "personalises": true,
+      "help": "Se preferir, envie-a depois, respondendo ao email da encomenda."
+    },
+    {
       "id": "names",
       "name": "Nome ou nomes (opcional)",
       "type": "text",
@@ -29,8 +37,7 @@
       "personalises": true,
       "max": 60,
       "extra": 0,
-      "example": "Benedita",
-      "help": "A fotografia envia-se depois da encomenda: basta responder ao email de confirmação com ela."
+      "example": "Benedita"
     },
     {
       "id": "date",

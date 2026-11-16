@@ -177,6 +177,11 @@ function checkProduct(brand, slug, p) {
   }
   for (const o of p.options || []) {
     if (!o.id || !o.name) die(`${where}: an option has no id or no name`);
+    /* OS TIPOS QUE O SITE E O WORKER CONHECEM. Um tipo novo que só um dos
+       lados soubesse ler saía como escolha sem valores (build.mjs) e o Worker
+       recusava a compra. A fotografia do comprador só existe na cathelier. */
+    if (!['choice', 'text', 'photo'].includes(o.type)) die(`${where}: option "${o.id}" has type "${o.type}", which is not choice, text or photo`);
+    if (o.type === 'photo' && brand !== 'cathelier') die(`${where}: «${o.name}» pede uma fotografia, e isso só existe nas peças da cathelier`);
     if (o.type === 'choice') {
       if (!o.values?.length) die(`${where}: option "${o.id}" offers nothing to choose`);
       const ids = new Set();

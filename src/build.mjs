@@ -607,6 +607,10 @@ function catalogueFile(nomesNasLinguas = {}) {
       options: (p.options || []).map((o) => ({ ...(o.type === 'text'
         ? { id: o.id, name: o.name, type: 'text', required: !!o.required,
             personalises: !!o.personalises, max: o.max || 40, extra: o.extra || 0 }
+        /* Uma fotografia do comprador (o Worker guarda-a: src/fotografias.js).
+           Personaliza sempre. */
+        : o.type === 'photo'
+          ? { id: o.id, name: o.name, type: 'photo', required: !!o.required, personalises: true, extra: o.extra || 0 }
         : { id: o.id, name: o.name, type: 'choice', required: !!o.required,
             personalises: !!o.personalises,
             /* `available` travels. Without it the shop could refuse a choice in

@@ -53,5 +53,8 @@
   "ficha.verTodas": "Ver as {n} peças de {nome}",
   "ficha.video": "Vídeo {i} da peça {nome}",
   "ficha.videoMiniatura": "Vídeo {i}",
-  "cartao.rapido": "Escolher e adicionar ao cesto: {nome}"
+  "cartao.rapido": "Escolher e adicionar ao cesto: {nome}",
+  "foto.escolher": "Escolher fotografia",
+  "foto.tirar": "Tirar",
+  "foto.escolhida": "A fotografia escolhida"
 }

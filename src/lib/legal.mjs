@@ -171,7 +171,9 @@ export const FORNECEDORES = Object.freeze({
    Apple Pay; a Resend guarda também a lista das novidades. E o GitHub, que a biblioteca só conhece como alojamento (aqui
    não o é): guarda o código e os textos do site e constrói-o. */
 const EXTRA_FINALIDADE = {
-  microsoft: 'e a folha de cada encomenda, que nos chega por email (nome, morada, telefone, email, NIF e artigos)',
+  microsoft: 'e a folha de cada encomenda, que nos chega por email (nome, morada, telefone, email, NIF, artigos e a fotografia, se carregou uma)',
+  /* As fotografias das peças com fotografia (o Worker: src/fotografias.js). */
+  cloudflare: 'e as fotografias que carrega nas peças com fotografia',
   ifthenpay: 'pagamentos por cartão, Google Pay e Apple Pay (o seu nome, o seu email e o valor; no MB WAY, o seu número de telemóvel)',
   /* A lista das novidades (src/lib/avisar.mjs; a API, src/lista.js). */
   resend: 'e a lista das novidades, se se inscrever (o seu email e a língua)',

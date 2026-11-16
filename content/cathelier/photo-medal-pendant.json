@@ -16,6 +16,14 @@
   "cover": "fmwgxw0ty6o",
   "options": [
     {
+      "id": "foto",
+      "name": "Fotografia",
+      "type": "photo",
+      "required": false,
+      "personalises": true,
+      "help": "Se preferir, envie-a depois, respondendo ao email da encomenda."
+    },
+    {
       "id": "name",
       "name": "Nome",
       "type": "text",

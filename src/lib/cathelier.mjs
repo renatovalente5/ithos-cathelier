@@ -348,7 +348,7 @@ const corDoQuadrado = (c) => (typeof c === 'string' && /^#[0-9a-f]{6}$/i.test(c)
 
 /* OS CAMPOS CURTOS LADO A LADO (o Renato, 8 nov 2026): hora, peso, comprimento… -- um campo de texto
    até 14 caracteres, sem ajuda nem condição. Só os que vêm seguidos, e só se forem pelo menos dois. */
-const curto = (o) => o.type !== 'choice' && (Number(o.max) || 60) <= 14 && !o.help && !o.onlyWith;
+const curto = (o) => o.type === 'text' && (Number(o.max) || 60) <= 14 && !o.help && !o.onlyWith;
 function camposDaPeca(p) {
   const os = p.options || [];
   const partes = [];
@@ -382,6 +382,30 @@ function campoDaPeca(o, p) {
   }).join('\n          ')}
         </div>
       </fieldset>`;
+  }
+  /* A FOTOGRAFIA DO COMPRADOR (a Cathia, 15 nov 2026: «deve haver um espaço a
+     preencher para carregarem a foto»). O ficheiro escolhe-se aqui; o shop.js
+     reduz a imagem, manda-a ao Worker e põe o id que ele devolve no campo
+     escondido, que é o que o cesto leva (como o texto de uma gravação). O
+     campo do ficheiro fica escondido à vista e não ao teclado: o botão é o
+     rótulo dele. Personaliza sempre, por isso aponta para o aviso dos dias. */
+  if (o.type === 'photo') {
+    const ajuda = o.help ? `opt-${o.id}-ajuda` : '';
+    return `<div class="field field--foto" data-foto${attrs}>
+        <label for="opt-${esc(o.id)}">${esc(o.name)}${o.required ? '' : ` <span class="field__optional">${esc(t('ithos.opcao.opcional'))}</span>`}</label>
+        ${o.help ? `<p class="field__help" id="${esc(ajuda)}">${esc(o.help)}</p>` : ''}
+        <input type="hidden" data-option="${esc(o.id)}" data-foto-id value=""${desligado}>
+        <div class="foto">
+          <img class="foto__miniatura" data-foto-mostra alt="${esc(t('cathelier.foto.escolhida'))}" hidden>
+          <div class="foto__accoes">
+            <input id="opt-${esc(o.id)}" class="foto__ficheiro" type="file" accept="image/*" data-foto-ficheiro${o.required ? ' data-obrigatoria' : ''}${desligado}
+                   aria-describedby="${esc([ajuda, `opt-${o.id}-estado`, 'opt-aviso-personalizada'].filter(Boolean).join(' '))}">
+            <label for="opt-${esc(o.id)}" class="btn btn--ghost foto__botao" data-foto-rotulo>${esc(t('cathelier.foto.escolher'))}</label>
+            <button type="button" class="foto__tirar" data-foto-tirar hidden>${esc(t('cathelier.foto.tirar'))}</button>
+          </div>
+        </div>
+        <p class="field__help foto__estado" id="opt-${esc(o.id)}-estado" data-foto-estado role="status"></p>
+      </div>`;
   }
   const descreve = [o.help ? `opt-${o.id}-ajuda` : '', o.personalises ? 'opt-aviso-personalizada' : ''].filter(Boolean).join(' ');
   return `<div class="field"${attrs}>
