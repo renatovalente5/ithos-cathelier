@@ -1095,6 +1095,9 @@ function checkout() {
         headers: { 'content-type': 'application/json' },
         body: JSON.stringify({
           hash: cat.hash, country: cur.country || 'PT', lines: cur.lines, cliente: cliente(),
+          /* Levantar sem portes: só se a caixa da escolha está à vista (os
+             países do sítio) e marcada. */
+          entrega: cur.entrega === 'levantamento' && $('[data-entrega]') && !$('[data-entrega]').hidden ? 'levantamento' : undefined,
           metodo: metodo(),
           /* A língua da página: o Worker devolve o comprador à página de
              pagamento nesta língua, e a ifthenpay fala-lhe nela. */
@@ -1891,6 +1894,17 @@ async function basketPage() {
   countrySel?.addEventListener('change', () => {
     const cur = basket(); cur.country = countrySel.value; setBasket(cur); paint();
   });
+  /* LEVANTAR SEM PORTES (pages.mjs, basket): a escolha guarda-se no cesto,
+     como o país. Só vale nos países do sítio; fora deles o cesto volta ao
+     envio, e o Worker recusaria o contrário (catalogue.js, priceOrder). */
+  const caixaEntrega = $('[data-entrega]');
+  if (caixaEntrega) {
+    const marcado = caixaEntrega.querySelector(`input[value="${b.entrega === 'levantamento' ? 'levantamento' : 'envio'}"]`);
+    if (marcado) marcado.checked = true;
+    caixaEntrega.addEventListener('change', (ev) => {
+      const cur = basket(); cur.entrega = ev.target.value === 'levantamento' ? 'levantamento' : 'envio'; setBasket(cur); paint();
+    });
+  }
 
   const euros = (n) => dinheiro(n);
 
@@ -2048,6 +2062,23 @@ async function basketPage() {
     };
   }
 
+  /* Levanta-se sem portes: só com o sítio ligado e para os países dele. A
+     caixa da escolha e a morada mostram-se e escondem-se daqui. */
+  function levantaraqui(cur) {
+    if (!caixaEntrega) return false;
+    const pais = String(cur.country || 'PT').slice(0, 2);
+    const pode = caixaEntrega.dataset.entregaPaises.split(' ').includes(pais);
+    caixaEntrega.hidden = !pode;
+    const sim = pode && cur.entrega === 'levantamento';
+    for (const caixa of $$('[data-morada]')) {
+      caixa.hidden = sim;
+      caixa.style.display = sim ? 'none' : '';
+      const i = caixa.querySelector('input');
+      if (i) { i.required = !sim; i.disabled = sim; }
+    }
+    return sim;
+  }
+
   function shippingFor(country, linhas) {
     const s = cat.shipping;
     const zone = s.zones.find((z) => z.countries.includes(country))
@@ -2161,7 +2192,8 @@ async function basketPage() {
     /* The same basket pays the same shipping: the free-shipping threshold is
        measured at retail value, as the Worker does, or a reseller would lose
        free shipping for paying less. */
-    const postDaZona = shippingFor(cur.country || 'PT', priced.map((x) => x.p));
+    const levanta = levantaraqui(cur);
+    const postDaZona = levanta ? 0 : shippingFor(cur.country || 'PT', priced.map((x) => x.p));
     /* O cupão muda os portes (num de portes grátis) e tira o desconto ao total. */
     const cupao = revenda.activa ? null : cur.cupao ?? null;
     const conta = cupao && postDaZona !== null ? descontoDoCupao(cupao, priced.map((x) => x.p), Math.round(postDaZona * 100)) : null;

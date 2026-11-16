@@ -666,6 +666,18 @@ export function basket({ shipping, shop }) {
               .map((c) => `<option value="${esc(c)}">${esc(nomeDoPais(c))}</option>`)).join('\n            ')}
           </select></span>
         </label>
+        ${/* LEVANTAR SEM PORTES (a dona, 14 nov 2026). O sítio vem de
+            settings/shipping.json (pickup), e só aparece para os países
+            dele: o script mostra-o, tira os portes e deixa de pedir a morada. */
+          shipping.pickup?.active ? `<fieldset class="field basket__entrega" data-entrega hidden
+          data-entrega-paises="${esc((shipping.pickup.countries?.length ? shipping.pickup.countries : ['PT']).join(' '))}">
+          <legend>${esc(t('paginas.cesto.entrega.titulo'))}</legend>
+          <div class="choices">
+            <label class="choice"><input type="radio" name="entrega" value="envio" checked> <span>${esc(t('paginas.cesto.entrega.envio'))}</span></label>
+            <label class="choice"><input type="radio" name="entrega" value="levantamento"> <span>${esc(t('paginas.cesto.entrega.levantar', { onde: shipping.pickup.name }))}
+              <small class="basket__entrega-onde">${esc([shipping.pickup.address, shipping.pickup.hours].filter(Boolean).join(' · '))}</small></span></label>
+          </div>
+        </fieldset>` : ''}
         <dl class="basket__sums">
           <dt>${esc(t('paginas.cesto.pecas'))}</dt><dd data-sum-goods>—</dd>
           <dt>${esc(t('paginas.cesto.portes'))}</dt><dd data-sum-shipping>—</dd>
@@ -718,11 +730,11 @@ export function basket({ shipping, shop }) {
           <input type="text" name="nome" autocomplete="name" required maxlength="120"></label>
         <label class="field field--wide"><span>${esc(t('paginas.entrega.email'))}</span>
           <input type="email" name="email" autocomplete="email" required maxlength="160"></label>
-        <label class="field field--wide"><span>${esc(t('paginas.entrega.morada'))}</span>
+        <label class="field field--wide" data-morada><span>${esc(t('paginas.entrega.morada'))}</span>
           <input type="text" name="linha1" autocomplete="address-line1" required maxlength="160"></label>
-        <label class="field"><span>${esc(t('paginas.entrega.postal'))}</span>
+        <label class="field" data-morada><span>${esc(t('paginas.entrega.postal'))}</span>
           <input type="text" name="postal" autocomplete="postal-code" required maxlength="20"></label>
-        <label class="field"><span>${esc(t('paginas.entrega.localidade'))}</span>
+        <label class="field" data-morada><span>${esc(t('paginas.entrega.localidade'))}</span>
           <input type="text" name="cidade" autocomplete="address-level2" required maxlength="80"></label>
         <label class="field"><span>${esc(t('paginas.entrega.telefone'))} <span class="field__optional">${esc(t('paginas.entrega.opcional'))}</span></span>
           <input type="tel" name="telefone" autocomplete="tel" maxlength="40"></label>

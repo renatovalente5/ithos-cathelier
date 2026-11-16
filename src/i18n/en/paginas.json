@@ -952,5 +952,17 @@
   "privacidade.revenda": {
     "t": "The NIF you provide is used only to send you reseller access; registration data is kept for as long as you are a reseller. Find out more in the <a href=\"/legal/privacy/\">privacy policy</a>.",
     "h": "e1278c163ad7"
+  },
+  "cesto.entrega.titulo": {
+    "t": "How you receive it",
+    "h": "3edeb5fad720"
+  },
+  "cesto.entrega.envio": {
+    "t": "Delivery to your address",
+    "h": "94e3912910f0"
+  },
+  "cesto.entrega.levantar": {
+    "t": "Collect, no shipping charge: {onde}",
+    "h": "b2cd929bdb72"
   }
 }

@@ -17,6 +17,9 @@ Depois de sair do atelier, a entrega é feita pela {{CARRIER}}.
 
 Os prazos da tabela contam a partir do dia em que a encomenda sai do atelier.
 
+Em Portugal, pode também escolher no cesto levantar a encomenda em Castelo
+Branco, sem portes. O cesto diz onde e o horário.
+
 ## Se chegar danificada
 
 Fotografe-a antes de a desembalar mais e escreva para

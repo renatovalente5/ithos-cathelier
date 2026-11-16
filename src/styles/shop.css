@@ -1172,6 +1172,10 @@ html:has(.rapido[open]) { overflow: hidden; }
 .foto__tirar:hover { color: var(--ink); }
 .foto__estado:empty { display: none; }
 .foto__estado { margin-block: .5rem 0; }
+/* Levantar sem portes, no cesto (pages.mjs, basket). */
+.basket__entrega { margin-block-start: 1rem; }
+.basket__entrega .choices { display: grid; gap: .5rem; }
+.basket__entrega-onde { display: block; margin-block-start: .2rem; font-size: 12px; color: var(--muted); line-height: 1.5; }
 /* A LISTA DE TIPOS TEM DE ESTAR COMPLETA, e não estava.
    Faltava `tel`, e por isso o campo do telefone no carrinho -- e o do MB WAY
    na escolha do pagamento -- saíam com o desenho do browser: mais estreitos,
