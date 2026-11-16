@@ -19,6 +19,10 @@
     "t": "Rest of Europe",
     "h": "7aadffe1e93a"
   },
+  "pickup.hours": {
+    "t": "Weekdays from 9h to 19h; Saturdays from 10h to 12h30.",
+    "h": "10dbd4f35e26"
+  },
   "campaigns.portes-gratis.title": {
     "t": "Free shipping",
     "h": "ec44803dfff4"
@@ -30,9 +34,5 @@
   "campaigns.campanha-ilpsx2.frase": {
     "t": "Free shipping to Portugal on orders from €65",
     "h": "70341ada13d5"
-  },
-  "pickup.hours": {
-    "t": "Weekdays from 9h to 19h; Saturdays from 10h to 12h30.",
-    "h": "10dbd4f35e26"
   }
 }

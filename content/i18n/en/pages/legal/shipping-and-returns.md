@@ -1,4 +1,4 @@
-<!-- origem: f15459bc0c75 partes: 549f878a8e13 396a10bae519 64ad65bb7f8c 3387ff0151d4 85be0388d41b 096904943b83 -->
+<!-- origem: d30773e9ee3a partes: 549f878a8e13 396a10bae519 27ad2301c295 3387ff0151d4 85be0388d41b 096904943b83 -->
 # Delivery and returns
 
 ## How long it takes
@@ -13,7 +13,9 @@ After leaving the workshop, delivery is made by {{CARRIER}}.
 
 {{SHIPPING_TABLE}}
 
-The times in the table count from the day the order leaves the workshop.
+The timeframes in the table start from the day the order leaves the workshop.
+
+In Portugal, you can also choose to collect your order in Castelo Branco at checkout, with no shipping costs. The basket will indicate the location and opening hours.
 
 ## If it arrives damaged
 
