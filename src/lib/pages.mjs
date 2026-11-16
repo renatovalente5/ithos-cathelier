@@ -740,6 +740,19 @@ export function basket({ shipping, shop }) {
           <input type="tel" name="telefone" autocomplete="tel" maxlength="40"></label>
         <label class="field"><span>${esc(t('paginas.entrega.nif'))} <span class="field__optional">${esc(t('paginas.entrega.nifNota'))}</span></span>
           <input type="text" name="nif" inputmode="numeric" maxlength="20"></label>
+        <!-- COMO NOS CONHECEU (o Renato, 16 nov 2026: saber se os anúncios
+             resultam). Opcional, e a única forma de o saber sem cookies: a
+             resposta vai com a encomenda (o Worker só aceita estas). -->
+        <label class="field field--wide"><span>${esc(t('paginas.entrega.origem'))} <span class="field__optional">${esc(t('paginas.entrega.opcional'))}</span></span>
+          <span class="select"><select name="origem">
+            <option value="">${esc(t('paginas.entrega.origem.escolher'))}</option>
+            <option value="anuncio">${esc(t('paginas.entrega.origem.anuncio'))}</option>
+            <option value="instagram">${esc(t('paginas.entrega.origem.instagram'))}</option>
+            <option value="facebook">${esc(t('paginas.entrega.origem.facebook'))}</option>
+            <option value="google">${esc(t('paginas.entrega.origem.google'))}</option>
+            <option value="recomendacao">${esc(t('paginas.entrega.origem.recomendacao'))}</option>
+            <option value="outro">${esc(t('paginas.entrega.origem.outro'))}</option>
+          </select></span></label>
       </div>
       <!-- A ESCOLHA DO MÉTODO PASSOU A SER AQUI.
            Era feita numa página da ifthenpay, depois de sair daqui. Agora o

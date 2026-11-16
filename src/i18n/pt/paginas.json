@@ -239,5 +239,13 @@
   "privacidade.revenda": "O NIF que escrever serve só para lhe enviar o acesso de revendedor; os dados do registo ficam guardados enquanto for revendedor. Saiba mais na <a href=\"/legal/privacy/\">política de privacidade</a>.",
   "cesto.entrega.titulo": "Como recebe",
   "cesto.entrega.envio": "Envio para a sua morada",
-  "cesto.entrega.levantar": "Levantar sem portes: {onde}"
+  "cesto.entrega.levantar": "Levantar sem portes: {onde}",
+  "entrega.origem": "Como nos conheceu?",
+  "entrega.origem.escolher": "Escolha, se quiser",
+  "entrega.origem.anuncio": "Um anúncio no Instagram",
+  "entrega.origem.instagram": "O Instagram da ithos ou da cathelier",
+  "entrega.origem.facebook": "O Facebook",
+  "entrega.origem.google": "O Google",
+  "entrega.origem.recomendacao": "Um amigo ou familiar",
+  "entrega.origem.outro": "Outra forma"
 }

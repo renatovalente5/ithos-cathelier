@@ -964,5 +964,37 @@
   "cesto.entrega.levantar": {
     "t": "Collect, no shipping charge: {onde}",
     "h": "b2cd929bdb72"
+  },
+  "entrega.origem": {
+    "t": "How did you find us?",
+    "h": "49bfc98b1461"
+  },
+  "entrega.origem.escolher": {
+    "t": "Choose, if you like",
+    "h": "857dd919c85e"
+  },
+  "entrega.origem.anuncio": {
+    "t": "An Instagram ad",
+    "h": "dda58a188a12"
+  },
+  "entrega.origem.instagram": {
+    "t": "The ithos or cathelier Instagram",
+    "h": "77719b193135"
+  },
+  "entrega.origem.facebook": {
+    "t": "Facebook",
+    "h": "9f2660a3d668"
+  },
+  "entrega.origem.google": {
+    "t": "Google",
+    "h": "9d3ce7d037a5"
+  },
+  "entrega.origem.recomendacao": {
+    "t": "A friend or family member",
+    "h": "357f7bec4ba3"
+  },
+  "entrega.origem.outro": {
+    "t": "Another way",
+    "h": "bb5bb4218d91"
   }
 }

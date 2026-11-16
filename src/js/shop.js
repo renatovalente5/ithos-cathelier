@@ -1099,6 +1099,8 @@ function checkout() {
              países do sítio) e marcada. */
           entrega: cur.entrega === 'levantamento' && $('[data-entrega]') && !$('[data-entrega]').hidden ? 'levantamento' : undefined,
           metodo: metodo(),
+          /* Como nos conheceu (opcional): só o id da resposta. */
+          origem: form?.elements?.origem?.value || undefined,
           /* A língua da página: o Worker devolve o comprador à página de
              pagamento nesta língua, e a ifthenpay fala-lhe nela. */
           lingua: LINGUA || undefined,

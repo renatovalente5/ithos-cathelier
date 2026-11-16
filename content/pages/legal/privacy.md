@@ -31,6 +31,9 @@ fim de 30; numa encomenda paga, ao fim de noventa dias, como a encomenda. Vai
 também em anexo na folha da encomenda que recebemos por email. O fundamento é
 o contrato entre nós.
 
+**Se nos disser como nos conheceu.** No cesto há uma pergunta opcional. A
+resposta fica com a encomenda e serve para sabermos que publicidade resulta.
+
 **Quando nos escreve.** O que estiver na sua mensagem, durante o tempo de
 responder e um tempo razoável depois.
 
