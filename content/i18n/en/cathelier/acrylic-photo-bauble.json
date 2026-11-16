@@ -26,5 +26,17 @@
   "gpsr.warnings.0": {
     "t": "It is an ornament and not a toy: hang it out of reach of small children, who may put it in their mouths.",
     "h": "ded79a9ab86f"
+  },
+  "options.modelo.name": {
+    "t": "Style",
+    "h": "a5ab3212dad1"
+  },
+  "options.modelo.values.redonda.name": {
+    "t": "Round, with a bow",
+    "h": "caac53a6d48d"
+  },
+  "options.modelo.values.tampa-dourada.name": {
+    "t": "With a gold cap",
+    "h": "b3ca1d678f13"
   }
 }

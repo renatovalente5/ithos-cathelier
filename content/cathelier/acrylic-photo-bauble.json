@@ -18,6 +18,25 @@
   "cover": "01",
   "options": [
     {
+      "id": "modelo",
+      "name": "Modelo",
+      "type": "choice",
+      "required": true,
+      "personalises": false,
+      "values": [
+        {
+          "id": "redonda",
+          "name": "Redonda, com laço",
+          "extra": 0
+        },
+        {
+          "id": "tampa-dourada",
+          "name": "Com tampa dourada",
+          "extra": 0
+        }
+      ]
+    },
+    {
       "id": "name",
       "name": "Nome ou data (opcional)",
       "type": "text",
