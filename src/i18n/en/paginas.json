@@ -914,12 +914,12 @@
     "h": "4c7de2c3da6d"
   },
   "destinatarios.f.cloudflare": {
-    "t": "website hosting and delivery (Pages/Workers); technical access logs; domain DNS",
-    "h": "4037fde69b85"
+    "t": "website hosting and delivery (Pages/Workers); technical access logs; domain DNS; and the photographs you upload to the pieces with photography",
+    "h": "1c808928f3ae"
   },
   "destinatarios.f.microsoft": {
-    "t": "mailbox (Microsoft 365/Outlook): the emails you send us and the replies; and each order sheet received via email (name, address, phone, email, NIF and items)",
-    "h": "df3803ca3ebf"
+    "t": "mailbox (Microsoft 365/Outlook): the emails you send us and the replies; and the details for each order that reach us by email (name, address, telephone, email, NIF, items and the photograph, if you uploaded one)",
+    "h": "f351d048aee3"
   },
   "destinatarios.f.google": {
     "t": "embedded map, loaded only after you click (IP address and Google cookies)",

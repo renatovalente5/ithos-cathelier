@@ -11,6 +11,14 @@
     "t": "Personalised Snow Globe with Photograph, a decorative piece made from pine plywood, personalised with a special photograph and a message on a golden acrylic plate. Featuring a decorative velvet or tartan fabric ribbon and a delicate golden bell, it is a unique and charming keepsake, perfect for celebrating Christmas and preserving your most special family moments.",
     "h": "68188160ebfe"
   },
+  "options.foto.name": {
+    "t": "Photo",
+    "h": "693ad51426e0"
+  },
+  "options.foto.help": {
+    "t": "If you prefer, send it later by replying to the order email.",
+    "h": "f40f7e373f3c"
+  },
   "options.base.name": {
     "t": "Base text",
     "h": "ed71a685433a"
@@ -22,13 +30,5 @@
   "gpsr.warnings.0": {
     "t": "This is an ornament and not a toy: hang it out of reach of small children, who may put it in their mouths.",
     "h": "ded79a9ab86f"
-  },
-  "options.foto.name": {
-    "t": "Photo",
-    "h": "693ad51426e0"
-  },
-  "options.foto.help": {
-    "t": "If you prefer, send it later by replying to the order email.",
-    "h": "f40f7e373f3c"
   }
 }

@@ -11,6 +11,14 @@
     "t": "Make this Christmas even more special with personalised magnets, lovingly created to cherish the most beautiful moments of this magical season.\nWith a special photograph, a child's name, a personalised message or simply a Merry Christmas, each piece is a unique keepsake, perfect for giving to family, friends, teachers or anyone who makes our lives more beautiful.",
     "h": "ca81354d126e"
   },
+  "options.foto.name": {
+    "t": "Photo",
+    "h": "693ad51426e0"
+  },
+  "options.foto.help": {
+    "t": "If you prefer, send it later by replying to the order email.",
+    "h": "f40f7e373f3c"
+  },
   "options.names.name": {
     "t": "Name or names (optional)",
     "h": "4dcac520586a"
@@ -34,13 +42,5 @@
   "gpsr.warnings.0": {
     "t": "Contains magnets. Keep them out of the reach of children: if a child swallows a magnet, get medical help at once.",
     "h": "2d058453ef00"
-  },
-  "options.foto.name": {
-    "t": "Photo",
-    "h": "693ad51426e0"
-  },
-  "options.foto.help": {
-    "t": "If you prefer, send it later by replying to the order email.",
-    "h": "f40f7e373f3c"
   }
 }
