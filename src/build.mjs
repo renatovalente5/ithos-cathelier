@@ -692,7 +692,10 @@ function escreverListaParaOGoogle() {
   const lead = shop.lead ?? {};
   const minDias = Array.isArray(lead.inStockDays) ? lead.inStockDays[0] : Number(lead.inStockDays) || 3;
   const maxDias = Array.isArray(lead.toOrderWeeks) ? lead.toOrderWeeks[1] * 5 : 20;
-  const item = (marca, p, nome, caminho, tipo) => {
+  const item = (marca, p, nomeDado, caminho, tipo) => {
+    /* O nome como o Google o mostra: sem espaços nas pontas (um «Carro »
+       gravado no painel dava «Carro , em madeira» no separador Compras). */
+    const nome = String(nomeDado ?? '').replace(/\s+/g, ' ').trim();
     const fotos = fotosDoProduto(marca, p, 11);
     const preco = precoAoAbrir(p);
     if (!fotos.length || !(preco > 0)) return '';
