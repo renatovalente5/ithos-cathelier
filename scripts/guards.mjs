@@ -86,6 +86,29 @@ for (const c of shipping.active) {
   }
 }
 
+/* AS ENCOMENDAS PEQUENAS (a Cathia, 20 nov 2026: «2,50 € até 3 peças»; «os
+   candeeiros não»; «ilhas igual»). O cesto e o Worker fazem a mesma conta
+   (shop.js e catalogue.js, portesDaZona): um valor mal escrito mostrava uns
+   portes no cesto e cobrava outros. */
+{
+  const pq = shipping.encomendasPequenas;
+  if (pq !== undefined) {
+    if (typeof pq !== 'object' || pq === null || Array.isArray(pq)) die('shipping.json: encomendasPequenas tem de ser um objeto');
+    else {
+      if (typeof pq.active !== 'boolean') die('shipping.json: encomendasPequenas: active tem de ser true ou false');
+      if (!(typeof pq.price === 'number' && pq.price >= 0 && pq.price <= 100)) die(`shipping.json: encomendasPequenas: os portes são «${pq.price}» — um número de 0 a 100`);
+      if (!(Number.isInteger(pq.ate) && pq.ate >= 1 && pq.ate <= 50)) die(`shipping.json: encomendasPequenas: «até» é «${pq.ate}» — um número inteiro de peças, de 1 a 50`);
+      if (pq.marca !== undefined && !['ithos', 'cathelier'].includes(pq.marca)) die(`shipping.json: encomendasPequenas: a marca é «${pq.marca}» — só «ithos», «cathelier» ou nenhuma (as duas)`);
+      if (!Array.isArray(pq.zones) || !pq.zones.length) die('shipping.json: encomendasPequenas: falta a lista das zonas onde vale');
+      for (const id of Array.isArray(pq.zones) ? pq.zones : []) {
+        const z = shipping.zones.find((x) => x.id === id);
+        if (!z) die(`shipping.json: encomendasPequenas: a zona «${id}» não existe em «Envios»`);
+        else if (pq.active && pq.price >= z.price) warnings.push(`shipping.json: encomendasPequenas: em «${z.name}» os portes de uma encomenda pequena (${pq.price} €) não ficam mais baratos do que os da zona (${z.price} €)`);
+      }
+    }
+  }
+}
+
 /* --- the lead times -------------------------------------------------------- */
 /* Two numbers, and every sentence about delivery is made from them
    (src/lib/prazos.mjs, and the Worker's emails). A number that is not one

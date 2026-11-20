@@ -85,6 +85,18 @@ export function markers({ identity, shop, shipping, pieces = [] }) {
   const table = rows.length
     ? [`| ${t('paginas.envios.onde')} | ${t('paginas.envios.portes')} | ${t('paginas.envios.prazo')} |`, '|---|---|---|', ...rows].join('\n')
     : `_${t('paginas.envios.nenhum')}_`;
+  /* AS ENCOMENDAS PEQUENAS (a Cathia, 20 nov 2026: «2,50 € até 3 peças»; «os
+     candeeiros não»; «ilhas igual»): uma frase debaixo da tabela, dos mesmos
+     números que o cesto e o Worker cobram (portesDaZona, no shop.js e no
+     catalogue.js do Worker). Só nas zonas onde a loja vende e onde ficam
+     mesmo mais baratos. */
+  const pq = shipping.encomendasPequenas;
+  const zonasPq = pq?.active === true && typeof pq.price === 'number' && pq.price >= 0 && Number.isInteger(pq.ate) && pq.ate >= 1
+    ? shipping.zones.filter((z) => (pq.zones ?? []).includes(z.id) && z.countries.some((c) => shipping.active.includes(c.slice(0, 2))) && pq.price < z.price)
+    : [];
+  const pequenas = zonasPq.length
+    ? t(pq.marca ? 'paginas.envios.pequenasMarca' : 'paginas.envios.pequenas', { zonas: zonasPq.map((z) => z.name).join(', '), ate: pq.ate, preco: preco(pq.price), marca: pq.marca ?? '' })
+    : '';
 
   return {
     LEGAL_NAME: i.legalName, TRADING_NAME: i.tradingName, LEGAL_FORM: i.legalForm,
@@ -114,7 +126,7 @@ export function markers({ identity, shop, shipping, pieces = [] }) {
     COOLING_OFF_DAYS: String(shop.returns.coolingOffDays),
     WARRANTY_YEARS: String(shop.returns.warrantyYears),
     FORM_URL: '/legal/returns-form/',
-    SHIPPING_TABLE: table,
+    SHIPPING_TABLE: rows.length && pequenas ? `${table}\n\n${pequenas}` : table,
     SAFETY_LIST: (shop.safetyIthos || []).map((s) => `- ${s}`).join('\n'),
     /* Os da cathelier, na página de cuidados dela: os de todas as peças
        (shop.json) e os de cada peça (os ficheiros delas). */

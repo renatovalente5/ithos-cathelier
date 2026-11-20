@@ -2056,7 +2056,7 @@ async function basketPage() {
       }
     }
     return {
-      name: nomeDaPeca(cat, line.id, p), brand: p.brand, photo: p.photo, shown, each, total: each * line.qty,
+      name: nomeDaPeca(cat, line.id, p), brand: p.brand, qty: line.qty, photo: p.photo, shown, each, total: each * line.qty,
       /* O que o revendedor poupa nesta linha, contra o PVP do mesmo cesto
          (já com o preço por quantidade): sem poupança, não se mostra o PVP. */
       pvpEach, pvpTotal: pvpEach * line.qty, desconto: pvpEach - each > 0.0001 ? pvpEach - each : 0,
@@ -2079,6 +2079,20 @@ async function basketPage() {
       if (i) { i.required = !sim; i.disabled = sim; }
     }
     return sim;
+  }
+
+  /* ENCOMENDAS PEQUENAS (a Cathia, 20 nov 2026: «2,50 € até 3 peças»; «os
+     candeeiros não, deixa estar como está»; «ilhas igual»): até `ate`
+     unidades, todas da `marca` (sem ela, de qualquer loja), nas zonas da
+     lista, pagam `price` -- nunca mais do que os da zona. A mesma conta do
+     Worker (src/catalogue.js, portesDaZona). */
+  function portesDaZona(s, zone, linhas) {
+    const p = s.encomendasPequenas;
+    const unidades = linhas.reduce((t, x) => t + (x.qty || 0), 0);
+    if (p && p.active === true && typeof p.price === 'number' && p.price >= 0 && Number.isInteger(p.ate) && p.ate >= 1
+      && (p.zones || []).includes(zone.id) && unidades >= 1 && unidades <= p.ate
+      && (!p.marca || linhas.every((x) => x.brand === p.marca))) return Math.min(p.price, zone.price);
+    return zone.price;
   }
 
   function shippingFor(country, linhas) {
@@ -2105,7 +2119,7 @@ async function basketPage() {
       const chega = c.sempre === true ? conta > 0 : conta >= c.freeOver - 1e-9;
       if (chega && (!(c.countries || []).length || c.countries.includes(country))) return 0;
     }
-    return zone.price;
+    return portesDaZona(s, zone, linhas);
   }
 
   function paint() {

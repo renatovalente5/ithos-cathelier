@@ -20,6 +20,14 @@
     "t": "We are not shipping anywhere yet.",
     "h": "97a1840f2e1d"
   },
+  "envios.pequenas": {
+    "t": "Shipping to {zonas} is {preco} for an order of up to {ate} pieces.",
+    "h": "b36cbcfa1159"
+  },
+  "envios.pequenasMarca": {
+    "t": "Shipping to {zonas} is {preco} for an order of up to {ate} pieces, all from {marca}.",
+    "h": "3174c4ec781d"
+  },
   "avisosPorPeca.nenhum": {
     "t": "At the moment, no piece has any warnings of its own.",
     "h": "f111694ffa36"

@@ -128,5 +128,16 @@
     "countries": [
       "PT"
     ]
+  },
+  "_note_encomendasPequenas": "Portes mais baratos numa encomenda pequena (a Cathia, 20 nov 2026): até `ate` unidades, todas da `marca` (sem ela, de qualquer loja), nas zonas de `zones`, pagam `price` -- nunca mais do que os da zona. Os candeeiros ficam com os portes da zona. A mesma conta no cesto (src/js/shop.js, portesDaZona) e no Worker (src/catalogue.js, portesDaZona). Uma campanha de portes grátis ou o levantamento ainda os tiram.",
+  "encomendasPequenas": {
+    "active": true,
+    "price": 2.5,
+    "ate": 3,
+    "marca": "cathelier",
+    "zones": [
+      "pt",
+      "ilhas"
+    ]
   }
 }

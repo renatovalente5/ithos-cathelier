@@ -5,6 +5,8 @@
   "envios.prazo": "Prazo",
   "envios.dias": "{min}–{max} dias úteis",
   "envios.nenhum": "Ainda não fazemos envios para nenhum destino.",
+  "envios.pequenas": "Para {zonas}, uma encomenda até {ate} peças paga {preco} de portes.",
+  "envios.pequenasMarca": "Para {zonas}, uma encomenda só com peças da {marca}, até {ate} peças, paga {preco} de portes.",
   "avisosPorPeca.nenhum": "Neste momento, nenhuma peça tem avisos só dela.",
   "pagamento.prestador": "o prestador de pagamentos",
   "pagamento.metodos": "os métodos indicados no pagamento",
