@@ -620,6 +620,12 @@ function catalogueFile(nomesNasLinguas = {}) {
             values: o.values.map((v) => ({
               id: v.id, name: v.name, extra: v.extra || 0,
               ...(v.available === false ? { available: false } : {}),
+              /* UM CONJUNTO (`pieces`, 21 nov 2026): quantas peças leva esta
+                 escolha -- «O conjunto dos 12» são 12. Conta como 12 peças nos
+                 portes das encomendas pequenas, e o desconto de revendedor
+                 vale também para o que o conjunto soma ao preço (o Worker,
+                 catalogue.js, e o cesto, shop.js). */
+              ...(Number.isInteger(v.pieces) && v.pieces >= 2 ? { pieces: v.pieces } : {}),
             })) }),
         /* Um campo condicional diz de que escolha depende: o Worker exige-o
            ou ignora-o pela mesma regra (catalogue.js, condicaoCumprida). */

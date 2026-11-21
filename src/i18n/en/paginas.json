@@ -28,6 +28,22 @@
     "t": "Shipping to {zonas} is {preco} for an order of up to {ate} pieces, all from {marca}.",
     "h": "3174c4ec781d"
   },
+  "envios.gratis": {
+    "t": "Shipping to {zonas} is free on orders from {valor}.",
+    "h": "0fbd7ccab192"
+  },
+  "envios.gratisMarca": {
+    "t": "Shipping to {zonas} is free on orders from {valor} of {marca} pieces.",
+    "h": "448ad5ae21ec"
+  },
+  "envios.gratisSempre": {
+    "t": "Shipping to {zonas} is free.",
+    "h": "98e9a45e0451"
+  },
+  "envios.gratisSempreMarca": {
+    "t": "Shipping to {zonas} is free on any order with {marca} pieces.",
+    "h": "6ca62a9e5cc6"
+  },
   "avisosPorPeca.nenhum": {
     "t": "At the moment, no piece has any warnings of its own.",
     "h": "f111694ffa36"

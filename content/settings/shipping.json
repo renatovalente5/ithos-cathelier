@@ -117,6 +117,22 @@
       "marca": "cathelier",
       "segundos": 5,
       "frase": "Portes gratuitos para Portugal a partir de 65 €"
+    },
+    {
+      "id": "portes-500",
+      "active": true,
+      "nome": "Portes grátis a partir de 500 €",
+      "title": "",
+      "freeOver": 500,
+      "countries": [
+        "PT",
+        "PT-20",
+        "PT-30"
+      ],
+      "from": "",
+      "to": "",
+      "popup": false,
+      "faixa": false
     }
   ],
   "_note_campaigns": "As campanhas de portes grátis, que a dona gere no painel (Campanhas). Em cada dia vale a primeira da lista que estiver ligada, com valor, e com o dia de Lisboa dentro das datas (vazias = sem limite). «countries» vazio = todos os países onde a loja vende; «popup» = a janela aos 10 segundos.",

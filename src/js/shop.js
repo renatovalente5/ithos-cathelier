@@ -224,6 +224,19 @@ function descontoDe(slug, preco) {
   return d > 0 && d < preco ? d : 0;
 }
 
+/* UM CONJUNTO PARA UM REVENDEDOR (a Cathia, 21 nov 2026: «dizemos que um deles
+   é brinde, mas quando fazem a encomenda os 12 são contabilizados»). O
+   desconto de revendedor sai do preço-base da peça, e as escolhas pagas somam
+   pelo preço normal -- o conjunto dos 12 desejos (1,80 € + 16,20 €) ficava a
+   17,55 € para um revendedor, mais caro do que as 12 bolas à unidade
+   (12 × 1,35 €). Uma escolha que é um conjunto (`pieces`) leva o mesmo
+   desconto, na mesma proporção do preço-base: 18 € a −25 % = 13,50 €. Em
+   cêntimos, a mesma conta do Worker (src/catalogue.js, checkLine). */
+function menosNoConjunto(v, d, preco) {
+  if (!(Number.isInteger(v?.pieces) && v.pieces >= 2) || !(d > 0) || !(v.extra > 0)) return 0;
+  return Math.round((Math.round(v.extra * 100) * Math.round(d * 100)) / Math.round(preco * 100)) / 100;
+}
+
 /* THE SAME "FROM" AS THE CARD, and as what the Worker charges: the base price
    plus the cheapest value still available in each required choice. It is
    fromPrice() in src/lib/ithos.mjs, again. The product page and the price list
@@ -376,12 +389,15 @@ function escolhaDe(form, seletor = '[data-option]', chave = 'option') {
     de revendedor se for mais baixo, e as escolhas pagas por cima. A mesma conta
     do cesto e do Worker. */
 function precoCada(p, slug, q, escolha) {
-  let cada = Math.min(precoParaQuantidade(p, q), p.price - descontoDe(slug, p.price));
+  const d = descontoDe(slug, p.price);
+  let cada = Math.min(precoParaQuantidade(p, q), p.price - d);
   for (const o of p.options || []) {
     const v = escolha[o.id];
     if (v === undefined) continue;
-    if (o.type === 'choice') cada += (o.values || []).find((x) => String(x.id) === String(v))?.extra || 0;
-    else cada += o.extra || 0;
+    if (o.type === 'choice') {
+      const x = (o.values || []).find((y) => String(y.id) === String(v));
+      cada += (x?.extra || 0) - menosNoConjunto(x, d, p.price);
+    } else cada += o.extra || 0;
   }
   return cada;
 }
@@ -2033,6 +2049,9 @@ async function basketPage() {
     const d = descontoDe(line.id, p.price);
     let each = Math.min(base, p.price - d);
     let pvpEach = base;
+    /* Quantas peças é uma unidade desta linha: o conjunto dos 12 são 12
+       (`pieces`) -- para os portes das encomendas pequenas (portesDaZona). */
+    let pecas = 1;
     const shown = [];
     if (base < p.price) shown.push(tj('cesto.precoQuantidade', { n: qtdDaPeca, preco: base.toFixed(2).replace('.', ',') }));
     for (const o of p.options || []) {
@@ -2042,8 +2061,9 @@ async function basketPage() {
       if (o.type === 'choice') {
         const v = o.values.find((x) => x.id === value);
         if (!v) continue;
-        each += v.extra || 0;
+        each += (v.extra || 0) - menosNoConjunto(v, d, p.price);
         pvpEach += v.extra || 0;
+        if (Number.isInteger(v.pieces) && v.pieces >= 2) pecas *= v.pieces;
         shown.push(`${nomeDaOpcao(cat, line.id, o)}: ${nomeDoValor(cat, line.id, o, v)}`);
       } else if (o.type === 'photo') {
         each += o.extra || 0;
@@ -2056,7 +2076,7 @@ async function basketPage() {
       }
     }
     return {
-      name: nomeDaPeca(cat, line.id, p), brand: p.brand, qty: line.qty, photo: p.photo, shown, each, total: each * line.qty,
+      name: nomeDaPeca(cat, line.id, p), brand: p.brand, qty: line.qty, pecas, photo: p.photo, shown, each, total: each * line.qty,
       /* O que o revendedor poupa nesta linha, contra o PVP do mesmo cesto
          (já com o preço por quantidade): sem poupança, não se mostra o PVP. */
       pvpEach, pvpTotal: pvpEach * line.qty, desconto: pvpEach - each > 0.0001 ? pvpEach - each : 0,
@@ -2084,11 +2104,12 @@ async function basketPage() {
   /* ENCOMENDAS PEQUENAS (a Cathia, 20 nov 2026: «2,50 € até 3 peças»; «os
      candeeiros não, deixa estar como está»; «ilhas igual»): até `ate`
      unidades, todas da `marca` (sem ela, de qualquer loja), nas zonas da
-     lista, pagam `price` -- nunca mais do que os da zona. A mesma conta do
-     Worker (src/catalogue.js, portesDaZona). */
+     lista, pagam `price` -- nunca mais do que os da zona. Um conjunto conta
+     as peças que leva (`pecas`, 21 nov 2026: o conjunto dos 12 desejos são 12
+     peças, não uma). A mesma conta do Worker (src/catalogue.js, portesDaZona). */
   function portesDaZona(s, zone, linhas) {
     const p = s.encomendasPequenas;
-    const unidades = linhas.reduce((t, x) => t + (x.qty || 0), 0);
+    const unidades = linhas.reduce((t, x) => t + (x.qty || 0) * (x.pecas || 1), 0);
     if (p && p.active === true && typeof p.price === 'number' && p.price >= 0 && Number.isInteger(p.ate) && p.ate >= 1
       && (p.zones || []).includes(zone.id) && unidades >= 1 && unidades <= p.ate
       && (!p.marca || linhas.every((x) => x.brand === p.marca))) return Math.min(p.price, zone.price);

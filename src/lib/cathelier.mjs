@@ -320,12 +320,17 @@ export function all({ pieces, occasions }) {
    duas lojas --, com o valor mais barato que se pode comprar marcado.
    A ajuda (`help`) também nunca aparecia: é aí que uma peça com fotografia diz
    como a fotografia chega. */
-/* O valor que a ficha abre marcado: o mais barato que se pode comprar. */
+/* O valor que a ficha abre marcado: O PRIMEIRO DA LISTA que se pode comprar
+   (a Cathia, 21 nov 2026, no «Conjunto 12 desejos de Natal»: «um deles tem um
+   nome personalizado gravado e acho que essa parte não está lá para as pessoas
+   conseguirem personalizar»). Era o mais barato: a ficha do conjunto abria na
+   bola «Anjo» a 1,80 €, com o «Nome da família» escondido, e quem queria o
+   conjunto juntava as 12 bolas à unidade e pagava as 12, sem a oferta. A ordem
+   é a do painel; nas outras peças o primeiro já era o mais barato. O preço
+   «desde» continua a ser o mais baixo (desdeDe, no shop.js). */
 function marcadoDe(o) {
   const ha = o.values.filter((v) => v.available !== false);
-  const pool = ha.length ? ha : o.values;
-  const barato = Math.min(...pool.map((v) => v.extra || 0));
-  return pool.find((v) => (v.extra || 0) === barato) ?? pool[0];
+  return (ha.length ? ha : o.values)[0];
 }
 
 /* OS CAMPOS CONDICIONAIS (`onlyWith`, 20 out 2026): «Nome da família» só

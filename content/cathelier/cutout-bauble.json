@@ -33,7 +33,8 @@
         {
           "id": "conjunto",
           "name": "Conjunto dos 12, com a bola do trenó oferecida",
-          "extra": 16.2
+          "extra": 16.2,
+          "pieces": 12
         },
         {
           "id": "angel",

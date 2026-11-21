@@ -29,7 +29,8 @@
         {
           "id": "conjunto",
           "name": "O conjunto dos 6 pinheiros",
-          "extra": 8
+          "extra": 8,
+          "pieces": 6
         },
         {
           "id": "um",

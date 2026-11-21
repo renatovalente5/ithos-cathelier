@@ -1545,6 +1545,15 @@ for (const [o, n] of esgotados) {
           if (v.colour != null && v.colour !== '' && !/^#[0-9a-f]{6}$/i.test(String(v.colour))) {
             die(`content/${marca}/${x}: a cor «${v.colour}» de «${v.name}» não é #rrggbb`);
           }
+          /* UM CONJUNTO (`pieces`, 21 nov 2026): quantas peças leva a escolha.
+             Entra nos portes das encomendas pequenas e no desconto de
+             revendedor, no cesto e no Worker -- um número que não o seja
+             contava uma peça e cobrava outra coisa. Só numa escolha que soma
+             ao preço: um conjunto que não custa mais é uma peça só. */
+          if (v.pieces !== undefined) {
+            if (!(Number.isInteger(v.pieces) && v.pieces >= 2 && v.pieces <= 1000)) die(`content/${marca}/${x}: «${v.name}» diz que leva «${v.pieces}» peças — um número inteiro de 2 a 1000`);
+            else if (!(Number(v.extra) > 0)) warnings.push(`content/${marca}/${x}: «${v.name}» é um conjunto de ${v.pieces} peças mas não soma nada ao preço`);
+          }
         }
       }
     }

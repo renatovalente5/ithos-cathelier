@@ -3,6 +3,7 @@ import { icon } from './icons.mjs';
 import { prazos, ateSemanas } from './prazos.mjs';
 import { t, tn, lingua } from './i18n.mjs';
 import * as legal from './legal.mjs';
+import { campanhasDe, emCondicoes, tipoDe, daLoja } from './campanhas.mjs';
 
 /* ===========================================================================
    The pages that are prose, plus the three that are not.
@@ -97,6 +98,26 @@ export function markers({ identity, shop, shipping, pieces = [] }) {
   const pequenas = zonasPq.length
     ? t(pq.marca ? 'paginas.envios.pequenasMarca' : 'paginas.envios.pequenas', { zonas: zonasPq.map((z) => z.name).join(', '), ate: pq.ate, preco: preco(pq.price), marca: pq.marca ?? '' })
     : '';
+  /* OS PORTES GRÁTIS DE UMA CAMPANHA SEM DATAS (a Cathia, 21 nov 2026: «temos
+     lá essa indicação que a partir dos 500 € não se paga portes» -- não havia,
+     em lado nenhum). Uma frase por campanha de portes ligada e sem datas (a
+     página só se refaz ao publicar: uma com datas passava o prazo e a frase
+     ficava), nas zonas onde a loja vende. Só se, em cada loja que cobre,
+     nenhuma campanha ligada vier antes na lista: o cesto e o Worker
+     (campanhaDeHoje) usam a primeira, e a de trás deixava de valer. Mede-se
+     ao preço de venda ao público, para todos, como o Worker cobra. */
+  const ligadas = campanhasDe(shipping).filter(emCondicoes);
+  const lojasDe = (c) => (c.marca ? [c.marca] : ['ithos', 'cathelier']);
+  const zonasDa = (c) => shipping.zones.filter((z) => z.countries.some((k) => shipping.active.includes(k.slice(0, 2)))
+    && (!(c.countries ?? []).length || z.countries.every((k) => c.countries.includes(k))));
+  const gratis = ligadas
+    .filter((c, n) => tipoDe(c) === 'portes' && !c.from && !c.to
+      && lojasDe(c).every((m) => !ligadas.slice(0, n).some((antes) => daLoja(antes, m))))
+    .map((c) => ({ c, zonas: zonasDa(c) }))
+    .filter((x) => x.zonas.length)
+    .map(({ c, zonas }) => t(`paginas.envios.gratis${c.sempre === true ? 'Sempre' : ''}${c.marca ? 'Marca' : ''}`,
+      /* «500 €», como a faixa (shell.mjs, condicaoDaCampanha); com cêntimos, «64,50 €». */
+      { zonas: zonas.map((z) => z.name).join(', '), valor: Number.isInteger(c.freeOver) ? t('build.euros', { n: String(c.freeOver) }) : preco(c.freeOver), marca: c.marca ?? '' }));
 
   return {
     LEGAL_NAME: i.legalName, TRADING_NAME: i.tradingName, LEGAL_FORM: i.legalForm,
@@ -126,7 +147,7 @@ export function markers({ identity, shop, shipping, pieces = [] }) {
     COOLING_OFF_DAYS: String(shop.returns.coolingOffDays),
     WARRANTY_YEARS: String(shop.returns.warrantyYears),
     FORM_URL: '/legal/returns-form/',
-    SHIPPING_TABLE: rows.length && pequenas ? `${table}\n\n${pequenas}` : table,
+    SHIPPING_TABLE: rows.length ? [table, pequenas, ...gratis].filter(Boolean).join('\n\n') : table,
     SAFETY_LIST: (shop.safetyIthos || []).map((s) => `- ${s}`).join('\n'),
     /* Os da cathelier, na página de cuidados dela: os de todas as peças
        (shop.json) e os de cada peça (os ficheiros delas). */
