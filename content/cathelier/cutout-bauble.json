@@ -8,7 +8,7 @@
   "occasion": "christmas",
   "alsoIn": [],
   "summary": "Conjunto de 12 bolas decorativas com mensagens personalizadas que correspondem aos 12 desejos de Natal.",
-  "text": "Mais do que simples enfeites, são 12 desejos cheios de amor, esperança e magia para iluminar o Natal.\nCada bola, em MDF lacado a branco e delicadamente recortada, guarda uma mensagem especial para nos lembrar do que realmente importa: o amor, a família, a amizade, a paz, a alegria, a harmonia, a fé, o amor, a paixão  de estarmos juntos.\nUm conjunto criado com carinho para decorar a árvore de Natal e encher cada lar de ternura, união e momentos inesquecíveis.\nVende-se o conjunto dos 12, com uma bola do trenó com o nome da família oferecida, ou cada bola à unidade.",
+  "text": "Mais do que simples enfeites, são 12 desejos cheios de amor, esperança e magia para iluminar o Natal.\nCada bola, em MDF lacado a branco e delicadamente recortada, guarda uma mensagem especial para nos lembrar do que realmente importa: o amor, a família, a amizade, a paz, a alegria, a harmonia, a fé, o amor, a paixão  de estarmos juntos.\nUm conjunto criado com carinho para decorar a árvore de Natal e encher cada lar de ternura, união e momentos inesquecíveis.\nVende-se o conjunto dos 12, com a bola do Pai Natal com trenó e rena oferecida e gravada com o texto que escolher (o nome da família ou «Feliz Natal»), ou cada bola à unidade.",
   "photoFolder": "cutout-bauble",
   "photos": [
     "fmvgrscwd2c",
@@ -100,14 +100,14 @@
     },
     {
       "id": "family",
-      "name": "Nome da família",
+      "name": "Texto da bola do Pai Natal",
       "type": "text",
       "required": true,
       "personalises": true,
       "max": 20,
       "extra": 0,
       "example": "Família Simão",
-      "help": "Vai gravado na bola do trenó, oferecida com o conjunto dos 12.",
+      "help": "Vai gravado na bola do Pai Natal com trenó e rena, oferecida no conjunto dos 12. Pode ser o nome da família ou «Feliz Natal».",
       "onlyWith": {
         "option": "escolha",
         "values": [
