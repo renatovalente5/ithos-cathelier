@@ -107,11 +107,12 @@
       "max": 20,
       "extra": 0,
       "example": "Família Simão",
-      "help": "Vai gravado na bola do Pai Natal com trenó e rena, oferecida no conjunto dos 12. Pode ser o nome da família ou «Feliz Natal».",
+      "help": "Vai gravado na bola do Pai Natal com trenó e rena (no conjunto dos 12, é a bola oferecida). Pode ser o nome da família ou «Feliz Natal».",
       "onlyWith": {
         "option": "escolha",
         "values": [
-          "conjunto"
+          "conjunto",
+          "pai-natal-treno-e-rena"
         ]
       }
     }
