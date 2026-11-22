@@ -122,8 +122,8 @@
     "h": "f889a06b8926"
   },
   "legal.cancellation.descricao": {
-    "t": "{dias} days to change your mind, and until when you can cancel a personalised piece.",
-    "h": "9094d0362ea3"
+    "t": "The period to withdraw from the purchase ({dias} days) and until when a personalised piece can be cancelled.",
+    "h": "c52f23d998e2"
   },
   "legal.returns-form": {
     "t": "Cancellation form",

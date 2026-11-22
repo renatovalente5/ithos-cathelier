@@ -1,12 +1,11 @@
-<!-- origem: 1d6efc63e940 partes: d9b93824be36 8c9676949d0b 50f56d8f556d 9ad95c906ee6 9a5ebd727f78 -->
+<!-- origem: 6fa1e487a2f8 partes: d9b93824be36 e627a81d89c8 50f56d8f556d 9ad95c906ee6 9a5ebd727f78 -->
 # Your right to cancel
 
 ## Fourteen days
 
 If you are buying as a consumer, you may withdraw from the purchase within a period of
-**{{COOLING_OFF_DAYS}} days** from the receipt of your order, without giving
-any reason — as per **Article 10 of Decree-Law no. 24/2014**. The period begins
-from the day the last item reaches you.
+**{{COOLING_OFF_DAYS}} days** from the receipt of your order — in accordance with
+**Article 10 of Decree-Law no. 24/2014**. The period begins from the day the last item reaches you.
 
 To withdraw, please inform us clearly. You can do so here on the website: click on
 [Withdraw from purchase here](/legal/withdraw/) — this link is also in the footer

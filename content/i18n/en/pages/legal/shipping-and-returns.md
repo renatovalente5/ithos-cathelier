@@ -1,4 +1,4 @@
-<!-- origem: d30773e9ee3a partes: 549f878a8e13 396a10bae519 27ad2301c295 3387ff0151d4 85be0388d41b 096904943b83 -->
+<!-- origem: b536b863352f partes: 549f878a8e13 396a10bae519 27ad2301c295 3387ff0151d4 8cc851b64ed5 096904943b83 -->
 # Delivery and returns
 
 ## How long it takes
@@ -27,8 +27,8 @@ charge, or a refund straight away (Articles 15 and 16 of Decree-Law No
 
 ## Returns
 
-You have {{COOLING_OFF_DAYS}} days to change your mind. A personalised piece is
-made just for you, so these days do not apply.
+You have {{COOLING_OFF_DAYS}} days to cancel your purchase. A personalised piece is
+made just for you, so this period does not apply.
 See your [right to cancel](/legal/cancellation/) to find out how
 it works and what is not covered.
 

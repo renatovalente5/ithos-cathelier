@@ -1,4 +1,4 @@
-<!-- origem: 71da4c2ec20c partes: a9f5355a42f7 15e1f22cf38b bb694c976aa8 39101eaf6b0b e5e59fbd129a e975ad517e2e 159c93cd33a7 46b026307256 -->
+<!-- origem: 1a9e14f80232 partes: a9f5355a42f7 15e1f22cf38b bb694c976aa8 39101eaf6b0b e5e59fbd129a e975ad517e2e 9625130ccc8a 46b026307256 -->
 # Questions
 
 ## How long does it take?
@@ -27,9 +27,9 @@ Both, at the same price. The battery version takes two AA cells, which are inclu
 
 It depends where you are. [The full table is here](/legal/shipping-and-returns/).
 
-## Can I change my mind?
+## Can I cancel my purchase?
 
-You have {{COOLING_OFF_DAYS}} days to change your mind. A personalised piece is made just for you, so it does not have those days. [How it works](/legal/cancellation/).
+You have {{COOLING_OFF_DAYS}} days to cancel your purchase. A personalised piece is made just for you, so these days do not apply. [See the conditions](/legal/cancellation/).
 
 ## Do you accept large orders?
 
