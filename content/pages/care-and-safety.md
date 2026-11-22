@@ -26,7 +26,7 @@ escreva-nos.
 
 ## Pilhas
 
-As versões a pilhas levam duas pilhas AA, que não estão incluídas. Tire-as se a peça ficar meses sem ser usada — uma pilha que verte estraga a madeira e o sistema de alimentação.
+As versões a pilhas levam duas pilhas AA, que já vêm incluídas. Tire-as se a peça ficar meses sem ser usada — uma pilha que verte estraga a madeira e o sistema de alimentação.
 
 Mantenha as pilhas soltas longe de crianças pequenas.
 
@@ -36,8 +36,7 @@ A versão com cabo traz um comando que regula a intensidade da luz, liga e desli
 faz a luz pulsar devagar.
 
 Mantenha o cabo fora do berço e fora da cama. Não o passe por baixo de um
-tapete nem atrás de um radiador, e não o deixe ligado à noite sem vigilância no
-quarto de uma criança.
+tapete nem atrás de um radiador.
 
 ## A madeira mexe
 

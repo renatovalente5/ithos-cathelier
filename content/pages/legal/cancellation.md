@@ -29,11 +29,11 @@ numa cor da nossa lista pode ser devolvido como qualquer outra coisa.
 
 ## Devolver a peça
 
-Devolva a peça no prazo de 14 dias a contar do dia em que nos disse. Os portes
-da devolução são por sua conta. Embale-a como chegou, ou melhor. Só é
-responsável pela perda de valor que resulte de um manuseamento além do
-necessário para verificar a natureza, as características e o funcionamento da
-peça.
+Devolva a peça no prazo de 14 dias a contar do dia em que nos disse, para
+{{LEGAL_NAME}}, {{ADDRESS}}. Os portes da devolução são por sua conta. Embale-a
+como chegou, ou melhor. Só é responsável pela perda de valor que resulte de um
+manuseamento além do necessário para verificar a natureza, as características e
+o funcionamento da peça.
 
 ## Receber o dinheiro de volta
 
