@@ -30,7 +30,7 @@ Decreto-Lei n.º 84/2021). O resto está nas [condições de venda](/legal/terms
 
 ## Devoluções
 
-Tem {{COOLING_OFF_DAYS}} dias para mudar de ideias. Uma peça personalizada é
+Tem {{COOLING_OFF_DAYS}} dias para desistir da compra. Uma peça personalizada é
 feita só para si, por isso não tem esses dias.
 Veja o [seu direito de livre resolução](/legal/cancellation/) para saber como
 funciona e o que não abrange.

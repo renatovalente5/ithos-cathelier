@@ -26,9 +26,9 @@ As duas, ao mesmo preço. A versão a pilhas leva duas pilhas AA, que já vêm i
 
 Depende de onde estiver. [A tabela completa está aqui](/legal/shipping-and-returns/).
 
-## Posso mudar de ideias?
+## Posso desistir da compra?
 
-Tem {{COOLING_OFF_DAYS}} dias para mudar de ideias. Uma peça personalizada é feita só para si, por isso não tem esses dias. [Como funciona](/legal/cancellation/).
+Tem {{COOLING_OFF_DAYS}} dias para desistir da compra. Uma peça personalizada é feita só para si, por isso não tem esses dias. [Veja as condições](/legal/cancellation/).
 
 ## Aceitam encomendas grandes?
 

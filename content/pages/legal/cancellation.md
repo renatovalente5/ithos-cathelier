@@ -3,8 +3,8 @@
 ## Catorze dias
 
 Se estiver a comprar como consumidor, pode desistir da compra no prazo de
-**{{COOLING_OFF_DAYS}} dias** a contar da receção da encomenda, sem dar
-qualquer motivo — é o **artigo 10.º do Decreto-Lei n.º 24/2014**. O prazo conta
+**{{COOLING_OFF_DAYS}} dias** a contar da receção da encomenda — é o
+**artigo 10.º do Decreto-Lei n.º 24/2014**. O prazo conta
 a partir do dia em que lhe chega o último artigo.
 
 Para desistir, diga-nos de forma clara. Pode fazê-lo aqui no site: carregue em
