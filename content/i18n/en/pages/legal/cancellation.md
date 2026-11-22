@@ -1,4 +1,4 @@
-<!-- origem: 6fa1e487a2f8 partes: d9b93824be36 e627a81d89c8 50f56d8f556d 9ad95c906ee6 9a5ebd727f78 -->
+<!-- origem: ece61f4b60b2 partes: d9b93824be36 e627a81d89c8 50f56d8f556d 2af22a9499d8 9a5ebd727f78 -->
 # Your right to cancel
 
 ## Fourteen days
@@ -22,12 +22,11 @@ expires, you have withdrawn in time (Article 11 of Decree-Law no. 24/2014).
 
 Choosing from colours we already offer is **not** personalisation. A lamp in a colour from our list can be returned just like any other item.
 
-## Sending it back
+## Returning the piece
 
-Send the piece back within 14 days of telling us. You pay the return postage.
-Pack it as it arrived, or better. You are only liable for any loss in value
-resulting from handling beyond what is necessary to establish the nature,
-characteristics and functioning of the piece.
+Return the piece within 14 days of the day you notified us, to
+{{LEGAL_NAME}}, {{ADDRESS}}. You are responsible for the return shipping costs. Pack it
+as it arrived, or better. You are only responsible for any loss in value resulting from handling beyond what is necessary to verify the nature, characteristics and functioning of the piece.
 
 ## Getting your money back
 

@@ -1,4 +1,4 @@
-<!-- origem: 8eac297be2a8 partes: ece0c79184c6 431615403d7d 1c5c11abb93c 5df13b1d4273 67f001b79894 f438ee476f61 dcbdb8e1f670 -->
+<!-- origem: f58224ca0ea0 partes: ece0c79184c6 431615403d7d 1c5c11abb93c 5df13b1d4273 6cf7d826e4f4 b8b1f7c14eaf dcbdb8e1f670 -->
 # Care and safety
 
 ## These are lights, not toys
@@ -24,15 +24,15 @@ Decree-Law No 84/2021). If it needs repairing, write to us.
 
 ## Batteries
 
-The battery-operated versions require two AA batteries, which are not included. Remove them if the piece will not be used for months — a leaking battery will damage the wood and the power system.
+The battery-powered versions require two AA batteries, which are already included. Remove them if the piece will not be used for several months — a leaking battery can damage the wood and the power system.
 
 Keep loose batteries away from small children.
 
 ## The corded version
 
-The corded version comes with a controller that regulates light intensity, turns the light on and off, includes a timer so it turns off by itself, and makes the light pulse slowly.
+The corded version comes with a controller that regulates the light intensity, turns it on and off, includes a timer so it switches off by itself, and makes the light pulse slowly.
 
-Keep the cord out of the cot and away from the bed. Do not pass it under a rug or behind a radiator, and do not leave it switched on overnight unattended in a child's room.
+Keep the cord out of the cot and away from the bed. Do not pass it under a rug or behind a radiator.
 
 ## Wood moves
 

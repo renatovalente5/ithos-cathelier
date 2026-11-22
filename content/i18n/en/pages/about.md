@@ -1,8 +1,8 @@
-<!-- origem: 19a9adff88a4 partes: c7c5c54b43b5 7864a94ca025 6c7d55b8141f -->
+<!-- origem: a62b3a677149 partes: bb9b9a8b90e0 7864a94ca025 6c7d55b8141f -->
 # ithos
 
-ithos is a dream come true to fulfil the wishes of little ones, and because everything handmade comes from the heart, we dedicate our very best to sending love! They are unique, special pieces, each with the characteristics that give them charm, and when they are sent, they are full of magic and emotion!
-Our ithos are not only night lights, but also decorative pieces that transform a bedroom into a warm and cosy environment that our little ones will remember for a lifetime! They will help parents with night-time nappy changes and help little ones feel a special sense of companionship as they fall asleep. ithos lamps are made in Portugal, in a small workshop where the entire creation process is manual, from cutting the pine wood, sanding, gluing, painting, to placing the LEDs(...) The LED lights work with two 3V batteries and an on/off switch so that the lamps can be placed anywhere, or the option with an electric cable and switch, remote control which allows for light intensity adjustment, a timer, and rhythmic lighting.
+ithos is a dream come true to fulfil the wishes of the little ones and because everything handmade comes from the heart, we dedicate our very best to sending love! They are unique, special pieces, each with the characteristics that give them charm, and when they are sent, they are full of magic and emotion!
+Our ithos are not only night lights, but also decorative pieces that transform a bedroom into a warm and cosy environment that our little ones will remember for a lifetime! They will help parents with night-time nappy changes and help the little ones feel a special sense of company as they fall asleep. ithos lamps are made in Portugal, in a small workshop where the entire creation process is manual, from cutting the pine wood, sanding, gluing, painting, to the installation of LEDs(...) The LED lights run on two AA batteries and an on/off switch so that the lamps can be placed anywhere, or the option with an electric cable and switch, remote control which allows for light intensity adjustment, a timer and rhythmic lighting.
 
 ## Personalisation
 
