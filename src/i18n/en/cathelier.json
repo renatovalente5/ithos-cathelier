@@ -69,12 +69,12 @@
     "h": "fa953a1853eb"
   },
   "lista.lede.um": {
-    "t": "{n} piece, made to order. It carries the names, the dates or the words you choose.",
-    "h": "9d4342d8571a"
+    "t": "{n} piece, in stock. It features the names, dates or words of your choice.",
+    "h": "7dda15c06d05"
   },
   "lista.lede.varios": {
-    "t": "{n} pieces, all made to order. Each one carries the names, the dates or the words you choose.",
-    "h": "c2031d895176"
+    "t": "{n} pieces, all in stock. Each one features the names, dates or words of your choice.",
+    "h": "225f9556e012"
   },
   "lista.todas": {
     "t": "All",

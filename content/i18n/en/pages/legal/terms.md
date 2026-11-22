@@ -1,4 +1,4 @@
-<!-- origem: e013697ef68f partes: 385996f20f05 95a292592920 74b642e8c44a 18e631390cab b9bacc6b6765 53283dbe7dbb e34c551d011f 317f15f9c64e 7303925a6a5e 5df13b1d4273 9b2ecfa0cec6 40d4012a548e 37247a30ba8d a42c1b8e95aa -->
+<!-- origem: 44684d796382 partes: 385996f20f05 95a292592920 74b642e8c44a 18e631390cab b9bacc6b6765 53283dbe7dbb e34c551d011f bbdbfb096acd 7303925a6a5e 5df13b1d4273 9b2ecfa0cec6 40d4012a548e 37247a30ba8d a42c1b8e95aa -->
 # Terms of sale
 
 ## Who is selling
@@ -70,23 +70,23 @@ shelf, and you owe nothing — put the basket together again whenever you like.
 
 ## Making and delivering
 
-**An in-stock lamp** leaves the workshop {{IN_STOCK_DAYS}} after your
+**An in stock lamp** leaves the workshop {{IN_STOCK_DAYS}} after your
 payment.
 
-**An out-of-stock lamp** can still be ordered: we will make yours, and
-it will reach you in {{TO_ORDER_WEEKS}}. Each product page and the basket will
-state which is the case before you pay. If the last one in stock goes to someone else while
+**An out of stock lamp** can still be ordered: we will make yours, and
+it will reach you in {{TO_ORDER_WEEKS}}. Each product page and the basket will state
+which is the case before you pay. If the last one in stock is taken by someone else while
 you are ordering, we will let you know before receiving any payment, and the decision to
 wait is yours.
 
-**cathelier pieces** are always made to order and arrive within
-{{TO_ORDER_MAX}}, counting from the approval of the design — almost always sooner.
+**cathelier pieces** are always in stock and leave the workshop in
+{{IN_STOCK_DAYS}}, counting from the approval of the design.
 
 If an item in an order is made to order, the entire order will be sent
 together once it is ready.
 
-Shipping is handled by {{CARRIER}}. The transit time counts from the day the
-order leaves the workshop.
+Shipping is handled by {{CARRIER}}. The transport timeframe starts from the day
+the order leaves the workshop.
 
 ## If something is wrong
 

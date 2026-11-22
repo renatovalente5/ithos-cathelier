@@ -1,11 +1,11 @@
-<!-- origem: 1a9e14f80232 partes: a9f5355a42f7 15e1f22cf38b bb694c976aa8 39101eaf6b0b e5e59fbd129a e975ad517e2e 9625130ccc8a 46b026307256 -->
+<!-- origem: 305fee87816a partes: a9f5355a42f7 ccad4b722633 bb694c976aa8 39101eaf6b0b e5e59fbd129a e975ad517e2e 9625130ccc8a 46b026307256 -->
 # Questions
 
 ## How long does it take?
 
 An in-stock lamp leaves the workshop in {{IN_STOCK_DAYS}}. If it is out of stock, you can still order it: we will make yours, and it will reach you in {{TO_ORDER_WEEKS}}. Each product page specifies which is the case.
 
-cathelier pieces are always made to order — {{TO_ORDER_WEEKS}}, starting from the day you approve the design. If any piece in the order is made to order, everything will be sent together.
+cathelier pieces are always in stock: they leave the workshop in {{IN_STOCK_DAYS}}, counting from the day you approve the design. If any piece of the order is made to order, everything will be sent together.
 
 ## Can I have a name on it?
 
