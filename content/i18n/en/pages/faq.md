@@ -1,4 +1,4 @@
-<!-- origem: 305fee87816a partes: a9f5355a42f7 ccad4b722633 bb694c976aa8 39101eaf6b0b e5e59fbd129a e975ad517e2e 9625130ccc8a 46b026307256 -->
+<!-- origem: 433b80fb1522 partes: a9f5355a42f7 ccad4b722633 39e68a63db55 39101eaf6b0b e5e59fbd129a e975ad517e2e 9625130ccc8a 46b026307256 -->
 # Questions
 
 ## How long does it take?
@@ -7,11 +7,11 @@ An in-stock lamp leaves the workshop in {{IN_STOCK_DAYS}}. If it is out of stock
 
 cathelier pieces are always in stock: they leave the workshop in {{IN_STOCK_DAYS}}, counting from the day you approve the design. If any piece of the order is made to order, everything will be sent together.
 
-## Can I have a name on it?
+## Can it include a name?
 
-Yes, on anything, and it costs nothing extra. Put it in the engraving box on the product page — a name, a date, or a short phrase.
+Yes, on any piece. For the lamps, engraving costs €2.50. For cathelier pieces, the name is already included in the price; for those that charge for extra letters, the product page will state the cost. Write it in the engraving box on the product page — a name, a date, or a short phrase.
 
-One thing to know: a piece with a name on it is made for you alone, so it does not have the {{COOLING_OFF_DAYS}}-day right to cancel. Choosing a colour we already offer is not personalisation and does not affect your right to cancel.
+One thing to note: a piece with a name is made just for you, so it does not include the {{COOLING_OFF_DAYS}} days right to cancel. Choosing a colour that we already offer is not personalisation and does not affect your right to cancel.
 
 ## Is it safe in a baby’s room?
 
