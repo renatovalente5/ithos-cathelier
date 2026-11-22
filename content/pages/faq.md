@@ -8,7 +8,7 @@ As peças da cathelier estão sempre em stock: saem do atelier em {{IN_STOCK_DAY
 
 ## Pode levar um nome?
 
-Sim, em qualquer peça, e sem custo extra. Escreva-o na caixa da gravação, na página do produto — um nome, uma data ou uma frase curta.
+Sim, em qualquer peça. Nos candeeiros, a gravação custa 2,50 €. Nas peças da cathelier, o nome já está no preço; nas que cobram letras a mais, a página da peça diz quanto. Escreva-o na caixa da gravação, na página do produto — um nome, uma data ou uma frase curta.
 
 Uma coisa a saber: uma peça com um nome é feita só para si, por isso não tem os {{COOLING_OFF_DAYS}} dias de livre resolução. Escolher uma cor que já oferecemos não é personalização e não afeta o seu direito de livre resolução.
 

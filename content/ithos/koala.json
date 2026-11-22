@@ -52,7 +52,7 @@
       "required": false,
       "personalises": true,
       "max": 40,
-      "extra": 0
+      "extra": 2.5
     }
   ],
   "gpsr": {

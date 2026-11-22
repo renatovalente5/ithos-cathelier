@@ -476,7 +476,7 @@ function optionField(o, diasDeResolucao) {
     const aviso = o.personalises
       ? `<p class="field__aviso" id="opt-${esc(o.id)}-aviso" data-aviso-ao-escrever hidden>${esc(t('paginas.aviso.personalizada', { n: diasDeResolucao }))}</p>` : '';
     return `<div class="field">
-        <label for="opt-${esc(o.id)}">${esc(o.name)} <span class="field__optional">${esc(t('ithos.opcao.opcional'))}</span></label>
+        <label for="opt-${esc(o.id)}">${esc(o.name)} <span class="field__optional">${esc(t('ithos.opcao.opcional'))}</span>${o.extra > 0 ? ` <em>+${money(o.extra)}</em>` : ''}</label>
         ${o.help ? `<p class="field__help">${esc(o.help)} <span class="field__limit">${esc(t('ithos.opcao.limite', { n: o.max || 40 }))}</span></p>` : ''}
         <input id="opt-${esc(o.id)}" type="text" maxlength="${Number.isInteger(o.max) && o.max > 0 ? o.max : 40}"
                data-option="${esc(o.id)}" placeholder="${esc(t('ithos.opcao.exemplo'))}"${o.personalises ? ` aria-describedby="opt-${esc(o.id)}-aviso"` : ''}>
