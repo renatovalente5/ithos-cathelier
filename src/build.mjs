@@ -689,7 +689,9 @@ function produtoParaOGoogle(marca, p, { nome, url }) {
    língua de origem: os mesmos produtos, preços e fotografias das fichas. Os
    portes ficam no Merchant Center, por loja (`shipping_label`), porque as
    campanhas de portes grátis contam a encomenda e não o artigo. Os dias de
-   preparação: do mais rápido (em stock) ao mais lento (feito por encomenda). */
+   preparação: num candeeiro, do mais rápido (em stock) ao mais lento (feito
+   por encomenda); numa peça da cathelier, que está sempre em stock (22 nov
+   2026), só os dias do stock. */
 function escreverListaParaOGoogle() {
   const x = (v) => String(v ?? '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   const texto = (p) => [p.summary, String(p.text ?? '')
@@ -697,7 +699,9 @@ function escreverListaParaOGoogle() {
     .filter(Boolean).join(' — ').slice(0, 4900);
   const lead = shop.lead ?? {};
   const minDias = Array.isArray(lead.inStockDays) ? lead.inStockDays[0] : Number(lead.inStockDays) || 3;
-  const maxDias = Array.isArray(lead.toOrderWeeks) ? lead.toOrderWeeks[1] * 5 : 20;
+  const maxEmStock = Array.isArray(lead.inStockDays) ? lead.inStockDays[1] : Number(lead.inStockDays) || 5;
+  const maxDias = (marca) => (marca === 'cathelier' ? maxEmStock
+    : Array.isArray(lead.toOrderWeeks) ? lead.toOrderWeeks[1] * 5 : 20);
   const item = (marca, p, nomeDado, caminho, tipo) => {
     /* O nome como o Google o mostra: sem espaços nas pontas (um «Carro »
        gravado no painel dava «Carro , em madeira» no separador Compras). */
@@ -720,7 +724,7 @@ function escreverListaParaOGoogle() {
       `      <g:product_type>${x(tipo)}</g:product_type>`,
       `      <g:shipping_label>${marca}</g:shipping_label>`,
       `      <g:min_handling_time>${minDias}</g:min_handling_time>`,
-      `      <g:max_handling_time>${maxDias}</g:max_handling_time>`,
+      `      <g:max_handling_time>${maxDias(marca)}</g:max_handling_time>`,
       '    </item>'].join('\n');
   };
   const itens = [
@@ -862,8 +866,8 @@ function buildCathelier() {
       partilha: cartaoDoProduto('cathelier', p),
       /* The 41 cathelier pieces emitted no structured data at all while the 26
          lamps did. Same shop, same basket, same law — and to a search engine
-         only half of it was a shop. `MadeToOrder` is the honest availability:
-         nothing here exists until somebody asks for it. */
+         only half of it was a shop. Availability as for the lamps (see
+         produtoParaOGoogle); since 22 Nov 2026 the pieces are always in stock. */
       schema: [produtoParaOGoogle('cathelier', p, { nome: p.name, url: `${SITE}${morada(`/cathelier/pieces/${p.slug}/`)}` })],
     }));
   }

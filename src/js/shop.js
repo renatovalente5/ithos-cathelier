@@ -363,6 +363,12 @@ function skusDaEscolha(p, options) {
   return Array.isArray(skus) && skus.length ? skus : null;
 }
 
+/** A cathelier piece is always in stock (the owner, 22 Nov 2026: four weeks
+    scared people, and she can do three to five days). It uses no shelf and
+    leaves in the in-stock days -- the Worker says the same (catalogue.js,
+    sempreEmStock). Only asked of something that has no stock units. */
+const sempreEmStock = (p) => p?.brand === 'cathelier';
+
 /** How many of a choice a reseller could take: the scarcest shelf it uses. */
 const quantosHa = (skus, livres) => Math.min(...skus.map((k) => livres?.[k] ?? 0));
 
@@ -1374,7 +1380,7 @@ async function paginaRevenda() {
      ("Both together") are left out -- they are not made, they are put
      together from the others, and the two numbers already say how many. */
   function stockNaTabela(cat, slug, p) {
-    if (!p.stock) return `<span class="muted">${escRv(tj('revenda.porEncomenda'))}</span>`;
+    if (!p.stock) return `<span class="muted">${escRv(tj(sempreEmStock(p) ? 'revenda.sempre' : 'revenda.porEncomenda'))}</span>`;
     if (!revenda.stock) return '<span class="muted">—</span>';
     const modelo = (p.options || []).find((o) => o.id === p.stock.option);
     const partes = Object.entries(p.stock.skus)
@@ -1997,13 +2003,16 @@ async function basketPage() {
   async function avaliar(priced) {
     const minha = ++vez;
     const procura = {};
-    const todas = priced.length > 0 && priced.every(({ p }) => p.skus);
+    const todas = priced.length > 0 && priced.every(({ p }) => p.skus || sempreEmStock(p));
     for (const { line, p } of priced) for (const k of p.skus ?? []) procura[k] = (procura[k] ?? 0) + line.qty;
 
     let deStock = false;
     let pouco = false;
     if (todas && !esgotouAgora) {
-      if (revenda.activa && revenda.stock) {
+      if (!Object.keys(procura).length) {
+        /* Only cathelier pieces: always in stock, nothing to ask. */
+        deStock = true;
+      } else if (revenda.activa && revenda.stock) {
         deStock = Object.entries(procura).every(([k, n]) => livresRv(k) >= n);
       } else if (Object.keys(procura).every(temUm)) {
         try {
@@ -2028,7 +2037,7 @@ async function basketPage() {
   /* One line's own state. Out of stock is said on the line, so a basket that
      turns into three to four weeks shows which lamp did it. */
   function estadoDaLinha(p, qty) {
-    if (!p.skus) return tj('cesto.porEncomenda');
+    if (!p.skus) return sempreEmStock(p) ? tj('cesto.emStock') : tj('cesto.porEncomenda');
     if (revenda.activa && revenda.stock) {
       const n = Math.min(...p.skus.map(livresRv));
       return n >= qty ? tj('cesto.emStockN', { n }) : n > 0 ? tj('cesto.soN', { n }) : tj('cesto.semStock');

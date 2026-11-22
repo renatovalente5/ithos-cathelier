@@ -20,6 +20,7 @@
   "revenda.rotuloStock": "Em stock",
   "revenda.semPreco": "sem preço de revendedor",
   "revenda.porEncomenda": "feito por encomenda",
+  "revenda.sempre": "sempre",
   "revenda.linkExpirou": "Esse link de entrada expirou ou já não é válido. Peça um novo com o seu NIF.",
   "revenda.semLigacaoLink": "Não conseguimos chegar à loja. Verifique a sua ligação e abra o link outra vez.",
   "revenda.emailPedido": "Se este NIF estiver registado, vai a caminho um email para o endereço que temos na sua ficha. Traz um botão que inicia a sessão no dispositivo onde o abrir e um código para escrever aqui, se for noutro. Os dois duram 15 minutos. Não chegou nada ao fim de alguns minutos? Veja a pasta de spam, espere um quarto de hora e peça outra vez, ou fale connosco.",

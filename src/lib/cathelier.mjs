@@ -503,7 +503,13 @@ export function piece({ p, all: everything, shop, occasions, identity }) {
     <h1>${esc(p.name)}</h1>
     <p class="product__price">${precoDaPeca(p)}</p>
     ${precosPorQuantidade(p)}
-    <p class="product__lead product__lead--texto">${esc(prazos(shop.lead).encomendaPeca)}${identity?.whatsapp ? ` <a href="https://wa.me/${esc(identity.whatsapp)}" ${fora}>${esc(prazos(shop.lead).dataCerta)}${noutroSeparador()}</a>` : ''}</p>
+    ${/* AS PEÇAS DA CATHELIER ESTÃO SEMPRE EM STOCK (a dona, 22 nov 2026: «as
+        pessoas podem se assustar com isso das quatro semanas, e a verdade é
+        que eu consigo assumir isso de três a cinco dias»). A mesma frase de um
+        candeeiro em stock, dos mesmos números; nas férias muda-se no painel o
+        «Em stock» de shop.json, que vale para as duas lojas. Sem `data-lead`:
+        não há stock a perguntar ao Worker. */ ''}
+    <p class="product__lead product__lead--texto">${esc(prazos(shop.lead).stock)}${identity?.whatsapp ? ` <a href="https://wa.me/${esc(identity.whatsapp)}" ${fora}>${esc(prazos(shop.lead).dataCerta)}${noutroSeparador()}</a>` : ''}</p>
 
     <form class="product__form" data-product-form data-product-id="${esc(p.slug)}">
       ${camposDaPeca(p)}

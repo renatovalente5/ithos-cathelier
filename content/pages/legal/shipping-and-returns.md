@@ -4,8 +4,8 @@
 
 Um candeeiro em stock sai do atelier {{IN_STOCK_DAYS}} depois do seu pagamento.
 Um candeeiro sem stock é feito para si, e chega-lhe em {{TO_ORDER_WEEKS}}. As
-peças da cathelier são sempre feitas por encomenda e chegam em até
-{{TO_ORDER_MAX}}, a contar da aprovação do desenho — quase sempre antes. A página de cada produto e o cesto dizem qual é
+peças da cathelier estão sempre em stock e saem do atelier em
+{{IN_STOCK_DAYS}}, a contar da aprovação do desenho. A página de cada produto e o cesto dizem qual é
 o caso antes de pagar, e uma encomenda segue junta quando a última peça estiver
 pronta.
 

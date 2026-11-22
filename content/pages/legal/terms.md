@@ -89,8 +89,8 @@ chega-lhe em {{TO_ORDER_WEEKS}}. A página de cada produto e o cesto dizem qual
 está a encomendar, dizemos-lhe antes de receber qualquer pagamento, e a decisão de
 esperar é sua.
 
-**As peças da cathelier** são sempre feitas por encomenda e chegam em até
-{{TO_ORDER_MAX}}, a contar da aprovação do desenho — quase sempre antes.
+**As peças da cathelier** estão sempre em stock e saem do atelier em
+{{IN_STOCK_DAYS}}, a contar da aprovação do desenho.
 
 Se uma coisa numa encomenda for feita por encomenda, a encomenda inteira segue
 junta quando estiver pronta.
