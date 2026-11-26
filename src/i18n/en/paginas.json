@@ -668,6 +668,14 @@
     "t": "Sign out",
     "h": "2d023dea2a9d"
   },
+  "revenda.encomendas": {
+    "t": "Your orders",
+    "h": "fcc953c46dcb"
+  },
+  "revenda.encomendasNota": {
+    "t": "Those from the last 90 days.",
+    "h": "8d5a496d2f0e"
+  },
   "revenda.tabela": {
     "t": "Your price list",
     "h": "62204c065826"

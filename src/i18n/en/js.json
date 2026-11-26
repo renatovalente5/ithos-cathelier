@@ -125,6 +125,70 @@
     "t": "That code did not work. It lasts 15 minutes — if it has expired, ask for a new email with the form at the top.",
     "h": "21dfc0956d41"
   },
+  "revenda.encSem": {
+    "t": "There have been no orders in the last 90 days.",
+    "h": "c3de692e9765"
+  },
+  "revenda.encErro": {
+    "t": "Unable to show orders. Please try again in a moment.",
+    "h": "e6f5349fa5f7"
+  },
+  "revenda.encEstado.criada": {
+    "t": "Pending payment",
+    "h": "a27e0d44c6ce"
+  },
+  "revenda.encEstado.expirada": {
+    "t": "Unpaid",
+    "h": "669c85a7c550"
+  },
+  "revenda.encEstado.paga": {
+    "t": "Paid, being prepared",
+    "h": "ef67d6b7df25"
+  },
+  "revenda.encEstado.enviada": {
+    "t": "Shipped",
+    "h": "7dc97b519111"
+  },
+  "revenda.encEstado.entregue": {
+    "t": "Delivered",
+    "h": "1c67bfabb563"
+  },
+  "revenda.encEstado.reembolsada": {
+    "t": "Refunded",
+    "h": "7e55f07b69a3"
+  },
+  "revenda.encNumero": {
+    "t": "Order {id}",
+    "h": "e3b9091e8388"
+  },
+  "revenda.encEnviadaEm": {
+    "t": "Shipped on {data}",
+    "h": "20c85db3cf3c"
+  },
+  "revenda.encEntregueEm": {
+    "t": "Delivered on {data}",
+    "h": "ceabe8587e5c"
+  },
+  "revenda.encCodigo": {
+    "t": "Shipping code: {codigo}",
+    "h": "0b298a7e3932"
+  },
+  "revenda.encReembolsoParcial": {
+    "t": "Part of the amount has been refunded.",
+    "h": "60056e23a0bc"
+  },
+  "revenda.encPortes": {
+    "t": "Shipping",
+    "h": "0364fc85087f"
+  },
+  "revenda.encLevantamento": {
+    "t": "Collection (no shipping fees)",
+    "h": "4affd9610bc2"
+  },
+  "revenda.encTotal": {
+    "t": "Total",
+    "h": "c9b3c38247f7"
+  },
   "stock.revendaFicha": {
     "t": "{n} in stock — leaves the workshop in {prazo}.",
     "h": "cf7041089db9"
