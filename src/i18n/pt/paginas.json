@@ -167,6 +167,8 @@
   "revenda.aindaNao": "Ainda não é revendedor? <a href=\"/contact/\">Fale connosco</a>. As compras de revenda seguem as <a href=\"/legal/terms/#resellers\">condições para revendedores</a>.",
   "revenda.ativos": "Os preços de revenda estão ativos para {firma} (NIF {nif}).",
   "revenda.sair": "Sair",
+  "revenda.encomendas": "As suas encomendas",
+  "revenda.encomendasNota": "As dos últimos 90 dias.",
   "revenda.tabela": "A sua tabela de preços",
   "revenda.precos": "Os preços de venda ao público são apenas recomendados — os seus preços são definidos por si. O desconto aplica-se a cada peça; as opções pagas ficam ao preço normal.",
   "revenda.condicoes": "Condições para revendedores",

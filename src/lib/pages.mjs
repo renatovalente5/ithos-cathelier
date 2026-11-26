@@ -1159,6 +1159,11 @@ export function resellers() {
       <label class="check"><input type="checkbox" data-rv-manter><span>${esc(t('paginas.revenda.manter'))}</span></label>
       <p><button class="btn btn--ghost" type="button" data-rv-sair>${esc(t('paginas.revenda.sair'))}</button></p>
 
+      ${/* AS ENCOMENDAS DELE (a dona, 26 nov 2026), pedidas ao Worker com a
+          sessão: o HTML não leva nenhuma. O Worker guarda-as noventa dias. */ ''}<h2>${esc(t('paginas.revenda.encomendas'))}</h2>
+      <p class="small muted">${esc(t('paginas.revenda.encomendasNota'))}</p>
+      <div class="rv-encomendas" data-rv-encomendas aria-busy="true"></div>
+
       <h2>${esc(t('paginas.revenda.tabela'))}</h2>
       <p class="small muted">${esc(t('paginas.revenda.precos'))}
         ${esc(t('paginas.iva'))}

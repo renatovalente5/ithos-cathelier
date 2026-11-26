@@ -1342,6 +1342,7 @@ async function paginaRevenda() {
     $('[data-rv-manter]', raiz).checked = Boolean(sessaoRevenda()?.manter);
 
     const cat = await catalogue().catch(() => null);
+    mostrarEncomendas(cat);
     const corpo = $('[data-rv-tabela] tbody', raiz);
     if (!cat || !corpo) return;
     const url = (slug, p) => pagina(`${p.brand === 'cathelier' ? '/cathelier/pieces' : '/lamps'}/${slug}/`);
@@ -1392,6 +1393,65 @@ async function paginaRevenda() {
         return `${nome ? `${escRv(nome)} ` : ''}<strong>${n}</strong>`;
       });
     return partes.join(' · ');
+  }
+
+  /* AS ENCOMENDAS DELE (a dona, 26 nov 2026: «é possível os revendedores verem
+     as encomendas que fizeram…?»). O Worker devolve só as do NIF da sessão,
+     dos últimos noventa dias, sem os dados de quem as fez. Uma linha por
+     encomenda (o dia, o estado, o total), que abre para as peças. O nome da
+     peça sai do catálogo, na língua da página; uma que já saiu do catálogo
+     fica com o nome que tinha na encomenda. As escolhas vão como ficaram
+     gravadas. */
+  const diaRv = (iso) => {
+    const d = new Date(iso ?? '');
+    return Number.isNaN(d.getTime()) ? '' : d.toLocaleDateString(LOCALE_DATAS, { day: 'numeric', month: 'long', year: 'numeric', timeZone: 'Europe/Lisbon' });
+  };
+  const centimos = (c) => (Number.isInteger(c) ? escRv(dinheiro(c / 100)) : '—');
+  function estadoDaEncomenda(e) {
+    if (e.estado === 'reembolsada' || e.reembolso === 'total') return 'reembolsada';
+    if (e.estado === 'paga') return e.enviada ? (e.levantamento ? 'entregue' : 'enviada') : 'paga';
+    return e.estado === 'expirada' ? 'expirada' : 'criada';
+  }
+  function encomendaNaLista(e, cat) {
+    const estado = estadoDaEncomenda(e);
+    const linhas = (e.linhas || []).map((l) => {
+      const p = proprio(cat?.products, l.slug);
+      const nome = p ? nomeDaPeca(cat, l.slug, p) : (l.nome || l.slug || '');
+      const escolhas = Object.entries(l.escolhas || {}).map(([k, v]) => `${k}: ${v}`).join(' · ');
+      const foto = l.foto
+        ? `<img src="${BASE}/media/${escRv(l.foto)}-200.webp" alt="" width="48" height="48" loading="lazy" decoding="async">`
+        : '<span class="rv-enc__semfoto" aria-hidden="true"></span>';
+      return `<li>${foto}<span>${escRv(String(l.qty ?? 1))} × ${escRv(nome)}${escolhas ? `<span class="rv-enc__escolhas">${escRv(escolhas)}</span>` : ''}</span>
+        <span class="rv-enc__valor">${centimos(l.totalCents)}</span></li>`;
+    }).join('');
+    const notas = [
+      tj('revenda.encNumero', { id: e.id }),
+      e.enviada?.em ? tj(estado === 'entregue' ? 'revenda.encEntregueEm' : 'revenda.encEnviadaEm', { data: diaRv(e.enviada.em) }) : '',
+      e.enviada?.codigo ? tj('revenda.encCodigo', { codigo: e.enviada.codigo }) : '',
+      e.reembolso === 'parcial' ? tj('revenda.encReembolsoParcial') : '',
+    ].filter(Boolean).map(escRv).join(' · ');
+    return `<details class="rv-enc" data-estado="${estado}">
+      <summary><span class="rv-enc__dia">${escRv(diaRv(e.criada))}</span><span class="rv-enc__estado">${escRv(tj(`revenda.encEstado.${estado}`))}</span><span class="rv-enc__total">${centimos(e.totalCents)}</span></summary>
+      <div class="rv-enc__corpo">
+        <p class="small muted">${notas}</p>
+        <ul class="rv-enc__linhas">${linhas}</ul>
+        <p class="rv-enc__soma"><span>${escRv(tj(e.levantamento ? 'revenda.encLevantamento' : 'revenda.encPortes'))}</span><span>${e.levantamento ? '' : centimos(e.shippingCents)}</span></p>
+        <p class="rv-enc__soma rv-enc__soma--total"><span>${escRv(tj('revenda.encTotal'))}</span><span>${centimos(e.totalCents)}</span></p>
+      </div>
+    </details>`;
+  }
+  async function mostrarEncomendas(cat) {
+    const caixa = $('[data-rv-encomendas]', raiz);
+    if (!caixa || !revenda.sessao) return;
+    let lista = null;
+    try {
+      const { r, j } = await post('/revenda/encomendas', { sessao: revenda.sessao });
+      if (r.ok && Array.isArray(j.encomendas)) lista = j.encomendas;
+    } catch { /* sem ligação: diz-se já a seguir */ }
+    caixa.removeAttribute('aria-busy');
+    caixa.innerHTML = !lista ? `<p class="small muted">${escRv(tj('revenda.encErro'))}</p>`
+      : !lista.length ? `<p class="small muted">${escRv(tj('revenda.encSem'))}</p>`
+        : lista.map((e) => encomendaNaLista(e, cat)).join('');
   }
 
   const t = new URLSearchParams(location.hash.slice(1)).get('t');

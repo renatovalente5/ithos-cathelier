@@ -1965,6 +1965,41 @@ html[data-js='yes'] .product__lead[data-lead]:not([data-lead-ready]) { visibilit
   .rv-table td::before { content: attr(data-rotulo); display: block; font-size: .7rem; letter-spacing: .08em;
     text-transform: uppercase; color: var(--muted); margin-block-end: .15rem; }
 }
+/* AS ENCOMENDAS DO REVENDEDOR: uma linha por encomenda -- o dia, o estado e o
+   total --, que abre para as peças, como as perguntas da página de contactos.
+   No telemóvel o estado desce para debaixo do dia: os três numa linha não
+   cabiam em 343 px. O estado que pede alguma coisa (pagar) leva a cor da
+   marca; o que já não conta (não paga, reembolsada) vai apagado. As regras
+   de dentro levam `.resellers` à frente: as listas e os parágrafos de
+   `.page-prose` (recuo, espaço entre parágrafos) venciam as delas. */
+.rv-encomendas { margin-block: 1rem 2.5rem; border-block-start: 1px solid var(--line); }
+.rv-encomendas > p { margin-block: 1rem 0; }
+.rv-enc { border-block-end: 1px solid var(--line); }
+.rv-enc summary {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto auto 1.25rem; grid-template-areas: 'dia estado total mais';
+  align-items: center; column-gap: 1rem; row-gap: .15rem; min-height: 52px; padding-block: .5rem;
+  cursor: pointer; list-style: none; font-size: .95rem; color: var(--ink); font-variant-numeric: tabular-nums;
+}
+.rv-enc summary::-webkit-details-marker { display: none; }
+.rv-enc summary::after { grid-area: mais; content: '+'; font-size: 1.2rem; color: var(--muted); text-align: end; }
+.rv-enc[open] summary::after { content: '\2212'; }
+.rv-enc__dia { grid-area: dia; }
+.rv-enc__total { grid-area: total; font-weight: 600; text-align: end; }
+.rv-enc__estado { grid-area: estado; font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; color: var(--ink); }
+.rv-enc[data-estado='criada'] .rv-enc__estado { color: var(--accent); }
+.rv-enc[data-estado='expirada'] .rv-enc__estado, .rv-enc[data-estado='reembolsada'] .rv-enc__estado { color: var(--muted); }
+.rv-enc__corpo { padding-block: 0 1.25rem; }
+.resellers .rv-enc__corpo > p.small { margin: 0; overflow-wrap: anywhere; }
+.resellers .rv-enc__linhas { list-style: none; margin: 1rem 0; padding: 0; display: grid; gap: .75rem; }
+.rv-enc__linhas li { display: grid; grid-template-columns: 3rem minmax(0, 1fr) auto; column-gap: .75rem; align-items: start; font-size: .9rem; font-variant-numeric: tabular-nums; }
+.rv-enc__linhas img, .rv-enc__semfoto { display: block; inline-size: 3rem; block-size: 3rem; object-fit: cover; background: var(--frame-bg); }
+.rv-enc__escolhas { display: block; margin-block-start: .15rem; font-size: .8rem; color: var(--muted); overflow-wrap: anywhere; }
+.rv-enc__valor { text-align: end; }
+.resellers .rv-enc__soma { display: flex; justify-content: space-between; gap: 1rem; margin: 0; padding-block: .4rem; border-block-start: 1px solid var(--line); font-size: .9rem; font-variant-numeric: tabular-nums; }
+.resellers .rv-enc__soma--total { font-weight: 600; }
+@media (width < 40rem) {
+  .rv-enc summary { grid-template-columns: minmax(0, 1fr) auto 1.25rem; grid-template-areas: 'dia total mais' 'estado estado mais'; }
+}
 .rv-aviso { margin: 0; padding: .7rem var(--gutter); background: var(--frame-bg); border-block-end: 1px solid var(--line); text-align: center; font-size: .9rem; color: var(--ink); }
 
 /* --- a janela da campanha (src/lib/shell.mjs, avisoCampanha) ---------------
