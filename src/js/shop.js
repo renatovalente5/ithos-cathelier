@@ -968,10 +968,20 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* --- back to top -------------------------------------------------------- */
+  // It also steps aside while the footer's last row (with the Livro de
+  // Reclamações) would be under it, so the footer needs no empty space below.
   const up = $('.to-top');
+  const lastRow = $('.foot__base');
   if (up) {
-    const decide = () => { up.hidden = scrollY < 500; };
+    const decide = () => {
+      up.hidden = scrollY < 500;
+      if (up.hidden || !lastRow) return;
+      const r = lastRow.getBoundingClientRect(), q = up.getBoundingClientRect(), tall = innerHeight;
+      up.classList.toggle('no-fim', r.top < tall && r.bottom > q.top && r.left < q.right && r.right > q.left);
+    };
     addEventListener('scroll', decide, { passive: true });
+    addEventListener('resize', decide);
+    if ('ResizeObserver' in window) new ResizeObserver(decide).observe(document.body);
     decide();
   }
 

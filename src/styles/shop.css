@@ -1479,9 +1479,11 @@ html.menu-open { overflow: hidden; }
    between two coloured blocks. The owner saw it and read it as a mistake,
    which is what it looked like. The footer's own top padding is what separates
    it from the text above; the margin was separating it from nothing. */
-/* The bottom padding clears the round back-to-top button (fixed, 46px at
-   1.25rem from the corner): with 2rem the last row ran under it. */
-.foot { background: var(--bg-soft, var(--bg)); border-block-start: 1px solid var(--line); padding-block: clamp(2.25rem, 5vw, 3.5rem) 4.75rem; }
+/* The page ends on the footer's last row: no empty band under it (27 nov 2026,
+   «a página acaba no rodapé»). The bottom padding used to be 4.75rem to clear
+   the round back-to-top button; now the button steps aside when that row
+   reaches it (shop.js, back to top) and the padding is the ordinary 2rem. */
+.foot { background: var(--bg-soft, var(--bg)); border-block-start: 1px solid var(--line); padding-block: clamp(2.25rem, 5vw, 3.5rem) 2rem; }
 /* A MARCA À ESQUERDA E AS PÁGINAS AO LADO (20 out 2026): o logótipo, as três
    maneiras de falar connosco e as redes numa coluna; as três listas de
    páginas noutras três. No telemóvel, a marca por cima e as listas em
@@ -1581,6 +1583,9 @@ html.menu-open { overflow: hidden; }
   box-shadow: 0 6px 20px rgb(0 0 0 / .18);
 }
 .to-top[hidden] { display: none; }
+/* Over the footer's last row (the Livro de Reclamações lives there), it steps aside. */
+.to-top { transition: opacity .25s; }
+.to-top.no-fim { opacity: 0; visibility: hidden; pointer-events: none; transition: opacity .25s, visibility 0s .25s; }
 
 /* --- cookies --------------------------------------------------------------- */
 .cookies { position: fixed; inset-block-end: 0; inset-inline: 0; z-index: 60; padding: 1.25rem var(--gutter); background: var(--bg); border-block-start: 1px solid var(--line); font-size: 13px; display: grid; gap: .85rem; }

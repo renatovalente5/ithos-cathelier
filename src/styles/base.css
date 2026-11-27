@@ -95,6 +95,11 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+/* A página acaba na última linha do rodapé: nada de faixa nem espaço vazio por baixo dele. Nas páginas curtas o
+   rodapé fica no fundo do ecrã e o espaço que sobra fica dentro da página. */
+body { display: flex; flex-direction: column; min-height: 100vh; min-height: 100dvh; }
+body > main { flex: 1 0 auto; }
+
 img, picture, svg, video { display: block; max-width: 100%; }
 img { height: auto; }
 input, button, select, textarea { font: inherit; color: inherit; }
